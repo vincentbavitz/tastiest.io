@@ -13,7 +13,7 @@ const Home = () => (
       </h1>
 
       <p className="description">
-        Get started by editing <code>pages/index.js</code>
+        Get started by eating <code>pages/eat.js</code>
       </p>
 
       <div className="grid">
