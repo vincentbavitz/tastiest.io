@@ -1,11 +1,15 @@
 module.exports = {
-  purge: [],
   theme: {
-    fontFamily: {
-      'sans': ['Helvetica', 'Arial', 'sans-serif'],
-    },
-    extend: {},
+      fontFamily: {
+          body: ['sans-serif'],
+          display: ['sans-serif'],
+          logo: ['sans-serif']
+      },
+      textColor: {
+        'primary': '#ff4c00',
+      },
+      extend: {}
   },
   variants: {},
-  plugins: [],
-}
+  plugins: []
+};
