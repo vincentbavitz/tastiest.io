@@ -16,7 +16,7 @@
   }
 
   /* Allows for proper border rounding on Safari */
-  select {
+  * {
     -webkit-appearance: none;
     -webkit-border-radius: 0px;
   }
