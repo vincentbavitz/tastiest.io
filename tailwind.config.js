@@ -1,14 +1,10 @@
 module.exports = {
   theme: {
-      fontFamily: {
-          body: ['sans-serif'],
-          display: ['sans-serif'],
-          logo: ['sans-serif']
-      },
-      textColor: {
-        'primary': '#ff4c00',
-      },
-      extend: {}
+      extend: {
+        colors: {
+          'primary': '#dd6b20',
+        }
+      }
   },
   variants: {},
   plugins: []
