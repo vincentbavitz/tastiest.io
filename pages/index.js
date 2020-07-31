@@ -10,6 +10,7 @@ export default function Index() {
       <Head>  
         <title>Tastiest</title>
         <meta property="og:title" content="Tastiest food no matter where you are" key="title" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
       </Head>
       <NavBar />
       <CuisineBar />
