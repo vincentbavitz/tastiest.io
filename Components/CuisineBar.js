@@ -4,7 +4,7 @@ import Link from 'next/link';
 function CuisineItem ({ text, href }) {
     return (
         <Link href={href}>
-            <a className='block font-semibold border-black border-2 border-solid rounded-md p-3 mx-3'>
+            <a className='block font-normal border-black border border-solid rounded-lg pr-12 pl-4 py-3 mr-4'>
                 {text}
             </a>
         </Link>
@@ -12,14 +12,16 @@ function CuisineItem ({ text, href }) {
 }
 
 function CuisineBar() {
-    return (
-        <div className="flex mt-2 mb-2 w-auto mx-2 px-4 overflow-x-auto scrolling-touch hide_scroll">
+    return (  
+    <div className="flex px-5 overflow-x-auto scrolling-touch hide_scroll">
+        <div className="flex">
             <CuisineItem text="Italian" href="/italian"/>
             <CuisineItem text="French" href="/french"/>
             <CuisineItem text="Japanese" href="/Japanese"/>
             <CuisineItem text="Chinese" href="/chinese"/>
             <CuisineItem text="Indian" href="/Indian"/>
         </div>
+    </div>  
     )
   }
   

@@ -20,3 +20,11 @@
     -webkit-appearance: none;
     -webkit-border-radius: 0px;
   }
+
+.cuisine-bar-after:after {
+    display: block;
+    content: "";
+    -webkit-flex: 0 0 var(--_2NCTA92m);
+    -ms-flex: 0 0 var(--_2NCTA92m);
+    flex: 0 0 var(--_2NCTA92m);
+}

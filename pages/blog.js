@@ -8,8 +8,10 @@ export default function Blog() {
         <title>Blog</title>
         <meta property="og:title" content="About Tastiest" key="title" />
       </Head>
+      <div className="block">
       <NavBar />
-      <h1 className="text-center text-xl m-6">Blog</h1>
+      <h1 className="text-xl text-center">Blog</h1>
+      </div>
     </div>
   );
 }
