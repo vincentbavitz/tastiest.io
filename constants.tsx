@@ -2,6 +2,7 @@ export interface ICuisine {
   // Name is the cuisine as it's rendered. Don't forget capitalisations
   name: string;
   href: string;
+  svg?: JSX.Element;
 }
 
 export const cuisines: Array<ICuisine> = [
