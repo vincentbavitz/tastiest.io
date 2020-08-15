@@ -1,10 +1,10 @@
-import NavBar from '../Components/NavBar';
-import Head from 'next/head'
+import NavBar from '../components/NavBar';
+import Head from 'next/head';
 
-export default function About() {
+export default function About(): JSX.Element {
   return (
     <div>
-      <Head>  
+      <Head>
         <title>About</title>
         <meta property="og:title" content="About Tastiest" key="title" />
       </Head>
