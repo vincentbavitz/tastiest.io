@@ -1,5 +1,4 @@
 import '../assets/style.css';
-import Link from 'next/link';
 
 function SubscribeToEmailList(): JSX.Element {
   return (
@@ -8,7 +7,10 @@ function SubscribeToEmailList(): JSX.Element {
         <div className="pt-8">
           <div>
             <h1 className="text-center text-2xl font-black mb-5">
-              Only dishes we&aposd reccomend to family.
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Labore
+              illum tempora ea minus nam expedita exercitationem ipsum!
+              Reprehenderit, rem. Ex ut iure hic, nam atque accusamus veritatis!
+              Laborum, ex accusantium!
             </h1>
             <form>
               <div className="text-center">
