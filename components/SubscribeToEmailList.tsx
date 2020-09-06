@@ -1,5 +1,3 @@
-import '../assets/style.css';
-
 function SubscribeToEmailList(): JSX.Element {
   return (
     <div className="bg-orange-200 mt-8 justify-center">
@@ -7,10 +5,7 @@ function SubscribeToEmailList(): JSX.Element {
         <div className="pt-8">
           <div>
             <h1 className="text-center text-2xl font-black mb-5">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Labore
-              illum tempora ea minus nam expedita exercitationem ipsum!
-              Reprehenderit, rem. Ex ut iure hic, nam atque accusamus veritatis!
-              Laborum, ex accusantium!
+              Only dishes we&aposd reccomend to family.
             </h1>
             <form>
               <div className="text-center">

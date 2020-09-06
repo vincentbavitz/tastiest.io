@@ -1,4 +1,3 @@
-import '../assets/style.css';
 import Link from 'next/link';
 import { cuisines } from '../constants';
 

@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Other CSS Properties  */
+
+/* ********************* */
+/* ***** CONSTANTS ***** */
+/* ********************* */
+$padding-container: 2.5em;
+$theme-primary: #ffd618;
+$theme-secondary: #fe4c00;
+$theme-danger: #130b57;
+/* ********************* */
+
+.hide_scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE and Edge */
+.hide_scroll {
+  -ms-overflow-style: none;
+}
+
+/* Allows for proper border rounding on Safari */
+* {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+}
+
+.cuisine-bar-after:after {
+  display: block;
+  content: '';
+  -webkit-flex: 0 0 var(--_2NCTA92m);
+  -ms-flex: 0 0 var(--_2NCTA92m);
+  flex: 0 0 var(--_2NCTA92m);
+}
+
+.article {
+  &__top,
+  &__content {
+    padding: 0 $padding-container;
+  }
+
+  &__title {
+    font-size: 2.7em;
+    font-weight: bold;
+    line-height: 1em;
+    margin-bottom: 0.5em;
+    margin-right: -3px;
+  }
+
+  &__feature-video {
+    position: relative;
+    height: 0;
+    width: 100%;
+    padding-bottom: 56.25%;
+  }
+}

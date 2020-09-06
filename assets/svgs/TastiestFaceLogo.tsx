@@ -1,5 +1,3 @@
-import '../../assets/style.css';
-
 function TastiestLogo({ className }) {
   return (
     <svg className={className} viewBox="0 0 714.9 560.44">

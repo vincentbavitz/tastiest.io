@@ -1,5 +1,5 @@
-import '../assets/style.css';
 import Link from 'next/link';
+import { Hashtag } from '../objects';
 
 interface Props {
   href: string;
@@ -7,24 +7,12 @@ interface Props {
   altTag: string;
   title: string;
   paragraph: string;
-  hashtags: string;
-  hashtags2: string;
-  hashtags3: string;
+  hashtags: Array<Hashtag>; // Max 5
   sameSite?: string;
 }
 
 function BlogCardItem(props: Props): JSX.Element {
-  const {
-    href,
-    image,
-    altTag,
-    title,
-    paragraph,
-    hashtags,
-    hashtags2,
-    hashtags3,
-    sameSite,
-  } = props;
+  const { href, image, altTag, title, paragraph, hashtags, sameSite } = props;
 
   // Item to be used
   sameSite;
@@ -39,15 +27,14 @@ function BlogCardItem(props: Props): JSX.Element {
             <p className="text-gray-700 text-base">{paragraph}</p>
           </div>
           <div className="px-6 py-4">
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-              {hashtags}
-            </span>
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-              {hashtags2}
-            </span>
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-              {hashtags3}
-            </span>
+            {hashtags.map(hashtag => (
+              <span
+                key={hashtag.tag}
+                className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+              >
+                {hashtag.formatted}
+              </span>
+            ))}
           </div>
         </a>
       </div>
@@ -65,9 +52,11 @@ function BlogCard() {
         altTag="hello"
         title="Best Korma in London"
         paragraph="loren loren loren loren loren loren loren loren"
-        hashtags="#indian"
-        hashtags2="#curry"
-        hashtags3="#chickenkorma"
+        hashtags={[
+          new Hashtag('indian'),
+          new Hashtag('curry'),
+          new Hashtag('chickenkorma'),
+        ]}
       />
     </div>
   );

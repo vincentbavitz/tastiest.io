@@ -1,5 +1,3 @@
-import '../../assets/style.css';
-
 function TastiestFullLogo({ className }) {
   return (
     <svg

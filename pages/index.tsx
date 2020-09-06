@@ -1,4 +1,4 @@
-import '../assets/style.css';
+import '../assets/style.scss';
 import NavBar from '../components/NavBar';
 import CuisineBar from '../components/CuisineBar';
 import SubscribeToEmailList from '../components/SubscribeToEmailList';
@@ -49,6 +49,7 @@ const Index = ({ posts }) => {
     </div>
   );
 };
+
 export const getStaticProps = async () => {
   const posts = await client.fetch(groq`
     *[_type == "post" ]|order(publishedAt desc)
