@@ -21,7 +21,7 @@ function CuisineItem(props: Props): JSX.Element {
 
 function CuisineBar() {
   return (
-    <div className="flex px-5 overflow-x-auto scrolling-touch hide_scroll">
+    <div className="flex px-5 md:px-0 overflow-x-auto scrolling-touch hide_scroll">
       <div className="flex">
         {cuisines.map(cuisine => (
           <CuisineItem

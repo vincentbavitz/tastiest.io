@@ -23,14 +23,14 @@ const Index = ({ posts }) => {
           content="width=device-width, initial-scale=1, maximum-scale=1"
         ></meta>
       </Head>
-      <div>
+      <div className="max-w-screen-xl mx-auto md:m-6">
         <NavBar />
+        <CuisineBar />
+        <SubscribeToEmailList />
+        <BlogCard />
       </div>
-      <CuisineBar />
-      <SubscribeToEmailList />
-      <BlogCard />
       <div>
-        <h1>Welcome to a blog!</h1>
+        <h1>Welcome to a blog! hello</h1>
         <ul>
           {posts.map(post => {
             return (
