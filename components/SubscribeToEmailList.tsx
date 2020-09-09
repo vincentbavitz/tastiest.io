@@ -1,13 +1,11 @@
-import '../assets/style.css';
-
 function SubscribeToEmailList(): JSX.Element {
   return (
-    <div className="bg-orange-200 mt-8 justify-around md:rounded-lg md:pb-32">
-      <div className="mx-6 md:mx-10">
-        <div className="pt-8 md:pt-20 md:justify-center">
-          <div className="md:relative md:z-50">
-            <h1 className="text-center text-2xl font-black mb-5 md:mb-6 md:text-4xl md:flex md:ml-10">
-              Dishes we would only reccomend to family.
+    <div className="bg-orange-200 mt-8 justify-center">
+      <div className="mx-6">
+        <div className="pt-8">
+          <div>
+            <h1 className="text-center text-2xl font-black mb-5">
+              Only dishes we would reccomend to family.
             </h1>
             <form className="md:ml-1">
               <div className="text-center md:w-3/4">

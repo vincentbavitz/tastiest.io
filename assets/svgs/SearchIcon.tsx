@@ -1,5 +1,3 @@
-import '../../assets/style.css';
-
 function SearchIcon({ className }) {
   return (
     <svg className={className} viewBox="0 0 20 20">
