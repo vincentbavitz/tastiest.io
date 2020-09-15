@@ -9,37 +9,20 @@ import { CityIndictor } from '../../components/CityIndictor';
 import moment from 'moment';
 import { Hashtag } from '../../objects';
 import { RecommendForm } from '../../components/RecommendForm';
+import { IPost } from '../../types/post';
+
+import React from 'react';
+import { Footer } from '../../components/Footer';
+
+import TableSVG from '../../assets/svgs/eating-bao.svg';
+import CookingSVG from '../../assets/svgs/cooking.svg';
+import HelloSVG from '../../assets/svgs/hello.svg';
 
 function urlFor(source) {
   return imageUrlBuilder(client).image(source);
 }
 
-interface Props {
-  title: string;
-  subtitle: string;
-  name: string;
-  authorImage: any;
-  publishedAt: string;
-  cuisine: string;
-  city: string;
-  tags: Array<string>;
-  location: {
-    lat: number;
-    lng: number;
-    _type: string;
-  };
-  restaurantName: string;
-  dishName: string;
-  mainImage: any;
-  backdropSVG: any;
-  video: {
-    link: string;
-    description: string;
-  };
-  body: Array<any>;
-}
-
-const Post = (props: Props): JSX.Element => {
+const Post = (props: IPost): JSX.Element => {
   const {
     title = '',
     subtitle = '',
@@ -66,80 +49,136 @@ const Post = (props: Props): JSX.Element => {
   const date = moment(publishedAt).format('MMMM D, YYYY');
 
   return (
-    <article>
+    <>
       <NavBar />
 
-      <div className="article__top w-full bg-primary">
-        <div className="w-full pt-10 pb-6">
-          <CityIndictor city={city} />
+      <article>
+        <div className="article__top relative w-full bg-white flex flex-col justify-center items-center mt-20">
+          <div className="w-full h-full">
+            <TableSVG className="w-full pb-0 mb-0" />
+          </div>
+
+          <div className="article__title absolute w-full">
+            <div className="w-full pb-0 mb-0 flex flex-col items-center">
+              <CityIndictor city={city} />
+              <h1 className="text-secondary text-center">{title}</h1>
+            </div>
+          </div>
+
+          <div className="article__author absolute w-full flex justify-center space-around">
+            <div>
+              <div className="flex w-full content-center items-center">
+                <img
+                  className="rounded-full w-10 h-10 mr-3"
+                  src={urlFor(authorImage).url()}
+                  alt={'Author profile picture'}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col items-start justify-center">
+              <span className="block font-bold text-xs">
+                BY {name.toUpperCase()}
+              </span>
+              <span className="block text-xs">{date}</span>
+            </div>
+          </div>
         </div>
 
-        <div className="flex w-full">
-          <div className="w-1/4">
-            <h1 className="article__title text-secondary">{title}</h1>
+        <div className="relative w-full -mt-2 contained bg-primary">
+          <div className="flex flex-col items-center w-full pt-8 pb-0">
+            <p className="w-3/4 text-center pb-8 font-semi-bold font-roboto-slab">
+              {subtitle}
+            </p>
+          </div>
 
-            <span className="block font-bold text-xs">
-              BY: {name.toUpperCase()}
-            </span>
+          <div className="article__feature-video">
+            <iframe
+              title="ytVideo"
+              className="absolute top-0 right-0 bottom-0 left-0 w-full h-full"
+              src={videoSrc}
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            ></iframe>
+          </div>
 
-            <span className="block text-xs">{date}</span>
+          <div className="w-3/4 self-start">
+            <p className="py-3 text-sm italic">{video.description}</p>
+          </div>
 
-            {tags && (
-              <ul className="mt-2 mb-6">
-                {tags.map(tag => (
-                  <li key={tag}>
-                    <span className="rounded p-1 bg-white bg-opacity-50 text-xs">
-                      {new Hashtag(tag).formatted}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
+          <div className="flex justify-center w-full h-40">
+            <CookingSVG className="w-56 absolute -mt-2" />
+          </div>
 
-            <div className="bg-white bg-opacity-25 w-full mb-12">
-              <img
-                src={urlFor(mainImage.image).url()}
-                alt={mainImage.altText}
+          {/* <div>
+          {tags && (
+            <ul className="mt-2 mb-6">
+              {tags.map(tag => (
+                <li key={tag}>
+                  <span className="rounded p-1 bg-white bg-opacity-50 text-xs">
+                    {new Hashtag(tag).formatted}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+       
+          <div className="bg-white bg-opacity-25 w-full mt-12">
+            <img src={urlFor(backdropSVG).url()} />
+          </div>
+        </div> */}
+        </div>
+
+        <div className="article__content contained bg-white w-full mt-16">
+          <div className="w-3/4">
+            <BlockContent
+              blocks={body}
+              imageOptions={{ w: 320, h: 240, fit: 'max' }}
+              {...client.config()}
+            />
+          </div>
+
+          {/* OFF TO SIDE IMAGE WITH CONTENT */}
+
+          <div className="mt-8 mb-8">
+            <h4 className="font-roboto-slab font-bold w-1/2 text-md mb-4">
+              {mainImage.description}
+            </h4>
+            <img
+              className="w-full"
+              src={urlFor(mainImage.image).url()}
+              alt={mainImage.altText}
+            />
+          </div>
+
+          <p className="italic w-2/3 text-sm font-thin">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laborum,
+            assumenda odit iure similique nobis itaque dolor deserunt, culpa cum
+            praesentium eligendi facilis quae, a illum corrupti quibusdam harum
+            hic modi maxime sapiente. Repellat fugit placeat distinctio eligendi
+            necessitatibus quia corporis dolorum blanditiis, sequi eos
+            doloremque voluptatem autem earum illum! At?
+          </p>
+        </div>
+
+        {/* RECOMMEND FORM */}
+        <div className="contained flex justify-between">
+          <div className="w-full py-10 relative">
+            <div className="w-2/3">
+              <RecommendForm
+                dish={dishName}
+                city={{ name: 'London', lat: 45, lng: 45 }}
               />
             </div>
 
-            <div className="bg-white bg-opacity-25 w-full mt-12">
-              <img src={urlFor(backdropSVG).url()} />
+            <div className="absolute bottom-0 right-0 mr-6">
+              <HelloSVG className="h-24" />
             </div>
           </div>
-
-          <div className="w-3/4 pl-16">
-            <p className="pb-8 font-bold">{subtitle}</p>
-            <div className="article__feature-video">
-              <iframe
-                title="ytVideo"
-                className="absolute top-0 right-0 bottom-0 left-0 w-full h-full"
-                src={videoSrc}
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              ></iframe>
-            </div>
-            <p className="py-3 text-sm italic">{video.description}</p>
-          </div>
         </div>
-      </div>
+      </article>
 
-      <div className="article__content w-full">
-        <div className="w-3/4 pl-16 ml-auto">
-          <BlockContent
-            blocks={body}
-            imageOptions={{ w: 320, h: 240, fit: 'max' }}
-            {...client.config()}
-          />
-
-          <div className="py-10">
-            <RecommendForm
-              dish={dishName}
-              city={{ name: 'London', lat: 45, lng: 45 }}
-            />
-          </div>
-        </div>
-      </div>
-    </article>
+      <Footer />
+    </>
   );
 };
 

@@ -11,7 +11,7 @@ interface Props {
   sameSite?: string;
 }
 
-function BlogCardItem(props: Props): JSX.Element {
+function BlogCard(props: Props): JSX.Element {
   const { href, image, altTag, title, paragraph, hashtags, sameSite } = props;
 
   // Item to be used
@@ -27,38 +27,19 @@ function BlogCardItem(props: Props): JSX.Element {
             <p className="text-gray-700 text-base">{paragraph}</p>
           </div>
           <div className="px-6 py-4">
-            {hashtags.map(hashtag => (
-              <span
-                key={hashtag.tag}
-                className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-              >
-                {hashtag.formatted}
-              </span>
-            ))}
+            {hashtags &&
+              hashtags.map(hashtag => (
+                <span
+                  key={hashtag.tag}
+                  className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+                >
+                  {hashtag.formatted}
+                </span>
+              ))}
           </div>
         </a>
       </div>
     </Link>
-  );
-}
-
-function BlogCard() {
-  return (
-    <div>
-      <BlogCardItem
-        href="/best-indian-food"
-        sameSite="None"
-        image="https://media1.tenor.com/images/a9eedf74168980fc42c923b5f0af1827/tenor.gif"
-        altTag="hello"
-        title="Best Korma in London"
-        paragraph="loren loren loren loren loren loren loren loren"
-        hashtags={[
-          new Hashtag('indian'),
-          new Hashtag('curry'),
-          new Hashtag('chickenkorma'),
-        ]}
-      />
-    </div>
   );
 }
 

@@ -1,14 +1,42 @@
 import '../assets/style.scss';
 import NavBar from '../components/NavBar';
 import CuisineBar from '../components/CuisineBar';
+import imageUrlBuilder from '@sanity/image-url';
 import SubscribeToEmailList from '../components/SubscribeToEmailList';
 import BlogCard from '../components/BlogCard';
 import groq from 'groq';
 import client from '../client';
 import Link from 'next/link';
 import Head from 'next/head';
+import { Hashtag } from '../objects';
+import { IPost } from '../types/post';
 
-const Index = ({ posts }) => {
+function urlFor(source) {
+  return imageUrlBuilder(client).image(source);
+}
+
+interface Props {
+  posts: Array<IPost>;
+}
+
+const Index = (props: Props) => {
+  const { posts } = props;
+
+  console.log('posts:', posts);
+
+  const cards = posts.map(post => (
+    <BlogCard
+      key={post.title.toLowerCase()}
+      href={`/post/${post.slug}`}
+      sameSite=""
+      image={post.mainImage && urlFor(post.mainImage.image).url()}
+      altTag={post.mainImage && post.mainImage.altText}
+      title={post.title}
+      paragraph={post.subtitle}
+      hashtags={post.tags && post.tags.map(tag => new Hashtag(tag))}
+    />
+  ));
+
   return (
     <div>
       <Head>
@@ -27,7 +55,7 @@ const Index = ({ posts }) => {
         <NavBar />
         <CuisineBar />
         <SubscribeToEmailList />
-        <BlogCard />
+        <div className="flex cards">{cards}</div>
       </div>
       <div>
         <h1>Welcome to a blog! hello</h1>
@@ -38,7 +66,7 @@ const Index = ({ posts }) => {
                 <button className="m-1 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
                   <Link href="/post/[slug]" as={`/post/${post.slug.current}`}>
                     <a>{post.title}</a>
-                  </Link>{' '}
+                  </Link>
                 </button>
                 ({new Date(post._updatedAt).toDateString()})
               </div>

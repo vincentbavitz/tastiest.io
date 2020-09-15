@@ -11,6 +11,9 @@ interface Props {
   city: ICity;
 }
 
+// Use klaviyo for emails
+// https://www.klaviyo.com/docs
+
 export function RecommendForm(props: Props) {
   const { dish, city } = props;
 
@@ -19,20 +22,28 @@ export function RecommendForm(props: Props) {
       <span className="text-lg font-bold">
         Do you know a better {dish} in {city.name}?
       </span>
-      <div className="flex w-full">
+      <div
+        className={classNames(
+          'flex',
+          'w-full',
+          'focus:outline-none',
+          'focus:shadow-outline',
+          'border-4',
+          'border-secondary',
+          'rounded-xl',
+        )}
+      >
         <input
           className={classNames(
-            'bg-white',
-            'focus:outline-none',
-            'focus:shadow-outline',
-            'border-4',
-            'border-secondary',
-            'rounded-l-lg',
-            'py-2',
+            'flex-1',
+            'border-none',
+            'outline-none',
             'px-4',
+            'self-center',
             'block',
             'appearance-none',
             'leading-normal',
+            'bg-transparent',
           )}
           type="text"
           maxLength={50}
@@ -41,14 +52,14 @@ export function RecommendForm(props: Props) {
         <button
           className={classNames(
             'bg-white',
-            'border-t-4',
-            'border-r-4',
-            'border-b-4',
+            'border-2',
+            'border-white',
+            'm-1',
+            'px-4',
+            'py-2',
             'border-secondary',
             'bg-secondary',
-            'rounded-r-lg',
-            'py-2',
-            'px-4',
+            'rounded-lg',
             'block',
             'appearance-none',
             'leading-normal',

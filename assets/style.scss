@@ -2,16 +2,167 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Other CSS Properties  */
+/* ********************* */
+/* ******* FONTS ******* */
+/* ********************* */
+@font-face {
+  font-family: SomaticRounded;
+  src: url(/fonts/Somatic-Rounded.otf) format('opentype');
+}
+@font-face {
+  font-family: Roboto;
+  src: url(/fonts/Roboto/Roboto-Thin.ttf) format('truetype');
+  font-weight: 200;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(/fonts/Roboto/Roboto-ThinItalic.ttf) format('truetype');
+  font-weight: 200;
+  font-style: italic;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(/fonts/Roboto/Roboto-Regular.ttf) format('truetype');
+}
+@font-face {
+  font-family: Roboto;
+  src: url(/fonts/Roboto/Roboto-MediumItalic.ttf) format('truetype');
+  font-style: italic;
+  font-weight: 500;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(/fonts/Roboto/Roboto-Medium.ttf) format('truetype');
+  font-weight: 500;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(/fonts/Roboto/Roboto-LightItalic.ttf) format('truetype');
+  font-style: italic;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(/fonts/Roboto/Roboto-Light.ttf) format('truetype');
+}
+@font-face {
+  font-family: Roboto;
+  src: url(/fonts/Roboto/Roboto-Italic.ttf) format('truetype');
+  font-style: italic;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(/fonts/Roboto/Roboto-BoldItalic.ttf) format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(/fonts/Roboto/Roboto-Bold.ttf) format('truetype');
+  font-weight: 700;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(/fonts/Roboto/Roboto-BlackItalic.ttf) format('truetype');
+  font-weight: 900;
+  font-style: italic;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(/fonts/Roboto/Roboto-Black.ttf) format('truetype');
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: RobotoSlab;
+  src: url(/fonts/RobotoSlab/RobotoSlab-ExtraLight.ttf) format('truetype');
+  font-weight: 100;
+}
+@font-face {
+  font-family: RobotoSlab;
+  src: url(/fonts/RobotoSlab/RobotoSlab-Thin.ttf) format('truetype');
+  font-weight: 200;
+}
+@font-face {
+  font-family: RobotoSlab;
+  src: url(/fonts/RobotoSlab/RobotoSlab-Light.ttf) format('truetype');
+  font-weight: 300;
+}
+@font-face {
+  font-family: RobotoSlab;
+  src: url(/fonts/RobotoSlab/RobotoSlab-Regular.ttf) format('truetype');
+  font-weight: 400;
+}
+@font-face {
+  font-family: RobotoSlab;
+  src: url(/fonts/RobotoSlab/RobotoSlab-SemiBold.ttf) format('truetype');
+  font-weight: 500;
+}
+@font-face {
+  font-family: RobotoSlab;
+  src: url(/fonts/RobotoSlab/RobotoSlab-Bold.ttf) format('truetype');
+  font-weight: 600;
+}
+@font-face {
+  font-family: RobotoSlab;
+  src: url(/fonts/RobotoSlab/RobotoSlab-ExtraBold.ttf) format('truetype');
+  font-weight: 700;
+}
+
+.font-somatic {
+  font-family: SomaticRounded;
+}
+
+.font-roboto {
+  font-family: Roboto;
+}
+
+.font-roboto-slab {
+  font-family: RobotoSlab;
+}
+
+.font-bold {
+  font-weight: 600 !important;
+}
+
+.font-semi-bold {
+  font-weight: 500 !important;
+}
+
+.contained {
+  padding-left: 5vw;
+  padding-right: 5vw;
+}
+
+.rounded-xl {
+  border-radius: 14px;
+}
+
+body {
+  font-family: Roboto;
+  font-weight: 400;
+}
 
 /* ********************* */
 /* ***** CONSTANTS ***** */
 /* ********************* */
-$padding-container: 2.5em;
 $theme-primary: #fe4c00;
 $theme-secondary: #ffd618;
 $theme-danger: #130b57;
 /* ********************* */
+
+.fill-primary {
+  fill: $theme-primary;
+}
+
+.fill-secondary {
+  fill: $theme-secondary;
+}
+
+.fill-white {
+  * {
+    fill: white;
+  }
+}
 
 .hide_scroll::-webkit-scrollbar {
   display: none;
@@ -37,17 +188,20 @@ $theme-danger: #130b57;
 }
 
 .article {
-  &__top,
-  &__content {
-    padding: 0 $padding-container;
+  &__title {
+    bottom: 50%;
+
+    h1 {
+      font-family: SomaticRounded;
+      font-size: 3.3em;
+      line-height: 1em;
+      width: 40%;
+    }
   }
 
-  &__title {
-    font-size: 2.7em;
-    font-weight: bold;
-    line-height: 1em;
-    margin-bottom: 0.5em;
-    margin-right: -3px;
+  &__author {
+    top: 70%;
+    margin-left: -10px;
   }
 
   &__feature-video {
@@ -55,5 +209,25 @@ $theme-danger: #130b57;
     height: 0;
     width: 100%;
     padding-bottom: 56.25%;
+  }
+
+  &__content {
+    color: $theme-danger;
+
+    p {
+      font-weight: 500;
+      opacity: 0.8;
+    }
+  }
+}
+
+.menu-item {
+  position: relative;
+
+  svg {
+    position: absolute;
+    height: 3.5em;
+    top: -0.3em;
+    right: 0.5em;
   }
 }

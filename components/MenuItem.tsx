@@ -1,35 +1,44 @@
 import classNames from 'classnames';
+import Link from 'next/link';
+import React from 'react';
 
 interface Props {
   text: string;
+  svg: any;
   selected: boolean;
 }
 
 export function MenuItem(props: Props) {
   return (
-    <a
-      href="#"
-      className={classNames(
-        'inline-block',
-        'flex-1',
-        'bg-yellow-500',
-        'text-sm',
-        'font-bold',
-        'px-4',
-        'py-2',
-        'rounded-lg',
-        'text-white',
-        'border',
-        'border-yellow-500',
-        'border-opacity-0',
-        'hover:border-opacity-100',
-        'hover:bg-transparent',
-        'hover:text-orange-400',
-        'mt-4',
-        'lg:mt-0',
-      )}
-    >
-      {props.text}
-    </a>
+    <Link href="#">
+      <div
+        className={classNames(
+          'menu-item',
+          'inline-flex',
+          'items-center',
+          'justify-between',
+          'flex-1',
+          'text-sm',
+          'font-bold',
+          'px-2',
+          'py-2',
+          'mx-3',
+          'mt-4',
+          'border-2',
+          'rounded-lg',
+          'bg-white',
+          'text-secondary',
+          'border-primary',
+          'hover:text-secondary-300',
+          'hover:bg-transparent',
+          'lg:mt-0',
+          'first:ml-0',
+          'last:mr-0',
+        )}
+      >
+        {props.text}
+        {props.svg}
+      </div>
+    </Link>
   );
 }
