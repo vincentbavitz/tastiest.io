@@ -17,6 +17,12 @@ function CuisineItem(props: Props) {
       <div
         className={classNames(
           'menu-item',
+          'overflow-y-visible',
+          'rounded-xl',
+          'pr-12',
+          'pl-4',
+          'py-3',
+          'mr-4',
           'inline-flex',
           'items-center',
           'justify-between',
@@ -39,7 +45,7 @@ function CuisineItem(props: Props) {
           'last:mr-0',
         )}
       >
-        {props.name}
+        <span className="pr-3">{props.name}</span>
         {props.svg}
       </div>
     </Link>
@@ -48,15 +54,19 @@ function CuisineItem(props: Props) {
 
 export function CuisineBar() {
   return (
-    <div className="w-full flex">
-      {cuisines.map(cuisine => (
-        <CuisineItem
-          key={cuisine.name}
-          name={cuisine.name}
-          href={cuisine.href}
-          svg={cuisine.svg}
-        />
-      ))}
+    <div className="w-full overflow-y-visible">
+      <div className="flex px-5 md:px-0 overflow-y-visible scrolling-touch hide_scroll">
+        <div className="flex w-full overflow-y-visible">
+          {cuisines.map(cuisine => (
+            <CuisineItem
+              key={cuisine.name}
+              name={cuisine.name}
+              href={cuisine.href}
+              svg={cuisine.svg}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

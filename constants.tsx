@@ -1,3 +1,4 @@
+// Ensure SVGs dont have any width or height attrs.
 import ChineseSVG from './assets/svgs/cuisines/chinese.svg';
 import FrenchSVG from './assets/svgs/cuisines/french.svg';
 import IndianSVG from './assets/svgs/cuisines/indian.svg';
