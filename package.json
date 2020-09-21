@@ -1,8 +1,7 @@
 {
   "name": "nextjs",
   "version": "0.1.0",
-  "private": true,
-  "license": "copyrighted",
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
