@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 /* ********************* */
+/* ***** CONSTANTS ***** */
+/* ********************* */
+$theme-primary: #fe4c00;
+$theme-secondary: #ffd618;
+$theme-danger: #130b57;
+
+$page-border: 5vw;
+
+/* ********************* */
 /* ******* FONTS ******* */
 /* ********************* */
 @font-face {
@@ -129,8 +138,8 @@
 }
 
 .contained {
-  padding-left: 5vw;
-  padding-right: 5vw;
+  padding-left: $page-border;
+  padding-right: $page-border;
 }
 
 .rounded-xl {
@@ -141,14 +150,6 @@ body {
   font-family: Roboto;
   font-weight: 400;
 }
-
-/* ********************* */
-/* ***** CONSTANTS ***** */
-/* ********************* */
-$theme-primary: #fe4c00;
-$theme-secondary: #ffd618;
-$theme-danger: #130b57;
-/* ********************* */
 
 .fill-primary {
   fill: $theme-primary;
@@ -227,14 +228,26 @@ $theme-danger: #130b57;
   }
 }
 
-.menu-item {
-  position: relative;
-  min-width: 150px;
+.cuisine-item {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 
-  svg {
-    position: absolute;
-    height: 5em;
-    top: -0.3em;
-    right: 0;
+  &:first-child {
+    margin-left: $page-border;
+  }
+
+  &:last-child::after {
+    content: ' ';
+    width: $page-border;
+  }
+
+  & > div {
+    position: relative;
+    max-height: 3.33em;
+
+    svg {
+      height: 6.66em;
+      margin-top: -0.2em;
+    }
   }
 }
