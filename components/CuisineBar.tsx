@@ -5,7 +5,7 @@ import { cuisines } from '../constants';
 
 interface Props {
   // Ensure that the accompanying SVG is in /assets/svgs/cuisines/name.svg
-  //  where name is given in lowercase for the filename
+  // where name is given in lowercase for the filename
   name: string;
   href: string;
   svg: JSX.Element;

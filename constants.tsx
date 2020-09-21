@@ -19,3 +19,7 @@ export const cuisines: Array<ICuisine> = [
   { name: 'Chinese', href: '/chinese', svg: <ChineseSVG /> },
   { name: 'Indian', href: '/indian', svg: <IndianSVG /> },
 ];
+
+export const UI = {
+  MOBILE_BREAKPOINT: 500,
+};
