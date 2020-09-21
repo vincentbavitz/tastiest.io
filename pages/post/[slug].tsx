@@ -1,22 +1,19 @@
 // [slug].js
-import '../../assets/style.scss';
-import groq from 'groq';
-import imageUrlBuilder from '@sanity/image-url';
 import BlockContent from '@sanity/block-content-to-react';
-import client from '../../client';
-import NavBar from '../../components/NavBar';
-import { CityIndictor } from '../../components/CityIndictor';
+import imageUrlBuilder from '@sanity/image-url';
+import groq from 'groq';
 import moment from 'moment';
-import { Hashtag } from '../../objects';
-import { RecommendForm } from '../../components/RecommendForm';
-import { IPost } from '../../types/post';
-
 import React from 'react';
-import { Footer } from '../../components/Footer';
-
-import TableSVG from '../../assets/svgs/eating-bao.svg';
+import '../../assets/style.scss';
 import CookingSVG from '../../assets/svgs/cooking.svg';
 import HelloSVG from '../../assets/svgs/hello.svg';
+import client from '../../client';
+import { CityIndictor } from '../../components/CityIndictor';
+import { CuisineBar } from '../../components/CuisineBar';
+import { Footer } from '../../components/Footer';
+import NavBar from '../../components/NavBar';
+import { RecommendForm } from '../../components/RecommendForm';
+import { IPost } from '../../types/post';
 
 function urlFor(source) {
   return imageUrlBuilder(client).image(source);
@@ -51,21 +48,18 @@ const Post = (props: IPost): JSX.Element => {
   return (
     <>
       <NavBar />
+      <CuisineBar />
 
       <article>
         <div className="article__top relative w-full bg-white flex flex-col justify-center items-center mt-20">
-          <div className="w-full h-full">
-            <TableSVG className="w-full pb-0 mb-0" />
-          </div>
-
-          <div className="article__title absolute w-full">
+          <div className="article__title w-full">
             <div className="w-full pb-0 mb-0 flex flex-col items-center">
               <CityIndictor city={city} />
               <h1 className="text-secondary text-center">{title}</h1>
             </div>
           </div>
 
-          <div className="article__author absolute w-full flex justify-center space-around">
+          <div className="article__author w-full flex justify-center space-around">
             <div>
               <div className="flex w-full content-center items-center">
                 <img

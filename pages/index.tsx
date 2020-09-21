@@ -1,13 +1,13 @@
-import '../assets/style.scss';
-import NavBar from '../components/NavBar';
-import CuisineBar from '../components/CuisineBar';
 import imageUrlBuilder from '@sanity/image-url';
-import SubscribeToEmailList from '../components/SubscribeToEmailList';
-import BlogCard from '../components/BlogCard';
 import groq from 'groq';
-import client from '../client';
-import Link from 'next/link';
 import Head from 'next/head';
+import Link from 'next/link';
+import '../assets/style.scss';
+import client from '../client';
+import BlogCard from '../components/BlogCard';
+import { CuisineBar } from '../components/CuisineBar';
+import NavBar from '../components/NavBar';
+import SubscribeToEmailList from '../components/SubscribeToEmailList';
 import { Hashtag } from '../objects';
 import { IPost } from '../types/post';
 

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
-import TastiestSVG from '../assets/svgs/tastiest.svg';
 import YummySVG from '../assets/svgs/logo.svg';
+import TastiestSVG from '../assets/svgs/tastiest.svg';
 
 export function Footer() {
   return (
@@ -13,8 +13,8 @@ export function Footer() {
           <Link href="/">
             <a className="mb-1 mt-0">HOME</a>
           </Link>
-          <Link href="/blog">
-            <a className="mb-1 mt-0">BLOG</a>
+          <Link href="/tastiest-for-restaurants">
+            <a className="mb-1 mt-0">TASTIEST FOR RESTAURANTS</a>
           </Link>
           <Link href="/about">
             <a className="mb-1 mt-0">ABOUT US</a>

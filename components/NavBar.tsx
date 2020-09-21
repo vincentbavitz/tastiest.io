@@ -1,10 +1,7 @@
-import Link from 'next/link';
 import classNames from 'classnames';
-
+import Link from 'next/link';
 import TastiestLogo from '../assets/svgs/brand.svg';
 import SearchIcon from '../assets/svgs/search-icon.svg';
-import PlateSVG from '../assets/svgs/plate.svg';
-import { MenuItem } from './MenuItem';
 
 function NavBar() {
   return (
@@ -49,13 +46,6 @@ function NavBar() {
             </Link>
           </div>
         </div>
-      </div>
-
-      <div className="w-full flex">
-        <MenuItem text="Spanish" svg={<PlateSVG />} selected={false} />
-        <MenuItem text="Italian" svg={<PlateSVG />} selected={false} />
-        <MenuItem text="Chinese" svg={<PlateSVG />} selected={false} />
-        <MenuItem text="Indian" svg={<PlateSVG />} selected={false} />
       </div>
     </div>
   );

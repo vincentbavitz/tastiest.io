@@ -188,19 +188,25 @@ $theme-danger: #130b57;
 }
 
 .article {
+  &__top {
+    background: url(/svgs/eating-bao.svg) bottom center no-repeat;
+    background-size: 100%;
+    min-height: 30vw;
+  }
+
   &__title {
-    bottom: 50%;
+    bottom: 65%;
 
     h1 {
       font-family: SomaticRounded;
-      font-size: 3.3em;
+      font-size: 6vw;
       line-height: 1em;
       width: 40%;
     }
   }
 
   &__author {
-    top: 70%;
+    top: 60%;
     margin-left: -10px;
   }
 
