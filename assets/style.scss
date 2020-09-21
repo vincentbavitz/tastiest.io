@@ -9,7 +9,13 @@ $theme-primary: #fe4c00;
 $theme-secondary: #ffd618;
 $theme-danger: #130b57;
 
+$transition-duration: 0.25s;
+
 $page-border: 5vw;
+
+.mr-page {
+  margin-right: $page-border;
+}
 
 /* ********************* */
 /* ******* FONTS ******* */
@@ -249,5 +255,20 @@ body {
       height: 6.66em;
       margin-top: -0.2em;
     }
+  }
+}
+
+.mobile-search-input {
+  background-color: #fafafa;
+  overflow-x: hidden;
+  animation: $transition-duration ease-in-out 0s 1 slideInFromRight;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
   }
 }
