@@ -262,7 +262,21 @@ body {
 .mobile-search-input {
   background-color: #fafafa;
   overflow-x: hidden;
+  z-index: 250;
   animation: $transition-duration ease-in-out 0s 1 slideInFromRight;
+}
+
+.tastiest-logo {
+  cursor: pointer;
+  z-index: 150;
+
+  &-link {
+    z-index: 200;
+  }
+
+  &.siding-out {
+    animation: $transition-duration ease-in-out 0s 1 slideOutFromRight;
+  }
 }
 
 @keyframes slideInFromRight {
@@ -274,11 +288,11 @@ body {
   }
 }
 
-.tastiest-logo {
-  cursor: pointer;
-  z-index: 150;
-
-  &-link {
-    z-index: 200;
+@keyframes slideOutFromRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100);
   }
 }

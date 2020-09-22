@@ -1,60 +1,53 @@
 import { CloseOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import SearchSVG from '../../assets/svgs/search-icon.svg';
-import { UI } from '../../constants';
+import { Hashtag } from '../../objects';
 
 interface State {
   inputValue: string;
-  isMobile: boolean;
   mobileInputExpanded: boolean;
 }
 
-export function Search() {
-  const searchContainerRef = useRef(null);
+interface IProps {
+  isMobile: boolean;
+}
+
+export function Search(props: IProps) {
   const mobileInputRef = useRef(null);
 
   const [state, setState] = useState({
-    isMobile: false,
     inputValue: '',
     mobileInputExpanded: false,
   } as State);
-  const { isMobile, inputValue, mobileInputExpanded } = state;
+  const { inputValue, mobileInputExpanded } = state;
+  const { isMobile } = props;
 
-  const setIsMobileIfNeeded = () => {
-    const width = searchContainerRef?.current?.getBoundingClientRect()?.width;
-
-    if (!width) {
-      return;
-    }
-
-    if (!isMobile && width < UI.MOBILE_BREAKPOINT) {
-      setState({ ...state, isMobile: true });
-    }
-
-    if (isMobile && width >= UI.MOBILE_BREAKPOINT) {
-      setState({ ...state, isMobile: false, mobileInputExpanded: false });
-    }
-
-    console.log('State:', state);
-  };
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileIfNeeded();
-    };
-
-    setIsMobileIfNeeded();
-    window.addEventListener('resize', handleResize);
-  }, []);
+  console.log('Mobile:', isMobile);
 
   const renderMobileSearchInput = () => null;
 
+  const searchItems = [
+    {
+      href: '',
+      image: '',
+      altTag: '',
+      title: 'Good london food',
+      paragraph: '',
+      hashtags: [new Hashtag('qwerkeqwjrqwlkehr')],
+    },
+    {
+      href: '',
+      image: '',
+      altTag: '',
+      title: 'North korean nonfood',
+      paragraph: 'Thisis very sad',
+      hashtags: [new Hashtag('qwerkeqwjrqwlkehr')],
+    },
+  ];
+
   return (
-    <div
-      className="tastiest-logo absolute w-full h-full"
-      ref={searchContainerRef}
-    >
+    <div className="absolute w-full h-full">
       <div className="flex h-full items-center justify-end">
         {isMobile ? (
           <>
@@ -132,6 +125,10 @@ export function Search() {
             </div>
           </div>
         )}
+      </div>
+
+      <div className="search-items absolute bottom-0 w-full">
+        {/* {searchItems } */}
       </div>
     </div>
   );

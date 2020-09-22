@@ -1,21 +1,8 @@
 import Link from 'next/link';
-import { Hashtag } from '../objects';
+import { IArticle } from '../types/article';
 
-interface Props {
-  href: string;
-  image: string;
-  altTag: string;
-  title: string;
-  paragraph: string;
-  hashtags: Array<Hashtag>; // Max 5
-  sameSite?: string;
-}
-
-function BlogCard(props: Props): JSX.Element {
-  const { href, image, altTag, title, paragraph, hashtags, sameSite } = props;
-
-  // Item to be used
-  sameSite;
+function ArticleItem(props: IArticle): JSX.Element {
+  const { href, image, altTag, title, paragraph, hashtags } = props;
 
   return (
     <Link href={href}>
@@ -43,4 +30,4 @@ function BlogCard(props: Props): JSX.Element {
   );
 }
 
-export default BlogCard;
+export default ArticleItem;

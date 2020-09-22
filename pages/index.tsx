@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import '../assets/style.scss';
 import client from '../client';
-import BlogCard from '../components/BlogCard';
+import ArticleItem from '../components/ArticleItem';
 import { CuisineBar } from '../components/CuisineBar';
 import NavBar from '../components/NavBar';
 import SubscribeToEmailList from '../components/SubscribeToEmailList';
@@ -25,7 +25,7 @@ const Index = (props: Props) => {
   console.log('posts:', posts);
 
   const cards = posts.map(post => (
-    <BlogCard
+    <ArticleItem
       key={post.title.toLowerCase()}
       href={`/post/${post.slug}`}
       sameSite=""
