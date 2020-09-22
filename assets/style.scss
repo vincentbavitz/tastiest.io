@@ -235,6 +235,7 @@ body {
 }
 
 .cuisine-item {
+  cursor: pointer;
   margin-left: 0.5em;
   margin-right: 0.5em;
 
@@ -270,5 +271,14 @@ body {
   }
   100% {
     transform: translateX(0);
+  }
+}
+
+.tastiest-logo {
+  cursor: pointer;
+  z-index: 150;
+
+  &-link {
+    z-index: 200;
   }
 }

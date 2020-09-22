@@ -10,7 +10,7 @@ function NavBar() {
         <div className="antialiased contained flex justify-between">
           <div className="flex">
             <Link href="/">
-              <a className="flex flex-shrink-0 text-primary">
+              <a className="tastiest-logo-link flex flex-shrink-0 text-primary">
                 <TastiestLogo className="fill-current h-8" />
               </a>
             </Link>

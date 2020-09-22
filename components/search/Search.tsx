@@ -4,13 +4,22 @@ import React, { useEffect, useRef, useState } from 'react';
 import SearchSVG from '../../assets/svgs/search-icon.svg';
 import { UI } from '../../constants';
 
+interface State {
+  inputValue: string;
+  isMobile: boolean;
+  mobileInputExpanded: boolean;
+}
+
 export function Search() {
   const searchContainerRef = useRef(null);
   const mobileInputRef = useRef(null);
 
-  const [inputValue, setInputValue] = useState('');
-  const [isMobile, setIsMobile] = useState(false);
-  const [mobileInputExpanded, setMobileInputExpanded] = useState(false);
+  const [state, setState] = useState({
+    isMobile: false,
+    inputValue: '',
+    mobileInputExpanded: false,
+  } as State);
+  const { isMobile, inputValue, mobileInputExpanded } = state;
 
   const setIsMobileIfNeeded = () => {
     const width = searchContainerRef?.current?.getBoundingClientRect()?.width;
@@ -20,15 +29,14 @@ export function Search() {
     }
 
     if (!isMobile && width < UI.MOBILE_BREAKPOINT) {
-      setIsMobile(true);
+      setState({ ...state, isMobile: true });
     }
 
     if (isMobile && width >= UI.MOBILE_BREAKPOINT) {
-      setIsMobile(false);
-      if (mobileInputExpanded) {
-        setMobileInputExpanded(false);
-      }
+      setState({ ...state, isMobile: false, mobileInputExpanded: false });
     }
+
+    console.log('State:', state);
   };
 
   useEffect(() => {
@@ -43,7 +51,10 @@ export function Search() {
   const renderMobileSearchInput = () => null;
 
   return (
-    <div className="absolute w-full h-full" ref={searchContainerRef}>
+    <div
+      className="tastiest-logo absolute w-full h-full"
+      ref={searchContainerRef}
+    >
       <div className="flex h-full items-center justify-end">
         {isMobile ? (
           <>
@@ -52,7 +63,11 @@ export function Search() {
                 onClick={() => mobileInputRef.current?.focus()}
                 className="mobile-search-input contained h-full w-full flex items-center justify-between"
               >
-                <CloseOutlined onClick={() => setMobileInputExpanded(false)} />
+                <CloseOutlined
+                  onClick={() =>
+                    setState({ ...state, mobileInputExpanded: false })
+                  }
+                />
                 <input
                   ref={mobileInputRef}
                   className={classNames(
@@ -65,14 +80,20 @@ export function Search() {
                   )}
                   placeholder={'Search'}
                 />
-                <div onClick={() => setMobileInputExpanded(true)}>
+                <div
+                  onClick={() =>
+                    setState({ ...state, mobileInputExpanded: false })
+                  }
+                >
                   <SearchSVG className="fill-secondary h-8" />
                 </div>
               </div>
             ) : (
               <div
                 className="flex flex-shrink-0 contained"
-                onClick={() => setMobileInputExpanded(true)}
+                onClick={() =>
+                  setState({ ...state, mobileInputExpanded: true })
+                }
               >
                 <SearchSVG className="fill-secondary h-8" />
               </div>
