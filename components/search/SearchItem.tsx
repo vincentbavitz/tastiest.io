@@ -1,13 +1,14 @@
 import Link from 'next/link';
-import { IArticle } from '../types/article';
+import React from 'react';
+import { IArticle } from '../../types/article';
 
-export function ArticleItem(props: IArticle): JSX.Element {
-  const { href, image, altTag, title, paragraph, hashtags } = props;
+export function SearchItem(props: IArticle) {
+  const { title, paragraph, image, altTag, href, hashtags } = props;
 
   return (
     <Link href={href}>
       <a>
-        <div className="rounded-lg overflow-hidden shadow-lg m-8 lg:w-3/12">
+        <div className="search-item rounded-lg overflow-hidden shadow-lg m-8 w1/2">
           <img className="w-full" src={image} alt={altTag} />
           <div className="px-6 py-4">
             <div className="font-bold text-xl mb-2">{title}</div>

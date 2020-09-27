@@ -1,8 +1,14 @@
-import { CloseOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import SearchSVG from '../../assets/svgs/search-icon.svg';
-import { Hashtag } from '../../objects';
+import { collapseSearchBar, expandSearchBar } from '../../state/navigation';
+import { IState } from '../../state/reducers';
+import { setSearchResultItems } from '../../state/search';
+import { search } from '../../utils/search';
+import { SearchItem } from './SearchItem';
+
+import ExitSVG from '../../assets/svgs/exit.svg';
 
 interface State {
   inputValue: string;
@@ -10,56 +16,59 @@ interface State {
 }
 
 interface IProps {
-  isMobile: boolean;
+  // isMobile: boolean;
+  // TEMPORAYR --> PUT INTO SEARCH NOT PROPS
+  //: Array<IArticle>;
 }
 
+// AT THE BOTTOM OFF THE SEARCH;
+// CAN YOU RECOMMEND A BETTER RESTAURANT? -> depedning on their search query
+
 export function Search(props: IProps) {
+  const navigationState = useSelector((state: IState) => state.navigation);
+
+  const dispatch = useDispatch();
+
+  // SUGGESTED SEARCH ITEMS: 4 <-- MOST RECENT
+  // SEARCH EXPLICIT: <-- 3X2 = 6 <--- VIEW MORE BUTTON
+
+  const { searchBarExpanded } = navigationState;
+
   const mobileInputRef = useRef(null);
 
-  const [state, setState] = useState({
-    inputValue: '',
-    mobileInputExpanded: false,
-  } as State);
-  const { inputValue, mobileInputExpanded } = state;
-  const { isMobile } = props;
+  const [inputValue, setInputValue] = useState('');
+
+  // const { isMobile } = props;
+  const isMobile = true;
 
   console.log('Mobile:', isMobile);
 
   const renderMobileSearchInput = () => null;
 
-  const searchItems = [
-    {
-      href: '',
-      image: '',
-      altTag: '',
-      title: 'Good london food',
-      paragraph: '',
-      hashtags: [new Hashtag('qwerkeqwjrqwlkehr')],
-    },
-    {
-      href: '',
-      image: '',
-      altTag: '',
-      title: 'North korean nonfood',
-      paragraph: 'Thisis very sad',
-      hashtags: [new Hashtag('qwerkeqwjrqwlkehr')],
-    },
-  ];
+  console.log('Props', props);
+
+  useEffect(() => {
+    const fetchSearchItems = async () => {
+      const query = String(inputValue);
+      dispatch(setSearchResultItems(await search(query)));
+    };
+
+    fetchSearchItems();
+  }, [inputValue]);
 
   return (
     <div className="absolute w-full h-full">
-      <div className="flex h-full items-center justify-end">
+      <div className="flex h-full items-center justify-end overflow-x-hidden">
         {isMobile ? (
           <>
-            {mobileInputExpanded ? (
+            {searchBarExpanded ? (
               <div
                 onClick={() => mobileInputRef.current?.focus()}
                 className="mobile-search-input contained h-full w-full flex items-center justify-between"
               >
-                <CloseOutlined
-                  onClick={() =>
-                    setState({ ...state, mobileInputExpanded: false })
-                  }
+                <ExitSVG
+                  className="h-8"
+                  onClick={() => dispatch(collapseSearchBar())}
                 />
                 <input
                   ref={mobileInputRef}
@@ -72,23 +81,22 @@ export function Search(props: IProps) {
                     'bg-transparent',
                   )}
                   placeholder={'Search'}
+                  value={inputValue}
+                  onChange={event => {
+                    const value = event.target.value;
+                    setInputValue(String(value));
+                  }}
                 />
-                <div
-                  onClick={() =>
-                    setState({ ...state, mobileInputExpanded: false })
-                  }
-                >
-                  <SearchSVG className="fill-secondary h-8" />
+                <div onClick={() => dispatch(collapseSearchBar())}>
+                  <SearchSVG className="fill-secondary h-8 cursor-pointer" />
                 </div>
               </div>
             ) : (
               <div
                 className="flex flex-shrink-0 contained"
-                onClick={() =>
-                  setState({ ...state, mobileInputExpanded: true })
-                }
+                onClick={() => dispatch(expandSearchBar())}
               >
-                <SearchSVG className="fill-secondary h-8" />
+                <SearchSVG className="fill-secondary h-8 cursor-pointer" />
               </div>
             )}
           </>
@@ -116,19 +124,17 @@ export function Search(props: IProps) {
                 'text-sm',
               )}
               placeholder={'Search'}
+              value={inputValue}
+              onChange={value => setInputValue(String(value))}
             />
             <div
               className="flex flex-shrink-0"
               onClick={() => alert('Searching')}
             >
-              <SearchSVG className="fill-secondary h-6" />
+              <SearchSVG className="fill-secondary h-6 cursor-pointer" />
             </div>
           </div>
         )}
-      </div>
-
-      <div className="search-items absolute bottom-0 w-full">
-        {/* {searchItems } */}
       </div>
     </div>
   );

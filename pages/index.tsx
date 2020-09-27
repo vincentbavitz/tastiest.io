@@ -2,14 +2,22 @@ import imageUrlBuilder from '@sanity/image-url';
 import groq from 'groq';
 import Head from 'next/head';
 import Link from 'next/link';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 import '../assets/style.scss';
 import client from '../client';
-import ArticleItem from '../components/ArticleItem';
+import { ArticleItem } from '../components/ArticleItem';
 import { CuisineBar } from '../components/CuisineBar';
 import NavBar from '../components/NavBar';
+import { SearchResultsOverlay } from '../components/search/SearchResultsOverlay';
 import SubscribeToEmailList from '../components/SubscribeToEmailList';
 import { Hashtag } from '../objects';
+import { rootReducer } from '../state/reducers';
 import { IPost } from '../types/post';
+import Modal from 'react-modal';
+
+const store = createStore(rootReducer);
 
 function urlFor(source) {
   return imageUrlBuilder(client).image(source);
@@ -28,7 +36,6 @@ const Index = (props: Props) => {
     <ArticleItem
       key={post.title.toLowerCase()}
       href={`/post/${post.slug}`}
-      sameSite=""
       image={post.mainImage && urlFor(post.mainImage.image).url()}
       altTag={post.mainImage && post.mainImage.altText}
       title={post.title}
@@ -38,7 +45,7 @@ const Index = (props: Props) => {
   ));
 
   return (
-    <div>
+    <Provider store={store}>
       <Head>
         <title>Tastiest</title>
         <meta
@@ -51,6 +58,7 @@ const Index = (props: Props) => {
           content="width=device-width, initial-scale=1, maximum-scale=1"
         ></meta>
       </Head>
+
       <div className="max-w-screen-xl mx-auto md:m-6">
         <NavBar />
         <CuisineBar />
@@ -74,7 +82,7 @@ const Index = (props: Props) => {
           })}
         </ul>
       </div>
-    </div>
+    </Provider>
   );
 };
 

@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import TastiestLogo from '../assets/svgs/brand.svg';
 import { UI } from '../constants';
 import { Search } from './search/Search';
+import { SearchResultsOverlay } from './search/SearchResultsOverlay';
 
 function NavBar() {
   const navBarRef = useRef(null);
@@ -37,30 +38,36 @@ function NavBar() {
   }, []);
 
   return (
-    <div ref={navBarRef} className="relative h-20">
-      <div
-        className={classNames(
-          'absolute',
-          'w-full',
-          'h-full',
-          'flex',
-          'items-center',
-          isMobile ? 'justify-center' : 'justify-start',
-        )}
-      >
-        <Search isMobile={isMobile} />
+    <>
+      <div ref={navBarRef} className="relative h-20">
+        <div
+          className={classNames(
+            'absolute',
+            'w-full',
+            'h-full',
+            'flex',
+            'items-center',
+            isMobile ? 'justify-center' : 'justify-start',
+          )}
+        >
+          {/* <Search isMobile={isMobile} /> */}
 
-        <div className="antialiased contained flex justify-between">
-          <div className="flex">
-            <Link href="/">
-              <a className="tastiest-logo-link flex flex-shrink-0 text-primary">
-                <TastiestLogo className="fill-current h-8" />
-              </a>
-            </Link>
+          <Search />
+
+          <div className="antialiased contained flex justify-between">
+            <div className="flex">
+              <Link href="/">
+                <a className="tastiest-logo-link flex flex-shrink-0 text-primary">
+                  <TastiestLogo className="fill-current h-8" />
+                </a>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      <SearchResultsOverlay />
+    </>
   );
 }
 

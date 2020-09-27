@@ -279,6 +279,12 @@ body {
   }
 }
 
+.search-items {
+  position: absolute;
+  top: 33px;
+  z-index: 300;
+}
+
 @keyframes slideInFromRight {
   0% {
     transform: translateX(100%);

@@ -1,7 +1,7 @@
 import { Hashtag } from '../objects';
 import { IArticle } from '../types/article';
 
-export async function search(query: string): Array<IArticle> {
+export async function search(query: string): Promise<Array<IArticle>> {
   // regrh
 
   return [
@@ -9,9 +9,17 @@ export async function search(query: string): Array<IArticle> {
       href: '',
       image: '',
       altTag: '',
-      title: '',
+      title: `${query}`,
       paragraph: '',
-      hashtags: [new Hashtag('qwerkeqwjrqwlkehr')],
+      hashtags: [new Hashtag('burgers')],
+    },
+    {
+      href: '',
+      image: '',
+      altTag: '',
+      title: 'Lasagne',
+      paragraph: '',
+      hashtags: [new Hashtag('pasta')],
     },
   ];
 }
