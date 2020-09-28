@@ -10,12 +10,10 @@ import client from '../client';
 import { ArticleItem } from '../components/ArticleItem';
 import { CuisineBar } from '../components/CuisineBar';
 import NavBar from '../components/NavBar';
-import { SearchResultsOverlay } from '../components/search/SearchResultsOverlay';
 import SubscribeToEmailList from '../components/SubscribeToEmailList';
 import { Hashtag } from '../objects';
 import { rootReducer } from '../state/reducers';
 import { IPost } from '../types/post';
-import Modal from 'react-modal';
 
 const store = createStore(rootReducer);
 
@@ -59,11 +57,11 @@ const Index = (props: Props) => {
         ></meta>
       </Head>
 
-      <div className="max-w-screen-xl mx-auto md:m-6">
+      <div>
         <NavBar />
         <CuisineBar />
         <SubscribeToEmailList />
-        <div className="flex cards">{cards}</div>
+        <div className="flex cards overflow-x-hidden">{cards}</div>
       </div>
       <div>
         <h1>Welcome to a blog! hello</h1>

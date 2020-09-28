@@ -17,6 +17,15 @@ $page-border: 5vw;
   margin-right: $page-border;
 }
 
+/* **************************** */
+/* ******** RESPONSIVE ******** */
+/* **************************** */
+
+$breakpoint-mobile: 500px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 992px;
+$breakpoint-huge: 1280px;
+
 /* ********************* */
 /* ******* FONTS ******* */
 /* ********************* */
@@ -121,6 +130,10 @@ $page-border: 5vw;
   font-family: RobotoSlab;
   src: url(/fonts/RobotoSlab/RobotoSlab-ExtraBold.ttf) format('truetype');
   font-weight: 700;
+}
+
+.__next {
+  overflow-x: hidden;
 }
 
 .font-somatic {
@@ -261,27 +274,32 @@ body {
 
 .mobile-search-input {
   background-color: #fafafa;
-  overflow-x: hidden;
-  z-index: 250;
-  animation: $transition-duration ease-in-out 0s 1 slideInFromRight;
+  z-index: 200;
+  // animation: $transition-duration ease-in-out 0s 1 slideInFromRight;
+
+  .search-bar-svg {
+    cursor: pointer;
+    min-width: 2rem;
+    min-height: 2rem;
+  }
 }
 
 .tastiest-logo {
   cursor: pointer;
-  z-index: 150;
+  z-index: 30;
 
   &-link {
-    z-index: 200;
+    z-index: 40;
   }
 
-  &.siding-out {
-    animation: $transition-duration ease-in-out 0s 1 slideOutFromRight;
-  }
+  // &.siding-out {
+  //   animation: $transition-duration ease-in-out 0s 1 slideOutFromRight;
+  // }
 }
 
 .search-items {
   position: absolute;
-  top: 33px;
+  top: 0px;
   z-index: 300;
 }
 

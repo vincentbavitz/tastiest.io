@@ -6,9 +6,10 @@ import { collapseSearchBar, expandSearchBar } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { setSearchResultItems } from '../../state/search';
 import { search } from '../../utils/search';
-import { SearchItem } from './SearchItem';
+import Modal from 'react-modal';
 
 import ExitSVG from '../../assets/svgs/exit.svg';
+import { SearchResultsOverlay } from './SearchResultsOverlay';
 
 interface State {
   inputValue: string;
@@ -16,7 +17,7 @@ interface State {
 }
 
 interface IProps {
-  // isMobile: boolean;
+  isMobile: boolean;
   // TEMPORAYR --> PUT INTO SEARCH NOT PROPS
   //: Array<IArticle>;
 }
@@ -25,6 +26,8 @@ interface IProps {
 // CAN YOU RECOMMEND A BETTER RESTAURANT? -> depedning on their search query
 
 export function Search(props: IProps) {
+  // document && Modal.setAppElement(document.getElementById('__next'));
+
   const navigationState = useSelector((state: IState) => state.navigation);
 
   const dispatch = useDispatch();
@@ -33,16 +36,11 @@ export function Search(props: IProps) {
   // SEARCH EXPLICIT: <-- 3X2 = 6 <--- VIEW MORE BUTTON
 
   const { searchBarExpanded } = navigationState;
-
   const mobileInputRef = useRef(null);
-
   const [inputValue, setInputValue] = useState('');
 
-  // const { isMobile } = props;
-  const isMobile = true;
-
+  const { isMobile } = props;
   console.log('Mobile:', isMobile);
-
   const renderMobileSearchInput = () => null;
 
   console.log('Props', props);
@@ -56,41 +54,73 @@ export function Search(props: IProps) {
     fetchSearchItems();
   }, [inputValue]);
 
+  const modalStyles = isMobile
+    ? {
+        content: {
+          top: '0',
+          left: '0',
+          right: '0',
+          bottom: '0',
+          height: '100%',
+          width: '100%',
+          zIndex: '1000',
+          border: 'none',
+          borderRadius: '0',
+          padding: '0',
+        },
+      }
+    : {
+        content: {
+          top: '0',
+          left: '0',
+          right: '0',
+          bottom: '0',
+          height: '100%',
+          width: '100%',
+          zIndex: '1000',
+        },
+      };
+
   return (
     <div className="absolute w-full h-full">
       <div className="flex h-full items-center justify-end overflow-x-hidden">
         {isMobile ? (
           <>
             {searchBarExpanded ? (
-              <div
-                onClick={() => mobileInputRef.current?.focus()}
-                className="mobile-search-input contained h-full w-full flex items-center justify-between"
-              >
-                <ExitSVG
-                  className="h-8"
-                  onClick={() => dispatch(collapseSearchBar())}
-                />
-                <input
-                  ref={mobileInputRef}
-                  className={classNames(
-                    'px-6',
-                    'flex-grow',
-                    'border-none',
-                    'outline-none',
-                    'text-xl',
-                    'bg-transparent',
-                  )}
-                  placeholder={'Search'}
-                  value={inputValue}
-                  onChange={event => {
-                    const value = event.target.value;
-                    setInputValue(String(value));
-                  }}
-                />
-                <div onClick={() => dispatch(collapseSearchBar())}>
-                  <SearchSVG className="fill-secondary h-8 cursor-pointer" />
+              <Modal style={modalStyles} isOpen={searchBarExpanded}>
+                <div
+                  onClick={() => mobileInputRef.current?.focus()}
+                  className="mobile-search-input contained h-20 w-full flex items-center justify-between"
+                >
+                  <ExitSVG
+                    className="search-bar-svg"
+                    onClick={() => dispatch(collapseSearchBar())}
+                  />
+                  <input
+                    ref={mobileInputRef}
+                    spellCheck={false}
+                    className={classNames(
+                      'px-8',
+                      'flex-grow',
+                      'border-none',
+                      'outline-none',
+                      'text-xl',
+                      'bg-transparent',
+                    )}
+                    placeholder={'Search'}
+                    value={inputValue}
+                    onChange={event => {
+                      const value = event.target.value;
+                      setInputValue(String(value));
+                    }}
+                  />
+                  <div onClick={() => dispatch(collapseSearchBar())}>
+                    <SearchSVG className="search-bar-svg" />
+                  </div>
                 </div>
-              </div>
+
+                <SearchResultsOverlay />
+              </Modal>
             ) : (
               <div
                 className="flex flex-shrink-0 contained"

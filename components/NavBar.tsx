@@ -1,12 +1,16 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import TastiestLogo from '../assets/svgs/brand.svg';
 import { UI } from '../constants';
+import { IState } from '../state/reducers';
 import { Search } from './search/Search';
-import { SearchResultsOverlay } from './search/SearchResultsOverlay';
 
 function NavBar() {
+  const navigationState = useSelector((state: IState) => state.navigation);
+  const { searchBarExpanded } = navigationState;
+
   const navBarRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -50,23 +54,21 @@ function NavBar() {
             isMobile ? 'justify-center' : 'justify-start',
           )}
         >
-          {/* <Search isMobile={isMobile} /> */}
-
-          <Search />
-
           <div className="antialiased contained flex justify-between">
             <div className="flex">
-              <Link href="/">
-                <a className="tastiest-logo-link flex flex-shrink-0 text-primary">
-                  <TastiestLogo className="fill-current h-8" />
-                </a>
-              </Link>
+              {!searchBarExpanded && (
+                <Link href="/">
+                  <a className="tastiest-logo-link flex flex-shrink-0 text-primary">
+                    <TastiestLogo className="fill-current h-8" />
+                  </a>
+                </Link>
+              )}
             </div>
           </div>
         </div>
-      </div>
 
-      <SearchResultsOverlay />
+        <Search isMobile={isMobile} />
+      </div>
     </>
   );
 }

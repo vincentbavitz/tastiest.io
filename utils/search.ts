@@ -1,43 +1,38 @@
+import groq from 'groq';
+import client from '../client';
+import imageUrlBuilder from '@sanity/image-url';
 import { Hashtag } from '../objects';
 import { IArticle } from '../types/article';
 
-export async function search(query: string): Promise<Array<IArticle>> {
-  // regrh
-
-  return [
-    {
-      href: '',
-      image: '',
-      altTag: '',
-      title: `${query}`,
-      paragraph: '',
-      hashtags: [new Hashtag('burgers')],
-    },
-    {
-      href: '',
-      image: '',
-      altTag: '',
-      title: 'Lasagne',
-      paragraph: '',
-      hashtags: [new Hashtag('pasta')],
-    },
-  ];
+function urlFor(source) {
+  return imageUrlBuilder(client).image(source);
 }
 
-// const query = groq`*[_type == "post" && slug.current == $slug][0]{
-//     title,
-//     subtitle,
-//     "name": author->name,
-//     "authorImage": author->image,
-//     publishedAt,
-//     cuisine,
-//     "city": city->title,
-//     "tags": tags[]->title,
-//     location,
-//     restaurantName,
-//     dishName,
-//     mainImage,
-//     backdropSVG,
-//     video,
-//     body,
-//   }`;
+export async function search(query: string): Promise<Array<IArticle>> {
+  const sanityQuery = groq`*[_type == "post"]|order(publishedAt desc) {
+    title,
+    subtitle,
+    "name": author->name,
+    "authorImage": author->image,
+    publishedAt,
+    cuisine,
+    "city": city->title,
+    "tags": tags[]->title,
+    location,
+    restaurantName,
+    dishName,
+    mainImage,
+    backdropSVG,
+    video,
+    body,
+  }`;
+
+  const posts = await client.fetch(sanityQuery);
+
+  return posts.map(post => ({
+    title: post.title,
+    href: `/blog/${post.slug}`,
+    imageUrl: post.mainImage ? urlFor(post.mainImage.image).url() : undefined,
+    tags: post.tags ? post.tags.map(tag => new Hashtag(tag)) : [],
+  }));
+}

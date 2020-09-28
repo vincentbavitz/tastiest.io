@@ -10,6 +10,7 @@ module.exports = {
   },
   variants: {
     margin: ['responsive', 'first', 'last'],
+    minWidth: ['responsive'],
   },
   plugins: [],
 };

@@ -27,7 +27,7 @@ function SubscribeToEmailList(): JSX.Element {
               </div>
             </form>
           </div>
-          <div className="sm:pb-32 h-32 md:absolute md:-m-64 md:w-7/12 lg:w-5/12 md:right-0 lg:mr-16 xl:w-3/12">
+          <div className="sm:pb-32 h-32 md:absolute md:-m-64 md:w-7/12 lg:w-5/12 md:right-0 lg:mr-16 xl:w-3/12 overflow-x-hidden">
             <img
               src="https://svgshare.com/i/NSw.svg"
               alt="tastiest-hero-image"
