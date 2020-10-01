@@ -23,3 +23,5 @@ export const cuisines: Array<ICuisine> = [
 export const UI = {
   MOBILE_BREAKPOINT: 500,
 };
+
+export const postsUriPrefix = '';

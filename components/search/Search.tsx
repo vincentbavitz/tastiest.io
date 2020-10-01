@@ -1,14 +1,13 @@
 import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
+import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
+import ExitSVG from '../../assets/svgs/exit.svg';
 import SearchSVG from '../../assets/svgs/search-icon.svg';
 import { collapseSearchBar, expandSearchBar } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { setSearchResultItems } from '../../state/search';
 import { search } from '../../utils/search';
-import Modal from 'react-modal';
-
-import ExitSVG from '../../assets/svgs/exit.svg';
 import { SearchResultsOverlay } from './SearchResultsOverlay';
 
 interface State {
@@ -48,6 +47,8 @@ export function Search(props: IProps) {
   useEffect(() => {
     const fetchSearchItems = async () => {
       const query = String(inputValue);
+      console.log('value', inputValue);
+
       dispatch(setSearchResultItems(await search(query)));
     };
 
@@ -106,6 +107,7 @@ export function Search(props: IProps) {
                       'outline-none',
                       'text-xl',
                       'bg-transparent',
+                      'w-0',
                     )}
                     placeholder={'Search'}
                     value={inputValue}
@@ -155,7 +157,10 @@ export function Search(props: IProps) {
               )}
               placeholder={'Search'}
               value={inputValue}
-              onChange={value => setInputValue(String(value))}
+              onChange={event => {
+                const value = event.target.value;
+                setInputValue(String(value));
+              }}
             />
             <div
               className="flex flex-shrink-0"

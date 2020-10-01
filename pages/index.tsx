@@ -33,8 +33,8 @@ const Index = (props: Props) => {
   const cards = posts.map(post => (
     <ArticleItem
       key={post.title.toLowerCase()}
-      href={`/post/${post.slug}`}
-      image={post.mainImage && urlFor(post.mainImage.image).url()}
+      href={`/[slug]/${post.slug}`}
+      imageUrl={post.mainImage && urlFor(post.mainImage.image).url()}
       altTag={post.mainImage && post.mainImage.altText}
       title={post.title}
       paragraph={post.subtitle}
@@ -70,7 +70,7 @@ const Index = (props: Props) => {
             return (
               <div key={post._id}>
                 <button className="m-1 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
-                  <Link href="/post/[slug]" as={`/post/${post.slug.current}`}>
+                  <Link href="/[slug]/[slug]" as={`/post/${post.slug.current}`}>
                     <a>{post.title}</a>
                   </Link>
                 </button>

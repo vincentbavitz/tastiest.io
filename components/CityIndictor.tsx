@@ -1,5 +1,5 @@
-import { titleCase } from '../utils/text';
 import LocationSVG from '../assets/svgs/location.svg';
+import { titleCase } from '../utils/text';
 
 interface Props {
   city: string;
@@ -11,7 +11,7 @@ export function CityIndictor(props: Props) {
       <div className="icon">
         <LocationSVG className="w-5 mr-2" />
       </div>
-      <div className="flex content-center h-4 px-1 bg-primary font-bold rounded">
+      <div className="flex content-center h-4 px-1 bg-secondary font-bold rounded">
         <p className="self-center text-white text-xs">
           {titleCase(props.city)}
         </p>

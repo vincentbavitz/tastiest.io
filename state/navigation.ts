@@ -4,7 +4,7 @@ export interface INavigation {
 }
 
 export const initialNavigationState: INavigation = {
-  searchBarExpanded: true,
+  searchBarExpanded: false,
 };
 
 export enum NavigationActions {

@@ -17,8 +17,6 @@ function NavBar() {
   const setIsMobileIfNeeded = () => {
     const width = navBarRef?.current?.getBoundingClientRect()?.width;
 
-    console.log('Ismobile:', isMobile);
-
     if (!width) {
       return;
     }
@@ -58,7 +56,7 @@ function NavBar() {
             <div className="flex">
               {!searchBarExpanded && (
                 <Link href="/">
-                  <a className="tastiest-logo-link flex flex-shrink-0 text-primary">
+                  <a className="tastiest-logo-link flex flex-shrink-0 text-secondary">
                     <TastiestLogo className="fill-current h-8" />
                   </a>
                 </Link>

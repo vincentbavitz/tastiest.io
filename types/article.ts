@@ -2,7 +2,7 @@ import { Hashtag } from '../objects';
 
 export interface IArticle {
   href: string;
-  image: string;
+  imageUrl: string;
   altTag: string;
   title: string;
   paragraph: string;

@@ -78,7 +78,7 @@ const Post = (props: IPost): JSX.Element => {
           </div>
         </div>
 
-        <div className="relative w-full -mt-2 contained bg-primary">
+        <div className="relative w-full -mt-2 contained bg-secondary">
           <div className="flex flex-col items-center w-full pt-8 pb-0">
             <p className="w-3/4 text-center pb-8 font-semi-bold font-roboto-slab">
               {subtitle}
@@ -135,7 +135,7 @@ const Post = (props: IPost): JSX.Element => {
 
           <div className="mt-8 mb-8">
             <h4 className="font-roboto-slab font-bold w-1/2 text-md mb-4">
-              {mainImage.description}
+              {mainImage && mainImage.description}
             </h4>
             <img
               className="w-full"
@@ -176,26 +176,26 @@ const Post = (props: IPost): JSX.Element => {
   );
 };
 
-const query = groq`*[_type == "post" && slug.current == $slug][0]{
-  title,
-  subtitle,
-  "name": author->name,
-  "authorImage": author->image,
-  publishedAt,
-  cuisine,
-  "city": city->title,
-  "tags": tags[]->title,
-  location,
-  restaurantName,
-  dishName,
-  mainImage,
-  backdropSVG,
-  video,
-  body,
-}`;
-
 Post.getInitialProps = async function (context) {
   // It's important to default the slug so that it doesn't return "undefined"
+  const query = groq`*[_type == "post" && slug.current == $slug][0]{
+    title,
+    subtitle,
+    "name": author->name,
+    "authorImage": author->image,
+    publishedAt,
+    cuisine,
+    "city": city->title,
+    "tags": tags[]->title,
+    location,
+    restaurantName,
+    dishName,
+    mainImage,
+    backdropSVG,
+    video,
+    body,
+  }`;
+
   const { slug = '' } = context.query;
   return await client.fetch(query, { slug });
 };
