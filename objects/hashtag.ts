@@ -1,4 +1,4 @@
-export class Hashtag {
+export class Tag {
   readonly tag;
   readonly formatted;
 

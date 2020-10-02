@@ -1,13 +1,23 @@
-import { Hashtag } from '../objects';
+import { Tag } from '../objects';
 
 // The return type of an article fetched from SanityIO
 export interface ISanityArticle {
-  city: string;
-  cuisine: string;
-  slug: { _type: string; current: string };
-  imageUrl: string;
-  altTag: string;
+  id: string;
+  updatedAt: string;
   title: string;
+  subtitle: string;
+  author: { name: string; imageSrc: string };
+  publishedAt: string;
+  city: string;
+  tags: Array<Tag>;
+  restaurantName: string;
+  backdropSVG: string;
+  dishName: string;
+  body: string;
+  video: { link: string; description: string };
+  location: { lat: number; lng: number };
+  cuisine: string;
+  slug: string;
   paragraph: string;
-  hashtags: Array<Hashtag>; // Max 5
+  featureImage: { source: string; altText: string; description: string };
 }

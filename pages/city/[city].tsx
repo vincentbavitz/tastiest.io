@@ -33,7 +33,15 @@ CityPosts.getInitialProps = async function (context) {
   }`;
 
   const { slug = '' } = context.query;
-  return await client.fetch(query, { slug });
+
+  let posts;
+  try {
+    posts = await client.fetch(query, { slug });
+  } catch (error) {
+    console.warn('Error:', error);
+  }
+
+  return posts;
 };
 
 export default CityPosts;

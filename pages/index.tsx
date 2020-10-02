@@ -1,4 +1,3 @@
-import imageUrlBuilder from '@sanity/image-url';
 import groq from 'groq';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -11,35 +10,22 @@ import { ArticleItem } from '../components/ArticleItem';
 import { CuisineBar } from '../components/CuisineBar';
 import NavBar from '../components/NavBar';
 import SubscribeToEmailList from '../components/SubscribeToEmailList';
-import { Hashtag } from '../objects';
 import { rootReducer } from '../state/reducers';
-import { IPost } from '../types/post';
+import { ISanityArticle } from '../types/article';
 import { generateURL } from '../utils/routing';
+import { sanityPostQuery } from '../utils/search';
 
 const store = createStore(rootReducer);
 
-function urlFor(source) {
-  return imageUrlBuilder(client).image(source);
-}
-
 interface Props {
-  posts: Array<IPost>;
+  posts: Array<ISanityArticle>;
 }
 
 const Index = (props: Props) => {
-  const { posts } = props;
-
-  const cards = posts.map(post => (
-    <ArticleItem
-      key={post.title.toLowerCase()}
-      href={`/[slug]/${post.slug}`}
-      imageUrl={post.mainImage && urlFor(post.mainImage.image).url()}
-      altTag={post.mainImage && post.mainImage.altText}
-      title={post.title}
-      paragraph={post.subtitle}
-      hashtags={post.tags && post.tags.map(tag => new Hashtag(tag))}
-    />
-  ));
+  const { posts = [] } = props;
+  const cards = posts
+    ? posts.map(post => <ArticleItem key={post.title} {...post} />)
+    : [];
 
   return (
     <Provider store={store}>
@@ -65,26 +51,27 @@ const Index = (props: Props) => {
       <div>
         <h1>Welcome to a blog! hello</h1>
         <ul>
-          {posts
-            .filter(post => post.slug && post.cuisine && post.city)
-            .map(post => {
-              const { href, as } = generateURL({
-                city: post.city,
-                cuisine: post.cuisine,
-                slug: post?.slug?.current,
-              });
+          {posts?.length &&
+            posts
+              .filter(post => post.slug && post.cuisine && post.city)
+              .map(post => {
+                const { href, as } = generateURL({
+                  city: post.city,
+                  cuisine: post.cuisine,
+                  slug: post?.slug,
+                });
 
-              return (
-                <div key={post._id}>
-                  <button className="m-1 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
-                    <Link href={href} as={as}>
-                      <a>{post.title}</a>
-                    </Link>
-                  </button>
-                  ({new Date(post._updatedAt).toDateString()})
-                </div>
-              );
-            })}
+                return (
+                  <div key={post.id}>
+                    <button className="m-1 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                      <Link href={href} as={as}>
+                        <a>{post.title}</a>
+                      </Link>
+                    </button>
+                    ({new Date(post.updatedAt).toDateString()})
+                  </div>
+                );
+              })}
         </ul>
       </div>
     </Provider>
@@ -93,29 +80,18 @@ const Index = (props: Props) => {
 
 export const getStaticProps = async () => {
   const query = groq`
-    *[_type == "post" ]|order(publishedAt desc) {
-      title,
-      subtitle,
-    "name": author->name,
-    "authorImage": author->image,
-    "cuisine": cuisine->title,
-    "city": city->title,
-    "tags": tags[]->title,
-    "slug": slug.current,
-    publishedAt,
-    location,
-    restaurantName,
-    dishName,
-    mainImage,
-    backdropSVG,
-    video,
-    body,
+    *[_type == "post"]|order(publishedAt desc) {
+      ${sanityPostQuery}
     }
   `;
 
-  const posts = await client.fetch(query);
-
-  console.log('First post:', posts[0]);
+  let posts: ISanityArticle;
+  try {
+    posts = await client.fetch(query);
+    console.log('Posts', posts);
+  } catch (error) {
+    console.warn('Error:', error);
+  }
 
   return {
     props: {

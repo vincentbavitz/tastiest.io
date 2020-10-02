@@ -6,15 +6,15 @@ import { generateURL } from '../../utils/routing';
 
 export function SearchItem(props: ISanityArticle) {
   const router = useRouter();
-  const { title, imageUrl, altTag, city, cuisine, slug } = props;
+  const { title, featureImage, city, cuisine, slug } = props;
+
+  console.log('Search item props', props);
 
   const handleClick = (e: SyntheticEvent) => {
     const { href, as } = generateURL({ city, cuisine, slug });
     e.preventDefault();
     router.push(href);
   };
-
-  console.log('IMage', imageUrl);
 
   return (
     <div
@@ -31,7 +31,11 @@ export function SearchItem(props: ISanityArticle) {
       onClick={e => handleClick(e)}
     >
       <div className="w-full h-64">
-        <img className="w-full h-full" src={imageUrl} alt={altTag} />
+        <img
+          className="w-full h-full"
+          src={featureImage.source}
+          alt={featureImage.altText}
+        />
       </div>
 
       <div className="px-6 py-4 w-full">

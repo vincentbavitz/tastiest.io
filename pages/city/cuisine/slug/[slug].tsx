@@ -4,37 +4,37 @@ import imageUrlBuilder from '@sanity/image-url';
 import groq from 'groq';
 import moment from 'moment';
 import React from 'react';
+import client from '../../../../client';
+import { CityIndictor } from '../../../../components/CityIndictor';
+import { CuisineBar } from '../../../../components/CuisineBar';
+import { Footer } from '../../../../components/Footer';
+import NavBar from '../../../../components/NavBar';
+import { RecommendForm } from '../../../../components/RecommendForm';
+import { ISanityArticle } from '../../../../types/article';
+import { sanityPostQuery } from '../../../../utils/search';
 import '../../assets/style.scss';
 import CookingSVG from '../../assets/svgs/cooking.svg';
 import HelloSVG from '../../assets/svgs/hello.svg';
-import client from '../../client';
-import { CityIndictor } from '../../components/CityIndictor';
-import { CuisineBar } from '../../components/CuisineBar';
-import { Footer } from '../../components/Footer';
-import NavBar from '../../components/NavBar';
-import { RecommendForm } from '../../components/RecommendForm';
-import { IPost } from '../../types/post';
 
 function urlFor(source) {
   return imageUrlBuilder(client).image(source);
 }
 
-const Post = (props: IPost): JSX.Element => {
+const Post = (props: ISanityArticle): JSX.Element => {
   const {
+    body,
     title = '',
     subtitle = '',
-    name = '',
-    authorImage = null,
+    author,
     publishedAt = '',
-    city = '',
+    city,
     tags = [],
-    location = { lat: 0, lng: 0, _type: '' },
-    restaurantName = '',
-    dishName = '',
-    mainImage = null,
-    backdropSVG = null,
-    video = { link: '', description: '' },
-    body = [],
+    location,
+    restaurantName,
+    dishName,
+    backdropSVG,
+    video,
+    featureImage,
   } = props;
 
   console.log('Props:', props);
@@ -64,14 +64,14 @@ const Post = (props: IPost): JSX.Element => {
               <div className="flex w-full content-center items-center">
                 <img
                   className="rounded-full w-10 h-10 mr-3"
-                  src={urlFor(authorImage).url()}
+                  src={author.imageSrc}
                   alt={'Author profile picture'}
                 />
               </div>
             </div>
             <div className="flex flex-col items-start justify-center">
               <span className="block font-bold text-xs">
-                BY {name.toUpperCase()}
+                BY {author.name.toUpperCase()}
               </span>
               <span className="block text-xs">{date}</span>
             </div>
@@ -108,7 +108,7 @@ const Post = (props: IPost): JSX.Element => {
               {tags.map(tag => (
                 <li key={tag}>
                   <span className="rounded p-1 bg-white bg-opacity-50 text-xs">
-                    {new Hashtag(tag).formatted}
+                    {new Tag(tag).formatted}
                   </span>
                 </li>
               ))}
@@ -135,12 +135,12 @@ const Post = (props: IPost): JSX.Element => {
 
           <div className="mt-8 mb-8">
             <h4 className="font-roboto-slab font-bold w-1/2 text-md mb-4">
-              {mainImage && mainImage.description}
+              {featureImage.description}
             </h4>
             <img
               className="w-full"
-              src={urlFor(mainImage.image).url()}
-              alt={mainImage.altText}
+              src={featureImage.source}
+              alt={featureImage.altText}
             />
           </div>
 
@@ -179,25 +179,19 @@ const Post = (props: IPost): JSX.Element => {
 Post.getInitialProps = async function (context) {
   // It's important to default the slug so that it doesn't return "undefined"
   const query = groq`*[_type == "post" && slug.current == $slug][0]{
-    title,
-    subtitle,
-    "name": author->name,
-    "authorImage": author->image,
-    "city": city->title,
-    "tags": tags[]->title,
-    "cuisine": cuisine->title,
-    publishedAt,
-    location,
-    restaurantName,
-    dishName,
-    mainImage,
-    backdropSVG,
-    video,
-    body,
+    ${sanityPostQuery}
   }`;
 
   const { slug = '' } = context.query;
-  return await client.fetch(query, { slug });
+
+  let posts;
+  try {
+    posts = await client.fetch(query, { slug });
+  } catch (error) {
+    console.warn('Error:', error);
+  }
+
+  return posts;
 };
 
 export default Post;

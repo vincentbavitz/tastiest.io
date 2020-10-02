@@ -1,3 +1,3 @@
-import { Hashtag } from './hashtag';
+import { Tag } from './hashtag';
 
-export { Hashtag };
+export { Tag };
