@@ -17,7 +17,7 @@ export function SearchResultsOverlay() {
           {searchState.searchResultItems &&
             searchState.searchResultItems.map(searchItem => (
               <div
-                className="flex w-1/2"
+                className="flex w-full"
                 key={searchItem.title.replace(' ', '-')}
               >
                 <SearchItem {...searchItem} />

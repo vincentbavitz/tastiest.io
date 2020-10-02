@@ -16,7 +16,7 @@ export function ArticleItem(props: IArticle): JSX.Element {
 
   return (
     <div
-      className="rounded-lg overflow-hidden shadow-lg m-8 w-full"
+      className="rounded-lg overflow-hidden shadow-lg w-full mb-6"
       onClick={e => handleClick(e)}
     >
       <img className="w-full" src={imageUrl} alt={altTag} />
