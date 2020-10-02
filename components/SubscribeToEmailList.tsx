@@ -6,7 +6,7 @@ function SubscribeToEmailList(): JSX.Element {
       <div className="mx-6">
         <div className="pt-8">
           <div>
-            <h1 className="text-center text-2xl font-black mb-5">
+            <h1 className="text-center text-2xl font-robotoblack mb-5">
               Only dishes we'd recommend to family.
             </h1>
             <form className="md:ml-1">

@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import '../assets/style.scss';
 import client from '../client';
+import { Footer } from '../components/Footer';
 import { ArticleItem } from '../components/ArticleItem';
 import { CuisineBar } from '../components/CuisineBar';
 import NavBar from '../components/NavBar';
@@ -74,6 +75,7 @@ const Index = (props: Props) => {
               })}
         </ul>
       </div>
+      <Footer />
     </Provider>
   );
 };

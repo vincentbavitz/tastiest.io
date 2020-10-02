@@ -1,5 +1,13 @@
 module.exports = {
   theme: {
+    fontFamily: {
+      somantic: ['SomaticRounded'],
+      roboto: ['Roboto'],
+      robotoslab: ['RobotoSlab'],
+      robotoblack: ['RobotoBlack'],
+      roboslabsemibold: ['RobotoSlabSemiBold'],
+      robotolight: ['RobotoLight'],
+    },
     extend: {
       colors: {
         primary: '#fe4c00',
@@ -7,11 +15,6 @@ module.exports = {
         danger: '#130b57',
       },
     },
-  },
-  fontFamily: {
-    raleway: ['Somantic-Rounded'],
-    ubuntu: ['Roboto'],
-    source: ['RobotoSlab'],
   },
   variants: {
     margin: ['responsive', 'first', 'last'],
