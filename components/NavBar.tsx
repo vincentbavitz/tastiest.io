@@ -41,7 +41,7 @@ function NavBar() {
 
   return (
     <>
-      <div ref={navBarRef} className="relative h-20">
+      <div ref={navBarRef} className="relative h-20 -mb-4">
         <div
           className={classNames(
             'absolute',

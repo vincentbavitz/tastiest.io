@@ -1,6 +1,6 @@
 function SubscribeToEmailList(): JSX.Element {
   return (
-    <div className="bg-orange-200 mt-8 justify-center">
+    <div className="bg-orange-200 justify-center">
       <div className="mx-6">
         <div className="pt-8">
           <div>
