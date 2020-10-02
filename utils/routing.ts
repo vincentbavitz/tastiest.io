@@ -4,5 +4,7 @@ interface IGenerateURLParams {
   slug: string;
 }
 
-export const generateURL = ({ city, cuisine, slug }: IGenerateURLParams) =>
-  `${city}/${cuisine}/${slug}`;
+export const generateURL = ({ city, cuisine, slug }: IGenerateURLParams) => ({
+  href: `${city}/${cuisine}/${slug}`.toLowerCase(),
+  as: '/[city]/[cuisine]/[slug]',
+});

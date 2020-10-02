@@ -29,8 +29,6 @@ interface Props {
 const Index = (props: Props) => {
   const { posts } = props;
 
-  console.log('posts:', posts);
-
   const cards = posts.map(post => (
     <ArticleItem
       key={post.title.toLowerCase()}
@@ -67,25 +65,26 @@ const Index = (props: Props) => {
       <div>
         <h1>Welcome to a blog! hello</h1>
         <ul>
-          {posts.map(post => {
-            return (
-              <div key={post._id}>
-                <button className="m-1 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
-                  <Link
-                    href="/slug/[slug]"
-                    as={generateURL({
-                      city: 'london',
-                      cuisine: 'italian',
-                      slug: post.slug.current,
-                    })}
-                  >
-                    <a>{post.title}</a>
-                  </Link>
-                </button>
-                ({new Date(post._updatedAt).toDateString()})
-              </div>
-            );
-          })}
+          {posts
+            .filter(post => post.slug && post.cuisine && post.city)
+            .map(post => {
+              const { href, as } = generateURL({
+                city: post.city,
+                cuisine: post.cuisine,
+                slug: post?.slug?.current,
+              });
+
+              return (
+                <div key={post._id}>
+                  <button className="m-1 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                    <Link href={href} as={as}>
+                      <a>{post.title}</a>
+                    </Link>
+                  </button>
+                  ({new Date(post._updatedAt).toDateString()})
+                </div>
+              );
+            })}
         </ul>
       </div>
     </Provider>
@@ -93,9 +92,31 @@ const Index = (props: Props) => {
 };
 
 export const getStaticProps = async () => {
-  const posts = await client.fetch(groq`
-    *[_type == "post" ]|order(publishedAt desc)
-  `);
+  const query = groq`
+    *[_type == "post" ]|order(publishedAt desc) {
+      title,
+      subtitle,
+    "name": author->name,
+    "authorImage": author->image,
+    "cuisine": cuisine->title,
+    "city": city->title,
+    "tags": tags[]->title,
+    "slug": slug.current,
+    publishedAt,
+    location,
+    restaurantName,
+    dishName,
+    mainImage,
+    backdropSVG,
+    video,
+    body,
+    }
+  `;
+
+  const posts = await client.fetch(query);
+
+  console.log('First post:', posts[0]);
+
   return {
     props: {
       posts,

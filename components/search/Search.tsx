@@ -18,7 +18,7 @@ interface State {
 interface IProps {
   isMobile: boolean;
   // TEMPORAYR --> PUT INTO SEARCH NOT PROPS
-  //: Array<IArticle>;
+  //: Array<ISanityArticle>;
 }
 
 // AT THE BOTTOM OFF THE SEARCH;

@@ -1,13 +1,15 @@
 import classNames from 'classnames';
 import { useRouter } from 'next/dist/client/router';
 import React, { SyntheticEvent } from 'react';
-import { IArticle } from '../../types/article';
+import { ISanityArticle } from '../../types/article';
+import { generateURL } from '../../utils/routing';
 
-export function SearchItem(props: IArticle) {
+export function SearchItem(props: ISanityArticle) {
   const router = useRouter();
-  const { title, imageUrl, altTag, href } = props;
+  const { title, imageUrl, altTag, city, cuisine, slug } = props;
 
   const handleClick = (e: SyntheticEvent) => {
+    const { href, as } = generateURL({ city, cuisine, slug });
     e.preventDefault();
     router.push(href);
   };

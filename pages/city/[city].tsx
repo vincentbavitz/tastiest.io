@@ -34,8 +34,6 @@ CityPosts.getInitialProps = async function (context) {
 
   const { slug = '' } = context.query;
   return await client.fetch(query, { slug });
-
-  console.log('Context', context);
 };
 
 export default CityPosts;
