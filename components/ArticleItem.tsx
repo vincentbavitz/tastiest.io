@@ -1,8 +1,8 @@
 import { useRouter } from 'next/dist/client/router';
 import { SyntheticEvent } from 'react';
-import { IArticle } from '../types/article';
+import { ISanityArticle } from '../types/article';
 
-export function ArticleItem(props: IArticle): JSX.Element {
+export function ArticleItem(props: ISanityArticle): JSX.Element {
   const { href, imageUrl, altTag, title, paragraph, hashtags } = props;
 
   const router = useRouter();
@@ -11,8 +11,6 @@ export function ArticleItem(props: IArticle): JSX.Element {
     e.preventDefault();
     router.push(href);
   };
-
-  console.log('Props', props);
 
   return (
     <div

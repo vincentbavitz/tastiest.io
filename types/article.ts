@@ -1,7 +1,10 @@
 import { Hashtag } from '../objects';
 
-export interface IArticle {
-  href: string;
+// The return type of an article fetched from SanityIO
+export interface ISanityArticle {
+  city: string;
+  cuisine: string;
+  slug: { _type: string; current: string };
   imageUrl: string;
   altTag: string;
   title: string;
