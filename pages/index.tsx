@@ -46,7 +46,7 @@ const Index = (props: Props) => {
         <NavBar />
         <CuisineBar />
         <SubscribeToEmailList />
-        <div className="flex overflow-x-hidden">{cards}</div>
+        <div className="md:flex overflow-x-hidden m-6">{cards}</div>
       </div>
       <div>
         <h1>Welcome to a blog! hello</h1>
