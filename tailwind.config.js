@@ -8,6 +8,11 @@ module.exports = {
       },
     },
   },
+  fontFamily: {
+    raleway: ['Somantic-Rounded'],
+    ubuntu: ['Roboto'],
+    source: ['RobotoSlab'],
+  },
   variants: {
     margin: ['responsive', 'first', 'last'],
     minWidth: ['responsive'],
