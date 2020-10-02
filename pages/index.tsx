@@ -14,6 +14,7 @@ import SubscribeToEmailList from '../components/SubscribeToEmailList';
 import { Hashtag } from '../objects';
 import { rootReducer } from '../state/reducers';
 import { IPost } from '../types/post';
+import { generateURL } from '../utils/routing';
 
 const store = createStore(rootReducer);
 
@@ -70,7 +71,14 @@ const Index = (props: Props) => {
             return (
               <div key={post._id}>
                 <button className="m-1 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
-                  <Link href="/[slug]/[slug]" as={`/post/${post.slug.current}`}>
+                  <Link
+                    href="/slug/[slug]"
+                    as={generateURL({
+                      city: 'london',
+                      cuisine: 'italian',
+                      slug: post.slug.current,
+                    })}
+                  >
                     <a>{post.title}</a>
                   </Link>
                 </button>
