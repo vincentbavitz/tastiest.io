@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import Link from 'next/link';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { useMedia } from 'react-use';
 import TastiestLogo from '../assets/svgs/brand.svg';
-import { UI } from '../constants';
 import { IState } from '../state/reducers';
 import { Search } from './search/Search';
 
@@ -12,32 +12,12 @@ function NavBar() {
   const { searchBarExpanded } = navigationState;
 
   const navBarRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
 
-  const setIsMobileIfNeeded = () => {
-    const width = navBarRef?.current?.getBoundingClientRect()?.width;
-
-    if (!width) {
-      return;
-    }
-
-    if (!isMobile && width < UI.MOBILE_BREAKPOINT) {
-      setIsMobile(true);
-    }
-
-    if (isMobile && width >= UI.MOBILE_BREAKPOINT) {
-      setIsMobile(false);
-    }
-  };
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileIfNeeded();
-    };
-
-    setIsMobileIfNeeded();
-    window.addEventListener('resize', handleResize);
-  }, []);
+  // Responsive
+  let isMobile = true;
+  if (typeof window !== 'undefined') {
+    isMobile = useMedia('(max-width: 500px)');
+  }
 
   return (
     <>
@@ -65,7 +45,7 @@ function NavBar() {
           </div>
         </div>
 
-        <Search isMobile={isMobile} />
+        <Search />
       </div>
     </>
   );

@@ -1,9 +1,11 @@
 export interface INavigation {
+  typedQuery?: string;
   searchBarExpanded: boolean;
   profile?: undefined;
 }
 
 export const initialNavigationState: INavigation = {
+  typedQuery: '',
   searchBarExpanded: false,
 };
 
