@@ -1,17 +1,27 @@
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Modal from 'react-modal';
 import { useDispatch } from 'react-redux';
 import { useMedia } from 'react-use';
+import ExitSVG from '../../assets/svgs/exit.svg';
 import SearchSVG from '../../assets/svgs/search.svg';
-import { expandSearchBar } from '../../state/navigation';
 import { setSearchResultItems } from '../../state/search';
 import { search } from '../../utils/search';
-import { SearchResultsOverlay } from './SearchResultsOverlay';
+import { SearchOverlay } from './SearchOverlay';
 
-export function Search() {
+export enum OverlayCondition {
+  ON_RENDER = 'ON_RENDER',
+  ON_FOCUS = 'ON_FOCUS',
+}
+interface Props {
+  overlay: OverlayCondition;
+}
+
+export function Search(props: Props) {
   const dispatch = useDispatch();
-  const [inputValue, setInputValue] = useState('');
+
+  const [inputValue, setInputValue] = useState();
+  const { overlay = OverlayCondition.ON_FOCUS } = props;
 
   // Responsive
   let isMobile = true;
@@ -19,6 +29,16 @@ export function Search() {
     isMobile = useMedia('(max-width: 500px)');
   }
 
+  const mobileInputRef = useRef(null);
+
+  // Functions
+  const handleFocus = () => {
+    if (overlay === OverlayCondition.ON_FOCUS) {
+      dispatch(showSearchOverlay());
+    }
+  };
+
+  // Effects
   useEffect(() => {
     const fetchSearchItems = async () => {
       const query = String(inputValue);
@@ -36,59 +56,41 @@ export function Search() {
   }, []);
 
   return (
-    <>
-      <SearchResultsOverlay />
-
-      <div className="absolute w-full h-full">
-        <div className="flex h-full items-center justify-end overflow-x-hidden">
-          {isMobile ? (
-            <div
-              className="flex flex-shrink-0 contained"
-              onClick={() => dispatch(expandSearchBar())}
-            >
-              <SearchSVG className="fill-secondary h-8 cursor-pointer" />
-            </div>
-          ) : (
-            <div
-              className={classNames(
-                'inline-flex',
-                'items-center',
-                'content-between',
-                'border-2',
-                'border-primary',
-                'focus:shadow-outline',
-                'focus:outline-none',
-                'rounded-lg',
-                'px-2',
-                'h-8',
-                'mr-page',
-              )}
-            >
-              <input
-                className={classNames(
-                  'pl-1',
-                  'border-none',
-                  'outline-none',
-                  'text-sm',
-                )}
-                placeholder={'Search'}
-                value={inputValue}
-                onChange={event => {
-                  const value = event.target.value;
-                  setInputValue(String(value));
-                }}
-                onFocus={() => dispatch(expandSearchBar())}
-              />
-              <div
-                className="flex flex-shrink-0"
-                onClick={() => alert('Searching')}
-              >
-                <SearchSVG className="fill-secondary h-6 cursor-pointer" />
-              </div>
-            </div>
+    <div className="relative">
+      <div
+        onClick={() => mobileInputRef.current?.focus()}
+        className="mobile-search-input contained h-20 w-full flex items-center justify-between"
+      >
+        <ExitSVG
+          className="search-bar-svg"
+          onClick={() => dispatch(hideSearchOverlay())}
+        />
+        <input
+          ref={mobileInputRef}
+          spellCheck={false}
+          className={classNames(
+            'px-8',
+            'flex-grow',
+            'border-none',
+            'outline-none',
+            'text-xl',
+            'bg-transparent',
+            'w-0',
           )}
+          placeholder={'Search'}
+          value={inputValue}
+          onFocus={handleFocus}
+          onChange={event => {
+            const value = event.target.value;
+            // setInputValue(String(value));
+          }}
+        />
+        <div onClick={() => dispatch(hideSearchOverlay())}>
+          <SearchSVG className="search-bar-svg" />
         </div>
       </div>
-    </>
+
+      <SearchOverlay />
+    </div>
   );
 }

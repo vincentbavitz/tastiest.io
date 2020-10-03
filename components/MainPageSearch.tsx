@@ -1,6 +1,18 @@
-import HomeHero from '../assets/svgs/home-hero.svg';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import HomeHeroSVG from '../assets/svgs/home-hero.svg';
+import { IState } from '../state/reducers';
+import { OverlayCondition, Search } from './search/Search';
 
-function SubscribeToEmailList(): JSX.Element {
+function MainPageSearch(): JSX.Element {
+  const navigationState = useSelector((state: IState) => state.navigation);
+  const { searchOverlayShown } = navigationState;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log('searchOverlayShown', searchOverlayShown);
+  });
+
   return (
     <div className="bg-orange-200 overflow-x-hidden md:mx-8 md:rounded-lg">
       <div className="mx-6">
@@ -11,11 +23,7 @@ function SubscribeToEmailList(): JSX.Element {
             </h1>
             <div className="flex justify-center">
               <div className="w-full md:w-7/12 xl:w-5/12">
-                <input
-                  autoCapitalize="none"
-                  className="bg-white border-orange-400 rounded-t-md pl-6 py-4 w-full text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-orange-500"
-                  placeholder="dumplings, bao, gelato...."
-                />
+                <Search overlay={OverlayCondition.ON_FOCUS} />
                 <div>
                   <button
                     className="bg-primary hover:bg-orange-400 focus:shadow-outline focus:outline-none text-white font-bold py-4 w-full rounded-b-md shadow-lg text-lg md:pl-6"
@@ -28,7 +36,7 @@ function SubscribeToEmailList(): JSX.Element {
             </div>
           </div>
           <div className="mobile-hero">
-            <HomeHero />
+            <HomeHeroSVG />
           </div>
         </div>
       </div>
@@ -36,4 +44,4 @@ function SubscribeToEmailList(): JSX.Element {
   );
 }
 
-export default SubscribeToEmailList;
+export default MainPageSearch;

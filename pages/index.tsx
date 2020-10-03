@@ -6,11 +6,11 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import '../assets/style.scss';
 import client from '../client';
-import { Footer } from '../components/Footer';
 import { ArticleItem } from '../components/ArticleItem';
 import { CuisineBar } from '../components/CuisineBar';
+import { Footer } from '../components/Footer';
+import MainPageSearch from '../components/MainPageSearch';
 import NavBar from '../components/NavBar';
-import SubscribeToEmailList from '../components/SubscribeToEmailList';
 import { rootReducer } from '../state/reducers';
 import { ISanityArticle } from '../types/article';
 import { generateURL } from '../utils/routing';
@@ -46,7 +46,7 @@ const Index = (props: Props) => {
       <div>
         <NavBar />
         <CuisineBar />
-        <SubscribeToEmailList />
+        <MainPageSearch />
         <div className="md:flex overflow-x-hidden m-6">{cards}</div>
       </div>
       <div>
