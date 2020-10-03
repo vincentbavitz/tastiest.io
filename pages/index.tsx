@@ -50,7 +50,7 @@ const Index = (props: Props) => {
         <div className="md:flex overflow-x-hidden m-6">{cards}</div>
       </div>
       <div>
-        <h1>Welcome to a blog! hello</h1>
+        <h1>Sanity output below</h1>
         <ul>
           {posts?.length &&
             posts

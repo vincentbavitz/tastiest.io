@@ -321,9 +321,11 @@ body {
   z-index: 300;
 }
 
-.mobile-hero {
-  width: 200%;
-  margin-left: -50%;
+@media only screen and (max-width: 760px) {
+  .mobile-hero {
+    width: 200%;
+    margin-left: -50%;
+  }
 }
 
 @keyframes slideInFromRight {
