@@ -31,23 +31,27 @@ export function Search(props: Props) {
     isMobile = useMedia('(max-width: 500px)');
   }
 
-  const [isModalOpen, setIsModalOpen] = useState(isMobile ? true : false);
-  const [overlayShown, setOverlayShown] = useState(
-    overlay === OverlayCondition.ON_RENDER ? true : false,
+  const [hasFocus, setHasFocus] = useState(false);
+  const [shouldRenderOverlay, setShouldRenderOverlay] = useState(
+    overlay === OverlayCondition.ON_RENDER ||
+      (overlay === OverlayCondition.ON_FOCUS && hasFocus),
   );
 
-  const renderExitButton = props.renderExitButton ?? isModalOpen;
+  const shouldWrapInModal = isMobile && shouldRenderOverlay;
+  const [isModalOpen, setIsModalOpen] = useState(
+    shouldWrapInModal ? true : false,
+  );
+  const renderExitButton = props.renderExitButton ?? shouldWrapInModal;
 
   // Exit when user clicks out of component
   const searchRef = useRef(null);
   useClickAway(searchRef, () => {
     if (!isMobile) {
-      setOverlayShown(false);
       handleExit();
     }
   });
 
-  const mobileInputRef = useRef(null);
+  const inputRef = useRef(null);
 
   // Styling
   const modalStyles = {
@@ -65,24 +69,37 @@ export function Search(props: Props) {
     },
   };
 
-  // Hanlder Functions
+  // Handler Functions
   const handleFocus = () => {
-    setIsModalOpen(true);
+    setHasFocus(true);
 
     if (overlay === OverlayCondition.ON_FOCUS) {
-      setOverlayShown(true);
+      setShouldRenderOverlay(true);
     }
 
-    if (isMobile) {
+    if (shouldWrapInModal) {
+      setIsModalOpen(true);
     }
   };
 
+  const handleBlur = () => {
+    // Handle blur of non-overlay search bar
+    if (!isModalOpen && overlay === OverlayCondition.ON_FOCUS) {
+      setShouldRenderOverlay(false);
+    }
+
+    setHasFocus(false);
+  };
+
   const handleExit = () => {
+    setShouldRenderOverlay(false);
     setIsModalOpen(false);
 
     if (onExit) {
       onExit();
     }
+
+    console.log('Finito');
   };
 
   // Effects
@@ -97,22 +114,33 @@ export function Search(props: Props) {
     fetchSearchItems();
   }, [inputValue]);
 
-  // Set modal element on client load
   useEffect(() => {
+    // Set modal element on client load
     Modal.setAppElement('#__next');
+
+    // Set focus on modal element
+    setInterval(() => {
+      if (shouldWrapInModal && isModalOpen) {
+        inputRef.current?.focus();
+      }
+    }, 10);
   }, []);
+
+  useEffect(() => {
+    console.log('Should wrap in a modal: ', shouldWrapInModal);
+  }, [shouldWrapInModal]);
 
   const SearchElement = (
     <div className="relative" ref={searchRef}>
       <div
-        onClick={() => mobileInputRef.current?.focus()}
+        onClick={() => inputRef.current?.focus()}
         className="mobile-search-input contained h-20 w-full flex items-center justify-between"
       >
         {renderExitButton && (
           <ExitSVG className="search-bar-svg" onClick={handleExit} />
         )}
         <input
-          ref={mobileInputRef}
+          ref={inputRef}
           spellCheck={false}
           className={classNames(
             renderExitButton ? 'px-6' : 'pl-2 pr-4',
@@ -126,31 +154,31 @@ export function Search(props: Props) {
           placeholder={'Search'}
           value={inputValue}
           onFocus={handleFocus}
+          onBlur={handleBlur}
           onChange={event => {
             const value = event.target.value;
             // setInputValue(String(value));
           }}
         />
-        <div onClick={() => setOverlayShown(true)}>
+        <div onClick={() => setShouldRenderOverlay(true)}>
           <SearchSVG className="search-bar-svg" />
         </div>
       </div>
 
-      {overlayShown && <SearchOverlay />}
+      {shouldRenderOverlay && <SearchOverlay />}
     </div>
   );
 
   return (
     <>
-      {isMobile && (
+      {shouldWrapInModal ? (
+        <Modal style={modalStyles} isOpen={isModalOpen}>
+          <>{SearchElement}</>
+        </Modal>
+      ) : (
         <>
-          {isModalOpen ? (
-            <Modal style={modalStyles} isOpen={isModalOpen}>
-              <>{SearchElement}</>
-            </Modal>
-          ) : (
-            { SearchElement }
-          )}
+          {/* Now you're either on mobile but not focussed or on desktop */}
+          {SearchElement}
         </>
       )}
     </>
