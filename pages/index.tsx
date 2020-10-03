@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import '../assets/style.scss';
 import client from '../client';
+import { Footer } from '../components/Footer';
 import { ArticleItem } from '../components/ArticleItem';
 import { CuisineBar } from '../components/CuisineBar';
 import NavBar from '../components/NavBar';
@@ -49,7 +50,7 @@ const Index = (props: Props) => {
         <div className="md:flex overflow-x-hidden m-6">{cards}</div>
       </div>
       <div>
-        <h1>Welcome to a blog! hello</h1>
+        <h1>Sanity output below</h1>
         <ul>
           {posts?.length &&
             posts
@@ -74,6 +75,7 @@ const Index = (props: Props) => {
               })}
         </ul>
       </div>
+      <Footer />
     </Provider>
   );
 };
