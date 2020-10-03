@@ -1,18 +1,8 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import HomeHeroSVG from '../assets/svgs/home-hero.svg';
-import { IState } from '../state/reducers';
 import { OverlayCondition, Search } from './search/Search';
 
 function MainPageSearch(): JSX.Element {
-  const navigationState = useSelector((state: IState) => state.navigation);
-  const { searchOverlayShown } = navigationState;
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log('searchOverlayShown', searchOverlayShown);
-  });
-
   return (
     <div className="bg-orange-200 overflow-x-hidden md:mx-8 md:rounded-lg">
       <div className="mx-6">

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 import Modal from 'react-modal';
 import { useDispatch } from 'react-redux';
-import { useMedia } from 'react-use';
+import { useClickAway, useMedia } from 'react-use';
 import ExitSVG from '../../assets/svgs/exit.svg';
 import SearchSVG from '../../assets/svgs/search.svg';
 import { setSearchResultItems } from '../../state/search';
@@ -15,13 +15,15 @@ export enum OverlayCondition {
 }
 interface Props {
   overlay: OverlayCondition;
+  renderExitButton?: boolean;
+  onExit?(): void;
 }
 
 export function Search(props: Props) {
   const dispatch = useDispatch();
 
   const [inputValue, setInputValue] = useState();
-  const { overlay = OverlayCondition.ON_FOCUS } = props;
+  const { overlay = OverlayCondition.ON_FOCUS, onExit } = props;
 
   // Responsive
   let isMobile = true;
@@ -29,12 +31,57 @@ export function Search(props: Props) {
     isMobile = useMedia('(max-width: 500px)');
   }
 
+  const [isModalOpen, setIsModalOpen] = useState(isMobile ? true : false);
+  const [overlayShown, setOverlayShown] = useState(
+    overlay === OverlayCondition.ON_RENDER ? true : false,
+  );
+
+  const renderExitButton = props.renderExitButton ?? isModalOpen;
+
+  // Exit when user clicks out of component
+  const searchRef = useRef(null);
+  useClickAway(searchRef, () => {
+    if (!isMobile) {
+      setOverlayShown(false);
+      handleExit();
+    }
+  });
+
   const mobileInputRef = useRef(null);
 
-  // Functions
+  // Styling
+  const modalStyles = {
+    overlay: {
+      zIndex: '10000',
+    },
+    content: {
+      top: 'unset',
+      bottom: 'unset',
+      left: 'unset',
+      right: 'unset',
+      width: '100%',
+      minHeight: '100%',
+      padding: '0',
+    },
+  };
+
+  // Hanlder Functions
   const handleFocus = () => {
+    setIsModalOpen(true);
+
     if (overlay === OverlayCondition.ON_FOCUS) {
-      dispatch(showSearchOverlay());
+      setOverlayShown(true);
+    }
+
+    if (isMobile) {
+    }
+  };
+
+  const handleExit = () => {
+    setIsModalOpen(false);
+
+    if (onExit) {
+      onExit();
     }
   };
 
@@ -55,21 +102,20 @@ export function Search(props: Props) {
     Modal.setAppElement('#__next');
   }, []);
 
-  return (
-    <div className="relative">
+  const SearchElement = (
+    <div className="relative" ref={searchRef}>
       <div
         onClick={() => mobileInputRef.current?.focus()}
         className="mobile-search-input contained h-20 w-full flex items-center justify-between"
       >
-        <ExitSVG
-          className="search-bar-svg"
-          onClick={() => dispatch(hideSearchOverlay())}
-        />
+        {renderExitButton && (
+          <ExitSVG className="search-bar-svg" onClick={handleExit} />
+        )}
         <input
           ref={mobileInputRef}
           spellCheck={false}
           className={classNames(
-            'px-8',
+            renderExitButton ? 'px-6' : 'pl-2 pr-4',
             'flex-grow',
             'border-none',
             'outline-none',
@@ -85,12 +131,28 @@ export function Search(props: Props) {
             // setInputValue(String(value));
           }}
         />
-        <div onClick={() => dispatch(hideSearchOverlay())}>
+        <div onClick={() => setOverlayShown(true)}>
           <SearchSVG className="search-bar-svg" />
         </div>
       </div>
 
-      <SearchOverlay />
+      {overlayShown && <SearchOverlay />}
     </div>
+  );
+
+  return (
+    <>
+      {isMobile && (
+        <>
+          {isModalOpen ? (
+            <Modal style={modalStyles} isOpen={isModalOpen}>
+              <>{SearchElement}</>
+            </Modal>
+          ) : (
+            { SearchElement }
+          )}
+        </>
+      )}
+    </>
   );
 }

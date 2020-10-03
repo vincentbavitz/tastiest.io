@@ -1,54 +1,10 @@
 import React from 'react';
-import Modal from 'react-modal';
-import { useDispatch, useSelector } from 'react-redux';
-import { useMedia } from 'react-use';
+import { useSelector } from 'react-redux';
 import { IState } from '../../state/reducers';
 import { SearchItem } from './SearchItem';
 
 export function SearchOverlay() {
-  const dispatch = useDispatch();
-
-  // Responsive
-  let isMobile = true;
-  if (typeof window !== 'undefined') {
-    isMobile = useMedia('(max-width: 500px)');
-  }
-
-  const modalStyles = {
-    content: {
-      top: '0',
-      left: '0',
-      right: '0',
-      bottom: '0',
-      height: '100%',
-      width: '100%',
-      zIndex: '1000',
-      border: 'none',
-      borderRadius: '0',
-      padding: '0',
-    },
-  };
-
-  return (
-    <>
-      {isMobile ? (
-        <Modal style={modalStyles} isOpen={true}>
-          <OverlayContent />
-        </Modal>
-      ) : (
-        <div className="absolute bottom-0 bg-white">
-          <OverlayContent />
-        </div>
-      )}
-    </>
-  );
-}
-
-function OverlayContent() {
   const searchState = useSelector((state: IState) => state.search);
-  const navigationState = useSelector((state: IState) => state.navigation);
-
-  const { searchOverlayShown } = navigationState;
   const renderSearchTemplate = searchState.searchResultItems.length === 0;
 
   return (
