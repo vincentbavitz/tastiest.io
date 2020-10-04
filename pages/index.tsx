@@ -2,8 +2,6 @@ import groq from 'groq';
 import Head from 'next/head';
 import Link from 'next/link';
 import React from 'react';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 import '../assets/style.scss';
 import client from '../client';
 import { ArticleItem } from '../components/ArticleItem';
@@ -11,12 +9,9 @@ import { CuisineBar } from '../components/CuisineBar';
 import { Footer } from '../components/Footer';
 import MainPageSearch from '../components/MainPageSearch';
 import NavBar from '../components/NavBar';
-import { rootReducer } from '../state/reducers';
 import { ISanityArticle } from '../types/article';
 import { generateURL } from '../utils/routing';
 import { sanityPostQuery } from '../utils/search';
-
-const store = createStore(rootReducer);
 
 interface Props {
   posts: Array<ISanityArticle>;
@@ -29,7 +24,8 @@ const Index = (props: Props) => {
     : [];
 
   return (
-    <Provider store={store}>
+    <>
+      {' '}
       <Head>
         <title>Tastiest</title>
         <meta
@@ -42,7 +38,6 @@ const Index = (props: Props) => {
           content="width=device-width, initial-scale=1, maximum-scale=1"
         ></meta>
       </Head>
-
       <div>
         <NavBar />
         <CuisineBar />
@@ -76,7 +71,7 @@ const Index = (props: Props) => {
         </ul>
       </div>
       <Footer />
-    </Provider>
+    </>
   );
 };
 
