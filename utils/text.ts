@@ -1,5 +1,5 @@
 export function titleCase(str: string) {
-  return str.length
+  return str?.length
     ? str
         .toLowerCase()
         .split(' ')

@@ -4,17 +4,17 @@ import imageUrlBuilder from '@sanity/image-url';
 import groq from 'groq';
 import moment from 'moment';
 import React from 'react';
-import client from '../../../../client';
-import { CityIndictor } from '../../../../components/CityIndictor';
-import { CuisineBar } from '../../../../components/CuisineBar';
-import { Footer } from '../../../../components/Footer';
-import NavBar from '../../../../components/NavBar';
-import { RecommendForm } from '../../../../components/RecommendForm';
-import { ISanityArticle } from '../../../../types/article';
-import { sanityPostQuery } from '../../../../utils/search';
-import '../../assets/style.scss';
-import CookingSVG from '../../assets/svgs/cooking.svg';
-import HelloSVG from '../../assets/svgs/hello.svg';
+import '../../../assets/style.scss';
+import CookingSVG from '../../../assets/svgs/cooking.svg';
+import HelloSVG from '../../../assets/svgs/hello.svg';
+import client from '../../../client';
+import { CityIndictor } from '../../../components/CityIndictor';
+import { CuisineBar } from '../../../components/CuisineBar';
+import { Footer } from '../../../components/Footer';
+import NavBar from '../../../components/NavBar';
+import { RecommendForm } from '../../../components/RecommendForm';
+import { ISanityArticle } from '../../../types/article';
+import { sanityPostQuery } from '../../../utils/search';
 
 function urlFor(source) {
   return imageUrlBuilder(client).image(source);
@@ -70,8 +70,8 @@ const Post = (props: ISanityArticle): JSX.Element => {
               </div>
             </div>
             <div className="flex flex-col items-start justify-center">
-              <span className="block font-bold text-xs">
-                BY {author.name.toUpperCase()}
+              <span className="block font-bold text-xs uppercase">
+                BY {author.name}
               </span>
               <span className="block text-xs">{date}</span>
             </div>

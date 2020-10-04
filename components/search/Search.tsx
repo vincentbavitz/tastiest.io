@@ -38,9 +38,7 @@ export function Search(props: Props) {
   );
 
   const shouldWrapInModal = isMobile && shouldRenderOverlay;
-  const [isModalOpen, setIsModalOpen] = useState(
-    shouldWrapInModal ? true : false,
-  );
+  const [isModalOpen, setIsModalOpen] = useState(shouldWrapInModal);
   const renderExitButton = props.renderExitButton ?? shouldWrapInModal;
 
   // Exit when user clicks out of component
@@ -77,7 +75,7 @@ export function Search(props: Props) {
       setShouldRenderOverlay(true);
     }
 
-    if (shouldWrapInModal) {
+    if (shouldWrapInModal && isMobile) {
       setIsModalOpen(true);
     }
   };
@@ -127,8 +125,10 @@ export function Search(props: Props) {
   }, []);
 
   useEffect(() => {
+    console.log('isModalOpen', isModalOpen);
+    console.log('shouldRenderOverlay', shouldRenderOverlay);
     console.log('Should wrap in a modal: ', shouldWrapInModal);
-  }, [shouldWrapInModal]);
+  });
 
   const SearchElement = (
     <div className="relative" ref={searchRef}>

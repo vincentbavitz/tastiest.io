@@ -9,10 +9,10 @@ export function ArticleItem(props: ISanityArticle): JSX.Element {
   const router = useRouter();
 
   const handleClick = (e: SyntheticEvent) => {
-    const { href } = generateURL({ city, slug, cuisine });
+    const { href, as } = generateURL({ city, slug, cuisine });
 
     e.preventDefault();
-    router.push(href);
+    router.push(href, as);
   };
 
   return (
