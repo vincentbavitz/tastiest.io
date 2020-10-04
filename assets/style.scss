@@ -186,6 +186,11 @@ $breakpoint-huge: 1280px;
 body {
   font-family: Roboto;
   font-weight: 400;
+
+  ::selection {
+    color: white;
+    background: rgba($theme-primary, 0.75);
+  }
 }
 
 .fill-primary {
@@ -279,7 +284,7 @@ body {
     width: $page-border;
   }
 
-  &>div {
+  & > div {
     position: relative;
     max-height: 3.33em;
 
