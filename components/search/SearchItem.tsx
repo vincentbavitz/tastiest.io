@@ -13,7 +13,7 @@ export function SearchItem(props: ISanityArticle) {
   const handleClick = (e: SyntheticEvent) => {
     const { href, as } = generateURL({ city, cuisine, slug });
     e.preventDefault();
-    router.push(href);
+    router.push(href, as);
   };
 
   return (

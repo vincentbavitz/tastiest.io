@@ -22,7 +22,7 @@ interface Props {
 export function Search(props: Props) {
   const dispatch = useDispatch();
 
-  const [inputValue, setInputValue] = useState();
+  const [inputValue, setInputValue] = useState('');
   const { overlay = OverlayCondition.ON_FOCUS, onExit } = props;
 
   // Responsive
@@ -157,7 +157,7 @@ export function Search(props: Props) {
           onBlur={handleBlur}
           onChange={event => {
             const value = event.target.value;
-            // setInputValue(String(value));
+            setInputValue(String(value));
           }}
         />
         <div onClick={() => setShouldRenderOverlay(true)}>
