@@ -33,6 +33,7 @@ function CuisineItem(props: Props) {
       <div className="cuisine-item flex py-6" onClick={handleOnClick}>
         <div
           className={classNames(
+            'select-none',
             'overflow-y-visible',
             'rounded-xl',
             'pl-4',

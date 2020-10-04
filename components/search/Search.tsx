@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 import Modal from 'react-modal';
 import { useDispatch } from 'react-redux';
-import { useClickAway, useMedia } from 'react-use';
+import { useClickAway, useLockBodyScroll, useMedia } from 'react-use';
 import ExitSVG from '../../assets/svgs/exit.svg';
 import SearchSVG from '../../assets/svgs/search.svg';
 import { setSearchResultItems } from '../../state/search';
@@ -129,6 +129,9 @@ export function Search(props: Props) {
     console.log('shouldRenderOverlay', shouldRenderOverlay);
     console.log('Should wrap in a modal: ', shouldWrapInModal);
   });
+
+  // Scroll locking
+  useLockBodyScroll(isModalOpen);
 
   const SearchElement = (
     <div className="relative" ref={searchRef}>
