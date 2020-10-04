@@ -17,7 +17,7 @@ export function ArticleItem(props: ISanityArticle): JSX.Element {
 
   return (
     <div
-      className="rounded-lg overflow-hidden shadow-lg w-full mb-6"
+      className="rounded-lg cursor-pointer overflow-hidden shadow-lg w-full mb-6"
       onClick={e => handleClick(e)}
     >
       <img

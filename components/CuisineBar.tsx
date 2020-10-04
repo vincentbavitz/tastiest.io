@@ -69,8 +69,6 @@ export function CuisineBar() {
   const scrollRef = useRef(null);
   const { x } = useScroll(scrollRef);
 
-  console.log('Current', scrollRef.current);
-
   const dispatch = useDispatch();
   const handleScrollPosition = () => {
     dispatch(saveCuisineBarScrollPos(x));
