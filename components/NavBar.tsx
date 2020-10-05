@@ -13,7 +13,7 @@ function NavBar() {
   // Responsive
   let isMobile = true;
   if (typeof window !== 'undefined') {
-    isMobile = useMedia('(max-width: 500px)');
+    isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
   }
 
   return (
