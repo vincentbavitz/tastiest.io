@@ -1,9 +1,9 @@
 import type { AppProps } from 'next/app';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import { rootReducer } from '../state/reducers';
 import TastiestLogo from '../assets/svgs/brand.svg';
+import { rootReducer } from '../state/reducers';
 
 const store = createStore(rootReducer);
 
@@ -17,6 +17,15 @@ function App({ Component, pageProps }: AppProps) {
     }
   };
 
+  const inputRef = useRef(null);
+
+  // Focus input on load
+  useEffect(() => {
+    setTimeout(() => {
+      inputRef?.current?.focus();
+    }, 0);
+  }, []);
+
   return (
     <Provider store={store}>
       {isLoggedIn ? (
@@ -29,6 +38,7 @@ function App({ Component, pageProps }: AppProps) {
               Enter the password to continue
             </p>
             <input
+              ref={inputRef}
               className="my-2 border-secondary border-2 rounded-lg focus:outline-none focus:border-primary pl-2 py-1"
               onChange={handleOnChange}
             />

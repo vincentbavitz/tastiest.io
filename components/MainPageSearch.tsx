@@ -1,6 +1,6 @@
 import React from 'react';
 import HomeHeroSVG from '../assets/svgs/home-hero.svg';
-import { OverlayCondition, Search } from './search/Search';
+import { Search } from './search/Search';
 
 function MainPageSearch(): JSX.Element {
   return (
@@ -13,7 +13,7 @@ function MainPageSearch(): JSX.Element {
             </h1>
             <div className="flex justify-center">
               <div className="w-full md:w-7/12 xl:w-5/12">
-                <Search overlay={OverlayCondition.ON_FOCUS} />
+                <Search />
                 <div>
                   <button
                     className="bg-primary hover:bg-orange-400 focus:shadow-outline focus:outline-none text-white font-bold py-4 w-full rounded-b-md shadow-lg text-lg md:pl-6"
