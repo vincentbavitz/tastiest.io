@@ -37,7 +37,7 @@ export function Search(props: Props) {
       (overlay === OverlayCondition.ON_FOCUS && hasFocus),
   );
 
-  const shouldWrapInModal = isMobile && shouldRenderOverlay;
+  const shouldWrapInModal = isMobile || shouldRenderOverlay;
   const [isModalOpen, setIsModalOpen] = useState(shouldWrapInModal);
   const renderExitButton = props.renderExitButton ?? shouldWrapInModal;
 
@@ -96,8 +96,6 @@ export function Search(props: Props) {
     if (onExit) {
       onExit();
     }
-
-    console.log('Finito');
   };
 
   // Effects
