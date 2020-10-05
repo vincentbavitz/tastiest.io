@@ -26,7 +26,7 @@ function App({ Component, pageProps }: AppProps) {
           <div className="flex flex-col justify-center -m-8 items-center">
             <TastiestLogo className="h-12 my-6" />
             <p className="font-robotolight text-base">
-              Enter the password to continue:
+              Enter the password to continue
             </p>
             <input
               className="my-2 border-secondary border-2 rounded-lg focus:outline-none focus:border-primary pl-2 py-1"
