@@ -39,7 +39,7 @@ function App({ Component, pageProps }: AppProps) {
             </p>
             <input
               ref={inputRef}
-              className="my-2 border-secondary border-2 rounded-lg focus:outline-none focus:border-primary pl-2 py-1"
+              className="my-2 border-secondary border-2 rounded-lg focus:outline-none focus:border-primary pl-2 py-1 text-center"
               onChange={handleOnChange}
             />
             <h1 className="font-somantic text-secondary text-2xl pt-8">

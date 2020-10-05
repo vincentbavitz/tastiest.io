@@ -1,15 +1,21 @@
 import classNames from 'classnames';
 import Link from 'next/link';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useMedia } from 'react-use';
 import TastiestLogo from '../assets/svgs/brand.svg';
 import SearchSVG from '../assets/svgs/search.svg';
 import { UI } from '../constants';
-import { Search } from './search/Search';
+import { expandSearchOverlay } from '../state/navigation';
+import { IState } from '../state/reducers';
+import { SearchOverlay } from './search/SearchOverlay';
 
 function NavBar() {
+  const navigationState = useSelector((state: IState) => state.navigation);
+  const dispatch = useDispatch();
   const navBarRef = useRef(null);
-  const [renderMobileSearchBar, setRenderMobileSearchBar] = useState(false);
+
+  const { searchOverlayExpanded } = navigationState;
 
   // Responsive
   let isMobile = true;
@@ -46,7 +52,7 @@ function NavBar() {
             <div className="flex h-full items-center justify-end overflow-x-hidden">
               <div
                 className="flex flex-shrink-0 contained"
-                onClick={() => setRenderMobileSearchBar(true)}
+                onClick={() => dispatch(expandSearchOverlay())}
               >
                 <SearchSVG className="fill-secondary h-8 cursor-pointer" />
               </div>
@@ -54,9 +60,7 @@ function NavBar() {
           </div>
         )}
 
-        {isMobile && renderMobileSearchBar && (
-          <Search onExit={() => setRenderMobileSearchBar(false)} />
-        )}
+        {isMobile && searchOverlayExpanded && <SearchOverlay />}
       </div>
     </>
   );

@@ -191,6 +191,10 @@ body {
     color: white;
     background: rgba($theme-primary, 0.75);
   }
+
+  & > div {
+    overflow-x: hidden;
+  }
 }
 
 .fill-primary {
@@ -318,12 +322,6 @@ body {
   // &.siding-out {
   //   animation: $transition-duration ease-in-out 0s 1 slideOutFromRight;
   // }
-}
-
-.search-items {
-  position: absolute;
-  top: 0px;
-  z-index: 300;
 }
 
 @media only screen and (max-width: 760px) {
