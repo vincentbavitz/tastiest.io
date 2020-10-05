@@ -4,7 +4,8 @@ import React, { useRef, useState } from 'react';
 import { useMedia } from 'react-use';
 import TastiestLogo from '../assets/svgs/brand.svg';
 import SearchSVG from '../assets/svgs/search.svg';
-import { OverlayCondition, Search } from './search/Search';
+import { UI } from '../constants';
+import { Search } from './search/Search';
 
 function NavBar() {
   const navBarRef = useRef(null);
@@ -13,7 +14,7 @@ function NavBar() {
   // Responsive
   let isMobile = true;
   if (typeof window !== 'undefined') {
-    isMobile = useMedia('(max-width: 500px)');
+    isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
   }
 
   return (
@@ -54,11 +55,7 @@ function NavBar() {
         )}
 
         {isMobile && renderMobileSearchBar && (
-          <Search
-            overlay={OverlayCondition.ON_RENDER}
-            renderExitButton={true}
-            onExit={() => setRenderMobileSearchBar(false)}
-          />
+          <Search onExit={() => setRenderMobileSearchBar(false)} />
         )}
       </div>
     </>
