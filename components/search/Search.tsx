@@ -1,45 +1,43 @@
 import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 import Modal from 'react-modal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useClickAway, useLockBodyScroll, useMedia } from 'react-use';
 import ExitSVG from '../../assets/svgs/exit.svg';
 import SearchSVG from '../../assets/svgs/search.svg';
+import { UI } from '../../constants';
+import {
+  collapseSearchOverlay,
+  expandSearchOverlay,
+} from '../../state/navigation';
+import { IState } from '../../state/reducers';
 import { setSearchResultItems } from '../../state/search';
 import { search } from '../../utils/search';
-import { SearchOverlay } from './SearchOverlay';
 
-export enum OverlayCondition {
-  ON_RENDER = 'ON_RENDER',
-  ON_FOCUS = 'ON_FOCUS',
-}
 interface Props {
-  overlay: OverlayCondition;
-  renderExitButton?: boolean;
   onExit?(): void;
 }
 
 export function Search(props: Props) {
+  const nagivationState = useSelector((state: IState) => state.navigation);
   const dispatch = useDispatch();
 
+  const { searchOverlayExpanded } = nagivationState;
+
   const [inputValue, setInputValue] = useState('');
-  const { overlay = OverlayCondition.ON_FOCUS, onExit } = props;
+  const { onExit } = props;
 
   // Responsive
   let isMobile = true;
   if (typeof window !== 'undefined') {
-    isMobile = useMedia('(max-width: 500px)');
+    isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
   }
 
   const [hasFocus, setHasFocus] = useState(false);
-  const [shouldRenderOverlay, setShouldRenderOverlay] = useState(
-    overlay === OverlayCondition.ON_RENDER ||
-      (overlay === OverlayCondition.ON_FOCUS && hasFocus),
-  );
 
-  const shouldWrapInModal = isMobile || shouldRenderOverlay;
-  const [isModalOpen, setIsModalOpen] = useState(shouldWrapInModal);
-  const renderExitButton = props.renderExitButton ?? shouldWrapInModal;
+  // const renderExitButton = props.renderExitButton ?? shouldWrapInModal;
+  const renderExitButton = isMobile;
+  const shouldWrapInModal = isMobile;
 
   // Exit when user clicks out of component
   const searchRef = useRef(null);
@@ -51,47 +49,26 @@ export function Search(props: Props) {
 
   const inputRef = useRef(null);
 
-  // Styling
-  const modalStyles = {
-    overlay: {
-      zIndex: '10000',
-    },
-    content: {
-      top: 'unset',
-      bottom: 'unset',
-      left: 'unset',
-      right: 'unset',
-      width: '100%',
-      minHeight: '100%',
-      padding: '0',
-    },
-  };
-
   // Handler Functions
   const handleFocus = () => {
     setHasFocus(true);
 
-    if (overlay === OverlayCondition.ON_FOCUS) {
-      setShouldRenderOverlay(true);
-    }
-
-    if (shouldWrapInModal && isMobile) {
-      setIsModalOpen(true);
+    if (!searchOverlayExpanded) {
+      dispatch(expandSearchOverlay());
     }
   };
 
   const handleBlur = () => {
     // Handle blur of non-overlay search bar
-    if (!isModalOpen && overlay === OverlayCondition.ON_FOCUS) {
-      setShouldRenderOverlay(false);
+    if (searchOverlayExpanded) {
+      dispatch(collapseSearchOverlay());
     }
 
     setHasFocus(false);
   };
 
   const handleExit = () => {
-    setShouldRenderOverlay(false);
-    setIsModalOpen(false);
+    dispatch(collapseSearchOverlay());
 
     if (onExit) {
       onExit();
@@ -102,8 +79,6 @@ export function Search(props: Props) {
   useEffect(() => {
     const fetchSearchItems = async () => {
       const query = String(inputValue);
-      console.log('value', inputValue);
-
       dispatch(setSearchResultItems(await search(query)));
     };
 
@@ -116,22 +91,21 @@ export function Search(props: Props) {
 
     // Set focus on modal element
     setInterval(() => {
-      if (shouldWrapInModal && isModalOpen) {
+      if (shouldWrapInModal && searchOverlayExpanded) {
         inputRef.current?.focus();
       }
     }, 10);
   }, []);
 
   useEffect(() => {
-    console.log('isModalOpen', isModalOpen);
-    console.log('shouldRenderOverlay', shouldRenderOverlay);
+    console.log('isModalOpen', searchOverlayExpanded);
     console.log('Should wrap in a modal: ', shouldWrapInModal);
   });
 
   // Scroll locking
-  useLockBodyScroll(isModalOpen);
+  useLockBodyScroll(searchOverlayExpanded);
 
-  const SearchElement = (
+  return (
     <div className="relative" ref={searchRef}>
       <div
         onClick={() => inputRef.current?.focus()}
@@ -161,27 +135,10 @@ export function Search(props: Props) {
             setInputValue(String(value));
           }}
         />
-        <div onClick={() => setShouldRenderOverlay(true)}>
+        <div onClick={() => dispatch(expandSearchOverlay())}>
           <SearchSVG className="search-bar-svg" />
         </div>
       </div>
-
-      {shouldRenderOverlay && <SearchOverlay />}
     </div>
-  );
-
-  return (
-    <>
-      {shouldWrapInModal ? (
-        <Modal style={modalStyles} isOpen={isModalOpen}>
-          <>{SearchElement}</>
-        </Modal>
-      ) : (
-        <>
-          {/* Now you're either on mobile but not focussed or on desktop */}
-          {SearchElement}
-        </>
-      )}
-    </>
   );
 }

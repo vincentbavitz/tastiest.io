@@ -17,6 +17,15 @@ export const navigationReducer = (
     case NavigationActions.SAVE_CUISINE_BAR_SCROLL_POS: {
       return { ...state, cuisineBarScrollPos: action.payload };
     }
+    case NavigationActions.EXPAND_SEARCH_OVERLAY: {
+      return { ...state, searchOverlayExpanded: true };
+    }
+    case NavigationActions.COLLAPSE_SEARCH_OVERLAY: {
+      return { ...state, searchOverlayExpanded: false };
+    }
+    case NavigationActions.TOGGLE_SEARCH_OVERLAY: {
+      return { ...state, searchOverlayExpanded: !state.searchOverlayExpanded };
+    }
     default:
       return state;
   }
