@@ -7,7 +7,7 @@ export function Footer() {
   return (
     <div className="bg-primary text-white py-6 text-center">
       <div className="contained font-robotolight text-sm">
-        <div className="flex justify-center mt-2 mb-6">
+        <div className="flex justify-center mt-2 mb-6 cursor-pointer">
           <Link href="/">
             <TastiestSVG className="h-6 fill-white" />
           </Link>
@@ -24,7 +24,7 @@ export function Footer() {
           </Link>
         </div>
         <Link href="/">
-          <div className="flex justify-center w-full mt-3">
+          <div className="flex justify-center w-full mt-3 cursor-pointer">
             <YummySVG className="h-10 fill-white mt-2" />
           </div>
         </Link>
