@@ -14,6 +14,7 @@ import { setSearchResultItems } from '../../state/search';
 import { search } from '../../utils/search';
 
 interface Props {
+  renderExitButton?: boolean;
   onFocus?(): void;
   onExit?(): void;
 }
@@ -36,8 +37,7 @@ export function Search(props: Props) {
   // Scroll locking
   useLockBodyScroll(searchOverlayExpanded && isMobile);
 
-  // const renderExitButton = props.renderExitButton ?? shouldWrapInModal;
-  const renderExitButton = isMobile;
+  const renderExitButton = props.renderExitButton ?? isMobile;
   const shouldWrapInModal = isMobile;
   const [hasFocus, setHasFocus] = useState(false);
 
@@ -92,7 +92,11 @@ export function Search(props: Props) {
   }, [inputValue]);
 
   return (
-    <div className="relative" ref={searchRef}>
+    <div
+      style={{ zIndex: searchOverlayExpanded && isMobile ? 20001 : 'auto' }}
+      className="relative"
+      ref={searchRef}
+    >
       <div
         onClick={() => inputRef.current?.focus()}
         className="mobile-search-input contained h-20 w-full flex items-center justify-between"

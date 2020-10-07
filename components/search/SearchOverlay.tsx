@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { useEffect } from 'react';
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMedia } from 'react-use';
+import { useLockBodyScroll, useMedia } from 'react-use';
 import { UI } from '../../constants';
 import { collapseSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
@@ -47,6 +47,8 @@ export function SearchOverlay() {
     Modal.setAppElement('#__next');
   }, []);
 
+  useLockBodyScroll(searchOverlayExpanded);
+
   return (
     <>
       {searchOverlayExpanded && (
@@ -58,25 +60,33 @@ export function SearchOverlay() {
               <OverlayElement />
             </Modal>
           ) : (
-            <div className="relative w-full h-0 z-50">
+            <>
               <div
-                style={{ height: '600px', zIndex: 20000 }}
-                className={classNames(
-                  'flex',
-                  'absolute',
-                  'top-0',
-                  // Allows shadow to overflow
-                  '-left-4',
-                  '-right-4',
-                  'px-4',
-                  'pb-4',
-                  'overflow-y-scroll',
-                  'bg-white',
-                )}
-              >
-                <OverlayElement />
+                style={{ zIndex: 20000 }}
+                className="fixed top-0 bottom-0 left-0 right-0 bg-gray-800 bg-opacity-50"
+              ></div>
+
+              <div className="relative h-0 w-full">
+                <div
+                  style={{ height: '600px', zIndex: 20000 }}
+                  className={classNames(
+                    'flex',
+                    'absolute',
+                    'top-0',
+                    // Allows shadow to overflow
+                    '-left-4',
+                    '-right-4',
+                    'pb-10',
+                    'bg-white',
+                    'rounded-b-md',
+                  )}
+                >
+                  <div className="overflow-y-scroll w-full">
+                    <OverlayElement />
+                  </div>
+                </div>
               </div>
-            </div>
+            </>
           )}
         </>
       )}
