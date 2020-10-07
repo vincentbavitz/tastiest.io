@@ -55,9 +55,7 @@ const Post = (props: ISanityArticle): JSX.Element => {
 
   return (
     <>
-      <div className="fixed bottom-0 mb-10 z-50 left-0 right-0 text-center m-3">
-        <Button>Test</Button>
-      </div>
+      <Button>Test</Button>
       <NavBar />
       <CuisineBar />
 
