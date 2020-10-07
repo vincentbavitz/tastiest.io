@@ -93,7 +93,7 @@ export function Search(props: Props) {
 
   return (
     <div
-      style={{ zIndex: searchOverlayExpanded && isMobile ? 20001 : 'auto' }}
+      style={{ zIndex: searchOverlayExpanded && !isMobile ? 20001 : 'auto' }}
       className="relative"
       ref={searchRef}
     >
