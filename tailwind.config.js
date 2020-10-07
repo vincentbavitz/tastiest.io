@@ -7,12 +7,14 @@ module.exports = {
       robotoblack: ['RobotoBlack'],
       roboslabsemibold: ['RobotoSlabSemiBold'],
       robotolight: ['RobotoLight'],
+      robotoslabsemibold: ['RobotoSlabSemiBold'],
     },
     extend: {
       colors: {
         primary: '#fe4c00',
         secondary: '#ffd618',
         danger: '#130b57',
+        article: '#140c57',
       },
     },
   },

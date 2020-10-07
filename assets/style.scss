@@ -7,6 +7,7 @@
 /* ********************* */
 $theme-primary: #fe4c00;
 $theme-secondary: #ffd618;
+$theme-article: #140c57;
 $theme-danger: #130b57;
 
 $transition-duration: 0.25s;
@@ -242,9 +243,7 @@ body {
 
     h1 {
       font-family: SomaticRounded;
-      font-size: 6vw;
       line-height: 1em;
-      width: 40%;
     }
   }
 
@@ -264,8 +263,8 @@ body {
     color: $theme-danger;
 
     p {
-      font-weight: 500;
-      opacity: 0.8;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
   }
 }
@@ -284,7 +283,7 @@ body {
     width: $page-border;
   }
 
-  & > div {
+  &>div {
     position: relative;
     max-height: 3.33em;
 

@@ -51,36 +51,43 @@ const Post = (props: ISanityArticle): JSX.Element => {
       <CuisineBar />
 
       <article>
-        <div className="article__top relative w-full bg-white flex flex-col justify-center items-center mt-20">
+        <div className="article__top relative w-full bg-white flex flex-col justify-center items-center">
           <div className="article__title w-full">
             <div className="w-full pb-0 mb-0 flex flex-col items-center">
               <CityIndictor city={city} />
-              <h1 className="text-secondary text-center">{title}</h1>
+              <h1 className="text-primary text-center pt-4 pb-4 w-11/12 text-4xl">
+                {title}
+              </h1>
+              <h3 className="text-article font-robotoslab text-center mx-8 pb-4">
+                We took to the raring streets of Melbourne to see what Lygon has
+                to offer. What restaurant will truly prevail as the king of
+                Lygon Street
+              </h3>
             </div>
           </div>
 
-          <div className="article__author w-full flex justify-center space-around">
+          <div className="article__author w-full flex flex-col items-center justify-center space-around">
             <div>
               <div className="flex w-full content-center items-center">
                 <img
-                  className="rounded-full w-10 h-10 mr-3"
+                  className="rounded-full w-12 h-12"
                   src={author.imageSrc}
                   alt={'Author profile picture'}
                 />
               </div>
             </div>
-            <div className="flex flex-col items-start justify-center">
+            <div className="flex flex-col justify-center">
               <span className="block font-bold text-xs uppercase">
                 BY {author.name}
               </span>
-              <span className="block text-xs">{date}</span>
+              <span className="text-xs z-10 flex">{date}</span>
             </div>
           </div>
         </div>
 
         <div className="relative w-full -mt-2 contained bg-secondary">
           <div className="flex flex-col items-center w-full pt-8 pb-0">
-            <p className="w-3/4 text-center pb-8 font-semi-bold font-roboto-slab">
+            <p className="w-full text-center pb-8 font-semi-bold font-roboto-slab">
               {subtitle}
             </p>
           </div>
@@ -122,8 +129,8 @@ const Post = (props: ISanityArticle): JSX.Element => {
         </div> */}
         </div>
 
-        <div className="article__content contained bg-white w-full mt-16">
-          <div className="w-3/4">
+        <div className="article__content contained w-full mt-16 text-black">
+          <div className="w-full">
             <BlockContent
               blocks={body}
               imageOptions={{ w: 320, h: 240, fit: 'max' }}
