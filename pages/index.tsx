@@ -20,12 +20,11 @@ interface Props {
 const Index = (props: Props) => {
   const { posts = [] } = props;
   const cards = posts
-    ? posts.map(post => <ArticleItem key={post.title} {...post} />)
+    ? posts.map(post => <ArticleItem key={post.id} {...post} />)
     : [];
 
   return (
     <>
-      {' '}
       <Head>
         <title>Tastiest</title>
         <meta
@@ -38,6 +37,7 @@ const Index = (props: Props) => {
           content="width=device-width, initial-scale=1, maximum-scale=1"
         ></meta>
       </Head>
+
       <div>
         <NavBar />
         <CuisineBar />

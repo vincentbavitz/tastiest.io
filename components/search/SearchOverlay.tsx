@@ -1,8 +1,10 @@
-import React from 'react';
+import classNames from 'classnames';
+import React, { useEffect } from 'react';
 import Modal from 'react-modal';
-import { useSelector } from 'react-redux';
-import { useMedia } from 'react-use';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLockBodyScroll, useMedia } from 'react-use';
 import { UI } from '../../constants';
+import { collapseSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Search } from './Search';
 import { SearchItem } from './SearchItem';
@@ -13,11 +15,16 @@ export function SearchOverlay() {
   const renderSearchTemplate = searchState.searchResultItems.length === 0;
   const { searchOverlayExpanded } = navigationState;
 
+  const dispatch = useDispatch();
+
   // Responsive
   let isMobile = true;
   if (typeof window !== 'undefined') {
     isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
   }
+
+  console.log('Media query', `(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
+  console.log('isMobile', isMobile);
 
   // Styling
   const modalStyles = {
@@ -35,9 +42,80 @@ export function SearchOverlay() {
     },
   };
 
-  const Overlay = (
+  useEffect(() => {
+    // Set modal element on client load
+    Modal.setAppElement('#__next');
+  }, []);
+
+  useLockBodyScroll(searchOverlayExpanded);
+
+  return (
     <>
-      <div className="search-items bottom-0 w-full h-full absolute mt-20">
+      {searchOverlayExpanded && (
+        // {true && (
+        <>
+          {isMobile ? (
+            <Modal style={modalStyles} isOpen={true}>
+              <Search onExit={() => dispatch(collapseSearchOverlay())} />
+              <OverlayElement />
+            </Modal>
+          ) : (
+            <>
+              <div
+                style={{ zIndex: 20000 }}
+                className="fixed top-0 bottom-0 left-0 right-0 bg-gray-800 bg-opacity-50"
+              ></div>
+
+              <div className="relative h-0 w-full">
+                <div
+                  style={{ height: '600px', zIndex: 20000 }}
+                  className={classNames(
+                    'flex',
+                    'absolute',
+                    'top-0',
+                    // Allows shadow to overflow
+                    '-left-4',
+                    '-right-4',
+                    'pb-10',
+                    'bg-white',
+                    'rounded-b-md',
+                  )}
+                >
+                  <div className="overflow-y-scroll w-full">
+                    <OverlayElement />
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </>
+      )}
+    </>
+  );
+}
+
+function OverlayElement() {
+  const navigationState = useSelector((state: IState) => state.navigation);
+  const searchState = useSelector((state: IState) => state.search);
+  const renderSearchTemplate = searchState.searchResultItems.length === 0;
+
+  // Responsive
+  let isMobile = true;
+  if (typeof window !== 'undefined') {
+    isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
+  }
+
+  const { searchOverlayExpanded } = navigationState;
+  const dispatch = useDispatch();
+
+  return (
+    <>
+      <div
+        className={classNames(
+          'search-items bottom-0 w-full h-full',
+          isMobile && 'mt-6',
+        )}
+      >
         {renderSearchTemplate ? (
           <>SUGGESTIONS FOR YOU</>
         ) : (
@@ -64,26 +142,6 @@ export function SearchOverlay() {
           </div>
         </div>
       </div>
-    </>
-  );
-
-  return (
-    <>
-      {searchOverlayExpanded && (
-        <>
-          {isMobile ? (
-            <Modal style={modalStyles} isOpen={searchOverlayExpanded}>
-              <Search />
-              {Overlay}
-            </Modal>
-          ) : (
-            <>
-              {/* Now you're either on mobile but not focussed or on desktop */}
-              {Overlay}
-            </>
-          )}
-        </>
-      )}
     </>
   );
 }
