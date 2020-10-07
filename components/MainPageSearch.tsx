@@ -9,7 +9,7 @@ function MainPageSearch(): JSX.Element {
   const dispatch = useDispatch();
 
   return (
-    <div className="bg-orange-200 overflow-x-hidden md:mx-8 md:rounded-lg">
+    <div className="bg-orange-200 md:mx-8 md:rounded-lg">
       <div className="mx-6">
         <div className="pt-8 md:pt-0 xl:pt-8">
           <div className="">
@@ -17,9 +17,12 @@ function MainPageSearch(): JSX.Element {
               Dishes we'd recommend to family
             </h1>
             <div className="flex justify-center">
-              <div className="w-full md:w-7/12 xl:w-5/12">
+              <div className="w-full md:w-10/12 xl:w-7/12">
                 <div className="">
-                  <Search onFocus={() => dispatch(expandSearchOverlay())} />
+                  <Search
+                    renderExitButton={false}
+                    onFocus={() => dispatch(expandSearchOverlay())}
+                  />
                   <SearchOverlay />
                 </div>
 
