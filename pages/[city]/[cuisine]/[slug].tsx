@@ -3,7 +3,7 @@ import BlockContent from '@sanity/block-content-to-react';
 import imageUrlBuilder from '@sanity/image-url';
 import groq from 'groq';
 import moment from 'moment';
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../../../assets/style.scss';
 import CookingSVG from '../../../assets/svgs/cooking.svg';
 import HelloSVG from '../../../assets/svgs/hello.svg';
@@ -45,6 +45,13 @@ const Post = (props: ISanityArticle): JSX.Element => {
   }`;
 
   const date = moment(publishedAt).format('MMMM D, YYYY');
+
+  // Scroll to top on load
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0);
+    }
+  }, []);
 
   return (
     <>

@@ -110,7 +110,7 @@ export function Search(props: Props) {
       <div
         onClick={() => inputRef.current?.focus()}
         className={classNames(
-          'h-20 w-full flex items-center justify-between bg-white px-6',
+          'h-16 w-full flex items-center justify-between bg-white px-6 rounded-t-lg',
           searchOverlayExpanded && 'rounded-t-lg',
         )}
       >
