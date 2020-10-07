@@ -1,9 +1,10 @@
 import classNames from 'classnames';
+import Link from 'next/link';
 import React, { useEffect } from 'react';
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLockBodyScroll, useMedia } from 'react-use';
-import { UI } from '../../constants';
+import { useMedia } from 'react-use';
+import { SEARCH, UI } from '../../constants';
 import { collapseSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Search } from './Search';
@@ -23,8 +24,10 @@ export function SearchOverlay() {
     isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
   }
 
-  console.log('Media query', `(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
-  console.log('isMobile', isMobile);
+  useEffect(() => {
+    // Set modal element on client load
+    Modal.setAppElement('#__next');
+  }, []);
 
   // Styling
   const modalStyles = {
@@ -42,52 +45,63 @@ export function SearchOverlay() {
     },
   };
 
-  useEffect(() => {
-    // Set modal element on client load
-    Modal.setAppElement('#__next');
-  }, []);
-
-  useLockBodyScroll(searchOverlayExpanded);
-
   return (
     <>
-      {searchOverlayExpanded && (
-        // {true && (
+      {isMobile ? (
+        <Modal style={modalStyles} isOpen={true}>
+          <Search
+            renderExitButton={true}
+            onExit={() => dispatch(collapseSearchOverlay())}
+          />
+          <OverlayElement />
+        </Modal>
+      ) : (
         <>
-          {isMobile ? (
-            <Modal style={modalStyles} isOpen={true}>
-              <Search onExit={() => dispatch(collapseSearchOverlay())} />
-              <OverlayElement />
-            </Modal>
-          ) : (
-            <>
-              <div
-                style={{ zIndex: 20000 }}
-                className="fixed top-0 bottom-0 left-0 right-0 bg-gray-800 bg-opacity-50"
-              ></div>
+          <div
+            style={{ zIndex: searchOverlayExpanded ? 20000 : -1 }}
+            className={classNames(
+              'fixed',
+              'top-0',
+              'bottom-0',
+              'left-0',
+              'right-0',
+              'bg-gray-800',
+              'bg-opacity-50',
+              'transition-opacity',
+              'duration-300',
+              searchOverlayExpanded ? 'opacity-100' : 'opacity-0',
+            )}
+          ></div>
 
-              <div className="relative h-0 w-full">
-                <div
-                  style={{ height: '600px', zIndex: 20000 }}
-                  className={classNames(
-                    'flex',
-                    'absolute',
-                    'top-0',
-                    // Allows shadow to overflow
-                    '-left-4',
-                    '-right-4',
-                    'pb-10',
-                    'bg-white',
-                    'rounded-b-md',
-                  )}
-                >
-                  <div className="overflow-y-scroll w-full">
-                    <OverlayElement />
-                  </div>
-                </div>
+          <div
+            className={classNames(
+              'relative',
+              'h-0',
+              'w-full',
+              searchOverlayExpanded ? 'block' : 'hidden',
+            )}
+          >
+            <div
+              style={{ zIndex: 20000 }}
+              className={classNames(
+                'flex',
+                'absolute',
+                'top-0',
+                // Allows shadow to overflow
+                '-left-4',
+                '-right-4',
+                'w-full',
+                'pb-10',
+                'bg-white',
+                'border-t',
+                'rounded-b-lg',
+              )}
+            >
+              <div className="overflow-y-scroll w-full">
+                <OverlayElement />
               </div>
-            </>
-          )}
+            </div>
+          </div>
         </>
       )}
     </>
@@ -108,6 +122,10 @@ function OverlayElement() {
   const { searchOverlayExpanded } = navigationState;
   const dispatch = useDispatch();
 
+  const shouldDisplaySeeAll =
+    searchState.searchResultItems.length >=
+    SEARCH.SOFT_LIMIT_SEARCH_RESULTS_OVERLAY;
+
   return (
     <>
       <div
@@ -120,15 +138,23 @@ function OverlayElement() {
           <>SUGGESTIONS FOR YOU</>
         ) : (
           <div className="flex w-full flex-wrap px-2 mt-4">
-            {searchState.searchResultItems &&
-              searchState.searchResultItems.map(searchItem => (
+            {searchState.searchResultItems.length &&
+              searchState.searchResultItems.slice(0, 4).map(searchItem => (
                 <div
-                  className="flex w-full"
+                  className={classNames('flex', isMobile ? ' w-full' : 'w-1/2')}
                   key={searchItem.title.replace(' ', '-')}
                 >
                   <SearchItem {...searchItem} />
                 </div>
               ))}
+          </div>
+        )}
+
+        {shouldDisplaySeeAll && (
+          <div className="flex w-full px-6 my-4 text-lg ">
+            <Link href="" as="">
+              See all
+            </Link>
           </div>
         )}
 

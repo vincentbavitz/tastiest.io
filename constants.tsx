@@ -24,4 +24,6 @@ export const UI = {
   MOBILE_BREAKPOINT: 500,
 };
 
-export const postsUriPrefix = '';
+export const SEARCH = {
+  SOFT_LIMIT_SEARCH_RESULTS_OVERLAY: 4,
+};

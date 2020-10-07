@@ -1,6 +1,8 @@
 import classNames from 'classnames';
 import { useRouter } from 'next/dist/client/router';
 import React, { SyntheticEvent } from 'react';
+import { useMedia } from 'react-use';
+import { UI } from '../../constants';
 import { ISanityArticle } from '../../types/article';
 import { generateURL } from '../../utils/routing';
 
@@ -8,7 +10,11 @@ export function SearchItem(props: ISanityArticle) {
   const router = useRouter();
   const { title, featureImage, city, cuisine, slug } = props;
 
-  console.log('Search item props', props);
+  // Responsive
+  let isMobile = true;
+  if (typeof window !== 'undefined') {
+    isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
+  }
 
   const handleClick = (e: SyntheticEvent) => {
     const { href, as } = generateURL({ city, cuisine, slug });
@@ -30,7 +36,7 @@ export function SearchItem(props: ISanityArticle) {
       )}
       onClick={e => handleClick(e)}
     >
-      <div className="w-full h-64">
+      <div className={classNames('w-full', isMobile && 'h-64')}>
         <img
           className="w-full h-full"
           src={featureImage.source}

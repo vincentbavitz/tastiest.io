@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useClickAway, useLockBodyScroll, useMedia } from 'react-use';
 import ExitSVG from '../../assets/svgs/exit.svg';
@@ -81,6 +81,16 @@ export function Search(props: Props) {
     }
   };
 
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setInputValue(String(value));
+
+    // Set overlay when user starts typing
+    if (value.length > 0 && !searchOverlayExpanded) {
+      dispatch(expandSearchOverlay());
+    }
+  };
+
   // Effects
   useEffect(() => {
     const fetchSearchItems = async () => {
@@ -99,7 +109,10 @@ export function Search(props: Props) {
     >
       <div
         onClick={() => inputRef.current?.focus()}
-        className="mobile-search-input contained h-20 w-full flex items-center justify-between"
+        className={classNames(
+          'h-20 w-full flex items-center justify-between bg-white px-6',
+          searchOverlayExpanded && 'rounded-t-lg',
+        )}
       >
         {renderExitButton && (
           <ExitSVG className="search-bar-svg" onClick={handleExit} />
@@ -119,15 +132,11 @@ export function Search(props: Props) {
           placeholder={'Search'}
           value={inputValue}
           onFocus={handleFocus}
-          // onBlur={handleBlur}
-          onChange={event => {
-            const value = event.target.value;
-            setInputValue(String(value));
-          }}
+          onChange={handleOnChange}
         />
 
         <div onClick={() => dispatch(expandSearchOverlay())}>
-          <SearchSVG className="search-bar-svg" />
+          <SearchSVG className="h-10" />
         </div>
       </div>
     </div>

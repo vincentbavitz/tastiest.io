@@ -17,8 +17,8 @@ function MainPageSearch(): JSX.Element {
               Dishes we'd recommend to family
             </h1>
             <div className="flex justify-center">
-              <div className="w-full md:w-10/12 xl:w-7/12">
-                <div className="">
+              <div className="w-full md:w-10/12 xl:w-7/12 max-w-3xl">
+                <div className="w-full">
                   <Search
                     renderExitButton={false}
                     onFocus={() => dispatch(expandSearchOverlay())}
