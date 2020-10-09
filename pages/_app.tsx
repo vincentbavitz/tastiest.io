@@ -47,7 +47,7 @@ function App({ Component, pageProps }: AppProps) {
               className="my-2 border-secondary border-2 rounded-lg focus:outline-none focus:border-primary pl-2 py-1 text-center"
               onChange={handleOnChange}
             />
-            <h1 className="font-somantic text-secondary text-2xl pt-8">
+            <h1 className="font-somantic text-secondary text-twoxl pt-8">
               Discover. Eat. Smile.
             </h1>
           </div>
