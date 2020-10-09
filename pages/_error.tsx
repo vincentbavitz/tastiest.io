@@ -32,7 +32,9 @@ function Error({ statusCode }) {
             </div>
           </Link>
         </div>
-        <FourOhFourSVG className="mb-10 fixed" />
+
+        <div className="relative"></div>
+        <FourOhFourSVG className="absolute mb-10" />
         <div className="div mr-10">
           <div className="flex-col z-50 my-4">
             <input
