@@ -1,11 +1,9 @@
 import classNames from 'classnames';
 import Link from 'next/link';
-import React, { useEffect } from 'react';
-import Modal from 'react-modal';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMedia } from 'react-use';
 import { SEARCH, UI } from '../../constants';
-import { collapseSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Search } from './Search';
 import { SearchItem } from './SearchItem';
@@ -23,11 +21,6 @@ export function SearchOverlay() {
   if (typeof window !== 'undefined') {
     isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
   }
-
-  useEffect(() => {
-    // Set modal element on client load
-    Modal.setAppElement('#__next');
-  }, []);
 
   // Styling
   const modalStyles = {
@@ -48,13 +41,18 @@ export function SearchOverlay() {
   return (
     <>
       {isMobile ? (
-        <Modal style={modalStyles} isOpen={true}>
-          <Search
-            renderExitButton={true}
-            onExit={() => dispatch(collapseSearchOverlay())}
-          />
-          <OverlayElement />
-        </Modal>
+        <div
+          style={{ zIndex: searchOverlayExpanded ? 20000 : -1 }}
+          className={classNames(
+            'fixed top-0 bottom-0 left-0 right-0 bg-white',
+            searchOverlayExpanded ? 'block' : 'hidden',
+          )}
+        >
+          <div className="flex flex-col h-full flex-grow overflow-y-scroll">
+            <Search autofocus={true} renderExitButton={true} />
+            <OverlayElement />
+          </div>
+        </div>
       ) : (
         <>
           <div
@@ -119,8 +117,8 @@ function OverlayElement() {
     isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
   }
 
-  const { searchOverlayExpanded } = navigationState;
-  const dispatch = useDispatch();
+  // const { searchOverlayExpanded } = navigationState;
+  // const dispatch = useDispatch();
 
   const shouldDisplaySeeAll =
     searchState.searchResultItems.length >=
@@ -130,8 +128,8 @@ function OverlayElement() {
     <>
       <div
         className={classNames(
-          'search-items bottom-0 w-full h-full',
-          isMobile && 'mt-6',
+          'search-items bottom-0 w-full h-full pb-10',
+          isMobile && 'mt-3',
         )}
       >
         {renderSearchTemplate ? (
@@ -167,6 +165,9 @@ function OverlayElement() {
             Click Here!
           </div>
         </div>
+
+        {/* Spacing -- do not touch! */}
+        <div className="h-8"></div>
       </div>
     </>
   );

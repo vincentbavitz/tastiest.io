@@ -28,6 +28,7 @@ function MainPageSearch(): JSX.Element {
 
                 <div>
                   <button
+                    onClick={() => dispatch(expandSearchOverlay())}
                     className="bg-primary hover:bg-orange-400 focus:shadow-outline focus:outline-none text-white font-bold py-4 w-full rounded-b-md shadow-lg text-lg md:pl-6"
                     type="button"
                   >
