@@ -8,7 +8,7 @@ import { Footer } from '../components/Footer';
 import NavBar from '../components/NavBar';
 import { UI } from '../constants';
 
-function Tastiest404({ statusCode }) {
+function Tastiest404() {
   // Responsive
   let isMobile = true;
   let isTablet = false;
