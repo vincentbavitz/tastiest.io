@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
+import React, { useState } from 'react';
 import { useWindowScroll, useWindowSize } from 'react-use';
 
 interface Props {
