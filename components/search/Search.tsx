@@ -143,6 +143,7 @@ export function Search(props: Props) {
           )}
           placeholder={'Search'}
           value={inputValue}
+          onKeyDown={() => inputRef?.current?.focus()}
           onFocus={handleFocus}
           onChange={handleOnChange}
         />
