@@ -2,7 +2,6 @@ import groq from 'groq';
 import Head from 'next/head';
 import Link from 'next/link';
 import React from 'react';
-import '../assets/style.scss';
 import client from '../client';
 import { ArticleItem } from '../components/ArticleItem';
 import { CuisineBar } from '../components/CuisineBar';

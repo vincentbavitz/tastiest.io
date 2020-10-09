@@ -114,9 +114,7 @@ export function Search(props: Props) {
           searchOverlayExpanded && 'rounded-t-lg',
         )}
       >
-        {renderExitButton && (
-          <ExitSVG className="search-bar-svg" onClick={handleExit} />
-        )}
+        {renderExitButton && <ExitSVG className="h-8" onClick={handleExit} />}
         <input
           ref={inputRef}
           spellCheck={false}
