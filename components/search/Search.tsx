@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useClickAway, useLockBodyScroll, useMedia } from 'react-use';
-import ExitSVG from '../../assets/svgs/exit.svg';
+import BackSVG from '../../assets/svgs/back.svg';
 import SearchSVG from '../../assets/svgs/search.svg';
 import { UI } from '../../constants';
 import {
@@ -10,29 +10,30 @@ import {
   expandSearchOverlay,
 } from '../../state/navigation';
 import { IState } from '../../state/reducers';
-import { setSearchResultItems } from '../../state/search';
+import { setSearchQuery, setSearchResultItems } from '../../state/search';
 import { search } from '../../utils/search';
 
 interface Props {
   renderExitButton?: boolean;
+  autofocus?: boolean;
   onFocus?(): void;
-  onExit?(): void;
 }
 
 export function Search(props: Props) {
   const nagivationState = useSelector((state: IState) => state.navigation);
+  const searchState = useSelector((state: IState) => state.search);
   const dispatch = useDispatch();
 
   const { searchOverlayExpanded } = nagivationState;
-
-  const [inputValue, setInputValue] = useState('');
-  const { onFocus, onExit } = props;
+  const { onFocus, autofocus = false } = props;
 
   // Responsive
   let isMobile = true;
   if (typeof window !== 'undefined') {
     isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
   }
+
+  const inputValue = searchState.searchQuery;
 
   // Scroll locking
   useLockBodyScroll(searchOverlayExpanded && isMobile);
@@ -43,13 +44,12 @@ export function Search(props: Props) {
 
   // Exit when user clicks out of component
   const searchRef = useRef(null);
+  const inputRef = useRef(null);
   useClickAway(searchRef, () => {
     if (!isMobile) {
       handleExit();
     }
   });
-
-  const inputRef = useRef(null);
 
   // Handler Functions
   const handleFocus = () => {
@@ -64,31 +64,13 @@ export function Search(props: Props) {
     }
   };
 
-  const handleBlur = () => {
-    // Handle blur of non-overlay search bar
-    if (searchOverlayExpanded) {
-      dispatch(collapseSearchOverlay());
-    }
-
-    setHasFocus(false);
-  };
-
   const handleExit = () => {
     dispatch(collapseSearchOverlay());
-
-    if (onExit) {
-      onExit();
-    }
   };
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setInputValue(String(value));
-
-    // Set overlay when user starts typing
-    if (value.length > 0 && !searchOverlayExpanded) {
-      dispatch(expandSearchOverlay());
-    }
+    dispatch(setSearchQuery(String(value)));
   };
 
   // Effects
@@ -101,6 +83,19 @@ export function Search(props: Props) {
     fetchSearchItems();
   }, [inputValue]);
 
+  useEffect(() => {
+    console.log('Search expanded: ', searchOverlayExpanded);
+  }, [searchOverlayExpanded]);
+
+  // Autofocus
+  useEffect(() => {
+    setTimeout(() => {
+      if (autofocus) {
+        inputRef.current?.focus();
+      }
+    }, 0);
+  }, []);
+
   return (
     <div
       style={{ zIndex: searchOverlayExpanded && !isMobile ? 20001 : 'auto' }}
@@ -108,18 +103,29 @@ export function Search(props: Props) {
       ref={searchRef}
     >
       <div
-        onClick={() => inputRef.current?.focus()}
         className={classNames(
-          'h-16 w-full flex items-center justify-between bg-white px-6 rounded-t-lg',
+          'flex items-center w-full justify-between bg-white px-6 rounded-t-lg',
           searchOverlayExpanded && 'rounded-t-lg',
+          isMobile && 'border-b border-gray-300',
+          isMobile && searchOverlayExpanded ? 'h-20' : 'h-16',
         )}
       >
-        {renderExitButton && <ExitSVG className="h-8" onClick={handleExit} />}
+        <span className="text-secondary">
+          <BackSVG
+            className={classNames(
+              'h-8 w-8 fill-current',
+              renderExitButton ? 'block' : 'hidden',
+            )}
+            onClick={handleExit}
+          />
+        </span>
+
         <input
           ref={inputRef}
           spellCheck={false}
           className={classNames(
             renderExitButton ? 'px-6' : 'pl-2 pr-4',
+            'flex',
             'flex-grow',
             'border-none',
             'outline-none',
@@ -129,10 +135,10 @@ export function Search(props: Props) {
           )}
           placeholder={'Search'}
           value={inputValue}
+          onKeyDown={() => inputRef?.current?.focus()}
           onFocus={handleFocus}
           onChange={handleOnChange}
         />
-
         <div onClick={() => dispatch(expandSearchOverlay())}>
           <SearchSVG className="h-10" />
         </div>
