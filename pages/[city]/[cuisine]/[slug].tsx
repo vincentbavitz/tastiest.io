@@ -55,7 +55,7 @@ const Post = (props: ISanityArticle): JSX.Element => {
 
   return (
     <>
-      <Button>Test</Button>
+      <Button>From £21</Button>
       <NavBar />
       <CuisineBar />
 

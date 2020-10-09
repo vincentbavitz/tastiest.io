@@ -16,15 +16,15 @@ export function Button(props: Props) {
 
   const scrollOffset = 0.25 * height;
 
-  useEffect(() => {
-    console.log(height);
+  //   useEffect(() => {
+  //     console.log(height);
 
-    if (y > scrollOffset && isButtonVisible === false) {
-      setIsButtonVisible(true);
-    } else if (y <= scrollOffset && isButtonVisible === true) {
-      setIsButtonVisible(false);
-    }
-  }, [y]);
+  //     if (y > scrollOffset && isButtonVisible === false) {
+  //       setIsButtonVisible(true);
+  //     } else if (y <= scrollOffset && isButtonVisible === true) {
+  //       setIsButtonVisible(false);
+  //     }
+  //   }, [y]);
 
   return (
     <div
@@ -40,18 +40,19 @@ export function Button(props: Props) {
         'right-0',
         'text-center',
         'm-3',
-        isButtonVisible ? 'mb-10' : '-mb-20',
+        'mb-8',
+        // isButtonVisible ? 'mb-10' : '-mb-20',
       )}
     >
       <div
         role="button"
         className={classNames(
           'bg-primary',
-          'text-sm',
+          'text-lg',
           'text-secondary',
           'font-somantic',
           'px-4',
-          'py-2',
+          'py-4',
           'w-full',
           'select-none',
           'rounded-lg',
