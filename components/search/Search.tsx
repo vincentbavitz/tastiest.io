@@ -55,7 +55,6 @@ export function Search(props: Props) {
     }
 
     if (!searchOverlayExpanded) {
-      alert('HANDLING FOCUS');
       dispatch(expandSearchOverlay());
     }
   };
