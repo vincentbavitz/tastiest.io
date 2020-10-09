@@ -8,7 +8,7 @@ import { Footer } from '../components/Footer';
 import NavBar from '../components/NavBar';
 import { UI } from '../constants';
 
-export function Error({ statusCode }) {
+function Error({ statusCode }) {
   // Responsive
   let isMobile = true;
   let isTablet = false;
@@ -32,8 +32,10 @@ export function Error({ statusCode }) {
   const wrapperStyles = {
     width: '100%',
     maxWidth: '760px',
-    margin: isDesktop ? '50px auto 100px' : '20px auto',
-    padding: isHuge ? '0 0' : '0 5vw',
+    margin: isDesktop ? '50px auto 100px' : '-10px auto',
+    paddingLeft: isHuge ? '0' : '5vw',
+    paddingRight: isHuge ? '0' : '5vw',
+    paddingBottom: !isDesktop ? '33px' : '0px',
   };
 
   const svgStyles = {
@@ -58,7 +60,7 @@ export function Error({ statusCode }) {
 
   const absoluteBoxStyles = {
     marginTop: isTablet ? '20px' : '0px',
-    minHeight: isTablet ? '355px' : '450px',
+    minHeight: isTablet ? '330px' : '450px',
   };
 
   const goBackHomeStyles = {
@@ -122,7 +124,12 @@ export function Error({ statusCode }) {
             </div>
           </div>
 
-          <div className="z-10 flex items-start">
+          <div
+            className={classNames(
+              'z-10 flex items-start',
+              isMobile ? '-mt-10' : 'mt-0',
+            )}
+          >
             <div className="flex-col flex-grow z-50 my-4">
               <h2
                 className={classNames(
@@ -133,19 +140,22 @@ export function Error({ statusCode }) {
               </h2>
 
               <textarea
+                maxLength={UI.USER_QUERY_404_MAX_LEN}
                 placeholder="Let us know what you were looking for and we'll get back to you soon."
-                className="border-secondary border-2 rounded-xl focus:outline-none focus:border-primary placeholder-primary placeholder-opacity-50 w-full h-48 pl-3 pt-3 pr-1"
+                className="border-secondary border-2 rounded-xl focus:outline-none focus:border-primary placeholder-primary placeholder-opacity-50 w-full h-48 px-3 py-3 resize-none"
               />
               <input
                 type="text"
-                placeholder="email address..."
+                placeholder="Email address..."
                 className="mt-2 border-secondary border-2 rounded-xl focus:outline-none focus:border-primary py-2 placeholder-primary placeholder-opacity-50 w-full pl-3 pt-3 pr-1"
               />
+
               <div
                 role="button"
                 className={classNames(
-                  'bg-primary cursor-pointer mt-4 text-white font-somantic px-4 py-2 select-none rounded-lg text-center w-4/12',
+                  'bg-primary cursor-pointer mt-4 text-white font-somantic px-4 py-2 select-none rounded-lg text-center',
                   isMobile ? 'text-lg' : 'text-sm',
+                  isMobile ? 'w-full' : 'w-4/12',
                 )}
               >
                 Send
