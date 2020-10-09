@@ -27,8 +27,6 @@ export async function search(query: string): Promise<Array<ISanityArticle>> {
     ${sanityPostQuery}
   }`;
 
-  console.log('Query', sanityQuery);
-
   let posts: ISanityArticle[];
   try {
     posts = await client.fetch(sanityQuery);
