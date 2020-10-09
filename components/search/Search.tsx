@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useClickAway, useLockBodyScroll, useMedia } from 'react-use';
 import BackSVG from '../../assets/svgs/back.svg';
@@ -34,13 +34,10 @@ export function Search(props: Props) {
   }
 
   const inputValue = searchState.searchQuery;
+  const renderExitButton = props.renderExitButton ?? isMobile;
 
   // Scroll locking
   useLockBodyScroll(searchOverlayExpanded && isMobile);
-
-  const renderExitButton = props.renderExitButton ?? isMobile;
-  const shouldWrapInModal = isMobile;
-  const [hasFocus, setHasFocus] = useState(false);
 
   // Exit when user clicks out of component
   const searchRef = useRef(null);
@@ -57,9 +54,8 @@ export function Search(props: Props) {
       onFocus();
     }
 
-    setHasFocus(true);
-
     if (!searchOverlayExpanded) {
+      alert('HANDLING FOCUS');
       dispatch(expandSearchOverlay());
     }
   };
@@ -80,9 +76,6 @@ export function Search(props: Props) {
       dispatch(setSearchResultItems(await search(query)));
     };
 
-    // Focus on change
-    inputRef?.current?.focus();
-
     fetchSearchItems();
   }, [inputValue]);
 
@@ -94,7 +87,7 @@ export function Search(props: Props) {
   useEffect(() => {
     setTimeout(() => {
       if (autofocus) {
-        inputRef.current?.focus();
+        inputRef?.current?.focus();
       }
     }, 0);
   }, []);

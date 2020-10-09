@@ -8,7 +8,6 @@ import SearchSVG from '../assets/svgs/search.svg';
 import { UI } from '../constants';
 import { expandSearchOverlay } from '../state/navigation';
 import { IState } from '../state/reducers';
-import { SearchOverlay } from './search/SearchOverlay';
 
 function NavBar() {
   const navigationState = useSelector((state: IState) => state.navigation);
@@ -59,8 +58,6 @@ function NavBar() {
             </div>
           </div>
         )}
-
-        {isMobile && searchOverlayExpanded && <SearchOverlay />}
       </div>
     </>
   );
