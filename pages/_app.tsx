@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import TastiestLogo from '../assets/svgs/brand.svg';
 import { rootReducer } from '../state/reducers';
+import '../assets/style.scss';
 
 const store = createStore(rootReducer);
 
