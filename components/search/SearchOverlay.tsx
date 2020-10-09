@@ -38,6 +38,8 @@ export function SearchOverlay() {
     },
   };
 
+  console.log('RENDERING OVERLAY');
+
   return (
     <>
       {isMobile ? (
@@ -49,7 +51,7 @@ export function SearchOverlay() {
           )}
         >
           <div className="flex flex-col h-full flex-grow overflow-y-scroll">
-            <Search autofocus={true} renderExitButton={true} />
+            <Search autofocus={searchOverlayExpanded} renderExitButton={true} />
             <OverlayElement />
           </div>
         </div>
