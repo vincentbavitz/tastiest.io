@@ -22,6 +22,8 @@ export const cuisines: Array<ICuisine> = [
 
 export const UI = {
   MOBILE_BREAKPOINT: 500,
+  TABLET_BREAKPOINT: 715,
+  DESKTOP_BREAKPOINT: 1100,
 };
 
 export const SEARCH = {
