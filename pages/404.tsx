@@ -8,7 +8,7 @@ import { Footer } from '../components/Footer';
 import NavBar from '../components/NavBar';
 import { UI } from '../constants';
 
-function Error({ statusCode }) {
+function Tastiest404({ statusCode }) {
   // Responsive
   let isMobile = true;
   let isTablet = false;
@@ -85,7 +85,7 @@ function Error({ statusCode }) {
                 style={_404TitleStyles}
                 className="font-somantic text-primary text-sevenxl text-opacity-25 -mb-4"
               >
-                {statusCode}
+                404
               </h1>
               <p
                 style={_404TextStyles}
@@ -169,9 +169,4 @@ function Error({ statusCode }) {
   );
 }
 
-Error.getInitialProps = ({ res, err }) => {
-  const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
-  return { statusCode };
-};
-
-export default Error;
+export default Tastiest404;
