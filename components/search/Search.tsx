@@ -71,11 +71,6 @@ export function Search(props: Props) {
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     dispatch(setSearchQuery(String(value)));
-
-    // Set overlay when user starts typing
-    if (value.length > 0 && !searchOverlayExpanded) {
-      dispatch(expandSearchOverlay());
-    }
   };
 
   // Effects
