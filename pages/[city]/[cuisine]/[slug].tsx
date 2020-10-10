@@ -64,7 +64,7 @@ const Post = (props: ISanityArticle): JSX.Element => {
           <div className="article__title w-full">
             <div className="w-full pb-0 mb-0 flex flex-col items-center">
               <CityIndictor city={city} />
-              <h1 className="text-primary text-center pt-4 pb-4 w-11/12 text-4xl">
+              <h1 className="text-primary text-center pt-4 pb-4 w-11/12 text-fourxl">
                 {title}
               </h1>
               <h3 className="text-article font-robotoslab text-center mx-8 pb-4">
@@ -89,7 +89,9 @@ const Post = (props: ISanityArticle): JSX.Element => {
               <span className="block font-bold text-xs uppercase">
                 BY {author.name}
               </span>
-              <span className="text-xs z-10 flex">{date}</span>
+              <div className="flex justify-center">
+                <span className="text-xs z-10">{date}</span>
+              </div>
             </div>
           </div>
         </div>

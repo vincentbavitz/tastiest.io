@@ -13,7 +13,7 @@ function MainPageSearch(): JSX.Element {
       <div className="mx-6">
         <div className="pt-8 md:pt-0 xl:pt-8">
           <div className="">
-            <h1 className="text-center text-2xl font-robotolight mb-5 sm:my-2  md:p-5">
+            <h1 className="text-center text-twoxl font-robotolight mb-5 sm:my-2  md:p-5">
               Dishes we'd recommend to family
             </h1>
             <div className="flex justify-center">
