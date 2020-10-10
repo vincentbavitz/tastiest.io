@@ -114,7 +114,7 @@ function Tastiest404() {
                     isMobile ? 'text-lg' : 'text-sm',
                   )}
                 >
-                  Go back home
+                  Discover food
                 </div>
               </Link>
             </div>
