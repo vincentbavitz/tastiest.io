@@ -22,24 +22,6 @@ export function SearchOverlay() {
     isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
   }
 
-  // Styling
-  const modalStyles = {
-    overlay: {
-      zIndex: '10000',
-    },
-    content: {
-      top: 'unset',
-      bottom: 'unset',
-      left: 'unset',
-      right: 'unset',
-      width: '100%',
-      minHeight: '100%',
-      padding: '0',
-    },
-  };
-
-  console.log('RENDERING OVERLAY');
-
   return (
     <>
       {isMobile ? (

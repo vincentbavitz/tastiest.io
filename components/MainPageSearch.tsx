@@ -19,6 +19,10 @@ function MainPageSearch(): JSX.Element {
             <div className="flex justify-center">
               <div className="w-full md:w-10/12 xl:w-7/12 max-w-3xl">
                 <div className="w-full">
+                  {/* FIX ME FIX ME FIX ME */}
+                  {/* FIX ME FIX ME FIX ME */}
+                  {/* FORWARD REF TO OVERLAY AND RENDER OVERLAY THUSLY */}
+                  {/* WORKS ON HOME PAGE ONLY, AS NAVBAR IS GRABBING THE OVERLAY FROM HERE */}
                   <Search
                     renderExitButton={false}
                     onFocus={() => dispatch(expandSearchOverlay())}

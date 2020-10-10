@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { ChangeEvent, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useClickAway, useLockBodyScroll, useMedia } from 'react-use';
+import { useLockBodyScroll, useMedia } from 'react-use';
 import BackSVG from '../../assets/svgs/back.svg';
 import SearchSVG from '../../assets/svgs/search.svg';
 import { UI } from '../../constants';
@@ -42,11 +42,12 @@ export function Search(props: Props) {
   // Exit when user clicks out of component
   const searchRef = useRef(null);
   const inputRef = useRef(null);
-  useClickAway(searchRef, () => {
-    if (!isMobile) {
-      handleExit();
-    }
-  });
+
+  // useClickAway(searchRef, () => {
+  //   if (!isMobile) {
+  //     handleExit();
+  //   }
+  // });
 
   // Handler Functions
   const handleFocus = () => {
@@ -55,7 +56,6 @@ export function Search(props: Props) {
     }
 
     if (!searchOverlayExpanded) {
-      alert('HANDLING FOCUS');
       dispatch(expandSearchOverlay());
     }
   };
