@@ -43,12 +43,6 @@ export function Search(props: Props) {
   const searchRef = useRef(null);
   const inputRef = useRef(null);
 
-  // useClickAway(searchRef, () => {
-  //   if (!isMobile) {
-  //     handleExit();
-  //   }
-  // });
-
   // Handler Functions
   const handleFocus = () => {
     if (onFocus) {
@@ -67,6 +61,11 @@ export function Search(props: Props) {
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     dispatch(setSearchQuery(String(value)));
+
+    // Bring up overlay when they start typing
+    if (String(value).length > 0) {
+      dispatch(expandSearchOverlay());
+    }
   };
 
   // Effects

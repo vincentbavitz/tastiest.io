@@ -25,6 +25,7 @@ export function SearchItem(props: ISanityArticle) {
   return (
     <div
       className={classNames(
+        'cursor-pointer',
         'search-item',
         'flex',
         'flex-col',

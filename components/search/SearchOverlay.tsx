@@ -1,9 +1,10 @@
 import classNames from 'classnames';
 import Link from 'next/link';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMedia } from 'react-use';
+import { useClickAway, useKey, useMedia } from 'react-use';
 import { SEARCH, UI } from '../../constants';
+import { collapseSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Search } from './Search';
 import { SearchItem } from './SearchItem';
@@ -21,6 +22,18 @@ export function SearchOverlay() {
   if (typeof window !== 'undefined') {
     isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
   }
+
+  const overlayRef = useRef(null);
+  useClickAway(overlayRef, event => {
+    console.log('Event', event);
+
+    if (!isMobile) {
+      dispatch(collapseSearchOverlay());
+    }
+  });
+
+  // Close on escape
+  useKey('Escape', () => dispatch(collapseSearchOverlay()));
 
   return (
     <>
@@ -56,6 +69,7 @@ export function SearchOverlay() {
           ></div>
 
           <div
+            ref={overlayRef}
             className={classNames(
               'relative',
               'h-0',
@@ -73,7 +87,6 @@ export function SearchOverlay() {
                 '-left-4',
                 '-right-4',
                 'w-full',
-                'pb-10',
                 'bg-white',
                 'border-t',
                 'rounded-b-lg',
@@ -97,8 +110,10 @@ function OverlayElement() {
 
   // Responsive
   let isMobile = true;
+  let isDesktop = false;
   if (typeof window !== 'undefined') {
     isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
+    isDesktop = useMedia(`(min-width: ${UI.TABLET_BREAKPOINT}px)`);
   }
 
   // const { searchOverlayExpanded } = navigationState;
@@ -112,14 +127,14 @@ function OverlayElement() {
     <>
       <div
         className={classNames(
-          'search-items bottom-0 w-full h-full pb-10',
+          'search-items bottom-0 w-full h-full pb-8',
           isMobile && 'mt-3',
         )}
       >
         {renderSearchTemplate ? (
           <>SUGGESTIONS FOR YOU</>
         ) : (
-          <div className="flex w-full flex-wrap px-2 mt-4">
+          <div className="flex w-full flex-wrap px-2 my-4">
             {searchState.searchResultItems.length &&
               searchState.searchResultItems.slice(0, 4).map(searchItem => (
                 <div
@@ -149,9 +164,6 @@ function OverlayElement() {
             Click Here!
           </div>
         </div>
-
-        {/* Spacing -- do not touch! */}
-        <div className="h-8"></div>
       </div>
     </>
   );
