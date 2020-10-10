@@ -135,7 +135,7 @@ export function Search(props: Props) {
         <span className="text-secondary">
           <BackSVG
             className={classNames(
-              'h-8 w-8 fill-current',
+              'h-6 w-6 fill-current',
               renderExitButton ? 'block' : 'hidden',
             )}
             onClick={handleExit}
