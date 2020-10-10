@@ -1,12 +1,15 @@
 import classNames from 'classnames';
 import { useRouter } from 'next/dist/client/router';
 import React, { SyntheticEvent } from 'react';
+import { useDispatch } from 'react-redux';
 import { useMedia } from 'react-use';
 import { UI } from '../../constants';
+import { collapseSearchOverlay } from '../../state/navigation';
 import { ISanityArticle } from '../../types/article';
 import { generateURL } from '../../utils/routing';
 
 export function SearchItem(props: ISanityArticle) {
+  const dispatch = useDispatch();
   const router = useRouter();
   const { title, featureImage, city, cuisine, slug } = props;
 
@@ -18,6 +21,7 @@ export function SearchItem(props: ISanityArticle) {
 
   const handleClick = (e: SyntheticEvent) => {
     const { href, as } = generateURL({ city, cuisine, slug });
+    dispatch(collapseSearchOverlay());
     e.preventDefault();
     router.push(href, as);
   };

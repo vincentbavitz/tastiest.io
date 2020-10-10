@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { ChangeEvent, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLockBodyScroll, useMedia } from 'react-use';
+import { useLockBodyScroll, useMeasure, useMedia } from 'react-use';
 import BackSVG from '../../assets/svgs/back.svg';
 import SearchSVG from '../../assets/svgs/search.svg';
 import { UI } from '../../constants';
@@ -10,7 +10,12 @@ import {
   expandSearchOverlay,
 } from '../../state/navigation';
 import { IState } from '../../state/reducers';
-import { setSearchQuery, setSearchResultItems } from '../../state/search';
+import {
+  ISearchBarGeometry,
+  setSearchBarGeometry,
+  setSearchQuery,
+  setSearchResultItems,
+} from '../../state/search';
 import { search } from '../../utils/search';
 
 interface Props {
@@ -40,8 +45,9 @@ export function Search(props: Props) {
   useLockBodyScroll(searchOverlayExpanded && isMobile);
 
   // Exit when user clicks out of component
-  const searchRef = useRef(null);
   const inputRef = useRef(null);
+  const searchRef = useRef(null);
+  const [searchMeasureRef, { width }] = useMeasure();
 
   // Handler Functions
   const handleFocus = () => {
@@ -91,13 +97,34 @@ export function Search(props: Props) {
     }, 0);
   }, []);
 
+  // Set coordinates of search element
+  useEffect(
+    () => {
+      const rects = searchRef.current.getBoundingClientRect();
+      const { height, top, right, bottom, left } = rects;
+      const geometry: ISearchBarGeometry = {
+        height,
+        width: rects.width,
+        top,
+        right,
+        bottom,
+        left,
+      };
+
+      dispatch(setSearchBarGeometry(geometry));
+    },
+    // We only need to update rects when width changes
+    [width],
+  );
+
   return (
     <div
+      ref={searchMeasureRef}
       style={{ zIndex: searchOverlayExpanded && !isMobile ? 20001 : 'auto' }}
       className="relative"
-      ref={searchRef}
     >
       <div
+        ref={searchRef}
         className={classNames(
           'flex items-center w-full justify-between bg-white px-6 rounded-t-lg',
           searchOverlayExpanded && 'rounded-t-lg',
@@ -135,7 +162,7 @@ export function Search(props: Props) {
           onChange={handleOnChange}
         />
         <div onClick={() => dispatch(expandSearchOverlay())}>
-          <SearchSVG className="h-10" />
+          <SearchSVG className="h-8" />
         </div>
       </div>
     </div>

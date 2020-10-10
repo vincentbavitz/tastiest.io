@@ -3,9 +3,7 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import { useMedia } from 'react-use';
 import _404 from '../assets/svgs/404.svg';
-import { CuisineBar } from '../components/CuisineBar';
 import { Footer } from '../components/Footer';
-import NavBar from '../components/NavBar';
 import { UI } from '../constants';
 
 function Tastiest404() {
@@ -69,8 +67,6 @@ function Tastiest404() {
 
   return (
     <div>
-      <NavBar />
-      <CuisineBar />
       <div style={wrapperStyles} className="flex items-center">
         <div
           className={classNames(

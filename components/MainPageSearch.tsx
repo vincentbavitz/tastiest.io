@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import HomeHeroSVG from '../assets/svgs/home-hero.svg';
 import { expandSearchOverlay } from '../state/navigation';
 import { Search } from './search/Search';
-import { SearchOverlay } from './search/SearchOverlay';
 
 function MainPageSearch(): JSX.Element {
   const dispatch = useDispatch();
@@ -27,7 +26,6 @@ function MainPageSearch(): JSX.Element {
                     renderExitButton={false}
                     onFocus={() => dispatch(expandSearchOverlay())}
                   />
-                  <SearchOverlay />
                 </div>
 
                 <div>

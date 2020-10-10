@@ -10,9 +10,7 @@ import HelloSVG from '../../../assets/svgs/hello.svg';
 import client from '../../../client';
 import { Button } from '../../../components/Button';
 import { CityIndictor } from '../../../components/CityIndictor';
-import { CuisineBar } from '../../../components/CuisineBar';
 import { Footer } from '../../../components/Footer';
-import NavBar from '../../../components/NavBar';
 import { RecommendForm } from '../../../components/RecommendForm';
 import { ISanityArticle } from '../../../types/article';
 import { sanityPostQuery } from '../../../utils/search';
@@ -56,8 +54,6 @@ const Post = (props: ISanityArticle): JSX.Element => {
   return (
     <>
       <Button>From £21</Button>
-      <NavBar />
-      <CuisineBar />
 
       <article>
         <div className="article__top relative w-full bg-white flex flex-col justify-center items-center">

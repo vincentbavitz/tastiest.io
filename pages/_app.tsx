@@ -4,6 +4,9 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import '../assets/style.scss';
 import TastiestLogo from '../assets/svgs/brand.svg';
+import { CuisineBar } from '../components/CuisineBar';
+import NavBar from '../components/NavBar';
+import { SearchOverlay } from '../components/search/SearchOverlay';
 import { rootReducer } from '../state/reducers';
 
 const store = createStore(rootReducer);
@@ -15,7 +18,7 @@ function App({ Component, pageProps }: AppProps) {
   // const [isVerified, setIsVerified] = useLocalStorage('is-verified', "false");
 
   const handleOnChange = e => {
-    if (e.target.value === password) {
+    if (e?.target?.value?.toLowerCase() === password) {
       setIsLoggedIn(true);
       // setIsVerified("true");
     }
@@ -34,7 +37,12 @@ function App({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       {/* {isLoggedIn || isVerified === "true" ? ( */}
       {isLoggedIn ? (
-        <Component {...pageProps} />
+        <>
+          <NavBar />
+          <CuisineBar />
+          <SearchOverlay />
+          <Component {...pageProps} />
+        </>
       ) : (
         <div className="flex justify-center items-center absolute top-0 bottom-0 left-0 right-0">
           <div className="flex flex-col justify-center -m-8 items-center">

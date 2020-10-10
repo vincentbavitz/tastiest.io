@@ -4,10 +4,8 @@ import Link from 'next/link';
 import React from 'react';
 import client from '../client';
 import { ArticleItem } from '../components/ArticleItem';
-import { CuisineBar } from '../components/CuisineBar';
 import { Footer } from '../components/Footer';
 import MainPageSearch from '../components/MainPageSearch';
-import NavBar from '../components/NavBar';
 import { ISanityArticle } from '../types/article';
 import { generateURL } from '../utils/routing';
 import { sanityPostQuery } from '../utils/search';
@@ -38,8 +36,6 @@ const Index = (props: Props) => {
       </Head>
 
       <div>
-        <NavBar />
-        <CuisineBar />
         <MainPageSearch />
         <div className="md:flex overflow-x-hidden m-6">{cards}</div>
       </div>

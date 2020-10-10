@@ -8,13 +8,16 @@ export interface SearchAction {
 export const searchReducer = (
   state: ISearch = initialSearchState,
   action: SearchAction,
-) => {
+): ISearch => {
   switch (action.type) {
     case SearchActions.SET_SEARCH_RESULT_ITEMS: {
       return { ...state, searchResultItems: action.payload };
     }
     case SearchActions.SET_SEARCH_QUERY: {
       return { ...state, searchQuery: action.payload };
+    }
+    case SearchActions.SET_SEARCH_BAR_GEOMETRY: {
+      return { ...state, searchBarGeometry: action.payload };
     }
     default:
       return state;
