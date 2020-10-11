@@ -42,7 +42,7 @@ export function SearchOverlay() {
 
   const desktopOverlayStyles = {
     zIndex: searchOverlayExpanded ? 20001 : -1,
-    display: searchOverlayExpanded ? 'block' : 'hidden',
+    display: searchOverlayExpanded ? 'block' : 'none',
     minHeight: '600px',
 
     top: `${searchBarGeometry.top + searchBarGeometry.height}px`,

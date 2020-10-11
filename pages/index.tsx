@@ -39,6 +39,7 @@ const Index = (props: Props) => {
         <MainPageSearch />
         <div className="md:flex overflow-x-hidden m-6">{cards}</div>
       </div>
+
       <div>
         <h1>Sanity output below</h1>
         <ul>
