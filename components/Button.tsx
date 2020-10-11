@@ -1,65 +1,115 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
-import { useWindowScroll, useWindowSize } from 'react-use';
+import React from 'react';
 
-interface Props {
-  onClick?(): void;
-  children: string | JSX.Element;
+export interface Props {
+  color?: 'primary' | 'secondary' | 'danger';
+  type?: 'ghost' | 'solid';
+  size?: 'small' | 'medium' | 'large';
+
+  disabled?: boolean;
+  selected?: boolean;
+  onClick?(): any;
+  children?: string;
+  className?: string;
+
+  // Icons
+  prefix?: JSX.Element;
+  suffix?: JSX.Element;
+
+  wide?: boolean;
 }
 
 export function Button(props: Props) {
-  const { children, onClick } = props;
+  const {
+    color = 'primary',
+    size = 'medium',
+    type = 'solid',
+    disabled = false,
+    selected = false,
+    onClick = () => null,
+    children,
+    className,
+    prefix,
+    suffix,
+    wide = false,
+  } = props;
 
-  const [isButtonVisible, setIsButtonVisible] = useState(false);
-  const { y } = useWindowScroll();
-  const { height } = useWindowSize();
+  const clickHandler = (e: any) => {
+    if (onClick) {
+      e.stopPropagation();
+      onClick();
+    }
+  };
 
-  const scrollOffset = 0.25 * height;
+  const onClickFn = disabled ? () => null : clickHandler;
 
-  //   useEffect(() => {
-  //     console.log(height);
+  const ghostClassNames = [
+    'bg-white',
+    `hover:bg-${color}`,
+    'border-solid',
+    'border-2',
+    'bg-transparent',
+    `border-${color}`,
+    selected && `bg-white`,
+    selected ? 'text-white' : `text-${color}`,
+  ];
 
-  //     if (y > scrollOffset && isButtonVisible === false) {
-  //       setIsButtonVisible(true);
-  //     } else if (y <= scrollOffset && isButtonVisible === true) {
-  //       setIsButtonVisible(false);
-  //     }
-  //   }, [y]);
+  const solidClassNames = [
+    `bg-${color}`,
+    'text-white',
+    'hover:bg-opacity-75',
+    selected && 'bg-opacity-75',
+  ];
+
+  const off = disabled
+    ? ['cursor-not-allowed', 'opacity-50']
+    : ['cursor-pointer'];
+
+  const fontSize =
+    size === 'medium' ? 'text-base' : size === 'large' ? 'text-lg' : 'text-sm';
+
+  // Make bg crop to text with tailwind on gradient
+  // https://tailwindcss.com/docs/background-clip#class-reference
 
   return (
     <div
-      //   style={{
-      //     transform: isButtonVisible ? 'translateY(0px)' : 'translateY(50px)',
-      //     transition: 'transform 2s ease-in-out',
-      //   }}
       className={classNames(
-        'fixed',
-        'bottom-0',
-        'z-50',
-        'left-0',
-        'right-0',
+        'flex',
+        'justify-center',
+        'items-center',
+        'px-4',
+        'py-3',
+        'outline-none',
+        'duration-300',
+        'ease-in-out',
         'text-center',
-        'm-3',
-        'mb-8',
-        // isButtonVisible ? 'mb-10' : '-mb-20',
+        'rounded-lg',
+        'text-lg',
+        'font-raleway',
+        'font-semibold',
+        off,
+        fontSize,
+        wide && 'tracking-widest',
+        !disabled && 'hover:text-white',
+        type === 'ghost' && ghostClassNames,
+        type === 'solid' && solidClassNames,
+        className,
       )}
+      role="button"
+      tabIndex={-1}
+      onClick={onClickFn}
     >
-      <div
-        role="button"
-        className={classNames(
-          'bg-primary',
-          'text-lg',
-          'text-secondary',
-          'font-somantic',
-          'px-4',
-          'py-4',
-          'w-full',
-          'select-none',
-          'rounded-lg',
-        )}
-      >
-        {children}
-      </div>
+      {prefix && (
+        <div className={classNames('flex', 'items-center', children && 'pr-2')}>
+          {prefix}
+        </div>
+      )}
+      {children}
+      {suffix && (
+        <div className={classNames('flex', 'items-center', children && 'pl-2')}>
+          {suffix}
+        </div>
+      )}
     </div>
   );
 }

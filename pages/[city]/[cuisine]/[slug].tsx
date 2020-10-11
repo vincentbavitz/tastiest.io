@@ -8,8 +8,8 @@ import '../../../assets/style.scss';
 import CookingSVG from '../../../assets/svgs/cooking.svg';
 import HelloSVG from '../../../assets/svgs/hello.svg';
 import client from '../../../client';
-import { Button } from '../../../components/Button';
 import { CityIndictor } from '../../../components/CityIndictor';
+import { FloatingButton } from '../../../components/FloatingButton';
 import { Footer } from '../../../components/Footer';
 import { RecommendForm } from '../../../components/RecommendForm';
 import { ISanityArticle } from '../../../types/article';
@@ -53,7 +53,7 @@ const Post = (props: ISanityArticle): JSX.Element => {
 
   return (
     <>
-      <Button>From £21</Button>
+      <FloatingButton>From £21</FloatingButton>
 
       <article>
         <div className="article__top relative w-full bg-white flex flex-col justify-center items-center">
