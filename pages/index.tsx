@@ -1,13 +1,11 @@
 import groq from 'groq';
 import Head from 'next/head';
-import Link from 'next/link';
 import React from 'react';
 import client from '../client';
 import { ArticleItem } from '../components/ArticleItem';
 import { Footer } from '../components/Footer';
 import MainPageSearch from '../components/MainPageSearch';
 import { ISanityArticle } from '../types/article';
-import { generateURL } from '../utils/routing';
 import { sanityPostQuery } from '../utils/search';
 
 interface Props {
@@ -40,32 +38,6 @@ const Index = (props: Props) => {
         <div className="md:flex overflow-x-hidden m-6">{cards}</div>
       </div>
 
-      <div>
-        <h1>Sanity output below</h1>
-        <ul>
-          {posts?.length &&
-            posts
-              .filter(post => post.slug && post.cuisine && post.city)
-              .map(post => {
-                const { href, as } = generateURL({
-                  city: post.city,
-                  cuisine: post.cuisine,
-                  slug: post?.slug,
-                });
-
-                return (
-                  <div key={post.id}>
-                    <button className="m-1 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
-                      <Link href={href} as={as}>
-                        <a>{post.title}</a>
-                      </Link>
-                    </button>
-                    ({new Date(post.updatedAt).toDateString()})
-                  </div>
-                );
-              })}
-        </ul>
-      </div>
       <Footer />
     </>
   );

@@ -2,11 +2,10 @@ import classNames from 'classnames';
 import React from 'react';
 
 export interface Props {
-  type?: 'primary' | 'secondary' | 'danger' | 'subtle' | 'gradient';
+  color?: 'primary' | 'secondary' | 'danger';
+  type?: 'ghost' | 'solid';
   size?: 'small' | 'medium' | 'large';
 
-  // shape?: 'default' | 'circle';
-  ghost?: boolean;
   disabled?: boolean;
   selected?: boolean;
   onClick?(): any;
@@ -22,9 +21,9 @@ export interface Props {
 
 export function Button(props: Props) {
   const {
-    type = 'primary',
+    color = 'primary',
     size = 'medium',
-    ghost = false,
+    type = 'solid',
     disabled = false,
     selected = false,
     onClick = () => null,
@@ -44,29 +43,27 @@ export function Button(props: Props) {
 
   const onClickFn = disabled ? () => null : clickHandler;
 
-  const background =
-    type === 'gradient'
-      ? [
-          'bg-gradient-to-br',
-          !disabled && 'hover:from-primary',
-          !disabled && 'hover:to-secondary',
-          selected ? 'from-primary' : 'from-white',
-          selected ? 'to-secondary' : 'to-white',
-        ]
-      : [
-          selected ? `bg-${type}` : ghost ? 'bg-white' : 'bg-gray-100',
-          !disabled && `hover:bg-${type}`,
-        ];
+  const ghostClassNames = [
+    'bg-white',
+    `hover:bg-${color}`,
+    'border-solid',
+    'border-2',
+    'bg-transparent',
+    `border-${color}`,
+    selected && `bg-white`,
+    selected ? 'text-white' : `text-${color}`,
+  ];
 
-  const outline = ghost
-    ? ['border-solid', 'border-2', 'bg-transparent', `border-${type}`]
-    : ['border-none'];
+  const solidClassNames = [
+    `bg-${color}`,
+    'text-white',
+    'hover:bg-opacity-75',
+    selected && 'bg-opacity-75',
+  ];
 
   const off = disabled
     ? ['cursor-not-allowed', 'opacity-50']
     : ['cursor-pointer'];
-
-  const text = selected ? [`text-white`] : [`text-${type}`];
 
   const fontSize =
     size === 'medium' ? 'text-base' : size === 'large' ? 'text-lg' : 'text-sm';
@@ -81,22 +78,21 @@ export function Button(props: Props) {
         'justify-center',
         'items-center',
         'px-4',
-        'py-2',
+        'py-3',
         'outline-none',
         'duration-300',
         'ease-in-out',
         'text-center',
-        'rounded-md',
-        'uppercase',
+        'rounded-lg',
+        'text-lg',
         'font-raleway',
         'font-semibold',
+        off,
         fontSize,
         wide && 'tracking-widest',
         !disabled && 'hover:text-white',
-        off,
-        text,
-        outline,
-        background,
+        type === 'ghost' && ghostClassNames,
+        type === 'solid' && solidClassNames,
         className,
       )}
       role="button"

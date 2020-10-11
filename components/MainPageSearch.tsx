@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import HomeHeroSVG from '../assets/svgs/home-hero.svg';
 import { expandSearchOverlay } from '../state/navigation';
+import { Button } from './Button';
 import { Search } from './search/Search';
 
 function MainPageSearch(): JSX.Element {
@@ -29,13 +30,12 @@ function MainPageSearch(): JSX.Element {
                 </div>
 
                 <div>
-                  <button
+                  <Button
                     onClick={() => dispatch(expandSearchOverlay())}
-                    className="bg-primary hover:bg-orange-400 focus:shadow-outline focus:outline-none text-white font-bold py-4 w-full rounded-b-md shadow-lg text-lg md:pl-6"
-                    type="button"
+                    className="rounded-t-none"
                   >
                     Search a dish
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
