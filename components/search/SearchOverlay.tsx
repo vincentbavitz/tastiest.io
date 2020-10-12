@@ -159,7 +159,16 @@ function OverlayElement() {
         )}
 
         <div className="flex flex-col w-full px-6">
-          <h3 className="text-xl text-center mt-4 mb-4">See all results</h3>
+          <Link
+            href={{
+              pathname: '/search',
+              query: { s: searchState.searchQuery },
+            }}
+          >
+            <h3 className="text-xl cursor-pointer text-center mt-4 mb-4">
+              See all results
+            </h3>
+          </Link>
         </div>
       </div>
     </>
