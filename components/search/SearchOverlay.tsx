@@ -116,7 +116,6 @@ export function SearchOverlay() {
 }
 
 function OverlayElement() {
-  const navigationState = useSelector((state: IState) => state.navigation);
   const searchState = useSelector((state: IState) => state.search);
   const renderSearchTemplate = searchState.searchResultItems.length === 0;
 
@@ -126,9 +125,6 @@ function OverlayElement() {
     isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
   }
 
-  // const { searchOverlayExpanded } = navigationState;
-  // const dispatch = useDispatch();
-
   return (
     <>
       <div
@@ -137,7 +133,10 @@ function OverlayElement() {
           isMobile && 'flex flex-col h-full justify-between mt-3',
         )}
       >
-        <CuisineBar shouldOverflow={true} />
+        {!searchState.searchQuery.length && (
+          <CuisineBar shouldOverflow={true} />
+        )}
+
         {renderSearchTemplate ? (
           <div className="flex justify-between items-center px-6 my-10">
             <h3 className="text-threexl">

@@ -1,7 +1,12 @@
 import classNames from 'classnames';
 import React, { ChangeEvent, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLockBodyScroll, useMeasure, useMedia } from 'react-use';
+import {
+  useLockBodyScroll,
+  useMeasure,
+  useMedia,
+  useStartTyping,
+} from 'react-use';
 import BackSVG from '../../assets/svgs/back.svg';
 import SearchSVG from '../../assets/svgs/search.svg';
 import { UI } from '../../constants';
@@ -55,6 +60,7 @@ export function Search(props: Props) {
       onFocus();
     }
 
+    inputRef?.current?.focus();
     if (!searchOverlayExpanded) {
       dispatch(expandSearchOverlay());
     }
@@ -72,7 +78,11 @@ export function Search(props: Props) {
     if (String(value).length > 0) {
       dispatch(expandSearchOverlay());
     }
+    inputRef?.current?.focus();
   };
+
+  // Force focus when user starts typing
+  useStartTyping(() => inputRef?.current?.focus());
 
   // Effects
   useEffect(() => {

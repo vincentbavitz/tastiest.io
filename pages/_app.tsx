@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import '../assets/style.scss';
@@ -14,25 +14,24 @@ const store = createStore(rootReducer);
 function App({ Component, pageProps }: AppProps) {
   const password = 'tastiest';
 
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // // const [isVerified, setIsVerified] = useLocalStorage('is-verified', "false");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isVerified, setIsVerified] = useLocalStorage('is-verified', "false");
 
-  // const handleOnChange = e => {
-  //   if (e?.target?.value?.toLowerCase() === password) {
-  //     setIsLoggedIn(true);
-  //     // setIsVerified("true");
-  //   }
-  // };
+  const handleOnChange = e => {
+    if (e?.target?.value?.toLowerCase() === password) {
+      setIsLoggedIn(true);
+      // setIsVerified("true");
+    }
+  };
 
-  // const inputRef = useRef(null);
+  const inputRef = useRef(null);
 
-  // // Focus input on load
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     inputRef?.current?.focus();
-  //   }, 0);
-  // }, []);
-  const isLoggedIn = true;
+  // Focus input on load
+  useEffect(() => {
+    setTimeout(() => {
+      inputRef?.current?.focus();
+    }, 0);
+  }, []);
 
   return (
     <Provider store={store}>
