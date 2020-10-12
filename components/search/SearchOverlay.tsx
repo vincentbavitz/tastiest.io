@@ -4,9 +4,10 @@ import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useKey, useMedia } from 'react-use';
 import ElfSVG from '../../assets/svgs/elf.svg';
-import { SEARCH, UI } from '../../constants';
+import { UI } from '../../constants';
 import { collapseSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
+import { CuisineBar } from '../CuisineBar/CuisineBar';
 import { Search } from './Search';
 import { SearchItem } from './SearchItem';
 
@@ -128,10 +129,6 @@ function OverlayElement() {
   // const { searchOverlayExpanded } = navigationState;
   // const dispatch = useDispatch();
 
-  const shouldDisplaySeeAll =
-    searchState.searchResultItems.length >=
-    SEARCH.SOFT_LIMIT_SEARCH_RESULTS_OVERLAY;
-
   return (
     <>
       <div
@@ -140,9 +137,12 @@ function OverlayElement() {
           isMobile && 'flex flex-col h-full justify-between mt-3',
         )}
       >
+        <CuisineBar shouldOverflow={true} />
         {renderSearchTemplate ? (
           <div className="flex justify-between items-center px-6 my-10">
-            <h3 className="text-threexl">No results found.</h3>
+            <h3 className="text-threexl">
+              See more <Link href="">results</Link>
+            </h3>
             <ElfSVG className="h-24" />
           </div>
         ) : (
@@ -159,24 +159,8 @@ function OverlayElement() {
           </div>
         )}
 
-        {shouldDisplaySeeAll && (
-          <div className="flex w-full px-6 my-4 text-lg ">
-            <Link href="" as="">
-              See all
-            </Link>
-          </div>
-        )}
-
         <div className="flex flex-col w-full px-6">
-          <h3 className="text-xl text-center mt-4 mb-4">
-            Didn't find what you're looking for?
-          </h3>
-          <div
-            role="button"
-            className="rounded-md py-2 px-4 text-white bg-primary text-center font-bold w-full"
-          >
-            Click Here!
-          </div>
+          <h3 className="text-xl text-center mt-4 mb-4">See all results</h3>
         </div>
       </div>
     </>

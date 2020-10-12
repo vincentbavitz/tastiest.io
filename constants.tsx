@@ -6,13 +6,13 @@ import ItalianSVG from './assets/svgs/cuisines/italian.svg';
 import JapaneseSVG from './assets/svgs/cuisines/japanese.svg';
 
 export interface ICuisine {
-  // Name is the cuisine as it's rendered. Don't forget capitalisations
+  // Name is the cuisine as it's rendered. Don't forget capitalizations
   name: string;
   href: string;
   svg: JSX.Element;
 }
 
-export const cuisines: Array<ICuisine> = [
+export const CUISINES: Array<ICuisine> = [
   { name: 'Italian', href: '/italian', svg: <ItalianSVG /> },
   { name: 'French', href: '/french', svg: <FrenchSVG /> },
   { name: 'Japanese', href: '/japanese', svg: <JapaneseSVG /> },

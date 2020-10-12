@@ -1,10 +1,10 @@
 import type { AppProps } from 'next/app';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import '../assets/style.scss';
 import TastiestLogo from '../assets/svgs/brand.svg';
-import { CuisineBar } from '../components/CuisineBar';
+import { CuisineBar } from '../components/CuisineBar/CuisineBar';
 import NavBar from '../components/NavBar';
 import { SearchOverlay } from '../components/search/SearchOverlay';
 import { rootReducer } from '../state/reducers';
@@ -14,24 +14,25 @@ const store = createStore(rootReducer);
 function App({ Component, pageProps }: AppProps) {
   const password = 'tastiest';
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [isVerified, setIsVerified] = useLocalStorage('is-verified', "false");
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // // const [isVerified, setIsVerified] = useLocalStorage('is-verified', "false");
 
-  const handleOnChange = e => {
-    if (e?.target?.value?.toLowerCase() === password) {
-      setIsLoggedIn(true);
-      // setIsVerified("true");
-    }
-  };
+  // const handleOnChange = e => {
+  //   if (e?.target?.value?.toLowerCase() === password) {
+  //     setIsLoggedIn(true);
+  //     // setIsVerified("true");
+  //   }
+  // };
 
-  const inputRef = useRef(null);
+  // const inputRef = useRef(null);
 
-  // Focus input on load
-  useEffect(() => {
-    setTimeout(() => {
-      inputRef?.current?.focus();
-    }, 0);
-  }, []);
+  // // Focus input on load
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     inputRef?.current?.focus();
+  //   }, 0);
+  // }, []);
+  const isLoggedIn = true;
 
   return (
     <Provider store={store}>

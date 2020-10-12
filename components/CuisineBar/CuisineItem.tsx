@@ -1,13 +1,7 @@
 import classNames from 'classnames';
 import Link from 'next/link';
-import React, { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useScroll } from 'react-use';
-// import { useGeolocation } from 'react-use';
-import { cuisines } from '../constants';
-import { saveCuisineBarScrollPos } from '../state/navigation';
-import { IState } from '../state/reducers';
-import { generateURL } from '../utils/routing';
+import React from 'react';
+import { generateURL } from '../../utils/routing';
 
 interface Props {
   // Ensure that the accompanying SVG is in /assets/svgs/cuisines/name.svg
@@ -17,7 +11,7 @@ interface Props {
   onClick?(): void;
 }
 
-function CuisineItem(props: Props) {
+export function CuisineItem(props: Props) {
   // const state = useGeolocation();
   const { name, onClick } = props;
   const { href, as } = generateURL({ city: 'london', cuisine: name });
@@ -60,38 +54,5 @@ function CuisineItem(props: Props) {
         </div>
       </div>
     </Link>
-  );
-}
-
-export function CuisineBar() {
-  const navigationState = useSelector((state: IState) => state.navigation);
-
-  const scrollRef = useRef(null);
-  const { x } = useScroll(scrollRef);
-
-  const dispatch = useDispatch();
-  const handleScrollPosition = () => {
-    dispatch(saveCuisineBarScrollPos(x));
-  };
-
-  useEffect(() => {
-    scrollRef.current.scrollLeft = navigationState.cuisineBarScrollPos;
-  }, []);
-
-  return (
-    <div className="w-full overflow-x-scroll hide_scroll" ref={scrollRef}>
-      <div className="flex md:px-0 overflow-y-visible scrolling-touch">
-        <div className="flex w-full overflow-y-visible">
-          {cuisines.map(cuisine => (
-            <CuisineItem
-              key={cuisine.name}
-              name={cuisine.name}
-              svg={cuisine.svg}
-              onClick={handleScrollPosition}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
   );
 }
