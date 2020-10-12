@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "UNLICENSED",
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_ENV=development next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
@@ -29,6 +29,7 @@
     "next-compose-plugins": "^2.2.0",
     "next-fonts": "^1.4.0",
     "next-images": "^1.4.0",
+    "next-session": "^3.3.2",
     "next-svgr": "^0.0.2",
     "node-sass": "^4.14.1",
     "react": "^16.13.0",

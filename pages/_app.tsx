@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app';
+import { useRouter } from 'next/dist/client/router';
 import React, { useEffect, useRef, useState } from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
@@ -12,19 +13,12 @@ import { rootReducer } from '../state/reducers';
 const store = createStore(rootReducer);
 
 function App({ Component, pageProps }: AppProps) {
-  const password = 'tastiest';
+  const router = useRouter();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [isVerified, setIsVerified] = useLocalStorage('is-verified', "false");
-
-  const handleOnChange = e => {
-    if (e?.target?.value?.toLowerCase() === password) {
-      setIsLoggedIn(true);
-      // setIsVerified("true");
-    }
-  };
+  console.log(router);
 
   const inputRef = useRef(null);
+  const password = 'tastiest';
 
   // Focus input on load
   useEffect(() => {
@@ -33,9 +27,17 @@ function App({ Component, pageProps }: AppProps) {
     }, 0);
   }, []);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const handleOnChange = e => {
+    if (e?.target?.value?.toLowerCase() === password) {
+      setIsLoggedIn(true);
+    }
+  };
+
+  console.log(`[env]`, process);
+
   return (
     <Provider store={store}>
-      {/* {isLoggedIn || isVerified === "true" ? ( */}
       {isLoggedIn ? (
         <>
           <NavBar />
