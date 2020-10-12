@@ -4,6 +4,11 @@ import FrenchSVG from './assets/svgs/cuisines/french.svg';
 import IndianSVG from './assets/svgs/cuisines/indian.svg';
 import ItalianSVG from './assets/svgs/cuisines/italian.svg';
 import JapaneseSVG from './assets/svgs/cuisines/japanese.svg';
+import SpanishSVG from './assets/svgs/cuisines/spanish.svg';
+import EnglishSVG from './assets/svgs/cuisines/english.svg';
+import AmericanSVG from './assets/svgs/cuisines/american.svg';
+import MexicanSVG from './assets/svgs/cuisines/mexican.svg';
+import MediterraneanSVG from './assets/svgs/cuisines/mediterranean.svg';
 
 export interface ICuisine {
   // Name is the cuisine as it's rendered. Don't forget capitalizations
@@ -18,6 +23,11 @@ export const CUISINES: Array<ICuisine> = [
   { name: 'Japanese', href: '/japanese', svg: <JapaneseSVG /> },
   { name: 'Chinese', href: '/chinese', svg: <ChineseSVG /> },
   { name: 'Indian', href: '/indian', svg: <IndianSVG /> },
+  { name: 'Spanish', href: '/spanish', svg: <SpanishSVG /> },
+  { name: 'English', href: '/english', svg: <EnglishSVG /> },
+  { name: 'American', href: '/american', svg: <AmericanSVG /> },
+  { name: 'Mexican', href: '/mexican', svg: <MexicanSVG /> },
+  { name: 'Mediterranean', href: '/mediterranean', svg: <MediterraneanSVG /> },
 ];
 
 export const UI = {
