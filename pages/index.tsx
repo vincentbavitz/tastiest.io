@@ -35,6 +35,17 @@ const Index = (props: Props) => {
 
       <div>
         <MainPageSearch />
+        <div className="flex justify-center font-somantic text-threexl mt-4 text-primary">
+          <p>
+            Discover your
+            <div className="pb-2 border-secondary relative flex">
+              {' '}
+              next
+              <div className="absolute w-4/5 h-1 mt-4"> - </div>
+            </div>
+            favourite dish!
+          </p>
+        </div>
         <div className="md:flex overflow-x-hidden m-6">{cards}</div>
       </div>
 

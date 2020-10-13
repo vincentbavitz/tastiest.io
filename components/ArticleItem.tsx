@@ -17,7 +17,7 @@ export function ArticleItem(props: ISanityArticle): JSX.Element {
 
   return (
     <div
-      className="rounded-lg cursor-pointer overflow-hidden shadow-lg w-full mb-6"
+      className="rounded-lg cursor-pointer overflow-hidden w-full mb-6"
       onClick={e => handleClick(e)}
     >
       <img
@@ -25,11 +25,11 @@ export function ArticleItem(props: ISanityArticle): JSX.Element {
         src={featureImage.source}
         alt={featureImage.altText}
       />
-      <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">{title}</div>
+      <div className="px-6 py-4 bg-secondary">
+        <div className="text-xl font-somantic mb-2">{title}</div>
         <p className="text-gray-700 text-base">{paragraph}</p>
       </div>
-      <div className="px-6 py-4">
+      <div className="px-6 py-4 bg-secondary">
         {tags &&
           tags
             .filter(map => !!map)
