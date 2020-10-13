@@ -116,6 +116,7 @@ export function SearchOverlay() {
 }
 
 function OverlayElement() {
+  const dispatch = useDispatch();
   const searchState = useSelector((state: IState) => state.search);
   const renderSearchTemplate = searchState.searchResultItems.length === 0;
 
@@ -158,7 +159,10 @@ function OverlayElement() {
           </div>
         )}
 
-        <div className="flex flex-col w-full px-6">
+        <div
+          onClick={() => dispatch(collapseSearchOverlay())}
+          className="flex flex-col w-full px-6"
+        >
           <Link
             href={{
               pathname: '/search',
