@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import Link from 'next/link';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useKey, useMedia } from 'react-use';
+import { useKey, useLocation, useMedia } from 'react-use';
 import ElfSVG from '../../assets/svgs/elf.svg';
 import { UI } from '../../constants';
 import { collapseSearchOverlay } from '../../state/navigation';
@@ -36,6 +36,12 @@ export function SearchOverlay() {
 
   // Close on escape
   useKey('Escape', () => dispatch(collapseSearchOverlay()));
+
+  // Close search overlay on page changed
+  const location = useLocation();
+  useEffect(() => {
+    dispatch(collapseSearchOverlay());
+  }, [location]);
 
   const mobileOverlayStyles = {
     zIndex: searchOverlayExpanded ? 20000 : -1,
@@ -116,7 +122,6 @@ export function SearchOverlay() {
 }
 
 function OverlayElement() {
-  const dispatch = useDispatch();
   const searchState = useSelector((state: IState) => state.search);
   const renderSearchTemplate = searchState.searchResultItems.length === 0;
 
@@ -159,10 +164,7 @@ function OverlayElement() {
           </div>
         )}
 
-        <div
-          onClick={() => dispatch(collapseSearchOverlay())}
-          className="flex flex-col w-full px-6"
-        >
+        <div className="flex flex-col w-full px-6">
           <Link
             href={{
               pathname: '/search',

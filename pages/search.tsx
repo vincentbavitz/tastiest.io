@@ -1,4 +1,3 @@
-import groq from 'groq';
 import React from 'react';
 import client from '../client';
 import { SEARCH } from '../constants';
@@ -30,15 +29,24 @@ Search.getInitialProps = async ({ query }): Promise<Props> => {
   const resultsStart = SEARCH.SEARCH_ITEMS_PER_PAGE * (page - 1);
   const resultsEnd = resultsStart + SEARCH.SEARCH_ITEMS_PER_PAGE;
 
-  const sanityQuery = groq`*[_type == "post" && (title match "${searchQuery}*" || description match "${searchQuery}*" || restaurantName match "${searchQuery}*" || location match "${searchQuery}*" || dishName match "${searchQuery}*" || cuisine match "${searchQuery}*")][${resultsStart}..${resultsEnd}] {
-    ${sanityPostQuery}
-  }`;
+  const specifier = `*[_type == "post" && (title match "${searchQuery}*" || description match "${searchQuery}*" || restaurantName match "${searchQuery}*" || location match "${searchQuery}*" || dishName match "${searchQuery}*" || cuisine match "${searchQuery}*")]`;
+  const sanityQuery = `
+    *[][0]{
+      "posts": ${specifier}[${resultsStart}..${resultsEnd}]{
+        ${sanityPostQuery}
+      },
+      "count": count(${specifier})
+    }
+  `;
 
   if (!searchQuery) {
     posts = [];
   } else {
     try {
       results = await client.fetch(sanityQuery);
+
+      console.log('results', results);
+
       if (results.length) {
         posts = results;
       }

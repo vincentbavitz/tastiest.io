@@ -4,10 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useScroll } from 'react-use';
 // import { useGeolocation } from 'react-use';
 import { CUISINES } from '../../constants';
-import {
-  collapseSearchOverlay,
-  saveCuisineBarScrollPos,
-} from '../../state/navigation';
+import { saveCuisineBarScrollPos } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { CuisineItem } from './CuisineItem';
 
@@ -31,7 +28,6 @@ export function CuisineBar(props: Props) {
     }
 
     dispatch(saveCuisineBarScrollPos(x));
-    dispatch(collapseSearchOverlay());
   }
 
   useEffect(() => {

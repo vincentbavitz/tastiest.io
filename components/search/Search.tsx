@@ -1,7 +1,9 @@
 import classNames from 'classnames';
+import { useRouter } from 'next/dist/client/router';
 import React, { ChangeEvent, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  useKey,
   useLockBodyScroll,
   useMeasure,
   useMedia,
@@ -36,6 +38,8 @@ export function Search(props: Props) {
 
   const { searchOverlayExpanded } = nagivationState;
   const { onFocus, autofocus = false } = props;
+
+  const router = useRouter();
 
   // Responsive
   let isMobile = true;
@@ -83,6 +87,14 @@ export function Search(props: Props) {
 
   // Force focus when user starts typing
   useStartTyping(() => inputRef?.current?.focus());
+
+  // Search on enter
+  useKey('Enter', () =>
+    router.push({
+      pathname: '/search',
+      query: { s: searchState.searchQuery },
+    }),
+  );
 
   // Effects
   useEffect(() => {
