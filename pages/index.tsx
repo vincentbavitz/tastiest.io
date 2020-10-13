@@ -3,7 +3,7 @@ import Head from 'next/head';
 import React from 'react';
 import client from '../client';
 import { ArticleItem } from '../components/ArticleItem';
-import { Content } from '../components/Content';
+import { Contained } from '../components/Contained';
 import { Footer } from '../components/Footer';
 import MainPageSearch from '../components/MainPageSearch';
 import { ISanityArticle } from '../types/article';
@@ -34,7 +34,7 @@ const Index = (props: Props) => {
         ></meta>
       </Head>
 
-      <Content>
+      <Contained>
         <MainPageSearch />
 
         <div className="flex justify-center font-somantic text-twoxl mt-4 text-primary">
@@ -50,7 +50,7 @@ const Index = (props: Props) => {
         <div className="md:flex overflow-x-hidden mx-6 my-8 space-x-6">
           {cards}
         </div>
-      </Content>
+      </Contained>
 
       <Footer />
     </>

@@ -9,6 +9,7 @@ import CookingSVG from '../../../assets/svgs/cooking.svg';
 import HelloSVG from '../../../assets/svgs/hello.svg';
 import client from '../../../client';
 import { CityIndictor } from '../../../components/CityIndictor';
+import { Contained } from '../../../components/Contained';
 import { FloatingButton } from '../../../components/FloatingButton';
 import { Footer } from '../../../components/Footer';
 import { RecommendForm } from '../../../components/RecommendForm';
@@ -52,7 +53,7 @@ const Post = (props: ISanityArticle): JSX.Element => {
   }, []);
 
   return (
-    <>
+    <Contained>
       <FloatingButton>From £21</FloatingButton>
 
       <article>
@@ -169,7 +170,7 @@ const Post = (props: ISanityArticle): JSX.Element => {
         </div>
 
         {/* RECOMMEND FORM */}
-        <div className="contained flex justify-between">
+        <div className="flex justify-between">
           <div className="w-full py-10 relative">
             <div className="w-2/3">
               <RecommendForm
@@ -186,7 +187,7 @@ const Post = (props: ISanityArticle): JSX.Element => {
       </article>
 
       <Footer />
-    </>
+    </Contained>
   );
 };
 
