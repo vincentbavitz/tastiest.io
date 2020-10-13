@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
+import ScrollContainer from 'react-indiana-drag-scroll';
 import { useDispatch, useSelector } from 'react-redux';
 import { useScroll } from 'react-use';
 // import { useGeolocation } from 'react-use';
@@ -30,40 +31,32 @@ export function CuisineBar(props: Props) {
     dispatch(saveCuisineBarScrollPos(x));
   }
 
-  useEffect(() => {
-    scrollRef.current.scrollLeft = navigationState.cuisineBarScrollPos;
-  }, []);
-
   return (
-    <div
-      className={classNames(
-        'w-full hide_scroll',
-        !shouldOverflow && 'overflow-x-scroll',
-      )}
-      ref={scrollRef}
-    >
-      <div
-        className={classNames(
-          'flex md:px-0 overflow-y-visible scrolling-touch',
-          shouldOverflow && 'flex-wrap',
-        )}
-      >
+    <>
+      <ScrollContainer vertical={false} hideScrollbars={true}>
         <div
           className={classNames(
-            'flex w-full overflow-y-visible',
+            'flex md:px-0 overflow-y-visible scrolling-touch',
             shouldOverflow && 'flex-wrap',
           )}
         >
-          {CUISINES.map(cuisine => (
-            <CuisineItem
-              key={cuisine.name}
-              name={cuisine.name}
-              svg={cuisine.svg}
-              onClick={handleItemClick}
-            />
-          ))}
+          <div
+            className={classNames(
+              'flex w-full overflow-y-visible',
+              shouldOverflow && 'flex-wrap',
+            )}
+          >
+            {CUISINES.map(cuisine => (
+              <CuisineItem
+                key={cuisine.name}
+                name={cuisine.name}
+                svg={cuisine.svg}
+                onClick={handleItemClick}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-    </div>
+      </ScrollContainer>
+    </>
   );
 }

@@ -5,9 +5,15 @@ import { ISanityArticle } from '../types/article';
 import { sanityPostQuery } from '../utils/search';
 
 interface Props {
+  sanityQuery: string;
   posts: ISanityArticle[];
   totalCount: number;
   currentPage: number;
+}
+
+interface ISanityPageResults {
+  posts: ISanityArticle[];
+  count: number;
 }
 
 function Search(props: Props) {
@@ -16,15 +22,17 @@ function Search(props: Props) {
 
   console.log('qw', props);
 
-  return <></>;
+  console.log(`query`);
+
+  return <> </>;
 }
 
 Search.getInitialProps = async ({ query }): Promise<Props> => {
   const page = query.page ?? 1;
   const { s: searchQuery } = query;
 
-  let posts: ISanityArticle[];
-  let results: ISanityArticle[];
+  let posts: ISanityArticle[] = [];
+  let totalCount = 0;
 
   const resultsStart = SEARCH.SEARCH_ITEMS_PER_PAGE * (page - 1);
   const resultsEnd = resultsStart + SEARCH.SEARCH_ITEMS_PER_PAGE;
@@ -39,16 +47,13 @@ Search.getInitialProps = async ({ query }): Promise<Props> => {
     }
   `;
 
-  if (!searchQuery) {
-    posts = [];
-  } else {
+  if (searchQuery) {
     try {
-      results = await client.fetch(sanityQuery);
+      const results: ISanityPageResults = await client.fetch(sanityQuery);
 
-      console.log('results', results);
-
-      if (results.length) {
-        posts = results;
+      if (results?.posts?.length) {
+        posts = results.posts;
+        totalCount = results.count;
       }
     } catch (error) {
       console.warn('Error: ', error);
@@ -57,7 +62,8 @@ Search.getInitialProps = async ({ query }): Promise<Props> => {
 
   return {
     posts,
-    totalCount: posts?.length ?? 0,
+    sanityQuery,
+    totalCount,
     currentPage: page,
   };
 };

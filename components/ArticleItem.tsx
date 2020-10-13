@@ -17,19 +17,19 @@ export function ArticleItem(props: ISanityArticle): JSX.Element {
 
   return (
     <div
-      className="rounded-lg cursor-pointer overflow-hidden w-full mb-6"
+      className="rounded-xl cursor-pointer overflow-hidden w-full mb-6 bg-secondary bg-opacity-75"
       onClick={e => handleClick(e)}
     >
       <img
-        className="w-full"
+        className="w-full h-42"
         src={featureImage.source}
         alt={featureImage.altText}
       />
-      <div className="px-6 py-4 bg-secondary">
-        <div className="text-xl font-somantic mb-2">{title}</div>
+      <div className="px-4 py-4">
+        <div className="text-xl font-somantic mb-2 leading-tight">{title}</div>
         <p className="text-gray-700 text-base">{paragraph}</p>
       </div>
-      <div className="px-6 py-4 bg-secondary">
+      {/* <div className="px-6 py-4">
         {tags &&
           tags
             .filter(map => !!map)
@@ -41,7 +41,7 @@ export function ArticleItem(props: ISanityArticle): JSX.Element {
                 {hashtag.formatted}
               </span>
             ))}
-      </div>
+      </div> */}
     </div>
   );
 }

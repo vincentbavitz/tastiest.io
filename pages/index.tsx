@@ -3,6 +3,7 @@ import Head from 'next/head';
 import React from 'react';
 import client from '../client';
 import { ArticleItem } from '../components/ArticleItem';
+import { Content } from '../components/Content';
 import { Footer } from '../components/Footer';
 import MainPageSearch from '../components/MainPageSearch';
 import { ISanityArticle } from '../types/article';
@@ -15,7 +16,7 @@ interface Props {
 const Index = (props: Props) => {
   const { posts = [] } = props;
   const cards = posts
-    ? posts.map(post => <ArticleItem key={post.id} {...post} />)
+    ? posts.slice(0, 4).map(post => <ArticleItem key={post.id} {...post} />)
     : [];
 
   return (
@@ -33,21 +34,23 @@ const Index = (props: Props) => {
         ></meta>
       </Head>
 
-      <div>
+      <Content>
         <MainPageSearch />
-        <div className="flex justify-center font-somantic text-threexl mt-4 text-primary">
-          <p>
-            Discover your
-            <div className="pb-2 border-secondary relative flex">
-              {' '}
-              next
-              <div className="absolute w-4/5 h-1 mt-4"> - </div>
-            </div>
-            favourite dish!
-          </p>
+
+        <div className="flex justify-center font-somantic text-twoxl mt-4 text-primary">
+          <p>Discover your</p>
+
+          <div className="mx-2 relative flex justify-center">
+            next
+            <div className="absolute w-4/5 h-1 mt-10 rounded-full bg-secondary"></div>
+          </div>
+          <p>favourite dish!</p>
         </div>
-        <div className="md:flex overflow-x-hidden m-6">{cards}</div>
-      </div>
+
+        <div className="md:flex overflow-x-hidden mx-6 my-8 space-x-6">
+          {cards}
+        </div>
+      </Content>
 
       <Footer />
     </>
