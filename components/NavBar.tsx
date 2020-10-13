@@ -8,7 +8,7 @@ import SearchSVG from '../assets/svgs/search.svg';
 import { UI } from '../constants';
 import { expandSearchOverlay } from '../state/navigation';
 import { IState } from '../state/reducers';
-import { Content } from './Content';
+import { Contained } from './Contained';
 
 function NavBar() {
   const navigationState = useSelector((state: IState) => state.navigation);
@@ -24,7 +24,7 @@ function NavBar() {
   }
 
   return (
-    <Content>
+    <Contained>
       <div ref={navBarRef} className="relative h-20 -mb-4">
         <div
           className={classNames(
@@ -36,7 +36,7 @@ function NavBar() {
             isMobile ? 'justify-center' : 'justify-start',
           )}
         >
-          <div className="antialiased contained flex justify-between">
+          <div className="antialiased flex justify-between">
             <div className="flex">
               <Link href="/">
                 <a className="tastiest-logo-link flex flex-shrink-0 text-secondary">
@@ -44,6 +44,8 @@ function NavBar() {
                 </a>
               </Link>
             </div>
+
+            <div className=""></div>
           </div>
         </div>
 
@@ -51,7 +53,7 @@ function NavBar() {
           <div className="absolute w-full h-full">
             <div className="flex h-full items-center justify-end overflow-x-hidden">
               <div
-                className="flex flex-shrink-0 contained"
+                className="flex flex-shrink-0"
                 onClick={() => dispatch(expandSearchOverlay())}
               >
                 <SearchSVG className="fill-secondary h-8 cursor-pointer" />
@@ -60,7 +62,7 @@ function NavBar() {
           </div>
         )}
       </div>
-    </Content>
+    </Contained>
   );
 }
 
