@@ -8,7 +8,7 @@ import SearchSVG from '../assets/svgs/search.svg';
 import { UI } from '../constants';
 import { expandSearchOverlay } from '../state/navigation';
 import { IState } from '../state/reducers';
-import { Content } from './Content';
+import { Contained } from './Contained';
 
 function NavBar() {
   const navigationState = useSelector((state: IState) => state.navigation);
@@ -24,7 +24,7 @@ function NavBar() {
   }
 
   return (
-    <Content>
+    <Contained>
       <div ref={navBarRef} className="relative h-20 -mb-4">
         <div
           className={classNames(
@@ -60,7 +60,7 @@ function NavBar() {
           </div>
         )}
       </div>
-    </Content>
+    </Contained>
   );
 }
 
