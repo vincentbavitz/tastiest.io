@@ -6,6 +6,7 @@ import { useScroll } from 'react-use';
 import { CUISINES } from '../../constants';
 import { saveCuisineBarScrollPos } from '../../state/navigation';
 import { IState } from '../../state/reducers';
+import { Contained } from '../Contained';
 import { CuisineItem } from './CuisineItem';
 
 interface Props {
@@ -35,7 +36,7 @@ export function CuisineBar(props: Props) {
   }, []);
 
   return (
-    <>
+    <Contained allowRight>
       <div
         className={classNames(
           'w-full hide_scroll',
@@ -66,6 +67,6 @@ export function CuisineBar(props: Props) {
           </div>
         </div>
       </div>
-    </>
+    </Contained>
   );
 }

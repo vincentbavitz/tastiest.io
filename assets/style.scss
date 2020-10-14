@@ -280,10 +280,6 @@ body {
   margin-left: 0.5em;
   margin-right: 0.5em;
 
-  &:first-child {
-    margin-left: $page-border;
-  }
-
   &:last-child::after {
     content: ' ';
     width: $page-border;
