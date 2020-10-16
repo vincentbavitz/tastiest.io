@@ -9,7 +9,7 @@ function MainPageSearch(): JSX.Element {
   const dispatch = useDispatch();
 
   return (
-    <div className="bg-orange-200 md:mx-8 md:rounded-lg">
+    <div className="bg-orange-200 md:rounded-lg">
       <div className="mx-6">
         <div className="pt-8 md:pt-0 xl:pt-8">
           <div className="">

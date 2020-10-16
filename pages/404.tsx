@@ -1,10 +1,12 @@
 import classNames from 'classnames';
+import Head from 'next/head';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useMedia } from 'react-use';
 import _404 from '../assets/svgs/404.svg';
 import { Footer } from '../components/Footer';
 import { UI } from '../constants';
+import { generateTitle } from '../utils/metadata';
 
 function Tastiest404() {
   // Responsive
@@ -67,6 +69,10 @@ function Tastiest404() {
 
   return (
     <div>
+      <Head>
+        <title>{generateTitle('404')}</title>
+      </Head>
+
       <div style={wrapperStyles} className="flex items-center">
         <div
           className={classNames(

@@ -1,7 +1,9 @@
 import { useRouter } from 'next/dist/client/router';
+import Head from 'next/head';
 import React, { useEffect } from 'react';
 import { Footer } from '../../../components/Footer';
 import { CUISINES } from '../../../constants';
+import { generateTitle } from '../../../utils/metadata';
 import { titleCase } from '../../../utils/text';
 
 export default function Cuisine() {
@@ -20,7 +22,11 @@ export default function Cuisine() {
   }, []);
 
   return (
-    <>
+    <div>
+      <Head>
+        <title>{generateTitle(String(cuisine))}</title>
+      </Head>
+
       {cuisineExists ? (
         <>
           <div className="content my-8 px-4">
@@ -31,6 +37,6 @@ export default function Cuisine() {
       ) : (
         <></>
       )}
-    </>
+    </div>
   );
 }

@@ -6,6 +6,7 @@ import { ArticleItem } from '../components/ArticleItem';
 import { Contained } from '../components/Contained';
 import { Footer } from '../components/Footer';
 import MainPageSearch from '../components/MainPageSearch';
+import { METADATA } from '../constants';
 import { ISanityArticle } from '../types/article';
 import { sanityPostQuery } from '../utils/search';
 
@@ -22,7 +23,7 @@ const Index = (props: Props) => {
   return (
     <>
       <Head>
-        <title>Tastiest</title>
+        <title>{METADATA.TITLE_SUFFIX}</title>
         <meta
           property="og:title"
           content="Tastiest food no matter where you are"
