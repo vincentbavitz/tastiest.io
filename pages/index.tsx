@@ -6,6 +6,7 @@ import { ArticleItem } from '../components/ArticleItem';
 import { Contained } from '../components/Contained';
 import { Footer } from '../components/Footer';
 import MainPageSearch from '../components/MainPageSearch';
+import { SuggestDish } from '../components/SuggestDish';
 import { METADATA } from '../constants';
 import { ISanityArticle } from '../types/article';
 import { sanityPostQuery } from '../utils/search';
@@ -50,6 +51,10 @@ const Index = (props: Props) => {
 
         <div className="md:flex overflow-x-hidden mx-6 my-8 space-x-6">
           {cards}
+        </div>
+
+        <div className="mt-6 mb-12">
+          <SuggestDish />
         </div>
       </Contained>
 

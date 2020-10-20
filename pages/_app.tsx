@@ -29,10 +29,10 @@ function App({ Component, pageProps }: AppProps) {
     }, 0);
   }, []);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
   const handleOnChange = e => {
     if (e?.target?.value?.toLowerCase() === password) {
-      setIsLoggedIn(true);
+      setIsVerified(true);
     }
   };
 
@@ -42,7 +42,7 @@ function App({ Component, pageProps }: AppProps) {
         <title>{METADATA.TITLE_SUFFIX}</title>
       </Head>
 
-      {isLoggedIn ? (
+      {isVerified ? (
         <>
           <NavBar />
           <CuisineBar />
