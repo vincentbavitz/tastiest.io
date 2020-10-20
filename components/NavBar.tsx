@@ -36,7 +36,7 @@ function NavBar() {
             isMobile ? 'justify-center' : 'justify-start',
           )}
         >
-          <div className="antialiased flex justify-between">
+          <div className="antialiased flex w-full justify-between">
             <div className="flex">
               <Link href="/">
                 <a className="tastiest-logo-link flex flex-shrink-0 text-secondary">
@@ -45,7 +45,9 @@ function NavBar() {
               </Link>
             </div>
 
-            <div className=""></div>
+            <Link href="/login">
+              <div className="bg-primary rounded-full h-8 w-8 cursor-pointer"></div>
+            </Link>
           </div>
         </div>
 
