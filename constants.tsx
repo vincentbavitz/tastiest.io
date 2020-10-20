@@ -30,6 +30,10 @@ export const CUISINES: Array<ICuisine> = [
   { name: 'Mediterranean', href: '/mediterranean', svg: <MediterraneanSVG /> },
 ];
 
+export const METADATA = {
+  TITLE_SUFFIX: 'Tastiest: Discover. Eat. Smile',
+};
+
 export const UI = {
   MOBILE_BREAKPOINT: 500,
   TABLET_BREAKPOINT: 715,

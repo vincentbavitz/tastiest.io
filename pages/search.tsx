@@ -1,6 +1,6 @@
 import React from 'react';
 import client from '../client';
-import { SEARCH } from '../constants';
+import { METADATA, SEARCH } from '../constants';
 import { ISanityArticle } from '../types/article';
 import { sanityPostQuery } from '../utils/search';
 
@@ -21,10 +21,13 @@ function Search(props: Props) {
   const recommendedOptions = <></>;
 
   console.log('qw', props);
-
   console.log(`query`);
 
-  return <> </>;
+  return (
+    <div>
+      <title>{METADATA.TITLE_SUFFIX}</title>
+    </div>
+  );
 }
 
 Search.getInitialProps = async ({ query }): Promise<Props> => {

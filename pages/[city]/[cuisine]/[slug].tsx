@@ -3,6 +3,7 @@ import BlockContent from '@sanity/block-content-to-react';
 import imageUrlBuilder from '@sanity/image-url';
 import groq from 'groq';
 import moment from 'moment';
+import Head from 'next/head';
 import React, { useEffect } from 'react';
 import '../../../assets/style.scss';
 import CookingSVG from '../../../assets/svgs/cooking.svg';
@@ -14,6 +15,7 @@ import { FloatingButton } from '../../../components/FloatingButton';
 import { Footer } from '../../../components/Footer';
 import { RecommendForm } from '../../../components/RecommendForm';
 import { ISanityArticle } from '../../../types/article';
+import { generateTitle } from '../../../utils/metadata';
 import { sanityPostQuery } from '../../../utils/search';
 
 function urlFor(source) {
@@ -54,6 +56,10 @@ const Post = (props: ISanityArticle): JSX.Element => {
 
   return (
     <Contained>
+      <Head>
+        <title>{generateTitle(title)}</title>
+      </Head>
+
       <FloatingButton>From £21</FloatingButton>
 
       <article>

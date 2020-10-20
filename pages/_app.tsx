@@ -1,5 +1,7 @@
+import admin from 'firebase-admin';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/dist/client/router';
+import Head from 'next/head';
 import React, { useEffect, useRef, useState } from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
@@ -8,6 +10,8 @@ import TastiestLogo from '../assets/svgs/brand.svg';
 import { CuisineBar } from '../components/CuisineBar/CuisineBar';
 import NavBar from '../components/NavBar';
 import { SearchOverlay } from '../components/search/SearchOverlay';
+import { METADATA } from '../constants';
+import serviceAccount from '../data/serviceAccountKey.json';
 import { rootReducer } from '../state/reducers';
 
 const store = createStore(rootReducer);
@@ -15,7 +19,13 @@ const store = createStore(rootReducer);
 function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
-  console.log(router);
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: 'https://tastiest-dishes.firebaseio.com',
+  });
+
+  const users = admin.firestore().collection('users');
+  console.log('users', users);
 
   const inputRef = useRef(null);
   const password = 'tastiest';
@@ -27,18 +37,20 @@ function App({ Component, pageProps }: AppProps) {
     }, 0);
   }, []);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
   const handleOnChange = e => {
     if (e?.target?.value?.toLowerCase() === password) {
-      setIsLoggedIn(true);
+      setIsVerified(true);
     }
   };
 
-  console.log(`[env]`, process);
-
   return (
     <Provider store={store}>
-      {isLoggedIn ? (
+      <Head>
+        <title>{METADATA.TITLE_SUFFIX}</title>
+      </Head>
+
+      {isVerified ? (
         <>
           <NavBar />
           <CuisineBar />
