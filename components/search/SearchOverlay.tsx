@@ -3,7 +3,6 @@ import Link from 'next/link';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useKey, useLocation, useMedia } from 'react-use';
-import ElfSVG from '../../assets/svgs/elf.svg';
 import { UI } from '../../constants';
 import { collapseSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
@@ -148,7 +147,6 @@ function OverlayElement() {
             <h3 className="text-threexl">
               See more <Link href="">results</Link>
             </h3>
-            <ElfSVG className="h-24" />
           </div>
         ) : (
           <div className="flex w-full flex-wrap px-2 my-4">
