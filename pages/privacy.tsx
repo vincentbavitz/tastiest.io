@@ -1951,7 +1951,7 @@ function Privacy() {
               fontFamily: 'Arial',
               color: '#000000',
               backgroundColor: 'transparent',
-              fontWeight: 400,
+              fontWeight: 700,
               fontStyle: 'normal',
               fontVariant: 'normal',
               textDecoration: 'none',
@@ -2320,7 +2320,7 @@ function Privacy() {
           style={{
             lineHeight: '1.68',
             backgroundColor: '#ffffff',
-            marginTop: '0pt',
+            marginTop: '10pt',
             marginBottom: '0pt',
             padding: '0pt 0pt 8pt 0pt',
           }}
@@ -2447,7 +2447,7 @@ function Privacy() {
               fontFamily: 'Arial',
               color: '#000000',
               backgroundColor: 'transparent',
-              fontWeight: 400,
+              fontWeight: 700,
               fontStyle: 'normal',
               fontVariant: 'normal',
               textDecoration: 'none',
@@ -2498,7 +2498,7 @@ function Privacy() {
           style={{
             lineHeight: '1.68',
             backgroundColor: '#ffffff',
-            marginTop: '0pt',
+            marginTop: '10pt',
             marginBottom: '22pt',
             padding: '-8pt 0pt 0pt 0pt',
           }}
@@ -2517,10 +2517,10 @@ function Privacy() {
               whiteSpace: 'pre-wrap',
             }}
           >
-            The cookies we use fall into three categories.
+            The cookies we use fall into three categories shown below:
           </span>
         </p>
-        <div align="left" dir="ltr" style={{ marginLeft: '0pt' }}>
+        <div dir="ltr" style={{ marginLeft: '0pt' }}>
           <table style={{ border: 'none', borderCollapse: 'collapse' }}>
             <tbody>
               <tr style={{ height: '31pt' }}>
@@ -3259,7 +3259,7 @@ function Privacy() {
           style={{
             lineHeight: '1.68',
             backgroundColor: '#ffffff',
-            marginTop: '0pt',
+            marginTop: '10pt',
             marginBottom: '0pt',
             padding: '0pt 0pt 8pt 0pt',
           }}
@@ -3898,7 +3898,7 @@ function Privacy() {
           style={{
             lineHeight: '1.68',
             backgroundColor: '#ffffff',
-            marginTop: '0pt',
+            marginTop: '10pt',
             marginBottom: '0pt',
             padding: '0pt 0pt 8pt 0pt',
           }}

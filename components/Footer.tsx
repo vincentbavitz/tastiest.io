@@ -24,6 +24,9 @@ export function Footer() {
             <Link href="/about">
               <a className="mb-1 mt-0">ABOUT US</a>
             </Link>
+            <Link href="/privacy">
+              <a className="mb-1 mt-0">PRIVACY</a>
+            </Link>
           </div>
           <Link href="/">
             <div className="flex justify-center w-full mt-3 cursor-pointer">
