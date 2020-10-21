@@ -742,7 +742,7 @@ function Privacy() {
           style={{
             lineHeight: '1.68',
             backgroundColor: '#ffffff',
-            marginTop: '0pt',
+            marginTop: '10pt',
             marginBottom: '0pt',
             padding: '0pt 0pt 8pt 0pt',
           }}
@@ -1440,7 +1440,7 @@ function Privacy() {
           style={{
             lineHeight: '1.68',
             backgroundColor: '#ffffff',
-            marginTop: '14pt',
+            marginTop: '10pt',
             marginBottom: '0pt',
             padding: '0pt 0pt 22pt 0pt',
           }}
@@ -1848,7 +1848,7 @@ function Privacy() {
           style={{
             lineHeight: '1.68',
             backgroundColor: '#ffffff',
-            marginTop: '0pt',
+            marginTop: '10pt',
             marginBottom: '0pt',
             padding: '0pt 0pt 8pt 0pt',
           }}

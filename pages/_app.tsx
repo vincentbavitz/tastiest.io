@@ -1,4 +1,3 @@
-import { url } from 'inspector';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
@@ -31,17 +30,27 @@ function App({ Component, pageProps }: AppProps) {
 
   // Focus input on load
   useEffect(() => {
+    if (window.location.href.includes('privacy')) {
+      setIsVerified(true);
+    }
     setTimeout(() => {
       inputRef?.current?.focus();
     }, 0);
   }, []);
 
   const [isVerified, setIsVerified] = useState(false);
+
   const handleOnChange = e => {
     if (e?.target?.value?.toLowerCase() === password) {
       setIsVerified(true);
     }
   };
+
+  function pageCheck() {
+    if (window.location.href.includes('privacy')) {
+      setIsVerified(true);
+    }
+  }
 
   return (
     <Provider store={store}>
