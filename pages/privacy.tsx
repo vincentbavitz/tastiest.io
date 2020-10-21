@@ -1,11 +1,6 @@
-import classNames from 'classnames';
 import Head from 'next/head';
-import Link from 'next/link';
-import React, { useEffect } from 'react';
-import { useMedia } from 'react-use';
-import _404 from '../assets/svgs/404.svg';
+import React from 'react';
 import { Footer } from '../components/Footer';
-import { UI } from '../constants';
 import { generateTitle } from '../utils/metadata';
 
 function Privacy() {
