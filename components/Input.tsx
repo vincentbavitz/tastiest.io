@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import {
   ChangeEvent,
   FocusEvent,
-  forwardRef,
   RefObject,
   useEffect,
   useRef,
@@ -39,7 +38,7 @@ export interface InputProps {
 
   // Styling
   fitHeight?: boolean;
-  readOnly?: boolean;
+  readonly?: boolean;
   center?: boolean;
   duration?: boolean;
 
@@ -68,17 +67,13 @@ export interface InputProps {
   step?: number | string | undefined;
 }
 
-const HTMLInput = forwardRef((props, ref: RefObject<HTMLInputElement>) => (
-  <Input ref={ref} {...props} />
-));
-
 export function Input(props: InputProps) {
   const {
     className,
     inputClassName,
     type = 'text',
     center = false,
-    readOnly = false,
+    readonly = false,
     size = 'medium',
     prefix,
     duration = true,
@@ -95,9 +90,17 @@ export function Input(props: InputProps) {
     onMouseUp,
   } = props;
 
-  // State
-  const [value, setValue] = useState('' as string | number);
+  // Focus
+  const inputRef = props.ref ?? useRef<HTMLInputElement>(null);
+  const setInputFocus = () => {
+    if (typeof inputRef !== 'string') {
+      inputRef?.current?.focus();
+    }
+  };
   const [hasFocus, setHasFocus] = useState(false);
+
+  // Value
+  const [value, setValue] = useState('' as string | number);
 
   // Styles
   const fontSize =
@@ -135,49 +138,12 @@ export function Input(props: InputProps) {
   };
 
   const handleOnFocus = (event: FocusEvent<HTMLInputElement>) => {
-    if (!readOnly) {
+    if (!readonly) {
       setHasFocus(true);
     }
 
     if (props.onFocus) {
       props.onFocus(event);
-    }
-  };
-
-  const inputProps = {
-    className: classNames(
-      'bg-transparent',
-      'outline-none',
-      'flex-1',
-      'w-0',
-      size === 'large' && 'py-2',
-      disabled && 'cursor-not-allowed',
-      center && 'text-center',
-      fontSize,
-      inputClassName,
-    ),
-    readOnly,
-    type,
-    disabled,
-    placeholder,
-    value: props.value ?? value,
-    step,
-    min,
-    max,
-    onChange: handleOnChange,
-    onFocus: handleOnFocus,
-    onBlur: handleOnBlur,
-    inputMode,
-    onKeyDown,
-    onMouseUp,
-  };
-
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  // Focus
-  const setInputFocus = () => {
-    if (typeof inputRef !== 'string') {
-      inputRef?.current?.focus();
     }
   };
 
@@ -219,9 +185,38 @@ export function Input(props: InputProps) {
         </span>
       )}
 
-      <HTMLInput ref={inputRef} {...inputProps} />
+      <input
+        className={classNames(
+          'bg-transparent',
+          'outline-none',
+          'flex-1',
+          'w-0',
+          size === 'large' && 'py-2',
+          disabled && 'cursor-not-allowed',
+          center && 'text-center',
+          fontSize,
+          inputClassName,
+        )}
+        readOnly={readonly}
+        type={type}
+        ref={inputRef}
+        spellCheck={false}
+        disabled={disabled}
+        placeholder={placeholder}
+        value={props.value ?? value}
+        step={step}
+        min={min}
+        max={max}
+        onChange={handleOnChange}
+        onFocus={handleOnFocus}
+        onBlur={handleOnBlur}
+        inputMode={inputMode}
+        onKeyDown={onKeyDown}
+        onMouseUp={onMouseUp}
+      ></input>
 
       {type === 'number' && <div className="h-full bg-green-200"></div>}
+
       {suffix && (
         <span
           className={classNames(`text-primary`, 'flex', 'items-center', 'pl-4')}
