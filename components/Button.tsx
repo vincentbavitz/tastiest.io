@@ -46,18 +46,15 @@ export function Button(props: Props) {
   const ghostClassNames = [
     'bg-white',
     `hover:bg-${color}`,
-    'border-solid',
-    'border-2',
     'bg-transparent',
-    `border-${color}`,
     selected && `bg-white`,
     selected ? 'text-white' : `text-${color}`,
   ];
 
   const solidClassNames = [
-    `bg-${color}`,
     'text-white',
-    'hover:bg-opacity-75',
+    `bg-${color}`,
+    'hover:opacity-75',
     selected && 'bg-opacity-75',
   ];
 
@@ -78,7 +75,6 @@ export function Button(props: Props) {
         'justify-center',
         'items-center',
         'px-4',
-        'py-3',
         'outline-none',
         'duration-300',
         'ease-in-out',
@@ -87,10 +83,14 @@ export function Button(props: Props) {
         'rounded-lg',
         'font-raleway',
         'font-semibold',
+        'border-2',
+        'border-solid',
+        `border-${color}`,
         off,
         fontSize,
         wide && 'tracking-widest',
         !disabled && 'hover:text-white',
+        size === 'small' ? 'py-1' : 'py-3',
         type === 'ghost' && ghostClassNames,
         type === 'solid' && solidClassNames,
         className,

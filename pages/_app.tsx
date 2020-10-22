@@ -1,7 +1,7 @@
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import '../assets/style.scss';
@@ -33,6 +33,7 @@ function App({ Component, pageProps }: AppProps) {
     if (window.location.href.includes('privacy')) {
       setIsVerified(true);
     }
+
     setTimeout(() => {
       inputRef?.current?.focus();
     }, 0);
@@ -40,17 +41,11 @@ function App({ Component, pageProps }: AppProps) {
 
   const [isVerified, setIsVerified] = useState(false);
 
-  const handleOnChange = e => {
-    if (e?.target?.value?.toLowerCase() === password) {
+  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.toLowerCase() === password) {
       setIsVerified(true);
     }
   };
-
-  function pageCheck() {
-    if (window.location.href.includes('privacy')) {
-      setIsVerified(true);
-    }
-  }
 
   return (
     <Provider store={store}>

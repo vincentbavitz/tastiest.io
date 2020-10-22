@@ -61,6 +61,12 @@ function NavBar() {
                 <SearchSVG className="fill-secondary h-8 cursor-pointer" />
               </div>
             </div>
+
+            <div className="absolute right-0">
+              <Link href="/login">
+                <div className="bg-primary rounded-full h-8 w-8 cursor-pointer"></div>
+              </Link>
+            </div>
           </div>
         )}
       </div>

@@ -1,32 +1,28 @@
 import classNames from 'classnames';
-import { ChangeEvent, FocusEvent, useEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  FocusEvent,
+  forwardRef,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 export interface InputProps {
-  // Styling
-  fitHeight?: boolean;
-  readonly?: boolean;
-  center?: boolean;
-  duration?: boolean;
-
-  size?: 'large' | 'medium' | 'small';
+  id?: string;
+  ref?: RefObject<HTMLInputElement>;
 
   // Applied to parent only
   className?: string;
   inputClassName?: string;
 
-  prefix?: JSX.Element;
-  suffix?: JSX.Element;
-  placeholder?: string;
-
-  onChange?(event: ChangeEvent): any;
-  onBlur?(event: FocusEvent<HTMLInputElement>): void;
-  onFocus?(event: FocusEvent<HTMLInputElement>): void;
-  onKeyDown?(): any;
-  onMouseUp?(): any;
-
   // If value is not given in props, the component will manage it through state (default)
   value?: string | number;
-  type?: 'text' | 'number' | 'search';
+  type?: 'text' | 'number' | 'search' | 'email' | 'password';
+  name?: string;
+  size?: 'large' | 'medium' | 'small';
+
   inputMode?:
     | 'none'
     | 'text'
@@ -35,11 +31,27 @@ export interface InputProps {
     | 'tel'
     | 'search'
     | 'url';
-  step?: number | string | undefined;
+
+  // Content
+  prefix?: JSX.Element;
+  suffix?: JSX.Element;
+  placeholder?: string;
+
+  // Styling
+  fitHeight?: boolean;
+  readOnly?: boolean;
+  center?: boolean;
+  duration?: boolean;
+
+  // Callbacks
+  onChange?(event: ChangeEvent<HTMLInputElement>): any;
+  onBlur?(event: FocusEvent<HTMLInputElement>): void;
+  onFocus?(event: FocusEvent<HTMLInputElement>): void;
+  onKeyDown?(): any;
+  onMouseUp?(): any;
 
   // HTMLInputElement Props
 
-  disabled?: boolean;
   autofocus?: boolean;
   // required?: boolean;
   // validity?: ValidityState;
@@ -47,11 +59,18 @@ export interface InputProps {
   // willValidate?: boolean;
   // autocomplete?: string;
 
+  // Validation
   max?: number | string;
   maxLength?: number | string;
   min?: number | string;
   minLength?: number | string;
+  disabled?: boolean;
+  step?: number | string | undefined;
 }
+
+const HTMLInput = forwardRef((props, ref: RefObject<HTMLInputElement>) => (
+  <Input ref={ref} {...props} />
+));
 
 export function Input(props: InputProps) {
   const {
@@ -59,7 +78,7 @@ export function Input(props: InputProps) {
     inputClassName,
     type = 'text',
     center = false,
-    readonly = false,
+    readOnly = false,
     size = 'medium',
     prefix,
     duration = true,
@@ -76,32 +95,32 @@ export function Input(props: InputProps) {
     onMouseUp,
   } = props;
 
-  // Focus
-  const inputRef = useRef<HTMLInputElement>(null);
-  const setInputFocus = () => inputRef?.current?.focus();
-  const [hasFocus, setHasFocus] = useState(false);
-
-  // Value
+  // State
   const [value, setValue] = useState('' as string | number);
+  const [hasFocus, setHasFocus] = useState(false);
 
   // Styles
   const fontSize =
     size !== 'medium' && size === 'large' ? 'text-lg' : 'text-sm';
 
   // Functions
-  const handleOnChange = (event: ChangeEvent) => {
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const element = event?.target as HTMLInputElement;
     if (element.value === undefined) {
       return;
     }
 
-    const caret = element.selectionStart;
-    window.requestAnimationFrame(() => {
-      element.selectionStart = caret;
-      element.selectionEnd = caret;
-    });
+    // Emails don't support selectionStart
+    if (type !== 'email') {
+      const caret = element.selectionStart;
+      window.requestAnimationFrame(() => {
+        element.selectionStart = caret;
+        element.selectionEnd = caret;
+      });
+    }
 
     setValue(element.value);
+
     if (props.onChange) {
       props.onChange(event);
     }
@@ -116,12 +135,49 @@ export function Input(props: InputProps) {
   };
 
   const handleOnFocus = (event: FocusEvent<HTMLInputElement>) => {
-    if (!readonly) {
+    if (!readOnly) {
       setHasFocus(true);
     }
 
     if (props.onFocus) {
       props.onFocus(event);
+    }
+  };
+
+  const inputProps = {
+    className: classNames(
+      'bg-transparent',
+      'outline-none',
+      'flex-1',
+      'w-0',
+      size === 'large' && 'py-2',
+      disabled && 'cursor-not-allowed',
+      center && 'text-center',
+      fontSize,
+      inputClassName,
+    ),
+    readOnly,
+    type,
+    disabled,
+    placeholder,
+    value: props.value ?? value,
+    step,
+    min,
+    max,
+    onChange: handleOnChange,
+    onFocus: handleOnFocus,
+    onBlur: handleOnBlur,
+    inputMode,
+    onKeyDown,
+    onMouseUp,
+  };
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Focus
+  const setInputFocus = () => {
+    if (typeof inputRef !== 'string') {
+      inputRef?.current?.focus();
     }
   };
 
@@ -147,7 +203,6 @@ export function Input(props: InputProps) {
         'outline-black',
         'outline-secondary',
         'focus:outline-black',
-        fitHeight ? 'py-2' : 'h-8',
         size === 'small' ? 'px-2' : 'px-4',
         duration && 'duration-300',
         disabled && 'opacity-50 cursor-not-allowed',
@@ -164,45 +219,12 @@ export function Input(props: InputProps) {
         </span>
       )}
 
-      <input
-        className={classNames(
-          'bg-transparent',
-          'outline-none',
-          'flex-1',
-          'w-0',
-          disabled && 'cursor-not-allowed',
-          center && 'text-center',
-          fontSize,
-          inputClassName,
-        )}
-        readOnly={readonly}
-        type={type}
-        ref={inputRef}
-        spellCheck={false}
-        disabled={disabled}
-        placeholder={placeholder}
-        value={props.value ?? value}
-        step={step}
-        min={min}
-        max={max}
-        onChange={handleOnChange}
-        onFocus={handleOnFocus}
-        onBlur={handleOnBlur}
-        inputMode={inputMode}
-        onKeyDown={onKeyDown}
-        onMouseUp={onMouseUp}
-      ></input>
+      <HTMLInput ref={inputRef} {...inputProps} />
 
       {type === 'number' && <div className="h-full bg-green-200"></div>}
-
       {suffix && (
         <span
-          className={classNames(
-            `text-${color}`,
-            'flex',
-            'items-center',
-            'pl-4',
-          )}
+          className={classNames(`text-primary`, 'flex', 'items-center', 'pl-4')}
         >
           {suffix}
         </span>

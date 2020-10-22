@@ -2,7 +2,10 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import Link from 'next/link';
 import Router from 'next/router';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { Button } from '../components/Button';
+import { Contained } from '../components/Contained';
+import { Input } from '../components/Input';
 import initFirebase from '../utils/auth/initFirebase';
 
 initFirebase();
@@ -17,69 +20,117 @@ function Login() {
     email: '',
     password: '',
   };
-  var firstInput: HTMLInputElement | null = null;
 
-  const [inputs, setInputs] = useState(initial);
+  const emailInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
+  const submitInputRef = useRef(null);
 
-  const handleSubmit = async (e: ChangeEvent<any>) => {
-    e.preventDefault();
+  const [email, setEmail] = useState(undefined as string | undefined);
+  const [password, setPassword] = useState(undefined as string | undefined);
+  const [password, setPassword] = useState(undefined as string | undefined);
+
+  const handleSubmit = async () => {
     try {
-      await firebase
-        .auth()
-        .signInWithEmailAndPassword(inputs.email, inputs.password);
+      const email = emailInputRef?.current?.value;
+      const password = passwordInputRef?.current?.value;
+
+      if (!(email && password)) {
+        return;
+      }
+
+      await firebase.auth().signInWithEmailAndPassword(email, password);
       Router.push('/');
     } catch (error) {
       alert(error);
     }
   };
 
-  const handleInputChange = (e: ChangeEvent<any>) => {
-    e.persist();
-    setInputs({
-      ...inputs,
-      [e.target.name]: e.target.value,
-    });
+  const handleEmailInputChanged = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log('value', event.target);
+
+    setEmail(event?.target?.value);
+
+    // TODO - Verify
+  };
+
+  const handlePasswordInputChanged = (event: ChangeEvent<HTMLInputElement>) => {
+    setPassword(event?.target?.value);
+
+    // TODO - Verify
   };
 
   useEffect(() => {
-    firstInput?.focus();
+    setTimeout(() => {
+      emailInputRef?.current?.focus();
+    }, 30);
   }, []); // [] = run once
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <p>
-          <label htmlFor="email">email: </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            onChange={handleInputChange}
-            value={inputs.email}
-            ref={r => (firstInput = r)}
-          />
-        </p>
-        <p>
-          <label htmlFor="password">password: </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            onChange={handleInputChange}
-            value={inputs.password}
-          />
-        </p>
-        <p>
-          <button type="submit">[ log in ]</button>
-        </p>
-      </form>
+    <Contained>
+      <div className="flex">
+        <div className="flex-1">
+          <form>
+            <div className="flex flex-col space-y-6">
+              <div>
+                <label htmlFor="email" className="text-twoxl">
+                  Email
+                </label>
+                <Input
+                  id="email"
+                  type="email"
+                  name="email"
+                  size="large"
+                  placeholder="jerry@tastiest.io"
+                  ref={emailInputRef}
+                  onChange={handleEmailInputChanged}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="password" className="text-twoxl">
+                  Password
+                </label>
+                <Input
+                  type="password"
+                  id="password"
+                  name="password"
+                  size="large"
+                  placeholder="Password"
+                  ref={passwordInputRef}
+                  onChange={handlePasswordInputChanged}
+                />
+              </div>
+
+              <div className="flex justify-center space-x-4">
+                <div className="flex-1">
+                  <Button type="solid" size="small" onClick={handleSubmit}>
+                    Sign in
+                  </Button>
+                </div>
+                <div className="flex-1">
+                  <Button type="ghost" size="small">
+                    Create account
+                  </Button>
+                </div>
+              </div>
+
+              <p>
+                <button type="submit">[ log in ]</button>
+              </p>
+              <input className="hidden" ref={submitInputRef} type="submit" />
+            </div>
+          </form>
+        </div>
+        <div className="flex-1"></div>
+      </div>
+
       <p>
         {'or '}
         <Link href="/signup">
           <a>[ create account ]</a>
         </Link>
       </p>
-    </>
+    </Contained>
   );
 }
 
