@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import Link from 'next/link';
 import Router from 'next/router';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import initFirebase from '../utils/auth/initFirebase';
 
 initFirebase();
@@ -10,30 +10,38 @@ initFirebase();
 type Inputs = {
   email: string;
   password: string;
+  displayName: string;
 };
 
-function Login() {
-  const initial: Inputs = {
+function Signup() {
+  const initialValues: Inputs = {
     email: '',
     password: '',
+    displayName: '',
   };
   var firstInput: HTMLInputElement | null = null;
 
-  const [inputs, setInputs] = useState(initial);
+  const [inputs, setInputs] = useState(initialValues);
 
-  const handleSubmit = async (e: ChangeEvent<any>) => {
+  const handleSubmit = async (e: React.ChangeEvent<any>) => {
     e.preventDefault();
     try {
       await firebase
         .auth()
-        .signInWithEmailAndPassword(inputs.email, inputs.password);
+        .createUserWithEmailAndPassword(inputs.email, inputs.password);
+      var user = firebase.auth().currentUser;
+      if (user) {
+        await user.updateProfile({
+          displayName: inputs.displayName,
+        });
+      }
       Router.push('/');
     } catch (error) {
       alert(error);
     }
   };
 
-  const handleInputChange = (e: ChangeEvent<any>) => {
+  const handleInputChange = (e: React.ChangeEvent<any>) => {
     e.persist();
     setInputs({
       ...inputs,
@@ -70,17 +78,27 @@ function Login() {
           />
         </p>
         <p>
-          <button type="submit">[ log in ]</button>
+          <label htmlFor="displayName">display name: </label>
+          <input
+            type="text"
+            id="displayName"
+            name="displayName"
+            onChange={handleInputChange}
+            value={inputs.displayName}
+          />
+        </p>
+        <p>
+          <button type="submit">[ create account ]</button>
         </p>
       </form>
       <p>
         {'or '}
-        <Link href="/signup">
-          <a>[ create account ]</a>
+        <Link href="/login">
+          <a>[ log in ]</a>
         </Link>
       </p>
     </>
   );
 }
 
-export default Login;
+export default Signup;
