@@ -1,11 +1,10 @@
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import '../assets/style.scss';
-import TastiestLogo from '../assets/svgs/brand.svg';
 import { CuisineBar } from '../components/CuisineBar/CuisineBar';
 import NavBar from '../components/NavBar';
 import { SearchOverlay } from '../components/search/SearchOverlay';
@@ -17,32 +16,32 @@ const store = createStore(rootReducer);
 function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
-  const inputRef = useRef(null);
-  const password = 'tastiest';
+  // const [isVerified, setIsVerified] = useState(true);
 
-  // Privacy page always visible
-  useEffect(() => {
-    if (window.location.href.includes('privacy')) {
-      setIsVerified(true);
-    } else {
-      setIsVerified(false);
-    }
-  }, [router.pathname]);
+  // const inputRef = useRef(null);
+  // const password = 'tastiest';
 
-  // Focus on mount
-  useEffect(() => {
-    setTimeout(() => {
-      inputRef?.current?.focus();
-    }, 0);
-  }, []);
+  // // Privacy page always visible
+  // useEffect(() => {
+  //   if (window.location.href.includes('privacy')) {
+  //     setIsVerified(true);
+  //   } else {
+  //     setIsVerified(false);
+  //   }
+  // }, [router.pathname]);
 
-  const [isVerified, setIsVerified] = useState(false);
+  // // Focus on mount
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     inputRef?.current?.focus();
+  //   }, 0);
+  // }, []);
 
-  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.toLowerCase() === password) {
-      setIsVerified(true);
-    }
-  };
+  // const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.value.toLowerCase() === password) {
+  //     setIsVerified(true);
+  //   }
+  // };
 
   return (
     <Provider store={store}>
@@ -50,7 +49,12 @@ function App({ Component, pageProps }: AppProps) {
         <title>{METADATA.TITLE_SUFFIX}</title>
       </Head>
 
-      {isVerified ? (
+      <NavBar />
+      <CuisineBar />
+      <SearchOverlay />
+      <Component {...pageProps} />
+
+      {/* {isVerified ? (
         <>
           <NavBar />
           <CuisineBar />
@@ -74,7 +78,7 @@ function App({ Component, pageProps }: AppProps) {
             </h1>
           </div>
         </div>
-      )}
+      )} */}
     </Provider>
   );
 }

@@ -1,7 +1,5 @@
-import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/functions';
-import { get } from 'lodash';
 import Link from 'next/link';
 import Router from 'next/router';
 import React, { useEffect } from 'react';
@@ -14,15 +12,21 @@ initFirebase();
 
 const Account = (props: any) => {
   const { AuthUserInfo, environment } = props;
-  var authUser = get(AuthUserInfo, 'AuthUser');
+  const authUser = AuthUserInfo.AuthUser;
+
+  console.log('props', props);
 
   useEffect(() => {
     console.log('Auth user', authUser);
 
     if (!authUser) {
+      alert('authUser not defined');
+      console.log('Auth', authUser);
+      debugger;
+
       Router.push('/');
     }
-  });
+  }, []);
 
   return (
     <>
@@ -31,7 +35,7 @@ const Account = (props: any) => {
       ) : (
         <>
           <div>
-            <label htmlFor="displayName">display name</label>{' '}
+            <label htmlFor="displayName">display name</label>
             <Link href="/account/update-name">
               <a>[ update ]</a>
             </Link>
@@ -58,12 +62,12 @@ const Account = (props: any) => {
   );
 };
 
-Account.getInitialProps = async function () {
-  const getEnvironment = firebase.functions().httpsCallable('getEnvironment');
-  const result = await getEnvironment({});
-  return {
-    environment: result.data.environment,
-  };
-};
+// Account.getInitialProps = async function () {
+//   const getEnvironment = firebase.functions().httpsCallable('getEnvironment');
+//   const result = await getEnvironment({});
+//   return {
+//     environment: result.data.environment,
+//   };
+// };
 
 export default withAuthUser(withAuthUserInfo(Account));
