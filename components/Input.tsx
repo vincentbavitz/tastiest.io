@@ -1,12 +1,5 @@
 import classNames from 'classnames';
-import {
-  ChangeEvent,
-  FocusEvent,
-  RefObject,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, FocusEvent, RefObject, useRef, useState } from 'react';
 
 export interface InputProps {
   id?: string;
@@ -43,11 +36,12 @@ export interface InputProps {
   duration?: boolean;
 
   // Callbacks
-  onChange?(event: ChangeEvent<HTMLInputElement>): any;
-  onBlur?(event: FocusEvent<HTMLInputElement>): void;
-  onFocus?(event: FocusEvent<HTMLInputElement>): void;
   onKeyDown?(): any;
   onMouseUp?(): any;
+  onBlur?(event: FocusEvent<HTMLInputElement>): void;
+  onFocus?(event: FocusEvent<HTMLInputElement>): void;
+  onChange?(event: ChangeEvent<HTMLInputElement>): any;
+  onValueChange?(value: string): any;
 
   // HTMLInputElement Props
 
@@ -97,10 +91,10 @@ export function Input(props: InputProps) {
       inputRef?.current?.focus();
     }
   };
-  const [hasFocus, setHasFocus] = useState(false);
 
   // Value
   const [value, setValue] = useState('' as string | number);
+  const [hasFocus, setHasFocus] = useState(false);
 
   // Styles
   const fontSize =
@@ -122,11 +116,11 @@ export function Input(props: InputProps) {
       });
     }
 
-    setValue(element.value);
-
-    if (props.onChange) {
-      props.onChange(event);
+    if (props.onValueChange) {
+      props.onValueChange(element.value);
     }
+
+    setValue(element.value);
   };
 
   const handleOnBlur = (event: FocusEvent<HTMLInputElement>) => {
@@ -147,12 +141,12 @@ export function Input(props: InputProps) {
     }
   };
 
-  // Effects
-  useEffect(() => {
-    if (autofocus) {
-      setInputFocus();
-    }
-  }, []);
+  // // Effects
+  // useEffect(() => {
+  //   if (autofocus) {
+  //     setInputFocus();
+  //   }
+  // }, []);
 
   return (
     <div

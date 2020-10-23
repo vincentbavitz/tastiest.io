@@ -17,14 +17,6 @@ const store = createStore(rootReducer);
 function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
-  // admin.initializeApp({
-  //   credential: admin.credential.cert(serviceAccount),
-  //   databaseURL: 'https://tastiest-dishes.firebaseio.com',
-  // });
-
-  // const users = admin.firestore().collection('users');
-  // console.log('users', users);
-
   const inputRef = useRef(null);
   const password = 'tastiest';
 

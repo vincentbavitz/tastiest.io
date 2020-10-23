@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { UI } from '../constants';
 
 interface Props {
@@ -8,12 +7,12 @@ interface Props {
 }
 
 export function Contained(props: Props) {
-  const Contained = styled.div`
-    padding-left: 5vw;
-    padding-right: ${props.allowRight ? '0vw' : '5vw'};
-    max-width: ${UI.MAX_CONTENT_WIDTH}px;
-    margin: 0 auto;
-  `;
+  const containerStyle = {
+    paddingLeft: '5vw',
+    paddingRight: `${props.allowRight ? '0' : '5'}vw`,
+    maxWidth: `${UI.MAX_CONTENT_WIDTH}px`,
+    margin: '0 auto',
+  };
 
-  return <Contained>{props.children}</Contained>;
+  return <div style={containerStyle}>{props.children}</div>;
 }

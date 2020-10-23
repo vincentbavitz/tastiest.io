@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
-import firebase from "firebase/app";
-import "firebase/auth";
-import initFirebase from "./initFirebase";
-import { setSession } from "./firebaseSessionHandler";
-import { createAuthUserInfo } from "./user";
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import React, { useEffect, useState } from 'react';
+import { setSession } from './firebaseSessionHandler';
+import initFirebase from './initFirebase';
+import { createAuthUserInfo } from './user';
 
 initFirebase();
-
 // https://benmcmahen.com/using-firebase-with-react-hooks/
 
 // Defaults to empty AuthUserInfo object.
@@ -22,7 +21,7 @@ export const useFirebaseAuth = () => {
     const user = firebase.auth().currentUser;
     return {
       initializing: !user,
-      user
+      user,
     };
   });
 

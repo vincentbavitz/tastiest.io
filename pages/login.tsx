@@ -2,18 +2,10 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import Link from 'next/link';
 import Router from 'next/router';
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '../components/Button';
-import { Contained } from '../components/Contained';
 import { Input } from '../components/Input';
 import initFirebase from '../utils/auth/initFirebase';
-
-initFirebase();
-
-type Inputs = {
-  email: string;
-  password: string;
-};
 
 function Login() {
   const submitInputRef = useRef(null);
@@ -34,24 +26,28 @@ function Login() {
     }
   };
 
-  const handleEmailInputChanged = (event: ChangeEvent<HTMLInputElement>) => {
-    setEmail(event?.target?.value);
+  const handleEmailInputChanged = (value: string) => {
+    setEmail(value);
 
-    console.log('email', email);
+    console.log('email', value);
 
     // TODO - Verify
   };
 
-  const handlePasswordInputChanged = (event: ChangeEvent<HTMLInputElement>) => {
-    setPassword(event?.target?.value);
+  const handlePasswordInputChanged = (value: string) => {
+    setPassword(value);
 
-    console.log('password', password);
+    console.log('password', value);
     // TODO - Verify
   };
+
+  useEffect(() => {
+    initFirebase();
+  }, []);
 
   return (
-    <Contained>
-      <div className="flex">
+    <>
+      <div className="flex ">
         <div className="flex-1">
           <form>
             <div className="flex flex-col space-y-6">
@@ -65,7 +61,7 @@ function Login() {
                   name="email"
                   size="large"
                   placeholder="jerry@tastiest.io"
-                  onChange={handleEmailInputChanged}
+                  onValueChange={handleEmailInputChanged}
                 />
               </div>
 
@@ -79,7 +75,7 @@ function Login() {
                   name="password"
                   size="large"
                   placeholder="Password"
-                  onChange={handlePasswordInputChanged}
+                  onValueChange={handlePasswordInputChanged}
                 />
               </div>
 
@@ -90,9 +86,11 @@ function Login() {
                   </Button>
                 </div>
                 <div className="flex-1">
-                  <Button type="ghost" size="small">
-                    Create account
-                  </Button>
+                  <Link href="/signup">
+                    <Button type="ghost" size="small">
+                      Create account
+                    </Button>
+                  </Link>
                 </div>
               </div>
 
@@ -112,7 +110,7 @@ function Login() {
           <a>[ create account ]</a>
         </Link>
       </p>
-    </Contained>
+    </>
   );
 }
 
