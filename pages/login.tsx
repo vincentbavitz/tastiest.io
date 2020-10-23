@@ -2,48 +2,31 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import Link from 'next/link';
 import Router from 'next/router';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
 import initFirebase from '../utils/auth/initFirebase';
 
-function Login() {
-  const submitInputRef = useRef(null);
+initFirebase();
 
+function Login() {
   const [email, setEmail] = useState(undefined as string | undefined);
   const [password, setPassword] = useState(undefined as string | undefined);
 
   const handleSubmit = async () => {
-    try {
-      if (!(email && password)) {
-        return;
-      }
+    if (!(email && password)) {
+      return;
+    }
 
+    // TODO - Verify
+
+    try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
-      Router.push('/');
+      Router.push('/account');
     } catch (error) {
       alert(error);
     }
   };
-
-  const handleEmailInputChanged = (value: string) => {
-    setEmail(value);
-
-    console.log('email', value);
-
-    // TODO - Verify
-  };
-
-  const handlePasswordInputChanged = (value: string) => {
-    setPassword(value);
-
-    console.log('password', value);
-    // TODO - Verify
-  };
-
-  useEffect(() => {
-    initFirebase();
-  }, []);
 
   return (
     <>
@@ -61,7 +44,7 @@ function Login() {
                   name="email"
                   size="large"
                   placeholder="jerry@tastiest.io"
-                  onValueChange={handleEmailInputChanged}
+                  onValueChange={value => setEmail(value)}
                 />
               </div>
 
@@ -75,7 +58,7 @@ function Login() {
                   name="password"
                   size="large"
                   placeholder="Password"
-                  onValueChange={handlePasswordInputChanged}
+                  onValueChange={value => setPassword(value)}
                 />
               </div>
 
@@ -93,23 +76,11 @@ function Login() {
                   </Link>
                 </div>
               </div>
-
-              <p>
-                <button type="submit">[ log in ]</button>
-              </p>
-              <input className="hidden" ref={submitInputRef} type="submit" />
             </div>
           </form>
         </div>
         <div className="flex-1"></div>
       </div>
-
-      <p>
-        {'or '}
-        <Link href="/signup">
-          <a>[ create account ]</a>
-        </Link>
-      </p>
     </>
   );
 }

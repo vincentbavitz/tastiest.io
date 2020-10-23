@@ -20,12 +20,17 @@ function App({ Component, pageProps }: AppProps) {
   const inputRef = useRef(null);
   const password = 'tastiest';
 
-  // Focus input on load
+  // Privacy page always visible
   useEffect(() => {
     if (window.location.href.includes('privacy')) {
       setIsVerified(true);
+    } else {
+      setIsVerified(false);
     }
+  }, [router.pathname]);
 
+  // Focus on mount
+  useEffect(() => {
     setTimeout(() => {
       inputRef?.current?.focus();
     }, 0);

@@ -17,6 +17,8 @@ const Account = (props: any) => {
   var authUser = get(AuthUserInfo, 'AuthUser');
 
   useEffect(() => {
+    console.log('Auth user', authUser);
+
     if (!authUser) {
       Router.push('/');
     }
