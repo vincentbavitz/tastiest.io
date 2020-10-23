@@ -49,10 +49,12 @@ function App({ Component, pageProps }: AppProps) {
         <title>{METADATA.TITLE_SUFFIX}</title>
       </Head>
 
-      <NavBar />
-      <CuisineBar />
-      <SearchOverlay />
-      <Component {...pageProps} />
+      <>
+        <NavBar />
+        <CuisineBar />
+        <SearchOverlay />
+        <Component {...pageProps} />
+      </>
 
       {/* {isVerified ? (
         <>

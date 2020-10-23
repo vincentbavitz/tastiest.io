@@ -7,6 +7,7 @@
     "dev": "NODE_ENV=development next dev",
     "build": "next build",
     "start": "next start",
+    "staging": "func() { git add . && git commit -m \"$1\" --no-verify && git push -u origin staging; }; func",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "lint:fix": "npm run lint -- --fix"
   },
