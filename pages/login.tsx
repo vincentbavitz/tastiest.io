@@ -1,8 +1,10 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import Link from 'next/link';
 import Router from 'next/router';
 import React, { useState } from 'react';
+import { useKey } from 'react-use';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
 import initFirebase from '../utils/auth/initFirebase';
@@ -13,7 +15,16 @@ function Login() {
   const [email, setEmail] = useState(undefined as string | undefined);
   const [password, setPassword] = useState(undefined as string | undefined);
 
+  const [error, setError] = useState(undefined as '' | undefined);
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = async () => {
+    if (isLoading) {
+      return;
+    }
+
+    setIsLoading(true);
+
     if (!(email && password)) {
       return;
     }
@@ -22,11 +33,16 @@ function Login() {
 
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
+      setIsLoading(false);
       Router.push('/account');
     } catch (error) {
-      alert(error);
+      setError(error);
+      setIsLoading(false);
     }
   };
+
+  // Submit on enter
+  useKey('Enter', handleSubmit);
 
   return (
     <>
@@ -64,7 +80,12 @@ function Login() {
 
               <div className="flex justify-center space-x-4">
                 <div className="flex-1">
-                  <Button type="solid" size="small" onClick={handleSubmit}>
+                  <Button
+                    type="solid"
+                    size="small"
+                    onClick={handleSubmit}
+                    suffix={isLoading ? <LoadingOutlined /> : <></>}
+                  >
                     Sign in
                   </Button>
                 </div>
@@ -79,7 +100,7 @@ function Login() {
             </div>
           </form>
         </div>
-        <div className="flex-1"></div>
+        <div className="flex-1">{error}</div>
       </div>
     </>
   );
