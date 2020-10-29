@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
+/* eslint-disable-next-line @typescript-eslint/no-var-requires */
 require('dotenv').config();
 
 const config = {

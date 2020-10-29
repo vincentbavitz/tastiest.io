@@ -36,7 +36,7 @@ export function Button(props: Props) {
 
   const clickHandler = (e: any) => {
     if (onClick) {
-      e.stopPropagation();
+      e?.stopPropagation && e?.stopPropagation();
       onClick();
     }
   };

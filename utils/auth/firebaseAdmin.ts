@@ -18,7 +18,7 @@ export const verifyIdToken = (token: string) => {
     privateKey: process.env.FIREBASE_PRIVATE_KEY,
   };
 
-  console.log(`process ${process.env.FIzREBASE_API_KEY}`);
+  console.log(`process ${process.env.FIREBASE_API_KEY}`);
 
   return admin
     .auth()

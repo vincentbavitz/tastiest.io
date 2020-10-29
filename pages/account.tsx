@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 import 'firebase/auth';
 import 'firebase/functions';
 import Link from 'next/link';
@@ -15,15 +16,12 @@ const Account = (props: any) => {
   const { AuthUserInfo, environment } = props;
   const authUser = AuthUserInfo.AuthUser;
 
-  console.log('props', props);
-
   useEffect(() => {
     console.log('Auth user', authUser);
 
     if (!authUser) {
       alert('authUser not defined');
       console.log('Auth', authUser);
-      debugger;
 
       Router.push('/');
     }
@@ -65,12 +63,12 @@ const Account = (props: any) => {
   );
 };
 
-// Account.getInitialProps = async function () {
-//   const getEnvironment = firebase.functions().httpsCallable('getEnvironment');
-//   const result = await getEnvironment({});
-//   return {
-//     environment: result.data.environment,
-//   };
-// };
+Account.getInitialProps = async function () {
+  const getEnvironment = firebase.functions().httpsCallable('getEnvironment');
+  const result = await getEnvironment({});
+  return {
+    environment: result.data.environment,
+  };
+};
 
 export default withAuthUser(withAuthUserInfo(Account));
