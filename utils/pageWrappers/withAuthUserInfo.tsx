@@ -1,9 +1,9 @@
 /* eslint react/jsx-props-no-spreading: 0 */
-import React from "react";
-import PropTypes from "prop-types";
-import { get } from "lodash";
-import { AuthUserInfoContext } from "../auth/hooks";
-import { NextPageContext } from "next";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { get } from 'lodash';
+import { AuthUserInfoContext } from '../auth/hooks';
+import { NextPageContext } from 'next';
 
 // Provides an AuthUserInfo prop to the composed component.
 export default (ComposedComponent: any) => {
@@ -22,7 +22,7 @@ export default (ComposedComponent: any) => {
   };
 
   WithAuthUserInfoComp.getInitialProps = async (ctx: NextPageContext) => {
-    const AuthUserInfo = get(ctx, "myCustomData.AuthUserInfo", null);
+    const AuthUserInfo = get(ctx, 'myCustomData.AuthUserInfo', null);
 
     // Evaluate the composed component's getInitialProps().
     let composedInitialProps = {};
@@ -32,7 +32,7 @@ export default (ComposedComponent: any) => {
 
     return {
       ...composedInitialProps,
-      AuthUserInfo
+      AuthUserInfo,
     };
   };
 
@@ -43,10 +43,10 @@ export default (ComposedComponent: any) => {
       AuthUser: PropTypes.shape({
         id: PropTypes.string.isRequired,
         email: PropTypes.string.isRequired,
-        emailVerified: PropTypes.bool.isRequired
+        emailVerified: PropTypes.bool.isRequired,
       }),
-      token: PropTypes.string
-    })
+      token: PropTypes.string,
+    }),
   };
 
   WithAuthUserInfoComp.defaultProps = {};
