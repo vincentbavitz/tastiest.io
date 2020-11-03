@@ -56,7 +56,7 @@ const Index = (props: Props) => {
             next
             <div className="absolute w-4/5 h-1 mt-10 rounded-full bg-secondary"></div>
           </div>
-          <p>favourite dish!!</p>
+          <p>favourite dish!</p>
         </div>
 
         <div className="md:flex overflow-x-hidden mx-6 my-8 space-x-6">
