@@ -138,9 +138,7 @@ function OverlayElement() {
           isMobile && 'flex flex-col h-full justify-between mt-3',
         )}
       >
-        {!searchState.searchQuery.length && (
-          <CuisineBar shouldOverflow={true} />
-        )}
+        {!searchState.searchQuery.length && <CuisineBar />}
 
         {renderSearchTemplate ? (
           <div className="flex justify-between items-center px-6 my-10">

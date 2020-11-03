@@ -20,7 +20,7 @@ export const addSession = (req: any, res: any) => {
     httpOnly: true,
     overwrite: true,
   });
-  // includeSession(req, res, () => {});
+  includeSession(req, res, () => null);
 };
 
 export default (handler: any) => (
