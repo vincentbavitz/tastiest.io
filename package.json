@@ -26,6 +26,7 @@
     "@zeit/next-sass": "^1.0.1",
     "D": "^1.0.0",
     "autoprefixer": "^10.0.1",
+    "caniuse-lite": "^1.0.30001154",
     "classnames": "^2.2.6",
     "cookie-session": "^1.4.0",
     "dotenv": "^8.2.0",

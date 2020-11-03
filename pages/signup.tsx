@@ -25,7 +25,7 @@ function Signup() {
 
     try {
       await firebase.auth().createUserWithEmailAndPassword(email, password);
-      var user = firebase.auth().currentUser;
+      const user = firebase.auth().currentUser;
       if (user) {
         await user.updateProfile({
           displayName,
