@@ -17,7 +17,9 @@ function NavBar() {
 
   const { searchOverlayExpanded } = navigationState;
 
-  // const handleAvatarClick = () => {};
+  const handleAvatarClick = () => {
+    null;
+  };
 
   // Responsive
   let isMobile = true;

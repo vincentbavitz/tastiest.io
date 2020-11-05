@@ -1,6 +1,6 @@
 import groq from 'groq';
 import Head from 'next/head';
-import React, { useEffect } from 'react';
+import React from 'react';
 import client from '../client';
 import { ArticleItem } from '../components/ArticleItem';
 import { Contained } from '../components/Contained';
@@ -9,8 +9,8 @@ import MainPageSearch from '../components/MainPageSearch';
 import { SuggestDish } from '../components/SuggestDish';
 import { METADATA } from '../constants';
 import { ISanityArticle } from '../types/article';
-import withAuthUser from '../utils/pageWrappers/withAuthUser';
-import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo';
+// import withAuthUser from '../utils/pageWrappers/withAuthUser';
+// import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo';
 import { sanityPostQuery } from '../utils/search';
 
 interface Props {
@@ -24,12 +24,12 @@ const Index = (props: Props) => {
     ? posts.slice(0, 4).map(post => <ArticleItem key={post.id} {...post} />)
     : [];
 
-  const { AuthUserInfo } = props;
-  const authUser = AuthUserInfo.AuthUser;
+  // const { AuthUserInfo } = props;
+  // const authUser = AuthUserInfo.AuthUser;
 
-  useEffect(() => {
-    console.log('Auth user', authUser);
-  }, [AuthUserInfo]);
+  // useEffect(() => {
+  //   console.log('Auth user', authUser);
+  // }, [AuthUserInfo]);
 
   return (
     <>
@@ -95,5 +95,5 @@ export const getInitialProps = async () => {
   };
 };
 
-// export default Index;
-export default withAuthUser(withAuthUserInfo(Index));
+// export default withAuthUser(withAuthUserInfo(Index));
+export default Index;

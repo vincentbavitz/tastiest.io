@@ -1,5 +1,4 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import firebase from 'firebase/app';
 import 'firebase/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -7,11 +6,11 @@ import React, { useState } from 'react';
 import { useKey } from 'react-use';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
-import initFirebase from '../utils/auth/initFirebase';
-import withAuthUser from '../utils/pageWrappers/withAuthUser';
-import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo';
+// import initFirebase from '../utils/auth/initFirebase';
+// import withAuthUser from '../utils/pageWrappers/withAuthUser';
+// import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo';
 
-initFirebase();
+// initFirebase();
 
 enum AuthErrorCode {
   WRONG_PASSWORD = 'auth/wrong-password',
@@ -49,14 +48,14 @@ function Login(props: Props) {
 
     // TODO - Verify
 
-    try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
-      setIsLoading(false);
-      router.push('/account');
-    } catch (error) {
-      setError(error);
-      setIsLoading(false);
-    }
+    // try {
+    //   // await firebase.auth().signInWithEmailAndPassword(email, password);
+    //   setIsLoading(false);
+    //   router.push('/account');
+    // } catch (error) {
+    //   setError(error);
+    //   setIsLoading(false);
+    // }
 
     setIsLoading(false);
   };
@@ -126,4 +125,5 @@ function Login(props: Props) {
   );
 }
 
-export default withAuthUser(withAuthUserInfo(Login));
+// export default withAuthUser(withAuthUserInfo(Login));
+export default Login;

@@ -1,16 +1,15 @@
-import firebase from 'firebase';
 import 'firebase/auth';
 import 'firebase/functions';
 import Link from 'next/link';
 import Router from 'next/router';
 import React, { useEffect } from 'react';
 import { Title } from '../components/Title';
-import initFirebase from '../utils/auth/initFirebase';
-import logout from '../utils/auth/logout';
-import withAuthUser from '../utils/pageWrappers/withAuthUser';
-import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo';
+// import initFirebase from '../utils/auth/initFirebase';
+// import logout from '../utils/auth/logout';
+// import withAuthUser from '../utils/pageWrappers/withAuthUser';
+// import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo';
 
-initFirebase();
+// initFirebase();
 
 const Account = (props: any) => {
   const { AuthUserInfo, environment } = props;
@@ -45,7 +44,7 @@ const Account = (props: any) => {
             <button
               onClick={async () => {
                 try {
-                  await logout();
+                  // await logout();
                   Router.push('/login');
                 } catch (e) {
                   console.error(e);
@@ -63,12 +62,13 @@ const Account = (props: any) => {
   );
 };
 
-Account.getInitialProps = async function () {
-  const getEnvironment = firebase.functions().httpsCallable('getEnvironment');
-  const result = await getEnvironment({});
-  return {
-    environment: result.data.environment,
-  };
-};
+// Account.getInitialProps = async function () {
+//   const getEnvironment = firebase.functions().httpsCallable('getEnvironment');
+//   const result = await getEnvironment({});
+//   return {
+//     environment: result.data.environment,
+//   };
+// };
 
-export default withAuthUser(withAuthUserInfo(Account));
+// export default withAuthUser(withAuthUserInfo(Account));
+export default Account;
