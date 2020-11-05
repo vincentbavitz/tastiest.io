@@ -1,6 +1,6 @@
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMedia, useScroll } from 'react-use';
 // import { useGeolocation } from 'react-use';
@@ -17,11 +17,12 @@ interface Props {
 export function CuisineBar(props: Props) {
   const { onItemClick } = props;
   const navigationState = useSelector((state: IState) => state.navigation);
+  const dispatch = useDispatch();
 
   const scrollRef = useRef(null);
   const { x } = useScroll(scrollRef);
 
-  const dispatch = useDispatch();
+  const [rightScrollHidden, setRightScrollHidden] = useState(false);
 
   // Responsive
   let isDesktop = true;
@@ -29,12 +30,20 @@ export function CuisineBar(props: Props) {
     isDesktop = useMedia(`(min-width: ${UI.TABLET_BREAKPOINT}px)`);
   }
 
-  const handleLeftScroll = (event: React.MouseEvent) => {
-    scrollRef.current.scrollLeft = scrollRef.current.scrollLeft += 200;
+  console.log('scrollRef', scrollRef);
+
+  const handleLeftScroll = () => {
+    scrollRef.current.scrollBy({
+      left: -333,
+      behavior: 'smooth',
+    });
   };
 
-  const handleRightScroll = (event: React.MouseEvent) => {
-    scrollRef.current.scrollLeft = scrollRef.current.scrollLeft += 200;
+  const handleRightScroll = () => {
+    scrollRef.current.scrollBy({
+      left: 333,
+      behavior: 'smooth',
+    });
   };
 
   function handleItemClick() {
@@ -46,21 +55,40 @@ export function CuisineBar(props: Props) {
   }
 
   useEffect(() => {
+    const isFullRight =
+      scrollRef.current.scrollWidth - scrollRef.current.clientWidth ===
+      scrollRef.current.scrollLeft;
+
+    setRightScrollHidden(isFullRight);
+  }, [x]);
+
+  useEffect(() => {
     scrollRef.current.scrollLeft = navigationState.cuisineBarScrollPos;
   }, []);
 
   return (
     <Contained>
       <div className="flex relative w-full">
-        <div className="absolute left-0 flex items-center justify-between h-full w-full">
+        <div
+          className={classNames(
+            'absolute left-0 flex items-center justify-between h-full w-full',
+            !isDesktop && 'hidden',
+          )}
+        >
           <div
-            className="flex justify-center items-center h-10 w-10 pt-3 bg-gray-200 z-50 rounded-full duration-300 cursor-pointer"
+            className={classNames(
+              'flex justify-center items-center h-12 w-12 pt-3 -ml-5 bg-gray-200 z-50 rounded-full duration-300 cursor-pointer',
+              x === 0 && 'opacity-0',
+            )}
             onClick={handleLeftScroll}
           >
             <LeftOutlined className="h-10 text-twoxl" />
           </div>
           <div
-            className="flex justify-center items-center h-10 w-10 pt-3 bg-gray-200 z-50 rounded-full duration-300 cursor-pointer"
+            className={classNames(
+              'flex justify-center items-center h-12 w-12 pt-3 -mr-5 bg-gray-200 z-50 rounded-full duration-300 cursor-pointer',
+              rightScrollHidden && 'hidden',
+            )}
             onClick={handleRightScroll}
           >
             <RightOutlined className="h-10 text-twoxl" />
