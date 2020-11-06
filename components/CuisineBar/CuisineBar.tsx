@@ -30,8 +30,6 @@ export function CuisineBar(props: Props) {
     isDesktop = useMedia(`(min-width: ${UI.TABLET_BREAKPOINT}px)`);
   }
 
-  console.log('scrollRef', scrollRef);
-
   const handleLeftScroll = () => {
     scrollRef.current.scrollBy({
       left: -333,
