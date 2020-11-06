@@ -26,36 +26,39 @@ export function SuggestDish() {
   return (
     <div
       className={classNames(
-        'relative flex w-full',
+        'relative flex w-full justify-end',
         isDesktop && !isHuge && 'space-x-10',
       )}
     >
       {isDesktop && (
         <div
-          className="relative flex-grow self-end"
+          className="relative"
           style={{
-            width: isHuge ? '75rem' : '40rem',
-            transform: isHuge ? 'translateY(30%)' : 'none',
-            marginTop: isHuge ? '-30%' : 'unset',
-            marginLeft: isHuge ? '0' : '-4rem',
+            width: '30rem',
+            marginLeft: isHuge ? '0' : 'calc(1/0.1vw)',
           }}
         >
           <SuggestDishDesktopSVG
-            style={{ width: '100%', marginLeft: isHuge ? '-6rem' : '-2rem' }}
+            style={{
+              height: '28.5rem',
+              marginLeft: isHuge ? '0' : '2rem',
+            }}
           />
         </div>
       )}
 
       <div
-        style={{ width: '100%', marginTop: '3vw' }}
-        className={classNames('relative flex flex-col', isDesktop && 'mb-12')}
+        style={{ width: '', marginTop: '3vw' }}
+        className={classNames(
+          'relative flex flex-col flex-1 ',
+          isDesktop && 'mb-12',
+        )}
       >
         {isDesktop ? (
           <div
-            style={{ width: '8.1rem', marginLeft: 'calc(-10rem - 2vw)' }}
+            style={{ width: '8.1rem', marginLeft: 'calc(-9rem - 2vw)' }}
             className={classNames(
-              'flex justify-end absolute left-0 leading-tight text-primary font-somantic',
-              isHuge ? 'text-fivexl' : 'text-fivexl',
+              'flex justify-end absolute left-0 leading-tight text-primary font-somantic text-fourxl',
             )}
           >
             <div>Suggest a dish</div>
@@ -74,7 +77,7 @@ export function SuggestDish() {
         </div>
 
         <div className="flex space-x-4 mt-4">
-          <div className="flex-1 my-1">
+          <div className="flex-1">
             <Title level={3} className="text-primary">
               Dish name
             </Title>
