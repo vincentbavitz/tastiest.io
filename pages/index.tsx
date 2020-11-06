@@ -1,4 +1,5 @@
 import groq from 'groq';
+import { NextPage } from 'next';
 import Head from 'next/head';
 import React from 'react';
 import { useMedia } from 'react-use';
@@ -16,14 +17,15 @@ import { sanityPostQuery } from '../utils/search';
 
 interface Props {
   posts: Array<ISanityArticle>;
-  AuthUserInfo: any;
+  // AuthUserInfo: any;
 }
 
-const Index = (props: Props) => {
-  const { posts = [] } = props;
+const Index: NextPage<Props> = ({ posts = [] }) => {
   const cards = posts
     ? posts.slice(0, 4).map(post => <ArticleItem key={post.id} {...post} />)
     : [];
+
+  console.log('posts', posts);
 
   // const { AuthUserInfo } = props;
   // const authUser = AuthUserInfo.AuthUser;
@@ -80,14 +82,14 @@ const Index = (props: Props) => {
   );
 };
 
-export const getInitialProps = async () => {
+Index.getInitialProps = async () => {
   const query = groq`
     *[_type == "post"]|order(publishedAt desc) {
       ${sanityPostQuery}
     }
   `;
 
-  let posts: ISanityArticle;
+  let posts: Array<ISanityArticle>;
   try {
     posts = await client.fetch(query);
     console.log('Posts', posts);
@@ -95,11 +97,7 @@ export const getInitialProps = async () => {
     console.warn('Error:', error);
   }
 
-  return {
-    props: {
-      posts,
-    },
-  };
+  return { posts };
 };
 
 // export default withAuthUser(withAuthUserInfo(Index));

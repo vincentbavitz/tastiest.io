@@ -34,7 +34,7 @@ export function SuggestDish() {
         <div
           className="relative flex-grow self-end"
           style={{
-            width: isHuge ? '75rem' : '55rem',
+            width: isHuge ? '75rem' : '40rem',
             transform: isHuge ? 'translateY(30%)' : 'none',
             marginTop: isHuge ? '-30%' : 'unset',
             marginLeft: isHuge ? '0' : '-4rem',
@@ -55,7 +55,7 @@ export function SuggestDish() {
             style={{ width: '8.1rem', marginLeft: 'calc(-10rem - 2vw)' }}
             className={classNames(
               'flex justify-end absolute left-0 leading-tight text-primary font-somantic',
-              isHuge ? 'text-fivexl' : 'text-fourxl',
+              isHuge ? 'text-fivexl' : 'text-fivexl',
             )}
           >
             <div>Suggest a dish</div>
