@@ -30,12 +30,6 @@ export function SuggestDish() {
         isDesktop && !isHuge && 'space-x-10',
       )}
     >
-      <div className="absolute -mt-12">
-        {isMobile && 'Mobile'}
-        {isTablet && 'Tablet'}
-        {isDesktop && 'Desktop'}
-        {isHuge && 'Huge'}
-      </div>
       {isDesktop && (
         <div
           className="relative flex-grow self-end"
