@@ -6,7 +6,7 @@ import { Contained } from './Contained';
 
 export function Footer() {
   return (
-    <div className="bg-primary text-white py-6 text-center">
+    <div className="bg-primary-subtle text-white py-6 text-center">
       <Contained>
         <div className="font-robotolight text-sm">
           <div className="flex justify-center mt-2 mb-6 cursor-pointer">

@@ -1,13 +1,14 @@
 import groq from 'groq';
 import Head from 'next/head';
 import React from 'react';
+import { useMedia } from 'react-use';
 import client from '../client';
 import { ArticleItem } from '../components/ArticleItem';
 import { Contained } from '../components/Contained';
 import { Footer } from '../components/Footer';
 import MainPageSearch from '../components/MainPageSearch';
 import { SuggestDish } from '../components/SuggestDish';
-import { METADATA } from '../constants';
+import { METADATA, UI } from '../constants';
 import { ISanityArticle } from '../types/article';
 // import withAuthUser from '../utils/pageWrappers/withAuthUser';
 // import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo';
@@ -30,6 +31,12 @@ const Index = (props: Props) => {
   // useEffect(() => {
   //   console.log('Auth user', authUser);
   // }, [AuthUserInfo]);
+
+  // Responsive
+  let isMobile = true;
+  if (typeof window !== 'undefined') {
+    isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
+  }
 
   return (
     <>
@@ -63,7 +70,7 @@ const Index = (props: Props) => {
           {cards}
         </div>
 
-        <div className="mt-6 mb-12">
+        <div className="mt-6">
           <SuggestDish />
         </div>
       </Contained>

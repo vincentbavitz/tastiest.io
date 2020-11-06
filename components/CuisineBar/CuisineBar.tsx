@@ -100,15 +100,12 @@ export function CuisineBar(props: Props) {
             'relative',
             'w-full',
             'hide_scroll',
-            isDesktop && 'overflow-x-hidden',
+            'scrolling-touch',
+            isDesktop ? 'overflow-x-hidden' : 'overflow-x-scroll',
           )}
           ref={scrollRef}
         >
-          <div
-            className={classNames(
-              'flex md:px-0 overflow-y-visible scrolling-touch',
-            )}
-          >
+          <div className={classNames('flex md:px-0 overflow-y-visible')}>
             <div className={classNames('flex w-full overflow-y-visible')}>
               {CUISINES.map(cuisine => (
                 <CuisineItem

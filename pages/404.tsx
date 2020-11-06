@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import Head from 'next/head';
 import Link from 'next/link';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useMedia } from 'react-use';
 import _404 from '../assets/svgs/404.svg';
 import { Footer } from '../components/Footer';
@@ -22,12 +22,6 @@ function Tastiest404() {
     isDesktop = useMedia(`(min-width: ${UI.TABLET_BREAKPOINT}px)`);
     isHuge = useMedia(`(min-width: ${UI.DESKTOP_BREAKPOINT}px)`);
   }
-
-  useEffect(() => {
-    console.log('isMobile:', isMobile);
-    console.log('isTablet:', isTablet);
-    console.log('isDesktop:', isDesktop);
-  }, [isMobile, isTablet, isDesktop]);
 
   const wrapperStyles = {
     width: '100%',
