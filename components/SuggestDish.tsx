@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import React from 'react';
-import { useMedia } from 'react-use';
+import React, { useEffect } from 'react';
+import { useMeasure, useMedia } from 'react-use';
 import SuggestDishDesktopSVG from '../assets/svgs/suggest-dish-desktop.svg';
 import SuggestDishMobileSVG from '../assets/svgs/suggest-dish-mobile.svg';
 import { UI } from '../constants';
@@ -10,21 +10,22 @@ import { Title } from './Title';
 
 export function SuggestDish() {
   // Responsive
-  let isMobile = true;
-  let isTablet = false;
   let isDesktop = false;
   let isHuge = false;
   if (typeof window !== 'undefined') {
-    isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
-    isTablet = useMedia(
-      `(min-width: ${UI.MOBILE_BREAKPOINT}px) and  (max-width: ${UI.TABLET_BREAKPOINT}px)`,
-    );
     isDesktop = useMedia(`(min-width: ${UI.TABLET_BREAKPOINT}px)`);
     isHuge = useMedia(`(min-width: ${UI.DESKTOP_BREAKPOINT}px)`);
   }
 
+  const [ref, { width }] = useMeasure();
+
+  useEffect(() => {
+    console.log('width', width);
+  }, [width]);
+
   return (
     <div
+      ref={ref}
       className={classNames(
         'relative flex w-full justify-end',
         isDesktop && !isHuge && 'space-x-10',
@@ -35,12 +36,12 @@ export function SuggestDish() {
           className="relative"
           style={{
             width: '30rem',
-            marginLeft: isHuge ? '0' : 'calc(1/0.1vw)',
+            marginLeft: isHuge ? '0' : '-12vw',
           }}
         >
           <SuggestDishDesktopSVG
             style={{
-              height: '28.5rem',
+              height: '27.5rem',
               marginLeft: isHuge ? '0' : '2rem',
             }}
           />
@@ -48,7 +49,7 @@ export function SuggestDish() {
       )}
 
       <div
-        style={{ width: '', marginTop: '3vw' }}
+        style={{ minWidth: '20rem', marginTop: '3vw' }}
         className={classNames(
           'relative flex flex-col flex-1 ',
           isDesktop && 'mb-12',
@@ -56,7 +57,7 @@ export function SuggestDish() {
       >
         {isDesktop ? (
           <div
-            style={{ width: '8.1rem', marginLeft: 'calc(-9rem - 2vw)' }}
+            style={{ width: '8.1rem', marginLeft: 'calc(-9rem - 3vw)' }}
             className={classNames(
               'flex justify-end absolute left-0 leading-tight text-primary font-somantic text-fourxl',
             )}
