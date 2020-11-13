@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import commonMiddleware from '../../utils/middleware/commonMiddleware';
+// import commonMiddleware from '../../utils/middleware/commonMiddleware';
 
 // req type: CookieSession?
 const handler = (req: any, res: NextApiResponse) => {
@@ -9,4 +9,4 @@ const handler = (req: any, res: NextApiResponse) => {
   res.status(200).json({ status: true });
 };
 
-export default commonMiddleware(handler);
+// export default commonMiddleware(handler);

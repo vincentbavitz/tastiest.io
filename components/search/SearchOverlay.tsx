@@ -69,7 +69,11 @@ export function SearchOverlay() {
           )}
         >
           <div className="flex flex-col h-full flex-grow overflow-y-scroll">
-            <Search autofocus={searchOverlayExpanded} renderExitButton={true} />
+            <Search
+              placeholder="Search"
+              autofocus={searchOverlayExpanded}
+              renderExitButton={true}
+            />
             <OverlayElement />
           </div>
         </div>

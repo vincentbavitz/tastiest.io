@@ -27,8 +27,11 @@ import { search } from '../../utils/search';
 
 interface Props {
   renderExitButton?: boolean;
+  size?: 'small' | 'medium';
+  placeholder?: string;
   autofocus?: boolean;
   onFocus?(): void;
+  className?: string;
 }
 
 export function Search(props: Props) {
@@ -37,7 +40,13 @@ export function Search(props: Props) {
   const dispatch = useDispatch();
 
   const { searchOverlayExpanded } = nagivationState;
-  const { onFocus, autofocus = false } = props;
+  const {
+    onFocus,
+    autofocus = false,
+    size = 'medium',
+    placeholder,
+    className,
+  } = props;
 
   const router = useRouter();
 
@@ -151,7 +160,12 @@ export function Search(props: Props) {
           'flex items-center w-full justify-between bg-white px-6 rounded-t-lg',
           searchOverlayExpanded && 'rounded-t-lg',
           isMobile && 'border-b border-gray-300',
-          isMobile && searchOverlayExpanded ? 'h-20' : 'h-16',
+          size === 'small'
+            ? 'py-1 px-1'
+            : isMobile && searchOverlayExpanded
+            ? 'h-20'
+            : 'h-16',
+          className,
         )}
       >
         <span className="text-secondary">
@@ -177,7 +191,7 @@ export function Search(props: Props) {
             'bg-transparent',
             'w-0',
           )}
-          placeholder={'Search'}
+          placeholder={placeholder}
           value={inputValue}
           onKeyDown={() => inputRef?.current?.focus()}
           onFocus={handleFocus}

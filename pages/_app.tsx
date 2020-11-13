@@ -23,9 +23,10 @@ function App({ Component, pageProps }: AppProps) {
       </Head>
 
       <>
+        {/* <SearchOverlay /> */}
+
         <NavBar />
         <CuisineBar />
-        {/* <SearchOverlay /> */}
         <Component {...pageProps} />
       </>
     </Provider>
