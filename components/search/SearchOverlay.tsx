@@ -13,7 +13,7 @@ import { SearchItem } from './SearchItem';
 export function SearchOverlay() {
   const navigationState = useSelector((state: IState) => state.navigation);
   const searchState = useSelector((state: IState) => state.search);
-  const renderSearchTemplate = searchState.searchResultItems.length === 0;
+  // const renderSearchTemplate = searchState.searchResultItems.length === 0;
   const { searchOverlayExpanded } = navigationState;
 
   // Pull into the location context of search bar
@@ -69,7 +69,11 @@ export function SearchOverlay() {
           )}
         >
           <div className="flex flex-col h-full flex-grow overflow-y-scroll">
-            <Search autofocus={searchOverlayExpanded} renderExitButton={true} />
+            <Search
+              placeholder="Search"
+              autofocus={searchOverlayExpanded}
+              renderExitButton={true}
+            />
             <OverlayElement />
           </div>
         </div>

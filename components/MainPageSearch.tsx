@@ -24,6 +24,7 @@ function MainPageSearch(): JSX.Element {
                   {/* FORWARD REF TO OVERLAY AND RENDER OVERLAY THUSLY */}
                   {/* WORKS ON HOME PAGE ONLY, AS NAVBAR IS GRABBING THE OVERLAY FROM HERE */}
                   <Search
+                    placeholder="Search"
                     renderExitButton={false}
                     onFocus={() => dispatch(expandSearchOverlay())}
                   />
