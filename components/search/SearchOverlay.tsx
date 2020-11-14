@@ -3,13 +3,16 @@ import Link from 'next/link';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useKey, useLocation, useMedia } from 'react-use';
-import { UI } from '../../constants';
+import NewSVG from '../../assets/svgs/hot.svg';
+import NearbySVG from '../../assets/svgs/location.svg';
+import TrendingSVG from '../../assets/svgs/trending.svg';
+import { CUISINES, UI } from '../../constants';
 import { collapseSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
-import { CuisineBar } from '../CuisineBar/CuisineBar';
 import { Search } from './Search';
-import { SearchItem } from './SearchItem';
 
+// TODO - FIX:
+// Warning: Did not expect server HTML to contain a <div> in <div>.
 export function SearchOverlay() {
   const navigationState = useSelector((state: IState) => state.navigation);
   const searchState = useSelector((state: IState) => state.search);
@@ -46,6 +49,8 @@ export function SearchOverlay() {
     zIndex: searchOverlayExpanded ? 20000 : -1,
   };
 
+  // Desktop overlay styles depend on wether or not the search bar is
+  // in the navbar or not
   const desktopOverlayStyles = {
     zIndex: searchOverlayExpanded ? 20001 : -1,
     display: searchOverlayExpanded ? 'block' : 'none',
@@ -59,7 +64,7 @@ export function SearchOverlay() {
   };
 
   return (
-    <>
+    <div>
       {isMobile ? (
         <div
           style={mobileOverlayStyles}
@@ -89,8 +94,8 @@ export function SearchOverlay() {
               'right-0',
               'h-full',
               'w-full',
-              'bg-gray-800',
-              'bg-opacity-50',
+              'bg-white',
+              'bg-opacity-75',
               'transition-opacity',
               'duration-300',
               searchOverlayExpanded ? 'opacity-100' : 'opacity-0',
@@ -108,7 +113,11 @@ export function SearchOverlay() {
                 'flex',
                 // Allows shadow to overflow
                 'bg-white',
-                'border-t',
+                'border-primary',
+                'border-t-none',
+                'border-l-2',
+                'border-r-2',
+                'border-b-2',
                 'rounded-b-lg',
                 'pb-4',
               )}
@@ -120,7 +129,7 @@ export function SearchOverlay() {
           </div>
         </>
       )}
-    </>
+    </div>
   );
 }
 
@@ -135,14 +144,48 @@ function OverlayElement() {
   }
 
   return (
-    <>
+    <div>
       <div
         className={classNames(
-          'search-items w-full pb-6',
+          'w-full px-4 pb-6',
           isMobile && 'flex flex-col h-full justify-between mt-3',
         )}
       >
-        {!searchState.searchQuery.length && <CuisineBar />}
+        <div className="w-full border-secondary border-opacity-50 border-t-2 mb-3"></div>
+
+        {/* FEATURED DYNAMIC CATEGORIES */}
+        <div className="flex flex-col space-y-1 mb-3">
+          <span className="flex items-center text-lg text-primary font-roboto font-semibold">
+            <NearbySVG className="h-10 mr-2" />
+            Nearby
+          </span>
+          <span className="flex items-center text-lg text-primary font-roboto font-semibold">
+            <TrendingSVG className="h-10 mr-2" />
+            Trending
+          </span>
+          <span className="flex items-center text-lg text-primary font-roboto font-semibold">
+            <NewSVG className="h-10 mr-2" />
+            New
+          </span>
+        </div>
+
+        {/* CUISINES */}
+        <div className="flex flex-col">
+          <span className="text-black font-bold text-lg ml-1">
+            Find your next favourite dish!
+          </span>
+
+          <div className="flex flex-wrap space-x-2">
+            {/* Get 5 most popular cuisines */}
+            {CUISINES.sort((a, b) => b.popularity - a.popularity)
+              .slice(0, 5)
+              .map(cuisine => (
+                <div className="border-2 border-secondary rounded-lg px-3 py-1">
+                  <span className="text-lg text-primary">{cuisine.name}</span>
+                </div>
+              ))}
+          </div>
+        </div>
 
         {renderSearchTemplate ? (
           <div className="flex justify-between items-center px-6 my-10">
@@ -151,17 +194,18 @@ function OverlayElement() {
             </h3>
           </div>
         ) : (
-          <div className="flex w-full flex-wrap px-2 my-4">
-            {searchState.searchResultItems.length &&
-              searchState.searchResultItems.slice(0, 4).map(searchItem => (
-                <div
-                  className={classNames('flex', isMobile ? ' w-full' : 'w-1/2')}
-                  key={searchItem.title.replace(' ', '-')}
-                >
-                  <SearchItem {...searchItem} />
-                </div>
-              ))}
-          </div>
+          // <div className="flex w-full flex-wrap px-2 my-4">
+          //   {searchState.searchResultItems.length &&
+          //     searchState.searchResultItems.slice(0, 4).map(searchItem => (
+          //       <div
+          //         className={classNames('flex', isMobile ? ' w-full' : 'w-1/2')}
+          //         key={searchItem.title.replace(' ', '-')}
+          //       >
+          //         <SearchItem {...searchItem} />
+          //       </div>
+          //     ))}
+          // </div>
+          <>fdsf</>
         )}
 
         <div className="flex flex-col w-full px-6">
@@ -177,6 +221,6 @@ function OverlayElement() {
           </Link>
         </div>
       </div>
-    </>
+    </div>
   );
 }

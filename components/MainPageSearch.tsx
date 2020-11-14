@@ -2,7 +2,6 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import HomeHeroSVG from '../assets/svgs/home-hero.svg';
 import { expandSearchOverlay } from '../state/navigation';
-import { Button } from './Button';
 import { Search } from './search/Search';
 
 function MainPageSearch(): JSX.Element {
@@ -24,19 +23,11 @@ function MainPageSearch(): JSX.Element {
                   {/* FORWARD REF TO OVERLAY AND RENDER OVERLAY THUSLY */}
                   {/* WORKS ON HOME PAGE ONLY, AS NAVBAR IS GRABBING THE OVERLAY FROM HERE */}
                   <Search
+                    trackGeometry
                     placeholder="Search"
                     renderExitButton={false}
                     onFocus={() => dispatch(expandSearchOverlay())}
                   />
-                </div>
-
-                <div>
-                  <Button
-                    onClick={() => dispatch(expandSearchOverlay())}
-                    className="rounded-t-none"
-                  >
-                    Search a dish
-                  </Button>
                 </div>
               </div>
             </div>
