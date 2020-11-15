@@ -59,68 +59,70 @@ export function SearchOverlay() {
   };
 
   return (
-    <>
-      {isMobile ? (
-        <div
-          style={mobileOverlayStyles}
-          className={classNames(
-            'fixed top-0 bottom-0 left-0 right-0 bg-white',
-            searchOverlayExpanded ? 'block' : 'hidden',
-          )}
-        >
-          <div className="flex flex-col h-full flex-grow overflow-y-scroll">
-            <Search
-              placeholder="Search"
-              autofocus={searchOverlayExpanded}
-              renderExitButton={true}
-            />
-            <OverlayElement />
-          </div>
-        </div>
-      ) : (
-        <>
+    <div>
+      <>
+        {isMobile ? (
           <div
-            onClick={onClickAway}
-            style={{ zIndex: searchOverlayExpanded ? 20000 : -1 }}
+            style={mobileOverlayStyles}
             className={classNames(
-              'fixed',
-              'bottom-0',
-              'left-0',
-              'right-0',
-              'h-full',
-              'w-full',
-              'bg-gray-800',
-              'bg-opacity-50',
-              'transition-opacity',
-              'duration-300',
-              searchOverlayExpanded ? 'opacity-100' : 'opacity-0',
+              'fixed top-0 bottom-0 left-0 right-0 bg-white',
+              searchOverlayExpanded ? 'block' : 'hidden',
             )}
-          ></div>
-
-          <div
-            className="absolute"
-            ref={overlayContentRef}
-            style={desktopOverlayStyles}
           >
-            <div
-              className={classNames(
-                'relative',
-                'flex',
-                // Allows shadow to overflow
-                'bg-white',
-                'border-t',
-                'rounded-b-lg',
-                'pb-4',
-              )}
-            >
-              <div className="relative overflow-y-scroll w-full">
-                <OverlayElement />
-              </div>
+            <div className="flex flex-col h-full flex-grow overflow-y-scroll">
+              <Search
+                placeholder="Search"
+                autofocus={searchOverlayExpanded}
+                renderExitButton={true}
+              />
+              <OverlayElement />
             </div>
           </div>
-        </>
-      )}
-    </>
+        ) : (
+          <>
+            <div
+              onClick={onClickAway}
+              style={{ zIndex: searchOverlayExpanded ? 20000 : -1 }}
+              className={classNames(
+                'fixed',
+                'bottom-0',
+                'left-0',
+                'right-0',
+                'h-full',
+                'w-full',
+                'bg-gray-800',
+                'bg-opacity-50',
+                'transition-opacity',
+                'duration-300',
+                searchOverlayExpanded ? 'opacity-100' : 'opacity-0',
+              )}
+            ></div>
+
+            <div
+              className="absolute"
+              ref={overlayContentRef}
+              style={desktopOverlayStyles}
+            >
+              <div
+                className={classNames(
+                  'relative',
+                  'flex',
+                  // Allows shadow to overflow
+                  'bg-white',
+                  'border-t',
+                  'rounded-b-lg',
+                  'pb-4',
+                )}
+              >
+                <div className="relative overflow-y-scroll w-full">
+                  <OverlayElement />
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </>
+    </div>
   );
 }
 
