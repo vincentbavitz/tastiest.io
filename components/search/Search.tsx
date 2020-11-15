@@ -26,6 +26,7 @@ import {
 import { search } from '../../utils/search';
 
 interface Props {
+  trackGeometry?: boolean;
   renderExitButton?: boolean;
   size?: 'small' | 'medium';
   placeholder?: string;
@@ -41,6 +42,7 @@ export function Search(props: Props) {
 
   const { searchOverlayExpanded } = nagivationState;
   const {
+    trackGeometry = false,
     onFocus,
     autofocus = false,
     size = 'medium',
@@ -131,6 +133,10 @@ export function Search(props: Props) {
   // Set coordinates of search element
   useEffect(
     () => {
+      if (!trackGeometry) {
+        return;
+      }
+
       const rects = searchRef.current.getBoundingClientRect();
       const { height, top, right, bottom, left } = rects;
       const geometry: ISearchBarGeometry = {
@@ -157,8 +163,11 @@ export function Search(props: Props) {
       <div
         ref={searchRef}
         className={classNames(
-          'flex items-center w-full justify-between bg-white px-6 rounded-t-lg',
-          searchOverlayExpanded && 'rounded-t-lg',
+          'flex items-center w-full justify-between bg-white px-6',
+          'border-primary border-t-2 border-l-2 border-r-2',
+          searchOverlayExpanded ? 'rounded-t-lg' : 'rounded-lg',
+          searchOverlayExpanded ? 'border-b-0' : 'border-b-2',
+
           isMobile && 'border-b border-gray-300',
           size === 'small'
             ? 'py-1 px-1'

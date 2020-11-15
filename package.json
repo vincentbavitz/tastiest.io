@@ -26,6 +26,8 @@
     "@zeit/next-sass": "^1.0.1",
     "D": "^1.0.0",
     "autoprefixer": "^10.0.1",
+    "babel-plugin-tailwind": "^0.1.10",
+    "babel-preset-env": "^1.7.0",
     "caniuse-lite": "^1.0.30001154",
     "classnames": "^2.2.6",
     "cookie-session": "^1.4.0",
@@ -54,7 +56,6 @@
     "react-redux": "^7.2.1",
     "react-use": "^15.3.4",
     "redux": "^4.0.5",
-    "styled-components": "^5.2.0",
     "tailwindcss": "^1.4.6",
     "vercel": "^20.1.2"
   },

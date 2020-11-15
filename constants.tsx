@@ -15,19 +15,35 @@ export interface ICuisine {
   name: string;
   href: string;
   svg: JSX.Element;
+  popularity: number;
 }
 
 export const CUISINES: Array<ICuisine> = [
-  { name: 'Italian', href: '/italian', svg: <ItalianSVG /> },
-  { name: 'French', href: '/french', svg: <FrenchSVG /> },
-  { name: 'Japanese', href: '/japanese', svg: <JapaneseSVG /> },
-  { name: 'Chinese', href: '/chinese', svg: <ChineseSVG /> },
-  { name: 'Indian', href: '/indian', svg: <IndianSVG /> },
-  { name: 'Spanish', href: '/spanish', svg: <SpanishSVG /> },
-  { name: 'English', href: '/english', svg: <EnglishSVG /> },
-  { name: 'American', href: '/american', svg: <AmericanSVG /> },
-  { name: 'Mexican', href: '/mexican', svg: <MexicanSVG /> },
-  { name: 'Mediterranean', href: '/mediterranean', svg: <MediterraneanSVG /> },
+  { name: 'Italian', href: '/italian', svg: <ItalianSVG />, popularity: 1103 },
+  { name: 'French', href: '/french', svg: <FrenchSVG />, popularity: 1337 },
+  {
+    name: 'Japanese',
+    href: '/japanese',
+    svg: <JapaneseSVG />,
+    popularity: 2147,
+  },
+  { name: 'Chinese', href: '/chinese', svg: <ChineseSVG />, popularity: 3333 },
+  { name: 'Indian', href: '/indian', svg: <IndianSVG />, popularity: 4096 },
+  { name: 'Spanish', href: '/spanish', svg: <SpanishSVG />, popularity: 13 },
+  { name: 'English', href: '/english', svg: <EnglishSVG />, popularity: 11 },
+  {
+    name: 'American',
+    href: '/american',
+    svg: <AmericanSVG />,
+    popularity: 400,
+  },
+  { name: 'Mexican', href: '/mexican', svg: <MexicanSVG />, popularity: 903 },
+  {
+    name: 'Mediterranean',
+    href: '/mediterranean',
+    svg: <MediterraneanSVG />,
+    popularity: 543,
+  },
 ];
 
 export const METADATA = {
