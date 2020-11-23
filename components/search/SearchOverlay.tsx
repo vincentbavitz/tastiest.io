@@ -24,7 +24,7 @@ export function SearchOverlay() {
   const dispatch = useDispatch();
 
   // Responsive
-  let isMobile = true;
+  let isMobile;
   if (typeof window !== 'undefined') {
     isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
   }
@@ -138,7 +138,7 @@ function OverlayElement() {
   const renderSearchTemplate = searchState.searchResultItems.length === 0;
 
   // Responsive
-  let isMobile = true;
+  let isMobile;
   if (typeof window !== 'undefined') {
     isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
   }
@@ -180,7 +180,10 @@ function OverlayElement() {
             {CUISINES.sort((a, b) => b.popularity - a.popularity)
               .slice(0, 5)
               .map(cuisine => (
-                <div className="border-2 border-secondary rounded-lg px-3 py-1">
+                <div
+                  key={cuisine.name.toLowerCase()}
+                  className="border-2 border-secondary rounded-lg px-3 py-1"
+                >
                   <span className="text-lg text-primary">{cuisine.name}</span>
                 </div>
               ))}

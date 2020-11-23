@@ -35,7 +35,7 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
   // }, [AuthUserInfo]);
 
   // Responsive
-  let isMobile = true;
+  let isMobile;
   if (typeof window !== 'undefined') {
     isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
   }

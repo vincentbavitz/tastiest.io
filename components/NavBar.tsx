@@ -4,15 +4,17 @@ import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useMedia, useWindowScroll } from 'react-use';
 import TastiestLogo from '../assets/svgs/brand.svg';
+import HeartPrimarySVG from '../assets/svgs/heart-primary.svg';
 import SearchSVG from '../assets/svgs/search.svg';
 import { UI } from '../constants';
 import { expandSearchOverlay } from '../state/navigation';
 import { IState } from '../state/reducers';
 import { Search } from './search/Search';
+import { Title } from './Title';
 
 export function NavBar() {
   // Responsive
-  let isMobile = true;
+  let isMobile;
   if (typeof window !== 'undefined') {
     isMobile = useMedia(`(max-width: ${UI.TABLET_BREAKPOINT}px)`);
   }
@@ -32,7 +34,7 @@ function MobileNavBar() {
   return (
     <div
       style={{ zIndex: 1000, paddingLeft: '5vw', paddingRight: '5vw' }}
-      className="fixed left-0 right-0 top-0 w-full h-20 bg-white"
+      className="fixed left-0 right-0 top-0 w-full h-24 bg-white"
     >
       <div className="w-full h-full flex items-center justify-between">
         {/* AVATAR */}
@@ -106,11 +108,24 @@ function DesktopNavBar() {
             >
               <Search
                 size="small"
+                theme="secondary"
                 className="border-secondary border-2 border-opacity-50 rounded-lg duration-300 w-full"
                 renderExitButton={false}
                 onFocus={() => dispatch(expandSearchOverlay())}
               />
             </div>
+          </div>
+
+          {/* SAVED PLACES */}
+          <div className="flex items-center px-4 cursor-pointer">
+            <HeartPrimarySVG className="h-8 mr-1" />
+            <Title
+              level={4}
+              margin={false}
+              className="text-primary font-somantic"
+            >
+              Saved Places
+            </Title>
           </div>
 
           {/* AVATAR */}

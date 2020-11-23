@@ -10,7 +10,8 @@ import {
   useStartTyping,
 } from 'react-use';
 import BackSVG from '../../assets/svgs/back.svg';
-import SearchSVG from '../../assets/svgs/search.svg';
+import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
+import SearchSecondarySVG from '../../assets/svgs/search-secondary.svg';
 import { UI } from '../../constants';
 import {
   collapseSearchOverlay,
@@ -33,6 +34,8 @@ interface Props {
   autofocus?: boolean;
   onFocus?(): void;
   className?: string;
+  inputClassName?: string;
+  theme?: 'primary' | 'secondary';
 }
 
 export function Search(props: Props) {
@@ -48,12 +51,14 @@ export function Search(props: Props) {
     size = 'medium',
     placeholder,
     className,
+    inputClassName,
+    theme,
   } = props;
 
   const router = useRouter();
 
   // Responsive
-  let isMobile = true;
+  let isMobile;
   if (typeof window !== 'undefined') {
     isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
   }
@@ -163,7 +168,7 @@ export function Search(props: Props) {
       <div
         ref={searchRef}
         className={classNames(
-          'flex items-center w-full justify-between bg-white px-6',
+          'flex items-center w-full justify-between bg-white px-2',
           'border-primary border-t-2 border-l-2 border-r-2',
           searchOverlayExpanded ? 'rounded-t-lg' : 'rounded-lg',
           searchOverlayExpanded ? 'border-b-0' : 'border-b-2',
@@ -173,7 +178,7 @@ export function Search(props: Props) {
             ? 'py-1 px-1'
             : isMobile && searchOverlayExpanded
             ? 'h-20'
-            : 'h-16',
+            : 'h-10',
           className,
         )}
       >
@@ -191,14 +196,15 @@ export function Search(props: Props) {
           ref={inputRef}
           spellCheck={false}
           className={classNames(
-            renderExitButton ? 'px-6' : 'pl-2 pr-4',
             'flex',
             'flex-grow',
             'border-none',
             'outline-none',
-            'text-xl',
             'bg-transparent',
             'w-0',
+            inputClassName,
+            renderExitButton ? 'px-6' : 'pl-2 pr-4',
+            isMobile && 'text-xl',
           )}
           placeholder={placeholder}
           value={inputValue}
@@ -206,8 +212,16 @@ export function Search(props: Props) {
           onFocus={handleFocus}
           onChange={handleOnChange}
         />
-        <div onClick={() => dispatch(expandSearchOverlay())}>
-          <SearchSVG className="h-8" />
+        <div
+          className="text-primary"
+          onClick={() => dispatch(expandSearchOverlay())}
+        >
+          {theme === 'primary' && (
+            <SearchPrimarySVG className="h-8 fill-current" />
+          )}
+          {theme === 'secondary' && (
+            <SearchSecondarySVG className="h-8 fill-current" />
+          )}
         </div>
       </div>
     </div>

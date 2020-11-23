@@ -10,7 +10,7 @@ import { Title } from './Title';
 
 export function SuggestDish() {
   // Responsive
-  let isDesktop = false;
+  let isDesktop;
   let isHuge = false;
   if (typeof window !== 'undefined') {
     isDesktop = useMedia(`(min-width: ${UI.TABLET_BREAKPOINT}px)`);
