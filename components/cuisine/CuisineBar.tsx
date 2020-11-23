@@ -114,7 +114,7 @@ export function CuisineBar(props: Props) {
         >
           <div className={classNames('flex md:px-0 overflow-y-visible')}>
             <div className={classNames('flex w-full overflow-y-visible')}>
-              {CUISINES.map(cuisine => (
+              {Object.values(CUISINES).map(cuisine => (
                 <CuisineItem
                   key={cuisine.name}
                   name={cuisine.name}

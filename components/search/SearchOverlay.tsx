@@ -180,7 +180,8 @@ function OverlayElement() {
 
           <div className="flex flex-wrap space-x-2 ml-1 mt-2">
             {/* Get 5 most popular cuisines */}
-            {CUISINES.sort((a, b) => b.popularity - a.popularity)
+            {Object.values(CUISINES)
+              .sort((a, b) => b.popularity - a.popularity)
               .slice(0, 5)
               .map(cuisine => (
                 <OutlineBlock size="small" key={cuisine.name}>
