@@ -3,6 +3,8 @@ import Link from 'next/link';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useKey, useLocation, useMedia } from 'react-use';
+import SpaghettiSVG from '../../assets/svgs/cuisines/italian.svg';
+import XiaoSVG from '../../assets/svgs/cuisines/xiao.svg';
 import NewSVG from '../../assets/svgs/hot.svg';
 import NearbySVG from '../../assets/svgs/location.svg';
 import TrendingSVG from '../../assets/svgs/trending.svg';
@@ -152,31 +154,31 @@ function OverlayElement() {
           isMobile && 'flex flex-col h-full justify-between mt-3',
         )}
       >
-        <div className="w-full border-secondary border-opacity-50 border-t-2 mb-3"></div>
+        <div className="w-full border-secondary border-opacity-50 border-t-2"></div>
 
         {/* FEATURED DYNAMIC CATEGORIES */}
-        <div className="flex flex-col space-y-1 mb-3">
-          <span className="flex items-center text-lg text-primary font-roboto font-semibold">
-            <NearbySVG className="h-10 mr-2" />
+        <div className="flex flex-col space-y-1 mt-4">
+          <span className="flex items-center text-lg text-primary font-roboto">
+            <NearbySVG className="h-8 mr-2" />
             Nearby
           </span>
-          <span className="flex items-center text-lg text-primary font-roboto font-semibold">
-            <TrendingSVG className="h-10 mr-2" />
+          <span className="flex items-center text-lg text-primary font-roboto">
+            <TrendingSVG className="h-8 mr-2" />
             Trending
           </span>
-          <span className="flex items-center text-lg text-primary font-roboto font-semibold">
-            <NewSVG className="h-10 mr-2" />
+          <span className="flex items-center text-lg text-primary font-roboto">
+            <NewSVG className="h-8 mr-2" />
             New
           </span>
         </div>
 
         {/* CUISINES */}
-        <div className="flex flex-col">
-          <span className="text-black font-bold text-lg ml-1">
+        <div className="flex flex-col mt-6">
+          <span className="text-black text-sm font-semibold tracking-wide ml-1">
             Find your next favourite dish!
           </span>
 
-          <div className="flex flex-wrap space-x-2">
+          <div className="flex flex-wrap space-x-2 ml-1 mt-2">
             {/* Get 5 most popular cuisines */}
             {CUISINES.sort((a, b) => b.popularity - a.popularity)
               .slice(0, 5)
@@ -185,6 +187,30 @@ function OverlayElement() {
                   {cuisine.name}
                 </OutlineBlock>
               ))}
+          </div>
+        </div>
+
+        {/* POPULAR DISHES */}
+        <div className="flex flex-col mt-6">
+          <span className="text-black text-sm font-semibold tracking-wide ml-1">
+            Popular dishes
+          </span>
+
+          <div className="flex flex-col space-y-2">
+            <div className="flex space-x-2 items-center w-full border-b border-secondary py-2">
+              <SpaghettiSVG className="h-10" />
+              <span className="text-primary">Best Spaghetti</span>
+            </div>
+
+            <div className="flex space-x-2 items-center w-full border-b border-secondary py-2">
+              <XiaoSVG className="h-10" />
+              <span className="text-primary">Best Xiao Long Bao</span>
+            </div>
+
+            <div className="flex space-x-2 items-center w-full border-b border-secondary py-2">
+              <SpaghettiSVG className="h-10" />
+              <span className="text-primary">Best Sushi</span>
+            </div>
           </div>
         </div>
 
