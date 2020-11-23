@@ -1,4 +1,9 @@
 // Ensure SVGs dont have any width or height attrs.
+import ChinaSVG from './assets/svgs/cuisine-pages/china.svg';
+import FranceSVG from './assets/svgs/cuisine-pages/france.svg';
+import IndiaSVG from './assets/svgs/cuisine-pages/india.svg';
+import JapanSVG from './assets/svgs/cuisine-pages/japan.svg';
+import MexicoSVG from './assets/svgs/cuisine-pages/mexico.svg';
 import AmericanSVG from './assets/svgs/cuisines/american.svg';
 import ChineseSVG from './assets/svgs/cuisines/chinese.svg';
 import EnglishSVG from './assets/svgs/cuisines/english.svg';
@@ -15,36 +20,93 @@ export interface ICuisine {
   name: string;
   href: string;
   svg: JSX.Element;
+  pageSvg?: JSX.Element;
   popularity: number;
 }
 
-export const CUISINES: Array<ICuisine> = [
-  { name: 'Italian', href: '/italian', svg: <ItalianSVG />, popularity: 1103 },
-  { name: 'French', href: '/french', svg: <FrenchSVG />, popularity: 1337 },
-  {
+export enum CuisineSymbol {
+  ITALIAN = 'ITALIAN',
+  FRENCH = 'FRENCH',
+  JAPANESE = 'JAPANESE',
+  CHINESE = 'CHINESE',
+  INDIAN = 'INDIAN',
+  SPANISH = 'SPANISH',
+  ENGLISH = 'ENGLISH',
+  AMERICAN = 'AMERICAN',
+  MEXICAN = 'MEXICAN',
+  MEDITERRANEAN = 'MEDITERRANEAN',
+}
+
+export const CUISINES = {
+  [CuisineSymbol.ITALIAN]: {
+    name: 'Italian',
+    href: '/italian',
+    svg: <ItalianSVG />,
+    pageSvg: undefined,
+    popularity: 1103,
+  },
+  [CuisineSymbol.FRENCH]: {
+    name: 'French',
+    href: '/french',
+    svg: <FrenchSVG />,
+    pageSvg: <FranceSVG />,
+    popularity: 1337,
+  },
+  [CuisineSymbol.JAPANESE]: {
     name: 'Japanese',
     href: '/japanese',
     svg: <JapaneseSVG />,
+    pageSvg: <JapanSVG />,
     popularity: 2147,
   },
-  { name: 'Chinese', href: '/chinese', svg: <ChineseSVG />, popularity: 3333 },
-  { name: 'Indian', href: '/indian', svg: <IndianSVG />, popularity: 4096 },
-  { name: 'Spanish', href: '/spanish', svg: <SpanishSVG />, popularity: 13 },
-  { name: 'English', href: '/english', svg: <EnglishSVG />, popularity: 11 },
-  {
+  [CuisineSymbol.CHINESE]: {
+    name: 'Chinese',
+    href: '/chinese',
+    svg: <ChineseSVG />,
+    pageSvg: <ChinaSVG />,
+    popularity: 3333,
+  },
+  [CuisineSymbol.INDIAN]: {
+    name: 'Indian',
+    href: '/indian',
+    svg: <IndianSVG />,
+    pageSvg: <IndiaSVG />,
+    popularity: 4096,
+  },
+  [CuisineSymbol.SPANISH]: {
+    name: 'Spanish',
+    href: '/spanish',
+    svg: <SpanishSVG />,
+    pageSvg: <MexicoSVG />,
+    popularity: 13,
+  },
+  [CuisineSymbol.ENGLISH]: {
+    name: 'English',
+    href: '/english',
+    svg: <EnglishSVG />,
+    pageSvg: undefined,
+    popularity: 11,
+  },
+  [CuisineSymbol.AMERICAN]: {
     name: 'American',
     href: '/american',
     svg: <AmericanSVG />,
     popularity: 400,
   },
-  { name: 'Mexican', href: '/mexican', svg: <MexicanSVG />, popularity: 903 },
-  {
+  [CuisineSymbol.MEXICAN]: {
+    name: 'Mexican',
+    href: '/mexican',
+    svg: <MexicanSVG />,
+    pageSvg: <MexicoSVG />,
+    popularity: 903,
+  },
+  [CuisineSymbol.MEDITERRANEAN]: {
     name: 'Mediterranean',
     href: '/mediterranean',
     svg: <MediterraneanSVG />,
     popularity: 543,
   },
-];
+} as { [name: string]: ICuisine };
 
 export const METADATA = {
   TITLE_SUFFIX: 'Tastiest: Discover. Eat. Smile',
