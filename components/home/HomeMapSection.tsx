@@ -2,11 +2,7 @@ import React from 'react';
 import { Button } from '../Button';
 import { Title } from '../Title';
 
-interface Props {
-  //
-}
-
-export function HomeMapSection(props: Props) {
+export function HomeMapSection() {
   // GET USERS LOCATION
   // const geolocation = useGeolocation();
 

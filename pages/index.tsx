@@ -59,7 +59,7 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
       </Head>
 
       <Contained>
-        <div className="flex flex-col space-y-12">
+        <div className="flex flex-col space-y-16">
           <HomeSearchSection />
           <HomeRecentSearchesSection />
           <HomeMapSection />

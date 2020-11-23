@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import '../assets/style.scss';
 import { CuisineBar } from '../components/cuisine/CuisineBar';
-import { Header } from '../components/Header';
+import { Header } from '../components/header/Header';
 import { SearchOverlay } from '../components/search/SearchOverlay';
 import { METADATA } from '../constants';
 import { rootReducer } from '../state/reducers';

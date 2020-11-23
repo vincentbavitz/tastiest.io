@@ -1,52 +1,49 @@
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React, { useRef } from 'react';
+import { useClickAway } from 'react-use';
 
 interface Props {
   isOpen: boolean;
-  children?: JSX.Element | JSX.Element[];
+  pull?: 'left' | 'right';
+
+  onClickAway: () => void;
+
+  // Always use DropdownItem
+  children?: JSX.Element[];
 }
 
 export function Dropdown(props: Props) {
   // Ensure children are all DropdownItems
-  const { isOpen, children } = props;
+  const { isOpen, pull = 'right', onClickAway, children } = props;
 
-  const [isHidden, setIsHidden] = useState(!isOpen);
-
-  // Disappear when not open
-  useEffect(() => {
-    if (!isOpen) {
-      setTimeout(() => {
-        setIsHidden(true);
-      }, 280);
-    } else {
-      setIsHidden(false);
-    }
-  }, [isOpen]);
+  const ref = useRef(null);
+  useClickAway(ref, onClickAway);
 
   return (
     <div className="relative w-full h-0 z-50">
       <div
+        style={{ width: 'max-content' }}
         className={classNames(
           'absolute',
           'top-0',
-          'overflow-y-hidden',
-          // Allows shadow to overflow
-          '-left-4',
-          '-right-4',
-          'px-4',
-          'pb-4',
-          isHidden && 'hidden',
+          'z-50',
+          'mt-2',
+          isOpen ? 'block' : 'hidden',
+          pull === 'right' && 'left-0',
+          pull === 'left' && 'right-0',
         )}
       >
         <div
+          ref={ref}
           className={classNames(
+            'py-2',
             'bg-white',
             'duration-300',
-            'rounded-b-lg',
+            'rounded-lg',
             'transform',
             'overflow-hidden',
-            isOpen && 'shadow-lg',
-            isOpen ? 'translate-y-0' : '-translate-y-full',
+            'border-2',
+            'border-secondary',
           )}
         >
           {children}

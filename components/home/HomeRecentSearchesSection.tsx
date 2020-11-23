@@ -21,7 +21,7 @@ export function HomeRecentSearchesSection() {
       <SectionTitle>Your recent searches</SectionTitle>
       <div className="flex mt-8 space-x-4">
         {recentSearches.map(search => (
-          <OutlineBlock>{search.value}</OutlineBlock>
+          <OutlineBlock key={search.timestamp}>{search.value}</OutlineBlock>
         ))}
       </div>
     </div>

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMedia, useScroll } from 'react-use';
+import { useMedia, useScroll, useWindowSize } from 'react-use';
 import ChevronLeftSecondarySVG from '../../assets/svgs/chevron-left-secondary.svg';
 import ChevronRightSecondarySVG from '../../assets/svgs/chevron-right-secondary.svg';
 // import { useGeolocation } from 'react-use';
@@ -21,7 +21,10 @@ export function CuisineBar(props: Props) {
   const dispatch = useDispatch();
 
   const scrollRef = useRef(null);
+
   const { x } = useScroll(scrollRef);
+  const pageWidth = useWindowSize().width;
+  const scrollDistance = pageWidth > 1400 ? 450 : pageWidth / 3;
 
   const [rightScrollHidden, setRightScrollHidden] = useState(false);
 
@@ -33,14 +36,14 @@ export function CuisineBar(props: Props) {
 
   const handleLeftScroll = () => {
     scrollRef.current.scrollBy({
-      left: -333,
+      left: -scrollDistance,
       behavior: 'smooth',
     });
   };
 
   const handleRightScroll = () => {
     scrollRef.current.scrollBy({
-      left: 333,
+      left: scrollDistance,
       behavior: 'smooth',
     });
   };
