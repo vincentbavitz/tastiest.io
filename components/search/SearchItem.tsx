@@ -13,7 +13,7 @@ export function SearchItem(props: ISanityArticle) {
   const { title, featureImage, city, cuisine, slug } = props;
 
   // Responsive
-  let isMobile = true;
+  let isMobile;
   if (typeof window !== 'undefined') {
     isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
   }

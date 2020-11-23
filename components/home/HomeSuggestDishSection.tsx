@@ -1,16 +1,16 @@
 import classNames from 'classnames';
 import React, { useEffect } from 'react';
 import { useMeasure, useMedia } from 'react-use';
-import SuggestDishDesktopSVG from '../assets/svgs/suggest-dish-desktop.svg';
-import SuggestDishMobileSVG from '../assets/svgs/suggest-dish-mobile.svg';
-import { UI } from '../constants';
-import { Button } from './Button';
-import { Input } from './Input';
-import { Title } from './Title';
+import SuggestDishDesktopSVG from '../../assets/svgs/suggest-dish-desktop.svg';
+import SuggestDishMobileSVG from '../../assets/svgs/suggest-dish-mobile.svg';
+import { UI } from '../../constants';
+import { Button } from '../Button';
+import { Input } from '../Input';
+import { Title } from '../Title';
 
-export function SuggestDish() {
+export function HomeSuggestDishSection() {
   // Responsive
-  let isDesktop = false;
+  let isDesktop;
   let isHuge = false;
   if (typeof window !== 'undefined') {
     isDesktop = useMedia(`(min-width: ${UI.TABLET_BREAKPOINT}px)`);

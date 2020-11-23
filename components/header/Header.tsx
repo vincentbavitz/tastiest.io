@@ -3,16 +3,19 @@ import Link from 'next/link';
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useMedia, useWindowScroll } from 'react-use';
-import TastiestLogo from '../assets/svgs/brand.svg';
-import SearchSVG from '../assets/svgs/search.svg';
-import { UI } from '../constants';
-import { expandSearchOverlay } from '../state/navigation';
-import { IState } from '../state/reducers';
-import { Search } from './search/Search';
+import TastiestLogo from '../../assets/svgs/brand.svg';
+import HeartPrimarySVG from '../../assets/svgs/heart-primary.svg';
+import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
+import { UI } from '../../constants';
+import { expandSearchOverlay } from '../../state/navigation';
+import { IState } from '../../state/reducers';
+import { Search } from '../search/Search';
+import { Title } from '../Title';
+import { HeaderAvatar } from './HeaderAvatar';
 
-export function NavBar() {
+export function Header() {
   // Responsive
-  let isMobile = true;
+  let isMobile;
   if (typeof window !== 'undefined') {
     isMobile = useMedia(`(max-width: ${UI.TABLET_BREAKPOINT}px)`);
   }
@@ -21,10 +24,10 @@ export function NavBar() {
     null;
   };
 
-  return <div>{isMobile ? <MobileNavBar /> : <DesktopNavBar />}</div>;
+  return <div>{isMobile ? <MobileHeader /> : <DesktopHeader />}</div>;
 }
 
-function MobileNavBar() {
+function MobileHeader() {
   const navigationState = useSelector((state: IState) => state.navigation);
   const searchState = useSelector((state: IState) => state.search);
   const dispatch = useDispatch();
@@ -32,7 +35,7 @@ function MobileNavBar() {
   return (
     <div
       style={{ zIndex: 1000, paddingLeft: '5vw', paddingRight: '5vw' }}
-      className="fixed left-0 right-0 top-0 w-full h-20 bg-white"
+      className="fixed left-0 right-0 top-0 w-full h-24 bg-white"
     >
       <div className="w-full h-full flex items-center justify-between">
         {/* AVATAR */}
@@ -52,14 +55,14 @@ function MobileNavBar() {
           className="flex flex-shrink-0"
           onClick={() => dispatch(expandSearchOverlay())}
         >
-          <SearchSVG className="fill-secondary h-8 cursor-pointer" />
+          <SearchPrimarySVG className="fill-secondary h-8 cursor-pointer" />
         </div>
       </div>
     </div>
   );
 }
 
-function DesktopNavBar() {
+function DesktopHeader() {
   const navigationState = useSelector((state: IState) => state.navigation);
   const searchState = useSelector((state: IState) => state.search);
   const dispatch = useDispatch();
@@ -106,6 +109,7 @@ function DesktopNavBar() {
             >
               <Search
                 size="small"
+                theme="secondary"
                 className="border-secondary border-2 border-opacity-50 rounded-lg duration-300 w-full"
                 renderExitButton={false}
                 onFocus={() => dispatch(expandSearchOverlay())}
@@ -113,10 +117,20 @@ function DesktopNavBar() {
             </div>
           </div>
 
+          {/* SAVED PLACES */}
+          <div className="flex items-center px-4 cursor-pointer">
+            <HeartPrimarySVG className="h-8 mr-1" />
+            <Title
+              level={4}
+              margin={false}
+              className="text-primary font-somantic"
+            >
+              Saved Places
+            </Title>
+          </div>
+
           {/* AVATAR */}
-          <Link href="/login">
-            <div className="bg-primary rounded-full h-8 w-8 cursor-pointer"></div>
-          </Link>
+          <HeaderAvatar />
         </div>
       </div>
     </div>

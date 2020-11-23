@@ -1,8 +1,9 @@
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMedia, useScroll } from 'react-use';
+import { useMedia, useScroll, useWindowSize } from 'react-use';
+import ChevronLeftSecondarySVG from '../../assets/svgs/chevron-left-secondary.svg';
+import ChevronRightSecondarySVG from '../../assets/svgs/chevron-right-secondary.svg';
 // import { useGeolocation } from 'react-use';
 import { CUISINES, UI } from '../../constants';
 import { saveCuisineBarScrollPos } from '../../state/navigation';
@@ -20,7 +21,10 @@ export function CuisineBar(props: Props) {
   const dispatch = useDispatch();
 
   const scrollRef = useRef(null);
+
   const { x } = useScroll(scrollRef);
+  const pageWidth = useWindowSize().width;
+  const scrollDistance = pageWidth > 1400 ? 450 : pageWidth / 3;
 
   const [rightScrollHidden, setRightScrollHidden] = useState(false);
 
@@ -32,14 +36,14 @@ export function CuisineBar(props: Props) {
 
   const handleLeftScroll = () => {
     scrollRef.current.scrollBy({
-      left: -333,
+      left: -scrollDistance,
       behavior: 'smooth',
     });
   };
 
   const handleRightScroll = () => {
     scrollRef.current.scrollBy({
-      left: 333,
+      left: scrollDistance,
       behavior: 'smooth',
     });
   };
@@ -66,7 +70,7 @@ export function CuisineBar(props: Props) {
 
   return (
     <Contained>
-      <div className="flex relative w-full mt-20 h-20">
+      <div className="flex relative w-full mt-24">
         <div
           className={classNames(
             'absolute left-0 flex items-center justify-between h-full w-full',
@@ -75,21 +79,26 @@ export function CuisineBar(props: Props) {
         >
           <div
             className={classNames(
-              'flex justify-center items-center h-12 w-12 pt-3 -ml-5 bg-gray-200 z-50 rounded-full duration-300 cursor-pointer',
+              'flex flex-col justify-center h-full z-50 duration-300 -ml-8',
               x === 0 && 'opacity-0',
             )}
-            onClick={handleLeftScroll}
           >
-            <LeftOutlined className="h-10 text-twoxl" />
+            <ChevronLeftSecondarySVG
+              onClick={handleLeftScroll}
+              className="h-16 cursor-pointer"
+            />
           </div>
+
           <div
             className={classNames(
-              'flex justify-center items-center h-12 w-12 pt-3 -mr-5 bg-gray-200 z-50 rounded-full duration-300 cursor-pointer',
-              rightScrollHidden && 'hidden',
+              'flex flex-col justify-center h-full z-50 duration-300 -mr-8',
+              rightScrollHidden && 'opacity-0',
             )}
-            onClick={handleRightScroll}
           >
-            <RightOutlined className="h-10 text-twoxl" />
+            <ChevronRightSecondarySVG
+              onClick={handleRightScroll}
+              className="h-16 cursor-pointer"
+            />
           </div>
         </div>
 

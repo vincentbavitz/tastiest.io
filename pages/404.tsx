@@ -10,9 +10,9 @@ import { generateTitle } from '../utils/metadata';
 
 function Tastiest404() {
   // Responsive
-  let isMobile = true;
-  let isTablet = false;
-  let isDesktop = false;
+  let isMobile;
+  let isTablet;
+  let isDesktop;
   let isHuge = false;
   if (typeof window !== 'undefined') {
     isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);

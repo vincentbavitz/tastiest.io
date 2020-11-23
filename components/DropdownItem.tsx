@@ -23,12 +23,16 @@ export function DropdownItem(props: Props) {
       onClick={() => handleOnSelect()}
       className={classNames(
         'block',
-        'px-4',
-        'py-2',
-        'text-gray-800',
-        !selected && 'hover:bg-gray-200',
-        selected && 'bg-gray-300',
+        'pl-4',
+        'pr-6',
+        'py-1',
+        'text-sm',
+        'text-primary',
+        'text-opacity-75',
+        'hover:text-opacity-100',
         'select-none',
+        'cursor-pointer',
+        selected && 'font-bold text-opacity-100',
       )}
     >
       {children}

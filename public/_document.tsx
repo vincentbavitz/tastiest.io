@@ -26,8 +26,7 @@ export default class CustomDocument extends Document {
 
   render() {
     return (
-      // eslint-disable-next-line jsx-a11y/html-has-lang
-      <html>
+      <html lang="en">
         <Head>
           <link rel="shortcut icon" href="/favicon.ico"></link>
           <link
