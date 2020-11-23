@@ -7,8 +7,11 @@ import client from '../client';
 import { ArticleItem } from '../components/ArticleItem';
 import { Contained } from '../components/Contained';
 import { Footer } from '../components/Footer';
-import MainPageSearch from '../components/MainPageSearch';
-import { SuggestDish } from '../components/SuggestDish';
+import { HomeFavouritesSection } from '../components/home/HomeFavouritesSection';
+import { HomeMapSection } from '../components/home/HomeMapSection';
+import { HomeRecentSearchesSection } from '../components/home/HomeRecentSearchesSection';
+import { HomeSearchSection } from '../components/home/HomeSearchSection';
+import { HomeSuggestDishSection } from '../components/home/HomeSuggestDishSection';
 import { METADATA, UI } from '../constants';
 import { ISanityArticle } from '../types/article';
 // import withAuthUser from '../utils/pageWrappers/withAuthUser';
@@ -56,24 +59,12 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
       </Head>
 
       <Contained>
-        <MainPageSearch />
-
-        <div className="flex justify-center font-somantic text-twoxl mt-4 text-primary">
-          <p>Discover your</p>
-
-          <div className="mx-2 relative flex justify-center">
-            next
-            <div className="absolute w-4/5 h-1 mt-10 rounded-full bg-secondary"></div>
-          </div>
-          <p>favourite dish!</p>
-        </div>
-
-        <div className="md:flex overflow-x-hidden mx-6 my-8 space-x-6">
-          {cards}
-        </div>
-
-        <div className="mt-6">
-          <SuggestDish />
+        <div className="flex flex-col space-y-12">
+          <HomeSearchSection />
+          <HomeRecentSearchesSection />
+          <HomeMapSection />
+          <HomeFavouritesSection cards={cards} />
+          <HomeSuggestDishSection />
         </div>
       </Contained>
 

@@ -52,7 +52,7 @@ export function Search(props: Props) {
     placeholder,
     className,
     inputClassName,
-    theme,
+    theme = 'primary',
   } = props;
 
   const router = useRouter();

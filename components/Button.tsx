@@ -79,7 +79,6 @@ export function Button(props: Props) {
         'duration-300',
         'ease-in-out',
         'text-center',
-        'text-lg',
         'rounded-lg',
         'font-raleway',
         'font-semibold',

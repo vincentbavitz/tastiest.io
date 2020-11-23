@@ -9,6 +9,7 @@ import TrendingSVG from '../../assets/svgs/trending.svg';
 import { CUISINES, UI } from '../../constants';
 import { collapseSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
+import { OutlineBlock } from '../OutlineBlock';
 import { Search } from './Search';
 
 // TODO - FIX:
@@ -180,12 +181,9 @@ function OverlayElement() {
             {CUISINES.sort((a, b) => b.popularity - a.popularity)
               .slice(0, 5)
               .map(cuisine => (
-                <div
-                  key={cuisine.name.toLowerCase()}
-                  className="border-2 border-secondary rounded-lg px-3 py-1"
-                >
-                  <span className="text-lg text-primary">{cuisine.name}</span>
-                </div>
+                <OutlineBlock size="small" key={cuisine.name}>
+                  {cuisine.name}
+                </OutlineBlock>
               ))}
           </div>
         </div>

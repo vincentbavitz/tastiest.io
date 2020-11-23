@@ -1,13 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMedia } from 'react-use';
-import HomeHeroSVG from '../assets/svgs/home-hero.svg';
-import { UI } from '../constants';
-import { expandSearchOverlay } from '../state/navigation';
-import { IState } from '../state/reducers';
-import { Search } from './search/Search';
+import HomeHeroSVG from '../../assets/svgs/home-hero.svg';
+import { UI } from '../../constants';
+import { expandSearchOverlay } from '../../state/navigation';
+import { IState } from '../../state/reducers';
+import { Search } from '../search/Search';
 
-function MainPageSearch(): JSX.Element {
+export function HomeSearchSection(): JSX.Element {
   const navigationState = useSelector((state: IState) => state.navigation);
   const { searchOverlayExpanded } = navigationState;
   const dispatch = useDispatch();
@@ -57,5 +57,3 @@ function MainPageSearch(): JSX.Element {
     </div>
   );
 }
-
-export default MainPageSearch;

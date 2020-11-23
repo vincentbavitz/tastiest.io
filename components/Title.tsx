@@ -7,7 +7,7 @@ interface Props {
   disabled?: boolean;
   margin?: boolean;
   className?: string;
-  children: string | JSX.Element;
+  children: React.ReactNode;
 }
 
 export function Title(props: Props) {
