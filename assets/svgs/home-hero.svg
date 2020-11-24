@@ -5,6 +5,7 @@
     animation-duration: 6s;
     animation-iteration-count: 1;
     animation-direction: alternate;
+    
 }
 @keyframes sdiamondOpacity {
     0%   { opacity: 0; transform: translateY(10px); }

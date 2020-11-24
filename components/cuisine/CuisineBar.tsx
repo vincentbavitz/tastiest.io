@@ -70,7 +70,7 @@ export function CuisineBar(props: Props) {
 
   return (
     <Contained>
-      <div className="flex relative w-full mt-24">
+      <div className="flex relative w-full mt-20">
         <div
           className={classNames(
             'absolute left-0 flex items-center justify-between h-full w-full',
