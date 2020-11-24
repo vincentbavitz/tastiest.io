@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useMedia, useScroll, useWindowSize } from 'react-use';
 import ChevronLeftSecondarySVG from '../../assets/svgs/chevron-left-secondary.svg';
 import ChevronRightSecondarySVG from '../../assets/svgs/chevron-right-secondary.svg';
-// import { useGeolocation } from 'react-use';
 import { CUISINES, UI } from '../../constants';
 import { saveCuisineBarScrollPos } from '../../state/navigation';
 import { IState } from '../../state/reducers';

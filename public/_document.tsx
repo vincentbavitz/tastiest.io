@@ -7,7 +7,7 @@ import Document, {
 import React from 'react';
 import { ServerStyleSheet } from 'styled-components';
 
-export default class CustomDocument extends Document {
+export default class CustomDocument extends Document<any> {
   static async getInitialProps(ctx: DocumentContext) {
     // Step 1: Create an instance of ServerStyleSheet
     const sheet = new ServerStyleSheet();

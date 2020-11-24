@@ -17,12 +17,8 @@ import { HeaderAvatar } from './HeaderAvatar';
 export function Header() {
   // Responsive
   let isMobile;
-  let isTablet;
   if (typeof window !== 'undefined') {
     isMobile = useMedia(`(max-width: ${UI.TABLET_BREAKPOINT}px)`);
-    isTablet = useMedia(
-      `(min-width: ${UI.MOBILE_BREAKPOINT}px) and  (max-width: ${UI.TABLET_BREAKPOINT}px)`,
-    );
   }
 
   const handleAvatarClick = () => {
