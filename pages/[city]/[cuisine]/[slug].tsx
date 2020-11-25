@@ -1,51 +1,46 @@
 // [slug].js
-import BlockContent from '@sanity/block-content-to-react';
 import imageUrlBuilder from '@sanity/image-url';
-import groq from 'groq';
-import moment from 'moment';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
+import { useMedia } from 'react-use';
 import '../../../assets/style.scss';
-import CookingSVG from '../../../assets/svgs/cooking.svg';
-import HelloSVG from '../../../assets/svgs/hello.svg';
 import client from '../../../client';
-import { CityIndictor } from '../../../components/CityIndictor';
+import {
+  ArticleDesktop,
+  ArticleMobile,
+} from '../../../components/article/Article';
 import { Contained } from '../../../components/Contained';
-import { FloatingButton } from '../../../components/FloatingButton';
 import { Footer } from '../../../components/Footer';
-import { RecommendForm } from '../../../components/RecommendForm';
-import { ISanityArticle } from '../../../types/article';
+import { UI } from '../../../constants';
+import { IArticle } from '../../../types/article';
+import { getArticle } from '../../../utils/article';
 import { generateTitle } from '../../../utils/metadata';
-import { sanityPostQuery } from '../../../utils/search';
 
 function urlFor(source) {
   return imageUrlBuilder(client).image(source);
 }
 
-const Post = (props: ISanityArticle): JSX.Element => {
+const Post = (props: IArticle): JSX.Element => {
   const {
     body,
-    title = '',
-    subtitle = '',
+    title,
+    subtitle,
     author,
-    publishedAt = '',
+    date,
     city,
-    tags = [],
+    tags,
     location,
     restaurantName,
     dishName,
-    backdropSVG,
     video,
     featureImage,
   } = props;
 
-  console.log('Props:', props);
-
-  const videoSrc = `https://www.youtube.com/embed/${
-    video.link?.split('?v=')[1] ?? ''
-  }`;
-
-  const date = moment(publishedAt).format('MMMM D, YYYY');
+  // Responsive
+  let isMobile;
+  if (typeof window !== 'undefined') {
+    isMobile = useMedia(`(max-width: ${UI.TABLET_BREAKPOINT}px)`);
+  }
 
   // Scroll to top on load
   useEffect(() => {
@@ -60,9 +55,12 @@ const Post = (props: ISanityArticle): JSX.Element => {
         <title>{generateTitle(title)}</title>
       </Head>
 
-      <FloatingButton>From £21</FloatingButton>
+      {isMobile ? <ArticleMobile {...props} /> : <ArticleDesktop {...props} />}
 
-      <article>
+      {/* temporary spacer */}
+      <div className="py-64"></div>
+
+      {/* <article>
         <div className="article__top relative w-full bg-white flex flex-col justify-center items-center">
           <div className="article__title w-full">
             <div className="w-full pb-0 mb-0 flex flex-col items-center">
@@ -75,26 +73,6 @@ const Post = (props: ISanityArticle): JSX.Element => {
                 to offer. What restaurant will truly prevail as the king of
                 Lygon Street
               </h3>
-            </div>
-          </div>
-
-          <div className="article__author w-full flex flex-col items-center justify-center space-around">
-            <div>
-              <div className="flex w-full content-center items-center">
-                <img
-                  className="rounded-full w-12 h-12"
-                  src={author.imageSrc}
-                  alt={'Author profile picture'}
-                />
-              </div>
-            </div>
-            <div className="flex flex-col justify-center">
-              <span className="block font-bold text-xs uppercase">
-                BY {author.name}
-              </span>
-              <div className="flex justify-center">
-                <span className="text-xs z-10">{date}</span>
-              </div>
             </div>
           </div>
         </div>
@@ -122,25 +100,6 @@ const Post = (props: ISanityArticle): JSX.Element => {
           <div className="flex justify-center w-full h-40">
             <CookingSVG className="w-56 absolute -mt-2" />
           </div>
-
-          {/* <div>
-          {tags && (
-            <ul className="mt-2 mb-6">
-              {tags.map(tag => (
-                <li key={tag}>
-                  <span className="rounded p-1 bg-white bg-opacity-50 text-xs">
-                    {new Tag(tag).formatted}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-
-       
-          <div className="bg-white bg-opacity-25 w-full mt-12">
-            <img src={urlFor(backdropSVG).url()} />
-          </div>
-        </div> */}
         </div>
 
         <div className="article__content contained w-full mt-16 text-black">
@@ -151,8 +110,6 @@ const Post = (props: ISanityArticle): JSX.Element => {
               {...client.config()}
             />
           </div>
-
-          {/* OFF TO SIDE IMAGE WITH CONTENT */}
 
           <div className="mt-8 mb-8">
             <h4 className="font-roboto-slab font-bold w-1/2 text-md mb-4">
@@ -175,7 +132,6 @@ const Post = (props: ISanityArticle): JSX.Element => {
           </p>
         </div>
 
-        {/* RECOMMEND FORM */}
         <div className="flex justify-between">
           <div className="w-full py-10 relative">
             <div className="w-2/3">
@@ -190,7 +146,7 @@ const Post = (props: ISanityArticle): JSX.Element => {
             </div>
           </div>
         </div>
-      </article>
+      </article> */}
 
       <Footer />
     </Contained>
@@ -198,21 +154,7 @@ const Post = (props: ISanityArticle): JSX.Element => {
 };
 
 Post.getInitialProps = async function (context) {
-  // It's important to default the slug so that it doesn't return "undefined"
-  const query = groq`*[_type == "post" && slug.current == $slug][0]{
-    ${sanityPostQuery}
-  }`;
-
-  const { slug = '' } = context.query;
-
-  let posts;
-  try {
-    posts = await client.fetch(query, { slug });
-  } catch (error) {
-    console.warn('Error:', error);
-  }
-
-  return posts;
+  return getArticle(context.query ?? '');
 };
 
 export default Post;

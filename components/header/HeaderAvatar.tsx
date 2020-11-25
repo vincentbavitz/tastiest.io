@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import LogoSVG from '../../assets/svgs/logo.svg';
+import { Avatar } from '../Avatar';
 import { Dropdown } from '../Dropdown';
 import { DropdownItem } from '../DropdownItem';
 
@@ -40,13 +40,7 @@ export function HeaderAvatar() {
 
   return (
     <div>
-      <div className="flex justify-center items-center bg-primary rounded-full h-8 w-8 cursor-pointer duration-300 bg-opacity-75 hover:bg-opacity-100">
-        <LogoSVG
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="h-4 text-white fill-current"
-          style={{ marginTop: '3px', marginLeft: '0.5px' }}
-        />
-      </div>
+      <Avatar onClick={() => setIsDropdownOpen(!isDropdownOpen)} />
 
       <Dropdown
         isOpen={isDropdownOpen}
