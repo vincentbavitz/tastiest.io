@@ -7,17 +7,17 @@ interface Props {
 }
 
 export function ArticleAuthor(props: Props) {
-  const { author, date: publishedAt } = props;
+  const { author, date } = props;
 
   return (
     <div className="flex items-center space-x-3">
-      <Avatar size={10} imageSrc={author.imageSrc} />
+      <Avatar size={10} imageSrc={author?.imageSrc} />
 
       <div className="flex flex-col leading-tight">
         <span className="font-roboto tracking-wider text-sm font-bold">
           By: {author.name}
         </span>
-        <span>{publishedAt}</span>
+        <span>{date}</span>
       </div>
     </div>
   );

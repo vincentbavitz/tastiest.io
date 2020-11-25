@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function ArticleTitleArea(props: Props) {
-  const { title, author, date: publishedAt } = props;
+  const { title, author, date } = props;
 
   return (
     <div className="flex flex-col justify-center space-y-10">
@@ -17,7 +17,7 @@ export function ArticleTitleArea(props: Props) {
         {title}
       </h1>
 
-      <ArticleAuthor author={author} date={publishedAt} />
+      <ArticleAuthor author={author} date={date} />
     </div>
   );
 }
