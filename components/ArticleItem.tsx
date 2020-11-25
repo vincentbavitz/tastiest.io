@@ -1,6 +1,5 @@
 import { useRouter } from 'next/dist/client/router';
 import { SyntheticEvent } from 'react';
-import { Tag } from '../objects/hashtag';
 import { ISanityArticle } from '../types/article';
 import { generateURL } from '../utils/routing';
 import { titleCase } from '../utils/text';
@@ -25,7 +24,7 @@ export function ArticleItem(props: ISanityArticle): JSX.Element {
     router.push(href, as);
   };
 
-  const tags = [new Tag('crepes'), new Tag('sweet')];
+  const tags = ['crepes', 'sweet'];
 
   return (
     <div
@@ -52,9 +51,9 @@ export function ArticleItem(props: ISanityArticle): JSX.Element {
             .filter(tag => Boolean(tag))
             // Maximum of three tags
             .slice(0, 3)
-            .map(hashtag => (
-              <OutlineBlock size="tiny" theme="alt" bold key={hashtag.tag}>
-                {titleCase(hashtag.tag)}
+            .map(tag => (
+              <OutlineBlock size="tiny" theme="alt" bold key={tag}>
+                {titleCase(tag)}
               </OutlineBlock>
             ))}
         </div>

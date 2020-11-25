@@ -1,5 +1,3 @@
-import { Tag } from '../objects';
-
 export interface IAuthor {
   name: string;
   imageSrc: string;
@@ -30,7 +28,6 @@ export interface ISanityArticle {
   author: IAuthor;
   publishedAt: string;
   city: string;
-  // tags: Array<Tag>;
   tags: Array<string>;
   restaurantName: string;
   backdropSVG: string;
@@ -52,7 +49,7 @@ export interface IArticle {
   author: IAuthor;
   date: string;
   city: string;
-  tags: Array<Tag>;
+  tags: Array<string>;
   restaurantName: string;
   dishName: string;
   body: string;

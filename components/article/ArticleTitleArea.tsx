@@ -1,3 +1,4 @@
+import { UI } from '../../constants';
 import { IAuthor } from '../../types/article';
 import { ArticleAuthor } from './ArticleAuthor';
 
@@ -12,10 +13,12 @@ export function ArticleTitleArea(props: Props) {
   const { title, author, date } = props;
 
   return (
-    <div className="flex flex-col justify-center space-y-10">
-      <h1 className="text-primary text-center pt-4 pb-4 w-11/12 text-fourxl">
-        {title}
-      </h1>
+    <div className="flex flex-col items-center space-y-4 mt-16 mb-4">
+      <div style={{ maxWidth: `${UI.ARTICLE.TITLE_MAX_WIDTH_REM}rem` }}>
+        <h1 className="font-somatic text-primary text-fivexl leading-none text-center">
+          {title}
+        </h1>
+      </div>
 
       <ArticleAuthor author={author} date={date} />
     </div>

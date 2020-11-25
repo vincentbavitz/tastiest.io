@@ -1,9 +1,10 @@
-import React from 'react';
+import classNames from 'classnames';
+import React, { ReactNode } from 'react';
 import { UI } from '../constants';
 
 interface Props {
-  backgroundColor?: string;
-  children: JSX.Element | JSX.Element[];
+  backgroundColor?: 'primary' | 'secondary';
+  children: ReactNode;
 }
 
 export function Contained(props: Props) {
@@ -15,8 +16,13 @@ export function Contained(props: Props) {
     width: '100%',
     maxWidth: `${UI.MAX_CONTENT_WIDTH}px`,
     margin: '0 auto',
-    backgroundColor,
   };
 
-  return <div style={containerStyle}>{children}</div>;
+  return (
+    <div className={classNames(backgroundColor && `bg-${backgroundColor}`)}>
+      <div className="relative" style={containerStyle}>
+        {children}
+      </div>
+    </div>
+  );
 }

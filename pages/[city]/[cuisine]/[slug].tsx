@@ -1,6 +1,8 @@
 // [slug].js
 import imageUrlBuilder from '@sanity/image-url';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useMedia } from 'react-use';
 import '../../../assets/style.scss';
@@ -9,7 +11,6 @@ import {
   ArticleDesktop,
   ArticleMobile,
 } from '../../../components/article/Article';
-import { Contained } from '../../../components/Contained';
 import { Footer } from '../../../components/Footer';
 import { UI } from '../../../constants';
 import { IArticle } from '../../../types/article';
@@ -20,7 +21,23 @@ function urlFor(source) {
   return imageUrlBuilder(client).image(source);
 }
 
-const Post = (props: IArticle): JSX.Element => {
+export const getServerSideProps: GetServerSideProps = async context => {
+  const article = await getArticle(String(context.query.slug) ?? '');
+
+  // Redirect to 404 for nonexistent page
+  if (!article) {
+    return {
+      props: undefined,
+      notFound: true,
+    };
+  }
+
+  return {
+    props: article,
+  };
+};
+
+function Post(props: IArticle) {
   const {
     body,
     title,
@@ -42,15 +59,28 @@ const Post = (props: IArticle): JSX.Element => {
     isMobile = useMedia(`(max-width: ${UI.TABLET_BREAKPOINT}px)`);
   }
 
+  const router = useRouter();
+
   // Scroll to top on load
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.scrollTo(0, 0);
     }
+
+    const fetch = async () => {
+      console.log('router', router.query);
+      const article = await getArticle(String(router.query.slug));
+
+      console.log('article', article);
+    };
+
+    fetch();
   }, []);
 
+  console.log('props', props);
+
   return (
-    <Contained>
+    <>
       <Head>
         <title>{generateTitle(title)}</title>
       </Head>
@@ -149,12 +179,8 @@ const Post = (props: IArticle): JSX.Element => {
       </article> */}
 
       <Footer />
-    </Contained>
+    </>
   );
-};
-
-Post.getInitialProps = async function (context) {
-  return getArticle(context.query ?? '');
-};
+}
 
 export default Post;
