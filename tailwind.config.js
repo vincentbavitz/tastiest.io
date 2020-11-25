@@ -30,6 +30,7 @@ module.exports = {
         primary: '#fe4c00',
         'primary-subtle': '#eb5929',
         secondary: '#ffd618',
+        'secondary-alt': 'ffd400',
         danger: '#130b57',
         article: '#140c57',
       },

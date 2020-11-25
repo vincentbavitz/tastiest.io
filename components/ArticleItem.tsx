@@ -29,7 +29,7 @@ export function ArticleItem(props: ISanityArticle): JSX.Element {
 
   return (
     <div
-      className="rounded-xl cursor-pointer overflow-hidden w-full pb-2 bg-secondary bg-opacity-75"
+      className="rounded-xl cursor-pointer overflow-hidden w-full pb-3 bg-secondary bg-opacity-75"
       onClick={e => handleClick(e)}
     >
       <div
@@ -42,15 +42,16 @@ export function ArticleItem(props: ISanityArticle): JSX.Element {
       <div className="px-4">
         <div className="py-3 h-30">
           <div className="text-xl font-somatic mb-2 leading-tight overflow-hidden">
-            {title} {title} {title} {title} {title} {title} {title}
+            {title}
           </div>
           <p className="text-gray-700 text-base">{paragraph}</p>
         </div>
 
         <div className="flex space-x-1">
           {tags
-            .slice(0, 3)
             .filter(tag => Boolean(tag))
+            // Maximum of three tags
+            .slice(0, 3)
             .map(hashtag => (
               <OutlineBlock size="tiny" theme="alt" bold key={hashtag.tag}>
                 {titleCase(hashtag.tag)}
