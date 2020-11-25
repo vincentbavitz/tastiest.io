@@ -26,7 +26,7 @@ export function HomeSearchSection(): JSX.Element {
 
       <div className="relative w-full">
         {isMobile ? (
-          <div>
+          <div style={{ width: '150%', marginLeft: '-25%' }}>
             <HomeHeroSVG />
           </div>
         ) : (

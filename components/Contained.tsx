@@ -9,6 +9,7 @@ export function Contained(props: Props) {
   const containerStyle = {
     paddingLeft: '5vw',
     paddingRight: '5vw',
+    width: '100%',
     maxWidth: `${UI.MAX_CONTENT_WIDTH}px`,
     margin: '0 auto',
   };

@@ -17,18 +17,21 @@ export function ArticleItem(props: ISanityArticle): JSX.Element {
 
   return (
     <div
-      className="rounded-xl cursor-pointer overflow-hidden w-full mb-6 bg-secondary bg-opacity-75"
+      className="rounded-xl cursor-pointer overflow-hidden w-full bg-secondary bg-opacity-75"
       onClick={e => handleClick(e)}
     >
-      <img
-        className="w-full h-42"
-        src={featureImage.source}
-        alt={featureImage.altText}
-      />
-      <div className="px-4 py-4">
+      <div
+        style={{ paddingBottom: '60%' }}
+        className="w-full h-0 overflow-hidden"
+      >
+        <img src={featureImage.source} alt={featureImage.altText} />
+      </div>
+
+      <div className="px-4 py-4 h-32">
         <div className="text-xl font-somantic mb-2 leading-tight">{title}</div>
         <p className="text-gray-700 text-base">{paragraph}</p>
       </div>
+
       {/* <div className="px-6 py-4">
         {tags &&
           tags
