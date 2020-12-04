@@ -23,7 +23,6 @@ export function HomeSearchSection(): JSX.Element {
       <h1 className="text-primary text-center text-threexl font-somatic mt-12 mb-5">
         Discover. Eat. Smile.
       </h1>
-
       <div className="relative w-full">
         {isMobile ? (
           <div style={{ width: '150%', marginLeft: '-25%' }}>

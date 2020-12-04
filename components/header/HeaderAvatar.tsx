@@ -44,6 +44,7 @@ export function HeaderAvatar() {
 
       <Dropdown
         isOpen={isDropdownOpen}
+        style="outline"
         onClickAway={() => setIsDropdownOpen(false)}
         pull="left"
       >

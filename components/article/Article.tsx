@@ -1,6 +1,6 @@
 import { IArticle } from '../../types/article';
-import { ArticleAbstractArea } from './ArticleAbstractArea';
-import { ArticleTitleArea } from './ArticleTitleArea';
+import { ArticleSectionAbstract } from './sections/ArticleSectionAbstract';
+import { ArticleSectionTitle } from './sections/ArticleSectionTitle';
 
 export function ArticleMobile(props: IArticle) {
   const {
@@ -20,7 +20,7 @@ export function ArticleMobile(props: IArticle) {
 
   return (
     <article>
-      <ArticleTitleArea title={title} author={author} date={date} />
+      <ArticleSectionTitle title={title} author={author} date={date} />
     </article>
   );
 }
@@ -43,9 +43,9 @@ export function ArticleDesktop(props: IArticle) {
 
   return (
     <article>
-      <ArticleTitleArea title={title} author={author} date={date} />
+      <ArticleSectionTitle title={title} author={author} date={date} />
 
-      <ArticleAbstractArea />
+      <ArticleSectionAbstract />
     </article>
   );
 }

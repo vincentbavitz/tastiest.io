@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { UI } from '../constants';
 
 interface Props {
-  backgroundColor?: 'primary' | 'secondary';
+  backgroundColor?: 'primary' | 'secondary' | 'secondary-alt';
   children: ReactNode;
 }
 
@@ -19,7 +19,12 @@ export function Contained(props: Props) {
   };
 
   return (
-    <div className={classNames(backgroundColor && `bg-${backgroundColor}`)}>
+    <div
+      className={classNames(
+        'w-full',
+        backgroundColor && `bg-${backgroundColor}`,
+      )}
+    >
       <div className="relative" style={containerStyle}>
         {children}
       </div>

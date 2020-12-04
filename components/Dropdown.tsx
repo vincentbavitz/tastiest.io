@@ -1,20 +1,27 @@
 import classNames from 'classnames';
 import React, { useRef } from 'react';
 import { useClickAway } from 'react-use';
+import { DropdownItem, DropdownItemProps, TDropdownItem } from './DropdownItem';
 
 interface Props {
   isOpen: boolean;
   pull?: 'left' | 'right';
-
+  style?: 'default' | 'outline';
   onClickAway: () => void;
 
-  // Always use DropdownItem
-  children?: JSX.Element[];
+  // Use DropdownItem
+  children?: JSX.Element | JSX.Element[];
 }
 
 export function Dropdown(props: Props) {
   // Ensure children are all DropdownItems
-  const { isOpen, pull = 'right', onClickAway, children } = props;
+  const {
+    isOpen,
+    pull = 'right',
+    style = 'default',
+    onClickAway,
+    children,
+  } = props;
 
   const ref = useRef(null);
   useClickAway(ref, onClickAway);
@@ -42,8 +49,8 @@ export function Dropdown(props: Props) {
             'rounded-lg',
             'transform',
             'overflow-hidden',
-            'border-2',
-            'border-secondary',
+            style === 'default' && [''],
+            style === 'outline' && ['border-2', 'border-secondary'],
           )}
         >
           {children}

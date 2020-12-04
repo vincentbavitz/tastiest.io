@@ -1,12 +1,12 @@
-import { IAuthor } from '../../types/article';
-import { Avatar } from '../Avatar';
+import { IAuthor } from '../../../types/article';
+import { Avatar } from '../../Avatar';
 
 interface Props {
   author: IAuthor;
   date: string;
 }
 
-export function ArticleAuthor(props: Props) {
+export function ArticleWidgetAuthor(props: Props) {
   const { author, date } = props;
 
   return (
