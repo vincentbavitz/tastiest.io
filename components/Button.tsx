@@ -3,8 +3,8 @@ import React from 'react';
 
 export interface Props {
   color?: 'primary' | 'secondary' | 'danger';
-  type?: 'ghost' | 'solid';
-  size?: 'small' | 'medium' | 'large';
+  type?: 'text' | 'ghost' | 'solid';
+  size?: 'tiny' | 'small' | 'medium' | 'large';
 
   disabled?: boolean;
   selected?: boolean;
@@ -58,12 +58,18 @@ export function Button(props: Props) {
     selected && 'bg-opacity-75',
   ];
 
+  const textTypeClassNames = [`text-${color}`, 'hover:opacity-75'];
+
   const off = disabled
     ? ['cursor-not-allowed', 'opacity-50']
     : ['cursor-pointer'];
 
-  const fontSize =
-    size === 'medium' ? 'text-base' : size === 'large' ? 'text-lg' : 'text-sm';
+  const sizeStyles = [
+    size === 'large' && 'text-lg',
+    size === 'medium' && 'text-base',
+    size === 'small' && 'text-sm',
+    size === 'tiny' && 'text-xs',
+  ];
 
   // Make bg crop to text with tailwind on gradient
   // https://tailwindcss.com/docs/background-clip#class-reference
@@ -82,16 +88,15 @@ export function Button(props: Props) {
         'rounded-lg',
         'font-raleway',
         'font-semibold',
-        'border-2',
-        'border-solid',
-        `border-${color}`,
         off,
-        fontSize,
+        sizeStyles,
         wide && 'tracking-widest',
-        !disabled && 'hover:text-white',
+        !disabled && type !== 'text' && 'hover:text-white',
         size === 'small' ? 'py-1' : 'py-3',
         type === 'ghost' && ghostClassNames,
         type === 'solid' && solidClassNames,
+        type === 'text' && textTypeClassNames,
+        type !== 'text' && ['border-2', 'border-solid', `border-${color}`],
         className,
       )}
       role="button"

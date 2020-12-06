@@ -50,6 +50,7 @@ export function HeaderAvatar() {
       >
         {dropdownItems.map(item => (
           <DropdownItem
+            style="outline"
             key={item.id}
             id={item.id}
             onSelect={item.onClick}

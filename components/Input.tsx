@@ -1,5 +1,12 @@
 import classNames from 'classnames';
-import { ChangeEvent, FocusEvent, RefObject, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  CSSProperties,
+  FocusEvent,
+  RefObject,
+  useRef,
+  useState,
+} from 'react';
 
 export interface InputProps {
   id?: string;
@@ -14,6 +21,7 @@ export interface InputProps {
   type?: 'text' | 'number' | 'search' | 'email' | 'password';
   name?: string;
   size?: 'large' | 'medium' | 'small';
+  border?: 'primary' | 'secondary' | 'none';
 
   inputMode?:
     | 'none'
@@ -30,6 +38,7 @@ export interface InputProps {
   placeholder?: string;
 
   // Styling
+  style?: CSSProperties;
   fitHeight?: boolean;
   readonly?: boolean;
   center?: boolean;
@@ -69,6 +78,8 @@ export function Input(props: InputProps) {
     center = false,
     readonly = false,
     size = 'medium',
+    border = 'secondary',
+    style,
     prefix,
     duration = true,
     suffix,
@@ -150,23 +161,27 @@ export function Input(props: InputProps) {
 
   return (
     <div
+      style={style ?? {}}
       className={classNames(
         'flex',
         'items-center',
         'appearance-none',
-        'border-2',
         'rounded-lg',
         'w-full',
-        'bg-white',
+        // 'bg-white',
         'text-gray-700',
         'leading-tight',
         'outline-black',
         'outline-secondary',
         'focus:outline-black',
+        border !== 'none' && 'border-2',
         size === 'small' ? 'px-2' : 'px-4',
         duration && 'duration-300',
         disabled && 'opacity-50 cursor-not-allowed',
-        hasFocus ? `border-primary` : 'border-secondary',
+        border === 'primary' && 'border-primary',
+        border === 'secondary' && hasFocus
+          ? `border-primary`
+          : 'border-secondary',
         className,
       )}
       onClick={setInputFocus}

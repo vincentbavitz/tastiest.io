@@ -1,13 +1,13 @@
 import classNames from 'classnames';
 import React, { useRef } from 'react';
 import { useClickAway } from 'react-use';
-import { DropdownItem, DropdownItemProps, TDropdownItem } from './DropdownItem';
 
 interface Props {
   isOpen: boolean;
   pull?: 'left' | 'right';
   style?: 'default' | 'outline';
   onClickAway: () => void;
+  center?: boolean;
 
   // Use DropdownItem
   children?: JSX.Element | JSX.Element[];
@@ -19,6 +19,7 @@ export function Dropdown(props: Props) {
     isOpen,
     pull = 'right',
     style = 'default',
+    center = false,
     onClickAway,
     children,
   } = props;

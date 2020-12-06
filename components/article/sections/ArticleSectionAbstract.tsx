@@ -1,30 +1,34 @@
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { Children } from 'react';
 import CharacterEatingSVG from '../../../assets/svgs/article/character-eating.svg';
 import { UI } from '../../../constants';
 import { Contained } from '../../Contained';
+import { ArticleFeatureVideoWidget } from '../widgets/ArticleFeatureVideoWidget';
 import { ArticleSaveShareWidget } from '../widgets/ArticleSaveShareWidget';
 import { ArticleWidgetMap } from '../widgets/ArticleWidgetMap';
 import { ArticleDescriptionSection } from './ArticleDescriptionSection';
+import XiaoDivierSVG from '../../../assets/svgs/article/xiao-divider.svg';
+import { ReactNode } from 'react';
 
 interface Props {
-  //
+  children?: ReactNode;
 }
 
 export function ArticleSectionAbstract(props: Props) {
+  const { children } = props;
+
   return (
     <Contained backgroundColor="secondary-alt">
       <CharacterEating />
 
-      <div className="flex flex-col items-center pt-6 pb-16 space-y-10">
-        <ArticleSaveShareWidget articleId="" articleUrl="" />
-
-        <ArticleDescriptionSection>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod
-          eligendi, labore tenetur odio veritatis alias nihil provident ad! Hic
-          aperiam quaerat nemo vel numquam quibusdam
-        </ArticleDescriptionSection>
+      <div className="flex flex-col items-center pt-6 mb-16 space-y-10">
+        {children}
 
         <ArticleWidgetMap location={{ lng: 33, lat: 33 }} />
+        <ArticleFeatureVideoWidget />
+        <div className="flex w-full justify-center h-4">
+          <XiaoDivierSVG className="h-56 -mt-32" />
+        </div>
       </div>
     </Contained>
   );

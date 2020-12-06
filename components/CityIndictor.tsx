@@ -11,8 +11,8 @@ export function CityIndictor(props: Props) {
       <div className="icon">
         <LocationSVG className="w-5 mr-2" />
       </div>
-      <div className="flex content-center h-4 px-1 bg-secondary font-bold rounded">
-        <p className="self-center text-white text-xs">
+      <div className="flex content-center h-4 px-4 py-3 bg-white bg-opacity-50 font-bold rounded">
+        <p className="self-center text-primary text-xs">
           {titleCase(props.city)}
         </p>
       </div>

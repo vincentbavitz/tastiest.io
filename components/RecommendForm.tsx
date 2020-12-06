@@ -1,4 +1,6 @@
 import classNames from 'classnames';
+import React from 'react';
+import { Button } from './Button';
 
 interface ICity {
   name: string;
@@ -18,10 +20,12 @@ export function RecommendForm(props: Props) {
   const { dish, city } = props;
 
   return (
-    <div className="w-full">
-      <span className="text-lg font-bold">
-        Do you know a better {dish} in {city.name}?
-      </span>
+    <div className="w-8/12">
+      <div className="w-9/12">
+        <span className="text-threexl font-somantic text-primary leading-tight">
+          Do you know a better {dish} in {city.name}?
+        </span>
+      </div>
       <div
         className={classNames(
           'flex',
@@ -44,32 +48,18 @@ export function RecommendForm(props: Props) {
             'appearance-none',
             'leading-normal',
             'bg-transparent',
+            'h-16',
+            'text-xl',
           )}
           type="text"
           maxLength={50}
-          placeholder=""
+          placeholder="Name of restaurant"
         ></input>
-        <button
-          className={classNames(
-            'bg-white',
-            'border-2',
-            'border-white',
-            'm-1',
-            'px-4',
-            'py-2',
-            'border-secondary',
-            'bg-secondary',
-            'rounded-lg',
-            'block',
-            'appearance-none',
-            'leading-normal',
-            'font-bold',
-            'text-white',
-          )}
-        >
-          RECOMMEND
-        </button>
       </div>
+
+      <Button size="small" className="w-32 font-somatic text-xl mt-6">
+        Recommend
+      </Button>
     </div>
   );
 }
