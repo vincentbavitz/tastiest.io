@@ -37,6 +37,9 @@ module.exports = {
     },
   },
   variants: {
+    extend: {
+      borderWidth: ['last'],
+    },
     margin: ['responsive', 'first', 'last'],
     minWidth: ['responsive'],
   },

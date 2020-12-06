@@ -4,7 +4,7 @@ import { useClickAway } from 'react-use';
 
 interface Props {
   isOpen: boolean;
-  pull?: 'left' | 'right';
+  pull?: 'left' | 'right' | 'center';
   style?: 'default' | 'outline';
   onClickAway: () => void;
   center?: boolean;
@@ -39,6 +39,7 @@ export function Dropdown(props: Props) {
           isOpen ? 'block' : 'hidden',
           pull === 'right' && 'left-0',
           pull === 'left' && 'right-0',
+          pull === 'center' && 'left-0 right-0',
         )}
       >
         <div

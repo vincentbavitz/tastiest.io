@@ -32,17 +32,17 @@ export function ArticleSaveShareWidget() {
     },
     {
       id: 'share-to-twitter',
-      name: 'Facebook',
+      name: 'Twitter',
       onClick: () => shareToTwitter(),
     },
     {
       id: 'share-to-whatsapp',
-      name: 'Facebook',
+      name: 'WhatsApp',
       onClick: () => shareToWhatsApp(),
     },
     {
       id: 'share-to-reddit',
-      name: 'Facebook',
+      name: 'Reddit',
       onClick: () => shareToReddit(),
     },
   ];
