@@ -1,4 +1,5 @@
 // Ensure SVGs dont have any width or height attrs.
+import AmericaSVG from './assets/svgs/cuisine-pages/america.svg';
 import ChinaSVG from './assets/svgs/cuisine-pages/china.svg';
 import FranceSVG from './assets/svgs/cuisine-pages/france.svg';
 import IndiaSVG from './assets/svgs/cuisine-pages/india.svg';
@@ -91,6 +92,7 @@ export const CUISINES = {
     name: 'American',
     href: '/american',
     svg: <AmericanSVG />,
+    pageSvg: <AmericaSVG />,
     popularity: 400,
   },
   [CuisineSymbol.MEXICAN]: {
