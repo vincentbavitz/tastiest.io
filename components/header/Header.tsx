@@ -122,7 +122,7 @@ function DesktopHeader() {
               <Title
                 level={4}
                 margin={false}
-                className="text-primary font-somantic"
+                className="text-primary font-somatic"
               >
                 Saved Places
               </Title>

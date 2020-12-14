@@ -22,7 +22,7 @@ export function RecommendForm(props: Props) {
   return (
     <div className="w-8/12">
       <div className="w-9/12">
-        <span className="text-threexl font-somantic text-primary leading-tight">
+        <span className="text-threexl font-somatic text-primary leading-tight">
           Do you know a better {dish} in {city.name}?
         </span>
       </div>

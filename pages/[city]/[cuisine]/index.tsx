@@ -3,8 +3,9 @@ import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { Contained } from '../../../components/Contained';
 import { Footer } from '../../../components/Footer';
-import { CUISINES, CuisineSymbol } from '../../../constants';
+import { CUISINES } from '../../../constants';
 import { ISanityArticle } from '../../../types/article';
+import { CuisineSymbol } from '../../../types/cuisine';
 import { generateTitle } from '../../../utils/metadata';
 import { getCuisinePosts, postsToCards } from '../../../utils/posts';
 import { titleCase } from '../../../utils/text';
@@ -18,12 +19,6 @@ export default function Cuisine() {
   // Ensure cuisine exists on load; else 404
   const cuisineName = titleCase(String(cuisine?.name));
   const cuisineExists = Boolean(cuisine);
-
-  // // Responsive
-  // let isDesktop = true;
-  // if (typeof window !== 'undefined') {
-  //   isDesktop = useMedia(`(min-width: ${UI.TABLET_BREAKPOINT}px)`);
-  // }
 
   console.log('cuisine info', {
     cuisineQueryName,
@@ -72,7 +67,7 @@ export default function Cuisine() {
               style={{ marginTop: '10vw' }}
               className="flex w-full justify-center"
             >
-              <span className="text-threexl font-somantic text-primary">
+              <span className="text-threexl font-somatic text-primary">
                 {cuisineName} Cuisine
               </span>
             </div>

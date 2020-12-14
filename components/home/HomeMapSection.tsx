@@ -1,10 +1,14 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import { Button } from '../Button';
 import { Title } from '../Title';
+import { useArticle } from '../../hooks/article';
 
 export function HomeMapSection() {
   // GET USERS LOCATION
   // const geolocation = useGeolocation();
+
+  useArticle();
 
   return (
     <div className="relative w-full rounded-xl overflow-hidden">
@@ -17,7 +21,7 @@ export function HomeMapSection() {
       {/* TEXT OVERLAY */}
       <div className="flex justify-end w-full py-4 px-6">
         <div className="flex flex-col items-center justify-center z-10">
-          <Title level={3} className="text-primary font-somantic text-center">
+          <Title level={3} className="text-primary font-somatic text-center">
             Discover and
             <br />
             save your new

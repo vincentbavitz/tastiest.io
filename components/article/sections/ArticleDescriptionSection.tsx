@@ -1,3 +1,4 @@
+import { useScreenSize } from '../../../hooks/screen';
 import { Contained } from '../../Contained';
 
 interface Props {
@@ -7,10 +8,17 @@ interface Props {
 export function ArticleDescriptionSection(props: Props) {
   const { children } = props;
 
+  const { isMobile, isDesktop } = useScreenSize();
+
   return (
     <Contained>
       <div className="flex justify-center w-full">
-        <span className="text-lg lg:text-twoxl lg:w-7/12 bold text-center font-robotoblack text-gray-800">
+        <span
+          style={{
+            maxWidth: isDesktop ? '700px' : 'unset',
+          }}
+          className="text-lg w-full desktop:text-twoxl bold text-center font-robotoblack text-gray-800"
+        >
           {children}
         </span>
       </div>
