@@ -5,6 +5,7 @@ import { useMedia, useScroll, useWindowSize } from 'react-use';
 import ChevronLeftSecondarySVG from '../../assets/svgs/chevron-left-secondary.svg';
 import ChevronRightSecondarySVG from '../../assets/svgs/chevron-right-secondary.svg';
 import { CUISINES, UI } from '../../constants';
+import { useScreenSize } from '../../hooks/screen';
 import { saveCuisineBarScrollPos } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Contained } from '../Contained';
@@ -27,11 +28,7 @@ export function CuisineBar(props: Props) {
 
   const [rightScrollHidden, setRightScrollHidden] = useState(false);
 
-  // Responsive
-  let isDesktop = true;
-  if (typeof window !== 'undefined') {
-    isDesktop = useMedia(`(min-width: ${UI.TABLET_BREAKPOINT}px)`);
-  }
+  const { isDesktop } = useScreenSize();
 
   const handleLeftScroll = () => {
     scrollRef.current.scrollBy({

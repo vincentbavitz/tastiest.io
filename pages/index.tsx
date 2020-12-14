@@ -13,6 +13,7 @@ import { HomeRecentSearchesSection } from '../components/home/HomeRecentSearches
 import { HomeSearchSection } from '../components/home/HomeSearchSection';
 import { HomeSuggestDishSection } from '../components/home/HomeSuggestDishSection';
 import { METADATA, UI } from '../constants';
+import { useScreenSize } from '../hooks/screen';
 import { ISanityArticle } from '../types/article';
 // import withAuthUser from '../utils/pageWrappers/withAuthUser';
 // import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo';
@@ -37,11 +38,7 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
   //   console.log('Auth user', authUser);
   // }, [AuthUserInfo]);
 
-  // Responsive
-  let isMobile;
-  if (typeof window !== 'undefined') {
-    isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
-  }
+  const { isMobile } = useScreenSize();
 
   return (
     <>

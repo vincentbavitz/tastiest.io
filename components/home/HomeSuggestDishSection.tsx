@@ -4,18 +4,13 @@ import { useMeasure, useMedia } from 'react-use';
 import SuggestDishDesktopSVG from '../../assets/svgs/suggest-dish-desktop.svg';
 import SuggestDishMobileSVG from '../../assets/svgs/suggest-dish-mobile.svg';
 import { UI } from '../../constants';
+import { useScreenSize } from '../../hooks/screen';
 import { Button } from '../Button';
 import { Input } from '../Input';
 import { Title } from '../Title';
 
 export function HomeSuggestDishSection() {
-  // Responsive
-  let isDesktop;
-  let isHuge = false;
-  if (typeof window !== 'undefined') {
-    isDesktop = useMedia(`(min-width: ${UI.TABLET_BREAKPOINT}px)`);
-    isHuge = useMedia(`(min-width: ${UI.DESKTOP_BREAKPOINT}px)`);
-  }
+  const { isDesktop, isHuge } = useScreenSize();
 
   const [ref, { width }] = useMeasure();
 

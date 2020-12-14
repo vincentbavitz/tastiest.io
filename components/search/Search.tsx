@@ -13,6 +13,7 @@ import BackSVG from '../../assets/svgs/back.svg';
 import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
 import SearchSecondarySVG from '../../assets/svgs/search-secondary.svg';
 import { UI } from '../../constants';
+import { useScreenSize } from '../../hooks/screen';
 import {
   collapseSearchOverlay,
   expandSearchOverlay,
@@ -57,11 +58,7 @@ export function Search(props: Props) {
 
   const router = useRouter();
 
-  // Responsive
-  let isMobile;
-  if (typeof window !== 'undefined') {
-    isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
-  }
+  const { isMobile } = useScreenSize();
 
   const inputValue = searchState.searchQuery;
   const renderExitButton = props.renderExitButton ?? isMobile;

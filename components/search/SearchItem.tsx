@@ -4,6 +4,7 @@ import React, { SyntheticEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { useMedia } from 'react-use';
 import { UI } from '../../constants';
+import { useScreenSize } from '../../hooks/screen';
 import { ISanityArticle } from '../../types/article';
 import { generateURL } from '../../utils/routing';
 
@@ -12,11 +13,7 @@ export function SearchItem(props: ISanityArticle) {
   const router = useRouter();
   const { title, featureImage, city, cuisine, slug } = props;
 
-  // Responsive
-  let isMobile;
-  if (typeof window !== 'undefined') {
-    isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
-  }
+  const { isMobile } = useScreenSize();
 
   const handleClick = (e: SyntheticEvent) => {
     const { href, as } = generateURL({ city, cuisine, slug });

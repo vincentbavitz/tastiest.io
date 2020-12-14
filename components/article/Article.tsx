@@ -33,7 +33,6 @@ export function ArticleMobile(props: IArticle) {
       </ArticleDescriptionSection>
 
       <ArticleSaveShareWidget />
-
       <ArticleSectionAbstract />
       <ArticleSectionContent />
     </article>

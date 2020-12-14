@@ -1,5 +1,14 @@
+const CONSTANTS = require('./constants');
+
 module.exports = {
   theme: {
+    screens: {
+      // -> @media (min-width: {}px) { ... }
+      mobile: '0px',
+      tablet: `${CONSTANTS.UI.MOBILE_BREAKPOINT}px`,
+      desktop: `${CONSTANTS.UI.TABLET_BREAKPOINT}px`,
+      huge: `${CONSTANTS.UI.DESKTOP_BREAKPOINT}px`,
+    },
     fontFamily: {
       somantic: ['SomaticRounded'],
       roboto: ['Roboto'],

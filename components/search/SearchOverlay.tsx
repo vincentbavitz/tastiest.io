@@ -9,6 +9,7 @@ import NewSVG from '../../assets/svgs/hot.svg';
 import NearbySVG from '../../assets/svgs/location.svg';
 import TrendingSVG from '../../assets/svgs/trending.svg';
 import { CUISINES, UI } from '../../constants';
+import { useScreenSize } from '../../hooks/screen';
 import { collapseSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { OutlineBlock } from '../OutlineBlock';
@@ -26,11 +27,7 @@ export function SearchOverlay() {
   const searchBarGeometry = searchState.searchBarGeometry;
   const dispatch = useDispatch();
 
-  // Responsive
-  let isMobile;
-  if (typeof window !== 'undefined') {
-    isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
-  }
+  const { isMobile } = useScreenSize();
 
   const overlayContentRef = useRef(null);
   const onClickAway = () => {
@@ -140,11 +137,7 @@ function OverlayElement() {
   const searchState = useSelector((state: IState) => state.search);
   const renderSearchTemplate = searchState.searchResultItems.length === 0;
 
-  // Responsive
-  let isMobile;
-  if (typeof window !== 'undefined') {
-    isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
-  }
+  const { isMobile } = useScreenSize();
 
   return (
     <div>

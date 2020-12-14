@@ -13,6 +13,7 @@ import {
 } from '../../../components/article/Article';
 import { Footer } from '../../../components/Footer';
 import { UI } from '../../../constants';
+import { useScreenSize } from '../../../hooks/screen';
 import { IArticle } from '../../../types/article';
 import { getArticle } from '../../../utils/article';
 import { generateTitle } from '../../../utils/metadata';
@@ -53,12 +54,7 @@ function Post(props: IArticle) {
     featureImage,
   } = props;
 
-  // Responsive
-  let isMobile;
-  if (typeof window !== 'undefined') {
-    isMobile = useMedia(`(max-width: ${UI.TABLET_BREAKPOINT}px)`);
-  }
-
+  const { isMobile } = useScreenSize();
   const router = useRouter();
 
   // Scroll to top on load

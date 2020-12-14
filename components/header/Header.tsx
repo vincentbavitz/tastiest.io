@@ -7,6 +7,7 @@ import TastiestLogo from '../../assets/svgs/brand.svg';
 import HeartPrimarySVG from '../../assets/svgs/heart-primary.svg';
 import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
 import { UI } from '../../constants';
+import { useScreenSize } from '../../hooks/screen';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Contained } from '../Contained';
@@ -15,11 +16,7 @@ import { Title } from '../Title';
 import { HeaderAvatar } from './HeaderAvatar';
 
 export function Header() {
-  // Responsive
-  let isMobile;
-  if (typeof window !== 'undefined') {
-    isMobile = useMedia(`(max-width: ${UI.TABLET_BREAKPOINT}px)`);
-  }
+  const { isMobile } = useScreenSize();
 
   const handleAvatarClick = () => {
     null;

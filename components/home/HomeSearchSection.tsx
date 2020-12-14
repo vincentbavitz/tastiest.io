@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useMedia } from 'react-use';
 import HomeHeroSVG from '../../assets/svgs/home-hero.svg';
 import { UI } from '../../constants';
+import { useScreenSize } from '../../hooks/screen';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Search } from '../search/Search';
@@ -12,11 +13,7 @@ export function HomeSearchSection(): JSX.Element {
   const { searchOverlayExpanded } = navigationState;
   const dispatch = useDispatch();
 
-  // Responsive
-  let isMobile;
-  if (typeof window !== 'undefined') {
-    isMobile = useMedia(`(max-width: ${UI.TABLET_BREAKPOINT}px)`);
-  }
+  const { isMobile } = useScreenSize();
 
   return (
     <div className="flex flex-col items-center">

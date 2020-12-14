@@ -6,22 +6,11 @@ import { useMedia } from 'react-use';
 import _404 from '../assets/svgs/404.svg';
 import { Footer } from '../components/Footer';
 import { UI } from '../constants';
+import { useScreenSize } from '../hooks/screen';
 import { generateTitle } from '../utils/metadata';
 
 function Tastiest404() {
-  // Responsive
-  let isMobile;
-  let isTablet;
-  let isDesktop;
-  let isHuge = false;
-  if (typeof window !== 'undefined') {
-    isMobile = useMedia(`(max-width: ${UI.MOBILE_BREAKPOINT}px)`);
-    isTablet = useMedia(
-      `(min-width: ${UI.MOBILE_BREAKPOINT}px) and  (max-width: ${UI.TABLET_BREAKPOINT}px)`,
-    );
-    isDesktop = useMedia(`(min-width: ${UI.TABLET_BREAKPOINT}px)`);
-    isHuge = useMedia(`(min-width: ${UI.DESKTOP_BREAKPOINT}px)`);
-  }
+  const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
 
   const wrapperStyles = {
     width: '100%',
