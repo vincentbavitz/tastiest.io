@@ -1,8 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMedia } from 'react-use';
 import HomeHeroSVG from '../../assets/svgs/home-hero.svg';
-import { UI } from '../../constants';
 import { useScreenSize } from '../../hooks/screen';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';

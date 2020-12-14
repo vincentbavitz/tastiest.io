@@ -16,7 +16,7 @@ import MediterraneanSVG from '../assets/svgs/cuisines/mediterranean.svg';
 import MexicanSVG from '../assets/svgs/cuisines/mexican.svg';
 import SpanishSVG from '../assets/svgs/cuisines/spanish.svg';
 
-const CUISINES = {
+export const CUISINES = {
   [CuisineSymbol.ITALIAN]: {
     name: 'Italian',
     href: '/italian',
@@ -86,5 +86,3 @@ const CUISINES = {
     popularity: 543,
   },
 } as { [name: string]: ICuisine };
-
-export default CUISINES;

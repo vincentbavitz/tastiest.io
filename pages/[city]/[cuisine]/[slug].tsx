@@ -4,7 +4,6 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import { useMedia } from 'react-use';
 import '../../../assets/style.scss';
 import client from '../../../client';
 import {
@@ -12,7 +11,6 @@ import {
   ArticleMobile,
 } from '../../../components/article/Article';
 import { Footer } from '../../../components/Footer';
-import { UI } from '../../../constants';
 import { useScreenSize } from '../../../hooks/screen';
 import { IArticle } from '../../../types/article';
 import { getArticle } from '../../../utils/article';
