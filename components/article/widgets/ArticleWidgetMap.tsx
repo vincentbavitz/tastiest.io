@@ -1,22 +1,15 @@
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useArticle } from '../../../hooks/article';
 import { useScreenSize } from '../../../hooks/screen';
 import { ILocation } from '../../../types/article';
 import { CityIndictor } from '../../CityIndictor';
 import { Title } from '../../Title';
 
-interface Props {
-  location: ILocation;
-}
-
-export function ArticleWidgetMap(props: Props) {
-  const { location } = props;
-  const { lat, lng } = location;
+export function ArticleWidgetMap() {
+  const { location, city } = useArticle();
 
   const { isDesktop } = useScreenSize();
-
-  const router = useRouter();
-  const city = String(router.query.city ?? '');
 
   return (
     <div className="flex justify-center w-full space-x-8">

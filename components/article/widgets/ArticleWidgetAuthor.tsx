@@ -1,13 +1,9 @@
+import { useArticle } from '../../../hooks/article';
 import { IAuthor } from '../../../types/article';
 import { Avatar } from '../../Avatar';
 
-interface Props {
-  author: IAuthor;
-  date: string;
-}
-
-export function ArticleWidgetAuthor(props: Props) {
-  const { author, date } = props;
+export function ArticleWidgetAuthor() {
+  const { author, date } = useArticle();
 
   return (
     <div className="flex items-center space-x-3">

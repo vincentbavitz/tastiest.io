@@ -2,15 +2,9 @@ import classNames from 'classnames';
 import React from 'react';
 import { Button } from './Button';
 
-interface ICity {
-  name: string;
-  lat: number;
-  lng: number;
-}
-
 interface Props {
   dish: string;
-  city: ICity;
+  city: string;
 }
 
 // Use klaviyo for emails
@@ -23,7 +17,7 @@ export function RecommendForm(props: Props) {
     <div className="w-8/12">
       <div className="w-9/12">
         <span className="text-threexl font-somatic text-primary leading-tight">
-          Do you know a better {dish} in {city.name}?
+          Do you know a better {dish} in {city}?
         </span>
       </div>
       <div

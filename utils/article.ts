@@ -1,7 +1,7 @@
 import groq from 'groq';
 import moment from 'moment';
 import client from '../client';
-import { IArticle, ISanityArticle } from '../types/article';
+import { ISanityArticle, IArticle } from '../types/article';
 import { sanityPostQuery } from './search';
 import { titleCase } from './text';
 
@@ -10,8 +10,8 @@ export async function getArticle(
   onFail?: () => void,
 ): Promise<IArticle | Partial<IArticle>> {
   const query = groq`*[_type == "post" && slug.current == "${slug}"][0]{
-      ${sanityPostQuery}
-    }`;
+        ${sanityPostQuery}
+      }`;
 
   console.log('slug', slug);
   console.log('query', query);
@@ -30,9 +30,6 @@ export async function getArticle(
   }
 
   const article = buildArticleInfo(sanityArticle);
-
-  console.log('article.title', article.title);
-
   return article;
 }
 
@@ -42,9 +39,8 @@ export function buildArticleInfo(
 ): IArticle | undefined {
   const date = moment(article.publishedAt).format('MMMM D, YYYY');
 
-  const video = `https://www.youtube.com/embed/${
-    article.video.link?.split('?v=')[1] ?? ''
-  }`;
+  // YouTube video ID
+  const video = article.video.link?.split('?v=')[1] ?? '';
 
   return {
     slug: article.slug,

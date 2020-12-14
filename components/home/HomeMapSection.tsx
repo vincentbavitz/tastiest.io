@@ -8,8 +8,6 @@ export function HomeMapSection() {
   // GET USERS LOCATION
   // const geolocation = useGeolocation();
 
-  useArticle();
-
   return (
     <div className="relative w-full rounded-xl overflow-hidden">
       {/* MAP BACKDROP */}

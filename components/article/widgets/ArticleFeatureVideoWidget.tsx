@@ -1,4 +1,10 @@
+import React from 'react';
+import { useArticle } from '../../../hooks/article';
+import YouTube from 'react-youtube';
+
 export function ArticleFeatureVideoWidget() {
+  const { video } = useArticle();
+
   return (
     <div className="w-full">
       <div
@@ -6,9 +12,16 @@ export function ArticleFeatureVideoWidget() {
           // Padding bottom of 56.25% corresponds to 16/9 aspect ratio
           paddingBottom: '56.25%',
         }}
-        className="relative h-0 w-full rounded-lg overflow-hidden bg-gray-300"
+        className="relative h-0 w-full rounded-lg overflow-hidden"
       >
-        <div className="absolute inset-0 flex justify-center items-center">
+        <YouTube
+          videoId={video}
+          className="absolute inset-0 w-full h-full"
+          // Tracking -> user started video
+          // onPlay={() => }
+        />
+
+        {/* <div className="absolute inset-0 flex justify-center items-center">
           <div className="flex justify-center items-center rounded-full bg-primary h-20 w-20">
             <div
               style={{
@@ -17,7 +30,7 @@ export function ArticleFeatureVideoWidget() {
               className="bg-white ml-2 w-8 h-10"
             ></div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="w-64 italic mt-4 pl-2">

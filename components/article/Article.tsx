@@ -1,12 +1,26 @@
 import React from 'react';
+import { useScreenSize } from '../../hooks/screen';
 import { IArticle } from '../../types/article';
+import { RecommendForm } from '../RecommendForm';
 import { ArticleDescriptionSection } from './sections/ArticleDescriptionSection';
 import { ArticleSectionAbstract } from './sections/ArticleSectionAbstract';
 import { ArticleSectionContent } from './sections/ArticleSectionContent';
 import { ArticleSectionTitle } from './sections/ArticleSectionTitle';
 import { ArticleSaveShareWidget } from './widgets/ArticleSaveShareWidget';
 
-export function ArticleMobile(props: IArticle) {
+export function Article(props: IArticle) {
+  const { isMobile } = useScreenSize();
+  const article = props;
+
+  return (
+    <div>
+      {isMobile ? <ArticleMobile {...props} /> : <ArticleDesktop {...props} />}
+      <RecommendForm dish={article.dishName} city={article.city} />
+    </div>
+  );
+}
+
+function ArticleMobile(props: IArticle) {
   const {
     body,
     title,
@@ -26,11 +40,7 @@ export function ArticleMobile(props: IArticle) {
     <article>
       <ArticleSectionTitle title={title} author={author} date={date} />
 
-      <ArticleDescriptionSection>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod eligendi,
-        labore tenetur odio veritatis alias nihil provident ad! Hic aperiam
-        quaerat nemo vel numquam quibusdam
-      </ArticleDescriptionSection>
+      <ArticleDescriptionSection />
 
       <ArticleSaveShareWidget />
       <ArticleSectionAbstract />
@@ -39,7 +49,7 @@ export function ArticleMobile(props: IArticle) {
   );
 }
 
-export function ArticleDesktop(props: IArticle) {
+function ArticleDesktop(props: IArticle) {
   const {
     body,
     title,

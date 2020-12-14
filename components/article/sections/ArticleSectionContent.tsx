@@ -66,11 +66,6 @@ export function ArticleSectionContent() {
       </div>
 
       <ArticleSectionFeatureImage />
-
-      <RecommendForm
-        dish="Xiao Long Bao"
-        city={{ name: 'London', lat: 0, lng: 0 }}
-      />
     </Contained>
   );
 }

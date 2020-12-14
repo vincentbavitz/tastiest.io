@@ -1,15 +1,19 @@
-// Genius TS import: https://github.com/vercel/next.js/issues/5318#issuecomment-575959060
-function requireTypescript(path) {
-  const fileContent = require('fs').readFileSync(path, 'utf8');
-  const compiled = require('@babel/core').transform(fileContent, {
-    filename: path,
-    presets: ['@babel/preset-typescript'],
-  });
+// // Genius TS import: https://github.com/vercel/next.js/issues/5318#issuecomment-575959060
+// function requireTypescript(path) {
+//   const fileContent = require('fs').readFileSync(path, 'utf8');
+//   const compiled = require('@babel/core').transform(fileContent, {
+//     filename: path,
+//     presets: ['@babel/preset-typescript'],
+//   });
 
-  return eval(compiled.code);
-}
+//   return eval(compiled.code);
+// }
 
-const UI = requireTypescript('./constants/ui.ts');
+// const UI = requireTypescript('./constants/ui');
+
+// Constants compiled on build
+
+const { UI } = require('./constants/ui');
 
 module.exports = {
   theme: {

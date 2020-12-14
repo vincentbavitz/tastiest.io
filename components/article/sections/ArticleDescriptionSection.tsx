@@ -1,12 +1,9 @@
+import { useArticle } from '../../../hooks/article';
 import { useScreenSize } from '../../../hooks/screen';
 import { Contained } from '../../Contained';
 
-interface Props {
-  children: string;
-}
-
-export function ArticleDescriptionSection(props: Props) {
-  const { children } = props;
+export function ArticleDescriptionSection() {
+  const { subtitle } = useArticle();
 
   const { isMobile, isDesktop } = useScreenSize();
 
@@ -17,9 +14,9 @@ export function ArticleDescriptionSection(props: Props) {
           style={{
             maxWidth: isDesktop ? '700px' : 'unset',
           }}
-          className="text-lg w-full desktop:text-twoxl bold text-center font-robotoblack text-gray-800"
+          className="text-lg w-full desktop:text-xl text-center font-roboto text-gray-900"
         >
-          {children}
+          {subtitle}
         </span>
       </div>
     </Contained>
