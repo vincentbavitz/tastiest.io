@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import { useScreenSize } from '../hooks/screen';
 
 export interface Props {
   color?: 'primary' | 'secondary' | 'danger';
@@ -34,6 +35,8 @@ export function Button(props: Props) {
     wide = false,
   } = props;
 
+  const { isDesktop } = useScreenSize();
+
   const clickHandler = (e: any) => {
     if (onClick) {
       e?.stopPropagation && e?.stopPropagation();
@@ -64,11 +67,13 @@ export function Button(props: Props) {
     ? ['cursor-not-allowed', 'opacity-50']
     : ['cursor-pointer'];
 
+  // Conditional isDesktop makes buttons more touch friendly
+  // with more padding
   const sizeStyles = [
-    size === 'large' && 'text-lg',
-    size === 'medium' && 'text-base',
-    size === 'small' && 'text-sm',
-    size === 'tiny' && 'text-xs',
+    size === 'large' && 'text-lg py-2',
+    size === 'medium' && 'text-base py-1',
+    size === 'small' && ['text-sm', isDesktop ? 'py-0' : 'py-1'],
+    size === 'tiny' && 'text-xs py-0',
   ];
 
   // Make bg crop to text with tailwind on gradient
@@ -92,7 +97,6 @@ export function Button(props: Props) {
         sizeStyles,
         wide && 'tracking-widest',
         !disabled && type !== 'text' && 'hover:text-white',
-        size === 'small' ? 'py-1' : 'py-3',
         type === 'ghost' && ghostClassNames,
         type === 'solid' && solidClassNames,
         type === 'text' && textTypeClassNames,

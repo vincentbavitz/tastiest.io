@@ -2,7 +2,7 @@ import React from 'react';
 import { useScreenSize } from '../../hooks/screen';
 import { IArticle } from '../../types/article';
 import { RecommendForm } from '../RecommendForm';
-import { ArticleDescriptionSection } from './sections/ArticleDescriptionSection';
+import { ArticleSubtitleSection } from './sections/ArticleSubtitleSection';
 import { ArticleSectionAbstract } from './sections/ArticleSectionAbstract';
 import { ArticleSectionContent } from './sections/ArticleSectionContent';
 import { ArticleSectionTitle } from './sections/ArticleSectionTitle';
@@ -39,12 +39,16 @@ function ArticleMobile(props: IArticle) {
   return (
     <article>
       <ArticleSectionTitle title={title} author={author} date={date} />
-
-      <ArticleDescriptionSection />
+      <ArticleSubtitleSection subtitle={subtitle} />
 
       <ArticleSaveShareWidget />
-      <ArticleSectionAbstract />
-      <ArticleSectionContent />
+      <ArticleSectionAbstract
+        city={city}
+        video={video}
+        location={location}
+        restaurantName={restaurantName}
+      ></ArticleSectionAbstract>
+      <ArticleSectionContent featureImage={featureImage} body={body} />
     </article>
   );
 }
@@ -68,15 +72,16 @@ function ArticleDesktop(props: IArticle) {
   return (
     <article>
       <ArticleSectionTitle title={title} author={author} date={date} />
-      <ArticleSectionAbstract>
+      <ArticleSectionAbstract
+        city={city}
+        video={video}
+        location={location}
+        restaurantName={restaurantName}
+      >
         <ArticleSaveShareWidget />
-        <ArticleDescriptionSection>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod
-          eligendi, labore tenetur odio veritatis alias nihil provident ad! Hic
-          aperiam quaerat nemo vel numquam quibusdam
-        </ArticleDescriptionSection>
+        <ArticleSubtitleSection subtitle={subtitle} />
       </ArticleSectionAbstract>
-      <ArticleSectionContent />
+      <ArticleSectionContent featureImage={featureImage} body={body} />
     </article>
   );
 }

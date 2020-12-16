@@ -6,7 +6,7 @@ import { useLocation, useMedia, useWindowScroll } from 'react-use';
 import TastiestLogo from '../../assets/svgs/brand.svg';
 import HeartPrimarySVG from '../../assets/svgs/heart-primary.svg';
 import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
-import { UI } from '../../constants';
+import SearchSecondarySVG from '../../assets/svgs/search-secondary.svg';
 import { useScreenSize } from '../../hooks/screen';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
@@ -14,6 +14,7 @@ import { Contained } from '../Contained';
 import { Search } from '../search/Search';
 import { Title } from '../Title';
 import { HeaderAvatar } from './HeaderAvatar';
+import HamburgerSVG from '../../assets/svgs/hamburger.svg';
 
 export function Header() {
   const { isMobile } = useScreenSize();
@@ -36,10 +37,12 @@ function MobileHeader() {
       className="fixed left-0 right-0 top-0 w-full h-24 bg-white"
     >
       <div className="w-full h-full flex items-center justify-between">
-        {/* AVATAR */}
-        <Link href="/login">
-          <div className="bg-primary rounded-full h-8 w-8 cursor-pointer"></div>
-        </Link>
+        <div
+          className="flex flex-shrink-0"
+          onClick={() => dispatch(expandSearchOverlay())}
+        >
+          <SearchPrimarySVG className="h-10 cursor-pointer" />
+        </div>
 
         <div className="antialiased">
           <Link href="/">
@@ -49,12 +52,7 @@ function MobileHeader() {
           </Link>
         </div>
 
-        <div
-          className="flex flex-shrink-0"
-          onClick={() => dispatch(expandSearchOverlay())}
-        >
-          <SearchPrimarySVG className="fill-secondary h-8 cursor-pointer" />
-        </div>
+        <HeaderAvatar />
       </div>
     </div>
   );

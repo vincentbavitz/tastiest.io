@@ -9,6 +9,9 @@ interface Props {
   onClickAway: () => void;
   center?: boolean;
 
+  offsetX?: number;
+  offsetY?: number;
+
   // Use DropdownItem
   children?: JSX.Element | JSX.Element[];
 }
@@ -20,6 +23,8 @@ export function Dropdown(props: Props) {
     pull = 'right',
     style = 'default',
     center = false,
+    offsetX,
+    offsetY,
     onClickAway,
     children,
   } = props;
@@ -30,12 +35,15 @@ export function Dropdown(props: Props) {
   return (
     <div className="relative w-full h-0 z-50">
       <div
-        style={{ width: 'max-content' }}
+        style={{
+          width: 'max-content',
+          marginLeft: offsetX ? `${offsetX}px` : 'unset',
+          marginTop: offsetY ? `${offsetY}px` : '0.5rem',
+        }}
         className={classNames(
           'absolute',
           'top-0',
           'z-50',
-          'mt-2',
           isOpen ? 'block' : 'hidden',
           pull === 'right' && 'left-0',
           pull === 'left' && 'right-0',
@@ -45,14 +53,13 @@ export function Dropdown(props: Props) {
         <div
           ref={ref}
           className={classNames(
-            'py-2',
             'bg-white',
             'duration-300',
             'rounded-lg',
             'transform',
             'overflow-hidden',
-            style === 'default' && [''],
-            style === 'outline' && ['border-2', 'border-secondary'],
+            style === 'default' && ['pt-2'],
+            style === 'outline' && ['py-2', 'border-2', 'border-secondary'],
           )}
         >
           {children}

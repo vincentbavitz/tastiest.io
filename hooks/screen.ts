@@ -1,21 +1,21 @@
+import { useEffect } from 'react';
 import { useMedia } from 'react-use';
 import { UI } from '../constants';
 
 export function useScreenSize() {
-  // Responsive
-  let isMobile;
-  let isTablet;
-  let isDesktop;
-  let isHuge;
+  // Default to mobile view
+  const isMobile = useMedia(`(max-width: ${UI.TABLET_BREAKPOINT}px)`, true);
+  const isTablet = useMedia(
+    `(min-width: ${UI.MOBILE_BREAKPOINT}px) and  (max-width: ${UI.TABLET_BREAKPOINT}px)`,
+    false,
+  );
+  const isDesktop = useMedia(`(min-width: ${UI.TABLET_BREAKPOINT}px)`, false);
+  const isHuge = useMedia(`(min-width: ${UI.DESKTOP_BREAKPOINT}px)`, false);
 
-  if (typeof window !== 'undefined') {
-    isMobile = useMedia(`(max-width: ${UI.TABLET_BREAKPOINT}px)`);
-    isTablet = useMedia(
-      `(min-width: ${UI.MOBILE_BREAKPOINT}px) and  (max-width: ${UI.TABLET_BREAKPOINT}px)`,
-    );
-    isDesktop = useMedia(`(min-width: ${UI.TABLET_BREAKPOINT}px)`);
-    isHuge = useMedia(`(min-width: ${UI.DESKTOP_BREAKPOINT}px)`);
-  }
+  // console.log('screen ➡️ isMobile:', isMobile);
+  // console.log('screen ➡️ isTablet:', isTablet);
+  // console.log('screen ➡️ isDesktop:', isDesktop);
+  // console.log('screen ➡️ isHuge:', isHuge);
 
   return { isMobile, isTablet, isDesktop, isHuge };
 }

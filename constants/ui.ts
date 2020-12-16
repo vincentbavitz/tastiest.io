@@ -8,6 +8,5 @@ export const UI = {
 
   ARTICLE: {
     TITLE_MAX_WIDTH_REM: 29,
-    EATING_CHARACTER_SIZE_REM: 22,
   },
 };

@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useState } from 'react';
 import HeartPrimarySVG from '../../../assets/svgs/heart-primary.svg';
 import ShareSVG from '../../../assets/svgs/share.svg';
 import {
@@ -23,6 +24,8 @@ interface IShareDropdownItems {
 export function ArticleSaveShareWidget() {
   const router = useRouter();
   const articleUrl = `tastiest.io${router.asPath}`;
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const dropdownItems: Array<IShareDropdownItems> = [
     {
@@ -48,22 +51,31 @@ export function ArticleSaveShareWidget() {
   ];
 
   return (
-    <div className="flex justify-center w-full">
+    <div className="flex justify-center w-full z-10">
       <div
         style={{ width: 'fit-content' }}
-        className="flex bg-secondary bg-opacity-25 lg:bg-white lg:bg-opacity-75 rounded-md text-primary my-4 lg:my-0"
+        className="flex bg-secondary desktop:bg-white bg-opacity-50 cursor-pointer rounded-md text-primary my-4"
       >
-        <div className="flex flex-1 items-center cursor-pointer px-2 py-1 space-x-1 hover:bg-white">
+        <div className="flex flex-1 items-center cursor-pointer px-2 py-1 space-x-1 hover:bg-white bg-opacity-50 font-medium rounded-md">
           <HeartPrimarySVG className="h-8" />
           <span>Save</span>
         </div>
 
-        <div className="flex flex-1 items-center cursor-pointer px-2 py-1 space-x-1 hover:bg-white">
+        <div
+          className="flex flex-1 items-center cursor-pointer px-2 py-1 space-x-1 hover:bg-white bg-opacity-50 font-medium rounded-md"
+          onClick={() => setIsDropdownOpen(true)}
+        >
           <ShareSVG className="h-8" />
           <span>Share</span>
         </div>
 
-        <Dropdown isOpen={true} onClickAway={() => null} pull="center">
+        <Dropdown
+          isOpen={isDropdownOpen}
+          onClickAway={() => setIsDropdownOpen(false)}
+          pull="center"
+          offsetX={-50}
+          offsetY={25}
+        >
           <>
             <div className="px-3 pt-1 pb-2">
               <InputGroup className="w-full rounded-sm bg-secondary bg-opacity-25">

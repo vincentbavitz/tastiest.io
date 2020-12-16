@@ -46,7 +46,6 @@ export function CuisineItem(props: Props) {
             'border-secondary',
             'hover:text-secondary-300',
             'hover:bg-transparent',
-            'lg:mt-0',
           )}
         >
           <span className="pr-1">{props.name}</span>

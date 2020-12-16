@@ -1,10 +1,12 @@
-import { useArticle } from '../../../hooks/article';
+import { IFigureImage } from '../../../types/article';
 
-export function ArticleSectionFeatureImage() {
-  const { featureImage } = useArticle();
+interface Props {
+  featureImage: IFigureImage;
+}
 
+export function ArticleSectionFeatureImage({ featureImage }: Props) {
   return (
-    <div className="my-10">
+    <div className="my-10 pb-4 desktop:pb-0">
       <div
         style={{ paddingBottom: '40%' }}
         className="relative w-full h-0 mb-4 bg-gray-300 rounded-md overflow-hidden"

@@ -1,18 +1,4 @@
-// // Genius TS import: https://github.com/vercel/next.js/issues/5318#issuecomment-575959060
-// function requireTypescript(path) {
-//   const fileContent = require('fs').readFileSync(path, 'utf8');
-//   const compiled = require('@babel/core').transform(fileContent, {
-//     filename: path,
-//     presets: ['@babel/preset-typescript'],
-//   });
-
-//   return eval(compiled.code);
-// }
-
-// const UI = requireTypescript('./constants/ui');
-
 // Constants compiled on build
-
 const { UI } = require('./constants/ui');
 
 module.exports = {
@@ -28,10 +14,6 @@ module.exports = {
       somatic: ['SomaticRounded'],
       roboto: ['Roboto'],
       robotoslab: ['RobotoSlab'],
-      robotoblack: ['RobotoBlack'],
-      roboslabsemibold: ['RobotoSlabSemiBold'],
-      robotolight: ['RobotoLight'],
-      robotoslabsemibold: ['RobotoSlabSemiBold'],
     },
     fontSize: {
       xs: ['.75rem'],
@@ -61,9 +43,7 @@ module.exports = {
     },
   },
   variants: {
-    extend: {
-      borderWidth: ['last'],
-    },
+    extend: {},
     margin: ['responsive', 'first', 'last'],
     minWidth: ['responsive'],
   },

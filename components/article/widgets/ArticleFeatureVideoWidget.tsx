@@ -2,9 +2,11 @@ import React from 'react';
 import { useArticle } from '../../../hooks/article';
 import YouTube from 'react-youtube';
 
-export function ArticleFeatureVideoWidget() {
-  const { video } = useArticle();
+interface Props {
+  video: string;
+}
 
+export function ArticleFeatureVideoWidget({ video }: Props) {
   return (
     <div className="w-full">
       <div
@@ -33,7 +35,7 @@ export function ArticleFeatureVideoWidget() {
         </div> */}
       </div>
 
-      <div className="w-64 italic mt-4 pl-2">
+      <div className="w-10/12 desktop:w-64 text-sm desktop:text-base italic mt-4 pl-2">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta labore
         eius iure aliquid asperiores cum, quibusdam sapiente!
       </div>

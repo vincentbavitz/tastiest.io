@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { Button } from '../Button';
 import { Title } from '../Title';
-import { useArticle } from '../../hooks/article';
 
 export function HomeMapSection() {
   // GET USERS LOCATION

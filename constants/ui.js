@@ -8,7 +8,6 @@ exports.UI = {
     MAX_CONTENT_WIDTH: 1300,
     USER_QUERY_404_MAX_LEN: 500,
     ARTICLE: {
-        TITLE_MAX_WIDTH_REM: 29,
-        EATING_CHARACTER_SIZE_REM: 22
+        TITLE_MAX_WIDTH_REM: 29
     }
 };

@@ -75,9 +75,6 @@ function Post(props: IArticle) {
 
       <Article {...props} />
 
-      {/* temporary spacer */}
-      <div className="py-64"></div>
-
       <Footer />
     </>
   );

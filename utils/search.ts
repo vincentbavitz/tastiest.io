@@ -35,7 +35,7 @@ export async function search(query: string): Promise<Array<ISanityArticle>> {
   }
 
   return posts
-    .filter(post =>
+    ?.filter(post =>
       // Ensure all values are present in each post
       Object.values(post).every(value => Boolean(value)),
     )

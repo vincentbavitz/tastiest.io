@@ -135,7 +135,8 @@ export function SearchOverlay() {
 
 function OverlayElement() {
   const searchState = useSelector((state: IState) => state.search);
-  const renderSearchTemplate = searchState.searchResultItems.length === 0;
+  const renderSearchTemplate =
+    searchState?.searchResultItems?.length === 0 ?? true;
 
   const { isMobile } = useScreenSize();
 

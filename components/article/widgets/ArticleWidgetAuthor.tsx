@@ -2,9 +2,12 @@ import { useArticle } from '../../../hooks/article';
 import { IAuthor } from '../../../types/article';
 import { Avatar } from '../../Avatar';
 
-export function ArticleWidgetAuthor() {
-  const { author, date } = useArticle();
+interface Props {
+  author: IAuthor;
+  date: string;
+}
 
+export function ArticleWidgetAuthor({ author, date }: Props) {
   return (
     <div className="flex items-center space-x-3">
       <Avatar size={10} imageSrc={author?.imageSrc} />

@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import styled from 'styled-components';
 
 // Simplest use is to define your options and map over them to product JSX and your desired onSelect; eg:
 // options?.map(option => <DropdownItem onSelect={() => setDropdownItem(option.key)})}</Dropdown>
@@ -10,6 +11,12 @@ export interface DropdownItemProps {
   children: JSX.Element | JSX.Element[] | string;
 }
 
+const DropdownItemElement = styled.div`
+  &:last-child {
+    border-bottom: none !important;
+  }
+`;
+
 export const DropdownItem = (props: DropdownItemProps) => {
   const { id, children, onSelect, selected = false, style = 'default' } = props;
 
@@ -20,23 +27,22 @@ export const DropdownItem = (props: DropdownItemProps) => {
   };
 
   return (
-    <div
+    <DropdownItemElement
       onClick={() => handleOnSelect()}
       className={classNames(
+        'flex items-center',
         'block',
-        'text-sm',
-        'text-primary',
-        'text-opacity-75',
-        'hover:text-opacity-100',
+        'font-roboto text-sm text-primary',
+        'hover:text-opacity-100 text-opacity-75',
         'select-none',
         'cursor-pointer',
         style === 'default' &&
-          'border-b border-secondary bold py-2 mx-3 last:border-b-0',
+          'border-b border-secondary font-semibold py-2 mx-3',
         style === 'outline' && ['pl-4', 'pr-6', 'py-1'],
         selected && 'bold text-opacity-100',
       )}
     >
       {children}
-    </div>
+    </DropdownItemElement>
   );
 };

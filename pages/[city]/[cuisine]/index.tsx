@@ -68,7 +68,7 @@ export default function Cuisine() {
               className="flex w-full justify-center"
             >
               <span className="text-threexl font-somatic text-primary">
-                {cuisineName} Cuisine
+                {cuisineName}
               </span>
             </div>
           </div>
