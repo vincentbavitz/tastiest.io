@@ -11,7 +11,7 @@ import { useScreenSize } from '../../hooks/screen';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Contained } from '../Contained';
-import { Search } from '../search/Search';
+import { SearchInput } from '../search/SearchInput';
 import { Title } from '../Title';
 import { HeaderAvatar } from './HeaderAvatar';
 import HamburgerSVG from '../../assets/svgs/hamburger.svg';
@@ -105,13 +105,13 @@ function DesktopHeader() {
                 )}
                 style={{ minWidth: '10rem', maxWidth: '20rem', width: '100%' }}
               >
-                <Search
+                {/* <SearchInput
                   size="small"
                   theme="secondary"
                   className="border-secondary border-2 border-opacity-50 rounded-lg duration-300 w-full"
                   renderExitButton={false}
                   onFocus={() => dispatch(expandSearchOverlay())}
-                />
+                /> */}
               </div>
             </div>
 

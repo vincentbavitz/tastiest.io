@@ -1,9 +1,11 @@
+import { SVG } from '.';
+
 export interface ICuisine {
   // Name is the cuisine as it's rendered. Don't forget capitalizations
   name: string;
   href: string;
-  svg: JSX.Element;
-  pageSvg?: JSX.Element;
+  svg: SVG;
+  pageSvg?: SVG;
   popularity: number;
 }
 

@@ -12,6 +12,20 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import { OutlineBlock } from '../OutlineBlock';
 import { ScreenContext } from '../../contexts/screen';
+import { ReactNode } from 'react';
+import { useRouter } from 'next/router';
+
+interface IDynamicCategories {
+  name: string;
+  href: string;
+  svg: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+}
+
+const dynamicCategories: Array<IDynamicCategories> = [
+  { name: 'Nearby', href: '/search/nearby', svg: NearbySVG },
+  { name: 'Trending', href: '/search/trending', svg: TrendingSVG },
+  { name: 'New', href: '/search/new', svg: NewSVG },
+];
 
 export function SearchOverlayInner() {
   const searchState = useSelector((state: IState) => state.search);
@@ -19,31 +33,29 @@ export function SearchOverlayInner() {
     searchState?.searchResultItems?.length === 0 ?? true;
 
   const { isMobile } = useContext(ScreenContext);
+  const router = useRouter();
 
   return (
     <div>
       <div
         className={classNames(
           'w-full px-4 pb-6',
-          isMobile && 'flex flex-col h-full justify-between mt-3',
+          isMobile && 'flex flex-col h-full justify-between',
         )}
       >
         <div className="w-full border-secondary border-opacity-50 border-t-2"></div>
 
         {/* FEATURED DYNAMIC CATEGORIES */}
         <div className="flex flex-col space-y-1 mt-4">
-          <span className="flex items-center text-lg text-primary font-roboto">
-            <NearbySVG className="h-8 mr-2" />
-            Nearby
-          </span>
-          <span className="flex items-center text-lg text-primary font-roboto">
-            <TrendingSVG className="h-8 mr-2" />
-            Trending
-          </span>
-          <span className="flex items-center text-lg text-primary font-roboto">
-            <NewSVG className="h-8 mr-2" />
-            New
-          </span>
+          {dynamicCategories.map(category => (
+            <span
+              onClick={() => router.push(category.href)}
+              className="flex items-center text-lg text-primary font-roboto"
+            >
+              <category.svg className="h-8 mr-2" />
+              {category.name}
+            </span>
+          ))}
         </div>
 
         {/* CUISINES */}

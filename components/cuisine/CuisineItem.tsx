@@ -1,13 +1,14 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import React from 'react';
+import { SVG } from '../../types';
 import { generateURL } from '../../utils/routing';
 
 interface Props {
   // Ensure that the accompanying SVG is in /assets/svgs/cuisines/name.svg
   // where name is given in lowercase for the filename
   name: string;
-  svg: JSX.Element;
+  svg: SVG;
   onClick?(): void;
 }
 
@@ -49,7 +50,7 @@ export function CuisineItem(props: Props) {
           )}
         >
           <span className="pr-1">{props.name}</span>
-          {props.svg}
+          <props.svg />
         </div>
       </div>
     </Link>

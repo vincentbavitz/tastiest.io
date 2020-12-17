@@ -153,6 +153,10 @@ $breakpoint-huge: 1280px;
   font-weight: 700;
 }
 
+body {
+  min-width: 350px;
+}
+
 .__next {
   overflow-x: hidden;
 }

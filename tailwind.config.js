@@ -40,6 +40,9 @@ module.exports = {
         danger: '#130b57',
         article: '#140c57',
       },
+      backgroundOpacity: {
+        '10': '0.1',
+      },
     },
   },
   variants: {

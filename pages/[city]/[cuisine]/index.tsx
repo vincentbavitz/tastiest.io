@@ -73,7 +73,7 @@ export default function Cuisine() {
             </div>
           </div>
 
-          {cuisine.pageSvg}
+          {<cuisine.pageSvg />}
         </div>
 
         <Contained>

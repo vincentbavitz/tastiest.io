@@ -5,7 +5,8 @@ import { ScreenContext } from '../../contexts/screen';
 import { useScreenSize } from '../../hooks/screen';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
-import { Search } from '../search/Search';
+import { SearchHome } from '../search/SearchHome';
+import { Search } from '../search/SearchInput';
 
 export function HomeSearchSection(): JSX.Element {
   const navigationState = useSelector((state: IState) => state.navigation);
@@ -25,6 +26,19 @@ export function HomeSearchSection(): JSX.Element {
         {isMobile ? (
           <div style={{ width: '150%', marginLeft: '-25%' }}>
             <HomeHeroSVG />
+            <div className="flex items-center justify-center w-full absolute top-0 right-0 bottom-0 left-0">
+              <div
+                className="w-full"
+                style={{
+                  marginTop: '27%',
+                  filter: searchOverlayExpanded
+                    ? 'unset'
+                    : 'drop-shadow(0px 6px 0px rgba(219, 68,0,0.5))',
+                }}
+              >
+                <SearchHome />
+              </div>
+            </div>
           </div>
         ) : (
           <>
@@ -40,12 +54,7 @@ export function HomeSearchSection(): JSX.Element {
                     : 'drop-shadow(0px 6px 0px rgba(219, 68,0,0.5))',
                 }}
               >
-                <Search
-                  trackGeometry
-                  placeholder="Search"
-                  renderExitButton={false}
-                  onFocus={() => dispatch(expandSearchOverlay())}
-                />
+                <SearchHome />
               </div>
             </div>
           </>
