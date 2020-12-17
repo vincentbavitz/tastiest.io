@@ -1,16 +1,17 @@
 import classNames from 'classnames';
 import Head from 'next/head';
 import Link from 'next/link';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useMedia } from 'react-use';
 import _404 from '../assets/svgs/404.svg';
 import { Footer } from '../components/Footer';
 import { UI } from '../constants';
+import { ScreenContext } from '../contexts/screen';
 import { useScreenSize } from '../hooks/screen';
 import { generateTitle } from '../utils/metadata';
 
 function Tastiest404() {
-  const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
+  const { isMobile, isTablet, isDesktop, isHuge } = useContext(ScreenContext);
 
   const wrapperStyles = {
     width: '100%',

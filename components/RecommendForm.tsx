@@ -1,9 +1,10 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button } from './Button';
 import { Contained } from './Contained';
 import SuggestDishDesktopSVG from '../assets/svgs/suggest-dish-desktop.svg';
 import { useScreenSize } from '../hooks/screen';
+import { ScreenContext } from '../contexts/screen';
 
 interface Props {
   dish: string;
@@ -14,7 +15,7 @@ interface Props {
 // https://www.klaviyo.com/docs
 
 export function RecommendForm(props: Props) {
-  const { isDesktop } = useScreenSize();
+  const { isDesktop } = useContext(ScreenContext);
 
   return (
     <Contained>
@@ -44,7 +45,7 @@ export function RecommendForm(props: Props) {
 }
 
 const RecommendFormContent = ({ dish, city }: Props) => {
-  const { isDesktop } = useScreenSize();
+  const { isDesktop } = useContext(ScreenContext);
 
   return (
     <>

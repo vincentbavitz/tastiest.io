@@ -1,7 +1,7 @@
 import groq from 'groq';
 import { NextPage } from 'next';
 import Head from 'next/head';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useMedia } from 'react-use';
 import client from '../client';
 import { ArticleItem } from '../components/ArticleItem';
@@ -13,6 +13,7 @@ import { HomeRecentSearchesSection } from '../components/home/HomeRecentSearches
 import { HomeSearchSection } from '../components/home/HomeSearchSection';
 import { HomeSuggestDishSection } from '../components/home/HomeSuggestDishSection';
 import { METADATA, UI } from '../constants';
+import { ScreenContext } from '../contexts/screen';
 import { useScreenSize } from '../hooks/screen';
 import { ISanityArticle } from '../types/article';
 // import withAuthUser from '../utils/pageWrappers/withAuthUser';
@@ -38,7 +39,7 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
   //   console.log('Auth user', authUser);
   // }, [AuthUserInfo]);
 
-  const { isMobile } = useScreenSize();
+  const { isMobile } = useContext(ScreenContext);
 
   return (
     <>

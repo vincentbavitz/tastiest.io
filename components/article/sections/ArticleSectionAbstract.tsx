@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import CharacterEatingSVG from '../../../assets/svgs/article/character-eating.svg';
 import { UI } from '../../../constants';
 import { Contained } from '../../Contained';
@@ -8,6 +8,7 @@ import XiaoDividerSVG from '../../../assets/svgs/article/xiao-divider.svg';
 import { ReactNode } from 'react';
 import { ILocation } from '../../../types/article';
 import { useScreenSize } from '../../../hooks/screen';
+import { ScreenContext } from '../../../contexts/screen';
 
 interface Props {
   city: string;
@@ -22,7 +23,7 @@ const EATING_CHARACTER_SIZE_REM = 22;
 export function ArticleSectionAbstract(props: Props) {
   const { city, location, video, restaurantName, children } = props;
 
-  const { isMobile } = useScreenSize();
+  const { isMobile } = useContext(ScreenContext);
 
   return (
     <Contained backgroundColor="secondary-alt">

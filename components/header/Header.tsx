@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import Link from 'next/link';
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useMedia, useWindowScroll } from 'react-use';
 import TastiestLogo from '../../assets/svgs/brand.svg';
@@ -15,9 +15,10 @@ import { Search } from '../search/Search';
 import { Title } from '../Title';
 import { HeaderAvatar } from './HeaderAvatar';
 import HamburgerSVG from '../../assets/svgs/hamburger.svg';
+import { ScreenContext } from '../../contexts/screen';
 
 export function Header() {
-  const { isMobile } = useScreenSize();
+  const { isMobile } = useContext(ScreenContext);
 
   const handleAvatarClick = () => {
     null;

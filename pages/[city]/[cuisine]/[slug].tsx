@@ -3,12 +3,13 @@ import imageUrlBuilder from '@sanity/image-url';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import '../../../assets/style.scss';
 import client from '../../../client';
 import { Article } from '../../../components/article/Article';
 import { Footer } from '../../../components/Footer';
+import { ScreenContext } from '../../../contexts/screen';
 import { useScreenSize } from '../../../hooks/screen';
 import { IState } from '../../../state/reducers';
 import { setArticle } from '../../../state/reducers/article';
@@ -58,7 +59,7 @@ function Post(props: IArticle) {
   const dispatch = useDispatch();
   dispatch(setArticle(props));
 
-  const { isMobile } = useScreenSize();
+  const { isMobile } = useContext(ScreenContext);
 
   // Scroll to top on load
   useEffect(() => {

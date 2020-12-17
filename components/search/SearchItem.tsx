@@ -1,9 +1,10 @@
 import classNames from 'classnames';
 import { useRouter } from 'next/dist/client/router';
-import React, { SyntheticEvent } from 'react';
+import React, { SyntheticEvent, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { useMedia } from 'react-use';
 import { UI } from '../../constants';
+import { ScreenContext } from '../../contexts/screen';
 import { useScreenSize } from '../../hooks/screen';
 import { ISanityArticle } from '../../types/article';
 import { generateURL } from '../../utils/routing';
@@ -13,7 +14,7 @@ export function SearchItem(props: ISanityArticle) {
   const router = useRouter();
   const { title, featureImage, city, cuisine, slug } = props;
 
-  const { isMobile } = useScreenSize();
+  const { isMobile } = useContext(ScreenContext);
 
   const handleClick = (e: SyntheticEvent) => {
     const { href, as } = generateURL({ city, cuisine, slug });

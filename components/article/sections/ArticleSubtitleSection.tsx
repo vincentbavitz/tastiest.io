@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { ScreenContext } from '../../../contexts/screen';
 import { useArticle } from '../../../hooks/article';
 import { useScreenSize } from '../../../hooks/screen';
 import { Contained } from '../../Contained';
@@ -7,7 +9,7 @@ interface Props {
 }
 
 export function ArticleSubtitleSection({ subtitle }: Props) {
-  const { isMobile, isDesktop } = useScreenSize();
+  const { isMobile, isDesktop } = useContext(ScreenContext);
 
   return (
     <Contained>

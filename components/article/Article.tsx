@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useScreenSize } from '../../hooks/screen';
 import { IArticle } from '../../types/article';
 import { RecommendForm } from '../RecommendForm';
@@ -7,9 +7,10 @@ import { ArticleSectionAbstract } from './sections/ArticleSectionAbstract';
 import { ArticleSectionContent } from './sections/ArticleSectionContent';
 import { ArticleSectionTitle } from './sections/ArticleSectionTitle';
 import { ArticleSaveShareWidget } from './widgets/ArticleSaveShareWidget';
+import { ScreenContext } from '../../contexts/screen';
 
 export function Article(props: IArticle) {
-  const { isMobile } = useScreenSize();
+  const { isMobile } = useContext(ScreenContext);
   const article = props;
 
   return (

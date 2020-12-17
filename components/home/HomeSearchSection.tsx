@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import HomeHeroSVG from '../../assets/svgs/home-hero.svg';
+import { ScreenContext } from '../../contexts/screen';
 import { useScreenSize } from '../../hooks/screen';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
@@ -11,7 +12,9 @@ export function HomeSearchSection(): JSX.Element {
   const { searchOverlayExpanded } = navigationState;
   const dispatch = useDispatch();
 
-  const { isMobile } = useScreenSize();
+  const { isMobile } = useContext(ScreenContext);
+
+  console.log('HomeSearchSection ➡️ isMobile:', isMobile);
 
   return (
     <div className="flex flex-col items-center">

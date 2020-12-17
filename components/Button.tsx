@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useContext } from 'react';
+import { ScreenContext } from '../contexts/screen';
 import { useScreenSize } from '../hooks/screen';
 
 export interface Props {
@@ -35,7 +36,7 @@ export function Button(props: Props) {
     wide = false,
   } = props;
 
-  const { isDesktop } = useScreenSize();
+  const { isDesktop } = useContext(ScreenContext);
 
   const clickHandler = (e: any) => {
     if (onClick) {

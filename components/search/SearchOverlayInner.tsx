@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { CUISINES } from '../../constants';
 import { useScreenSize } from '../../hooks/screen';
@@ -11,13 +11,14 @@ import TrendingSVG from '../../assets/svgs/trending.svg';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { OutlineBlock } from '../OutlineBlock';
+import { ScreenContext } from '../../contexts/screen';
 
 export function SearchOverlayInner() {
   const searchState = useSelector((state: IState) => state.search);
   const renderSearchTemplate =
     searchState?.searchResultItems?.length === 0 ?? true;
 
-  const { isMobile } = useScreenSize();
+  const { isMobile } = useContext(ScreenContext);
 
   return (
     <div>

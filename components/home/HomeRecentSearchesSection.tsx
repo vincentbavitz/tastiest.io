@@ -1,6 +1,7 @@
 import React from 'react';
 import { OutlineBlock } from '../OutlineBlock';
 import { SectionTitle } from '../SectionTitle';
+import { v4 as uuid } from 'uuid';
 
 interface RecentSearchItem {
   value: string;
@@ -21,7 +22,7 @@ export function HomeRecentSearchesSection() {
       <SectionTitle>Your recent searches</SectionTitle>
       <div className="flex mt-8 space-x-4">
         {recentSearches.map(search => (
-          <OutlineBlock key={search.timestamp}>{search.value}</OutlineBlock>
+          <OutlineBlock key={uuid()}>{search.value}</OutlineBlock>
         ))}
       </div>
     </div>

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { useRouter } from 'next/dist/client/router';
-import React, { ChangeEvent, useEffect, useRef } from 'react';
+import React, { ChangeEvent, useContext, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useKey,
@@ -13,6 +13,7 @@ import BackSVG from '../../assets/svgs/back.svg';
 import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
 import SearchSecondarySVG from '../../assets/svgs/search-secondary.svg';
 import { UI } from '../../constants';
+import { ScreenContext } from '../../contexts/screen';
 import { useScreenSize } from '../../hooks/screen';
 import {
   collapseSearchOverlay,
@@ -58,7 +59,7 @@ export function Search(props: Props) {
 
   const router = useRouter();
 
-  const { isMobile } = useScreenSize();
+  const { isMobile } = useContext(ScreenContext);
 
   const inputValue = searchState.searchQuery;
   const renderExitButton = props.renderExitButton ?? isMobile;
@@ -149,6 +150,8 @@ export function Search(props: Props) {
         bottom,
         left,
       };
+
+      console.log('Search ➡️ rects:', rects);
 
       dispatch(setSearchBarGeometry(geometry));
     },

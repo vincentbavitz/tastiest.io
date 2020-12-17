@@ -1,10 +1,11 @@
 import classNames from 'classnames';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMedia, useScroll, useWindowSize } from 'react-use';
 import ChevronLeftSecondarySVG from '../../assets/svgs/chevron-left-secondary.svg';
 import ChevronRightSecondarySVG from '../../assets/svgs/chevron-right-secondary.svg';
 import { CUISINES, UI } from '../../constants';
+import { ScreenContext } from '../../contexts/screen';
 import { useScreenSize } from '../../hooks/screen';
 import { saveCuisineBarScrollPos } from '../../state/navigation';
 import { IState } from '../../state/reducers';
@@ -28,7 +29,7 @@ export function CuisineBar(props: Props) {
 
   const [rightScrollHidden, setRightScrollHidden] = useState(false);
 
-  const { isDesktop } = useScreenSize();
+  const { isDesktop } = useContext(ScreenContext);
 
   const handleLeftScroll = () => {
     scrollRef.current.scrollBy({

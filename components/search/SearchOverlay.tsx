@@ -1,10 +1,11 @@
 import classNames from 'classnames';
 import Link from 'next/link';
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useKey, useLocation, useMedia } from 'react-use';
 
 import { CUISINES, UI } from '../../constants';
+import { ScreenContext } from '../../contexts/screen';
 import { useScreenSize } from '../../hooks/screen';
 import { collapseSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
@@ -25,7 +26,7 @@ export function SearchOverlay() {
   const searchBarGeometry = searchState.searchBarGeometry;
   const dispatch = useDispatch();
 
-  const { isMobile } = useScreenSize();
+  const { isMobile } = useContext(ScreenContext);
 
   // Close on escape
   useKey('Escape', () => dispatch(collapseSearchOverlay()));

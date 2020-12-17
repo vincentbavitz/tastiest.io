@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ScreenContext } from '../../../contexts/screen';
 import { useScreenSize } from '../../../hooks/screen';
 import { ILocation } from '../../../types/article';
 import { CityIndictor } from '../../CityIndictor';
@@ -11,7 +12,7 @@ interface Props {
 }
 
 export function ArticleWidgetMap({ city, location }: Props) {
-  const { isMobile, isDesktop } = useScreenSize();
+  const { isMobile, isDesktop } = useContext(ScreenContext);
 
   return (
     <div className="flex flex-col w-full desktop:flex-row desktop:justify-center desktop:space-x-8">

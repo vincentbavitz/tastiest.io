@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ScreenContext } from '../../../contexts/screen';
 import { useScreenSize } from '../../../hooks/screen';
 import { IFigureImage } from '../../../types/article';
 import { Contained } from '../../Contained';
@@ -53,7 +54,7 @@ odit est fugit, iste aspernatur incidunt quod iure aliquid fugiat.`,
 // Really want writers to be able to do {{CALL_TO_ACTION}} sorta things like Wordpress shortcodes
 // And that will then conditionally render our components
 export function ArticleSectionContent(props: Props) {
-  const { isDesktop } = useScreenSize();
+  const { isDesktop } = useContext(ScreenContext);
 
   return (
     <Contained>

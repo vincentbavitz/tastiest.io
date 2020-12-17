@@ -8,6 +8,7 @@ import { CuisineBar } from '../components/cuisine/CuisineBar';
 import { Header } from '../components/header/Header';
 import { SearchOverlay } from '../components/search/SearchOverlay';
 import { METADATA } from '../constants';
+import ScreenProvider from '../contexts/screen';
 import { rootReducer } from '../state/reducers';
 
 const store = createStore(rootReducer);
@@ -15,17 +16,19 @@ const store = createStore(rootReducer);
 function App({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <Head>
-        <title>{METADATA.TITLE_SUFFIX}</title>
-      </Head>
+      <ScreenProvider>
+        <Head>
+          <title>{METADATA.TITLE_SUFFIX}</title>
+        </Head>
 
-      <>
-        <SearchOverlay />
+        <>
+          <SearchOverlay />
 
-        <Header />
-        <CuisineBar />
-        <Component {...pageProps} />
-      </>
+          <Header />
+          <CuisineBar />
+          <Component {...pageProps} />
+        </>
+      </ScreenProvider>
     </Provider>
   );
 }

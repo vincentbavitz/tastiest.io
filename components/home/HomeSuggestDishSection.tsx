@@ -1,16 +1,17 @@
 import classNames from 'classnames';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useMeasure, useMedia } from 'react-use';
 import SuggestDishDesktopSVG from '../../assets/svgs/suggest-dish-desktop.svg';
 import SuggestDishMobileSVG from '../../assets/svgs/suggest-dish-mobile.svg';
 import { UI } from '../../constants';
+import { ScreenContext } from '../../contexts/screen';
 import { useScreenSize } from '../../hooks/screen';
 import { Button } from '../Button';
 import { Input } from '../Input';
 import { Title } from '../Title';
 
 export function HomeSuggestDishSection() {
-  const { isDesktop, isHuge } = useScreenSize();
+  const { isDesktop, isHuge } = useContext(ScreenContext);
 
   const [ref, { width }] = useMeasure();
 
