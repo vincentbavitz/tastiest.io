@@ -32,16 +32,19 @@ function MobileHeader() {
   const searchState = useSelector((state: IState) => state.search);
   const dispatch = useDispatch();
 
+  const handleExpandSearch = (e: React.MouseEvent) => {
+    // Timeout to prevent action immediately firing on the elemnt under with onMouseUp
+    setTimeout(() => dispatch(expandSearchOverlay()), 50);
+    e.stopPropagation();
+  };
+
   return (
     <div
       style={{ zIndex: 1000, paddingLeft: '5vw', paddingRight: '5vw' }}
       className="fixed left-0 right-0 top-0 w-full h-24 bg-white"
     >
       <div className="w-full h-full flex items-center justify-between">
-        <div
-          className="flex flex-shrink-0"
-          onClick={() => dispatch(expandSearchOverlay())}
-        >
+        <div className="flex flex-shrink-0" onMouseDown={handleExpandSearch}>
           <SearchPrimarySVG className="h-10 cursor-pointer" />
         </div>
 

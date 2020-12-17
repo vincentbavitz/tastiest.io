@@ -39,7 +39,6 @@ export function SearchOverlayDesktop() {
 
   return (
     <>
-      {' '}
       <div
         onClick={onClickAway}
         style={{ zIndex: searchOverlayExpanded ? 20000 : -1 }}

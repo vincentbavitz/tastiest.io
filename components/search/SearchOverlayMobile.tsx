@@ -19,17 +19,16 @@ export function SearchOverlayMobile() {
   const dispatch = useDispatch();
 
   // Internal functions
-  const handleExit = () => {
-    dispatch(collapseSearchOverlay());
+  const handleExit = (e: React.MouseEvent) => {
+    // Timeout to prevent action immediately firing on the elemnt under with onMouseUp
+    setTimeout(() => dispatch(collapseSearchOverlay()), 50);
+    e.stopPropagation();
   };
 
   // Internal elements
   const searchInputPrefix = (
-    <span className="text-secondary">
-      <BackSVG
-        className={classNames('h-8 w-8 fill-current')}
-        onClick={handleExit}
-      />
+    <span onMouseDown={handleExit} className="text-secondary">
+      <BackSVG className={classNames('h-8 w-8 fill-current')} />
     </span>
   );
 
@@ -46,10 +45,10 @@ export function SearchOverlayMobile() {
       <div className="flex flex-col h-full flex-grow overflow-y-scroll">
         <Contained>
           <SearchInput
+            autofocus
             className=""
             inputClassName="h-24 pl-2 text-xl"
             placeholder="Search"
-            autofocus={searchOverlayExpanded}
             prefix={searchInputPrefix}
           />
         </Contained>

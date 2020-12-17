@@ -8,14 +8,7 @@ import React, {
   useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  useClickAway,
-  useKey,
-  useLockBodyScroll,
-  useMeasure,
-  useMedia,
-  useStartTyping,
-} from 'react-use';
+import { useClickAway, useLockBodyScroll, useMeasure } from 'react-use';
 import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
 import SearchSecondarySVG from '../../assets/svgs/search-secondary.svg';
 import { UI } from '../../constants';
@@ -55,15 +48,8 @@ export function SearchHome(props: Props) {
   const searchRef = useRef(null);
   const [searchMeasureRef, { width }] = useMeasure();
 
-  // Internal Functions
-  // Exit when user clicks out of component
-  const handleExit = () => {
-    dispatch(collapseSearchOverlay());
-  };
-
   // Hooks
   const router = useRouter();
-  useClickAway(searchRef, handleExit);
   useLockBodyScroll(searchOverlayExpanded && isMobile);
 
   // Set coordinates of search element
@@ -90,29 +76,29 @@ export function SearchHome(props: Props) {
   );
 
   return (
-    <div
-      ref={searchMeasureRef}
-      style={{ zIndex: searchOverlayExpanded && !isMobile ? 20001 : 'auto' }}
-      className="relative"
-    >
+    <div ref={searchMeasureRef} className="relative">
       <div
         ref={searchRef}
+        style={{
+          filter: searchOverlayExpanded
+            ? 'unset'
+            : 'drop-shadow(0px 6px 0px rgba(219, 68,0,0.5))',
+        }}
         className={classNames(
-          'flex items-center w-full justify-between bg-white px-2',
+          'flex items-center w-full justify-between h-10 bg-white px-2',
           'border-primary border-t-2 border-l-2 border-r-2',
-          searchOverlayExpanded ? 'rounded-t-lg' : 'rounded-lg',
-          searchOverlayExpanded ? 'border-b-0' : 'border-b-2',
+          searchOverlayExpanded && !isMobile ? 'rounded-t-lg' : 'rounded-lg',
+          searchOverlayExpanded && !isMobile ? 'border-b-0' : 'border-b-2',
           isMobile && 'border-b border-gray-300',
-          isMobile && searchOverlayExpanded ? 'h-20' : 'h-10',
         )}
       >
         <SearchInput
+          dummy={isMobile}
+          autofocus={!isMobile}
+          placeholder="Search..."
           suffix={searchSuffix}
           onFocus={() => dispatch(expandSearchOverlay())}
-          inputClassName={classNames([
-            isMobile ? 'px-6' : 'pl-2 pr-4',
-            isMobile && 'text-xl',
-          ])}
+          inputClassName={classNames(['pl-2 pr-4', isMobile && 'text-xl'])}
         />
       </div>
     </div>

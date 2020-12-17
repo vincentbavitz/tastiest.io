@@ -14,6 +14,9 @@ interface Props {
 
   className?: string;
   inputClassName?: string;
+
+  // A dummy input is purely visual.
+  dummy?: boolean;
   prefix?: ReactNode;
   suffix?: ReactNode;
   onFocus?(): void;
@@ -28,6 +31,7 @@ export function SearchInput(props: Props) {
     placeholder,
     className,
     inputClassName,
+    dummy,
     prefix,
     suffix,
     onFocus,
@@ -108,30 +112,48 @@ export function SearchInput(props: Props) {
       if (autofocus) {
         inputRef?.current?.focus();
       }
-    }, 0);
+    }, 50);
   }, []);
 
   return (
-    <div className={classNames('flex items-center space-x-3', className)}>
+    <div
+      className={classNames('flex items-center w-full space-x-3', className)}
+    >
       {prefix && <div>{prefix}</div>}
 
-      <input
-        ref={inputRef}
-        spellCheck={false}
-        className={classNames(
-          'flex',
-          'flex-grow',
-          'border-none',
-          'outline-none',
-          'w-0',
-          inputClassName,
-        )}
-        placeholder={placeholder}
-        value={inputValue}
-        onKeyDown={() => inputRef?.current?.focus()}
-        onFocus={handleFocus}
-        onChange={handleOnChange}
-      />
+      {dummy ? (
+        <div
+          className={classNames(
+            'flex',
+            'flex-grow',
+            'border-none',
+            'outline-none',
+            'opacity-50',
+            'w-0',
+            inputClassName,
+          )}
+        >
+          {inputValue || placeholder}
+        </div>
+      ) : (
+        <input
+          ref={inputRef}
+          spellCheck={false}
+          className={classNames(
+            'flex',
+            'flex-grow',
+            'border-none',
+            'outline-none',
+            'w-0',
+            inputClassName,
+          )}
+          placeholder={placeholder}
+          value={inputValue}
+          onKeyDown={() => inputRef?.current?.focus()}
+          onFocus={handleFocus}
+          onChange={handleOnChange}
+        />
+      )}
 
       {suffix && <div>{suffix}</div>}
     </div>

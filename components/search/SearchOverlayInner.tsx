@@ -14,11 +14,12 @@ import { OutlineBlock } from '../OutlineBlock';
 import { ScreenContext } from '../../contexts/screen';
 import { ReactNode } from 'react';
 import { useRouter } from 'next/router';
+import { SVG } from '../../types';
 
 interface IDynamicCategories {
   name: string;
   href: string;
-  svg: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+  svg: SVG;
 }
 
 const dynamicCategories: Array<IDynamicCategories> = [
@@ -50,7 +51,7 @@ export function SearchOverlayInner() {
           {dynamicCategories.map(category => (
             <span
               onClick={() => router.push(category.href)}
-              className="flex items-center text-lg text-primary font-roboto"
+              className="flex items-center text-lg text-primary font-roboto font-medium"
             >
               <category.svg className="h-8 mr-2" />
               {category.name}
