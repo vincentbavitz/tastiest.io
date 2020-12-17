@@ -5,6 +5,7 @@ import { useScreenSize } from '../../hooks/screen';
 import { IState } from '../../state/reducers';
 import SpaghettiSVG from '../../assets/svgs/cuisines/italian.svg';
 import XiaoSVG from '../../assets/svgs/cuisines/xiao.svg';
+import SushiSVG from '../../assets/svgs/cuisines/japanese.svg';
 import NewSVG from '../../assets/svgs/hot.svg';
 import NearbySVG from '../../assets/svgs/location.svg';
 import TrendingSVG from '../../assets/svgs/trending.svg';
@@ -16,16 +17,22 @@ import { ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import { SVG } from '../../types';
 
-interface IDynamicCategories {
+interface IDynamicOptions {
   name: string;
   href: string;
   svg: SVG;
 }
 
-const dynamicCategories: Array<IDynamicCategories> = [
+const dynamicCategories: Array<IDynamicOptions> = [
   { name: 'Nearby', href: '/search/nearby', svg: NearbySVG },
   { name: 'Trending', href: '/search/trending', svg: TrendingSVG },
-  { name: 'New', href: '/search/new', svg: NewSVG },
+  { name: 'New!', href: '/search/new', svg: NewSVG },
+];
+
+const popularDishes: Array<IDynamicOptions> = [
+  { name: 'Best Spaghetti', href: '/search/best-spaghetti', svg: SpaghettiSVG },
+  { name: 'Best Xiao Long Bao', href: '/search/best-xiao', svg: XiaoSVG },
+  { name: 'Best Sushi', href: '/search/best-sushi', svg: SushiSVG },
 ];
 
 export function SearchOverlayInner() {
@@ -37,7 +44,7 @@ export function SearchOverlayInner() {
   const router = useRouter();
 
   return (
-    <div>
+    <>
       <div
         className={classNames(
           'w-full px-4 pb-6',
@@ -51,7 +58,7 @@ export function SearchOverlayInner() {
           {dynamicCategories.map(category => (
             <span
               onClick={() => router.push(category.href)}
-              className="flex items-center text-lg text-primary font-roboto font-medium"
+              className="flex items-center text-lg text-primary font-roboto font-medium rounded-lg hover:bg-primary hover:bg-opacity-10"
             >
               <category.svg className="h-8 mr-2" />
               {category.name}
@@ -71,7 +78,11 @@ export function SearchOverlayInner() {
               .sort((a, b) => b.popularity - a.popularity)
               .slice(0, 5)
               .map(cuisine => (
-                <OutlineBlock size="small" key={cuisine.name}>
+                <OutlineBlock
+                  size="small"
+                  className="font-medium"
+                  key={cuisine.name}
+                >
                   {cuisine.name}
                 </OutlineBlock>
               ))}
@@ -84,44 +95,15 @@ export function SearchOverlayInner() {
             Popular dishes
           </span>
 
-          <div className="flex flex-col space-y-2">
-            <div className="flex space-x-2 items-center w-full border-b border-secondary py-2">
-              <SpaghettiSVG className="h-10" />
-              <span className="text-primary">Best Spaghetti</span>
-            </div>
-
-            <div className="flex space-x-2 items-center w-full border-b border-secondary py-2">
-              <XiaoSVG className="h-10" />
-              <span className="text-primary">Best Xiao Long Bao</span>
-            </div>
-
-            <div className="flex space-x-2 items-center w-full border-b border-secondary py-2">
-              <SpaghettiSVG className="h-10" />
-              <span className="text-primary">Best Sushi</span>
-            </div>
+          <div className="flex flex-col space-y-2 children:last:bg-primary">
+            {popularDishes.map(dish => (
+              <div className="flex space-x-2 items-center w-full border-b border-secondary py-2">
+                <dish.svg className="h-10 w-12" />
+                <span className="text-primary">{dish.name}</span>
+              </div>
+            ))}
           </div>
         </div>
-
-        {renderSearchTemplate ? (
-          <div className="flex justify-between items-center px-6 my-10">
-            <h3 className="text-threexl">
-              See more <Link href="">results</Link>
-            </h3>
-          </div>
-        ) : (
-          // <div className="flex w-full flex-wrap px-2 my-4">
-          //   {searchState.searchResultItems.length &&
-          //     searchState.searchResultItems.slice(0, 4).map(searchItem => (
-          //       <div
-          //         className={classNames('flex', isMobile ? ' w-full' : 'w-1/2')}
-          //         key={searchItem.title.replace(' ', '-')}
-          //       >
-          //         <SearchItem {...searchItem} />
-          //       </div>
-          //     ))}
-          // </div>
-          <>fdsf</>
-        )}
 
         <div className="flex flex-col w-full px-6">
           <Link
@@ -136,6 +118,6 @@ export function SearchOverlayInner() {
           </Link>
         </div>
       </div>
-    </div>
+    </>
   );
 }

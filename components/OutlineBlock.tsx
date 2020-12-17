@@ -9,7 +9,13 @@ interface Props {
 }
 
 export function OutlineBlock(props: Props) {
-  const { children, size = 'medium', theme = 'default', bold } = props;
+  const {
+    children,
+    size = 'medium',
+    theme = 'default',
+    bold,
+    className,
+  } = props;
 
   return (
     <div
@@ -22,7 +28,9 @@ export function OutlineBlock(props: Props) {
         size === 'large' && 'py-3 px-3 text-lg',
       )}
     >
-      <span className={classNames('text-primary', bold && 'font-bold')}>
+      <span
+        className={classNames('text-primary', bold && 'font-bold', className)}
+      >
         {children}
       </span>
     </div>

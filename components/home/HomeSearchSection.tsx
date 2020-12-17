@@ -22,13 +22,19 @@ export function HomeSearchSection(): JSX.Element {
         Discover. Eat. Smile.
       </h1>
       <div className="relative w-full">
-        <div style={{ width: '180%', marginLeft: '-40%' }}>
+        <div
+          style={{
+            width: isMobile ? '180%' : '100%',
+            marginLeft: isMobile ? '-40%' : 'unset',
+          }}
+        >
           <HomeHeroSVG />
           <div className="flex items-center justify-center w-full absolute top-0 right-0 bottom-0 left-0">
             <div
               className={isMobile ? 'w-full' : 'w-7/12'}
               style={{
-                marginTop: isMobile ? '33%' : '18.5%',
+                marginTop: isMobile ? '33%' : '16.5%',
+                zIndex: !isMobile && searchOverlayExpanded ? 20001 : 1,
               }}
             >
               <SearchHome />
