@@ -46,11 +46,8 @@ module.exports = {
     },
   },
   variants: {
-    borderColor: ['children', 'children-last'],
     borderWidth: ['children', 'children-last'],
-    backgroundColor: ['children-last'],
-    margin: ['responsive', 'first', 'last'],
-    minWidth: ['responsive'],
+    padding: ['children-odd', 'children-even'],
   },
   plugins: [require('tailwindcss-children')],
 };

@@ -1,21 +1,17 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { IState } from '../../state/reducers';
-import { SearchOverlayInner } from './SearchOverlayInner';
 import classNames from 'classnames';
-import { SearchInput } from './SearchInput';
-import { collapseSearchOverlay } from '../../state/navigation';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import BackSVG from '../../assets/svgs/back.svg';
+import { collapseSearchOverlay } from '../../state/navigation';
+import { IState } from '../../state/reducers';
 import { Contained } from '../Contained';
+import { SearchInput } from './SearchInput';
+import { SearchOverlayInner } from './SearchOverlayInner';
 
 export function SearchOverlayMobile() {
   const navigationState = useSelector((state: IState) => state.navigation);
-  const searchState = useSelector((state: IState) => state.search);
-  // const renderSearchTemplate = searchState.searchResultItems.length === 0;
   const { searchOverlayExpanded } = navigationState;
 
-  // Pull into the location context of search bar
-  const searchBarGeometry = searchState.searchBarGeometry;
   const dispatch = useDispatch();
 
   // Internal functions
@@ -42,7 +38,7 @@ export function SearchOverlayMobile() {
         searchOverlayExpanded ? 'block' : 'hidden',
       )}
     >
-      <div className="flex flex-col h-full flex-grow overflow-y-scroll">
+      <div className="flex flex-col h-full flex-grow overflow-y-auto">
         <Contained>
           <SearchInput
             autofocus
@@ -51,9 +47,9 @@ export function SearchOverlayMobile() {
             placeholder="Search"
             prefix={searchInputPrefix}
           />
-        </Contained>
 
-        <SearchOverlayInner />
+          <SearchOverlayInner />
+        </Contained>
       </div>
     </div>
   );

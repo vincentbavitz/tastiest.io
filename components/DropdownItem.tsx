@@ -27,7 +27,7 @@ export const DropdownItem = (props: DropdownItemProps) => {
   };
 
   return (
-    <DropdownItemElement
+    <div
       onClick={() => handleOnSelect()}
       className={classNames(
         'flex items-center',
@@ -43,6 +43,6 @@ export const DropdownItem = (props: DropdownItemProps) => {
       )}
     >
       {children}
-    </DropdownItemElement>
+    </div>
   );
 };

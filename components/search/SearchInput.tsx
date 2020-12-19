@@ -1,24 +1,27 @@
+import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import React, { ChangeEvent, useRef, useEffect, ReactNode } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useStartTyping, useKey } from 'react-use';
+import React, { ChangeEvent, ReactNode, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useKey, useStartTyping } from 'react-use';
+import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
+import SearchSecondarySVG from '../../assets/svgs/search-secondary.svg';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { setSearchQuery, setSearchResultItems } from '../../state/search';
 import { search } from '../../utils/search';
-import classNames from 'classnames';
 
 interface Props {
   placeholder?: string;
   autofocus?: boolean;
-
   className?: string;
   inputClassName?: string;
 
+  prefix?: ReactNode;
+  searchIcon?: 'primary' | 'secondary';
+
   // A dummy input is purely visual.
   dummy?: boolean;
-  prefix?: ReactNode;
-  suffix?: ReactNode;
+  dummyOnClick?(): void;
   onFocus?(): void;
   onChange?(value: string): void;
 }
@@ -31,9 +34,10 @@ export function SearchInput(props: Props) {
     placeholder,
     className,
     inputClassName,
-    dummy,
+    searchIcon,
     prefix,
-    suffix,
+    dummy,
+    dummyOnClick,
     onFocus,
     onChange,
   } = props;
@@ -123,17 +127,19 @@ export function SearchInput(props: Props) {
 
       {dummy ? (
         <div
+          onClick={() => dummyOnClick && dummyOnClick()}
           className={classNames(
             'flex',
             'flex-grow',
             'border-none',
+            'cursor-text',
             'outline-none',
             'opacity-50',
             'w-0',
             inputClassName,
           )}
         >
-          {inputValue || placeholder}
+          {placeholder}
         </div>
       ) : (
         <input
@@ -155,7 +161,20 @@ export function SearchInput(props: Props) {
         />
       )}
 
-      {suffix && <div>{suffix}</div>}
+      {searchIcon && (
+        // Internal elements
+        <div
+          className="cursor-pointer"
+          onClick={() => dispatch(expandSearchOverlay())}
+        >
+          {searchIcon === 'primary' && (
+            <SearchPrimarySVG className="h-8 fill-current" />
+          )}
+          {searchIcon === 'secondary' && (
+            <SearchSecondarySVG className="h-8 fill-current" />
+          )}
+        </div>
+      )}
     </div>
   );
 }

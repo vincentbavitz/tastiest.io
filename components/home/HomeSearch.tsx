@@ -1,43 +1,21 @@
 import classNames from 'classnames';
-import { useRouter } from 'next/dist/client/router';
-import React, {
-  ChangeEvent,
-  ReactNode,
-  useContext,
-  useEffect,
-  useRef,
-} from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useClickAway, useLockBodyScroll, useMeasure } from 'react-use';
-import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
-import SearchSecondarySVG from '../../assets/svgs/search-secondary.svg';
-import { UI } from '../../constants';
+import { useLockBodyScroll, useMeasure } from 'react-use';
 import { ScreenContext } from '../../contexts/screen';
-import { useScreenSize } from '../../hooks/screen';
-import Search from '../../pages/search';
-import {
-  collapseSearchOverlay,
-  expandSearchOverlay,
-} from '../../state/navigation';
+import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import {
   ISearchBarGeometry,
-  setSearchBarGeometry,
-  setSearchQuery,
-  setSearchResultItems,
+  setHomeSearchBarGeometry,
+  setSearchBarPinnedToHeader,
 } from '../../state/search';
-import { search } from '../../utils/search';
-import { SearchInput } from './SearchInput';
+import { SearchInput } from '../search/SearchInput';
 
-interface Props {
-  theme?: 'primary' | 'secondary';
-}
-
-export function SearchHome(props: Props) {
-  const { theme = 'primary' } = props;
-
+export function HomeSearch() {
   const nagivationState = useSelector((state: IState) => state.navigation);
   const searchState = useSelector((state: IState) => state.search);
+  const { searchBarPinnedToHeader, homeSearchBarGeometry } = searchState;
   const { searchOverlayExpanded } = nagivationState;
   const dispatch = useDispatch();
 
@@ -46,34 +24,38 @@ export function SearchHome(props: Props) {
 
   // References
   const searchRef = useRef(null);
-  const [searchMeasureRef, { width }] = useMeasure();
+  const [searchMeasureRef] = useMeasure();
 
   // Hooks
-  const router = useRouter();
   useLockBodyScroll(searchOverlayExpanded && isMobile);
 
   // Set coordinates of search element
-  useEffect(
-    () => {
-      const geometry: ISearchBarGeometry = searchRef.current.getBoundingClientRect();
-      dispatch(setSearchBarGeometry(geometry));
-    },
-    // We only need to update rects when width changes
-    [width],
-  );
+  useEffect(() => {
+    const setGeometry = () => {
+      if (!isMobile) {
+        const geometry: ISearchBarGeometry = (searchRef.current as HTMLDivElement)?.getBoundingClientRect();
 
-  // Internal elements
-  const searchSuffix = (
-    <div
-      className="text-primary"
-      onClick={() => dispatch(expandSearchOverlay())}
-    >
-      {theme === 'primary' && <SearchPrimarySVG className="h-8 fill-current" />}
-      {theme === 'secondary' && (
-        <SearchSecondarySVG className="h-8 fill-current" />
-      )}
-    </div>
-  );
+        if (geometry) {
+          dispatch(setHomeSearchBarGeometry(geometry));
+
+          const HEADER_FIXED_OFFSET = 35;
+          if (geometry.top < HEADER_FIXED_OFFSET) {
+            dispatch(setSearchBarPinnedToHeader(true));
+          } else {
+            dispatch(setSearchBarPinnedToHeader(false));
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', setGeometry);
+    window.addEventListener('resize', setGeometry);
+
+    return function cleanup() {
+      window.removeEventListener('scroll', setGeometry);
+      window.removeEventListener('resize', setGeometry);
+    };
+  }, [isMobile, searchBarPinnedToHeader]);
 
   return (
     <div ref={searchMeasureRef} className="relative">
@@ -93,10 +75,11 @@ export function SearchHome(props: Props) {
         )}
       >
         <SearchInput
-          dummy={isMobile}
+          searchIcon="primary"
           autofocus={!isMobile}
           placeholder="Search..."
-          suffix={searchSuffix}
+          dummy={isMobile}
+          dummyOnClick={() => dispatch(expandSearchOverlay())}
           onFocus={() => dispatch(expandSearchOverlay())}
           inputClassName={classNames(['pl-2 pr-4', isMobile && 'text-xl'])}
         />

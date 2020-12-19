@@ -11,14 +11,25 @@ export interface ISearchBarGeometry {
 
 export interface ISearch {
   searchQuery: string;
+  searchBarPinnedToHeader: boolean;
   searchResultItems: Array<ISanityArticle>;
-  searchBarGeometry: ISearchBarGeometry;
+  homeSearchBarGeometry: ISearchBarGeometry;
+  headerSearchBarGeometry: ISearchBarGeometry;
 }
 
 export const initialSearchState: ISearch = {
   searchQuery: '',
   searchResultItems: [],
-  searchBarGeometry: {
+  searchBarPinnedToHeader: false,
+  homeSearchBarGeometry: {
+    height: undefined,
+    width: undefined,
+    top: undefined,
+    right: undefined,
+    bottom: undefined,
+    left: undefined,
+  },
+  headerSearchBarGeometry: {
     height: undefined,
     width: undefined,
     top: undefined,
@@ -31,7 +42,9 @@ export const initialSearchState: ISearch = {
 export enum SearchActions {
   SET_SEARCH_QUERY = 'SET_SEARCH_QUERY',
   SET_SEARCH_RESULT_ITEMS = 'SET_SEARCH_RESULT_ITEMS',
-  SET_SEARCH_BAR_GEOMETRY = 'SET_SEARCH_BAR_GEOMETRY',
+  SET_HOME_SEARCH_BAR_GEOMETRY = 'SET_HOME_SEARCH_BAR_GEOMETRY',
+  SET_HEADER_SEARCH_BAR_GEOMETRY = 'SET_HEADER_SEARCH_BAR_GEOMETRY',
+  SET_SEARCH_BAR_PINNED_TO_HEADER = 'SET_SEARCH_BAR_PINNED_TO_HEADER',
 }
 
 // ////////////////////////////// //
@@ -48,7 +61,17 @@ export const setSearchQuery = (payload: string) => ({
   payload,
 });
 
-export const setSearchBarGeometry = (payload: ISearchBarGeometry) => ({
-  type: SearchActions.SET_SEARCH_BAR_GEOMETRY,
+export const setHomeSearchBarGeometry = (payload: ISearchBarGeometry) => ({
+  type: SearchActions.SET_HOME_SEARCH_BAR_GEOMETRY,
+  payload,
+});
+
+export const setHeaderSearchBarGeometry = (payload: ISearchBarGeometry) => ({
+  type: SearchActions.SET_HEADER_SEARCH_BAR_GEOMETRY,
+  payload,
+});
+
+export const setSearchBarPinnedToHeader = (payload: boolean) => ({
+  type: SearchActions.SET_SEARCH_BAR_PINNED_TO_HEADER,
   payload,
 });

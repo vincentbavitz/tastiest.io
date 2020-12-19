@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { IState } from '../../state/reducers';
 import classNames from 'classnames';
+import React, { CSSProperties, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useWindowScroll } from 'react-use';
 import { collapseSearchOverlay } from '../../state/navigation';
+import { IState } from '../../state/reducers';
 import { SearchOverlayInner } from './SearchOverlayInner';
 
 export function SearchOverlayDesktop() {
@@ -11,10 +12,13 @@ export function SearchOverlayDesktop() {
   const dispatch = useDispatch();
 
   // const renderSearchTemplate = searchState.searchResultItems.length === 0;
+  const { y: scrollY } = useWindowScroll();
   const { searchOverlayExpanded } = navigationState;
-
-  // Pull into the location context of search bar
-  const searchBarGeometry = searchState.searchBarGeometry;
+  const {
+    homeSearchBarGeometry,
+    headerSearchBarGeometry,
+    searchBarPinnedToHeader,
+  } = searchState;
 
   const overlayContentRef = useRef(null);
   const onClickAway = () => {
@@ -23,18 +27,41 @@ export function SearchOverlayDesktop() {
     }
   };
 
+  // Snap to home search location
+  const homeSearchCoords: CSSProperties = {
+    position: 'absolute',
+    top: `${
+      homeSearchBarGeometry.top + homeSearchBarGeometry.height + scrollY - 1
+    }px`,
+    bottom: `${homeSearchBarGeometry.bottom}px`,
+    left: `${homeSearchBarGeometry.left}px`,
+    right: `${homeSearchBarGeometry.right}px`,
+    width: `${homeSearchBarGeometry.width}px`,
+  };
+
+  // Snap to header search location
+  const headerSearchCoords: CSSProperties = {
+    position: 'fixed',
+    top: `${headerSearchBarGeometry.top + headerSearchBarGeometry.height}px`,
+    // bottom: `${headerSearchBarGeometry.bottom}px`,
+    left: `${headerSearchBarGeometry.left}px`,
+    right: `${headerSearchBarGeometry.right}px`,
+    width: `${headerSearchBarGeometry.width}px`,
+  };
+
+  const shouldSnapToHomeCoords =
+    location.pathname === '/' && !searchBarPinnedToHeader;
+  const overlayCoords = shouldSnapToHomeCoords
+    ? homeSearchCoords
+    : headerSearchCoords;
+
   // Desktop overlay styles depend on wether or not the search bar is
   // in the navbar or not
   const desktopOverlayStyles = {
-    zIndex: searchOverlayExpanded ? 20001 : -1,
+    zIndex: searchOverlayExpanded ? 20002 : -1,
     display: searchOverlayExpanded ? 'block' : 'none',
     minHeight: '600px',
-
-    top: `${searchBarGeometry.top + searchBarGeometry.height}px`,
-    bottom: `${searchBarGeometry.bottom}px`,
-    left: `${searchBarGeometry.left}px`,
-    right: `${searchBarGeometry.right}px`,
-    width: `${searchBarGeometry.width}px`,
+    ...overlayCoords,
   };
 
   return (
@@ -56,11 +83,7 @@ export function SearchOverlayDesktop() {
           searchOverlayExpanded ? 'opacity-100' : 'opacity-0',
         )}
       ></div>
-      <div
-        className="absolute"
-        ref={overlayContentRef}
-        style={desktopOverlayStyles}
-      >
+      <div ref={overlayContentRef} style={desktopOverlayStyles}>
         <div
           className={classNames(
             'relative',
@@ -76,7 +99,7 @@ export function SearchOverlayDesktop() {
             'pb-4',
           )}
         >
-          <div className="relative overflow-y-scroll w-full">
+          <div className="relative overflow-y-auto w-full">
             <SearchOverlayInner />
           </div>
         </div>

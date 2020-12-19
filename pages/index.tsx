@@ -2,9 +2,8 @@ import groq from 'groq';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import React, { useContext } from 'react';
-import { useMedia } from 'react-use';
 import client from '../client';
-import { ArticleItem } from '../components/ArticleItem';
+import { ArticleCard } from '../components/ArticleCard';
 import { Contained } from '../components/Contained';
 import { Footer } from '../components/Footer';
 import { HomeFavouritesSection } from '../components/home/HomeFavouritesSection';
@@ -12,9 +11,8 @@ import { HomeMapSection } from '../components/home/HomeMapSection';
 import { HomeRecentSearchesSection } from '../components/home/HomeRecentSearchesSection';
 import { HomeSearchSection } from '../components/home/HomeSearchSection';
 import { HomeSuggestDishSection } from '../components/home/HomeSuggestDishSection';
-import { METADATA, UI } from '../constants';
+import { METADATA } from '../constants';
 import { ScreenContext } from '../contexts/screen';
-import { useScreenSize } from '../hooks/screen';
 import { ISanityArticle } from '../types/article';
 // import withAuthUser from '../utils/pageWrappers/withAuthUser';
 // import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo';
@@ -27,7 +25,7 @@ interface Props {
 
 const Index: NextPage<Props> = ({ posts = [] }) => {
   const cards = posts
-    ? posts.slice(0, 4).map(post => <ArticleItem key={post.id} {...post} />)
+    ? posts.slice(0, 4).map(post => <ArticleCard key={post.id} {...post} />)
     : [];
 
   console.log('posts', posts);

@@ -1,21 +1,20 @@
+import classNames from 'classnames';
+import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
-import { CUISINES } from '../../constants';
-import { useScreenSize } from '../../hooks/screen';
-import { IState } from '../../state/reducers';
 import SpaghettiSVG from '../../assets/svgs/cuisines/italian.svg';
-import XiaoSVG from '../../assets/svgs/cuisines/xiao.svg';
 import SushiSVG from '../../assets/svgs/cuisines/japanese.svg';
+import XiaoSVG from '../../assets/svgs/cuisines/xiao.svg';
 import NewSVG from '../../assets/svgs/hot.svg';
 import NearbySVG from '../../assets/svgs/location.svg';
 import TrendingSVG from '../../assets/svgs/trending.svg';
-import classNames from 'classnames';
-import Link from 'next/link';
-import { OutlineBlock } from '../OutlineBlock';
+import { CUISINES } from '../../constants';
 import { ScreenContext } from '../../contexts/screen';
-import { ReactNode } from 'react';
-import { useRouter } from 'next/router';
+import { IState } from '../../state/reducers';
 import { SVG } from '../../types';
+import { ArticleCard } from '../ArticleCard';
+import { Button } from '../Button';
+import { OutlineBlock } from '../OutlineBlock';
 
 interface IDynamicOptions {
   name: string;
@@ -37,47 +36,69 @@ const popularDishes: Array<IDynamicOptions> = [
 
 export function SearchOverlayInner() {
   const searchState = useSelector((state: IState) => state.search);
-  const renderSearchTemplate =
-    searchState?.searchResultItems?.length === 0 ?? true;
+
+  const renderSearchResults =
+    searchState.searchQuery.length > 0 &&
+    searchState.searchResultItems?.length > 0;
+  const renderSearchDefaltTemplate = searchState?.searchQuery?.length === 0;
+  const renderSearchNoResults =
+    searchState.searchQuery.length > 0 &&
+    searchState?.searchResultItems?.length === 0;
 
   const { isMobile } = useContext(ScreenContext);
   const router = useRouter();
 
   return (
     <>
-      <div
-        className={classNames(
-          'w-full px-4 pb-6',
-          isMobile && 'flex flex-col h-full justify-between',
-        )}
-      >
-        <div className="w-full border-secondary border-opacity-50 border-t-2"></div>
+      <div className={classNames('w-full', isMobile ? 'px-0' : 'px-4')}>
+        <div className="border-secondary border-opacity-50 border-t-2"></div>
+      </div>
 
-        {/* FEATURED DYNAMIC CATEGORIES */}
-        <div className="flex flex-col space-y-1 mt-4">
-          {dynamicCategories.map(category => (
-            <span
-              onClick={() => router.push(category.href)}
-              className="flex items-center text-lg text-primary font-roboto font-medium rounded-lg hover:bg-primary hover:bg-opacity-10"
-            >
-              <category.svg className="h-8 mr-2" />
-              {category.name}
-            </span>
-          ))}
-        </div>
+      {renderSearchResults && <SearchOverlayInnerResults />}
+      {renderSearchNoResults && <></>}
+      {renderSearchDefaltTemplate && <SearchOverlayInnerDefault />}
+    </>
+  );
+}
 
-        {/* CUISINES */}
-        <div className="flex flex-col mt-6">
-          <span className="text-black text-sm font-semibold tracking-wide ml-1">
-            Find your next favourite dish!
+function SearchOverlayInnerDefault() {
+  const searchState = useSelector((state: IState) => state.search);
+
+  const { isMobile } = useContext(ScreenContext);
+  const router = useRouter();
+
+  return (
+    <div
+      className={classNames(
+        'w-full px-4',
+        isMobile && 'flex flex-col h-full justify-between',
+      )}
+    >
+      {/* FEATURED DYNAMIC CATEGORIES */}
+      <div className="flex flex-col space-y-1 mt-4">
+        {dynamicCategories.map(category => (
+          <span
+            onClick={() => router.push(category.href)}
+            className="flex items-center text-lg text-primary font-roboto font-medium rounded-lg hover:bg-primary hover:bg-opacity-10"
+          >
+            <category.svg className="h-8 mr-2" />
+            {category.name}
           </span>
+        ))}
+      </div>
 
-          <div className="flex flex-wrap space-x-2 ml-1 mt-2">
-            {/* Get 5 most popular cuisines */}
-            {Object.values(CUISINES)
-              .sort((a, b) => b.popularity - a.popularity)
-              .slice(0, 5)
-              .map(cuisine => (
+      {/* CUISINES */}
+      <div className="flex flex-col mt-6">
+        <span className="text-black text-sm font-semibold tracking-wide ml-1">
+          Find your next favourite dish!
+        </span>
+        <div className="flex flex-wrap">
+          {/* Get 5 most popular cuisines */}
+          {Object.values(CUISINES)
+            .sort((a, b) => b.popularity - a.popularity)
+            .slice(0, 5)
+            .map(cuisine => (
+              <div className="mt-2 mr-2">
                 <OutlineBlock
                   size="small"
                   className="font-medium"
@@ -85,38 +106,59 @@ export function SearchOverlayInner() {
                 >
                   {cuisine.name}
                 </OutlineBlock>
-              ))}
-          </div>
-        </div>
-
-        {/* POPULAR DISHES */}
-        <div className="flex flex-col mt-6">
-          <span className="text-black text-sm font-semibold tracking-wide ml-1">
-            Popular dishes
-          </span>
-
-          <div className="flex flex-col space-y-2 children:last:bg-primary">
-            {popularDishes.map(dish => (
-              <div className="flex space-x-2 items-center w-full border-b border-secondary py-2">
-                <dish.svg className="h-10 w-12" />
-                <span className="text-primary">{dish.name}</span>
               </div>
             ))}
-          </div>
         </div>
+      </div>
 
-        <div className="flex flex-col w-full px-6">
-          <Link
-            href={{
+      {/* POPULAR DISHES */}
+      <div className="flex flex-col mt-6">
+        <span className="text-black text-sm font-semibold tracking-wide ml-1">
+          Popular dishes
+        </span>
+
+        <div className="flex flex-col space-y-2 children:last:border-b-0">
+          {popularDishes.map(dish => (
+            <div className="flex space-x-2 items-center w-full border-b border-secondary py-2">
+              <dish.svg className="h-10 w-12" />
+              <span className="text-primary">{dish.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SearchOverlayInnerResults() {
+  const searchState = useSelector((state: IState) => state.search);
+  const results = searchState?.searchResultItems;
+
+  const { isMobile } = useContext(ScreenContext);
+  const router = useRouter();
+
+  return (
+    <>
+      <div className="flex flex-wrap mt-10 children:odd:pr-4 children:even:pl-4">
+        {results?.map(card => (
+          <div className={classNames('w-1/2 mb-8')}>
+            <ArticleCard {...card} />
+          </div>
+        ))}
+      </div>
+      <div className="flex w-full justify-center px-6 mt-6">
+        <Button
+          color="primary"
+          size="small"
+          onClick={() =>
+            router.push({
               pathname: '/search',
               query: { s: searchState.searchQuery },
-            }}
-          >
-            <h3 className="text-xl cursor-pointer text-center mt-4 mb-4">
-              See all results
-            </h3>
-          </Link>
-        </div>
+            })
+          }
+        >
+          See all results
+        </Button>
       </div>
     </>
   );

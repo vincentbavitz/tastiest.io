@@ -1,7 +1,7 @@
 import groq from 'groq';
 import React from 'react';
 import client from '../client';
-import { ArticleItem } from '../components/ArticleItem';
+import { ArticleCard } from '../components/ArticleCard';
 import { CuisineSymbol } from '../constants';
 import { ISanityArticle } from '../types/article';
 import { sanityPostQuery } from './search';
@@ -32,7 +32,7 @@ export async function getCuisinePosts(cuisine: CuisineSymbol, limit: number) {
 
 export function postsToCards(posts: ISanityArticle[]) {
   const cards = posts
-    ? posts.slice(0, 4).map(post => <ArticleItem key={post.id} {...post} />)
+    ? posts.slice(0, 4).map(post => <ArticleCard key={post.id} {...post} />)
     : [];
 
   return cards;

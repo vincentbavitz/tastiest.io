@@ -1,11 +1,12 @@
 import { useRouter } from 'next/dist/client/router';
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useContext } from 'react';
+import { ScreenContext } from '../contexts/screen';
 import { ISanityArticle } from '../types/article';
 import { generateURL } from '../utils/routing';
 import { titleCase } from '../utils/text';
 import { OutlineBlock } from './OutlineBlock';
 
-export function ArticleItem(props: ISanityArticle): JSX.Element {
+export function ArticleCard(props: ISanityArticle): JSX.Element {
   const {
     featureImage,
     title,
@@ -14,6 +15,8 @@ export function ArticleItem(props: ISanityArticle): JSX.Element {
     city,
     cuisine,
   } = props;
+
+  const { isMobile } = useContext(ScreenContext);
 
   const router = useRouter();
 
