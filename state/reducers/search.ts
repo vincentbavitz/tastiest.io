@@ -17,6 +17,10 @@ export const searchReducer = (
       return { ...state, searchQuery: action.payload };
     }
     case SearchActions.SET_SEARCH_BAR_PINNED_TO_HEADER: {
+      if (action.payload === state.searchBarPinnedToHeader) {
+        return state;
+      }
+
       return { ...state, searchBarPinnedToHeader: action.payload };
     }
     default:

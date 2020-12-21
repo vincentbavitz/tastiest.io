@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TastiestLogo from '../../assets/svgs/brand.svg';
 import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
@@ -64,13 +64,32 @@ function DesktopHeader() {
     (state: IState) => state.search,
   );
 
+  // We only wnat the searchbar to be invisible on the home page
+  // and given that they have not scrolled past the main home search
+  const [searchIsShown, setSearchIsShown] = useState(false);
+  useEffect(() => {
+    if (
+      (location.pathname === '/' && searchBarPinnedToHeader) ||
+      location.pathname !== '/'
+    ) {
+      if (!searchIsShown) {
+        setSearchIsShown(true);
+      }
+    } else {
+      if (searchIsShown) {
+        setSearchIsShown(false);
+      }
+    }
+  }, [location.pathname, searchBarPinnedToHeader]);
+
   const navBarRef = useRef(null);
+  console.log('Header ➡️ location.pathname:', location.pathname);
 
   return (
     <div
       ref={navBarRef}
       style={{
-        zIndex: searchOverlayExpanded && searchBarPinnedToHeader ? 20001 : 1000,
+        zIndex: searchOverlayExpanded && searchIsShown ? 20001 : 1000,
       }}
       className="fixed left-0 right-0 top-0 w-full h-20 bg-white flex items-center"
     >
@@ -83,9 +102,14 @@ function DesktopHeader() {
                   <TastiestLogo className="fill-current h-8" />
                 </a>
               </Link>
-              <HeaderSearch />
+              <HeaderSearch
+                isShown={searchIsShown}
+                innerOverlayStyle={{
+                  // When pinned to header, limit height to vh and lock body scroll
+                  maxHeight: searchIsShown ? '80vh' : 'unset',
+                }}
+              />
             </div>
-
             <HeaderSavedPlaces />
             <HeaderAvatar />
           </div>

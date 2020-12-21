@@ -67,7 +67,9 @@ export function SearchOverlayInner() {
 }
 
 function SearchOverlayInnerDefault() {
-  const searchState = useSelector((state: IState) => state.search);
+  const { searchBarPinnedToHeader } = useSelector(
+    (state: IState) => state.search,
+  );
 
   const { isMobile } = useContext(ScreenContext);
   const router = useRouter();
@@ -82,13 +84,13 @@ function SearchOverlayInnerDefault() {
       {/* FEATURED DYNAMIC CATEGORIES */}
       <div className="flex flex-col space-y-1 mt-4">
         {dynamicCategories.map(category => (
-          <span
+          <div
             onClick={() => router.push(category.href)}
-            className="flex items-center text-lg text-primary font-roboto font-medium rounded-lg hover:bg-primary hover:bg-opacity-10"
+            className="flex items-center text-lg cursor-pointer text-primary font-roboto font-medium rounded-lg hover:bg-primary hover:bg-opacity-10"
           >
             <category.svg className="h-8 mr-2" />
             {category.name}
-          </span>
+          </div>
         ))}
       </div>
 
@@ -97,6 +99,7 @@ function SearchOverlayInnerDefault() {
         <span className="text-black text-sm font-semibold tracking-wide ml-1">
           Find your next favourite dish!
         </span>
+
         <div className="flex flex-wrap">
           {/* Get 5 most popular cuisines */}
           {Object.values(CUISINES)
@@ -105,7 +108,8 @@ function SearchOverlayInnerDefault() {
             .map(cuisine => (
               <div className="mt-2 mr-2">
                 <OutlineBlock
-                  size="small"
+                  onClick={() => router.push(cuisine.href)}
+                  size={!isMobile && searchBarPinnedToHeader ? 'tiny' : 'small'}
                   className="font-medium"
                   key={cuisine.name}
                 >

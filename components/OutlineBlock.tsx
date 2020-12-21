@@ -6,6 +6,7 @@ interface Props {
   bold?: boolean;
   children: string;
   className?: string;
+  onClick?(): void;
 }
 
 export function OutlineBlock(props: Props) {
@@ -15,10 +16,12 @@ export function OutlineBlock(props: Props) {
     theme = 'default',
     bold,
     className,
+    onClick,
   } = props;
 
   return (
     <div
+      onClick={onClick}
       className={classNames(
         theme === 'alt' && 'border border-white rounded-md',
         theme === 'default' && 'border-2 border-secondary rounded-lg',
@@ -26,6 +29,7 @@ export function OutlineBlock(props: Props) {
         size === 'small' && 'py-1 px-3 text-sm',
         size === 'medium' && 'py-2 px-3',
         size === 'large' && 'py-3 px-3 text-lg',
+        onClick && 'cursor-pointer',
       )}
     >
       <span

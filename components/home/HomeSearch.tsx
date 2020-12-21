@@ -35,16 +35,14 @@ export function HomeSearch() {
   // Hooks
   useLockBodyScroll(searchOverlayExpanded && isMobile);
 
-  const HEADER_FIXED_OFFSET = 35;
+  const HEADER_FIXED_OFFSET = 70;
   const handleShouldHide = () => {
     const geometry: ISearchBarGeometry = (searchRef.current as HTMLDivElement)?.getBoundingClientRect();
 
-    if (geometry) {
-      if (geometry.top < HEADER_FIXED_OFFSET) {
-        dispatch(setSearchBarPinnedToHeader(true));
-      } else {
-        dispatch(setSearchBarPinnedToHeader(false));
-      }
+    if (geometry && geometry.top < HEADER_FIXED_OFFSET) {
+      dispatch(setSearchBarPinnedToHeader(true));
+    } else {
+      dispatch(setSearchBarPinnedToHeader(false));
     }
   };
 
@@ -71,8 +69,12 @@ export function HomeSearch() {
         className={classNames(
           'flex items-center w-full justify-between h-10 bg-white px-2',
           'border-primary border-t-2 border-l-2 border-r-2',
-          searchOverlayExpanded && !isMobile ? 'rounded-t-lg' : 'rounded-lg',
-          searchOverlayExpanded && !isMobile ? 'border-b-0' : 'border-b-2',
+          searchOverlayExpanded && !searchBarPinnedToHeader && !isMobile
+            ? 'rounded-t-lg'
+            : 'rounded-lg',
+          searchOverlayExpanded && !searchBarPinnedToHeader && !isMobile
+            ? 'border-b-0'
+            : 'border-b-2',
           isMobile && 'border-b border-gray-300',
         )}
       >
