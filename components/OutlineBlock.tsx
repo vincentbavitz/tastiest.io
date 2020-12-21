@@ -23,7 +23,7 @@ export function OutlineBlock(props: Props) {
     <div
       onClick={onClick}
       className={classNames(
-        theme === 'alt' && 'border border-white rounded-md',
+        theme === 'alt' && 'border-2 border-white rounded-md',
         theme === 'default' && 'border-2 border-secondary rounded-lg',
         size === 'tiny' && 'px-2 text-xs',
         size === 'small' && 'py-1 px-3 text-sm',
@@ -33,7 +33,7 @@ export function OutlineBlock(props: Props) {
       )}
     >
       <span
-        className={classNames('text-primary', bold && 'font-bold', className)}
+        className={classNames('text-primary', bold && 'font-medium', className)}
       >
         {children}
       </span>

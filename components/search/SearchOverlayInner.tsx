@@ -108,7 +108,9 @@ function SearchOverlayInnerDefault() {
             .map(cuisine => (
               <div className="mt-2 mr-2">
                 <OutlineBlock
-                  onClick={() => router.push(cuisine.href)}
+                  onClick={() =>
+                    router.push(`/search/?cuisine=${cuisine.href}`)
+                  }
                   size={!isMobile && searchBarPinnedToHeader ? 'tiny' : 'small'}
                   className="font-medium"
                   key={cuisine.name}
@@ -152,8 +154,8 @@ function SearchOverlayInnerResults() {
   return (
     <>
       <div
-        className={classNames('flex flex-wrap mt-10', [
-          isMobile ? 'px-0' : 'px-4',
+        className={classNames('flex flex-wrap', [
+          isMobile ? 'mt-10 px-0' : 'mt-6 px-4',
           `children:odd:${isMobile ? 'pr-4' : 'pr-2'}`,
           `children:even:${isMobile ? 'pl-4' : 'pl-2'}`,
         ])}
@@ -164,10 +166,15 @@ function SearchOverlayInnerResults() {
           </div>
         ))}
       </div>
-      <div className="flex w-full justify-center px-6 mt-6">
+      <div
+        className={classNames(
+          'flex w-full justify-center px-6',
+          isMobile ? 'mb-6' : 'mb-0',
+        )}
+      >
         <Button
           color="primary"
-          size="small"
+          size={isMobile ? 'medium' : 'small'}
           onClick={() =>
             router.push({
               pathname: '/search',
@@ -186,9 +193,11 @@ function SearchOverlayInnerNoResults() {
   const { isMobile } = useContext(ScreenContext);
 
   return (
-    <div className={classNames('flex mt-4', [isMobile ? 'px-0' : 'px-4'])}>
+    <div
+      className={classNames('flex flex-col mt-4', [isMobile ? 'px-0' : 'px-4'])}
+    >
       No results found.
-      <div className="w-full h-px bg-red-500">f</div>
+      <div className="w-full h-px bg-red-500 bg-opacity-25 mt-2"></div>
     </div>
   );
 }

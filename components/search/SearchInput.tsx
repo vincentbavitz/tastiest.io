@@ -55,18 +55,31 @@ export function SearchInput(props: Props) {
   const router = useRouter();
   // Force focus when user starts typing
   useStartTyping(() => inputRef?.current?.focus());
+  const inputValue = searchState.searchQuery;
 
-  // Search on enter
-  useKey('Enter', () => {
-    if ((inputRef.current as HTMLInputElement).focus) {
+  // Internal functions
+  const pushToSearchPage = () => {
+    const input = inputRef.current as HTMLInputElement;
+    if (input?.value?.length && input?.focus) {
       router.push({
         pathname: '/search',
         query: { s: searchState.searchQuery },
       });
     }
-  });
+  };
 
-  // Internal functions
+  // Handler Functions
+  const handleFocus = () => {
+    if (onFocus) {
+      onFocus();
+    }
+
+    inputRef?.current?.focus();
+    if (!searchOverlayExpanded) {
+      dispatch(expandSearchOverlay());
+    }
+  };
+
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = String(event.target.value);
     dispatch(setSearchQuery(String(value)));
@@ -82,19 +95,8 @@ export function SearchInput(props: Props) {
     inputRef?.current?.focus();
   };
 
-  const inputValue = searchState.searchQuery;
-
-  // Handler Functions
-  const handleFocus = () => {
-    if (onFocus) {
-      onFocus();
-    }
-
-    inputRef?.current?.focus();
-    if (!searchOverlayExpanded) {
-      dispatch(expandSearchOverlay());
-    }
-  };
+  // Search on enter
+  useKey('Enter', pushToSearchPage);
 
   // Effects
   useEffect(() => {
@@ -105,10 +107,6 @@ export function SearchInput(props: Props) {
 
     fetchSearchItems();
   }, [inputValue]);
-
-  useEffect(() => {
-    console.log('Search expanded: ', searchOverlayExpanded);
-  }, [searchOverlayExpanded]);
 
   // Autofocus
   useEffect(() => {
@@ -165,7 +163,13 @@ export function SearchInput(props: Props) {
         // Internal elements
         <div
           className="cursor-pointer"
-          onClick={() => dispatch(expandSearchOverlay())}
+          onClick={() => {
+            if (searchOverlayExpanded) {
+              pushToSearchPage();
+            } else {
+              dispatch(expandSearchOverlay());
+            }
+          }}
         >
           {searchIcon === 'primary' && (
             <SearchPrimarySVG className="h-8 fill-current" />

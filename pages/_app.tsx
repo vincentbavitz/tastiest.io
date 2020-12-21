@@ -20,7 +20,7 @@ function App({ Component, pageProps }: AppProps) {
   const location = useLocation();
   useEffect(() => {
     store.dispatch(collapseSearchOverlay());
-  }, [location.pathname]);
+  }, [location.pathname, location.search]);
 
   return (
     <Provider store={store}>
