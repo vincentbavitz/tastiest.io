@@ -40,7 +40,12 @@ export function SearchOverlayInner() {
   const renderSearchResults =
     searchState.searchQuery.length > 0 &&
     searchState.searchResultItems?.length > 0;
-  const renderSearchDefaltTemplate = searchState?.searchQuery?.length === 0;
+
+  const renderSearchDefaltTemplate =
+    searchState?.searchQuery?.length === 0 ||
+    (searchState?.searchQuery?.length > 0 &&
+      searchState.searchResultItems?.length === 0);
+
   const renderSearchNoResults =
     searchState.searchQuery.length > 0 &&
     searchState?.searchResultItems?.length === 0;
@@ -55,7 +60,7 @@ export function SearchOverlayInner() {
       </div>
 
       {renderSearchResults && <SearchOverlayInnerResults />}
-      {renderSearchNoResults && <></>}
+      {renderSearchNoResults && <SearchOverlayInnerNoResults />}
       {renderSearchDefaltTemplate && <SearchOverlayInnerDefault />}
     </>
   );
@@ -132,14 +137,23 @@ function SearchOverlayInnerDefault() {
 
 function SearchOverlayInnerResults() {
   const searchState = useSelector((state: IState) => state.search);
-  const results = searchState?.searchResultItems;
+  const allResults = searchState?.searchResultItems;
 
   const { isMobile } = useContext(ScreenContext);
   const router = useRouter();
 
+  // Sort results by popularity and filter down to four results
+  const results = allResults?.slice(0, 4);
+
   return (
     <>
-      <div className="flex flex-wrap mt-10 children:odd:pr-4 children:even:pl-4">
+      <div
+        className={classNames('flex flex-wrap mt-10', [
+          isMobile ? 'px-0' : 'px-4',
+          `children:odd:${isMobile ? 'pr-4' : 'pr-2'}`,
+          `children:even:${isMobile ? 'pl-4' : 'pl-2'}`,
+        ])}
+      >
         {results?.map(card => (
           <div className={classNames('w-1/2 mb-8')}>
             <ArticleCard {...card} />
@@ -161,5 +175,16 @@ function SearchOverlayInnerResults() {
         </Button>
       </div>
     </>
+  );
+}
+
+function SearchOverlayInnerNoResults() {
+  const { isMobile } = useContext(ScreenContext);
+
+  return (
+    <div className={classNames('flex mt-4', [isMobile ? 'px-0' : 'px-4'])}>
+      No results found.
+      <div className="w-full h-px bg-red-500">f</div>
+    </div>
   );
 }

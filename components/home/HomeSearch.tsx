@@ -37,15 +37,13 @@ export function HomeSearch() {
 
   const HEADER_FIXED_OFFSET = 35;
   const handleShouldHide = () => {
-    if (!isMobile) {
-      const geometry: ISearchBarGeometry = (searchRef.current as HTMLDivElement)?.getBoundingClientRect();
+    const geometry: ISearchBarGeometry = (searchRef.current as HTMLDivElement)?.getBoundingClientRect();
 
-      if (geometry) {
-        if (geometry.top < HEADER_FIXED_OFFSET) {
-          dispatch(setSearchBarPinnedToHeader(true));
-        } else {
-          dispatch(setSearchBarPinnedToHeader(false));
-        }
+    if (geometry) {
+      if (geometry.top < HEADER_FIXED_OFFSET) {
+        dispatch(setSearchBarPinnedToHeader(true));
+      } else {
+        dispatch(setSearchBarPinnedToHeader(false));
       }
     }
   };

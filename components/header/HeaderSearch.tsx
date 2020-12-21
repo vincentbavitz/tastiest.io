@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useWindowSize } from 'react-use';
+import { useLocation } from 'react-use';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { SearchDropdown } from '../search/SearchDropdown';
@@ -16,11 +16,23 @@ export function HeaderSearch() {
 
   const searchRef = useRef(null);
   const location = useLocation();
-  const { width: pageWidth } = useWindowSize();
 
   // We only wnat the searchbar to be invisible on the home page
   // and given that they have not scrolled past the main home search
-  const isShown = location.pathname !== '/' || searchBarPinnedToHeader;
+  const [isShown, setIsShown] = useState(false);
+  useEffect(() => {
+    if (
+      (location.pathname === '/' && searchBarPinnedToHeader) ||
+      location.pathname !== '/'
+    ) {
+      setIsShown(true);
+    } else {
+      setIsShown(false);
+    }
+  }, [location, searchBarPinnedToHeader]);
+
+  console.log('HeaderSearch ➡️ location.pathname:', location.pathname);
+  console.log('HeaderSearch ➡️ isShown:', isShown);
 
   return (
     <div

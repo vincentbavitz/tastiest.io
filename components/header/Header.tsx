@@ -57,14 +57,21 @@ function MobileHeader() {
 }
 
 function DesktopHeader() {
-  const nagivationState = useSelector((state: IState) => state.navigation);
-  const { searchOverlayExpanded } = nagivationState;
+  const { searchOverlayExpanded } = useSelector(
+    (state: IState) => state.navigation,
+  );
+  const { searchBarPinnedToHeader } = useSelector(
+    (state: IState) => state.search,
+  );
+
   const navBarRef = useRef(null);
 
   return (
     <div
       ref={navBarRef}
-      style={{ zIndex: searchOverlayExpanded ? 20001 : 1000 }}
+      style={{
+        zIndex: searchOverlayExpanded && searchBarPinnedToHeader ? 20001 : 1000,
+      }}
       className="fixed left-0 right-0 top-0 w-full h-20 bg-white flex items-center"
     >
       <Contained>

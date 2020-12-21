@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { useLockBodyScroll } from 'react-use';
 import { IState } from '../../state/reducers';
 import { SearchOverlayInner } from './SearchOverlayInner';
 
@@ -9,10 +10,16 @@ interface Props {
 }
 
 export function SearchDropdown({ isShown }: Props) {
-  const navigationState = useSelector((state: IState) => state.navigation);
+  const { searchOverlayExpanded } = useSelector(
+    (state: IState) => state.navigation,
+  );
+  const { searchBarPinnedToHeader } = useSelector(
+    (state: IState) => state.search,
+  );
 
-  // const renderSearchTemplate = searchState.searchResultItems.length === 0;
-  const { searchOverlayExpanded } = navigationState;
+  // Lock body scroll when pinned to header and open
+  useLockBodyScroll(searchOverlayExpanded && searchBarPinnedToHeader);
+
   const overlayContentRef = useRef(null);
 
   // Desktop overlay styles depend on wether or not the search bar is
@@ -21,7 +28,6 @@ export function SearchDropdown({ isShown }: Props) {
     zIndex: searchOverlayExpanded && isShown ? 20002 : -1,
     display: searchOverlayExpanded && isShown ? 'block' : 'none',
     minHeight: '600px',
-    // ...overlayCoords,
   };
 
   return (
@@ -42,7 +48,16 @@ export function SearchDropdown({ isShown }: Props) {
             'pb-4',
           )}
         >
-          <div className="relative overflow-y-auto w-full">
+          <div
+            style={{
+              // When pinned to header, limit height to vh and lock body scroll
+              maxHeight:
+                searchOverlayExpanded && searchBarPinnedToHeader
+                  ? '80vh'
+                  : 'unset',
+            }}
+            className="relative overflow-y-auto w-full"
+          >
             <SearchOverlayInner />
           </div>
         </div>
