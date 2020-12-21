@@ -5,18 +5,24 @@ import { useLockBodyScroll, useMeasure } from 'react-use';
 import { ScreenContext } from '../../contexts/screen';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
-import {
-  ISearchBarGeometry,
-  setHomeSearchBarGeometry,
-  setSearchBarPinnedToHeader,
-} from '../../state/search';
+import { setSearchBarPinnedToHeader } from '../../state/search';
+import { SearchDropdown } from '../search/SearchDropdown';
 import { SearchInput } from '../search/SearchInput';
+
+export interface ISearchBarGeometry {
+  height?: number;
+  width?: number;
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
+}
 
 export function HomeSearch() {
   const nagivationState = useSelector((state: IState) => state.navigation);
   const searchState = useSelector((state: IState) => state.search);
-  const { searchBarPinnedToHeader, homeSearchBarGeometry } = searchState;
   const { searchOverlayExpanded } = nagivationState;
+  const { searchBarPinnedToHeader } = searchState;
   const dispatch = useDispatch();
 
   // Contexts
@@ -29,33 +35,31 @@ export function HomeSearch() {
   // Hooks
   useLockBodyScroll(searchOverlayExpanded && isMobile);
 
-  // Set coordinates of search element
-  useEffect(() => {
-    const setGeometry = () => {
-      if (!isMobile) {
-        const geometry: ISearchBarGeometry = (searchRef.current as HTMLDivElement)?.getBoundingClientRect();
+  const HEADER_FIXED_OFFSET = 35;
+  const handleShouldHide = () => {
+    if (!isMobile) {
+      const geometry: ISearchBarGeometry = (searchRef.current as HTMLDivElement)?.getBoundingClientRect();
 
-        if (geometry) {
-          dispatch(setHomeSearchBarGeometry(geometry));
-
-          const HEADER_FIXED_OFFSET = 35;
-          if (geometry.top < HEADER_FIXED_OFFSET) {
-            dispatch(setSearchBarPinnedToHeader(true));
-          } else {
-            dispatch(setSearchBarPinnedToHeader(false));
-          }
+      if (geometry) {
+        if (geometry.top < HEADER_FIXED_OFFSET) {
+          dispatch(setSearchBarPinnedToHeader(true));
+        } else {
+          dispatch(setSearchBarPinnedToHeader(false));
         }
       }
-    };
+    }
+  };
 
-    window.addEventListener('scroll', setGeometry);
-    window.addEventListener('resize', setGeometry);
+  // Handle whether or not to hide overlay of home
+  useEffect(() => {
+    window.addEventListener('scroll', handleShouldHide);
+    window.addEventListener('resize', handleShouldHide);
 
     return function cleanup() {
-      window.removeEventListener('scroll', setGeometry);
-      window.removeEventListener('resize', setGeometry);
+      window.removeEventListener('scroll', handleShouldHide);
+      window.removeEventListener('resize', handleShouldHide);
     };
-  }, [isMobile, searchBarPinnedToHeader]);
+  }, []);
 
   return (
     <div ref={searchMeasureRef} className="relative">
@@ -76,13 +80,16 @@ export function HomeSearch() {
       >
         <SearchInput
           searchIcon="primary"
-          autofocus={!isMobile}
           placeholder="Search..."
           dummy={isMobile}
           dummyOnClick={() => dispatch(expandSearchOverlay())}
           onFocus={() => dispatch(expandSearchOverlay())}
           inputClassName={classNames(['pl-2 pr-4', isMobile && 'text-xl'])}
         />
+      </div>
+
+      <div className="h-0">
+        <SearchDropdown isShown={!searchBarPinnedToHeader} />
       </div>
     </div>
   );

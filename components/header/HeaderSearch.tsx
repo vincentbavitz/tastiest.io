@@ -1,52 +1,36 @@
 import classNames from 'classnames';
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useWindowSize } from 'react-use';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
-import {
-  ISearchBarGeometry,
-  setHeaderSearchBarGeometry,
-} from '../../state/search';
+import { SearchDropdown } from '../search/SearchDropdown';
 import { SearchInput } from '../search/SearchInput';
 
 export function HeaderSearch() {
-  const navigationState = useSelector((state: IState) => state.navigation);
+  const nagivationState = useSelector((state: IState) => state.navigation);
   const searchState = useSelector((state: IState) => state.search);
+  const { searchOverlayExpanded } = nagivationState;
+  const { searchBarPinnedToHeader } = searchState;
   const dispatch = useDispatch();
 
   const searchRef = useRef(null);
   const location = useLocation();
   const { width: pageWidth } = useWindowSize();
 
-  // Pull into the location context of search bar
-  const { searchBarPinnedToHeader } = searchState;
-  const { searchOverlayExpanded } = navigationState;
-
   // We only wnat the searchbar to be invisible on the home page
   // and given that they have not scrolled past the main home search
-  const isHidden = location.pathname === '/' && !searchBarPinnedToHeader;
-
-  console.log('HeaderSearch ➡️ location:', location);
-
-  // Set coordinates of search element
-  useEffect(() => {
-    const geometry: ISearchBarGeometry = (searchRef.current as HTMLDivElement)?.getBoundingClientRect();
-
-    if (geometry) {
-      dispatch(setHeaderSearchBarGeometry(geometry));
-    }
-  }, [pageWidth, searchBarPinnedToHeader]);
+  const isShown = location.pathname !== '/' || searchBarPinnedToHeader;
 
   return (
     <div
       style={{
-        zIndex: isHidden ? -1 : searchOverlayExpanded ? 20001 : 1,
+        zIndex: isShown ? (searchOverlayExpanded ? 20001 : 1) : -1,
         maxWidth: '650px',
       }}
       className={classNames(
-        'mx-8 flex-grow duration-300',
-        isHidden ? 'opacity-0' : 'opacity-100',
+        'mx-8 flex-grow',
+        isShown ? 'opacity-100' : 'opacity-0',
       )}
     >
       <div
@@ -63,6 +47,10 @@ export function HeaderSearch() {
           placeholder="Search..."
           onFocus={() => dispatch(expandSearchOverlay())}
         />
+      </div>
+
+      <div className="h-0">
+        <SearchDropdown isShown={isShown} />
       </div>
     </div>
   );

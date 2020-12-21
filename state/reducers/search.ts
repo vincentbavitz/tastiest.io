@@ -16,12 +16,6 @@ export const searchReducer = (
     case SearchActions.SET_SEARCH_QUERY: {
       return { ...state, searchQuery: action.payload };
     }
-    case SearchActions.SET_HOME_SEARCH_BAR_GEOMETRY: {
-      return { ...state, homeSearchBarGeometry: action.payload };
-    }
-    case SearchActions.SET_HEADER_SEARCH_BAR_GEOMETRY: {
-      return { ...state, headerSearchBarGeometry: action.payload };
-    }
     case SearchActions.SET_SEARCH_BAR_PINNED_TO_HEADER: {
       return { ...state, searchBarPinnedToHeader: action.payload };
     }

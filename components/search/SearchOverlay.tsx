@@ -1,11 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { useDispatch } from 'react-redux';
-import { useKey, useLocation } from 'react-use';
+import { useKey } from 'react-use';
 import { ScreenContext } from '../../contexts/screen';
 import { collapseSearchOverlay } from '../../state/navigation';
-import { SearchOverlayDesktop } from './SearchOverlayDesktop';
+import { SearchOverlayBackdrop } from './SearchOverlayBackdrop';
 import { SearchOverlayMobile } from './SearchOverlayMobile';
 
+// Search overlay includes the backdrop and the mobile overlay.
+// Search dropdown is desktop only and is rendered per component
 export function SearchOverlay() {
   const { isMobile } = useContext(ScreenContext);
   const dispatch = useDispatch();
@@ -13,13 +15,5 @@ export function SearchOverlay() {
   // Close on escape
   useKey('Escape', () => dispatch(collapseSearchOverlay()));
 
-  // Close search overlay on page changed
-  const location = useLocation();
-  useEffect(() => {
-    dispatch(collapseSearchOverlay());
-  }, [location]);
-
-  return (
-    <div>{isMobile ? <SearchOverlayMobile /> : <SearchOverlayDesktop />}</div>
-  );
+  return <>{isMobile ? <SearchOverlayMobile /> : <SearchOverlayBackdrop />}</>;
 }
