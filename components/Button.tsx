@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import React, { useContext } from 'react';
 import { ScreenContext } from '../contexts/screen';
-import { useScreenSize } from '../hooks/screen';
 
 export interface Props {
   color?: 'primary' | 'secondary' | 'danger';
@@ -40,7 +39,7 @@ export function Button(props: Props) {
 
   const clickHandler = (e: any) => {
     if (onClick) {
-      e?.stopPropagation && e?.stopPropagation();
+      // e?.stopPropagation && e?.stopPropagation();
       onClick();
     }
   };

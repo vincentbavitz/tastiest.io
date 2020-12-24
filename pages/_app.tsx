@@ -32,15 +32,25 @@ function App({ Component, pageProps }: AppProps) {
             <title>{METADATA.TITLE_SUFFIX}</title>
           </Head>
 
-          <>
-            <SearchOverlay />
+          <div
+            style={{ height: '100vh' }}
+            className="flex flex-col justify-between"
+          >
+            <div className="relative flex-grow">
+              <SearchOverlay />
 
-            <Header />
-            <CuisineBar />
-            <Component {...pageProps} />
+              <Header />
+              <CuisineBar />
 
-            <Footer />
-          </>
+              <div className="flex-grow">
+                <Component {...pageProps} />
+              </div>
+            </div>
+
+            <div>
+              <Footer />
+            </div>
+          </div>
         </ScreenProvider>
       </AuthProvider>
     </StoreProvider>

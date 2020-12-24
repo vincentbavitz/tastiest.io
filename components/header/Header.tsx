@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TastiestLogo from '../../assets/svgs/brand.svg';
 import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
+import { useAuth } from '../../contexts/auth';
 import { ScreenContext } from '../../contexts/screen';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
@@ -18,7 +19,16 @@ export function Header() {
     null;
   };
 
-  return <div>{isMobile ? <MobileHeader /> : <DesktopHeader />}</div>;
+  const { user } = useAuth();
+
+  // return <div>{isMobile ? <MobileHeader /> : <DesktopHeader />}</div>;
+
+  return (
+    <div className="flex flex-col w-full">
+      <div style={{ zIndex: 333333 }}>{user?.email || 'no user signed in'}</div>
+      <div>{isMobile ? <MobileHeader /> : <DesktopHeader />}</div>
+    </div>
+  );
 }
 
 function MobileHeader() {

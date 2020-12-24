@@ -31,10 +31,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 };
 
-export default (
+const Account = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => (
   <div>
     <p>{props.message}</p>
   </div>
 );
+
+export default Account;

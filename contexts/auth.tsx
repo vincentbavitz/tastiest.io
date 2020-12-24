@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import nookies from 'nookies';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { firebaseClient } from '../firebaseClient';
@@ -24,8 +25,6 @@ export function AuthProvider({ children }: any) {
         return;
       }
 
-      console.log(`updating token...`);
-
       const token = await user.getIdToken();
 
       setUser(user);
@@ -38,9 +37,11 @@ export function AuthProvider({ children }: any) {
   useEffect(() => {
     const handle = setInterval(async () => {
       console.log(`refreshing token...`);
+
       const user = firebaseClient.auth().currentUser;
       if (user) await user.getIdToken(true);
     }, 10 * 60 * 1000);
+
     return () => clearInterval(handle);
   }, []);
 
@@ -50,5 +51,61 @@ export function AuthProvider({ children }: any) {
 }
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const router = useRouter();
+
+  const signIn = async (email: string, password: string) => {
+    try {
+      const user = await firebaseClient
+        .auth()
+        .signInWithEmailAndPassword(email, password);
+
+      console.log('user', user);
+
+      router.push('/account');
+      return { user };
+    } catch (error) {
+      console.log('FGSDFKJSDJF', error);
+      return { error };
+    }
+  };
+
+  // If redirectTo is given, will redirect there after sign out.
+  // Else, the page will simply reload.
+  const signOut = async (redirectTo?: string) => {
+    await firebaseClient.auth().signOut();
+
+    if (redirectTo) {
+      router.push(redirectTo);
+    } else {
+      router.reload();
+    }
+  };
+
+  const createUser = async (
+    displayName: string,
+    email: string,
+    password: string,
+  ) => {
+    await firebaseClient.auth().createUserWithEmailAndPassword(email, password);
+
+    const user = firebaseClient.auth().currentUser;
+    if (user) {
+      await user.updateProfile({
+        displayName,
+      });
+    }
+
+    router.push('/account');
+  };
+
+  const isSignedIn = Boolean(user);
+
+  return {
+    user,
+    signIn,
+    signOut,
+    createUser,
+    isSignedIn,
+  };
 };
