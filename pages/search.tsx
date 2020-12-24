@@ -4,14 +4,18 @@ import ReactPaginate from 'react-paginate';
 import SearchBackdropDesktopSVG from '../assets/svgs/page/search_desktop.svg';
 import SearchBackdropMobileSVG from '../assets/svgs/page/search_mobile.svg';
 import client from '../client';
-import { ArticlePreviewRow } from '../components/ArticlePreviewRow';
+import { ArticleCard } from '../components/cards/ArticleCard';
+import { ArticleCardRow } from '../components/cards/ArticleCardRow';
+import { ArtcileCardScrollable } from '../components/cards/ArticleCardScrollable';
 import { Contained } from '../components/Contained';
 import { SectionTitle } from '../components/SectionTitle';
+import { SuggestDish } from '../components/SuggestDish';
 import { Title } from '../components/Title';
 import { METADATA, SEARCH } from '../constants';
 import { ScreenContext } from '../contexts/screen';
 import { ISanityArticle } from '../types/article';
 import { buildArticleInfo } from '../utils/article';
+import { getTopPosts } from '../utils/posts';
 import { sanityPostQuery } from '../utils/search';
 
 interface Props {
@@ -38,6 +42,16 @@ function Search(props: Props) {
   const [isLoading, setLoading] = useState(false); //State for loading indicator
   const startLoading = () => setLoading(true);
   const stopLoading = () => setLoading(false);
+
+  const [topPosts, setTopPosts] = useState([] as ISanityArticle[]);
+  useEffect(() => {
+    const getPosts = async () => {
+      const posts = await getTopPosts(4);
+      setTopPosts(posts);
+    };
+
+    getPosts();
+  });
 
   // Since requests happens after chaning routes url ?page={n} we need to bind loading events
   // on the router change event.
@@ -99,7 +113,7 @@ function Search(props: Props) {
       <Contained>
         <div className="flex flex-col space-y-8">
           {posts.map(post => (
-            <ArticlePreviewRow {...post} />
+            <ArticleCardRow {...post} />
           ))}
         </div>
 
@@ -119,13 +133,21 @@ function Search(props: Props) {
             onPageChange={paginationHandler}
           />
         </div>
-
-        <div>
-          <SectionTitle>Didn't find what you were looking for?</SectionTitle>
-
-          {/*  */}
-        </div>
       </Contained>
+
+      <>
+        <Contained>
+          <SectionTitle>Didn't find what you were looking for?</SectionTitle>
+        </Contained>
+        {/*  */}
+        <ArtcileCardScrollable>
+          {topPosts.map(post => (
+            <ArticleCard {...post} />
+          ))}
+        </ArtcileCardScrollable>
+      </>
+
+      <SuggestDish />
     </div>
   );
 }

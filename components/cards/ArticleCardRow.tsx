@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import { ScreenContext } from '../contexts/screen';
-import { IArticle } from '../types/article';
-import { Title } from './Title';
+import { ScreenContext } from '../../contexts/screen';
+import { IArticle } from '../../types/article';
+import { Title } from '../Title';
 
-export function ArticlePreviewRow(post: IArticle) {
-  console.log('ArticlePreviewRow ➡️ post.body:', post.body);
+export function ArticleCardRow(post: IArticle) {
+  console.log('ArticleCardRow ➡️ post.body:', post.body);
 
   const { isMobile } = useContext(ScreenContext);
 

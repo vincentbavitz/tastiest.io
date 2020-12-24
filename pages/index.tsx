@@ -3,13 +3,13 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import React, { useContext } from 'react';
 import client from '../client';
-import { ArticleCard } from '../components/ArticleCard';
+import { ArticleCard } from '../components/cards/ArticleCard';
 import { Contained } from '../components/Contained';
 import { HomeFavouritesSection } from '../components/home/HomeFavouritesSection';
 import { HomeMapSection } from '../components/home/HomeMapSection';
 import { HomeRecentSearchesSection } from '../components/home/HomeRecentSearchesSection';
 import { HomeSearchSection } from '../components/home/HomeSearchSection';
-import { HomeSuggestDishSection } from '../components/home/HomeSuggestDishSection';
+import { SuggestDish } from '../components/SuggestDish';
 import { METADATA } from '../constants';
 import { ScreenContext } from '../contexts/screen';
 import { ISanityArticle } from '../types/article';
@@ -59,7 +59,7 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
           <HomeRecentSearchesSection />
           <HomeMapSection />
           <HomeFavouritesSection cards={cards} />
-          <HomeSuggestDishSection />
+          <SuggestDish />
         </div>
       </Contained>
     </>

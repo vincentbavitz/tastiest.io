@@ -12,8 +12,8 @@ import { CUISINES } from '../../constants';
 import { ScreenContext } from '../../contexts/screen';
 import { IState } from '../../state/reducers';
 import { SVG } from '../../types';
-import { ArticleCard } from '../ArticleCard';
 import { Button } from '../Button';
+import { ArticleCard } from '../cards/ArticleCard';
 import { OutlineBlock } from '../OutlineBlock';
 
 interface IDynamicOptions {
