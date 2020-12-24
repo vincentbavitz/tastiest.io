@@ -12,8 +12,8 @@ import { CUISINES } from '../../constants';
 import { ScreenContext } from '../../contexts/screen';
 import { IState } from '../../state/reducers';
 import { SVG } from '../../types';
-import { ArticleCard } from '../ArticleCard';
 import { Button } from '../Button';
+import { ArticleCard } from '../cards/ArticleCard';
 import { OutlineBlock } from '../OutlineBlock';
 
 interface IDynamicOptions {
@@ -85,6 +85,7 @@ function SearchOverlayInnerDefault() {
       <div className="flex flex-col space-y-1 mt-4">
         {dynamicCategories.map(category => (
           <div
+            key={category.name.toLowerCase()}
             onClick={() => router.push(category.href)}
             className="flex items-center text-lg cursor-pointer text-primary font-roboto font-medium rounded-lg hover:bg-primary hover:bg-opacity-10"
           >
@@ -106,7 +107,7 @@ function SearchOverlayInnerDefault() {
             .sort((a, b) => b.popularity - a.popularity)
             .slice(0, 5)
             .map(cuisine => (
-              <div className="mt-2 mr-2">
+              <div key={cuisine.name.toLowerCase()} className="mt-2 mr-2">
                 <OutlineBlock
                   onClick={() =>
                     router.push(`/search/?cuisine=${cuisine.href}`)
@@ -130,7 +131,10 @@ function SearchOverlayInnerDefault() {
 
         <div className="flex flex-col space-y-2 children:last:border-b-0">
           {popularDishes.map(dish => (
-            <div className="flex space-x-2 items-center w-full border-b border-secondary py-2">
+            <div
+              key={dish.name.toLowerCase()}
+              className="flex space-x-2 items-center w-full border-b border-secondary py-2"
+            >
               <dish.svg className="h-10 w-12" />
               <span className="text-primary">{dish.name}</span>
             </div>
@@ -161,7 +165,7 @@ function SearchOverlayInnerResults() {
         ])}
       >
         {results?.map(card => (
-          <div className={classNames('w-1/2 mb-8')}>
+          <div key={card.id.toLowerCase()} className={classNames('w-1/2 mb-8')}>
             <ArticleCard {...card} />
           </div>
         ))}

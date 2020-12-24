@@ -1,6 +1,6 @@
 import { IArticle } from '../../types/article';
 
-export const initialArticleState: IArticle | {} = {};
+export const initialArticleState: IArticle | Record<string, unknown> = {};
 
 export enum ArticleActions {
   SET_ARTICLE = 'SET_ARTICLE',
@@ -21,9 +21,9 @@ export interface ArticleAction {
 }
 
 export const articleReducer = (
-  state: IArticle | {} = initialArticleState,
+  state: IArticle | Record<string, unknown> = initialArticleState,
   action: ArticleAction,
-): IArticle | {} => {
+): IArticle | Record<string, unknown> => {
   switch (action.type) {
     case ArticleActions.SET_ARTICLE: {
       return { ...action.payload };
