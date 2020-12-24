@@ -51,7 +51,7 @@ function Search(props: Props) {
     };
 
     getPosts();
-  });
+  }, []);
 
   // Since requests happens after chaning routes url ?page={n} we need to bind loading events
   // on the router change event.

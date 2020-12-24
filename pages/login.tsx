@@ -124,6 +124,3 @@ function Login(props: Props) {
     </>
   );
 }
-
-// export default withAuthUser(withAuthUserInfo(Login));
-export default Login;
