@@ -2,7 +2,6 @@ import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { Contained } from '../../../components/Contained';
-import { Footer } from '../../../components/Footer';
 import { CUISINES } from '../../../constants';
 import { ISanityArticle } from '../../../types/article';
 import { CuisineSymbol } from '../../../types/cuisine';
@@ -82,8 +81,6 @@ export default function Cuisine() {
           </div>
         </Contained>
       </div>
-
-      <Footer />
     </div>
   );
 }

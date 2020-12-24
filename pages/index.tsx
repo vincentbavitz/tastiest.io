@@ -5,7 +5,6 @@ import React, { useContext } from 'react';
 import client from '../client';
 import { ArticleCard } from '../components/ArticleCard';
 import { Contained } from '../components/Contained';
-import { Footer } from '../components/Footer';
 import { HomeFavouritesSection } from '../components/home/HomeFavouritesSection';
 import { HomeMapSection } from '../components/home/HomeMapSection';
 import { HomeRecentSearchesSection } from '../components/home/HomeRecentSearchesSection';
@@ -63,8 +62,6 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
           <HomeSuggestDishSection />
         </div>
       </Contained>
-
-      <Footer />
     </>
   );
 };

@@ -1,11 +1,11 @@
 import groq from 'groq';
 import moment from 'moment';
 import client from '../client';
-import { ISanityArticle, IArticle } from '../types/article';
+import { IArticle, ISanityArticle } from '../types/article';
 import { sanityPostQuery } from './search';
 import { titleCase } from './text';
 
-export async function getArticle(
+export async function getArticleBySlug(
   slug: string,
   onFail?: () => void,
 ): Promise<IArticle | Partial<IArticle>> {

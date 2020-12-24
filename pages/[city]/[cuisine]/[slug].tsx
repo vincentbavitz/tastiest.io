@@ -2,19 +2,15 @@
 import imageUrlBuilder from '@sanity/image-url';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import React, { useContext, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import '../../../assets/style.scss';
 import client from '../../../client';
 import { Article } from '../../../components/article/Article';
-import { Footer } from '../../../components/Footer';
 import { ScreenContext } from '../../../contexts/screen';
-import { useScreenSize } from '../../../hooks/screen';
-import { IState } from '../../../state/reducers';
 import { setArticle } from '../../../state/reducers/article';
 import { IArticle } from '../../../types/article';
-import { getArticle } from '../../../utils/article';
+import { getArticleBySlug } from '../../../utils/article';
 import { generateTitle } from '../../../utils/metadata';
 
 function urlFor(source) {
@@ -22,7 +18,7 @@ function urlFor(source) {
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {
-  const article = await getArticle(String(context.query.slug) ?? '');
+  const article = await getArticleBySlug(String(context.query.slug) ?? '');
 
   // Redirect to 404 for nonexistent page
   if (!article) {
@@ -75,8 +71,6 @@ function Post(props: IArticle) {
       </Head>
 
       <Article {...props} />
-
-      <Footer />
     </>
   );
 }

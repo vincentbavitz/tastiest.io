@@ -63,7 +63,7 @@ export function SearchInput(props: Props) {
     if (input?.value?.length && input?.focus) {
       router.push({
         pathname: '/search',
-        query: { s: searchState.searchQuery },
+        query: { s: encodeURI(input?.value) },
       });
     }
   };

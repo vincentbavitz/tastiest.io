@@ -1,9 +1,9 @@
+import BlockContent from '@sanity/block-content-to-react';
 import React, { useContext } from 'react';
+import { SANITY_CONSTATNTS } from '../../../client';
 import { ScreenContext } from '../../../contexts/screen';
-import { useScreenSize } from '../../../hooks/screen';
 import { IFigureImage } from '../../../types/article';
 import { Contained } from '../../Contained';
-import { RecommendForm } from '../../RecommendForm';
 import { ArticleWidgetOrderNow } from '../widgets/ArticleWidgetOrderNow';
 import { ArticleSectionFeatureImage } from './ArticleSectionFeatureImage';
 
@@ -80,7 +80,13 @@ const MobileContent = ({ body, featureImage }: Props) => (
 const DesktopContent = ({ body, featureImage }: Props) => (
   <div className="flex flex-col">
     <div className="flex space-x-10">
-      <div className="w-8/12 mt-16">{paragraphs}</div>
+      <div className="w-8/12 mt-16">
+        <BlockContent
+          blocks={body}
+          projectId={SANITY_CONSTATNTS.PROJECT_ID}
+          dataset={SANITY_CONSTATNTS.DATASET}
+        />
+      </div>
 
       <div className="w-4/12 mt-12">
         <ArticleWidgetOrderNow />

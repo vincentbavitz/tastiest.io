@@ -206,6 +206,35 @@ body {
   }
 }
 
+// Pagination
+.pagination {
+  display: flex;
+  justify-content: center;
+
+  li {
+    &:first-child {
+      border-top-left-radius: 0.25rem;
+      border-bottom-left-radius: 0.25rem;
+    }
+
+    &:last-child {
+      border-top-right-radius: 0.25rem;
+      border-bottom-right-radius: 0.25rem;
+    }
+
+    &:hover {
+      background-color: #dfbb0a;
+    }
+
+    cursor: pointer;
+    padding: 0.25rem 1rem;
+    width: max-content;
+    font-weight: 500;
+    border-radius: 0;
+    background-color: #ffd400;
+  }
+}
+
 .fill-primary {
   fill: $theme-primary;
 }
@@ -241,44 +270,6 @@ body {
   -webkit-flex: 0 0 var(--_2NCTA92m);
   -ms-flex: 0 0 var(--_2NCTA92m);
   flex: 0 0 var(--_2NCTA92m);
-}
-
-.article {
-  &__top {
-    background: url(/svgs/eating-bao.svg) bottom center no-repeat;
-    background-size: 100%;
-    min-height: 30vw;
-  }
-
-  &__title {
-    bottom: 65%;
-
-    h1 {
-      font-family: SomaticRounded;
-      line-height: 1em;
-    }
-  }
-
-  &__author {
-    top: 60%;
-    margin-left: -10px;
-  }
-
-  &__feature-video {
-    position: relative;
-    height: 0;
-    width: 100%;
-    padding-bottom: 56.25%;
-  }
-
-  &__content {
-    color: $theme-danger;
-
-    p {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-  }
 }
 
 .cuisine-item {

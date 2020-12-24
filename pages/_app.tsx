@@ -6,6 +6,7 @@ import { useLocation } from 'react-use';
 import { createStore } from 'redux';
 import '../assets/style.scss';
 import { CuisineBar } from '../components/cuisine/CuisineBar';
+import { Footer } from '../components/Footer';
 import { Header } from '../components/header/Header';
 import { SearchOverlay } from '../components/search/SearchOverlay';
 import { METADATA } from '../constants';
@@ -35,6 +36,8 @@ function App({ Component, pageProps }: AppProps) {
           <Header />
           <CuisineBar />
           <Component {...pageProps} />
+
+          <Footer />
         </>
       </ScreenProvider>
     </Provider>

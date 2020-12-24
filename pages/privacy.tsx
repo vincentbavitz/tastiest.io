@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import React from 'react';
-import { Footer } from '../components/Footer';
 import { generateTitle } from '../utils/metadata';
 
 function Privacy() {
@@ -5360,7 +5359,6 @@ function Privacy() {
           </span>
         </p>
       </div>
-      <Footer />
     </div>
   );
 }
