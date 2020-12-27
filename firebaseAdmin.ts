@@ -6,8 +6,6 @@ const CERT = {
   projectId: process.env.FIREBASE_PROJECT_ID,
 };
 
-console.log('firebaseAdmin ➡️ CERT:', CERT);
-
 if (!firebaseAdmin.apps.length) {
   firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert(CERT),

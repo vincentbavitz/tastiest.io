@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { collapseSearchOverlay } from '../../state/navigation';
-import IState from '../../state/reducers';
+import { IState } from '../../state/reducers';
 
 export function SearchOverlayBackdrop() {
   const navigationState = useSelector((state: IState) => state.navigation);

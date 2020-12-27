@@ -7,6 +7,7 @@ import { Input } from '../components/Input';
 import { useAuth } from '../contexts/auth';
 
 function Signup() {
+  const router = useRouter();
   const { createUser } = useAuth();
 
   const [email, setEmail] = useState(undefined as string | undefined);
@@ -15,15 +16,12 @@ function Signup() {
     undefined as string | undefined,
   );
 
-  const router = useRouter();
-
   const handleSubmit = async () => {
     if (!(displayName && email && password)) {
       return;
     }
 
     // Todo verify
-
     try {
       await createUser(displayName, email, password);
       router.push('/account');
