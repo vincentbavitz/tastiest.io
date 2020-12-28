@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button } from '../components/Button';
 import { Contained } from '../components/Contained';
 import { Input } from '../components/Input';
-import { useAuth } from '../contexts/auth';
+import { useAuth } from '../hooks/auth';
 
 function Signup() {
   const router = useRouter();

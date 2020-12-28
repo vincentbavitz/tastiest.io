@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../../contexts/auth';
+import { useAuth } from '../../hooks/auth';
 import { Avatar } from '../Avatar';
 import { Dropdown } from '../Dropdown';
 import { DropdownItem } from '../DropdownItem';
@@ -14,8 +14,8 @@ interface IProfileDropdownItems {
 
 export function HeaderAvatar() {
   const { isSignedIn, signOut } = useAuth();
-
   const router = useRouter();
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Close dropdown on route change

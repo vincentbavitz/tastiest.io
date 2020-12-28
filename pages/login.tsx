@@ -6,7 +6,7 @@ import { useKey } from 'react-use';
 import { Button } from '../components/Button';
 import { Contained } from '../components/Contained';
 import { Input } from '../components/Input';
-import { useAuth } from '../contexts/auth';
+import { useAuth } from '../hooks/auth';
 
 // enum AuthErrorCode {
 //   WRONG_PASSWORD = 'auth/wrong-password',

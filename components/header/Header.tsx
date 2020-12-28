@@ -3,8 +3,8 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TastiestLogo from '../../assets/svgs/brand.svg';
 import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
-import { useAuth } from '../../contexts/auth';
 import { ScreenContext } from '../../contexts/screen';
+import { useAuth } from '../../hooks/auth';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Contained } from '../Contained';
@@ -14,12 +14,11 @@ import { HeaderSearch } from './HeaderSearch';
 
 export function Header() {
   const { isMobile } = useContext(ScreenContext);
+  const { user } = useAuth();
 
   const handleAvatarClick = () => {
     null;
   };
-
-  const { user } = useAuth();
 
   // return <div>{isMobile ? <MobileHeader /> : <DesktopHeader />}</div>;
 
