@@ -24,7 +24,6 @@ function Signup() {
     // Todo verify
     try {
       await createUser(displayName, email, password);
-      router.push('/account');
     } catch (error) {
       alert(error);
     }

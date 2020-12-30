@@ -4,15 +4,13 @@
   "license": "UNLICENSED",
   "scripts": {
     "now": "npm run now",
-    "dev": "NODE_ENV=development npm run tsc-watch-config & next dev",
-    "dev:https": "NODE_ENV=development npm run tsc-watch-config & node server.js",
-    "build": "npm run tsc-config && next build",
-    "start": "npm run tsc-config && next start",
+    "dev": "NODE_ENV=development next dev",
+    "dev:https": "NODE_ENV=development node server.js",
+    "build": "next build",
+    "start": "next start",
     "staging": "func() { git add . && git commit -m \"$1\" && git push -u origin staging; }; func",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
-    "lint:fix": "npm run lint -- --fix",
-    "tsc-config": "npx tsc 'tailwind.config.ts' > /dev/null",
-    "tsc-watch-config": "npx tsc -w 'tailwind.config.ts' > /dev/null"
+    "lint:fix": "npm run lint -- --fix"
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",

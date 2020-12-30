@@ -27,7 +27,7 @@ export function Button(props: Props) {
     type = 'solid',
     disabled = false,
     selected = false,
-    onClick = () => null,
+    onClick,
     children,
     className,
     prefix,
