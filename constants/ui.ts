@@ -1,4 +1,4 @@
-export const UI = {
+const UI = {
   MOBILE_BREAKPOINT: 500,
   TABLET_BREAKPOINT: 715,
   DESKTOP_BREAKPOINT: 1100,
@@ -10,3 +10,5 @@ export const UI = {
     TITLE_MAX_WIDTH_REM: 29,
   },
 };
+
+export default UI;

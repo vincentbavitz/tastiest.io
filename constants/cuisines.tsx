@@ -1,5 +1,4 @@
 // Ensure SVGs dont have any width or height attrs.
-import { CuisineSymbol, ICuisine } from '../types/cuisine';
 import ChinaSVG from '../assets/svgs/cuisine-pages/china.svg';
 import FranceSVG from '../assets/svgs/cuisine-pages/france.svg';
 import IndiaSVG from '../assets/svgs/cuisine-pages/india.svg';
@@ -15,8 +14,9 @@ import JapaneseSVG from '../assets/svgs/cuisines/japanese.svg';
 import MediterraneanSVG from '../assets/svgs/cuisines/mediterranean.svg';
 import MexicanSVG from '../assets/svgs/cuisines/mexican.svg';
 import SpanishSVG from '../assets/svgs/cuisines/spanish.svg';
+import { CuisineSymbol, ICuisine } from '../types/cuisine';
 
-export const CUISINES = {
+const CUISINES = {
   [CuisineSymbol.ITALIAN]: {
     name: 'Italian',
     href: '/italian',
@@ -86,3 +86,5 @@ export const CUISINES = {
     popularity: 543,
   },
 } as { [name: string]: ICuisine };
+
+export default CUISINES;

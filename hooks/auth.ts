@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { AuthContext } from '../contexts/auth';
 import { firebaseClient } from '../firebaseClient';
+import { titleCase } from '../utils/text';
 
 export const useAuth = () => {
   const { user } = useContext(AuthContext);
@@ -56,7 +57,7 @@ export const useAuth = () => {
     const user = firebaseClient.auth().currentUser;
     if (user) {
       await user.updateProfile({
-        displayName,
+        displayName: titleCase(displayName),
       });
     }
 

@@ -1,7 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.UI = void 0;
-exports.UI = {
+var UI = {
     MOBILE_BREAKPOINT: 500,
     TABLET_BREAKPOINT: 715,
     DESKTOP_BREAKPOINT: 1100,
@@ -11,3 +10,4 @@ exports.UI = {
         TITLE_MAX_WIDTH_REM: 29
     }
 };
+exports["default"] = UI;
