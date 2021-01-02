@@ -1,4 +1,4 @@
-import { useRouter } from 'next/dist/client/router';
+import { InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { Contained } from '../../../components/Contained';
@@ -9,37 +9,48 @@ import { generateTitle } from '../../../utils/metadata';
 import { getCuisinePosts, postsToCards } from '../../../utils/posts';
 import { titleCase } from '../../../utils/text';
 
-export default function Cuisine() {
-  const router = useRouter();
-  const cuisineQueryName = router.query?.cuisine;
-  const cuisineSymbol = String(cuisineQueryName).toUpperCase() as CuisineSymbol;
-  const cuisine = CUISINES[cuisineSymbol];
+interface Props {
+  cuisineSymbol?: CuisineSymbol;
+}
 
-  // Ensure cuisine exists on load; else 404
+export const getServerSideProps = async context => {
+  // const cuisineSymbol = String(
+  //   context.params?.cuisine,
+  // ).toUpperCase() as CuisineSymbol;
+
+  // const cuisineExists = CUISINES[cuisineSymbol];
+
+  // console.log('index ➡️ cuisineSymbol:', cuisineSymbol);
+  // console.log('index ➡️ context:', context);
+
+  // // Redirect to 404 for nonexistent page
+  // if (!cuisineExists) {
+  //   return {
+  //     notFound: true,
+  //   };
+  // }
+
+  return { props: { cuisineSymbol: 'ITALIAN' } };
+};
+
+export default function Cuisine({
+  cuisineSymbol,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const cuisine = CUISINES[cuisineSymbol];
   const cuisineName = titleCase(String(cuisine?.name));
   const cuisineExists = Boolean(cuisine);
-
-  console.log('cuisine info', {
-    cuisineQueryName,
-    cuisineSymbol,
-    cuisine,
-    cuisineName,
-  });
 
   const [posts, setPosts] = useState([] as ISanityArticle[]);
 
   const getPosts = async () => {
-    const posts = await getCuisinePosts(cuisineSymbol, 8);
+    const posts = await getCuisinePosts(
+      String(cuisine.name).toUpperCase() as CuisineSymbol,
+      8,
+    );
     if (!posts) return;
 
     setPosts(posts);
   };
-
-  useEffect(() => {
-    if (!cuisineExists) {
-      router.push('/404', '/404');
-    }
-  }, []);
 
   // Get new posts on location change
   useEffect(() => {
@@ -48,10 +59,10 @@ export default function Cuisine() {
 
   const cards = postsToCards(posts);
 
-  // Prevent user from seeing anything rendered when cuisine doesn't exist
-  if (!cuisineExists) {
-    return <></>;
-  }
+  // // Prevent user from seeing anything rendered when cuisine doesn't exist
+  // if (!cuisineExists) {
+  //   return <></>;
+  // }
 
   return (
     <div>

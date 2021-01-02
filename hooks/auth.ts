@@ -16,7 +16,7 @@ export const useAuth = () => {
     try {
       // Retry on fail
       let user: firebaseClient.auth.UserCredential;
-      let i = 0;
+      const i = 0;
       while (!user && i < MAX_LOGIN_ATTEMPTS) {
         console.log(
           `Attempting to log user in. (${i + 1}/${MAX_LOGIN_ATTEMPTS})`,

@@ -47,6 +47,7 @@ module.exports = {
     borderWidth: ['children', 'children-last'],
     padding: ['children-odd', 'children-even'],
     margin: ['children-last'],
+    fontWeight: ['children-last'],
   },
   plugins: [require('tailwindcss-children')],
 };
