@@ -38,6 +38,7 @@ module.exports = {
         danger: '#130b57',
         article: '#140c57',
       },
+      display: ['huge', 'desktop', 'tablet', 'mobile'],
       backgroundOpacity: {
         '10': '0.1',
       },
