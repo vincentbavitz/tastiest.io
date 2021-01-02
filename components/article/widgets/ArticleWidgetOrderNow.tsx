@@ -1,10 +1,8 @@
 import React, { useContext } from 'react';
-import { Button } from '../../Button';
-
-import { Title } from '../../Title';
 import HeySpriteSVG from '../../../assets/svgs/article/hey-sprite.svg';
-import { useScreenSize } from '../../../hooks/screen';
 import { ScreenContext } from '../../../contexts/screen';
+import { Button } from '../../Button';
+import { Title } from '../../Title';
 
 export function ArticleWidgetOrderNow() {
   const { isDesktop } = useContext(ScreenContext);

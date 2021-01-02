@@ -2,11 +2,12 @@ module.exports = {
   theme: {
     screens: {
       // Constants taken from UI constants.
+      // Think of them as 'beyond this breakpoint' when using
+      // mobile:my-class, for example.
       // -> @media (min-width: {}px) { ... }
-      mobile: '0px',
-      tablet: '500px',
-      desktop: '715px',
-      huge: '1100px',
+      mobile: '500px',
+      tablet: '715px',
+      desktop: '1100px',
     },
     fontFamily: {
       somatic: ['SomaticRounded'],

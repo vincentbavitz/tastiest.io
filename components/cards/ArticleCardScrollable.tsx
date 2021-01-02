@@ -34,6 +34,7 @@ function ScrollalbeInner(props: Props) {
     <div className="flex overflow-x-auto scrollable-touch space-x-6 my-8 children:last:mr-6">
       {children.map(child => (
         <div
+          key={child.key}
           style={{ minWidth: isMobile ? '15rem' : 'unset' }}
           className="w-1/4"
         >

@@ -113,7 +113,7 @@ function Search(props: Props) {
       <Contained>
         <div className="flex flex-col space-y-8">
           {posts.map(post => (
-            <ArticleCardRow {...post} />
+            <ArticleCardRow key={post.slug} {...post} />
           ))}
         </div>
 
@@ -142,7 +142,7 @@ function Search(props: Props) {
         {/*  */}
         <ArtcileCardScrollable>
           {topPosts.map(post => (
-            <ArticleCard {...post} />
+            <ArticleCard key={post.id.toLowerCase()} {...post} />
           ))}
         </ArtcileCardScrollable>
       </>

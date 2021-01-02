@@ -57,6 +57,7 @@ function Favourites() {
         <div className="flex flex-wrap">
           {topPosts.map(post => (
             <div
+              key={post.id.toLowerCase()}
               style={{
                 minWidth: '12rem',
               }}

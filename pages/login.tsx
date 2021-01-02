@@ -68,7 +68,7 @@ function Login() {
             width: '100%',
             maxWidth: '400px',
           }}
-          className="p-10 mobile:p-6 border-2 border-secondary rounded-xl"
+          className="p-10 tablet:p-6 border-2 border-secondary rounded-xl"
         >
           <form>
             <div className="flex flex-col space-y-6">
