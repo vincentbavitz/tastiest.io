@@ -139,7 +139,7 @@ function Search(props: Props) {
         <Contained>
           <SectionTitle>Didn't find what you were looking for?</SectionTitle>
         </Contained>
-        {/*  */}
+
         <ArtcileCardScrollable>
           {topPosts.map(post => (
             <ArticleCard key={post.id.toLowerCase()} {...post} />

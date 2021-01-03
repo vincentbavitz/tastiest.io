@@ -11,8 +11,8 @@ export function Contained(props: Props) {
   const { backgroundColor, children } = props;
 
   const containerStyle = {
-    paddingLeft: '5vw',
-    paddingRight: '5vw',
+    paddingLeft: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
+    paddingRight: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
     width: '100%',
     maxWidth: `${UI.MAX_CONTENT_WIDTH}px`,
     margin: '0 auto',
