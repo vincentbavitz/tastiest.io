@@ -1,20 +1,14 @@
 // [slug].js
-import imageUrlBuilder from '@sanity/image-url';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import '../../../assets/style.scss';
-import client from '../../../client';
 import { Article } from '../../../components/article/Article';
 import { setArticle } from '../../../state/reducers/article';
 import { IArticle } from '../../../types/article';
 import { getArticleBySlug } from '../../../utils/article';
 import { generateTitle } from '../../../utils/metadata';
-
-function urlFor(source) {
-  return imageUrlBuilder(client).image(source);
-}
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const article = await getArticleBySlug(String(context.query.slug) ?? '');

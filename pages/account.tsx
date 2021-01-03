@@ -2,23 +2,28 @@ import 'firebase/auth';
 import 'firebase/functions';
 import Link from 'next/link';
 import Router from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Title } from '../components/Title';
 
 const Account = (props: any) => {
-  const { AuthUserInfo, environment } = props;
-  const authUser = AuthUserInfo.AuthUser;
+  // const authUser = AuthUserInfo.AuthUser;
 
-  useEffect(() => {
-    console.log('Auth user', authUser);
+  // useEffect(() => {
+  //   console.log('Auth user', authUser);
 
-    if (!authUser) {
-      alert('authUser not defined');
-      console.log('Auth', authUser);
+  //   if (!authUser) {
+  //     alert('authUser not defined');
+  //     console.log('Auth', authUser);
 
-      Router.push('/');
-    }
-  }, []);
+  //     Router.push('/');
+  //   }
+  // }, []);
+
+  const authUser = {
+    displayName: 'Vince',
+  };
+
+  const environment = 'development';
 
   return (
     <>
