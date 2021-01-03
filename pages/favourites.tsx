@@ -55,7 +55,7 @@ function Favourites() {
 
       <div className="">
         {topPosts.map(post => (
-          <ArticleCardFavourite {...post} />
+          <ArticleCardFavourite key={post.id.toLowerCase()} {...post} />
         ))}
       </div>
     </div>
