@@ -51,7 +51,7 @@ function Search(props: Props) {
     };
 
     getPosts();
-  });
+  }, []);
 
   // Since requests happens after chaning routes url ?page={n} we need to bind loading events
   // on the router change event.
@@ -113,7 +113,7 @@ function Search(props: Props) {
       <Contained>
         <div className="flex flex-col space-y-8">
           {posts.map(post => (
-            <ArticleCardRow {...post} />
+            <ArticleCardRow key={post.slug} {...post} />
           ))}
         </div>
 
@@ -139,10 +139,10 @@ function Search(props: Props) {
         <Contained>
           <SectionTitle>Didn't find what you were looking for?</SectionTitle>
         </Contained>
-        {/*  */}
+
         <ArtcileCardScrollable>
           {topPosts.map(post => (
-            <ArticleCard {...post} />
+            <ArticleCard key={post.id.toLowerCase()} {...post} />
           ))}
         </ArtcileCardScrollable>
       </>

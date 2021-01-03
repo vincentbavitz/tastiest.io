@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import TastiestLogo from '../../assets/svgs/brand.svg';
 import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
 import { ScreenContext } from '../../contexts/screen';
+import { useAuth } from '../../hooks/auth';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Contained } from '../Contained';
@@ -13,12 +14,22 @@ import { HeaderSearch } from './HeaderSearch';
 
 export function Header() {
   const { isMobile } = useContext(ScreenContext);
+  const { user } = useAuth();
 
   const handleAvatarClick = () => {
     null;
   };
 
-  return <div>{isMobile ? <MobileHeader /> : <DesktopHeader />}</div>;
+  // return <div>{isMobile ? <MobileHeader /> : <DesktopHeader />}</div>;
+
+  return (
+    <div className="flex flex-col w-full">
+      <div className="fixed" style={{ zIndex: 333333 }}>
+        {user?.email || 'no user signed in'}
+      </div>
+      <div>{isMobile ? <MobileHeader /> : <DesktopHeader />}</div>
+    </div>
+  );
 }
 
 function MobileHeader() {

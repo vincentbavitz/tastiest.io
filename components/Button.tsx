@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import React, { useContext } from 'react';
 import { ScreenContext } from '../contexts/screen';
-import { useScreenSize } from '../hooks/screen';
 
 export interface Props {
   color?: 'primary' | 'secondary' | 'danger';
@@ -28,7 +27,7 @@ export function Button(props: Props) {
     type = 'solid',
     disabled = false,
     selected = false,
-    onClick = () => null,
+    onClick,
     children,
     className,
     prefix,
@@ -38,7 +37,7 @@ export function Button(props: Props) {
 
   const { isDesktop } = useContext(ScreenContext);
 
-  const clickHandler = (e: any) => {
+  const clickHandler = (e: React.MouseEvent) => {
     if (onClick) {
       e?.stopPropagation && e?.stopPropagation();
       onClick();

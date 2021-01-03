@@ -277,8 +277,10 @@ body {
   margin-left: 0.5em;
   margin-right: 0.5em;
 
-  &:last-child::after {
-    content: ' ';
+  &:last-child {
+    &::after {
+      content: ' ';
+    }
   }
 
   & > div {

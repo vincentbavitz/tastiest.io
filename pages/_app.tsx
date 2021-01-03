@@ -1,7 +1,7 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
-import { Provider } from 'react-redux';
+import { Provider as StoreProvider } from 'react-redux';
 import { useLocation } from 'react-use';
 import { createStore } from 'redux';
 import '../assets/style.scss';
@@ -10,6 +10,7 @@ import { Footer } from '../components/Footer';
 import { Header } from '../components/header/Header';
 import { SearchOverlay } from '../components/search/SearchOverlay';
 import { METADATA } from '../constants';
+import { AuthProvider } from '../contexts/auth';
 import ScreenProvider from '../contexts/screen';
 import { collapseSearchOverlay } from '../state/navigation';
 import { rootReducer } from '../state/reducers';
@@ -24,23 +25,35 @@ function App({ Component, pageProps }: AppProps) {
   }, [location.pathname, location.search]);
 
   return (
-    <Provider store={store}>
-      <ScreenProvider>
-        <Head>
-          <title>{METADATA.TITLE_SUFFIX}</title>
-        </Head>
+    <StoreProvider store={store}>
+      <AuthProvider>
+        <ScreenProvider>
+          <Head>
+            <title>{METADATA.TITLE_SUFFIX}</title>
+          </Head>
 
-        <>
-          <SearchOverlay />
+          <div
+            style={{ height: '100vh' }}
+            className="flex flex-col justify-between"
+          >
+            <div className="relative flex-grow">
+              <SearchOverlay />
 
-          <Header />
-          <CuisineBar />
-          <Component {...pageProps} />
+              <Header />
+              <CuisineBar />
 
-          <Footer />
-        </>
-      </ScreenProvider>
-    </Provider>
+              <div className="flex-grow">
+                <Component {...pageProps} />
+              </div>
+            </div>
+
+            <div>
+              <Footer />
+            </div>
+          </div>
+        </ScreenProvider>
+      </AuthProvider>
+    </StoreProvider>
   );
 }
 

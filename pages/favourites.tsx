@@ -17,7 +17,7 @@ function Favourites() {
     };
 
     getPosts();
-  });
+  }, []);
 
   return (
     <div>
@@ -53,11 +53,21 @@ function Favourites() {
         )}
       </div>
 
-      <div className="">
-        {topPosts.map(post => (
-          <ArticleCardFavourite {...post} />
-        ))}
-      </div>
+      <Contained>
+        <div className="flex flex-wrap">
+          {topPosts.map(post => (
+            <div
+              key={post.id.toLowerCase()}
+              style={{
+                minWidth: '12rem',
+              }}
+              className="w-1/4 flex-grow"
+            >
+              <ArticleCardFavourite {...post} />
+            </div>
+          ))}
+        </div>
+      </Contained>
     </div>
   );
 }

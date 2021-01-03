@@ -1,33 +1,26 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import 'firebase/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useKey } from 'react-use';
 import { Button } from '../components/Button';
+import { Contained } from '../components/Contained';
 import { Input } from '../components/Input';
-// import initFirebase from '../utils/auth/initFirebase';
-// import withAuthUser from '../utils/pageWrappers/withAuthUser';
-// import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo';
+import { useAuth } from '../hooks/auth';
 
-// initFirebase();
+// enum AuthErrorCode {
+//   WRONG_PASSWORD = 'auth/wrong-password',
+//   USER_NOT_FOUND = 'auth/user-not-found',
+// }
 
-enum AuthErrorCode {
-  WRONG_PASSWORD = 'auth/wrong-password',
-  USER_NOT_FOUND = 'auth/user-not-found',
-}
+// interface FirebaseAuthError {
+//   a: null;
+//   code: string;
+//   message: string;
+// }
 
-interface FirebaseAuthError {
-  a: null;
-  code: string;
-  message: string;
-}
-
-interface Props {
-  withAuthUserInfo: any;
-}
-
-function Login(props: Props) {
+function Login() {
+  const { signIn } = useAuth();
   const router = useRouter();
 
   const [email, setEmail] = useState(undefined as string | undefined);
@@ -46,16 +39,13 @@ function Login(props: Props) {
       return;
     }
 
-    // TODO - Verify
-
-    // try {
-    //   // await firebase.auth().signInWithEmailAndPassword(email, password);
-    //   setIsLoading(false);
-    //   router.push('/account');
-    // } catch (error) {
-    //   setError(error);
-    //   setIsLoading(false);
-    // }
+    try {
+      await signIn(email, password);
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      setIsLoading(false);
+    }
 
     setIsLoading(false);
   };
@@ -64,13 +54,29 @@ function Login(props: Props) {
   useKey('Enter', handleSubmit);
 
   return (
-    <>
-      <div className="flex ">
-        <div className="flex-1">
+    <Contained>
+      <div
+        style={{
+          minHeight: '500px',
+          height: '60vh',
+          maxHeight: '800px',
+        }}
+        className="flex justify-center items-center"
+      >
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '400px',
+          }}
+          className="p-10 tablet:p-6 border-2 border-secondary rounded-xl"
+        >
           <form>
             <div className="flex flex-col space-y-6">
               <div>
-                <label htmlFor="email" className="text-twoxl">
+                <label
+                  htmlFor="email"
+                  className="text-xl font-somatic text-primary"
+                >
                   Email
                 </label>
                 <Input
@@ -84,7 +90,10 @@ function Login(props: Props) {
               </div>
 
               <div>
-                <label htmlFor="password" className="text-twoxl">
+                <label
+                  htmlFor="password"
+                  className="text-xl font-somatic text-primary"
+                >
                   Password
                 </label>
                 <Input
@@ -110,7 +119,11 @@ function Login(props: Props) {
                 </div>
                 <div className="flex-1">
                   <Link href="/signup">
-                    <Button type="ghost" size="small">
+                    <Button
+                      onClick={() => router.push('/signup')}
+                      type="ghost"
+                      size="small"
+                    >
                       Create account
                     </Button>
                   </Link>
@@ -119,11 +132,9 @@ function Login(props: Props) {
             </div>
           </form>
         </div>
-        <div className="flex-1">{error}</div>
       </div>
-    </>
+    </Contained>
   );
 }
 
-// export default withAuthUser(withAuthUserInfo(Login));
 export default Login;

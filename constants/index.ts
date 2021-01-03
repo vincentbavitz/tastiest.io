@@ -1,4 +1,6 @@
-export { UI } from './ui';
-export { SEARCH } from './search';
-export { CUISINES } from './cuisines';
-export { METADATA } from './metadata';
+import CUISINES from './cuisines';
+import METADATA from './metadata';
+import SEARCH from './search';
+import UI from './ui';
+
+export { UI, CUISINES, METADATA, SEARCH };
