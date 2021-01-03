@@ -200,7 +200,8 @@ function SearchOverlayInnerNoResults() {
     <div
       className={classNames('flex flex-col mt-4', [isMobile ? 'px-0' : 'px-4'])}
     >
-      No results found.
+      No results found. Would you like to suggest a dish?
+      <Button>Suggest</Button>
       <div className="w-full h-px bg-red-500 bg-opacity-25 mt-2"></div>
     </div>
   );

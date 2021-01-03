@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../hooks/auth';
 import { Avatar } from '../Avatar';
 import { Dropdown } from '../Dropdown';
 import { DropdownItem } from '../DropdownItem';
@@ -12,13 +13,36 @@ interface IProfileDropdownItems {
 }
 
 export function HeaderAvatar() {
+  const { isSignedIn, signOut } = useAuth();
   const router = useRouter();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleSignOut = () => null;
+  // Close dropdown on route change
+  useEffect(() => {
+    setIsDropdownOpen(false);
+  }, [router.pathname]);
 
-  const dropdownItems: Array<IProfileDropdownItems> = [
+  const signedOutDropdownItems: Array<IProfileDropdownItems> = [
+    {
+      id: 'sign-in',
+      name: 'Sign In',
+      onClick: () => {
+        router.push('/login', '/login');
+        setIsDropdownOpen(false);
+      },
+    },
+    {
+      id: 'help',
+      name: 'Help',
+      onClick: () => {
+        router.push('/help', '/help');
+        setIsDropdownOpen(false);
+      },
+    },
+  ];
+
+  const signedInDropdownItems: Array<IProfileDropdownItems> = [
     {
       id: 'view-profile',
       name: 'View Profile',
@@ -34,9 +58,16 @@ export function HeaderAvatar() {
     {
       id: 'sign-out',
       name: 'Sign Out',
-      onClick: () => handleSignOut(),
+      onClick: () => {
+        signOut();
+        setIsDropdownOpen(false);
+      },
     },
   ];
+
+  const dropdownItems = isSignedIn
+    ? signedInDropdownItems
+    : signedOutDropdownItems;
 
   return (
     <div>

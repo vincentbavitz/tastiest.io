@@ -1,14 +1,13 @@
-// Constants compiled on build
-const { UI } = require('./constants/ui');
-
 module.exports = {
   theme: {
     screens: {
+      // Constants taken from UI constants.
+      // Think of them as 'beyond this breakpoint' when using
+      // mobile:my-class, for example.
       // -> @media (min-width: {}px) { ... }
-      mobile: '0px',
-      tablet: `${UI.MOBILE_BREAKPOINT}px`,
-      desktop: `${UI.TABLET_BREAKPOINT}px`,
-      huge: `${UI.DESKTOP_BREAKPOINT}px`,
+      mobile: '500px',
+      tablet: '715px',
+      desktop: '1100px',
     },
     fontFamily: {
       somatic: ['SomaticRounded'],
@@ -40,6 +39,7 @@ module.exports = {
         danger: '#130b57',
         article: '#140c57',
       },
+      display: ['huge', 'desktop', 'tablet', 'mobile'],
       backgroundOpacity: {
         '10': '0.1',
       },

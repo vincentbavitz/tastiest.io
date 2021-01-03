@@ -1,13 +1,15 @@
 import 'firebase/auth';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Button } from '../components/Button';
 import { Contained } from '../components/Contained';
 import { Input } from '../components/Input';
-// import initFirebase from '../utils/auth/initFirebase';
-
-// initFirebase();
+import { useAuth } from '../hooks/auth';
 
 function Signup() {
+  const router = useRouter();
+  const { createUser } = useAuth();
+
   const [email, setEmail] = useState(undefined as string | undefined);
   const [password, setPassword] = useState(undefined as string | undefined);
   const [displayName, setDisplayName] = useState(
@@ -20,19 +22,11 @@ function Signup() {
     }
 
     // Todo verify
-
-    // try {
-    //   await firebase.auth().createUserWithEmailAndPassword(email, password);
-    //   const user = firebase.auth().currentUser;
-    //   if (user) {
-    //     await user.updateProfile({
-    //       displayName,
-    //     });
-    //   }
-    //   Router.push('/');
-    // } catch (error) {
-    //   alert(error);
-    // }
+    try {
+      await createUser(displayName, email, password);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
