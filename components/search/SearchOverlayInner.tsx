@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
@@ -29,9 +30,13 @@ const dynamicCategories: Array<IDynamicOptions> = [
 ];
 
 const popularDishes: Array<IDynamicOptions> = [
-  { name: 'Best Spaghetti', href: '/search/best-spaghetti', svg: SpaghettiSVG },
-  { name: 'Best Xiao Long Bao', href: '/search/best-xiao', svg: XiaoSVG },
-  { name: 'Best Sushi', href: '/search/best-sushi', svg: SushiSVG },
+  { name: 'Best Spaghetti', href: '/search?dish=spaghetti', svg: SpaghettiSVG },
+  {
+    name: 'Best Xiao Long Bao',
+    href: '/search?dish=xiao-long-bao',
+    svg: XiaoSVG,
+  },
+  { name: 'Best Sushi', href: '/search/?dish=sushi', svg: SushiSVG },
 ];
 
 export function SearchOverlayInner() {
@@ -136,7 +141,9 @@ function SearchOverlayInnerDefault() {
               className="flex space-x-2 items-center w-full border-b border-secondary py-2"
             >
               <dish.svg className="h-10 w-12" />
-              <span className="text-primary">{dish.name}</span>
+              <Link href={dish.href}>
+                <a className="text-primary hover:underline">{dish.name}</a>
+              </Link>
             </div>
           ))}
         </div>

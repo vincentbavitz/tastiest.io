@@ -19,8 +19,6 @@ export async function getArticleBySlug(
   let sanityArticle: ISanityArticle;
   try {
     sanityArticle = await client.fetch(query);
-
-    console.log('sanityArticle', sanityArticle);
   } catch (error) {
     if (onFail) {
       onFail();

@@ -1,66 +1,25 @@
 import classNames from 'classnames';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {
+  ReactNode,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useScroll, useWindowSize } from 'react-use';
 import ChevronLeftSecondarySVG from '../../assets/svgs/chevron-left-secondary.svg';
 import ChevronRightSecondarySVG from '../../assets/svgs/chevron-right-secondary.svg';
-import { CUISINES, UI } from '../../constants';
-import { ScreenContext } from '../../contexts/screen';
-import { saveCuisineBarScrollPos } from '../../state/navigation';
-import { IState } from '../../state/reducers';
-import { Contained } from '../Contained';
-import { HorizontalScrollable } from '../HorizontalScrollable';
-import { CuisineItem } from './CuisineItem';
+import { UI } from '../constants';
+import { ScreenContext } from '../contexts/screen';
 
 interface Props {
-  onItemClick?(): void;
+  onScroll?: (x: number) => void;
+  onItemClick?: () => void;
+  children: ReactNode;
 }
 
-export function CuisineBar(props: Props) {
-  const { isMobile } = useContext(ScreenContext);
-
-  return (
-    <>
-      {isMobile ? (
-        <CuisineBarInner {...props} />
-      ) : (
-        <Contained>
-          <CuisineBarInner {...props} />
-        </Contained>
-      )}
-    </>
-  );
-}
-
-function CuisineBarInner(props: Props) {
-  const { onItemClick } = props;
-  const dispatch = useDispatch();
-
-  const handleItemClick = () => {
-    if (onItemClick) {
-      onItemClick();
-    }
-
-    dispatch(saveCuisineBarScrollPos(x));
-  };
-
-  return (
-    <HorizontalScrollable {...props}>
-      {Object.values(CUISINES).map(cuisine => (
-        <CuisineItem
-          key={cuisine.name}
-          name={cuisine.name}
-          svg={cuisine.svg}
-          onClick={handleItemClick}
-        />
-      ))}
-    </HorizontalScrollable>
-  );
-}
-
-function CuisineBarContent({ onItemClick }: Props) {
-  const navigationState = useSelector((state: IState) => state.navigation);
-  const dispatch = useDispatch();
+export function HorizontalScrollable(props: Props) {
+  const { onItemClick, children } = props;
 
   const scrollRef = useRef(null);
   const { x } = useScroll(scrollRef);
@@ -89,8 +48,6 @@ function CuisineBarContent({ onItemClick }: Props) {
     if (onItemClick) {
       onItemClick();
     }
-
-    dispatch(saveCuisineBarScrollPos(x));
   }
 
   useEffect(() => {
@@ -144,20 +101,13 @@ function CuisineBarContent({ onItemClick }: Props) {
         )}
       >
         <div
-          className={classNames('flex md:px-0 overflow-y-visible')}
+          className={classNames('flex overflow-y-visible')}
           style={{
             width: 'fit-content',
             marginLeft: `${isMobile ? UI.PAGE_CONTAINED_PADDING_VW : 0}vw`,
           }}
         >
-          {Object.values(CUISINES).map(cuisine => (
-            <CuisineItem
-              key={cuisine.name}
-              name={cuisine.name}
-              svg={cuisine.svg}
-              onClick={handleItemClick}
-            />
-          ))}
+          {children}
         </div>
       </div>
     </div>

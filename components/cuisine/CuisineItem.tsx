@@ -42,8 +42,6 @@ export function CuisineItem(props: Props) {
             'flex-1',
             'text-sm',
             'font-bold',
-            'pl-2',
-            'py-2',
             'border-2',
             'rounded-lg',
             'text-primary',

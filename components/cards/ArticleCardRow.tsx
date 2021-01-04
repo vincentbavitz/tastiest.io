@@ -4,8 +4,6 @@ import { IArticle } from '../../types/article';
 import { Title } from '../Title';
 
 export function ArticleCardRow(post: IArticle) {
-  console.log('ArticleCardRow ➡️ post.body:', post.body);
-
   const { isMobile } = useContext(ScreenContext);
 
   const ArticlePreviewContent = () => (

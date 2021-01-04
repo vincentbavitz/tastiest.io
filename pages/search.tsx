@@ -6,7 +6,7 @@ import SearchBackdropMobileSVG from '../assets/svgs/page/search_mobile.svg';
 import client from '../client';
 import { ArticleCard } from '../components/cards/ArticleCard';
 import { ArticleCardRow } from '../components/cards/ArticleCardRow';
-import { ArtcileCardScrollable } from '../components/cards/ArticleCardScrollable';
+import { ArticleCardScrollable } from '../components/cards/ArticleCardScrollable';
 import { Contained } from '../components/Contained';
 import { SectionTitle } from '../components/SectionTitle';
 import { SuggestDish } from '../components/SuggestDish';
@@ -44,6 +44,7 @@ function Search(props: Props) {
   const stopLoading = () => setLoading(false);
 
   const [topPosts, setTopPosts] = useState([] as ISanityArticle[]);
+
   useEffect(() => {
     const getPosts = async () => {
       const posts = await getTopPosts(4);
@@ -79,6 +80,20 @@ function Search(props: Props) {
     });
   };
 
+  //
+  //
+  //
+  //
+  // USING QUERY          ?s=
+  // OR USING CITY        ?city=
+  // OR USING CUISINE`    ?cuisine=
+  // OR USING CATEGORY?   ?tags=,,
+  // OR USING DISH/       ?dish=
+  //
+  //
+  //
+  //
+
   return (
     <div>
       <title>{METADATA.TITLE_SUFFIX}</title>
@@ -94,7 +109,7 @@ function Search(props: Props) {
             />
             <div className="absolute inset-0 flex justify-center items-center">
               <Title level={1} className="font-somatic text-primary">
-                Search Results
+                {posts.length > 0 ? 'Search Results' : 'Nothing Found'}
               </Title>
             </div>
           </>
@@ -103,7 +118,7 @@ function Search(props: Props) {
             <SearchBackdropDesktopSVG className="w-full" />
             <div className="absolute inset-0 flex justify-center items-center">
               <Title level={1} className="font-somatic text-primary">
-                Search Results
+                {posts.length > 0 ? 'Search Results' : 'Nothing Found'}
               </Title>
             </div>
           </Contained>
@@ -117,22 +132,24 @@ function Search(props: Props) {
           ))}
         </div>
 
-        <div className="mobile:my-12 my-8">
-          <ReactPaginate
-            previousLabel={'<'}
-            nextLabel={'>'}
-            breakLabel={'...'}
-            breakClassName={'break-me'}
-            activeClassName={'active'}
-            containerClassName={'pagination'}
-            subContainerClassName={'bg-red-300'}
-            initialPage={props.currentPage - 1}
-            pageCount={props.totalCount}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            onPageChange={paginationHandler}
-          />
-        </div>
+        {posts.length > 0 && (
+          <div className="mobile:my-12 my-8">
+            <ReactPaginate
+              previousLabel={'<'}
+              nextLabel={'>'}
+              breakLabel={'...'}
+              breakClassName={'break-me'}
+              activeClassName={'active'}
+              containerClassName={'pagination'}
+              subContainerClassName={'bg-red-300'}
+              initialPage={props.currentPage - 1}
+              pageCount={props.totalCount}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={paginationHandler}
+            />
+          </div>
+        )}
       </Contained>
 
       <>
@@ -140,11 +157,11 @@ function Search(props: Props) {
           <SectionTitle>Didn't find what you were looking for?</SectionTitle>
         </Contained>
 
-        <ArtcileCardScrollable>
+        <ArticleCardScrollable>
           {topPosts.map(post => (
             <ArticleCard key={post.id.toLowerCase()} {...post} />
           ))}
-        </ArtcileCardScrollable>
+        </ArticleCardScrollable>
       </>
 
       <SuggestDish />

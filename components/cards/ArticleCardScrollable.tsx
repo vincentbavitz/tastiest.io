@@ -6,7 +6,7 @@ interface Props {
   children: JSX.Element[];
 }
 
-export function ArtcileCardScrollable(props: Props) {
+export function ArticleCardScrollable(props: Props) {
   const { children } = props;
 
   const { isMobile } = useContext(ScreenContext);
