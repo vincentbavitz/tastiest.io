@@ -18,9 +18,14 @@ export function Footer() {
             <Link href="/">
               <a className="mb-1 mt-0">Home</a>
             </Link>
-            <Link href="/tastiest-for-restaurants">
-              <a className="mb-1 mt-0">Tastiest For Restaurants</a>
-            </Link>
+            <a
+              href="https://restaurants.tastiest.io/"
+              // eslint-disable-next-line react/jsx-no-target-blank
+              target="_blank"
+              className="mb-1 mt-0"
+            >
+              Tastiest For Restaurants
+            </a>
             <Link href="/about">
               <a className="mb-1 mt-0">About Us</a>
             </Link>
