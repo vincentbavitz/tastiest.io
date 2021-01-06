@@ -26,7 +26,7 @@ function Favourites() {
           <>
             <FavouritesBackdropSVG
               style={{
-                width: '130%',
+                width: '100%',
                 transform: 'translateX(-15%)',
               }}
             />
