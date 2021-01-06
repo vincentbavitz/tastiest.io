@@ -7,10 +7,11 @@ import React, {
   useState,
 } from 'react';
 import { useScroll, useWindowSize } from 'react-use';
-import ChevronLeftSecondarySVG from '../../assets/svgs/chevron-left-secondary.svg';
-import ChevronRightSecondarySVG from '../../assets/svgs/chevron-right-secondary.svg';
+import ChevronLeftSecondarySVG from '../assets/svgs/chevron-left-secondary.svg';
+import ChevronRightSecondarySVG from '../assets/svgs/chevron-right-secondary.svg';
 import { UI } from '../constants';
 import { ScreenContext } from '../contexts/screen';
+import { Contained } from './Contained';
 
 interface Props {
   onScroll?: (x: number) => void;
@@ -19,6 +20,22 @@ interface Props {
 }
 
 export function HorizontalScrollable(props: Props) {
+  const { isMobile } = useContext(ScreenContext);
+
+  return (
+    <>
+      {isMobile ? (
+        <HorizontalScrollableInner {...props} />
+      ) : (
+        <Contained>
+          <HorizontalScrollableInner {...props} />
+        </Contained>
+      )}
+    </>
+  );
+}
+
+function HorizontalScrollableInner(props: Props) {
   const { onItemClick, children } = props;
 
   const scrollRef = useRef(null);
@@ -59,7 +76,7 @@ export function HorizontalScrollable(props: Props) {
   }, [x]);
 
   return (
-    <div className="flex relative w-full mt-20">
+    <div className="flex relative w-full">
       <div
         className={classNames(
           'absolute left-0 flex items-center justify-between h-full w-full',
@@ -103,7 +120,7 @@ export function HorizontalScrollable(props: Props) {
         <div
           className={classNames('flex overflow-y-visible')}
           style={{
-            width: 'fit-content',
+            width: 'min-content',
             marginLeft: `${isMobile ? UI.PAGE_CONTAINED_PADDING_VW : 0}vw`,
           }}
         >

@@ -1,10 +1,13 @@
+import Link from 'next/link';
 import React, { useContext } from 'react';
 import { ScreenContext } from '../../contexts/screen';
 import { IArticle } from '../../types/article';
-import { Title } from '../Title';
+import { generateURL } from '../../utils/routing';
 
 export function ArticleCardRow(post: IArticle) {
   const { isMobile } = useContext(ScreenContext);
+  const { city, slug, cuisine } = post;
+  const { href, as } = generateURL({ city, slug, cuisine });
 
   const ArticlePreviewContent = () => (
     <p
@@ -22,11 +25,18 @@ export function ArticleCardRow(post: IArticle) {
     <div
       style={{
         width: isMobile ? '33%' : '10rem',
-        height: isMobile ? '0' : '6rem',
-        paddingBottom: isMobile ? '20%' : 'unset',
+        height: isMobile ? '66%' : '6rem',
       }}
-      className="rounded-lg bg-primary bg-opacity-10"
-    ></div>
+      className="relative rounded-lg bg-primary bg-opacity-10 overflow-hidden"
+    >
+      {post?.featureImage?.source && (
+        <img
+          src={post.featureImage.source}
+          alt={post.featureImage.altText}
+          className="w-full h-full rounded-lg object-cover"
+        />
+      )}
+    </div>
   );
 
   return (
@@ -36,13 +46,9 @@ export function ArticleCardRow(post: IArticle) {
           <div className="flex w-full space-x-6">
             <ArticlePreviewImage />
             <div className="w-2/3">
-              <Title
-                level={1}
-                margin={false}
-                className="font-somatic text-twoxl text-primary"
-              >
+              <h3 className="font-somatic text-twoxl text-primary">
                 {post.title}
-              </Title>
+              </h3>
             </div>
           </div>
 
@@ -52,16 +58,12 @@ export function ArticleCardRow(post: IArticle) {
         <div className="flex w-full space-x-6">
           <ArticlePreviewImage />
           <div
-            style={{ width: 'fit-content' }}
+            style={{ width: 'min-content' }}
             className="flex flex-col flex-grow"
           >
-            <Title
-              level={3}
-              margin={false}
-              className="font-somatic text-primary"
-            >
-              {post.title}
-            </Title>
+            <Link href={href} as={as}>
+              <a className="font-somatic text-xl text-primary">{post.title}</a>
+            </Link>
 
             <ArticlePreviewContent />
           </div>

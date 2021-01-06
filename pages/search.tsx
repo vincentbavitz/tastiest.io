@@ -6,8 +6,8 @@ import SearchBackdropMobileSVG from '../assets/svgs/page/search_mobile.svg';
 import client from '../client';
 import { ArticleCard } from '../components/cards/ArticleCard';
 import { ArticleCardRow } from '../components/cards/ArticleCardRow';
-import { ArticleCardScrollable } from '../components/cards/ArticleCardScrollable';
 import { Contained } from '../components/Contained';
+import { HorizontalScrollable } from '../components/HorizontalScrollable';
 import { SectionTitle } from '../components/SectionTitle';
 import { SuggestDish } from '../components/SuggestDish';
 import { Title } from '../components/Title';
@@ -94,6 +94,12 @@ function Search(props: Props) {
   //
   //
 
+  const pageCount = Math.ceil(props.totalCount / SEARCH.SEARCH_ITEMS_PER_PAGE);
+  const showPagination = posts.length > 0 && pageCount > 1;
+
+  console.log('search ➡️ pageCount:', pageCount);
+  console.log('search ➡️ props.totalCount:', props.totalCount);
+
   return (
     <div>
       <title>{METADATA.TITLE_SUFFIX}</title>
@@ -132,8 +138,8 @@ function Search(props: Props) {
           ))}
         </div>
 
-        {posts.length > 0 && (
-          <div className="mobile:my-12 my-8">
+        {showPagination && (
+          <div className="mobile:mt-12 mt-8">
             <ReactPaginate
               previousLabel={'<'}
               nextLabel={'>'}
@@ -141,9 +147,9 @@ function Search(props: Props) {
               breakClassName={'break-me'}
               activeClassName={'active'}
               containerClassName={'pagination'}
-              subContainerClassName={'bg-red-300'}
+              subContainerClassName={''}
               initialPage={props.currentPage - 1}
-              pageCount={props.totalCount}
+              pageCount={pageCount}
               marginPagesDisplayed={2}
               pageRangeDisplayed={5}
               onPageChange={paginationHandler}
@@ -152,17 +158,25 @@ function Search(props: Props) {
         )}
       </Contained>
 
-      <>
+      <div className="mt-12 mb-12">
         <Contained>
           <SectionTitle>Didn't find what you were looking for?</SectionTitle>
         </Contained>
 
-        <ArticleCardScrollable>
-          {topPosts.map(post => (
-            <ArticleCard key={post.id.toLowerCase()} {...post} />
-          ))}
-        </ArticleCardScrollable>
-      </>
+        <div className="mt-10">
+          <HorizontalScrollable>
+            {topPosts.map(post => (
+              <div
+                key={post.id.toLowerCase()}
+                style={{ width: isMobile ? '13rem' : '14rem' }}
+                className="mr-6"
+              >
+                <ArticleCard {...post} />
+              </div>
+            ))}
+          </HorizontalScrollable>
+        </div>
+      </div>
 
       <SuggestDish />
     </div>
