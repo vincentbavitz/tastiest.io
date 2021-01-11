@@ -1,11 +1,10 @@
 // [slug].js
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import '../../../assets/style.scss';
 import { Article } from '../../../components/article/Article';
-import { ScreenContext } from '../../../contexts/screen';
 import { setArticle } from '../../../state/reducers/article';
 import { IArticle } from '../../../types/article';
 import { getArticleBySlug } from '../../../utils/article';
@@ -48,8 +47,6 @@ function Post(props: IArticle) {
   // hurts SEO performance
   const dispatch = useDispatch();
   dispatch(setArticle(props));
-
-  const { isMobile } = useContext(ScreenContext);
 
   // Scroll to top on load
   useEffect(() => {

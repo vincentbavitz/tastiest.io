@@ -1,5 +1,5 @@
 module.exports = {
-  root: true,
+  // root: true,
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2020, // Allows for ES8+

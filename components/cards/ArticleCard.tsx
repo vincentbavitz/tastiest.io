@@ -20,8 +20,6 @@ export function ArticleCard(props: ISanityArticle): JSX.Element {
   const [ref, { width }] = useMeasure();
   const isSmall = width < 130;
 
-  console.log('ArticleCard ➡️ width:', width);
-
   const handleClick = (e: SyntheticEvent) => {
     const { href, as } = generateURL({ city, slug, cuisine });
 

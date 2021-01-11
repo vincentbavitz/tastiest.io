@@ -30,7 +30,6 @@ export const useAuth = () => {
         return { user };
       }
     } catch (error) {
-      console.log('FGSDFKJSDJF', error);
       return { error };
     }
   };

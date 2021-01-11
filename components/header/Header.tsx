@@ -24,7 +24,9 @@ export function Header() {
 
   return (
     <div className="flex flex-col w-full">
-      <div style={{ zIndex: 333333 }}>{user?.email || 'no user signed in'}</div>
+      <div className="fixed" style={{ zIndex: 333333 }}>
+        {user?.email || 'no user signed in'}
+      </div>
       <div>{isMobile ? <MobileHeader /> : <DesktopHeader />}</div>
     </div>
   );

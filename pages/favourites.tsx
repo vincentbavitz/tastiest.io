@@ -26,7 +26,7 @@ function Favourites() {
           <>
             <FavouritesBackdropSVG
               style={{
-                width: '130%',
+                width: '100%',
                 transform: 'translateX(-15%)',
               }}
             />
@@ -57,6 +57,7 @@ function Favourites() {
         <div className="flex flex-wrap">
           {topPosts.map(post => (
             <div
+              key={post.id.toLowerCase()}
               style={{
                 minWidth: '12rem',
               }}

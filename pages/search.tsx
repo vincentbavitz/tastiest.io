@@ -6,8 +6,8 @@ import SearchBackdropMobileSVG from '../assets/svgs/page/search_mobile.svg';
 import client from '../client';
 import { ArticleCard } from '../components/cards/ArticleCard';
 import { ArticleCardRow } from '../components/cards/ArticleCardRow';
-import { ArtcileCardScrollable } from '../components/cards/ArticleCardScrollable';
 import { Contained } from '../components/Contained';
+import { HorizontalScrollable } from '../components/HorizontalScrollable';
 import { SectionTitle } from '../components/SectionTitle';
 import { SuggestDish } from '../components/SuggestDish';
 import { Title } from '../components/Title';
@@ -44,6 +44,7 @@ function Search(props: Props) {
   const stopLoading = () => setLoading(false);
 
   const [topPosts, setTopPosts] = useState([] as ISanityArticle[]);
+
   useEffect(() => {
     const getPosts = async () => {
       const posts = await getTopPosts(4);
@@ -79,6 +80,26 @@ function Search(props: Props) {
     });
   };
 
+  //
+  //
+  //
+  //
+  // USING QUERY          ?s=
+  // OR USING CITY        ?city=
+  // OR USING CUISINE`    ?cuisine=
+  // OR USING CATEGORY?   ?tags=,,
+  // OR USING DISH/       ?dish=
+  //
+  //
+  //
+  //
+
+  const pageCount = Math.ceil(props.totalCount / SEARCH.SEARCH_ITEMS_PER_PAGE);
+  const showPagination = posts.length > 0 && pageCount > 1;
+
+  console.log('search ➡️ pageCount:', pageCount);
+  console.log('search ➡️ props.totalCount:', props.totalCount);
+
   return (
     <div>
       <title>{METADATA.TITLE_SUFFIX}</title>
@@ -94,7 +115,7 @@ function Search(props: Props) {
             />
             <div className="absolute inset-0 flex justify-center items-center">
               <Title level={1} className="font-somatic text-primary">
-                Search Results
+                {posts.length > 0 ? 'Search Results' : 'Nothing Found'}
               </Title>
             </div>
           </>
@@ -103,7 +124,7 @@ function Search(props: Props) {
             <SearchBackdropDesktopSVG className="w-full" />
             <div className="absolute inset-0 flex justify-center items-center">
               <Title level={1} className="font-somatic text-primary">
-                Search Results
+                {posts.length > 0 ? 'Search Results' : 'Nothing Found'}
               </Title>
             </div>
           </Contained>
@@ -113,39 +134,49 @@ function Search(props: Props) {
       <Contained>
         <div className="flex flex-col space-y-8">
           {posts.map(post => (
-            <ArticleCardRow {...post} />
+            <ArticleCardRow key={post.slug} {...post} />
           ))}
         </div>
 
-        <div className="mobile:my-12 my-8">
-          <ReactPaginate
-            previousLabel={'<'}
-            nextLabel={'>'}
-            breakLabel={'...'}
-            breakClassName={'break-me'}
-            activeClassName={'active'}
-            containerClassName={'pagination'}
-            subContainerClassName={'bg-red-300'}
-            initialPage={props.currentPage - 1}
-            pageCount={props.totalCount}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            onPageChange={paginationHandler}
-          />
-        </div>
+        {showPagination && (
+          <div className="mobile:mt-12 mt-8">
+            <ReactPaginate
+              previousLabel={'<'}
+              nextLabel={'>'}
+              breakLabel={'...'}
+              breakClassName={'break-me'}
+              activeClassName={'active'}
+              containerClassName={'pagination'}
+              subContainerClassName={''}
+              initialPage={props.currentPage - 1}
+              pageCount={pageCount}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={paginationHandler}
+            />
+          </div>
+        )}
       </Contained>
 
-      <>
+      <div className="mt-12 mb-12">
         <Contained>
           <SectionTitle>Didn't find what you were looking for?</SectionTitle>
         </Contained>
-        {/*  */}
-        <ArtcileCardScrollable>
-          {topPosts.map(post => (
-            <ArticleCard {...post} />
-          ))}
-        </ArtcileCardScrollable>
-      </>
+
+        <div className="mt-10">
+          <HorizontalScrollable>
+            {topPosts.map(post => (
+              <div
+                key={post.id.toLowerCase()}
+                style={{ width: isMobile ? '13rem' : '14rem' }}
+                className="mr-6"
+              >
+                <ArticleCard {...post} />
+              </div>
+            ))}
+          </HorizontalScrollable>
+        </div>
+      </div>
 
       <SuggestDish />
     </div>

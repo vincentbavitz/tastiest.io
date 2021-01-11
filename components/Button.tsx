@@ -37,9 +37,9 @@ export function Button(props: Props) {
 
   const { isDesktop } = useContext(ScreenContext);
 
-  const clickHandler = (e: any) => {
+  const clickHandler = (e: React.MouseEvent) => {
     if (onClick) {
-      // e?.stopPropagation && e?.stopPropagation();
+      e?.stopPropagation && e?.stopPropagation();
       onClick();
     }
   };

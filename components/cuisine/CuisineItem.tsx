@@ -25,7 +25,10 @@ export function CuisineItem(props: Props) {
 
   return (
     <Link href={href} as={as}>
-      <div className="cuisine-item flex py-6" onClick={handleOnClick}>
+      <div
+        className="cuisine-item flex py-6 mt-1 tablet:py-4 tablet:mt-0"
+        onClick={handleOnClick}
+      >
         <div
           className={classNames(
             'select-none',
@@ -39,8 +42,6 @@ export function CuisineItem(props: Props) {
             'flex-1',
             'text-sm',
             'font-bold',
-            'pl-2',
-            'py-2',
             'border-2',
             'rounded-lg',
             'text-primary',

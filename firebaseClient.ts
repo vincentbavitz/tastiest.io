@@ -22,4 +22,6 @@ if (typeof window !== 'undefined' && !firebaseClient.apps.length) {
   (window as any).firebase = firebaseClient;
 }
 
-export { firebaseClient };
+const db = firebaseClient.firestore();
+
+export { firebaseClient, db };

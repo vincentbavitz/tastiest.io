@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
@@ -29,9 +30,13 @@ const dynamicCategories: Array<IDynamicOptions> = [
 ];
 
 const popularDishes: Array<IDynamicOptions> = [
-  { name: 'Best Spaghetti', href: '/search/best-spaghetti', svg: SpaghettiSVG },
-  { name: 'Best Xiao Long Bao', href: '/search/best-xiao', svg: XiaoSVG },
-  { name: 'Best Sushi', href: '/search/best-sushi', svg: SushiSVG },
+  { name: 'Best Spaghetti', href: '/search?dish=spaghetti', svg: SpaghettiSVG },
+  {
+    name: 'Best Xiao Long Bao',
+    href: '/search?dish=xiao-long-bao',
+    svg: XiaoSVG,
+  },
+  { name: 'Best Sushi', href: '/search/?dish=sushi', svg: SushiSVG },
 ];
 
 export function SearchOverlayInner() {
@@ -85,6 +90,7 @@ function SearchOverlayInnerDefault() {
       <div className="flex flex-col space-y-1 mt-4">
         {dynamicCategories.map(category => (
           <div
+            key={category.name.toLowerCase()}
             onClick={() => router.push(category.href)}
             className="flex items-center text-lg cursor-pointer text-primary font-roboto font-medium rounded-lg hover:bg-primary hover:bg-opacity-10"
           >
@@ -106,7 +112,7 @@ function SearchOverlayInnerDefault() {
             .sort((a, b) => b.popularity - a.popularity)
             .slice(0, 5)
             .map(cuisine => (
-              <div className="mt-2 mr-2">
+              <div key={cuisine.name.toLowerCase()} className="mt-2 mr-2">
                 <OutlineBlock
                   onClick={() =>
                     router.push(`/search/?cuisine=${cuisine.href}`)
@@ -130,9 +136,14 @@ function SearchOverlayInnerDefault() {
 
         <div className="flex flex-col space-y-2 children:last:border-b-0">
           {popularDishes.map(dish => (
-            <div className="flex space-x-2 items-center w-full border-b border-secondary py-2">
+            <div
+              key={dish.name.toLowerCase()}
+              className="flex space-x-2 items-center w-full border-b border-secondary py-2"
+            >
               <dish.svg className="h-10 w-12" />
-              <span className="text-primary">{dish.name}</span>
+              <Link href={dish.href}>
+                <a className="text-primary hover:underline">{dish.name}</a>
+              </Link>
             </div>
           ))}
         </div>
@@ -161,7 +172,7 @@ function SearchOverlayInnerResults() {
         ])}
       >
         {results?.map(card => (
-          <div className={classNames('w-1/2 mb-8')}>
+          <div key={card.id.toLowerCase()} className={classNames('w-1/2 mb-8')}>
             <ArticleCard {...card} />
           </div>
         ))}

@@ -1,19 +1,38 @@
 import React, { useContext } from 'react';
-import { Button } from '../../Button';
-
-import { Title } from '../../Title';
 import HeySpriteSVG from '../../../assets/svgs/article/hey-sprite.svg';
-import { useScreenSize } from '../../../hooks/screen';
 import { ScreenContext } from '../../../contexts/screen';
+import { db } from '../../../firebaseClient';
+import { useAuth } from '../../../hooks/auth';
+import { Button } from '../../Button';
+import { Title } from '../../Title';
+import { useDocumentData } from 'react-firebase-hooks/firestore';
+import { useUserData } from '../../../hooks/userData';
 
-export function ArticleWidgetOrderNow() {
+export interface IOrderDeal {
+  restaurantID: string;
+  dealName: string; // Grizzly Grumble
+  dealDescription: string; // Experience the best porterhouse steak in London
+  dealPrefix: string; // Only £25 and you'll get
+  dealItems: Array<string>; // ['300g Porterhouse', 'Fries', ...]
+  pricePerHeadGBP: number; // 25 (25 pounds)s
+}
+
+export function ArticleWidgetOrderNow(deal: IOrderDeal) {
   const { isDesktop } = useContext(ScreenContext);
+
+  const { user } = useAuth();
+  const { userData, setUserData } = useUserData();
+
+  const submit = () => {
+    setUserData('this', 'that');
+  };
 
   return (
     <div className="flex justify-center w-full">
       <div
         style={{
           width: isDesktop ? 'unset' : '300px',
+          minWidth: isDesktop ? '275px' : 'unset',
           maxWidth: isDesktop ? 'unset' : '75vw',
         }}
         className="relative flex flex-col space-y-6 py-4 mt-20 mb-6 desktop:mt-0 border-4 border-secondary-alt rounded-xl"
@@ -26,8 +45,7 @@ export function ArticleWidgetOrderNow() {
         </div>
 
         <h3 className="font-somatic text-threexl text-primary text-center leading-8">
-          Daniel's
-          <br /> Restaurant
+          {deal.dealName}
         </h3>
 
         <div className="mx-4 pb-4 overflow-hidden bg-secondary-alt rounded-xl">
@@ -35,7 +53,7 @@ export function ArticleWidgetOrderNow() {
 
           <div className="flex flex-col space-y-4 mx-4 pt-2 justify-center">
             <Title level={2} className="font-somatic">
-              Experience the best porterhouse steak in London
+              {deal.dealDescription}
             </Title>
 
             <div className="border-t-4 border-b-4 py-2 mb-3 border-white border-dashed text-center">
@@ -44,16 +62,14 @@ export function ArticleWidgetOrderNow() {
                 margin={false}
                 className="font-somatic text-primary"
               >
-                Only £25 and you'll get
+                {deal.dealPrefix}
               </Title>
             </div>
 
             <div className="text-center">
-              <div>300g porterhouse</div>
-              <div>Fries</div>
-              <div>Salad</div>
-              <div>Choice of steak sauces</div>
-              <div>House wine/beer</div>
+              {deal.dealItems.map(item => (
+                <div>{item}</div>
+              ))}
             </div>
           </div>
         </div>
@@ -89,7 +105,12 @@ export function ArticleWidgetOrderNow() {
             <span>£50</span>
           </div>
 
-          <Button type="solid" size="small" className="text-base font-somatic">
+          <Button
+            onClick={submit}
+            type="solid"
+            size="small"
+            className="text-base font-somatic"
+          >
             Buy now
           </Button>
         </div>
