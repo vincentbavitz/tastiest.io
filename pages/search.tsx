@@ -13,10 +13,10 @@ import { SuggestDish } from '../components/SuggestDish';
 import { Title } from '../components/Title';
 import { METADATA, SEARCH } from '../constants';
 import { ScreenContext } from '../contexts/screen';
+import { sanityPostQuery } from '../hooks/search';
 import { ISanityArticle } from '../types/article';
 import { buildArticleInfo } from '../utils/article';
 import { getTopPosts } from '../utils/posts';
-import { sanityPostQuery } from '../utils/search';
 
 interface Props {
   sanityQuery: string;

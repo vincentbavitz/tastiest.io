@@ -70,7 +70,7 @@ export function ArticleCard(props: ISanityArticle): JSX.Element {
             // Maximum of three tags
             .slice(0, 3)
             .map(tag => (
-              <>
+              <div key={tag.toLowerCase()}>
                 {isSmall ? (
                   <span className="text-xs font-medium text-primary hover:underline">
                     {titleCase(tag)}
@@ -80,7 +80,7 @@ export function ArticleCard(props: ISanityArticle): JSX.Element {
                     {titleCase(tag)}
                   </OutlineBlock>
                 )}
-              </>
+              </div>
             ))}
         </div>
       </div>

@@ -1,14 +1,9 @@
 import groq from 'groq';
 import { useRouter } from 'next/router';
-import client from '../client';
-import { sanityPostQuery } from '../utils/search';
-import useSWR from 'swr';
-import moment from 'moment';
-import { ISanityArticle, IArticle } from '../types/article';
-import { titleCase } from '../utils/text';
-import { buildArticleInfo } from '../utils/article';
 import { useSelector } from 'react-redux';
+import client from '../client';
 import { IState } from '../state/reducers';
+import { sanityPostQuery } from './search';
 
 export function useArticle() {
   const router = useRouter();

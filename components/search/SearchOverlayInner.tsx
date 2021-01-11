@@ -11,6 +11,7 @@ import NearbySVG from '../../assets/svgs/location.svg';
 import TrendingSVG from '../../assets/svgs/trending.svg';
 import { CUISINES } from '../../constants';
 import { ScreenContext } from '../../contexts/screen';
+import { useSearch } from '../../hooks/search';
 import { IState } from '../../state/reducers';
 import { SVG } from '../../types';
 import { Button } from '../Button';
@@ -153,13 +154,12 @@ function SearchOverlayInnerDefault() {
 }
 
 function SearchOverlayInnerResults() {
-  const searchState = useSelector((state: IState) => state.search);
-  const allResults = searchState?.searchResultItems;
-
+  const { results: allResults, query: searchQuery } = useSearch();
   const { isMobile } = useContext(ScreenContext);
   const router = useRouter();
 
   // Sort results by popularity and filter down to four results
+  console.log('Results', allResults);
   const results = allResults?.slice(0, 4);
 
   return (
@@ -189,7 +189,7 @@ function SearchOverlayInnerResults() {
           onClick={() =>
             router.push({
               pathname: '/search',
-              query: { s: searchState.searchQuery },
+              query: { s: searchQuery },
             })
           }
         >

@@ -19,9 +19,9 @@ export interface ISearchBarGeometry {
 }
 
 export function HomeSearch() {
-  const nagivationState = useSelector((state: IState) => state.navigation);
+  const navigationState = useSelector((state: IState) => state.navigation);
   const searchState = useSelector((state: IState) => state.search);
-  const { searchOverlayExpanded } = nagivationState;
+  const { searchOverlayExpanded } = navigationState;
   const { searchBarPinnedToHeader } = searchState;
   const dispatch = useDispatch();
 

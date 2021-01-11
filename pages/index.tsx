@@ -12,11 +12,11 @@ import { HomeSearchSection } from '../components/home/HomeSearchSection';
 import { SuggestDish } from '../components/SuggestDish';
 import { METADATA } from '../constants';
 import { ScreenContext } from '../contexts/screen';
-import { useUserData } from '../hooks/userData';
-import { ISanityArticle } from '../types/article';
 // import withAuthUser from '../utils/pageWrappers/withAuthUser';
 // import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo';
-import { sanityPostQuery } from '../utils/search';
+import { sanityPostQuery } from '../hooks/search';
+import { useUserData } from '../hooks/userData';
+import { ISanityArticle } from '../types/article';
 
 interface Props {
   posts: Array<ISanityArticle>;
@@ -50,10 +50,16 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
         ></meta>
       </Head>
 
+      <div className="flex flex-col space-y-16 mb-16">
+        <Contained>
+          <HomeSearchSection />
+        </Contained>
+
+        <HomeRecentSearchesSection />
+      </div>
+
       <Contained>
         <div className="flex flex-col space-y-16">
-          <HomeSearchSection />
-          <HomeRecentSearchesSection />
           <HomeMapSection />
           <HomeFavouritesSection cards={cards} />
           <SuggestDish />

@@ -5,10 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useKey, useStartTyping } from 'react-use';
 import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
 import SearchSecondarySVG from '../../assets/svgs/search-secondary.svg';
-import { expandSearchOverlay } from '../../state/navigation';
+import { useSearch } from '../../hooks/search';
+import {
+  collapseSearchOverlay,
+  expandSearchOverlay,
+} from '../../state/navigation';
 import { IState } from '../../state/reducers';
-import { setSearchQuery, setSearchResultItems } from '../../state/search';
-import { useSearch } from '../../utils/search';
+import { setSearchQuery } from '../../state/search';
 
 interface Props {
   placeholder?: string;
@@ -43,9 +46,10 @@ export function SearchInput(props: Props) {
   } = props;
 
   // State
-  const nagivationState = useSelector((state: IState) => state.navigation);
+  // const navigationState = useSelector((state: IState) => state.navigation);
   const searchState = useSelector((state: IState) => state.search);
-  const { searchOverlayExpanded } = nagivationState;
+  // const { searchOverlayExpanded } = navigationState;
+  const searchOverlayExpanded = true;
   const dispatch = useDispatch();
 
   // References
@@ -70,6 +74,8 @@ export function SearchInput(props: Props) {
         query: { s: encodeURI(input?.value) },
       });
     }
+
+    dispatch(collapseSearchOverlay());
   };
 
   // Handler Functions
@@ -96,6 +102,7 @@ export function SearchInput(props: Props) {
     if (String(value).length > 0) {
       dispatch(expandSearchOverlay());
     }
+
     inputRef?.current?.focus();
   };
 
@@ -104,12 +111,7 @@ export function SearchInput(props: Props) {
 
   // Effects
   useEffect(() => {
-    const fetchSearchItems = async () => {
-      const query = String(inputValue);
-      dispatch(setSearchResultItems(await search(query)));
-    };
-
-    fetchSearchItems();
+    search(String(inputValue));
   }, [inputValue]);
 
   // Autofocus

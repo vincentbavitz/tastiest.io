@@ -24,9 +24,7 @@ const FIREBASE = {
   //   databaseURL: process.env.FIREBASE_DATABASE_URL,
   // },
   // react-redux-firebase config
-  RRF_CONFIG: {
-    userProfile: 'users',
-  },
+  RRF_CONFIG: {},
 };
 
 export default FIREBASE;

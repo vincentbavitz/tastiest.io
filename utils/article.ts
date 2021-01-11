@@ -1,8 +1,8 @@
 import groq from 'groq';
 import moment from 'moment';
 import client from '../client';
+import { sanityPostQuery } from '../hooks/search';
 import { IArticle, ISanityArticle } from '../types/article';
-import { sanityPostQuery } from './search';
 import { titleCase } from './text';
 
 export async function getArticleBySlug(

@@ -27,7 +27,7 @@ export function useUserData(): IUseUserData {
     },
   ]);
 
-  const userData: IUserData = useSelector(
+  const userData: Partial<IUserData> = useSelector(
     ({ firestore: { data } }: IState) => data.users && data.users[user?.uid],
   );
 

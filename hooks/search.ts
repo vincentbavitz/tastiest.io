@@ -1,9 +1,12 @@
 import groq from 'groq';
+import { useDispatch, useSelector } from 'react-redux';
 import client from '../client';
-import { useAuth } from '../hooks/auth';
-import { useUserData } from '../hooks/userData';
+import { IState } from '../state/reducers';
+import { setSearchResultItems } from '../state/search';
 import { ISanityArticle } from '../types/article';
 import { IRecentSearch, USER_DATA } from '../types/firebase';
+import { useAuth } from './auth';
+import { useUserData } from './userData';
 
 export const sanityPostQuery = `
 "id": _id,
@@ -28,6 +31,15 @@ dishName,
 export function useSearch() {
   const { user } = useAuth();
   const { userData, setUserData } = useUserData();
+  const searchState = useSelector((state: IState) => state.search);
+  const results = searchState?.searchResultItems ?? [];
+  const query = searchState.searchQuery ?? '';
+  const dispatch = useDispatch();
+
+  // const throttledSetSearchResultItems = _.debounce(
+  //   (items: ISanityArticle[]) => dispatch(setSearchResultItems(items)),
+  //   100,
+  // );
 
   const search = async (query: string): Promise<Array<ISanityArticle>> => {
     const sanityQuery = groq`*[_type == "post" && title match "${query}*"][0..5] {
@@ -41,14 +53,20 @@ export function useSearch() {
       console.warn('Error: ', error);
     }
 
-    return posts
-      ?.filter(post =>
-        // Ensure all values are present in each post
-        Object.values(post).every(value => Boolean(value)),
-      )
-      .map(post => ({
-        ...post,
-      }));
+    const results = posts?.filter(post =>
+      // Ensure all values are present in each post
+      Object.values(post).every(value => Boolean(value)),
+    );
+    // .map(post => ({
+    //   ...post,
+    // }));
+
+    console.log('search ➡️ posts:', posts);
+    console.log('search ➡️ results:', results);
+
+    // throttledSetSearchResultItems(results);
+    dispatch(setSearchResultItems(results));
+    return results;
   };
 
   const saveUserSearch = (query: string) => {
@@ -68,5 +86,5 @@ export function useSearch() {
     }
   };
 
-  return { search, saveUserSearch };
+  return { search, saveUserSearch, query, results };
 }
