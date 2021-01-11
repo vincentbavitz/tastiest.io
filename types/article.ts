@@ -43,6 +43,7 @@ export interface ISanityArticle {
 
 // The type of ArticleProps; only essential article information
 export interface IArticle {
+  id: string;
   slug: string;
   title: string;
   subtitle: string;

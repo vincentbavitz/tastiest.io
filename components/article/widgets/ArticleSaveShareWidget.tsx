@@ -1,8 +1,12 @@
 import { useRouter } from 'next/router';
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import HeartFilledPrimarySVG from '../../../assets/svgs/heart-filled-primary.svg';
 import HeartPrimarySVG from '../../../assets/svgs/heart-primary.svg';
 import ShareSVG from '../../../assets/svgs/share.svg';
+import { useArticle } from '../../../hooks/article';
+import { useAuth } from '../../../hooks/auth';
+import { useUserData } from '../../../hooks/userData';
+import { USER_DATA } from '../../../types/firebase';
 import {
   shareToFacebook,
   shareToReddit,
@@ -24,8 +28,37 @@ interface IShareDropdownItems {
 export function ArticleSaveShareWidget() {
   const router = useRouter();
   const articleUrl = `tastiest.io${router.asPath}`;
-
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const article = useArticle();
+  const { isSignedIn } = useAuth();
+
+  const { userData = {}, setUserData } = useUserData();
+
+  const toggleSaveArticle = () => {
+    if (!isSignedIn) {
+      router.push('/login');
+    }
+
+    if (isArticleSaved) {
+      const filtered = userData?.savedArticles?.filter(
+        saved => article.id !== saved,
+      );
+
+      setUserData(USER_DATA.SAVED_ARTICLES, filtered);
+      return;
+    }
+
+    setUserData(USER_DATA.SAVED_ARTICLES, [
+      ...(userData?.savedArticles ?? []),
+      article.id,
+    ]);
+  };
+
+  const isArticleSaved = userData?.savedArticles?.find(
+    saved => article.id === saved,
+  );
+
+  console.log('ArticleSaveShareWidget ➡️ articleUrl:', articleUrl);
 
   const dropdownItems: Array<IShareDropdownItems> = [
     {
@@ -56,8 +89,15 @@ export function ArticleSaveShareWidget() {
         style={{ width: 'fit-content' }}
         className="flex bg-secondary desktop:bg-white bg-opacity-50 cursor-pointer rounded-md text-primary my-4"
       >
-        <div className="flex flex-1 items-center cursor-pointer px-2 py-1 space-x-1 hover:bg-white bg-opacity-50 font-medium rounded-md">
-          <HeartPrimarySVG className="h-8" />
+        <div
+          onClick={() => toggleSaveArticle()}
+          className="flex flex-1 items-center cursor-pointer px-2 py-1 space-x-1 hover:bg-white bg-opacity-50 font-medium rounded-md"
+        >
+          {isArticleSaved ? (
+            <HeartFilledPrimarySVG className="h-8" />
+          ) : (
+            <HeartPrimarySVG className="h-8" />
+          )}
           <span>Save</span>
         </div>
 

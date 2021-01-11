@@ -7,11 +7,11 @@ import '../../../assets/style.scss';
 import { Article } from '../../../components/article/Article';
 import { setArticle } from '../../../state/reducers/article';
 import { IArticle } from '../../../types/article';
-import { getArticleBySlug } from '../../../utils/article';
+import { getArticleBy } from '../../../utils/article';
 import { generateTitle } from '../../../utils/metadata';
 
 export const getServerSideProps: GetServerSideProps = async context => {
-  const article = await getArticleBySlug(String(context.query.slug) ?? '');
+  const article = await getArticleBy('slug', String(context.query.slug) ?? '');
 
   // Redirect to 404 for nonexistent page
   if (!article) {

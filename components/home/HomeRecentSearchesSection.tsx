@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
 import { useUserData } from '../../hooks/userData';
@@ -10,6 +11,8 @@ export function HomeRecentSearchesSection() {
   const { userData } = useUserData();
   const { recentSearches = [] } = userData ?? {};
 
+  const router = useRouter();
+
   return (
     <>
       {recentSearches.length ? (
@@ -17,8 +20,13 @@ export function HomeRecentSearchesSection() {
           <SectionTitle>Your recent searches</SectionTitle>
           <HorizontalScrollable>
             <div className="flex space-x-4">
-              {recentSearches.slice(0, 10).map(search => (
-                <OutlineBlock key={uuid()}>{search?.query}</OutlineBlock>
+              {recentSearches.slice(0, 10).map(item => (
+                <OutlineBlock
+                  key={uuid()}
+                  onClick={() => router.push(`/search?s=${item.query}`)}
+                >
+                  {item?.query.slice(0, 15)}
+                </OutlineBlock>
               ))}
             </div>
           </HorizontalScrollable>

@@ -7,9 +7,11 @@ export enum USER_DATA {
   RECENT_SEARCHES = 'recentSearches',
   PROFILE_PICTURE_URL = 'profilePictureUrl',
   REFERRED_FROM = 'referredFrom',
+
   FAVOURITE_CUISINES = 'favouriteCuisines',
   FAVOURITE_RESTAURANTS = 'favouriteRestaurants',
   RESTAURANTS_VISITED = 'restaurantsVisited',
+  SAVED_ARTICLES = 'savedArticles',
 }
 
 export interface IBooking {}
@@ -32,6 +34,7 @@ export type TUserData<T extends USER_DATA> =
     T extends USER_DATA.RECENT_SEARCHES ? Array<IRecentSearch> :
 
     // User favourites
+    T extends USER_DATA.SAVED_ARTICLES ? Array<string> :
     T extends USER_DATA.FAVOURITE_CUISINES ? Array<CuisineSymbol> :
     T extends USER_DATA.FAVOURITE_RESTAURANTS? Array<string> :
 

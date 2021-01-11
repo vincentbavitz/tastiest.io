@@ -1,9 +1,6 @@
-import groq from 'groq';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import client from '../client';
 import { IState } from '../state/reducers';
-import { sanityPostQuery } from './search';
 
 export function useArticle() {
   const router = useRouter();
@@ -36,11 +33,3 @@ export function useArticle() {
 
   return article;
 }
-
-const fetcher = (slug: string) => {
-  const query = groq`*[_type == "post" && slug.current == "${slug}"][0]{
-      ${sanityPostQuery}
-    }`;
-
-  return client.fetch(query);
-};

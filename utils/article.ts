@@ -5,15 +5,15 @@ import { sanityPostQuery } from '../hooks/search';
 import { IArticle, ISanityArticle } from '../types/article';
 import { titleCase } from './text';
 
-export async function getArticleBySlug(
-  slug: string,
+export async function getArticleBy(
+  by: 'slug' | 'id',
+  value: string,
   onFail?: () => void,
 ): Promise<IArticle | Partial<IArticle>> {
-  const query = groq`*[_type == "post" && slug.current == "${slug}"][0]{
+  const query = groq`*[_type == "post" && ${by}.current == "${value}"][0]{
         ${sanityPostQuery}
       }`;
 
-  console.log('slug', slug);
   console.log('query', query);
 
   let sanityArticle: ISanityArticle;
@@ -41,6 +41,7 @@ export function buildArticleInfo(
   const video = article.video.link?.split('?v=')[1] ?? '';
 
   return {
+    id: article.id,
     slug: article.slug,
     title: titleCase(article.title ?? ''),
     subtitle: article.subtitle ?? '',
