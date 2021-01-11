@@ -1,18 +1,14 @@
 import React from 'react';
+import { v4 as uuid } from 'uuid';
+import { IRecentSearch } from '../../types/firebase';
 import { OutlineBlock } from '../OutlineBlock';
 import { SectionTitle } from '../SectionTitle';
-import { v4 as uuid } from 'uuid';
-
-interface RecentSearchItem {
-  value: string;
-  timestamp: number;
-}
 
 export function HomeRecentSearchesSection() {
   // Get recent searches from session / account data
 
-  const recentSearches = [
-    { value: 'Spanish', timestamp: Date.now() },
+  const recentSearches: Array<IRecentSearch> = [
+    { query: 'Spanish', timestamp: Date.now() },
     { value: 'Best Pasta', timestamp: Date.now() },
     { value: 'Best Xiao Long Bao in London', timestamp: Date.now() },
   ] as Array<RecentSearchItem>;

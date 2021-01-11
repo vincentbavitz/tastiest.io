@@ -8,7 +8,7 @@ import SearchSecondarySVG from '../../assets/svgs/search-secondary.svg';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { setSearchQuery, setSearchResultItems } from '../../state/search';
-import { search } from '../../utils/search';
+import { useSearch } from '../../utils/search';
 
 interface Props {
   placeholder?: string;
@@ -53,6 +53,8 @@ export function SearchInput(props: Props) {
 
   // Hooks
   const router = useRouter();
+  const { search, saveUserSearch } = useSearch();
+
   // Force focus when user starts typing
   useStartTyping(() => inputRef?.current?.focus());
   const inputValue = searchState.searchQuery;
@@ -61,6 +63,8 @@ export function SearchInput(props: Props) {
   const pushToSearchPage = () => {
     const input = inputRef.current as HTMLInputElement;
     if (input?.value?.length && input?.focus) {
+      saveUserSearch(input?.value);
+
       router.push({
         pathname: '/search',
         query: { s: encodeURI(input?.value) },

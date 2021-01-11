@@ -49,14 +49,13 @@ function ArticleMobile(props: IArticle) {
         location={location}
         restaurantName={restaurantName}
       ></ArticleSectionAbstract>
-      <ArticleSectionContent featureImage={featureImage} body={body} />
+      <ArticleSectionContent {...props} />
     </article>
   );
 }
 
 function ArticleDesktop(props: IArticle) {
   const {
-    body,
     title,
     subtitle,
     author,
@@ -82,7 +81,7 @@ function ArticleDesktop(props: IArticle) {
         <ArticleSaveShareWidget />
         <ArticleSubtitleSection subtitle={subtitle} />
       </ArticleSectionAbstract>
-      <ArticleSectionContent featureImage={featureImage} body={body} />
+      <ArticleSectionContent {...props} />
     </article>
   );
 }

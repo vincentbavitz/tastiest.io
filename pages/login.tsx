@@ -29,9 +29,9 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
-    if (isLoading) {
-      return;
-    }
+    // if (isLoading) {
+    // return;
+    // }
 
     setIsLoading(true);
 

@@ -6315,7 +6315,7 @@ hmac-drbg@^1.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
-hoist-non-react-statics@^3.3.0:
+hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
@@ -6519,6 +6519,11 @@ ignore@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-4.0.6.tgz#750e3db5862087b4737ebac8207ffd1ef27b25fc"
   integrity sha512-cyFDKrqc/YdcWFniJhzI42+AzS+gNwmUzOSFcRCQYwySuBBBy/KjuxWLZ/FHEH6Moq1NizMOBWyTcv8O4OZIMg==
+
+immer@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-5.0.0.tgz#07f462b7d95f7e86c214a861ecacd766d42b8c0a"
+  integrity sha512-G7gRqKbi9NE025XVyqyTV98dxUOtdKvu/P1QRaVZfA55aEcXgjbxPdm+TlWdcSMNPKijlaHNz61DGPyelouRlA==
 
 import-cwd@^2.0.0:
   version "2.1.0"
@@ -7481,7 +7486,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@^4.0.0, lodash@^4.17.14, lodash@^4.17.19, lodash@^4.17.4, lodash@~4.17.10:
+lodash@^4.0.0, lodash@^4.17.14, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.4, lodash@~4.17.10:
   version "4.17.20"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
@@ -9617,11 +9622,6 @@ react-dom@^17.0.0:
     object-assign "^4.1.1"
     scheduler "^0.20.0"
 
-react-firebase-hooks@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/react-firebase-hooks/-/react-firebase-hooks-2.2.0.tgz#a2cea46d3da94619e8a316b85173638698ef7d2b"
-  integrity sha512-bwBaCYa8M+bpTqD0masAPGDTzxiTkGbyxv363hyR+NeNH1HbezPll6G7aMIGl+7OOYRPzfdmpkk72zc3VgXfEw==
-
 react-is@16.13.1, react-is@^16.12.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.9.0:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -9633,6 +9633,15 @@ react-paginate@^6.5.0:
   integrity sha512-H7xSi9jyiJzgfaj+2nNhQcjZfwzJ/Mxb64V2RiyDctjZyCWojwsaGwMqhLBpQ58iAuMVtBMRQ7ECqMcUKG9QSQ==
   dependencies:
     prop-types "^15.6.1"
+
+react-redux-firebase@^3.9.0:
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/react-redux-firebase/-/react-redux-firebase-3.9.0.tgz#57f4face201d63139d666288c58a0c06f3083cb1"
+  integrity sha512-sHzk1sMe1VFhHc99TdNsLJX4mF6qTRtFApSS+AINkdw5inVxD/8oc21pbp8NnD6fmrOjVsGxyBDkQ+44iUs6nA==
+  dependencies:
+    hoist-non-react-statics "^3.3.2"
+    lodash "^4.17.19"
+    prop-types "^15.7.2"
 
 react-redux@^7.2.1:
   version "7.2.1"
@@ -9769,6 +9778,20 @@ reduce-css-calc@^2.1.6:
   dependencies:
     css-unit-converter "^1.1.1"
     postcss-value-parser "^3.3.0"
+
+reduce-reducers@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/reduce-reducers/-/reduce-reducers-1.0.4.tgz#fb77e751a9eb0201760ac5a605ca8c9c2d0537f8"
+  integrity sha512-Mb2WZ2bJF597exiqX7owBzrqJ74DHLK3yOQjCyPAaNifRncE8OD0wFIuoMhXxTnHK07+8zZ2SJEKy/qtiyR7vw==
+
+redux-firestore@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/redux-firestore/-/redux-firestore-0.14.0.tgz#01cd4bb93dd4d0afe92870d486919655a10d9195"
+  integrity sha512-/ELeYDKTl2H/cK+qLtUnKQXhGsJaa0LBerZ3rSdJfqwdf6y14HuAvI+9NxXEBbs/CZIhqAcGWDAjlGAqnHNgVg==
+  dependencies:
+    immer "5.0.0"
+    lodash "^4.17.20"
+    reduce-reducers "^1.0.4"
 
 redux@*, redux@^4.0.0, redux@^4.0.5:
   version "4.0.5"

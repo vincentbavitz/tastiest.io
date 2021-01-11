@@ -1,21 +1,24 @@
+import firebaseApp from 'firebase/app';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
+import { useFirebase } from 'react-redux-firebase';
 import { AuthContext } from '../contexts/auth';
-import { firebaseClient } from '../firebaseClient';
 import { titleCase } from '../utils/text';
 
 export const useAuth = () => {
-  const { user } = useContext(AuthContext);
+  const firebase = useFirebase();
   const router = useRouter();
+  const { user } = useContext(AuthContext);
 
   const MAX_LOGIN_ATTEMPTS = 3;
 
   const signIn = async (email: string, password: string) => {
     const attemptSignIn = async () =>
-      await firebaseClient.auth().signInWithEmailAndPassword(email, password);
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+
     try {
       // Retry on fail
-      let user: firebaseClient.auth.UserCredential;
+      let user: firebaseApp.auth.UserCredential;
       const i = 0;
       while (!user && i < MAX_LOGIN_ATTEMPTS) {
         console.log(
@@ -37,7 +40,7 @@ export const useAuth = () => {
   // If redirectTo is given, will redirect there after sign out.
   // Else, the page will simply reload.
   const signOut = async (redirectTo?: string) => {
-    await firebaseClient.auth().signOut();
+    await firebase.auth().signOut();
 
     if (redirectTo) {
       router.push(redirectTo);
@@ -51,9 +54,9 @@ export const useAuth = () => {
     email: string,
     password: string,
   ) => {
-    await firebaseClient.auth().createUserWithEmailAndPassword(email, password);
+    await firebase.auth().createUserWithEmailAndPassword(email, password);
 
-    const user = firebaseClient.auth().currentUser;
+    const user = firebase.auth().currentUser;
     if (user) {
       await user.updateProfile({
         displayName: titleCase(displayName),

@@ -12,6 +12,7 @@ import { HomeSearchSection } from '../components/home/HomeSearchSection';
 import { SuggestDish } from '../components/SuggestDish';
 import { METADATA } from '../constants';
 import { ScreenContext } from '../contexts/screen';
+import { useUserData } from '../hooks/userData';
 import { ISanityArticle } from '../types/article';
 // import withAuthUser from '../utils/pageWrappers/withAuthUser';
 // import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo';
@@ -29,14 +30,10 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
 
   console.log('posts', posts);
 
-  // const { AuthUserInfo } = props;
-  // const authUser = AuthUserInfo.AuthUser;
-
-  // useEffect(() => {
-  //   console.log('Auth user', authUser);
-  // }, [AuthUserInfo]);
-
   const { isMobile } = useContext(ScreenContext);
+
+  const { userData } = useUserData();
+  console.log('userData', userData);
 
   return (
     <>

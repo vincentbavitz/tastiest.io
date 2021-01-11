@@ -1,12 +1,11 @@
 import React, { useContext } from 'react';
 import HeySpriteSVG from '../../../assets/svgs/article/hey-sprite.svg';
 import { ScreenContext } from '../../../contexts/screen';
-import { db } from '../../../firebaseClient';
 import { useAuth } from '../../../hooks/auth';
+import { useUserData } from '../../../hooks/userData';
+import { USER_DATA } from '../../../types/firebase';
 import { Button } from '../../Button';
 import { Title } from '../../Title';
-import { useDocumentData } from 'react-firebase-hooks/firestore';
-import { useUserData } from '../../../hooks/userData';
 
 export interface IOrderDeal {
   restaurantID: string;
@@ -24,7 +23,7 @@ export function ArticleWidgetOrderNow(deal: IOrderDeal) {
   const { userData, setUserData } = useUserData();
 
   const submit = () => {
-    setUserData('this', 'that');
+    setUserData(USER_DATA.DISPLAY_NAME, '234324');
   };
 
   return (
