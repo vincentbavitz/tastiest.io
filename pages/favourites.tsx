@@ -1,42 +1,50 @@
 import React, { useContext, useEffect, useState } from 'react';
 import FavouritesBackdropSVG from '../assets/svgs/page/favourites.svg';
+import { ArticleCard } from '../components/cards/ArticleCard';
 import { ArticleCardFavourite } from '../components/cards/ArticleCardFavourite';
+import { CardGrid } from '../components/cards/CardGrid';
 import { Contained } from '../components/Contained';
+import { SectionTitle } from '../components/SectionTitle';
 import { ScreenContext } from '../contexts/screen';
 import { useUserData } from '../hooks/userData';
-import { ISanityArticle } from '../types/article';
-import { USER_DATA } from '../types/firebase';
+import { IArticle, ISanityArticle } from '../types/article';
+import { getArticlesHaving } from '../utils/article';
 import { getTopPosts } from '../utils/posts';
 
 function Favourites() {
-  const { isMobile } = useContext(ScreenContext);
+  const { isMobile, isTablet, isDesktop, isHuge } = useContext(ScreenContext);
   const { userData = {}, setUserData } = useUserData();
 
-  const [topPosts, setTopPosts] = useState([] as ISanityArticle[]);
+  const [initialFetchDone, setInitialFetchDone] = useState(false);
+  const [topPosts, setTopPosts] = useState([] as Array<ISanityArticle>);
+  const [savedPosts, setSavedPosts] = useState([] as Array<Partial<IArticle>>);
+
   useEffect(() => {
     const getPosts = async () => {
+      if (initialFetchDone) {
+        return;
+      }
+
       const posts = await getTopPosts(12);
+      const saved = await getArticlesHaving(
+        'id',
+        userData?.savedArticles ?? [],
+      );
+
       setTopPosts(posts);
+      setSavedPosts(saved);
+      setInitialFetchDone(true);
     };
+
     getPosts();
-  }, []);
+  }, [userData?.savedArticles]);
 
-  const toggleSaveArticle = (id: string) => {
-    const isArticleSaved =
-      id === userData?.savedArticles?.find(saved => saved === id);
+  console.log(
+    'favourites ➡️ userData?.savedArticles:',
+    userData?.savedArticles,
+  );
 
-    if (isArticleSaved) {
-      const filtered = userData?.savedArticles?.filter(saved => id !== saved);
-
-      setUserData(USER_DATA.SAVED_ARTICLES, filtered);
-      return;
-    }
-
-    setUserData(USER_DATA.SAVED_ARTICLES, [
-      ...(userData?.savedArticles ?? []),
-      id,
-    ]);
-  };
+  console.log('favourites ➡️ savedPosts:', savedPosts);
 
   return (
     <div>
@@ -73,19 +81,28 @@ function Favourites() {
       </div>
 
       <Contained>
-        <div className="flex flex-wrap space-x-4">
-          {topPosts.map(post => (
-            <div
-              key={post.id.toLowerCase()}
-              style={{
-                minWidth: '12rem',
-              }}
-              className="w-1/4 flex-grow"
-            >
-              <ArticleCardFavourite {...post} />
-            </div>
-          ))}
+        <div className="flex flex-col">
+          <CardGrid>
+            {savedPosts.map(post => (
+              <ArticleCardFavourite
+                {...post}
+                isFavourite={(userData?.savedArticles ?? []).some(
+                  saved => saved === post?.id,
+                )}
+              />
+            ))}
+          </CardGrid>
         </div>
+
+        <div className="mt-20 mb-6">
+          <SectionTitle>You might also like</SectionTitle>
+        </div>
+
+        <CardGrid>
+          {topPosts.map(post => (
+            <ArticleCard {...post} />
+          ))}
+        </CardGrid>
       </Contained>
     </div>
   );

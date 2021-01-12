@@ -1,9 +1,4 @@
 export interface IAuthor {
-  name: string;
-  imageSrc: string;
-}
-
-export interface IVideo {
   link: string;
   description: string;
 }

@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
-import { useScreenSize } from '../../hooks/screen';
+import { ScreenContext } from '../../contexts/screen';
 import { IArticle } from '../../types/article';
 import { RecommendForm } from '../RecommendForm';
-import { ArticleSubtitleSection } from './sections/ArticleSubtitleSection';
 import { ArticleSectionAbstract } from './sections/ArticleSectionAbstract';
 import { ArticleSectionContent } from './sections/ArticleSectionContent';
 import { ArticleSectionTitle } from './sections/ArticleSectionTitle';
+import { ArticleSubtitleSection } from './sections/ArticleSubtitleSection';
 import { ArticleSaveShareWidget } from './widgets/ArticleSaveShareWidget';
-import { ScreenContext } from '../../contexts/screen';
 
 export function Article(props: IArticle) {
   const { isMobile } = useContext(ScreenContext);
@@ -23,18 +22,16 @@ export function Article(props: IArticle) {
 
 function ArticleMobile(props: IArticle) {
   const {
-    body,
+    id,
     title,
+    slug,
     subtitle,
     author,
     date,
     city,
-    tags,
     location,
     restaurantName,
-    dishName,
     video,
-    featureImage,
   } = props;
 
   return (
@@ -42,7 +39,7 @@ function ArticleMobile(props: IArticle) {
       <ArticleSectionTitle title={title} author={author} date={date} />
       <ArticleSubtitleSection subtitle={subtitle} />
 
-      <ArticleSaveShareWidget />
+      <ArticleSaveShareWidget id={id} slug={slug} />
       <ArticleSectionAbstract
         city={city}
         video={video}
@@ -56,17 +53,16 @@ function ArticleMobile(props: IArticle) {
 
 function ArticleDesktop(props: IArticle) {
   const {
+    id,
     title,
     subtitle,
     author,
     date,
+    slug,
     city,
-    tags,
     location,
     restaurantName,
-    dishName,
     video,
-    featureImage,
   } = props;
 
   return (
@@ -78,7 +74,7 @@ function ArticleDesktop(props: IArticle) {
         location={location}
         restaurantName={restaurantName}
       >
-        <ArticleSaveShareWidget />
+        <ArticleSaveShareWidget id={id} slug={slug} />
         <ArticleSubtitleSection subtitle={subtitle} />
       </ArticleSectionAbstract>
       <ArticleSectionContent {...props} />

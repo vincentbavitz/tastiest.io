@@ -42,9 +42,6 @@ function Post(props: IArticle) {
     featureImage,
   } = props;
 
-  // Set article for useArticle
-  // We don't want useArticle to fetch it directly, as this
-  // hurts SEO performance
   const dispatch = useDispatch();
   dispatch(setArticle(props));
 

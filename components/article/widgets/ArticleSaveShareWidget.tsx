@@ -4,9 +4,7 @@ import HeartFilledPrimarySVG from '../../../assets/svgs/heart-filled-primary.svg
 import HeartPrimarySVG from '../../../assets/svgs/heart-primary.svg';
 import ShareSVG from '../../../assets/svgs/share.svg';
 import { useArticle } from '../../../hooks/article';
-import { useAuth } from '../../../hooks/auth';
 import { useUserData } from '../../../hooks/userData';
-import { USER_DATA } from '../../../types/firebase';
 import {
   shareToFacebook,
   shareToReddit,
@@ -25,40 +23,22 @@ interface IShareDropdownItems {
   onClick: () => void;
 }
 
-export function ArticleSaveShareWidget() {
+interface Props {
+  id: string;
+  slug: string;
+}
+
+export function ArticleSaveShareWidget(props: Props) {
+  const { id, slug } = props;
+
+  const { toggleSaveArticle } = useArticle();
+  const { userData = {} } = useUserData();
+
   const router = useRouter();
-  const articleUrl = `tastiest.io${router.asPath}`;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const article = useArticle();
-  const { isSignedIn } = useAuth();
+  const articleUrl = `tastiest.io${router.asPath}`;
 
-  const { userData = {}, setUserData } = useUserData();
-
-  const toggleSaveArticle = () => {
-    if (!isSignedIn) {
-      router.push('/login');
-    }
-
-    if (isArticleSaved) {
-      const filtered = userData?.savedArticles?.filter(
-        saved => article.id !== saved,
-      );
-
-      setUserData(USER_DATA.SAVED_ARTICLES, filtered);
-      return;
-    }
-
-    setUserData(USER_DATA.SAVED_ARTICLES, [
-      ...(userData?.savedArticles ?? []),
-      article.id,
-    ]);
-  };
-
-  const isArticleSaved = userData?.savedArticles?.find(
-    saved => article.id === saved,
-  );
-
-  console.log('ArticleSaveShareWidget ➡️ articleUrl:', articleUrl);
+  const isArticleSaved = userData?.savedArticles?.find(saved => id === saved);
 
   const dropdownItems: Array<IShareDropdownItems> = [
     {
@@ -90,7 +70,7 @@ export function ArticleSaveShareWidget() {
         className="flex bg-secondary desktop:bg-white bg-opacity-50 cursor-pointer rounded-md text-primary my-4"
       >
         <div
-          onClick={() => toggleSaveArticle()}
+          onClick={() => toggleSaveArticle(id)}
           className="flex flex-1 items-center cursor-pointer px-2 py-1 space-x-1 hover:bg-white bg-opacity-50 font-medium rounded-md"
         >
           {isArticleSaved ? (

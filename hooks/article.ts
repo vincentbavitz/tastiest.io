@@ -1,35 +1,33 @@
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import { IState } from '../state/reducers';
+import { USER_DATA } from '../types/firebase';
+import { useAuth } from './auth';
+import { useUserData } from './userData';
 
 export function useArticle() {
+  const { userData = {}, setUserData } = useUserData();
+  const { isSignedIn } = useAuth();
   const router = useRouter();
-  const slug = router.query.slug;
 
-  if (!slug.length) {
-    // Not on an article page
-    return;
-  }
+  const toggleSaveArticle = (id: string) => {
+    if (!isSignedIn) {
+      router.push('/login');
+    }
 
-  const article = useSelector((state: IState) => state.article);
+    const isArticleSaved =
+      id === userData?.savedArticles?.find(saved => saved === id);
 
-  // Slug mismatch; wrong page
-  if (slug !== article.slug) {
-    return;
-  }
+    if (isArticleSaved) {
+      const filtered = userData?.savedArticles?.filter(saved => id !== saved);
 
-  // const { data: rawArticle, error } = useSWR(slug, fetcher, {
-  //   revalidateOnReconnect: false,
-  //   revalidateOnMount: false,
-  //   onError: e => console.log('article ➡️ e:', e),
-  // });
+      setUserData(USER_DATA.SAVED_ARTICLES, filtered);
+      return;
+    }
 
-  // if (error || !rawArticle) {
-  //   router.push('/');
-  //   return;
-  // }
+    setUserData(USER_DATA.SAVED_ARTICLES, [
+      ...(userData?.savedArticles ?? []),
+      id,
+    ]);
+  };
 
-  // const article = buildArticleInfo(rawArticle);
-
-  return article;
+  return { toggleSaveArticle };
 }

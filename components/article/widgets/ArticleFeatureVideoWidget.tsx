@@ -1,5 +1,4 @@
 import React from 'react';
-import { useArticle } from '../../../hooks/article';
 import YouTube from 'react-youtube';
 
 interface Props {
