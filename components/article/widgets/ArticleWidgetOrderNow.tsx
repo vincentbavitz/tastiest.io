@@ -34,7 +34,7 @@ export function ArticleWidgetOrderNow(deal: IOrderDeal) {
           minWidth: isDesktop ? '275px' : 'unset',
           maxWidth: isDesktop ? 'unset' : '75vw',
         }}
-        className="relative flex flex-col space-y-6 py-4 mt-20 mb-6 desktop:mt-0 border-4 border-secondary-alt rounded-xl"
+        className="relative flex flex-col space-y-6 py-4 mt-20 mb-6 desktop:mt-0 border-4 border-secondary-1 rounded-xl"
       >
         <div className="absolute top-0 right-0 mr-4 -mt-20 desktop:-mt-16">
           <HeySpriteSVG
@@ -47,7 +47,7 @@ export function ArticleWidgetOrderNow(deal: IOrderDeal) {
           {deal.dealName}
         </h3>
 
-        <div className="mx-4 pb-4 overflow-hidden bg-secondary-alt rounded-xl">
+        <div className="mx-4 pb-4 overflow-hidden bg-secondary-1 rounded-xl">
           <img src="/img/steak-dish.jpeg" className="w-full" />
 
           <div className="flex flex-col space-y-4 mx-4 pt-2 justify-center">

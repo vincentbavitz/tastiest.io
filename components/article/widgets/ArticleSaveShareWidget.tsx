@@ -68,11 +68,11 @@ export function ArticleSaveShareWidget(props: Props) {
     <div className="flex justify-center w-full z-10">
       <div
         style={{ width: 'fit-content' }}
-        className="flex bg-secondary desktop:bg-white bg-opacity-50 cursor-pointer rounded-md text-primary my-4"
+        className="flex bg-soft cursor-pointer rounded-md text-primary my-4"
       >
         <div
           onClick={() => toggleSaveArticle(id)}
-          className="flex flex-1 items-center cursor-pointer px-2 py-1 space-x-1 hover:bg-white bg-opacity-50 font-medium rounded-md"
+          className="flex flex-1 items-center cursor-pointer px-2 py-1 space-x-1 hover:bg-subtle-2 font-medium rounded-l-md"
         >
           {isArticleSaved ? (
             <HeartFilledPrimarySVG className="h-8" />
@@ -83,7 +83,7 @@ export function ArticleSaveShareWidget(props: Props) {
         </div>
 
         <div
-          className="flex flex-1 items-center cursor-pointer px-2 py-1 space-x-1 hover:bg-white bg-opacity-50 font-medium rounded-md"
+          className="flex flex-1 items-center cursor-pointer px-2 py-1 space-x-1 hover:bg-subtle-2 font-medium rounded-r-md"
           onClick={() => setIsDropdownOpen(true)}
         >
           <ShareSVG className="h-8" />

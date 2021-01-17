@@ -1,12 +1,9 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { getMapBoxStaticSource } from '../../lib/mapbox';
 import { expandSearchOverlay } from '../../state/navigation';
 import { Button } from '../Button';
 import { Title } from '../Title';
-
-const mapBoxUsername = 'tastiestvince';
-const mapBoxStyleID = 'ckj6mv0zb04uz1amskq1bpi3u';
-const mapBoxSource = `https://api.mapbox.com/styles/v1/${mapBoxUsername}/${mapBoxStyleID}/static/-0.1127,51.5188,8.5,0,60/1200x300?access_token=pk.eyJ1IjoidGFzdGllc3R2aW5jZSIsImEiOiJja2VnaXp0bzkwZWM0MzJxYng3OW9qZnY5In0.xA1wKv2WJEZUU9XvdlolLg`;
 
 export function HomeMapSection() {
   // GET USERS LOCATION
@@ -17,7 +14,10 @@ export function HomeMapSection() {
     <div className="relative w-full rounded-xl overflow-hidden">
       {/* MAP BACKDROP */}
       <div className="absolute top-0 right-0 bottom-0 left-0">
-        <img className="w-full h-full object-cover" src={mapBoxSource} />
+        <img
+          className="w-full h-full object-cover"
+          src={getMapBoxStaticSource(-0.1127, 51.5188)}
+        />
       </div>
 
       {/* BACKGROUND OVERLAY */}

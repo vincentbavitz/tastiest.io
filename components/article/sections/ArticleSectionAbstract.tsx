@@ -1,14 +1,12 @@
-import React, { useContext } from 'react';
+import React, { ReactNode, useContext } from 'react';
 import CharacterEatingSVG from '../../../assets/svgs/article/character-eating.svg';
+import XiaoDividerSVG from '../../../assets/svgs/article/xiao-divider.svg';
 import { UI } from '../../../constants';
+import { ScreenContext } from '../../../contexts/screen';
+import { ILocation } from '../../../types/article';
 import { Contained } from '../../Contained';
 import { ArticleFeatureVideoWidget } from '../widgets/ArticleFeatureVideoWidget';
 import { ArticleWidgetMap } from '../widgets/ArticleWidgetMap';
-import XiaoDividerSVG from '../../../assets/svgs/article/xiao-divider.svg';
-import { ReactNode } from 'react';
-import { ILocation } from '../../../types/article';
-import { useScreenSize } from '../../../hooks/screen';
-import { ScreenContext } from '../../../contexts/screen';
 
 interface Props {
   city: string;
@@ -26,7 +24,7 @@ export function ArticleSectionAbstract(props: Props) {
   const { isMobile } = useContext(ScreenContext);
 
   return (
-    <Contained backgroundColor="secondary-alt">
+    <Contained backgroundColor="secondary-1">
       {isMobile ? <CharacterEatingMobile /> : <CharacterEatingDesktop />}
 
       <div className="flex flex-col items-center desktop:pt-6 mb-16 space-y-10">
@@ -35,7 +33,7 @@ export function ArticleSectionAbstract(props: Props) {
         <ArticleWidgetMap
           city={city}
           restaurantName={restaurantName}
-          location={{ lng: 33, lat: 33 }}
+          location={location}
         />
         <ArticleFeatureVideoWidget video={video} />
       </div>
