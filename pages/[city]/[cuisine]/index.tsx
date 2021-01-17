@@ -9,28 +9,27 @@ import { generateTitle } from '../../../utils/metadata';
 import { getCuisinePosts, postsToCards } from '../../../utils/posts';
 import { titleCase } from '../../../utils/text';
 
-interface Props {
-  cuisineSymbol?: CuisineSymbol;
-}
-
 export const getServerSideProps = async context => {
-  // const cuisineSymbol = String(
-  //   context.params?.cuisine,
-  // ).toUpperCase() as CuisineSymbol;
+  const cuisineSymbol = String(
+    context.params?.cuisine,
+  ).toUpperCase() as CuisineSymbol;
 
-  // const cuisineExists = CUISINES[cuisineSymbol];
+  const cuisineExists = CUISINES[cuisineSymbol];
 
-  // console.log('index ➡️ cuisineSymbol:', cuisineSymbol);
-  // console.log('index ➡️ context:', context);
+  console.log('index ➡️ cuisineSymbol:', cuisineSymbol);
+  console.log('index ➡️ context:', context);
 
-  // // Redirect to 404 for nonexistent page
-  // if (!cuisineExists) {
-  //   return {
-  //     notFound: true,
-  //   };
-  // }
+  // Redirect to 404 for nonexistent page
+  if (!cuisineExists) {
+    return {
+      props: { cuisineSymbol: undefined },
+      notFound: true,
+    };
+  }
 
-  return { props: { cuisineSymbol: 'ITALIAN' } };
+  return {
+    props: { cuisineSymbol },
+  };
 };
 
 export default function Cuisine({
