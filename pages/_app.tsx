@@ -10,10 +10,7 @@ import { useLocation } from 'react-use';
 import { createStore } from 'redux';
 import { createFirestoreInstance } from 'redux-firestore';
 import '../assets/style.scss';
-import { CuisineBar } from '../components/cuisine/CuisineBar';
-import { Footer } from '../components/Footer';
-import { Header } from '../components/header/Header';
-import { SearchOverlay } from '../components/search/SearchOverlay';
+import Layout from '../components/layout';
 import { FIREBASE, METADATA } from '../constants';
 import { AuthProvider } from '../contexts/auth';
 import ScreenProvider from '../contexts/screen';
@@ -56,25 +53,9 @@ function App({ Component, pageProps }: AppProps) {
               <title>{METADATA.TITLE_SUFFIX}</title>
             </Head>
 
-            <div
-              style={{ height: '100vh' }}
-              className="flex flex-col justify-between"
-            >
-              <div className="relative flex-grow">
-                <SearchOverlay />
-
-                <Header />
-                <CuisineBar />
-
-                <div className="flex-grow">
-                  <Component {...pageProps} />
-                </div>
-              </div>
-
-              <div>
-                <Footer />
-              </div>
-            </div>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
           </ScreenProvider>
         </AuthProvider>
       </ReactReduxFirebaseProvider>
