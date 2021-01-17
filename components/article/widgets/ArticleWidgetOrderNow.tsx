@@ -67,7 +67,7 @@ export function ArticleWidgetOrderNow(deal: IOrderDeal) {
 
             <div className="text-center">
               {deal.dealItems.map(item => (
-                <div>{item}</div>
+                <div key={item}>{item}</div>
               ))}
             </div>
           </div>

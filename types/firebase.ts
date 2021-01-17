@@ -12,11 +12,24 @@ export enum USER_DATA {
   FAVOURITE_RESTAURANTS = 'favouriteRestaurants',
   RESTAURANTS_VISITED = 'restaurantsVisited',
   SAVED_ARTICLES = 'savedArticles',
+
+  USER_SESSIONS = 'userSessions',
+  USER_DEVICE = 'userDevice',
 }
 
-export interface IBooking {}
+export interface IUserSession {
+  device: 'mobile' | 'tablet' | 'desktop';
+  sessionStartTimestamp: number;
+  sessionEndTimestamp: number;
+}
 
-export interface ICover {}
+export interface IBooking {
+  never;
+}
+
+export interface ICover {
+  never;
+}
 
 export interface IRecentSearch {
   query: string;
@@ -42,6 +55,10 @@ export type TUserData<T extends USER_DATA> =
     T extends USER_DATA.BOOKINGS ? Array<IBooking> :
     T extends USER_DATA.COVERS ? Array<ICover> : 
     T extends USER_DATA.RESTAURANTS_VISITED ? Array<string> :
+
+    // User metadata
+    T extends USER_DATA.USER_SESSIONS ? Array<IUserSession> :
+
     never;
 
 export type IUserData = {

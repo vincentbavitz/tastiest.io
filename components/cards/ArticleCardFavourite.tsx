@@ -11,7 +11,7 @@ import { useArticle } from '../../hooks/article';
 import { ISanityArticle } from '../../types/article';
 import { generateURL } from '../../utils/routing';
 
-interface Props extends ISanityArticle {
+interface Props extends Partial<ISanityArticle> {
   isFavourite: boolean;
 }
 
@@ -79,15 +79,15 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
             className="flex items-center cursor-pointer"
           >
             {isFavourite ? (
-              <HeartFilledPrimarySVG className={isMobile ? 'h-8' : 'h-10'} />
+              <HeartFilledPrimarySVG className={isMobile ? 'h-8' : 'h-8'} />
             ) : (
-              <HeartPrimayrSVG className={isMobile ? 'h-8' : 'h-10'} />
+              <HeartPrimayrSVG className={isMobile ? 'h-8' : 'h-8'} />
             )}
             {!isMobile && isFavourite ? 'Unsave' : 'Save'}
           </div>
 
           <div className="flex items-center cursor-pointer">
-            <ShareSVG className={isMobile ? 'h-8' : 'h-10'} />
+            <ShareSVG className={isMobile ? 'h-8' : 'h-8'} />
             {!isMobile && 'Share'}
           </div>
         </div>

@@ -15,7 +15,7 @@ export function CardGrid({ children }: Props) {
     <div className="flex flex-col space-y-4">
       {_.chunk(children, isHuge ? 4 : isDesktop || isTablet ? 3 : 2).map(
         group => (
-          <div className="flex">
+          <div key={uuid()} className="flex">
             {group.map((item, index) => (
               <div
                 key={uuid()}

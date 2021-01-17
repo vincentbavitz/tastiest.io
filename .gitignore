@@ -31,7 +31,3 @@ yarn-error.log*
 
 .now
 .vercel
-
-
-# Firebase
-./config/serviceAccount.json

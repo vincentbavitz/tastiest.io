@@ -45,6 +45,8 @@ function App({ Component, pageProps }: AppProps) {
     store.dispatch(collapseSearchOverlay());
   }, [location.pathname, location.search]);
 
+  // const { info } = useGetInfo();
+
   return (
     <StoreProvider store={store}>
       <ReactReduxFirebaseProvider {...rrfProps}>

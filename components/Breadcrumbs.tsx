@@ -14,7 +14,7 @@ export function Breadcrumbs() {
       <HomeSVG className="h-4 w-4 mr-1 text-primary fill-current" />
       <span className="children:last:font-medium">
         {path.map((item, index) => (
-          <Link href={`/${path.slice(0, index + 1)?.join('/')}`}>
+          <Link key={item} href={`/${path.slice(0, index + 1)?.join('/')}`}>
             <a>
               <span className="font-normal opacity-75"> / </span>
               <span className="text-primary">{item}</span>

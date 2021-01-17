@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import FavouritesBackdropSVG from '../assets/svgs/page/favourites.svg';
 import { ArticleCard } from '../components/cards/ArticleCard';
@@ -6,6 +7,7 @@ import { CardGrid } from '../components/cards/CardGrid';
 import { Contained } from '../components/Contained';
 import { SectionTitle } from '../components/SectionTitle';
 import { ScreenContext } from '../contexts/screen';
+import { useAuth } from '../hooks/auth';
 import { useUserData } from '../hooks/userData';
 import { IArticle, ISanityArticle } from '../types/article';
 import { getArticlesHaving } from '../utils/article';
@@ -14,6 +16,8 @@ import { getTopPosts } from '../utils/posts';
 function Favourites() {
   const { isMobile, isTablet, isDesktop, isHuge } = useContext(ScreenContext);
   const { userData = {}, setUserData } = useUserData();
+  const { isSignedIn } = useAuth();
+  const router = useRouter();
 
   const [initialFetchDone, setInitialFetchDone] = useState(false);
   const [topPosts, setTopPosts] = useState([] as Array<ISanityArticle>);
@@ -39,12 +43,23 @@ function Favourites() {
     getPosts();
   }, [userData?.savedArticles]);
 
+  // Redirect users who are not signed in
+  useEffect(() => {
+    if (!isSignedIn) {
+      router.push('/');
+    }
+  }, [isSignedIn]);
+
   console.log(
     'favourites ➡️ userData?.savedArticles:',
     userData?.savedArticles,
   );
 
   console.log('favourites ➡️ savedPosts:', savedPosts);
+
+  if (!isSignedIn) {
+    return null;
+  }
 
   return (
     <div>
@@ -70,7 +85,12 @@ function Favourites() {
           </>
         ) : (
           <Contained>
-            <FavouritesBackdropSVG className="w-full" />
+            <FavouritesBackdropSVG
+              style={{
+                width: '300%',
+                transform: 'translateX(-34%)',
+              }}
+            />
             <div className="absolute inset-0 flex justify-center items-center">
               <h1 className="font-somatic text-primary text-threexl">
                 Saved Dishes
@@ -86,6 +106,7 @@ function Favourites() {
             {savedPosts.map(post => (
               <ArticleCardFavourite
                 {...post}
+                key={post.id}
                 isFavourite={(userData?.savedArticles ?? []).some(
                   saved => saved === post?.id,
                 )}
@@ -100,7 +121,7 @@ function Favourites() {
 
         <CardGrid>
           {topPosts.map(post => (
-            <ArticleCard {...post} />
+            <ArticleCard key={post.id} {...post} />
           ))}
         </CardGrid>
       </Contained>
