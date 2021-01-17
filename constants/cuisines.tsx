@@ -1,16 +1,16 @@
 // Ensure SVGs dont have any width or height attrs.
 import AmericaSVG from '../assets/svgs/cuisine-pages/america.svg';
 import ChinaSVG from '../assets/svgs/cuisine-pages/china.svg';
-import EnglishPageSVG from '../assets/svgs/cuisine-pages/english.svg';
 import FranceSVG from '../assets/svgs/cuisine-pages/france.svg';
 import IndiaSVG from '../assets/svgs/cuisine-pages/india.svg';
 import ItalySVG from '../assets/svgs/cuisine-pages/italy.svg';
 import JapanSVG from '../assets/svgs/cuisine-pages/japan.svg';
 import MediterraneanPageSVG from '../assets/svgs/cuisine-pages/mediterranean.svg';
 import MexicoSVG from '../assets/svgs/cuisine-pages/mexico.svg';
+import SpainSVG from '../assets/svgs/cuisine-pages/spain.svg';
 import AmericanSVG from '../assets/svgs/cuisines/american.svg';
+// import BritishSVG from '../assets/svgs/cuisines/british.svg';
 import ChineseSVG from '../assets/svgs/cuisines/chinese.svg';
-import EnglishSVG from '../assets/svgs/cuisines/english.svg';
 import FrenchSVG from '../assets/svgs/cuisines/french.svg';
 import IndianSVG from '../assets/svgs/cuisines/indian.svg';
 import ItalianSVG from '../assets/svgs/cuisines/italian.svg';
@@ -60,14 +60,16 @@ const CUISINES = {
     name: 'Spanish',
     href: '/spanish',
     svg: SpanishSVG,
-    pageSvg: MexicoSVG,
+    pageSvg: SpainSVG,
     popularity: 13,
   },
-  [CuisineSymbol.ENGLISH]: {
-    name: 'English',
-    href: '/english',
-    svg: EnglishSVG,
-    pageSvg: EnglishPageSVG,
+  [CuisineSymbol.BRITISH]: {
+    name: 'British',
+    href: '/british',
+    // svg: BritishSVG,
+    svg: SpanishSVG,
+    // pageSvg: BritishPageSVG,
+    pageSvg: SpainSVG,
     popularity: 11,
   },
   [CuisineSymbol.AMERICAN]: {

@@ -1,12 +1,10 @@
 import React, { useContext } from 'react';
 import HeySpriteSVG from '../../../assets/svgs/article/hey-sprite.svg';
 import { ScreenContext } from '../../../contexts/screen';
-import { db } from '../../../firebaseClient';
 import { useAuth } from '../../../hooks/auth';
+import { useUserData } from '../../../hooks/userData';
 import { Button } from '../../Button';
 import { Title } from '../../Title';
-import { useDocumentData } from 'react-firebase-hooks/firestore';
-import { useUserData } from '../../../hooks/userData';
 
 export interface IOrderDeal {
   restaurantID: string;
@@ -68,7 +66,7 @@ export function ArticleWidgetOrderNow(deal: IOrderDeal) {
 
             <div className="text-center">
               {deal.dealItems.map(item => (
-                <div>{item}</div>
+                <div key={item}>{item}</div>
               ))}
             </div>
           </div>
