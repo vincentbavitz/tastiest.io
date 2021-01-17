@@ -25,11 +25,12 @@ interface IShareDropdownItems {
 
 interface Props {
   id: string;
+  title: string;
   slug: string;
 }
 
 export function ArticleSaveShareWidget(props: Props) {
-  const { id, slug } = props;
+  const { id, title, slug } = props;
 
   const { toggleSaveArticle } = useArticle();
   const { userData = {} } = useUserData();
@@ -44,22 +45,22 @@ export function ArticleSaveShareWidget(props: Props) {
     {
       id: 'share-to-facebook',
       name: 'Facebook',
-      onClick: () => shareToFacebook(),
+      onClick: () => shareToFacebook(title, slug),
     },
     {
       id: 'share-to-twitter',
       name: 'Twitter',
-      onClick: () => shareToTwitter(),
+      onClick: () => shareToTwitter(title, slug),
     },
     {
       id: 'share-to-whatsapp',
       name: 'WhatsApp',
-      onClick: () => shareToWhatsApp(),
+      onClick: () => shareToWhatsApp(title, slug),
     },
     {
       id: 'share-to-reddit',
       name: 'Reddit',
-      onClick: () => shareToReddit(),
+      onClick: () => shareToReddit(title, slug),
     },
   ];
 
@@ -113,7 +114,7 @@ export function ArticleSaveShareWidget(props: Props) {
             </div>
 
             {dropdownItems.map(item => (
-              <DropdownItem key={item.id} id={item.id}>
+              <DropdownItem key={item.id} id={item.id} onSelect={item.onClick}>
                 <div className="w-full text-center">{item.name}</div>
               </DropdownItem>
             ))}

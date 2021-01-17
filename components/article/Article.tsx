@@ -39,7 +39,7 @@ function ArticleMobile(props: IArticle) {
       <ArticleSectionTitle title={title} author={author} date={date} />
       <ArticleSubtitleSection subtitle={subtitle} />
 
-      <ArticleSaveShareWidget id={id} slug={slug} />
+      <ArticleSaveShareWidget id={id} title={title} slug={slug} />
       <ArticleSectionAbstract
         city={city}
         video={video}
@@ -74,7 +74,7 @@ function ArticleDesktop(props: IArticle) {
         location={location}
         restaurantName={restaurantName}
       >
-        <ArticleSaveShareWidget id={id} slug={slug} />
+        <ArticleSaveShareWidget id={id} title={title} slug={slug} />
         <ArticleSubtitleSection subtitle={subtitle} />
       </ArticleSectionAbstract>
       <ArticleSectionContent {...props} />
