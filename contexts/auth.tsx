@@ -16,7 +16,7 @@ export function AuthProvider({ children }: any) {
       (window as any).nookies = nookies;
     }
 
-    return firebase.auth().onIdTokenChanged(async user => {
+    firebase.auth().onIdTokenChanged(async user => {
       console.log(`token changed!`);
       if (!user) {
         console.log(`no token found...`);
@@ -26,16 +26,18 @@ export function AuthProvider({ children }: any) {
         return;
       }
 
-      const token = await user.getIdToken();
+      try {
+        const token = await user.getIdToken();
 
-      setUser(user);
-      nookies.destroy(null, 'token');
-      nookies.set(null, 'token', token, {});
+        setUser(user);
+        nookies.destroy(null, 'token');
+        nookies.set(null, 'token', token, {});
+      } catch (e) {
+        return;
+      }
     });
-  }, []);
 
-  // Force refresh the token every 10 minutes
-  useEffect(() => {
+    // Force refresh the token every 10 minutes
     const handle = setInterval(async () => {
       console.log(`refreshing token...`);
 

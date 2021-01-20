@@ -1,11 +1,17 @@
+export enum ModalInstance {
+  LOGIN = 'LOGIN',
+}
+
 export interface INavigation {
   searchOverlayExpanded: boolean;
   cuisineBarScrollPos: number;
+  openedModal: ModalInstance | null;
 }
 
 export const initialNavigationState: INavigation = {
   searchOverlayExpanded: false,
   cuisineBarScrollPos: 0,
+  openedModal: null,
 };
 
 export enum NavigationActions {
@@ -13,6 +19,7 @@ export enum NavigationActions {
   COLLAPSE_SEARCH_OVERLAY = 'COLLAPSE_SEARCH_OVERLAY',
   TOGGLE_SEARCH_OVERLAY = 'TOGGLE_SEARCH_OVERLAY',
   SAVE_CUISINE_BAR_SCROLL_POS = 'SAVE_CUISINE_BAR_SCROLL_POS',
+  SET_MODAL_IS_OPEN = 'SET_MODAL_IS_OPEN',
 }
 
 // ////////////////////////////// //
@@ -34,4 +41,9 @@ export const collapseSearchOverlay = () => ({
 
 export const toggleSearchOverlay = () => ({
   type: NavigationActions.TOGGLE_SEARCH_OVERLAY,
+});
+
+export const setCurrentOpenModal = (isOpen: boolean) => ({
+  type: NavigationActions.SET_MODAL_IS_OPEN,
+  payload: isOpen,
 });

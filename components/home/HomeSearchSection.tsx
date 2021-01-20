@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import HomeHeroSVG from '../../assets/svgs/home-hero.svg';
+import { METADATA } from '../../constants';
 import { ScreenContext } from '../../contexts/screen';
 import { IState } from '../../state/reducers';
 import { HomeSearch } from './HomeSearch';
@@ -17,7 +18,7 @@ export function HomeSearchSection(): JSX.Element {
   return (
     <div className="flex flex-col items-center">
       <h1 className="text-primary text-center text-threexl font-somatic mt-12 mb-5">
-        Discover. Eat. Smile.
+        {METADATA.TAGLINE}
       </h1>
       <div className="relative w-full">
         <div

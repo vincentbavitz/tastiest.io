@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TastiestLogo from '../../assets/svgs/brand.svg';
 import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
+import { UI } from '../../constants';
 import { ScreenContext } from '../../contexts/screen';
 import { useAuth } from '../../hooks/auth';
 import { expandSearchOverlay } from '../../state/navigation';
@@ -45,7 +46,11 @@ function MobileHeader() {
 
   return (
     <div
-      style={{ zIndex: 1000, paddingLeft: '5vw', paddingRight: '5vw' }}
+      style={{
+        zIndex: UI.Z_INDEX_HEADER,
+        paddingLeft: '5vw',
+        paddingRight: '5vw',
+      }}
       className="fixed left-0 right-0 top-0 w-full h-24 bg-white"
     >
       <div className="w-full h-full flex items-center justify-between">
@@ -100,7 +105,10 @@ function DesktopHeader() {
     <div
       ref={navBarRef}
       style={{
-        zIndex: searchOverlayExpanded && searchIsShown ? 20001 : 1000,
+        zIndex:
+          searchOverlayExpanded && searchIsShown
+            ? UI.Z_INDEX_HEADER_SEARCH
+            : UI.Z_INDEX_HEADER,
       }}
       className="fixed left-0 right-0 top-0 w-full h-20 bg-white flex items-center"
     >

@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BackSVG from '../../assets/svgs/back.svg';
+import { UI } from '../../constants';
 import { collapseSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Contained } from '../Contained';
@@ -31,7 +32,7 @@ export function SearchOverlayMobile() {
   return (
     <div
       style={{
-        zIndex: searchOverlayExpanded ? 20000 : -1,
+        zIndex: searchOverlayExpanded ? UI.Z_INDEX_SEARCH_OVERLAY : -1,
       }}
       className={classNames(
         'fixed top-0 bottom-0 left-0 right-0 bg-white',

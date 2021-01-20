@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { USER_DATA } from '../types/firebase';
+import { UserData } from '../types/firebase';
 import { useAuth } from './auth';
 import { useUserData } from './userData';
 
@@ -19,11 +19,11 @@ export function useArticle() {
     if (isArticleSaved) {
       const filtered = userData?.savedArticles?.filter(saved => id !== saved);
 
-      setUserData(USER_DATA.SAVED_ARTICLES, filtered);
+      setUserData(UserData.SAVED_ARTICLES, filtered);
       return;
     }
 
-    setUserData(USER_DATA.SAVED_ARTICLES, [
+    setUserData(UserData.SAVED_ARTICLES, [
       ...(userData?.savedArticles ?? []),
       id,
     ]);

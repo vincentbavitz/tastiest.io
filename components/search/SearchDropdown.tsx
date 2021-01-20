@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React, { CSSProperties, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { UI } from '../../constants';
 import { IState } from '../../state/reducers';
 import { SearchOverlayInner } from './SearchOverlayInner';
 
@@ -22,7 +23,7 @@ export function SearchDropdown({ isShown, innerOverlayStyle = {} }: Props) {
   // Desktop overlay styles depend on wether or not the search bar is
   // in the navbar or not
   const desktopOverlayStyles = {
-    zIndex: searchOverlayExpanded && isShown ? 20002 : -1,
+    zIndex: searchOverlayExpanded && isShown ? UI.Z_INDEX_SEARCH_DROPDOWN : -1,
     display: searchOverlayExpanded && isShown ? 'block' : 'none',
     minHeight: '600px',
   };

@@ -8,7 +8,7 @@ import { useAuth } from '../hooks/auth';
 
 function Signup() {
   const router = useRouter();
-  const { createUser } = useAuth();
+  const { signUp } = useAuth();
 
   const [email, setEmail] = useState(undefined as string | undefined);
   const [password, setPassword] = useState(undefined as string | undefined);
@@ -23,7 +23,7 @@ function Signup() {
 
     // Todo verify
     try {
-      await createUser(displayName, email, password);
+      await signUp(displayName, email, password);
     } catch (error) {
       alert(error);
     }

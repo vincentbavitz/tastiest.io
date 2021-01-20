@@ -4,7 +4,7 @@ import client from '../client';
 import { IState } from '../state/reducers';
 import { setSearchResultItems } from '../state/search';
 import { ISanityArticle } from '../types/article';
-import { IRecentSearch, USER_DATA } from '../types/firebase';
+import { IRecentSearch, UserData } from '../types/firebase';
 import { useAuth } from './auth';
 import { useUserData } from './userData';
 
@@ -79,7 +79,7 @@ export function useSearch() {
         timestamp: Date.now(),
       };
 
-      setUserData(USER_DATA.RECENT_SEARCHES, [
+      setUserData(UserData.RECENT_SEARCHES, [
         ...(userData?.recentSearches ?? []),
         recentSearch,
       ]);

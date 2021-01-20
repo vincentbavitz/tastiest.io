@@ -3,7 +3,7 @@ import HeySpriteSVG from '../../../assets/svgs/article/hey-sprite.svg';
 import { ScreenContext } from '../../../contexts/screen';
 import { useAuth } from '../../../hooks/auth';
 import { useUserData } from '../../../hooks/userData';
-import { USER_DATA } from '../../../types/firebase';
+import { UserData } from '../../../types/firebase';
 import { Button } from '../../Button';
 import { Title } from '../../Title';
 
@@ -23,7 +23,7 @@ export function ArticleWidgetOrderNow(deal: IOrderDeal) {
   const { userData, setUserData } = useUserData();
 
   const submit = () => {
-    setUserData(USER_DATA.DISPLAY_NAME, '234324');
+    setUserData(UserData.DISPLAY_NAME, '234324');
   };
 
   return (

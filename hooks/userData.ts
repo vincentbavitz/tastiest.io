@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
 import { IState } from '../state/reducers';
-import { IUserData, TUserData, USER_DATA } from '../types/firebase';
+import { IUserData, TUserData, UserData } from '../types/firebase';
 import { useAuth } from './auth';
 
 interface IUseUserData {
   userData: Partial<IUserData>;
-  setUserData: <T extends USER_DATA>(
+  setUserData: <T extends UserData>(
     field: T,
     value: TUserData<T>,
     onInvalidUser?: () => void,
@@ -31,7 +31,7 @@ export function useUserData(): IUseUserData {
     ({ firestore: { data } }: IState) => data.users && data.users[user?.uid],
   );
 
-  const setUserData = <T extends USER_DATA>(
+  const setUserData = <T extends UserData>(
     field: T,
     value: TUserData<T>,
     onInvalidUser?: () => void,

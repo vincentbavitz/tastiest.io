@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
+import { UI } from '../../constants';
 import { collapseSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 
@@ -17,7 +18,7 @@ export function SearchOverlayBackdrop() {
   return (
     <div
       onClick={onClickAway}
-      style={{ zIndex: searchOverlayExpanded ? 20000 : -1 }}
+      style={{ zIndex: searchOverlayExpanded ? UI.Z_INDEX_SEARCH_OVERLAY : -1 }}
       className={classNames(
         'fixed',
         'bottom-0',

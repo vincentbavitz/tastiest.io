@@ -14,7 +14,7 @@ export const useAuth = () => {
 
   const signIn = async (email: string, password: string) => {
     const attemptSignIn = async () =>
-      await firebase.auth().signInWithEmailAndPassword(email, password);
+      firebase.auth().signInWithEmailAndPassword(email, password);
 
     try {
       // Retry on fail
@@ -29,6 +29,7 @@ export const useAuth = () => {
       }
 
       if (user) {
+        firebase.auth().currentUser.sendEmailVerification();
         router.push('/account');
         return { user };
       }
@@ -49,7 +50,15 @@ export const useAuth = () => {
     }
   };
 
-  const createUser = async (
+  const resetPassword = async () => {
+    if (!user.email) {
+      return;
+    }
+
+    return firebase.auth().sendPasswordResetEmail(user.email);
+  };
+
+  const signUp = async (
     displayName: string,
     email: string,
     password: string,
@@ -72,7 +81,8 @@ export const useAuth = () => {
     user,
     signIn,
     signOut,
-    createUser,
+    resetPassword,
+    signUp,
     isSignedIn,
   };
 };

@@ -1,6 +1,6 @@
 import { CuisineSymbol } from './cuisine';
 
-export enum USER_DATA {
+export enum UserData {
   DISPLAY_NAME = 'displayName',
   BOOKINGS = 'bookings',
   COVERS = 'covers',
@@ -37,30 +37,30 @@ export interface IRecentSearch {
 }
 
 // prettier-ignore
-export type TUserData<T extends USER_DATA> =
+export type TUserData<T extends UserData> =
     // User profile
-    T extends USER_DATA.DISPLAY_NAME ? string :
-    T extends USER_DATA.PROFILE_PICTURE_URL ? string :
-    T extends USER_DATA.REFERRED_FROM ? string :
+    T extends UserData.DISPLAY_NAME ? string :
+    T extends UserData.PROFILE_PICTURE_URL ? string :
+    T extends UserData.REFERRED_FROM ? string :
 
     // User actions
-    T extends USER_DATA.RECENT_SEARCHES ? Array<IRecentSearch> :
+    T extends UserData.RECENT_SEARCHES ? Array<IRecentSearch> :
 
     // User favourites
-    T extends USER_DATA.SAVED_ARTICLES ? Array<string> :
-    T extends USER_DATA.FAVOURITE_CUISINES ? Array<CuisineSymbol> :
-    T extends USER_DATA.FAVOURITE_RESTAURANTS? Array<string> :
+    T extends UserData.SAVED_ARTICLES ? Array<string> :
+    T extends UserData.FAVOURITE_CUISINES ? Array<CuisineSymbol> :
+    T extends UserData.FAVOURITE_RESTAURANTS? Array<string> :
 
     // User orders
-    T extends USER_DATA.BOOKINGS ? Array<IBooking> :
-    T extends USER_DATA.COVERS ? Array<ICover> : 
-    T extends USER_DATA.RESTAURANTS_VISITED ? Array<string> :
+    T extends UserData.BOOKINGS ? Array<IBooking> :
+    T extends UserData.COVERS ? Array<ICover> : 
+    T extends UserData.RESTAURANTS_VISITED ? Array<string> :
 
     // User metadata
-    T extends USER_DATA.USER_SESSIONS ? Array<IUserSession> :
+    T extends UserData.USER_SESSIONS ? Array<IUserSession> :
 
     never;
 
 export type IUserData = {
-  [key in USER_DATA]: TUserData<key>;
+  [key in UserData]: TUserData<key>;
 };

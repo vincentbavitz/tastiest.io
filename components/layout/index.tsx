@@ -15,6 +15,7 @@ export default function Layout({ children }: Props) {
         <SearchOverlay />
         <Header />
         <CuisineBar />
+
         <div className="flex-grow">{children}</div>
       </div>
 

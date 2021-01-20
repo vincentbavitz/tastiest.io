@@ -26,6 +26,9 @@ export const navigationReducer = (
     case NavigationActions.TOGGLE_SEARCH_OVERLAY: {
       return { ...state, searchOverlayExpanded: !state.searchOverlayExpanded };
     }
+    case NavigationActions.SET_MODAL_IS_OPEN: {
+      return { ...state, modalIsOpen: action.payload };
+    }
     default:
       return state;
   }
