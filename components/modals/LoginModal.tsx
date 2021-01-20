@@ -24,7 +24,7 @@ enum LoginFlowStep {
 }
 
 export function LoginModal(props: Props) {
-  const { signIn, signUp, resetPassword, isSignedIn } = useAuth();
+  const { signIn, signUp, resetPassword, isSignedIn, error } = useAuth();
 
   const router = useRouter();
 
@@ -138,19 +138,20 @@ export function LoginModal(props: Props) {
     <>
       <p>
         Forgot password?{' '}
-        <a className="font-semibold" onClick={resetPassword}>
+        <a className="cursor-pointer font-semibold" onClick={resetPassword}>
           Reset
         </a>
       </p>
       <p>
         Don't have an account?{' '}
         <a
-          className="font-semibold"
+          className="cursor-pointer font-semibold"
           onClick={() => setStep(LoginFlowStep.SIGN_UP)}
         >
           Sign Up
         </a>
       </p>
+      {error && <div className="mb-1 text-red-700">{error?.message}</div>}
     </>
   );
 
@@ -159,12 +160,13 @@ export function LoginModal(props: Props) {
       <p>
         Already have an account?{' '}
         <a
-          className="font-semibold"
+          className="cursor-pointer font-semibold"
           onClick={() => setStep(LoginFlowStep.SIGN_IN)}
         >
           Sign In
         </a>
       </p>
+      {error && <div className="mb-1 text-red-700">{error?.message}</div>}
     </>
   );
 
@@ -197,12 +199,11 @@ export function LoginModal(props: Props) {
   return (
     <Modal modalId={ModalInstance.LOGIN} {...props}>
       <div
-        style={{ maxWidth: '350px', height: '480px', maxHeight: '90vw' }}
-        className="relative flex flex-col justify-between pb-3"
+        style={{ maxWidth: '350px', height: '490px', maxHeight: '90vh' }}
+        className="relative flex flex-col justify-between"
       >
         <div className="flex flex-col flex-grow items-center space-y-5">
           <TastiestLogo className="fill-current h-8" />
-
           <div className="w-full text-center">
             <h1 className="font-somatic text-fourxl">{title}</h1>
             {subtitle && (
@@ -211,17 +212,16 @@ export function LoginModal(props: Props) {
           </div>
 
           <div className="flex flex-col w-full space-y-4 pt-2">{content}</div>
-
           <div className="text-center text-sm">{subtext}</div>
         </div>
 
         <div className="text-xs">
           By proceeding, you agree to our{' '}
-          <a href="/privacy" className="underline font-semibold">
+          <a href="/privacy" className="underline cursor-pointer font-semibold">
             Terms of Use
           </a>{' '}
           and confirm that you have read our{' '}
-          <a href="/privacy" className="underline font-semibold">
+          <a href="/privacy" className="underline cursor-pointer font-semibold">
             Privacy and Cookie Statement
           </a>
         </div>

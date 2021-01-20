@@ -1,6 +1,6 @@
 import firebaseApp from 'firebase/app';
 import { useRouter } from 'next/router';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useFirebase } from 'react-redux-firebase';
 import { AuthContext } from '../contexts/auth';
 import { titleCase } from '../utils/text';
@@ -9,6 +9,7 @@ export const useAuth = () => {
   const firebase = useFirebase();
   const router = useRouter();
   const { user } = useContext(AuthContext);
+  const [error, setError] = useState<Error | undefined>();
 
   const MAX_LOGIN_ATTEMPTS = 3;
 
@@ -34,7 +35,7 @@ export const useAuth = () => {
         return { user };
       }
     } catch (error) {
-      return { error };
+      setError(error);
     }
   };
 
@@ -63,26 +64,31 @@ export const useAuth = () => {
     email: string,
     password: string,
   ) => {
-    await firebase.auth().createUserWithEmailAndPassword(email, password);
+    try {
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
 
-    const user = firebase.auth().currentUser;
-    if (user) {
-      await user.updateProfile({
-        displayName: titleCase(displayName),
-      });
+      const user = firebase.auth().currentUser;
+      if (user) {
+        await user.updateProfile({
+          displayName: titleCase(displayName),
+        });
+      }
+
+      router.push('/account');
+    } catch (e) {
+      setError(error);
     }
-
-    router.push('/account');
   };
 
   const isSignedIn = Boolean(user);
 
   return {
     user,
+    signUp,
     signIn,
     signOut,
     resetPassword,
-    signUp,
     isSignedIn,
+    error,
   };
 };
