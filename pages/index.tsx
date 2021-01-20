@@ -30,7 +30,7 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
 
   console.log('posts', posts);
 
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
 
   const { userData } = useUserData();
   console.log('userData', userData);

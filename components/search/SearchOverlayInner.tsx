@@ -56,12 +56,12 @@ export function SearchOverlayInner() {
     searchState.searchQuery.length > 0 &&
     searchState?.searchResultItems?.length === 0;
 
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
   const router = useRouter();
 
   return (
     <>
-      <div className={classNames('w-full', isMobile ? 'px-0' : 'px-4')}>
+      <div className={classNames('w-full', !isDesktop ? 'px-0' : 'px-4')}>
         <div className="border-secondary border-opacity-50 border-t-2"></div>
       </div>
 
@@ -77,14 +77,14 @@ function SearchOverlayInnerDefault() {
     (state: IState) => state.search,
   );
 
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
   const router = useRouter();
 
   return (
     <div
       className={classNames(
         'w-full px-4',
-        isMobile && 'flex flex-col h-full justify-between',
+        !isDesktop && 'flex flex-col h-full justify-between',
       )}
     >
       {/* FEATURED DYNAMIC CATEGORIES */}
@@ -118,7 +118,9 @@ function SearchOverlayInnerDefault() {
                   onClick={() =>
                     router.push(`/search/?cuisine=${cuisine.href}`)
                   }
-                  size={!isMobile && searchBarPinnedToHeader ? 'tiny' : 'small'}
+                  size={
+                    !!isDesktop && searchBarPinnedToHeader ? 'tiny' : 'small'
+                  }
                   className="font-medium"
                   key={cuisine.name}
                 >
@@ -155,7 +157,7 @@ function SearchOverlayInnerDefault() {
 
 function SearchOverlayInnerResults() {
   const { results: allResults, query: searchQuery } = useSearch();
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
   const router = useRouter();
 
   // Sort results by popularity and filter down to four results
@@ -166,9 +168,9 @@ function SearchOverlayInnerResults() {
     <>
       <div
         className={classNames('flex flex-wrap', [
-          isMobile ? 'mt-10 px-0' : 'mt-6 px-4',
-          `children:odd:${isMobile ? 'pr-4' : 'pr-2'}`,
-          `children:even:${isMobile ? 'pl-4' : 'pl-2'}`,
+          !isDesktop ? 'mt-10 px-0' : 'mt-6 px-4',
+          `children:odd:${!isDesktop ? 'pr-4' : 'pr-2'}`,
+          `children:even:${!isDesktop ? 'pl-4' : 'pl-2'}`,
         ])}
       >
         {results?.map(card => (
@@ -180,12 +182,12 @@ function SearchOverlayInnerResults() {
       <div
         className={classNames(
           'flex w-full justify-center px-6',
-          isMobile ? 'mb-6' : 'mb-0',
+          !isDesktop ? 'mb-6' : 'mb-0',
         )}
       >
         <Button
           color="primary"
-          size={isMobile ? 'medium' : 'small'}
+          size={!isDesktop ? 'medium' : 'small'}
           onClick={() =>
             router.push({
               pathname: '/search',
@@ -201,11 +203,13 @@ function SearchOverlayInnerResults() {
 }
 
 function SearchOverlayInnerNoResults() {
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
 
   return (
     <div
-      className={classNames('flex flex-col mt-4', [isMobile ? 'px-0' : 'px-4'])}
+      className={classNames('flex flex-col mt-4', [
+        !isDesktop ? 'px-0' : 'px-4',
+      ])}
     >
       No results found. Would you like to suggest a dish?
       <Button>Suggest</Button>

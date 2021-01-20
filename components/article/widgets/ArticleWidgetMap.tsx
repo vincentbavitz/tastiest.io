@@ -12,20 +12,20 @@ interface Props {
 }
 
 export function ArticleWidgetMap({ city, location, restaurantName }: Props) {
-  const { isMobile, isDesktop } = useContext(ScreenContext);
+  const { isDesktop, isDesktop } = useContext(ScreenContext);
 
   console.log('ArticleWidgetMap ➡️ location:', location);
 
   return (
     <div className="flex flex-col w-full desktop:flex-row desktop:justify-center desktop:space-x-8">
-      {isMobile && <CityIndictor city={city} />}
+      {!isDesktop && <CityIndictor city={city} />}
       <div className="mt-4 h-40 desktop:h-auto desktop:mt-0 desktop:w-1/2 w-full rounded-xl overflow-hidden">
         <img
           className="h-full w-full object-cover border-4 border-primary "
           src={getMapBoxStaticSource(
             location.lat,
             location.lng,
-            isMobile ? 1200 : 400,
+            !isDesktop ? 1200 : 400,
           )}
         />
       </div>

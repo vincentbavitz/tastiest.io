@@ -3,7 +3,8 @@ import 'firebase/auth';
 import 'firebase/firestore'; // <- needed if using firestore
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import React, { useEffect } from 'react';
+import Router, { useRouter } from 'next/router';
+import React, { useContext, useEffect } from 'react';
 import { Provider as StoreProvider } from 'react-redux';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import { useLocation } from 'react-use';
@@ -13,8 +14,9 @@ import '../assets/style.scss';
 import Layout from '../components/layout';
 import { FIREBASE, METADATA } from '../constants';
 import { AuthProvider } from '../contexts/auth';
-import ScreenProvider from '../contexts/screen';
-import { collapseSearchOverlay } from '../state/navigation';
+import ScreenProvider, { ScreenContext } from '../contexts/screen';
+import { useAuth } from '../hooks/auth';
+import { collapseSearchOverlay, openSignInModal } from '../state/navigation';
 import { rootReducer } from '../state/reducers';
 
 if (!firebase.apps.length) {
@@ -35,14 +37,22 @@ const rrfProps = {
   createFirestoreInstance,
 };
 
+// Router.events.on('routeChangeComplete', ctx => {});
+
 function App({ Component, pageProps }: AppProps) {
+  const { isSignedIn } = useAuth();
+  const router = useRouter();
+
   // Close search overlay on page changed
   const location = useLocation();
   useEffect(() => {
     store.dispatch(collapseSearchOverlay());
-  }, [location.pathname, location.search]);
 
-  // const { info } = useGetInfo();
+    // Open login modal from URL params
+    if (router.query?.login === '1' && !isSignedIn) {
+      store.dispatch(openSignInModal());
+    }
+  }, [location.pathname, location.search]);
 
   return (
     <StoreProvider store={store}>

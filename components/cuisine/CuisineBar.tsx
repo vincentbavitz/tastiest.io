@@ -125,7 +125,7 @@ export function CuisineBar(props: Props) {
 //           className={classNames('flex md:px-0 overflow-y-visible')}
 //           style={{
 //             width: 'fit-content',
-//             marginLeft: `${isMobile ? UI.PAGE_CONTAINED_PADDING_VW : 0}vw`,
+//             marginLeft: `${!isDesktop ? UI.PAGE_CONTAINED_PADDING_VW : 0}vw`,
 //           }}
 //         >
 //           {Object.values(CUISINES).map(cuisine => (

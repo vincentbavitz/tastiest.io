@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function CardGrid({ children }: Props) {
-  const { isMobile, isTablet, isDesktop, isHuge } = useContext(ScreenContext);
+  const { isDesktop, isTablet, isDesktop, isHuge } = useContext(ScreenContext);
 
   return (
     <div className="flex flex-col space-y-4">

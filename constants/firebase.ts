@@ -2,7 +2,7 @@ export interface IFirestore {
   data: any;
 }
 
-const CERT = {
+export const CERT = {
   privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
   clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
   projectId: process.env.FIREBASE_PROJECT_ID,
@@ -19,11 +19,6 @@ const FIREBASE = {
     appId: process.env.FIREBASE_APP_ID,
     measurementId: process.env.FIREBASE_MEASUREMENT_ID,
   },
-  // ADMIN_CONFIG: {
-  //   credential: firebaseAdmin.credential.cert(CERT),
-  //   databaseURL: process.env.FIREBASE_DATABASE_URL,
-  // },
-  // react-redux-firebase config
   RRF_CONFIG: {},
 };
 

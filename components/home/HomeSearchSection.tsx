@@ -13,7 +13,7 @@ export function HomeSearchSection(): JSX.Element {
   const { searchOverlayExpanded } = navigationState;
   const dispatch = useDispatch();
 
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
 
   return (
     <div className="flex flex-col items-center">
@@ -23,18 +23,20 @@ export function HomeSearchSection(): JSX.Element {
       <div className="relative w-full">
         <div
           style={{
-            width: isMobile ? '180%' : '100%',
-            marginLeft: isMobile ? '-40%' : 'unset',
+            width: !isDesktop ? '180%' : '100%',
+            marginLeft: !isDesktop ? '-40%' : 'unset',
           }}
         >
           <HomeHeroSVG />
           <div className="flex items-center justify-center w-full absolute top-0 right-0 bottom-0 left-0">
             <div
-              className={isMobile ? 'w-full' : 'w-7/12'}
+              className={!isDesktop ? 'w-full' : 'w-7/12'}
               style={{
-                marginTop: isMobile ? '33%' : '16.5%',
+                marginTop: !isDesktop ? '33%' : '16.5%',
                 zIndex:
-                  !isMobile && searchOverlayExpanded && !searchBarPinnedToHeader
+                  !!isDesktop &&
+                  searchOverlayExpanded &&
+                  !searchBarPinnedToHeader
                     ? 20001
                     : 1,
               }}

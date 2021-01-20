@@ -17,7 +17,7 @@ export function AuthProvider({ children }: any) {
     }
 
     firebase.auth().onIdTokenChanged(async user => {
-      console.log(`token changed!`);
+      console.log(`token changed! sfdsafasdfdsaf`);
       if (!user) {
         console.log(`no token found...`);
         setUser(null);
@@ -27,9 +27,9 @@ export function AuthProvider({ children }: any) {
       }
 
       try {
-        const token = await user.getIdToken();
-
         setUser(user);
+
+        const token = await user.getIdToken();
         nookies.destroy(null, 'token');
         nookies.set(null, 'token', token, {});
       } catch (e) {

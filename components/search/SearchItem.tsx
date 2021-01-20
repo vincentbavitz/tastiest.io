@@ -14,7 +14,7 @@ export function SearchItem(props: ISanityArticle) {
   const router = useRouter();
   const { title, featureImage, city, cuisine, slug } = props;
 
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
 
   const handleClick = (e: SyntheticEvent) => {
     const { href, as } = generateURL({ city, cuisine, slug });
@@ -37,7 +37,7 @@ export function SearchItem(props: ISanityArticle) {
       )}
       onClick={e => handleClick(e)}
     >
-      <div className={classNames('w-full', isMobile && 'h-64')}>
+      <div className={classNames('w-full', !isDesktop && 'h-64')}>
         <img
           className="w-full h-full"
           src={featureImage.source}

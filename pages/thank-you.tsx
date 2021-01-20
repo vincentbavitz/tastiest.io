@@ -9,7 +9,7 @@ import { ScreenContext } from '../contexts/screen';
 import { SVG } from '../types';
 
 function ThankYou() {
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
 
   return (
     <Contained>
@@ -32,7 +32,7 @@ function ThankYou() {
           <div className="flex flex-col items-center text-center">
             <h1 className="font-somatic text-primary text-sevenxl">Yay!</h1>
             <h2
-              style={{ maxWidth: isMobile ? '28rem' : '50rem' }}
+              style={{ maxWidth: !isDesktop ? '28rem' : '50rem' }}
               className="font-somatic text-primary text-twoxl"
             >
               Thank you and congratulations on taking advantage of this offer.
@@ -63,7 +63,7 @@ interface BookingSectionProps {
 }
 
 function BookingSection(props: BookingSectionProps) {
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
   const promptText = (
     <>
       Please quote <b>"Tastiest"</b> when you book to get this offer!
@@ -75,13 +75,13 @@ function BookingSection(props: BookingSectionProps) {
       <div className="flex flex-row justify-center items-start mobile:items-center space-x-6">
         <div className="flex flex-col items-start">
           <h2
-            style={{ maxWidth: isMobile ? '16rem' : '13rem' }}
+            style={{ maxWidth: !isDesktop ? '16rem' : '13rem' }}
             className="font-somatic text-threexl mobile:text-fourxl leading-tight"
           >
             {props.title}
           </h2>
 
-          {!isMobile && (
+          {!!isDesktop && (
             <>
               <props.buttonSvg
                 onClick={() => null}
@@ -102,7 +102,7 @@ function BookingSection(props: BookingSectionProps) {
         </div>
       </div>
 
-      {isMobile && (
+      {!isDesktop && (
         <div className="flex flex-col items-center space-y-4">
           <props.buttonSvg
             onClick={() => null}

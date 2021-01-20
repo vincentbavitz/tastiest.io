@@ -1,21 +1,16 @@
-import { useRouter } from 'next/router';
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import TastiestLogo from '../../assets/svgs/brand.svg';
 import EmailSVG from '../../assets/svgs/email.svg';
 import PasswordSVG from '../../assets/svgs/lock.svg';
 import { METADATA } from '../../constants';
+import { ScreenContext } from '../../contexts/screen';
 import { useAuth } from '../../hooks/auth';
-import { ModalInstance } from '../../state/navigation';
+import { closeSignInModal, ModalInstance } from '../../state/navigation';
+import { IState } from '../../state/reducers';
 import { Button } from '../Button';
 import { Input } from '../Input';
 import { Modal } from '../Modal';
-
-interface Props {
-  isOpen: boolean;
-  close?: () => void;
-}
 
 enum LoginFlowStep {
   CONTINUE = 'CONTINUE',
@@ -23,10 +18,15 @@ enum LoginFlowStep {
   SIGN_UP = 'SIGN_UP',
 }
 
-export function LoginModal(props: Props) {
+export function LoginModal() {
   const { signIn, signUp, resetPassword, isSignedIn, error } = useAuth();
+  const { isSignInModalOpen } = useSelector(
+    (state: IState) => state.navigation,
+  );
 
-  const router = useRouter();
+  const isOpen = isSignInModalOpen && !isSignedIn;
+  const { isMobile } = useContext(ScreenContext);
+  const dispatch = useDispatch();
 
   const [signInEmail, setSignInEmail] = useState('');
   const [signUpEmail, setSignUpEmail] = useState('');
@@ -34,23 +34,12 @@ export function LoginModal(props: Props) {
   const [signUpPassword, setSignUpPassword] = useState('');
   const [step, setStep] = useState<LoginFlowStep>(LoginFlowStep.CONTINUE);
 
-  if (isSignedIn) {
-    return null;
-  }
-
+  // Close if the user is signed in
   useEffect(() => {
-    console.log('LoginModal ➡️ signInEmail:', signInEmail);
-    console.log('LoginModal ➡️ signUpEmail:', signUpEmail);
-    console.log('LoginModal ➡️ signInPassword:', signInPassword);
-    console.log('LoginModal ➡️ signUpPassword:', signUpPassword);
-    console.log('LoginModal ➡️ router.pathname;:', router.pathname);
-  }, [
-    signInEmail,
-    signUpEmail,
-    signInPassword,
-    signUpPassword,
-    router.pathname,
-  ]);
+    if (isSignedIn) {
+      dispatch(closeSignInModal());
+    }
+  }, []);
 
   const continueContent = (
     <Button
@@ -74,10 +63,12 @@ export function LoginModal(props: Props) {
         className="rounded-xl py-2"
         placeholder="Email address"
         prefix={<EmailSVG className="h-6" />}
+        suffix={<>!</>}
         value={signInEmail}
         maxLength={50}
-        onValueChange={value => setSignInEmail(value)}
+        onValueChange={value => setSignInEmail(cleanupInputValue(value))}
       ></Input>
+
       <Input
         size="large"
         type="password"
@@ -85,21 +76,31 @@ export function LoginModal(props: Props) {
         placeholder="Password"
         prefix={<PasswordSVG className="ml-2 mr-2 h-8" />}
         value={signInPassword}
-        onValueChange={value => setSignInPassword(value)}
+        onValueChange={value => setSignInPassword(cleanupInputValue(value))}
         maxLength={50}
       ></Input>
+
       <Button
         wide
         size="large"
         type="solid"
         color="primary"
         className="rounded-xl py-3"
-        onClick={() => signIn('sd', 'sd')}
+        onClick={() => signIn(signInEmail, signInPassword)}
       >
         Sign In
       </Button>
+
+      {error && (
+        <div className="text-sm text-center mb-1 -mt-1 text-red-700">
+          {error?.message}
+        </div>
+      )}
     </>
   );
+
+  const cleanupInputValue = (value: string | number) =>
+    String(value).toLowerCase().trim();
 
   const signUpContent = (
     <>
@@ -110,8 +111,9 @@ export function LoginModal(props: Props) {
         placeholder="Email address"
         prefix={<EmailSVG className="h-6" />}
         value={signUpEmail}
-        onValueChange={value => setSignUpEmail(value)}
+        onValueChange={value => setSignUpEmail(cleanupInputValue(value))}
       ></Input>
+
       <Input
         size="large"
         type="password"
@@ -119,8 +121,9 @@ export function LoginModal(props: Props) {
         placeholder="Create a password"
         prefix={<PasswordSVG className="ml-2 mr-2 h-8" />}
         value={signUpPassword}
-        onValueChange={value => setSignUpPassword(value)}
+        onValueChange={value => setSignUpPassword(cleanupInputValue(value))}
       ></Input>
+
       <Button
         wide
         size="large"
@@ -131,6 +134,12 @@ export function LoginModal(props: Props) {
       >
         Join
       </Button>
+
+      {error && (
+        <div className="text-sm text-center mb-1 -mt-1 text-red-700">
+          {error?.message}
+        </div>
+      )}
     </>
   );
 
@@ -151,7 +160,6 @@ export function LoginModal(props: Props) {
           Sign Up
         </a>
       </p>
-      {error && <div className="mb-1 text-red-700">{error?.message}</div>}
     </>
   );
 
@@ -166,7 +174,6 @@ export function LoginModal(props: Props) {
           Sign In
         </a>
       </p>
-      {error && <div className="mb-1 text-red-700">{error?.message}</div>}
     </>
   );
 
@@ -196,10 +203,23 @@ export function LoginModal(props: Props) {
     step === LoginFlowStep.SIGN_UP? signUpSubtext :
     null;
 
+  if (isSignedIn) {
+    return null;
+  }
+
   return (
-    <Modal modalId={ModalInstance.LOGIN} {...props}>
+    <Modal
+      isOpen={isOpen}
+      onMobileFullscreen
+      modalId={ModalInstance.LOGIN}
+      close={() => dispatch(closeSignInModal())}
+    >
       <div
-        style={{ maxWidth: '350px', height: '490px', maxHeight: '90vh' }}
+        style={{
+          width: isMobile ? '100%' : '350px',
+          height: isMobile ? '100%' : '510px',
+          minHeight: '500px',
+        }}
         className="relative flex flex-col justify-between"
       >
         <div className="flex flex-col flex-grow items-center space-y-5">

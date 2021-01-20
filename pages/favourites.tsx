@@ -14,7 +14,7 @@ import { getArticlesHaving } from '../utils/article';
 import { getTopPosts } from '../utils/posts';
 
 function Favourites() {
-  const { isMobile, isTablet, isDesktop, isHuge } = useContext(ScreenContext);
+  const { isDesktop, isTablet, isDesktop, isHuge } = useContext(ScreenContext);
   const { userData = {}, setUserData } = useUserData();
   const { isSignedIn } = useAuth();
   const router = useRouter();
@@ -64,7 +64,7 @@ function Favourites() {
   return (
     <div>
       <div className="relative w-full mb-12 mt-6">
-        {isMobile ? (
+        {!isDesktop ? (
           <>
             <FavouritesBackdropSVG
               style={{

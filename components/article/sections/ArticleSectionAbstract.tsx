@@ -21,11 +21,11 @@ const EATING_CHARACTER_SIZE_REM = 22;
 export function ArticleSectionAbstract(props: Props) {
   const { city, location, video, restaurantName, children } = props;
 
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
 
   return (
     <Contained backgroundColor="secondary-1">
-      {isMobile ? <CharacterEatingMobile /> : <CharacterEatingDesktop />}
+      {!isDesktop ? <CharacterEatingMobile /> : <CharacterEatingDesktop />}
 
       <div className="flex flex-col items-center desktop:pt-6 mb-16 space-y-10">
         {children}

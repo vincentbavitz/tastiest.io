@@ -31,8 +31,7 @@ export const useAuth = () => {
 
       if (user) {
         firebase.auth().currentUser.sendEmailVerification();
-        router.push('/account');
-        return { user };
+        return user;
       }
     } catch (error) {
       setError(error);
@@ -42,12 +41,18 @@ export const useAuth = () => {
   // If redirectTo is given, will redirect there after sign out.
   // Else, the page will simply reload.
   const signOut = async (redirectTo?: string) => {
-    await firebase.auth().signOut();
+    setError(undefined);
 
-    if (redirectTo) {
-      router.push(redirectTo);
-    } else {
-      router.reload();
+    try {
+      await firebase.auth().signOut();
+
+      if (redirectTo) {
+        router.push(redirectTo);
+      } else {
+        router.reload();
+      }
+    } catch (error) {
+      setError(error);
     }
   };
 
@@ -64,6 +69,8 @@ export const useAuth = () => {
     email: string,
     password: string,
   ) => {
+    setError(undefined);
+
     try {
       await firebase.auth().createUserWithEmailAndPassword(email, password);
 
@@ -73,8 +80,6 @@ export const useAuth = () => {
           displayName: titleCase(displayName),
         });
       }
-
-      router.push('/account');
     } catch (e) {
       setError(error);
     }

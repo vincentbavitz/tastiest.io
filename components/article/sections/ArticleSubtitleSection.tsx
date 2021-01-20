@@ -7,7 +7,7 @@ interface Props {
 }
 
 export function ArticleSubtitleSection({ subtitle }: Props) {
-  const { isMobile, isDesktop } = useContext(ScreenContext);
+  const { isDesktop, isDesktop } = useContext(ScreenContext);
 
   return (
     <Contained>

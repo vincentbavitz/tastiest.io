@@ -17,7 +17,7 @@ interface Props extends Partial<ISanityArticle> {
 
 export function ArticleCardFavourite(props: Props): JSX.Element {
   const { id, featureImage, title, city, slug, cuisine, isFavourite } = props;
-  const { isMobile, isTablet, isDesktop, isHuge } = useContext(ScreenContext);
+  const { isDesktop, isTablet, isDesktop, isHuge } = useContext(ScreenContext);
 
   const { toggleSaveArticle } = useArticle();
   const [ref, { width }] = useMeasure();
@@ -64,7 +64,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
             paddingBottom: '2.1em',
           }}
           className={classNames(
-            isMobile ? 'text-base' : isSmall ? 'text-lg' : 'text-twoxl',
+            !isDesktop ? 'text-base' : isSmall ? 'text-lg' : 'text-twoxl',
             'font-somatic text-primary overflow-hidden cursor-pointer',
           )}
         >
@@ -79,16 +79,16 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
             className="flex items-center cursor-pointer"
           >
             {isFavourite ? (
-              <HeartFilledPrimarySVG className={isMobile ? 'h-8' : 'h-8'} />
+              <HeartFilledPrimarySVG className={!isDesktop ? 'h-8' : 'h-8'} />
             ) : (
-              <HeartPrimayrSVG className={isMobile ? 'h-8' : 'h-8'} />
+              <HeartPrimayrSVG className={!isDesktop ? 'h-8' : 'h-8'} />
             )}
-            {!isMobile && isFavourite ? 'Unsave' : 'Save'}
+            {!!isDesktop && isFavourite ? 'Unsave' : 'Save'}
           </div>
 
           <div className="flex items-center cursor-pointer">
-            <ShareSVG className={isMobile ? 'h-8' : 'h-8'} />
-            {!isMobile && 'Share'}
+            <ShareSVG className={!isDesktop ? 'h-8' : 'h-8'} />
+            {!!isDesktop && 'Share'}
           </div>
         </div>
       </div>

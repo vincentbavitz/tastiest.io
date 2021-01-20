@@ -14,21 +14,21 @@ import { HeaderSavedPlaces } from './HeaderSavedPlaces';
 import { HeaderSearch } from './HeaderSearch';
 
 export function Header() {
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
   const { user } = useAuth();
 
   const handleAvatarClick = () => {
     null;
   };
 
-  // return <div>{isMobile ? <MobileHeader /> : <DesktopHeader />}</div>;
+  // return <div>{!isDesktop ? <MobileHeader /> : <DesktopHeader />}</div>;
 
   return (
     <div className="flex flex-col w-full">
       <div className="fixed" style={{ zIndex: 333333 }}>
         {user?.email || 'no user signed in'}
       </div>
-      <div>{isMobile ? <MobileHeader /> : <DesktopHeader />}</div>
+      <div>{!isDesktop ? <MobileHeader /> : <DesktopHeader />}</div>
     </div>
   );
 }

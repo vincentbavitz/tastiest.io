@@ -26,6 +26,12 @@ export const navigationReducer = (
     case NavigationActions.TOGGLE_SEARCH_OVERLAY: {
       return { ...state, searchOverlayExpanded: !state.searchOverlayExpanded };
     }
+    case NavigationActions.OPEN_SIGN_IN_MODAL: {
+      return { ...state, isSignInModalOpen: true };
+    }
+    case NavigationActions.CLOSE_SIGN_IN_MODAL: {
+      return { ...state, isSignInModalOpen: false };
+    }
     case NavigationActions.SET_MODAL_IS_OPEN: {
       return { ...state, modalIsOpen: action.payload };
     }

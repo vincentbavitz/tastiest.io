@@ -98,7 +98,7 @@ function Tastiest404() {
                     'rounded-lg',
                     'text-center',
                     'tracking-tight',
-                    isMobile ? 'text-lg' : 'text-sm',
+                    !isDesktop ? 'text-lg' : 'text-sm',
                   )}
                 >
                   Discover food
@@ -110,7 +110,7 @@ function Tastiest404() {
           <div
             className={classNames(
               'z-10 flex items-start',
-              isMobile ? '-mt-10' : 'mt-0',
+              !isDesktop ? '-mt-10' : 'mt-0',
             )}
           >
             <div className="flex-col flex-grow z-50 my-4">
@@ -137,8 +137,8 @@ function Tastiest404() {
                 role="button"
                 className={classNames(
                   'bg-primary cursor-pointer mt-4 text-white font-somatic px-4 py-2 select-none rounded-lg text-center',
-                  isMobile ? 'text-lg' : 'text-sm',
-                  isMobile ? 'w-full' : 'w-4/12',
+                  !isDesktop ? 'text-lg' : 'text-sm',
+                  !isDesktop ? 'w-full' : 'w-4/12',
                 )}
               >
                 Send

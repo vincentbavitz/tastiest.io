@@ -1,7 +1,10 @@
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { ScreenContext } from '../../contexts/screen';
 import { useAuth } from '../../hooks/auth';
+import { openSignInModal } from '../../state/navigation';
+import { IState } from '../../state/reducers';
 import { Avatar } from '../Avatar';
 import { Dropdown } from '../Dropdown';
 import { DropdownItem } from '../DropdownItem';
@@ -16,11 +19,15 @@ interface IProfileDropdownItems {
 
 export function HeaderAvatar() {
   const { isSignedIn, signOut } = useAuth();
+  const { isSignInModalOpen } = useSelector(
+    (state: IState) => state.navigation,
+  );
+
+  const dispatch = useDispatch();
   const router = useRouter();
 
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
 
   // Close dropdown on route change
   useEffect(() => {
@@ -83,7 +90,7 @@ export function HeaderAvatar() {
     }
 
     setIsDropdownOpen(false);
-    setLoginModalIsOpen(true);
+    dispatch(openSignInModal());
   };
 
   return (
@@ -108,11 +115,6 @@ export function HeaderAvatar() {
           </DropdownItem>
         ))}
       </Dropdown>
-
-      <LoginModal
-        isOpen={loginModalIsOpen}
-        close={() => setLoginModalIsOpen(false)}
-      />
     </div>
   );
 }

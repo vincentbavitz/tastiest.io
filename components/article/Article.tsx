@@ -9,12 +9,16 @@ import { ArticleSubtitleSection } from './sections/ArticleSubtitleSection';
 import { ArticleSaveShareWidget } from './widgets/ArticleSaveShareWidget';
 
 export function Article(props: IArticle) {
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
   const article = props;
 
   return (
     <div>
-      {isMobile ? <ArticleMobile {...props} /> : <ArticleDesktop {...props} />}
+      {!isDesktop ? (
+        <ArticleMobile {...props} />
+      ) : (
+        <ArticleDesktop {...props} />
+      )}
       <RecommendForm dish={article.dishName} city={article.city} />
     </div>
   );

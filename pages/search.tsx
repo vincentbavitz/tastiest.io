@@ -36,7 +36,7 @@ function Search(props: Props) {
   // Show these options if the user is on this page without entering a query
   const recommendedOptions = <></>;
 
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
 
   const router = useRouter();
   const [isLoading, setLoading] = useState(false); //State for loading indicator
@@ -105,7 +105,7 @@ function Search(props: Props) {
       <title>{METADATA.TITLE_SUFFIX}</title>
 
       <div className="relative w-full mt-6 mb-12">
-        {isMobile ? (
+        {!isDesktop ? (
           <>
             <SearchBackdropMobileSVG
               style={{
@@ -168,7 +168,7 @@ function Search(props: Props) {
             {topPosts.map(post => (
               <div
                 key={post.id.toLowerCase()}
-                style={{ width: isMobile ? '13rem' : '14rem' }}
+                style={{ width: !isDesktop ? '13rem' : '14rem' }}
                 className="mr-6"
               >
                 <ArticleCard {...post} />

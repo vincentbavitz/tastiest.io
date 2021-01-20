@@ -1,24 +1,40 @@
 import classNames from 'classnames';
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, {
+  ReactNode,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useClickAway, useLockBodyScroll } from 'react-use';
+import { useClickAway, useKey, useLockBodyScroll } from 'react-use';
 import ExitSVG from '../assets/svgs/exit-primary.svg';
 import { UI } from '../constants';
-import { collapseSearchOverlay } from '../state/navigation';
+import { ScreenContext } from '../contexts/screen';
+import { closeSignInModal, collapseSearchOverlay } from '../state/navigation';
 import { IState } from '../state/reducers';
 
 interface Props {
   modalId: string;
   isOpen: boolean;
   children: ReactNode;
-  isMobileFullscreen?: boolean;
   // size: 'small' | 'regular' | 'large';
   className?: string;
   close?: () => void;
+  onMobileFullscreen?: boolean;
 }
 
 export function Modal(props: Props) {
-  const { modalId, isOpen, close, className, children } = props;
+  const {
+    modalId,
+    isOpen,
+    close,
+    className,
+    children,
+    onMobileFullscreen,
+  } = props;
+
+  const { isMobile } = useContext(ScreenContext);
   const { searchOverlayExpanded, openedModal } = useSelector(
     (state: IState) => state.navigation,
   );
@@ -27,7 +43,9 @@ export function Modal(props: Props) {
   const [shouldRender, setShouldRender] = useState(false);
 
   const ref = useRef(null);
-  useClickAway(ref, close);
+  const boxRef = useRef(null);
+  useKey('Escape', () => dispatch(closeSignInModal()));
+  useClickAway(boxRef, () => dispatch(closeSignInModal()));
   useLockBodyScroll(isOpen);
 
   useEffect(() => {
@@ -37,6 +55,7 @@ export function Modal(props: Props) {
     }
 
     // Refuse to open if another modal is currently open
+
     if (modalId !== openedModal) {
       console.log(
         `Cannot open modal ${modalId}, ${openedModal} is already open.`,
@@ -50,23 +69,25 @@ export function Modal(props: Props) {
     return null;
   }
 
+  const padding =
+    onMobileFullscreen && isMobile ? 0 : UI.PAGE_CONTAINED_PADDING_VW;
+
   return (
     <div
       ref={ref}
       style={{
         zIndex: UI.Z_INDEX_MODAL_OVERLAY,
-        paddingLeft: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
-        paddingRight: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
+        paddingLeft: `${padding}vw`,
+        paddingRight: `${padding}vw`,
       }}
       className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-25"
     >
       <div
-        // style={{
-        //   minWidth: '200px',
-        //   maxWidth: '100%',
-        //   minHeight: '150px',
-        //   maxHeight: '80vh',
-        // }}
+        ref={boxRef}
+        style={{
+          height: onMobileFullscreen && isMobile ? '100vh' : 'unset',
+          width: onMobileFullscreen && isMobile ? '100vw' : 'unset',
+        }}
         className={classNames(
           'relative border-2 border-gray px-6 pb-4 pt-12 bg-white',
           className,

@@ -4,18 +4,22 @@ export enum ModalInstance {
 
 export interface INavigation {
   searchOverlayExpanded: boolean;
+  isSignInModalOpen: boolean;
   cuisineBarScrollPos: number;
   openedModal: ModalInstance | null;
 }
 
 export const initialNavigationState: INavigation = {
   searchOverlayExpanded: false,
+  isSignInModalOpen: false,
   cuisineBarScrollPos: 0,
   openedModal: null,
 };
 
 export enum NavigationActions {
   EXPAND_SEARCH_OVERLAY = 'EXPAND_SEARCH_OVERLAY',
+  OPEN_SIGN_IN_MODAL = 'OPEN_SIGN_IN_MODAL',
+  CLOSE_SIGN_IN_MODAL = 'CLOSE_SIGN_IN_MODAL',
   COLLAPSE_SEARCH_OVERLAY = 'COLLAPSE_SEARCH_OVERLAY',
   TOGGLE_SEARCH_OVERLAY = 'TOGGLE_SEARCH_OVERLAY',
   SAVE_CUISINE_BAR_SCROLL_POS = 'SAVE_CUISINE_BAR_SCROLL_POS',
@@ -41,6 +45,14 @@ export const collapseSearchOverlay = () => ({
 
 export const toggleSearchOverlay = () => ({
   type: NavigationActions.TOGGLE_SEARCH_OVERLAY,
+});
+
+export const openSignInModal = () => ({
+  type: NavigationActions.OPEN_SIGN_IN_MODAL,
+});
+
+export const closeSignInModal = () => ({
+  type: NavigationActions.CLOSE_SIGN_IN_MODAL,
 });
 
 export const setCurrentOpenModal = (isOpen: boolean) => ({

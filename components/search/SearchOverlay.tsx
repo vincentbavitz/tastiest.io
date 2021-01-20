@@ -9,11 +9,13 @@ import { SearchOverlayMobile } from './SearchOverlayMobile';
 // Search overlay includes the backdrop and the mobile overlay.
 // Search dropdown is desktop only and is rendered per component
 export function SearchOverlay() {
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
   const dispatch = useDispatch();
 
   // Close on escape
   useKey('Escape', () => dispatch(collapseSearchOverlay()));
 
-  return <>{isMobile ? <SearchOverlayMobile /> : <SearchOverlayBackdrop />}</>;
+  return (
+    <>{!isDesktop ? <SearchOverlayMobile /> : <SearchOverlayBackdrop />}</>
+  );
 }

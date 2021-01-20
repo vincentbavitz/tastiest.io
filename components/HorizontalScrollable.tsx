@@ -20,11 +20,11 @@ interface Props {
 }
 
 export function HorizontalScrollable(props: Props) {
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
 
   return (
     <>
-      {isMobile ? (
+      {!isDesktop ? (
         <HorizontalScrollableInner {...props} />
       ) : (
         <Contained>
@@ -127,7 +127,7 @@ function HorizontalScrollableInner(props: Props) {
           className={classNames('flex overflow-y-visible')}
           style={{
             width: 'min-content',
-            marginLeft: `${isMobile ? UI.PAGE_CONTAINED_PADDING_VW : 0}vw`,
+            marginLeft: `${!isDesktop ? UI.PAGE_CONTAINED_PADDING_VW : 0}vw`,
           }}
         >
           {children}

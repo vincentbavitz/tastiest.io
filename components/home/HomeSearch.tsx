@@ -26,7 +26,7 @@ export function HomeSearch() {
   const dispatch = useDispatch();
 
   // Contexts
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
 
   // References
   const searchRef = useRef(null);
@@ -75,16 +75,16 @@ export function HomeSearch() {
           searchOverlayExpanded && !searchBarPinnedToHeader && !isMobile
             ? 'border-b-0'
             : 'border-b-2',
-          isMobile && 'border-b border-gray-300',
+          !isDesktop && 'border-b border-gray-300',
         )}
       >
         <SearchInput
           searchIcon="primary"
           placeholder="Search..."
-          dummy={isMobile}
+          dummy={!isDesktop}
           dummyOnClick={() => dispatch(expandSearchOverlay())}
           onFocus={() => dispatch(expandSearchOverlay())}
-          inputClassName={classNames(['pl-2 pr-4', isMobile && 'text-xl'])}
+          inputClassName={classNames(['pl-2 pr-4', !isDesktop && 'text-xl'])}
         />
       </div>
 
