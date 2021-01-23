@@ -21,7 +21,7 @@ export function SuggestDish() {
     <div
       ref={ref}
       className={classNames(
-        'relative flex w-full justify-end',
+        'relative flex w-full justify-end -mb-10',
         isDesktop && !isHuge && 'space-x-10',
       )}
     >
@@ -35,8 +35,9 @@ export function SuggestDish() {
         >
           <SuggestDishDesktopSVG
             style={{
-              height: '27.5rem',
-              marginLeft: isHuge ? '0' : '2rem',
+              height: '22rem',
+              marginTop: '2.5rem',
+              marginLeft: isHuge ? '0' : '6rem',
             }}
           />
         </div>
@@ -46,7 +47,7 @@ export function SuggestDish() {
         style={{ minWidth: '20rem', marginTop: '3vw' }}
         className={classNames(
           'relative flex flex-col flex-1 ',
-          isDesktop && 'mb-12',
+          isDesktop && 'mb-1',
         )}
       >
         {isDesktop ? (

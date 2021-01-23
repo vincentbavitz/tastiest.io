@@ -5,7 +5,7 @@ import { collapseSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 
 export function SearchOverlayBackdrop() {
-  const navigationState = useSelector((state: IState) => state.navigation);
+  const navigationState = useSelector<IState>(state => state.navigation);
   const dispatch = useDispatch();
 
   const { searchOverlayExpanded } = navigationState;

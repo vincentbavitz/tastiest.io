@@ -46,8 +46,8 @@ export function SearchInput(props: Props) {
   } = props;
 
   // State
-  // const navigationState = useSelector((state: IState) => state.navigation);
-  const searchState = useSelector((state: IState) => state.search);
+  // const navigationState = useSelector<IState>(state => state.navigation);
+  const searchState = useSelector<IState>(state => state.search);
   // const { searchOverlayExpanded } = navigationState;
   const searchOverlayExpanded = true;
   const dispatch = useDispatch();

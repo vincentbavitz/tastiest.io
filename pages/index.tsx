@@ -25,7 +25,7 @@ interface Props {
 
 const Index: NextPage<Props> = ({ posts = [] }) => {
   const cards = posts
-    ? posts.slice(0, 4).map(post => <ArticleCard key={post.id} {...post} />)
+    ? posts.slice(0, 4).map(post => <ArticleCard key={post.id} post={post} />)
     : [];
 
   console.log('posts', posts);

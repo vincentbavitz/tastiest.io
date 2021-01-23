@@ -49,7 +49,7 @@ export async function getTopPosts(limit?: number) {
 
 export function postsToCards(posts: ISanityArticle[]) {
   const cards = posts
-    ? posts.slice(0, 4).map(post => <ArticleCard key={post.id} {...post} />)
+    ? posts.slice(0, 4).map(post => <ArticleCard key={post.id} post={post} />)
     : [];
 
   return cards;

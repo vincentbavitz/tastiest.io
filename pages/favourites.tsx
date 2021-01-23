@@ -14,7 +14,7 @@ import { getArticlesHaving } from '../utils/article';
 import { getTopPosts } from '../utils/posts';
 
 function Favourites() {
-  const { isDesktop, isTablet, isDesktop, isHuge } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
   const { userData = {}, setUserData } = useUserData();
   const { isSignedIn } = useAuth();
   const router = useRouter();
@@ -105,8 +105,10 @@ function Favourites() {
           <CardGrid>
             {savedPosts.map(post => (
               <ArticleCardFavourite
-                {...post}
+                post={post}
                 key={post.id}
+                usePolyfill
+                isLoading={true}
                 isFavourite={(userData?.savedArticles ?? []).some(
                   saved => saved === post?.id,
                 )}
@@ -121,7 +123,12 @@ function Favourites() {
 
         <CardGrid>
           {topPosts.map(post => (
-            <ArticleCard key={post.id} {...post} />
+            <ArticleCard
+              key={post.id}
+              post={post}
+              usePolyfill
+              isLoading={true}
+            />
           ))}
         </CardGrid>
       </Contained>

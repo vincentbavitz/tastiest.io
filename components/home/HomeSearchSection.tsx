@@ -7,8 +7,8 @@ import { IState } from '../../state/reducers';
 import { HomeSearch } from './HomeSearch';
 
 export function HomeSearchSection(): JSX.Element {
-  const navigationState = useSelector((state: IState) => state.navigation);
-  const searchState = useSelector((state: IState) => state.search);
+  const navigationState = useSelector<IState>(state => state.navigation);
+  const searchState = useSelector<IState>(state => state.search);
   const { searchBarPinnedToHeader } = searchState;
   const { searchOverlayExpanded } = navigationState;
   const dispatch = useDispatch();

@@ -14,8 +14,8 @@ interface Props {
 }
 
 export function HeaderSearch({ isShown, innerOverlayStyle = {} }: Props) {
-  const navigationState = useSelector((state: IState) => state.navigation);
-  const searchState = useSelector((state: IState) => state.search);
+  const navigationState = useSelector<IState>(state => state.navigation);
+  const searchState = useSelector<IState>(state => state.search);
   const { searchOverlayExpanded } = navigationState;
   const { searchBarPinnedToHeader } = searchState;
   const dispatch = useDispatch();

@@ -34,8 +34,8 @@ export function Header() {
 }
 
 function MobileHeader() {
-  const navigationState = useSelector((state: IState) => state.navigation);
-  const searchState = useSelector((state: IState) => state.search);
+  const navigationState = useSelector<IState>(state => state.navigation);
+  const searchState = useSelector<IState>(state => state.search);
   const dispatch = useDispatch();
 
   const handleExpandSearch = (e: React.MouseEvent) => {

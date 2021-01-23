@@ -37,7 +37,7 @@ export function CuisineBar(props: Props) {
 }
 
 // function CuisineBarContent({ onItemClick }: Props) {
-//   const navigationState = useSelector((state: IState) => state.navigation);
+//   const navigationState = useSelector<IState>(state => state.navigation);
 //   const dispatch = useDispatch();
 
 //   const scrollRef = useRef(null);

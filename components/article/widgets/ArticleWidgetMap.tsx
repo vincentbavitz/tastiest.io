@@ -12,7 +12,7 @@ interface Props {
 }
 
 export function ArticleWidgetMap({ city, location, restaurantName }: Props) {
-  const { isDesktop, isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
 
   console.log('ArticleWidgetMap ➡️ location:', location);
 

@@ -1,5 +1,4 @@
 const withPlugins = require('next-compose-plugins');
-
 const withSass = require('@zeit/next-sass');
 const withFonts = require('next-fonts');
 const withSvgr = require('next-svgr');
@@ -30,6 +29,9 @@ const nextConfig = {
     FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID,
     FIREBASE_CLIENT_EMAIL: process.env.FIREBASE_CLIENT_EMAIL,
     FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY,
+
+    KLAVIYO_PUBLIC_API_KEY: process.env.KLAVIYO_PUBLIC_API_KEY,
+    KLAVIYO_PRIVATE_API_KEY: process.env.KLAVIYO_PRIVATE_API_KEY,
   },
 };
 

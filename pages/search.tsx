@@ -171,7 +171,7 @@ function Search(props: Props) {
                 style={{ width: !isDesktop ? '13rem' : '14rem' }}
                 className="mr-6"
               >
-                <ArticleCard {...post} />
+                <ArticleCard post={post} />
               </div>
             ))}
           </HorizontalScrollable>

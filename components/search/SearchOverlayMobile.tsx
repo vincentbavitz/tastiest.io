@@ -10,7 +10,7 @@ import { SearchInput } from './SearchInput';
 import { SearchOverlayInner } from './SearchOverlayInner';
 
 export function SearchOverlayMobile() {
-  const navigationState = useSelector((state: IState) => state.navigation);
+  const navigationState = useSelector<IState>(state => state.navigation);
   const { searchOverlayExpanded } = navigationState;
 
   const dispatch = useDispatch();

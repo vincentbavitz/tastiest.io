@@ -19,8 +19,8 @@ export interface ISearchBarGeometry {
 }
 
 export function HomeSearch() {
-  const navigationState = useSelector((state: IState) => state.navigation);
-  const searchState = useSelector((state: IState) => state.search);
+  const navigationState = useSelector<IState>(state => state.navigation);
+  const searchState = useSelector<IState>(state => state.search);
   const { searchOverlayExpanded } = navigationState;
   const { searchBarPinnedToHeader } = searchState;
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ export function HomeSearch() {
   const [searchMeasureRef] = useMeasure();
 
   // Hooks
-  useLockBodyScroll(searchOverlayExpanded && isMobile);
+  useLockBodyScroll(searchOverlayExpanded && !isDesktop);
 
   const HEADER_FIXED_OFFSET = 70;
   const handleShouldHide = () => {
@@ -69,10 +69,10 @@ export function HomeSearch() {
         className={classNames(
           'flex items-center w-full justify-between h-10 bg-white px-2',
           'border-primary border-t-2 border-l-2 border-r-2',
-          searchOverlayExpanded && !searchBarPinnedToHeader && !isMobile
+          searchOverlayExpanded && !searchBarPinnedToHeader && !!isDesktop
             ? 'rounded-t-lg'
             : 'rounded-lg',
-          searchOverlayExpanded && !searchBarPinnedToHeader && !isMobile
+          searchOverlayExpanded && !searchBarPinnedToHeader && !!isDesktop
             ? 'border-b-0'
             : 'border-b-2',
           !isDesktop && 'border-b border-gray-300',

@@ -1,4 +1,3 @@
-import 'firebase/auth';
 import 'firebase/firestore'; // <- needed if using firestore
 import { firebaseReducer } from 'react-redux-firebase';
 import { combineReducers } from 'redux';

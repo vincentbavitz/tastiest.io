@@ -1,8 +1,11 @@
 import { InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { CardGrid } from '../../../components/cards/CardGrid';
 import { Contained } from '../../../components/Contained';
+import { SuggestDish } from '../../../components/SuggestDish';
 import { CUISINES } from '../../../constants';
+import { ScreenContext } from '../../../contexts/screen';
 import { ISanityArticle } from '../../../types/article';
 import { CuisineSymbol } from '../../../types/cuisine';
 import { generateTitle } from '../../../utils/metadata';
@@ -35,6 +38,7 @@ export const getServerSideProps = async context => {
 export default function Cuisine({
   cuisineSymbol,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { isMobile } = useContext(ScreenContext);
   const cuisine = CUISINES[cuisineSymbol];
   const cuisineName = titleCase(String(cuisine?.name));
   const cuisineExists = Boolean(cuisine);
@@ -82,12 +86,21 @@ export default function Cuisine({
             </div>
           </div>
 
-          {<cuisine.pageSvg />}
+          {
+            <cuisine.pageSvg
+              style={{
+                width: isMobile ? '133vw' : '100%',
+                marginLeft: isMobile ? '-20vw' : 'unset',
+              }}
+            />
+          }
         </div>
 
         <Contained>
-          <div className="flex justify-center items-baseline space-x-6 space-y-4 mt-6 mb-16">
-            {cards}
+          <CardGrid>{cards}</CardGrid>
+
+          <div className="mt-12">
+            <SuggestDish />
           </div>
         </Contained>
       </div>
