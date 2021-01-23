@@ -1,36 +1,39 @@
-import Document, { Head, Main, NextScript } from 'next/document';
+import * as snippet from '@segment/snippet';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
+import { Favicon } from '../components/Favicon';
 
 export default class CustomDocument extends Document<any> {
+  private renderSnippet() {
+    const opts = {
+      apiKey: process.env.ANALYTICS_WRITE_KEY,
+      // note: the page option only covers SSR tracking.
+      // Page.js is used to track other events using `window.analytics.page()`
+      page: true,
+    };
+
+    if (process.env.NODE_ENV === 'development') {
+      return snippet.max(opts);
+    }
+
+    return snippet.min(opts);
+  }
+
   render() {
     return (
-      <html lang="en">
+      <Html lang="en">
         <Head>
-          <link rel="shortcut icon" href="/favicon.ico"></link>
-          <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/apple-touch-icon.png"
-          ></link>
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/favicon-32x32.png"
-          ></link>
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/favicon-16x16.png"
-          ></link>
+          {/* Inject the Segment snippet into the <head> of the document  */}
+          <script dangerouslySetInnerHTML={{ __html: this.renderSnippet() }} />
+
+          <Favicon />
           {this.props?.styleTags}
         </Head>
         <body>
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }

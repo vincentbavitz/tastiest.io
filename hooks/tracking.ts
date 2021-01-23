@@ -20,5 +20,5 @@ export function useTracking(type: TrackingType) {
   const router = useRouter();
 
   // Let all traching know about page change
-  router.events.on('routeChangeComplete', url => {});
+  router.events.on('routeChangeComplete', url => null);
 }

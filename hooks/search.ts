@@ -61,7 +61,6 @@ export function useSearch() {
     //   ...post,
     // }));
 
-    console.log('search ➡️ posts:', posts);
     console.log('search ➡️ results:', results);
 
     // throttledSetSearchResultItems(results);

@@ -105,10 +105,8 @@ function Favourites() {
           <CardGrid>
             {savedPosts.map(post => (
               <ArticleCardFavourite
-                post={post}
+                {...post}
                 key={post.id}
-                usePolyfill
-                isLoading={true}
                 isFavourite={(userData?.savedArticles ?? []).some(
                   saved => saved === post?.id,
                 )}
@@ -123,12 +121,7 @@ function Favourites() {
 
         <CardGrid>
           {topPosts.map(post => (
-            <ArticleCard
-              key={post.id}
-              post={post}
-              usePolyfill
-              isLoading={true}
-            />
+            <ArticleCard key={post.id} {...post} />
           ))}
         </CardGrid>
       </Contained>

@@ -173,9 +173,9 @@ function SearchOverlayInnerResults() {
           `children:even:${!isDesktop ? 'pl-4' : 'pl-2'}`,
         ])}
       >
-        {results?.map(post => (
-          <div key={post.id.toLowerCase()} className={classNames('w-1/2 mb-8')}>
-            <ArticleCard post={post} />
+        {results?.map(card => (
+          <div key={card.id.toLowerCase()} className={classNames('w-1/2 mb-8')}>
+            <ArticleCard {...card} />
           </div>
         ))}
       </div>

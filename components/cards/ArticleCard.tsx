@@ -7,18 +7,14 @@ import { generateURL } from '../../utils/routing';
 import { titleCase } from '../../utils/text';
 import { OutlineBlock } from '../OutlineBlock';
 
-interface Props {
-  post: Partial<ISanityArticle>;
-  // Polyfill animates the card with filler content while isLoading
-  usePolyfill?: boolean;
-  isLoading?: boolean;
-}
-
-export function ArticleCard(props: Props): JSX.Element {
+export function ArticleCard(props: ISanityArticle): JSX.Element {
   const {
-    usePolyfill,
-    isLoading,
-    post: { featureImage, title, paragraph, /*tags*/ slug, city, cuisine } = {},
+    featureImage,
+    title,
+    paragraph,
+    /*tags*/ slug,
+    city,
+    cuisine,
   } = props;
 
   const [ref, { width }] = useMeasure();
@@ -47,7 +43,7 @@ export function ArticleCard(props: Props): JSX.Element {
         style={{ paddingBottom: '60%' }}
         className="relative w-full h-0 overflow-hidden bg-white bg-opacity-25"
       >
-        {featureImage?.source && (
+        {featureImage.source && (
           <div className="absolute inset-0">
             <img
               className="object-cover w-full h-full"

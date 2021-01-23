@@ -25,15 +25,17 @@ interface Props {
 
 const Index: NextPage<Props> = ({ posts = [] }) => {
   const cards = posts
-    ? posts.slice(0, 4).map(post => <ArticleCard key={post.id} post={post} />)
+    ? posts.slice(0, 4).map(post => <ArticleCard key={post.id} {...post} />)
     : [];
-
-  console.log('posts', posts);
 
   const { isDesktop } = useContext(ScreenContext);
 
   const { userData } = useUserData();
   console.log('userData', userData);
+
+  global?.analytics?.track('Form Submitted', {
+    message: 'sdasdsadas',
+  });
 
   return (
     <>
@@ -79,7 +81,6 @@ Index.getInitialProps = async () => {
   let posts: Array<ISanityArticle>;
   try {
     posts = await client.fetch(query);
-    console.log('Posts', posts);
   } catch (error) {
     console.warn('Error:', error);
   }

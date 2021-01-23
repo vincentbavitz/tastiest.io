@@ -5,3 +5,7 @@ declare module '*.svg' {
   export { ReactComponent };
   export default string;
 }
+
+declare namespace global {
+  let analytics: any;
+}

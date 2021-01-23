@@ -11,21 +11,12 @@ import { useArticle } from '../../hooks/article';
 import { ISanityArticle } from '../../types/article';
 import { generateURL } from '../../utils/routing';
 
-interface Props {
-  post: Partial<ISanityArticle>;
+interface Props extends Partial<ISanityArticle> {
   isFavourite: boolean;
-  usePolyfill?: boolean;
-  isLoading?: boolean;
 }
 
 export function ArticleCardFavourite(props: Props): JSX.Element {
-  const {
-    usePolyfill,
-    isLoading,
-    isFavourite,
-    post: { id, featureImage, title, city, slug, cuisine },
-  } = props;
-
+  const { id, featureImage, title, city, slug, cuisine, isFavourite } = props;
   const { isTablet, isDesktop, isHuge } = useContext(ScreenContext);
 
   const { toggleSaveArticle } = useArticle();

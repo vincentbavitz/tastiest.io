@@ -50,8 +50,8 @@ export default function Cuisine({
       String(cuisine.name).toUpperCase() as CuisineSymbol,
       8,
     );
-    if (!posts) return;
 
+    if (!posts) return;
     setPosts(posts);
   };
 
