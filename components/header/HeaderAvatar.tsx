@@ -5,10 +5,9 @@ import { ScreenContext } from '../../contexts/screen';
 import { useAuth } from '../../hooks/auth';
 import { openSignInModal } from '../../state/navigation';
 import { IState } from '../../state/reducers';
-import { Avatar } from '../Avatar';
+import { UserAvatar } from '../avatar/UserAvatar';
 import { Dropdown } from '../Dropdown';
 import { DropdownItem } from '../DropdownItem';
-import { LoginModal } from '../modals/LoginModal';
 
 interface IProfileDropdownItems {
   id: string;
@@ -95,7 +94,7 @@ export function HeaderAvatar() {
 
   return (
     <div>
-      <Avatar onClick={onAvatarClick} />
+      <UserAvatar onClick={onAvatarClick} />
 
       <Dropdown
         isOpen={isDropdownOpen}

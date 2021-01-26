@@ -3,6 +3,7 @@ import { CuisineBar } from '../cuisine/CuisineBar';
 import { Footer } from '../Footer';
 import { Header } from '../header/Header';
 import { LoginModal } from '../modals/LoginModal';
+import { AcceptTrackingPopup } from '../popups/AcceptTrackingPopup';
 import { SearchOverlay } from '../search/SearchOverlay';
 
 interface Props {
@@ -30,6 +31,8 @@ export default function Layout({ children }: Props) {
           <Footer />
         </div>
       </div>
+
+      <AcceptTrackingPopup />
     </>
   );
 }

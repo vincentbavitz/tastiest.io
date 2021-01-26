@@ -165,7 +165,7 @@ function Search(props: Props) {
 
         <div className="mt-10">
           <HorizontalScrollable>
-            {topPosts.map(post => (
+            {topPosts?.map(post => (
               <div
                 key={post.id.toLowerCase()}
                 style={{ width: !isDesktop ? '13rem' : '14rem' }}

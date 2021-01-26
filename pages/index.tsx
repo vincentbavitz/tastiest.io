@@ -33,10 +33,6 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
   const { userData } = useUserData();
   console.log('userData', userData);
 
-  global?.analytics?.track('Form Submitted', {
-    message: 'sdasdsadas',
-  });
-
   return (
     <>
       <Head>

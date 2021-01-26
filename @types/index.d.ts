@@ -1,3 +1,5 @@
+import { SegmentAnalytics } from '@segment/analytics.js-core';
+
 declare module '*.svg' {
   import * as React from 'react';
 
@@ -6,6 +8,8 @@ declare module '*.svg' {
   export default string;
 }
 
-declare namespace global {
-  let analytics: any;
+declare global {
+  interface Window {
+    analytics: SegmentAnalytics.AnalyticsJS;
+  }
 }

@@ -1,14 +1,16 @@
 import classNames from 'classnames';
-import LogoSVG from '../assets/svgs/logo.svg';
+import LogoSVG from '../../assets/svgs/logo.svg';
 
-interface Props {
+export interface AvatarProps {
   // Size is in the same units as Tailwind units
   size?: 8 | 10 | 12 | 16 | 20;
+  initial?: string;
   imageSrc?: string;
   onClick?(): void;
 }
-export function Avatar(props: Props) {
-  const { size = '8', imageSrc, onClick } = props;
+
+export function Avatar(props: AvatarProps) {
+  const { size = '8', imageSrc, initial, onClick } = props;
 
   return (
     <div
@@ -26,6 +28,10 @@ export function Avatar(props: Props) {
           src={imageSrc}
           alt={'Author profile picture'}
         />
+      ) : initial?.length ? (
+        <div className="flex justify-center items-center w-full h-full font-somatic text-white text-xl">
+          {initial[0]}
+        </div>
       ) : (
         // Default Tastiest Avatar
         <LogoSVG

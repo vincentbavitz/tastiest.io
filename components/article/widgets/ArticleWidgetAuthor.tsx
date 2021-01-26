@@ -1,5 +1,5 @@
 import { IAuthor } from '../../../types/article';
-import { Avatar } from '../../Avatar';
+import { Avatar } from '../../avatar/Avatar';
 
 interface Props {
   author: IAuthor;

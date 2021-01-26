@@ -3,7 +3,10 @@ import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import { useFirebase } from 'react-redux-firebase';
 import { AuthContext } from '../contexts/auth';
+import { LocalStorageItem } from '../types/data';
+import { UserData } from '../types/firebase';
 import { titleCase } from '../utils/text';
+import { useUserData } from './userData';
 
 export const useAuth = () => {
   const firebase = useFirebase();
@@ -30,12 +33,15 @@ export const useAuth = () => {
       }
 
       if (user) {
-        firebase.auth().currentUser.sendEmailVerification();
+        // User has accepted cookies by logging in
+        localStorage.setItem(LocalStorageItem.HAS_ACCEPTED_COOKIES, '1');
         return user;
       }
     } catch (error) {
       setError(error);
     }
+
+    return false;
   };
 
   // If redirectTo is given, will redirect there after sign out.
@@ -79,9 +85,41 @@ export const useAuth = () => {
         await user.updateProfile({
           displayName: titleCase(displayName),
         });
+
+        const { setUserData } = useUserData();
+        setUserData(UserData.DISPLAY_NAME, displayName);
+
+        // Sign in user
+        signIn(email, password);
+
+        // User has accepted cookies implicitly
+        localStorage.setItem(LocalStorageItem.HAS_ACCEPTED_COOKIES, '1');
+
+        // Send email verification email
+        firebase.auth().currentUser.sendEmailVerification();
+
+        // Identify user with Segment
+        window.analytics.identify(user.uid, {
+          context: {
+            userAgent: navigator?.userAgent,
+          },
+          traits: {
+            // name: '',
+            // address: '',
+            // birthday: undefined,
+            // phone,
+            id: user.uid,
+            email: email,
+            createdAt: Date.now(),
+            username: user.displayName,
+          },
+        });
+
+        return true;
       }
     } catch (e) {
       setError(error);
+      return false;
     }
   };
 

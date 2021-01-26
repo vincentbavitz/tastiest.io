@@ -32,7 +32,7 @@ export function LoginModal() {
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
   const [signUpPassword, setSignUpPassword] = useState('');
-  const [step, setStep] = useState<LoginFlowStep>(LoginFlowStep.CONTINUE);
+  const [step, setStep] = useState<LoginFlowStep>(LoginFlowStep.SIGN_IN);
 
   // Close if the user is signed in
   useEffect(() => {
@@ -40,6 +40,14 @@ export function LoginModal() {
       dispatch(closeSignInModal());
     }
   }, []);
+
+  const onClickSignUp = async () => {
+    const signUpSuccessful = await signUp('', signUpEmail, signUpPassword);
+
+    if (signUpSuccessful) {
+      dispatch(closeSignInModal());
+    }
+  };
 
   const continueContent = (
     <Button
@@ -130,7 +138,7 @@ export function LoginModal() {
         type="solid"
         color="primary"
         className="rounded-xl py-3"
-        onClick={() => signUp('', signUpEmail, signUpPassword)}
+        onClick={() => onClickSignUp()}
       >
         Join
       </Button>
