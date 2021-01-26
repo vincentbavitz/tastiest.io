@@ -8,8 +8,12 @@ declare module '*.svg' {
   export default string;
 }
 
+interface IAnalytics extends SegmentAnalytics.AnalyticsJS {
+  on: () => void;
+  off: () => void;
+}
 declare global {
   interface Window {
-    analytics: SegmentAnalytics.AnalyticsJS;
+    analytics: IAnalytics;
   }
 }

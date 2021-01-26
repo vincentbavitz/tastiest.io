@@ -1,7 +1,7 @@
 import groq from 'groq';
 import moment from 'moment';
 import client from '../client';
-import { sanityPostQuery } from '../hooks/search';
+import { sanityPostQuery } from '../hooks/useSearch';
 import { IArticle, ISanityArticle } from '../types/article';
 import { titleCase } from './text';
 

@@ -48,7 +48,7 @@ const RecommendFormContent = ({ dish, city }: Props) => {
   return (
     <>
       <div className="desktop:w-9/12 mb-4">
-        <span className="text-threexl font-somatic text-primary leading-tight">
+        <span className="text-3xl font-somatic text-primary leading-tight">
           Do you know a better {dish} in {city}?
         </span>
       </div>

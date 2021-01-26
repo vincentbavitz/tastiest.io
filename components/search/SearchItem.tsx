@@ -2,10 +2,7 @@ import classNames from 'classnames';
 import { useRouter } from 'next/dist/client/router';
 import React, { SyntheticEvent, useContext } from 'react';
 import { useDispatch } from 'react-redux';
-import { useMedia } from 'react-use';
-import { UI } from '../../constants';
 import { ScreenContext } from '../../contexts/screen';
-import { useScreenSize } from '../../hooks/screen';
 import { ISanityArticle } from '../../types/article';
 import { generateURL } from '../../utils/routing';
 

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
-import { useUserData } from '../../hooks/userData';
+import { useUserData } from '../../hooks/useUserData';
 import { HorizontalScrollable } from '../HorizontalScrollable';
 import { OutlineBlock } from '../OutlineBlock';
 import { SectionTitle } from '../SectionTitle';

@@ -14,8 +14,8 @@ import { METADATA } from '../constants';
 import { ScreenContext } from '../contexts/screen';
 // import withAuthUser from '../utils/pageWrappers/withAuthUser';
 // import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo';
-import { sanityPostQuery } from '../hooks/search';
-import { useUserData } from '../hooks/userData';
+import { sanityPostQuery } from '../hooks/useSearch';
+import { useUserData } from '../hooks/useUserData';
 import { ISanityArticle } from '../types/article';
 
 interface Props {

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button } from '../components/Button';
 import { Contained } from '../components/Contained';
 import { Input } from '../components/Input';
-import { useAuth } from '../hooks/auth';
+import { useAuth } from '../hooks/useAuth';
 
 function Signup() {
   const router = useRouter();
@@ -34,7 +34,7 @@ function Signup() {
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col space-y-6">
           <div>
-            <label htmlFor="email" className="text-twoxl">
+            <label htmlFor="email" className="text-2xl">
               Name
             </label>
             <Input
@@ -47,7 +47,7 @@ function Signup() {
             />
           </div>
           <div>
-            <label htmlFor="email" className="text-twoxl">
+            <label htmlFor="email" className="text-2xl">
               Email
             </label>
             <Input
@@ -61,7 +61,7 @@ function Signup() {
           </div>
 
           <div>
-            <label htmlFor="email" className="text-twoxl">
+            <label htmlFor="email" className="text-2xl">
               Password
             </label>
             <Input

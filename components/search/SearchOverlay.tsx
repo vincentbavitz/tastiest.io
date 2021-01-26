@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { useKey } from 'react-use';
 import { ScreenContext } from '../../contexts/screen';
+import { useLocationChange } from '../../hooks/useLocationChange';
 import { collapseSearchOverlay } from '../../state/navigation';
 import { SearchOverlayBackdrop } from './SearchOverlayBackdrop';
 import { SearchOverlayMobile } from './SearchOverlayMobile';
@@ -12,8 +13,11 @@ export function SearchOverlay() {
   const { isDesktop } = useContext(ScreenContext);
   const dispatch = useDispatch();
 
-  // Close on escape
-  useKey('Escape', () => dispatch(collapseSearchOverlay()));
+  const close = () => dispatch(collapseSearchOverlay());
+
+  // Close on escape or page change
+  useKey('Escape', close);
+  useLocationChange(close);
 
   return (
     <>{!isDesktop ? <SearchOverlayMobile /> : <SearchOverlayBackdrop />}</>

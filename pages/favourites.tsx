@@ -7,8 +7,8 @@ import { CardGrid } from '../components/cards/CardGrid';
 import { Contained } from '../components/Contained';
 import { SectionTitle } from '../components/SectionTitle';
 import { ScreenContext } from '../contexts/screen';
-import { useAuth } from '../hooks/auth';
-import { useUserData } from '../hooks/userData';
+import { useAuth } from '../hooks/useAuth';
+import { useUserData } from '../hooks/useUserData';
 import { IArticle, ISanityArticle } from '../types/article';
 import { getArticlesHaving } from '../utils/article';
 import { getTopPosts } from '../utils/posts';
@@ -92,7 +92,7 @@ function Favourites() {
               }}
             />
             <div className="absolute inset-0 flex justify-center items-center">
-              <h1 className="font-somatic text-primary text-threexl">
+              <h1 className="font-somatic text-primary text-3xl">
                 Saved Dishes
               </h1>
             </div>

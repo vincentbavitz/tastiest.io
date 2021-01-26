@@ -30,10 +30,10 @@ function ThankYou() {
           </div>
 
           <div className="flex flex-col items-center text-center">
-            <h1 className="font-somatic text-primary text-sevenxl">Yay!</h1>
+            <h1 className="font-somatic text-primary text-7xl">Yay!</h1>
             <h2
               style={{ maxWidth: !isDesktop ? '28rem' : '50rem' }}
-              className="font-somatic text-primary text-twoxl"
+              className="font-somatic text-primary text-2xl"
             >
               Thank you and congratulations on taking advantage of this offer.
             </h2>
@@ -76,7 +76,7 @@ function BookingSection(props: BookingSectionProps) {
         <div className="flex flex-col items-start">
           <h2
             style={{ maxWidth: !isDesktop ? '16rem' : '13rem' }}
-            className="font-somatic text-threexl mobile:text-fourxl leading-tight"
+            className="font-somatic text-3xl mobile:text-4xl leading-tight"
           >
             {props.title}
           </h2>

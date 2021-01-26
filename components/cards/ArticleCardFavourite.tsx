@@ -7,7 +7,7 @@ import HeartFilledPrimarySVG from '../../assets/svgs/heart-filled-primary.svg';
 import HeartPrimayrSVG from '../../assets/svgs/heart-primary.svg';
 import ShareSVG from '../../assets/svgs/share.svg';
 import { ScreenContext } from '../../contexts/screen';
-import { useArticle } from '../../hooks/article';
+import { useArticle } from '../../hooks/useArticle';
 import { ISanityArticle } from '../../types/article';
 import { generateURL } from '../../utils/routing';
 
@@ -64,7 +64,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
             paddingBottom: '2.1em',
           }}
           className={classNames(
-            !isDesktop ? 'text-base' : isSmall ? 'text-lg' : 'text-twoxl',
+            !isDesktop ? 'text-base' : isSmall ? 'text-lg' : 'text-2xl',
             'font-somatic text-primary overflow-hidden cursor-pointer',
           )}
         >

@@ -5,8 +5,8 @@ import { IState } from '../state/reducers';
 import { setSearchResultItems } from '../state/search';
 import { ISanityArticle } from '../types/article';
 import { IRecentSearch, UserData } from '../types/firebase';
-import { useAuth } from './auth';
-import { useUserData } from './userData';
+import { useAuth } from './useAuth';
+import { useUserData } from './useUserData';
 
 export const sanityPostQuery = `
 "id": _id,

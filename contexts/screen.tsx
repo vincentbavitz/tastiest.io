@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useScreenSize } from '../hooks/screen';
+import { useScreenSize } from '../hooks/useScreen';
 
 interface IScreen {
   isMobile: boolean;

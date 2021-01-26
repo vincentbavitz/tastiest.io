@@ -2,7 +2,7 @@ import groq from 'groq';
 import React from 'react';
 import client from '../client';
 import { ArticleCard } from '../components/cards/ArticleCard';
-import { sanityPostQuery } from '../hooks/search';
+import { sanityPostQuery } from '../hooks/useSearch';
 import { ISanityArticle } from '../types/article';
 import { CuisineSymbol } from '../types/cuisine';
 import { titleCase } from './text';

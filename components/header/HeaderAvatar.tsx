@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ScreenContext } from '../../contexts/screen';
-import { useAuth } from '../../hooks/auth';
+import { useAuth } from '../../hooks/useAuth';
 import { openSignInModal } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { UserAvatar } from '../avatar/UserAvatar';

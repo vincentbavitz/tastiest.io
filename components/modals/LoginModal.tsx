@@ -5,7 +5,7 @@ import EmailSVG from '../../assets/svgs/email.svg';
 import PasswordSVG from '../../assets/svgs/lock.svg';
 import { METADATA } from '../../constants';
 import { ScreenContext } from '../../contexts/screen';
-import { useAuth } from '../../hooks/auth';
+import { useAuth } from '../../hooks/useAuth';
 import { closeSignInModal, ModalInstance } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Button } from '../Button';
@@ -71,7 +71,7 @@ export function LoginModal() {
         className="rounded-xl py-2"
         placeholder="Email address"
         prefix={<EmailSVG className="h-6" />}
-        suffix={<>!</>}
+        // suffix={<>!</>}
         value={signInEmail}
         maxLength={50}
         onValueChange={value => setSignInEmail(cleanupInputValue(value))}
@@ -233,7 +233,7 @@ export function LoginModal() {
         <div className="flex flex-col flex-grow items-center space-y-5">
           <TastiestLogo className="fill-current h-8" />
           <div className="w-full text-center">
-            <h1 className="font-somatic text-fourxl">{title}</h1>
+            <h1 className="font-somatic text-4xl">{title}</h1>
             {subtitle && (
               <h3 className="font-roboto font-semiobld -mt-1">{subtitle}</h3>
             )}

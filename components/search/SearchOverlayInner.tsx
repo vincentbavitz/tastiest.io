@@ -11,7 +11,7 @@ import NearbySVG from '../../assets/svgs/location.svg';
 import TrendingSVG from '../../assets/svgs/trending.svg';
 import { CUISINES } from '../../constants';
 import { ScreenContext } from '../../contexts/screen';
-import { useSearch } from '../../hooks/search';
+import { useSearch } from '../../hooks/useSearch';
 import { IState } from '../../state/reducers';
 import { SVG } from '../../types';
 import { Button } from '../Button';

@@ -17,7 +17,7 @@ export function HomeSearchSection(): JSX.Element {
 
   return (
     <div className="flex flex-col items-center">
-      <h1 className="text-primary text-center text-threexl font-somatic mt-12 mb-5">
+      <h1 className="text-primary text-center text-3xl font-somatic mt-12 mb-5">
         {METADATA.TAGLINE}
       </h1>
       <div className="relative w-full">

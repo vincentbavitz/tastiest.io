@@ -5,7 +5,6 @@ import TastiestLogo from '../../assets/svgs/brand.svg';
 import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
 import { UI } from '../../constants';
 import { ScreenContext } from '../../contexts/screen';
-import { useAuth } from '../../hooks/auth';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Contained } from '../Contained';
@@ -15,27 +14,15 @@ import { HeaderSearch } from './HeaderSearch';
 
 export function Header() {
   const { isDesktop } = useContext(ScreenContext);
-  const { user } = useAuth();
-
-  const handleAvatarClick = () => {
-    null;
-  };
-
-  // return <div>{!isDesktop ? <MobileHeader /> : <DesktopHeader />}</div>;
 
   return (
     <div className="flex flex-col w-full">
-      <div className="fixed" style={{ zIndex: 333333 }}>
-        {user?.email || 'no user signed in'}
-      </div>
       <div>{!isDesktop ? <MobileHeader /> : <DesktopHeader />}</div>
     </div>
   );
 }
 
 function MobileHeader() {
-  const navigationState = useSelector<IState>(state => state.navigation);
-  const searchState = useSelector<IState>(state => state.search);
   const dispatch = useDispatch();
 
   const handleExpandSearch = (e: React.MouseEvent) => {

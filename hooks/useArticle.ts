@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { UserData } from '../types/firebase';
-import { useAuth } from './auth';
-import { useUserData } from './userData';
+import { useAuth } from './useAuth';
+import { useUserData } from './useUserData';
 
 export function useArticle() {
   const { userData = {}, setUserData } = useUserData();

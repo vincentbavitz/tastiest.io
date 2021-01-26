@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from '../../hooks/auth';
+import { useAuth } from '../../hooks/useAuth';
 import { Avatar, AvatarProps } from './Avatar';
 
 export function UserAvatar(props: Omit<AvatarProps, 'imageSrc'>) {

@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import HeySpriteSVG from '../../../assets/svgs/article/hey-sprite.svg';
 import { ScreenContext } from '../../../contexts/screen';
-import { useAuth } from '../../../hooks/auth';
-import { useUserData } from '../../../hooks/userData';
+import { useAuth } from '../../../hooks/useAuth';
+import { useUserData } from '../../../hooks/useUserData';
 import { UserData } from '../../../types/firebase';
 import { Button } from '../../Button';
 import { Title } from '../../Title';
@@ -43,7 +43,7 @@ export function ArticleWidgetOrderNow(deal: IOrderDeal) {
           />
         </div>
 
-        <h3 className="font-somatic text-threexl text-primary text-center leading-8">
+        <h3 className="font-somatic text-3xl text-primary text-center leading-8">
           {deal.dealName}
         </h3>
 

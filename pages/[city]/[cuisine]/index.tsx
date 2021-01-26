@@ -80,7 +80,7 @@ export default function Cuisine({
               style={{ marginTop: '10vw' }}
               className="flex w-full justify-center"
             >
-              <span className="text-threexl font-somatic text-primary">
+              <span className="text-3xl font-somatic text-primary">
                 {cuisineName}
               </span>
             </div>

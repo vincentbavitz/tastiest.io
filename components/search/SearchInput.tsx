@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useKey, useStartTyping } from 'react-use';
 import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
 import SearchSecondarySVG from '../../assets/svgs/search-secondary.svg';
-import { useSearch } from '../../hooks/search';
+import { useSearch } from '../../hooks/useSearch';
 import {
   collapseSearchOverlay,
   expandSearchOverlay,

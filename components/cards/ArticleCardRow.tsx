@@ -46,7 +46,7 @@ export function ArticleCardRow(post: IArticle) {
           <div className="flex w-full space-x-6">
             <ArticlePreviewImage />
             <div className="w-2/3">
-              <h3 className="font-somatic text-twoxl text-primary">
+              <h3 className="font-somatic text-2xl text-primary">
                 {post.title}
               </h3>
             </div>

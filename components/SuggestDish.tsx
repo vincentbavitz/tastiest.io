@@ -54,13 +54,13 @@ export function SuggestDish() {
           <div
             style={{ width: '8.1rem', marginLeft: 'calc(-9rem - 3vw)' }}
             className={classNames(
-              'flex justify-end absolute left-0 leading-tight text-primary font-somatic text-fourxl',
+              'flex justify-end absolute left-0 leading-tight text-primary font-somatic text-4xl',
             )}
           >
             <div>Suggest a dish</div>
           </div>
         ) : (
-          <div className="mb-2 flex justify-center text-fourxl text-primary font-somatic">
+          <div className="mb-2 flex justify-center text-4xl text-primary font-somatic">
             Suggest a dish
           </div>
         )}

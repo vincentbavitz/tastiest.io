@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { useWindowSize } from 'react-use';
 import HeartPrimarySVG from '../../assets/svgs/heart-primary.svg';
-import { useAuth } from '../../hooks/auth';
+import { useAuth } from '../../hooks/useAuth';
 import { openSignInModal } from '../../state/navigation';
 import { Title } from '../Title';
 

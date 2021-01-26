@@ -6,7 +6,7 @@ import { AuthContext } from '../contexts/auth';
 import { LocalStorageItem } from '../types/data';
 import { UserData } from '../types/firebase';
 import { titleCase } from '../utils/text';
-import { useUserData } from './userData';
+import { useUserData } from './useUserData';
 
 export const useAuth = () => {
   const firebase = useFirebase();
