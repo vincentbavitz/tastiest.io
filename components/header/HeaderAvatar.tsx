@@ -39,7 +39,7 @@ export function HeaderAvatar() {
   //     name: 'Sign In',
   //     onClick: () => {
   //       setIsDropdownOpen(false);
-  //       setLoginModalIsOpen(true);
+  //       setSignInModalIsOpen(true);
   //       // router.push('/login', '/login');
   //     },
   //   },

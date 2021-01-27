@@ -13,18 +13,21 @@ function Checkout() {
 }
 
 const signInTabs = [
-  { label: 'I have an account', onClick: () => null },
-  { label: "I'm new here", onClick: () => null },
+  { label: 'I have an account', selected: true, onClick: () => null },
+  { label: "I'm new here", selected: false, onClick: () => null },
 ];
 
 function CheckoutDesktop() {
   return (
     <div>
       <Contained>
-        <div className="flex flex-col w-7/12">
+        <div
+          style={{ minWidth: '433px' }}
+          className="flex flex-col space-y-10 w-7/12"
+        >
           <CheckoutStepIndicator step={CheckoutStep.COMPLETE} />
-
           <CheckoutSignInTabs tabs={signInTabs} />
+          <CheckoutSignIn />
         </div>
       </Contained>
     </div>
