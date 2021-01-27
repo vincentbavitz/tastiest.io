@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
+import FavouritesNoneSVG from '../assets/svgs/page/favourites-none.svg';
 import FavouritesBackdropSVG from '../assets/svgs/page/favourites.svg';
 import { ArticleCard } from '../components/cards/ArticleCard';
 import { ArticleCardFavourite } from '../components/cards/ArticleCardFavourite';
@@ -57,21 +58,34 @@ function Favourites() {
 
   console.log('favourites ➡️ savedPosts:', savedPosts);
 
-  if (!isSignedIn) {
+  if (!isSignedIn || !initialFetchDone) {
     return null;
   }
+
+  const BackdropSVG =
+    savedPosts.length === 0 ? (
+      <FavouritesNoneSVG
+        style={{
+          width: isDesktop ? '130%' : '300%',
+          transform: `translateX(${isDesktop ? -15 : 34}%)`,
+        }}
+      />
+    ) : (
+      <FavouritesBackdropSVG
+        style={{
+          width: '100%',
+          transform: 'translateX(-15%)',
+        }}
+      />
+    );
 
   return (
     <div>
       <div className="relative w-full mb-12 mt-6">
         {!isDesktop ? (
           <>
-            <FavouritesBackdropSVG
-              style={{
-                width: '100%',
-                transform: 'translateX(-15%)',
-              }}
-            />
+            {BackdropSVG}
+
             <div className="absolute inset-0 flex justify-center items-center">
               <h1
                 style={{
@@ -85,12 +99,7 @@ function Favourites() {
           </>
         ) : (
           <Contained>
-            <FavouritesBackdropSVG
-              style={{
-                width: '300%',
-                transform: 'translateX(-34%)',
-              }}
-            />
+            {BackdropSVG}
             <div className="absolute inset-0 flex justify-center items-center">
               <h1 className="font-somatic text-primary text-3xl">
                 Saved Dishes
@@ -103,7 +112,7 @@ function Favourites() {
       <Contained>
         <div className="flex flex-col">
           <CardGrid>
-            {savedPosts.map(post => (
+            {savedPosts?.map(post => (
               <ArticleCardFavourite
                 {...post}
                 key={post.id}
@@ -120,7 +129,7 @@ function Favourites() {
         </div>
 
         <CardGrid>
-          {topPosts.map(post => (
+          {topPosts?.map(post => (
             <ArticleCard key={post.id} {...post} />
           ))}
         </CardGrid>

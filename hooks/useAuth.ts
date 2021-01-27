@@ -22,20 +22,33 @@ export const useAuth = () => {
 
     try {
       // Retry on fail
-      let user: firebaseApp.auth.UserCredential;
+      let credential: firebaseApp.auth.UserCredential;
       const i = 0;
       while (!user && i < MAX_LOGIN_ATTEMPTS) {
         console.log(
           `Attempting to log user in. (${i + 1}/${MAX_LOGIN_ATTEMPTS})`,
         );
 
-        user = await attemptSignIn();
+        credential = await attemptSignIn();
       }
 
-      if (user) {
+      if (credential) {
         // User has accepted cookies by logging in
         localStorage.setItem(LocalStorageItem.HAS_ACCEPTED_COOKIES, '1');
-        return user;
+
+        // Identify user with Segment
+        window.analytics.identify(credential.user.uid, {
+          context: {
+            userAgent: navigator?.userAgent,
+          },
+        });
+
+        // Track user sign in
+        window.analytics.track('User Signed In', {
+          //
+        });
+
+        return credential;
       }
     } catch (error) {
       setError(error);

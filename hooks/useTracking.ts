@@ -10,6 +10,12 @@ enum TrackingType {
   PAGES = 'PAGES',
 }
 
+// enum Pages {
+//   HOME = 'Home',
+//   FAVOURITES = 'Favourites',
+//   ARTICLE = ''
+// }
+
 // Each tracking event fires in three directions.
 //    1. Firebase (per user)
 //    2. Segment --> Klaviyo
@@ -20,7 +26,7 @@ enum TrackingType {
 // So we need an abstract event firing tool that splits each event
 // into these routes.
 export function useTracking() {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, user } = useAuth();
 
   // ////////////////////////////////////// //
   // Turn off analytics until user opts in  //
@@ -40,7 +46,6 @@ export function useTracking() {
 
   const handleLocationChange = url => {
     // Update analytics page location
-    alert(url);
     window.analytics.page();
   };
 
