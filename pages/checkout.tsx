@@ -19,18 +19,20 @@ const signInTabs = [
 
 function CheckoutDesktop() {
   return (
-    <div>
-      <Contained>
+    <Contained>
+      <div className="flex w-full space-x-10">
         <div
           style={{ minWidth: '433px' }}
           className="flex flex-col space-y-10 w-7/12"
         >
           <CheckoutStepIndicator step={CheckoutStep.COMPLETE} />
           <CheckoutSignInTabs tabs={signInTabs} />
-          <CheckoutSignIn />
+          {/* <CheckoutSignIn /> */}
         </div>
-      </Contained>
-    </div>
+
+        <div className="flex-grow bg-blue-200"> </div>
+      </div>
+    </Contained>
   );
 }
 
