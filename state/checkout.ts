@@ -1,17 +1,15 @@
-export enum CheckoutStep {
-  SIGN_IN = 'SIGN_IN',
-  PAYMENT = 'PAYMENT',
-  COMPLETE = 'COMPLETE',
-}
-
-export enum CheckoutSignInTabSelected {
-  HAS_ACCOUNT = 'HAS_ACCOUNT',
-  NEW_USER = 'NEW_USER',
-}
+import {
+  CheckoutSignInTabSelected,
+  CheckoutStep,
+  ICheckoutDetails,
+} from '../types/checkout';
 
 export interface ICheckoutFlow {
   step: CheckoutStep;
   signInTabSelected: CheckoutSignInTabSelected;
+  // Details as they have been verified either serverside
+  // or from Firebase
+  verifiedDetails: ICheckoutDetails;
 }
 
 export interface ICheckout {
@@ -26,6 +24,21 @@ export const initialCheckoutState: ICheckout = {
   flow: {
     step: CheckoutStep.SIGN_IN,
     signInTabSelected: CheckoutSignInTabSelected.HAS_ACCOUNT,
+    verifiedDetails: {
+      payment: {
+        cardHolderName: '',
+        cardNumber: '',
+        cardCvv: '',
+        cardExpiry: '',
+        cardPostCode: '',
+      },
+      contact: {
+        firstName: '',
+        lastName: '',
+        birthday: { day: '', month: '', year: '' },
+        address: '',
+      },
+    },
   },
 };
 
