@@ -5,7 +5,7 @@ import SuggestDishDesktopSVG from '../assets/svgs/suggest-dish-desktop.svg';
 import SuggestDishMobileSVG from '../assets/svgs/suggest-dish-mobile.svg';
 import { ScreenContext } from '../contexts/screen';
 import { Button } from './Button';
-import { Input } from './Input';
+import { InputAbstract } from './inputs/InputAbstract';
 import { Title } from './Title';
 
 export function SuggestDish() {
@@ -69,7 +69,7 @@ export function SuggestDish() {
           <Title level={3} className="text-primary">
             Location of restaurant
           </Title>
-          <Input size="large"></Input>
+          <InputAbstract size="large"></InputAbstract>
         </div>
 
         <div className="flex space-x-4 mt-4">
@@ -77,14 +77,14 @@ export function SuggestDish() {
             <Title level={3} className="text-primary">
               Dish name
             </Title>
-            <Input size="large"></Input>
+            <InputAbstract size="large"></InputAbstract>
           </div>
 
           <div className="flex-1">
             <Title level={3} className="text-primary">
               Cuisine
             </Title>
-            <Input size="large"></Input>
+            <InputAbstract size="large"></InputAbstract>
           </div>
         </div>
 
@@ -92,7 +92,7 @@ export function SuggestDish() {
           <Title level={3} className="text-primary">
             Email address
           </Title>
-          <Input size="large"></Input>
+          <InputAbstract size="large"></InputAbstract>
         </div>
 
         {isDesktop ? (

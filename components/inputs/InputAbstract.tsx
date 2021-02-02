@@ -33,6 +33,7 @@ export interface InputProps {
     | 'url';
 
   // Content
+  label?: string;
   prefix?: JSX.Element;
   suffix?: JSX.Element;
   placeholder?: string;
@@ -42,7 +43,6 @@ export interface InputProps {
   fitHeight?: boolean;
   readonly?: boolean;
   center?: boolean;
-  duration?: boolean;
 
   // Callbacks
   onKeyDown?(): any;
@@ -70,7 +70,7 @@ export interface InputProps {
   step?: number | string | undefined;
 }
 
-export function Input(props: InputProps) {
+export function InputAbstract(props: InputProps) {
   const {
     className,
     inputClassName,
@@ -81,7 +81,7 @@ export function Input(props: InputProps) {
     border = 'secondary',
     style,
     prefix,
-    duration = true,
+    label,
     suffix,
     autofocus,
     disabled,
@@ -160,79 +160,95 @@ export function Input(props: InputProps) {
   // }, []);
 
   return (
-    <div
-      style={style ?? {}}
-      className={classNames(
-        'flex',
-        'items-center',
-        'appearance-none',
-        'rounded-lg',
-        'w-full',
-        // 'bg-white',
-        'text-gray-700',
-        'leading-tight',
-        'outline-black',
-        'outline-secondary',
-        'focus:outline-black',
-        border !== 'none' && 'border-2',
-        size === 'small' ? 'px-2' : 'px-4',
-        duration && 'duration-300',
-        disabled && 'opacity-50 cursor-not-allowed',
-        border === 'primary' && 'border-primary',
-        border === 'secondary' && hasFocus
-          ? `border-primary`
-          : 'border-secondary',
-        className,
-      )}
-      onClick={setInputFocus}
-    >
-      {prefix && (
-        <span
-          className={classNames(`text-black`, 'flex', 'items-center', 'pr-4')}
+    <div>
+      {label && (
+        <div
+          className={classNames(
+            'mb-1',
+            size === 'small' ? 'text-sm' : 'text-base',
+          )}
         >
-          {prefix}
-        </span>
+          {label}
+        </div>
       )}
 
-      <input
+      <div
+        style={style ?? {}}
         className={classNames(
-          'bg-transparent',
-          'outline-none',
-          'flex-1',
-          'w-0',
-          size === 'large' && 'py-2',
-          disabled && 'cursor-not-allowed',
-          center && 'text-center',
-          fontSize,
-          inputClassName,
+          'flex',
+          'items-center',
+          'appearance-none',
+          'w-full',
+          // 'bg-white',
+          'text-gray-700',
+          'leading-tight',
+          'outline-black',
+          'outline-secondary',
+          'focus:outline-black',
+          'duration-300',
+          border !== 'none' && 'border-2',
+          disabled && 'opacity-50 cursor-not-allowed',
+          border === 'primary' && 'border-primary',
+          border === 'secondary' && hasFocus
+            ? `border-primary`
+            : 'border-secondary',
+          size === 'small' ? 'px-2' : 'px-4',
+          size === 'large' ? 'rounded-xl' : 'rounded-lg',
+          className,
         )}
-        readOnly={readonly}
-        type={type}
-        ref={inputRef}
-        spellCheck={false}
-        disabled={disabled}
-        placeholder={placeholder}
-        value={props.value ?? value}
-        step={step}
-        min={min}
-        max={max}
-        onChange={handleOnChange}
-        onFocus={handleOnFocus}
-        onBlur={handleOnBlur}
-        inputMode={inputMode}
-        onKeyDown={onKeyDown}
-        onMouseUp={onMouseUp}
-      ></input>
+        onClick={setInputFocus}
+      >
+        {prefix && (
+          <span
+            className={classNames(`text-black`, 'flex', 'items-center', 'pr-4')}
+          >
+            {prefix}
+          </span>
+        )}
 
-      {type === 'number' && <div className="h-full bg-green-200"></div>}
+        <input
+          className={classNames(
+            'bg-transparent',
+            'outline-none',
+            'flex-1',
+            'w-0',
+            disabled && 'cursor-not-allowed',
+            size === 'large' ? 'h-12' : 'h-8',
+            center && 'text-center',
+            fontSize,
+            inputClassName,
+          )}
+          readOnly={readonly}
+          type={type}
+          ref={inputRef}
+          spellCheck={false}
+          disabled={disabled}
+          placeholder={placeholder}
+          value={props.value ?? value}
+          step={step}
+          min={min}
+          max={max}
+          onChange={handleOnChange}
+          onFocus={handleOnFocus}
+          onBlur={handleOnBlur}
+          inputMode={inputMode}
+          onKeyDown={onKeyDown}
+          onMouseUp={onMouseUp}
+        ></input>
 
-      {suffix && (
-        <span
-          className={classNames(`text-primary`, 'flex', 'items-center', 'pl-4')}
-        >
-          {suffix}
-        </span>
-      )}
+        {suffix && (
+          <span
+            className={classNames(
+              `text-primary`,
+              'flex',
+              'items-center',
+              'pl-4',
+            )}
+          >
+            {suffix}
+          </span>
+        )}
+      </div>
     </div>
   );
 }

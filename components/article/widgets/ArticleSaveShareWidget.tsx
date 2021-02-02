@@ -14,8 +14,8 @@ import {
 import { Button } from '../../Button';
 import { Dropdown } from '../../Dropdown';
 import { DropdownItem } from '../../DropdownItem';
-import { Input } from '../../Input';
-import { InputGroup } from '../../InputGroup';
+import { InputAbstract } from '../../inputs/InputAbstract';
+import { InputGroup } from '../../inputs/InputGroup';
 
 interface IShareDropdownItems {
   id: string;
@@ -100,7 +100,7 @@ export function ArticleSaveShareWidget(props: Props) {
           <>
             <div className="px-3 pt-1 pb-2">
               <InputGroup className="w-full rounded-sm bg-secondary bg-opacity-25">
-                <Input
+                <InputAbstract
                   style={{ minWidth: '9rem' }}
                   border="none"
                   readonly

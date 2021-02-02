@@ -4,32 +4,32 @@ import React from 'react';
 import firebaseAdmin from '../lib/firebaseAdmin';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  try {
-    const cookies = nookies.get(ctx);
-    const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
-    // the user is authenticated!
-    const { uid, email } = token;
+  // try {
+  const cookies = nookies.get(ctx);
+  const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
+  // the user is authenticated!
+  const { uid, email } = token;
 
-    // FETCH STUFF HERE!! 🚀
-    return {
-      props: { message: `Your email is ${email} and your UID is ${uid}.` },
-    };
-  } catch (err) {
-    // either the `token` cookie didn't exist
-    // or token verification failed
-    // either way: redirect to the login
-    ctx.res.writeHead(302, { Location: '/?login=1' });
-    ctx.res.end();
-    // `as never` prevents inference issues
-    // with InferGetServerSidePropsType.
-    // The props returned here don't matter because we've
-    // already redirected the user.
-    return { props: {} as never };
-  }
+  // FETCH STUFF HERE!! 🚀
+  return {
+    props: { token },
+  };
+  // } catch (err) {
+  //   // either the `token` cookie didn't exist
+  //   // or token verification failed
+  //   // either way: redirect to the login
+  //   // ctx.res.writeHead(302, { Location: '/?login=1' });
+  //   // ctx.res.end();
+  //   // `as never` prevents inference issues
+  //   // with InferGetServerSidePropsType.
+  //   // The props returned here don't matter because we've
+  //   // already redirected the user.
+  //   return { props: { token: 'sdfdsf' } as never };
+  // }
 };
 
 const Account = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
-) => <div>{props.message} sdfsfsdf</div>;
+) => <div>{props.token} sdfsfsdf</div>;
 
 export default Account;

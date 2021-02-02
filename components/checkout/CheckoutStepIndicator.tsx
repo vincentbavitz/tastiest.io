@@ -1,21 +1,21 @@
 import classNames from 'classnames';
+import { useSelector } from 'react-redux';
 import CheckCircleSVG from '../../assets/svgs/checkout/check-circle.svg';
-
-export enum CheckoutStep {
-  SIGN_IN = 'SIGN_IN',
-  DETAILS = 'DETAILS',
-  COMPLETE = 'COMPLETE',
-}
+import { CheckoutStep } from '../../state/checkout';
+import { IState } from '../../state/reducers';
 
 interface Props {
   step: CheckoutStep;
 }
 
-export function CheckoutStepIndicator({ step }: Props) {
+export function CheckoutStepIndicator() {
+  const {
+    flow: { step },
+  } = useSelector((state: IState) => state.checkout);
+
   return (
     <div className="relative flex items-center justify-between w-full">
       <ProgressBar step={step} />
-
       <CheckCircle complete label="Log in" />
       <CheckCircle
         complete={step !== CheckoutStep.SIGN_IN}
@@ -56,7 +56,7 @@ function ProgressBar({ step }: Props) {
   // prettier-ignore
   const transform = 
     step === CheckoutStep.SIGN_IN ? 'translateX(-100%)' :
-    step === CheckoutStep.DETAILS? 'translateX(-50%)' :
+    step === CheckoutStep.PAYMENT? 'translateX(-50%)' :
     step === CheckoutStep.COMPLETE ? 'translateX(0%)' :
     undefined;
 

@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 import { firestoreReducer } from 'redux-firestore'; // <- needed if using firestore
 import { IFirestore } from '../../constants/firebase';
 import { IArticle } from '../../types/article';
+import { ICheckout } from '../checkout';
 import { INavigation } from '../navigation';
 import { ISearch } from '../search';
 import { articleReducer } from './article';
@@ -15,6 +16,7 @@ export interface IState {
   navigation: INavigation;
   search: ISearch;
   article: IArticle;
+  checkout: ICheckout;
   firestore: IFirestore;
 }
 

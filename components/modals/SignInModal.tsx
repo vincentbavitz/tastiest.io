@@ -9,7 +9,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { closeSignInModal, ModalInstance } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Button } from '../Button';
-import { Input } from '../Input';
+import { InputAbstract } from '../inputs/InputAbstract';
 import { Modal } from '../Modal';
 
 enum LoginFlowStep {
@@ -18,7 +18,7 @@ enum LoginFlowStep {
   SIGN_UP = 'SIGN_UP',
 }
 
-export function LoginModal() {
+export function SignInModal() {
   const { signIn, signUp, resetPassword, isSignedIn, error } = useAuth();
   const { isSignInModalOpen } = useSelector(
     (state: IState) => state.navigation,
@@ -65,7 +65,7 @@ export function LoginModal() {
 
   const signInContent = (
     <>
-      <Input
+      <InputAbstract
         size="large"
         type="email"
         className="rounded-xl py-2"
@@ -75,9 +75,9 @@ export function LoginModal() {
         value={signInEmail}
         maxLength={50}
         onValueChange={value => setSignInEmail(cleanupInputValue(value))}
-      ></Input>
+      ></InputAbstract>
 
-      <Input
+      <InputAbstract
         size="large"
         type="password"
         className="rounded-xl py-2"
@@ -86,7 +86,7 @@ export function LoginModal() {
         value={signInPassword}
         onValueChange={value => setSignInPassword(cleanupInputValue(value))}
         maxLength={50}
-      ></Input>
+      ></InputAbstract>
 
       <Button
         wide
@@ -112,7 +112,7 @@ export function LoginModal() {
 
   const signUpContent = (
     <>
-      <Input
+      <InputAbstract
         size="large"
         type="email"
         className="rounded-xl py-2"
@@ -120,9 +120,9 @@ export function LoginModal() {
         prefix={<EmailSVG className="h-6" />}
         value={signUpEmail}
         onValueChange={value => setSignUpEmail(cleanupInputValue(value))}
-      ></Input>
+      ></InputAbstract>
 
-      <Input
+      <InputAbstract
         size="large"
         type="password"
         className="rounded-xl py-2"
@@ -130,7 +130,7 @@ export function LoginModal() {
         prefix={<PasswordSVG className="ml-2 mr-2 h-8" />}
         value={signUpPassword}
         onValueChange={value => setSignUpPassword(cleanupInputValue(value))}
-      ></Input>
+      ></InputAbstract>
 
       <Button
         wide

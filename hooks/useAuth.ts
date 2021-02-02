@@ -1,4 +1,5 @@
 import firebaseApp from 'firebase/app';
+import _ from 'lodash';
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import { useFirebase } from 'react-redux-firebase';
@@ -17,19 +18,19 @@ export const useAuth = () => {
   const MAX_LOGIN_ATTEMPTS = 3;
 
   const signIn = async (email: string, password: string) => {
-    const attemptSignIn = async () =>
-      firebase.auth().signInWithEmailAndPassword(email, password);
+    const attemptSignIn = _.debounce(
+      async () => firebase.auth().signInWithEmailAndPassword(email, password),
+      2000,
+    );
 
     try {
       // Retry on fail
       let credential: firebaseApp.auth.UserCredential;
-      const i = 0;
+      let i = 0;
       while (!user && i < MAX_LOGIN_ATTEMPTS) {
-        console.log(
-          `Attempting to log user in. (${i + 1}/${MAX_LOGIN_ATTEMPTS})`,
-        );
-
+        console.log(`Attempting to log user in. (${i}/${MAX_LOGIN_ATTEMPTS})`);
         credential = await attemptSignIn();
+        i += 1;
       }
 
       if (credential) {
