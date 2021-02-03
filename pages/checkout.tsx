@@ -7,8 +7,9 @@ import { CheckoutStepSignIn } from '../components/checkout/steps/CheckoutStepSig
 import { Contained } from '../components/Contained';
 import { ScreenContext } from '../contexts/screen';
 import { useAuth } from '../hooks/useAuth';
-import { CheckoutStep, setCheckoutStep } from '../state/checkout';
+import { setCheckoutStep } from '../state/checkout';
 import { IState } from '../state/reducers';
+import { CheckoutStep } from '../types/checkout';
 
 function Checkout() {
   const { isDesktop } = useContext(ScreenContext);
@@ -30,7 +31,7 @@ function CheckoutDesktop() {
     }
   }, [isSignedIn]);
 
-  const isSignInStep = !isSignedIn || step === CheckoutStep.SIGN_IN;
+  const isSignInStep = !isSignedIn;
   const isPaymentStep = isSignedIn && step === CheckoutStep.PAYMENT;
   const isCompleteStep = isSignedIn && step === CheckoutStep.COMPLETE;
 
@@ -39,7 +40,7 @@ function CheckoutDesktop() {
       <div className="flex w-full space-x-10">
         <div
           style={{ minWidth: '433px' }}
-          className="flex flex-col space-y-10 w-7/12"
+          className="flex flex-col w-7/12 space-y-10"
         >
           <CheckoutStepIndicator />
 

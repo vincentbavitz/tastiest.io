@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import CheckCircleSVG from '../../assets/svgs/checkout/check-circle.svg';
-import { CheckoutStep } from '../../state/checkout';
 import { IState } from '../../state/reducers';
+import { CheckoutStep } from '../../types/checkout';
 
 interface Props {
   step: CheckoutStep;
@@ -33,11 +33,11 @@ interface CheckCircleProps {
 
 function CheckCircle({ label, complete }: CheckCircleProps) {
   return (
-    <div className="flex items-center flex-col z-10">
+    <div className="z-10 flex flex-col items-center">
       {complete ? (
         <CheckCircleSVG className="h-10 bg-white" />
       ) : (
-        <div className="rounded-full border-2 border-gray-400 bg-white h-10 w-10"></div>
+        <div className="w-10 h-10 bg-white border-2 border-gray-400 rounded-full"></div>
       )}
 
       <span
@@ -62,13 +62,13 @@ function ProgressBar({ step }: Props) {
 
   return (
     <>
-      <div className="absolute flex items-center justify-start w-full h-10 top-0 mx-1 overflow-hidden">
-        <div className="h-0 w-full border-b-2 border-gray-400 duration-300"></div>
+      <div className="absolute top-0 flex items-center justify-start w-full h-10 mx-1 overflow-hidden">
+        <div className="w-full h-0 duration-300 border-b-2 border-gray-400"></div>
       </div>
-      <div className="absolute flex items-center justify-start w-full h-10 top-0 mx-1 overflow-hidden">
+      <div className="absolute top-0 flex items-center justify-start w-full h-10 mx-1 overflow-hidden">
         <div
           style={{ transform }}
-          className="h-0 w-full border-b-2 border-primary duration-300"
+          className="w-full h-0 duration-300 border-b-2 border-primary"
         ></div>
       </div>
     </>

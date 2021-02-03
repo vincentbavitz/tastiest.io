@@ -3,7 +3,6 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import '../../../assets/style.scss';
 import { Article } from '../../../components/article/Article';
 import { setArticle } from '../../../state/reducers/article';
 import { IArticle } from '../../../types/article';

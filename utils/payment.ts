@@ -1,3 +1,5 @@
+import { IOrderDeal } from '../components/article/widgets/ArticleWidgetOrderNow';
+
 export enum PaymentDetailsError {
   INVALID_CARD_NUMBER = 'INVALID_CARD_NUMBER',
   INVALID_CARD_CVV = 'INVALID_CARD_CVV',
@@ -41,7 +43,7 @@ export class PaymentDetails {
     this.cardPostcode = cardPostcode;
   }
 
-  public makePaymentWithStripe() {
+  public makePaymentWithStripe(item: IOrderDeal, coupon: string) {
     return null;
   }
 
@@ -102,19 +104,19 @@ export class PaymentDetails {
     return CARD_POSTCODE_REGEX.test(postcode);
   };
 
-  // Convert to JSON compatible string format for encryption
-  // and saving to user's file.
-  public serialise() {
-    //
-  }
+  // // Convert to JSON compatible string format for encryption
+  // // and saving to user's file.
+  // public serialise() {
+  //   //
+  // }
 
-  public static deserialise(details: string): PaymentDetails {
-    return new PaymentDetails();
-  }
+  // public static deserialise(details: string): PaymentDetails {
+  //   return new PaymentDetails();
+  // }
 
-  public saveUserPaymentDetails = () => {
-    // Serialize and encrypt with Tastiest DB Public Key.
-  };
+  // public saveUserPaymentDetails = () => {
+  //   // Serialize and encrypt with Tastiest DB Public Key.
+  // };
 
-  public static fetchUserPaymentDetails = () => {};
+  // public static fetchUserPaymentDetails = () => {};
 }

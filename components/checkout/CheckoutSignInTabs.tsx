@@ -1,10 +1,8 @@
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  CheckoutSignInTabSelected,
-  setSignInTabSelected,
-} from '../../state/checkout';
+import { setSignInTabSelected } from '../../state/checkout';
 import { IState } from '../../state/reducers';
+import { CheckoutSignInTabSelected } from '../../types/checkout';
 
 interface ITab {
   label: string;
@@ -34,7 +32,7 @@ export function CheckoutSignInTabs() {
   ];
 
   return (
-    <div className="flex space-x-10 justify-center px-6 border-b-4 border-secondary">
+    <div className="flex justify-center px-6 space-x-10 border-b-4 border-secondary">
       {tabs?.map(tab => (
         <div
           key={tab.label}
@@ -46,7 +44,7 @@ export function CheckoutSignInTabs() {
         >
           <span
             style={{ fontSize: 'min(1rem, 2vw)' }}
-            className="font-semibold px-2"
+            className="px-2 font-semibold"
           >
             {tab.label}
           </span>

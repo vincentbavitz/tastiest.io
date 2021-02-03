@@ -1,9 +1,10 @@
 import { SegmentAnalytics } from '@segment/analytics.js-core';
 
-declare module '*.svg' {
-  import * as React from 'react';
+// Common types
+export type SVG = React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 
-  const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+declare module '*.svg' {
+  const ReactComponent: SVG;
   export { ReactComponent };
   export default string;
 }
