@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { getMapBoxStaticSource } from '../../lib/mapbox';
+import { getMapBoxStaticSource } from '../../services/mapbox';
 import { expandSearchOverlay } from '../../state/navigation';
 import { Button } from '../Button';
 import { Title } from '../Title';

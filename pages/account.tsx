@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import nookies from 'nookies';
 import React from 'react';
-import firebaseAdmin from '../lib/firebaseAdmin';
+import firebaseAdmin from '../services/firebaseAdmin';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   // try {

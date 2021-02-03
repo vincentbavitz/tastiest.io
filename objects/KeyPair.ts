@@ -19,7 +19,7 @@ export class KeyPair {
     if (publicKey && privateKey) {
       this.publicKeyEncoded = publicKey;
       this.privateKeyEncoded = privateKey;
-    }
+    } 
   }
 
   public async init() {
@@ -108,5 +108,15 @@ export class KeyPair {
     );
 
     return verification;
+  }
+
+  public async encrypt(value: string) {
+    // Encrypts any string using public key, returning a string
+    this.crypt.
+  }
+
+  public async decrypt(value: string) {
+    // Decrypts a string ecrypted with public key using private key
+
   }
 }
