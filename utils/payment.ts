@@ -45,8 +45,6 @@ export class PaymentDetails {
     return null;
   }
 
-  public saveToFirebase() {}
-
   public static verify(
     cardNumber: string,
     cardCvv: string,
@@ -104,7 +102,8 @@ export class PaymentDetails {
     return CARD_POSTCODE_REGEX.test(postcode);
   };
 
-  // Convert to JSON compatible string format
+  // Convert to JSON compatible string format for encryption
+  // and saving to user's file.
   public serialise() {
     //
   }
@@ -112,4 +111,10 @@ export class PaymentDetails {
   public static deserialise(details: string): PaymentDetails {
     return new PaymentDetails();
   }
+
+  public saveUserPaymentDetails = () => {
+    // Serialize and encrypt with Tastiest DB Public Key.
+  };
+
+  public static fetchUserPaymentDetails = () => {};
 }
