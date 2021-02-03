@@ -35,9 +35,9 @@ function CheckCircle({ label, complete }: CheckCircleProps) {
   return (
     <div className="z-10 flex flex-col items-center">
       {complete ? (
-        <CheckCircleSVG className="h-10 bg-white" />
+        <CheckCircleSVG className="h-8 bg-white" />
       ) : (
-        <div className="w-10 h-10 bg-white border-2 border-gray-400 rounded-full"></div>
+        <div className="w-8 h-8 bg-white border-2 border-gray-400 rounded-full"></div>
       )}
 
       <span
@@ -62,7 +62,13 @@ function ProgressBar({ step }: Props) {
 
   return (
     <>
-      <div className="absolute top-0 flex items-center justify-start w-full h-10 mx-1 overflow-hidden">
+      <div
+        style={{
+          left: '10px',
+          right: '10px',
+        }}
+        className="absolute top-0 flex items-center justify-start h-10 overflow-hidden"
+      >
         <div className="w-full h-0 duration-300 border-b-2 border-gray-400"></div>
       </div>
       <div className="absolute top-0 flex items-center justify-start w-full h-10 mx-1 overflow-hidden">

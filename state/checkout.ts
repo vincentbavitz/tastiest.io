@@ -18,6 +18,7 @@ export interface ICheckout {
   createdAt?: number;
   priceGBP?: number;
   flow?: ICheckoutFlow;
+  onCheckoutPage: boolean;
 }
 
 export const initialCheckoutState: ICheckout = {
@@ -40,6 +41,7 @@ export const initialCheckoutState: ICheckout = {
       },
     },
   },
+  onCheckoutPage: false,
 };
 
 export enum CheckoutActions {

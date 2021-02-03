@@ -1,14 +1,9 @@
-import classNames from 'classnames';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSignInTabSelected } from '../../state/checkout';
 import { IState } from '../../state/reducers';
 import { CheckoutSignInTabSelected } from '../../types/checkout';
-
-interface ITab {
-  label: string;
-  selected?: boolean;
-  onClick: () => void;
-}
+import { CheckoutTabs, ITab } from './CheckoutTabs';
 
 export function CheckoutSignInTabs() {
   const {
@@ -31,25 +26,5 @@ export function CheckoutSignInTabs() {
     },
   ];
 
-  return (
-    <div className="flex justify-center px-6 space-x-10 border-b-4 border-secondary">
-      {tabs?.map(tab => (
-        <div
-          key={tab.label}
-          onClick={tab.onClick}
-          className={classNames(
-            'flex justify-center w-5/12 rounded-t-xl px-3 pt-2 pb-1 cursor-pointer',
-            tab.selected ? 'bg-secondary' : 'bg-secondary-2',
-          )}
-        >
-          <span
-            style={{ fontSize: 'min(1rem, 2vw)' }}
-            className="px-2 font-semibold"
-          >
-            {tab.label}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
+  return <CheckoutTabs tabs={tabs} />;
 }

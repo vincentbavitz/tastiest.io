@@ -12,9 +12,15 @@ interface Props {
 const Input = (props: Props) => (
   <InputAbstract
     inputMode="decimal"
+    type="password"
     size="large"
     label="Security Code"
-    inputClassName="w-full"
+    externalSuffix={
+      <Tooltip content="This is the 3 digit code on the back of your card.">
+        <HelpSVG className="h-6" />
+      </Tooltip>
+    }
+    inputClassName="font-mono w-full"
     {...props}
   />
 );
@@ -27,16 +33,12 @@ export function InputCardCvv(props: Props) {
   return (
     <div className="flex items-center space-x-1">
       <NumberFormat
+        type="password"
         customInput={Input}
         value={props.value}
         onValueChange={handleOnChange}
         format="###"
-        mask="_"
       />
-
-      <Tooltip content="This is the 3 digit code on the back of your card.">
-        <HelpSVG className="h-10 mt-5" />
-      </Tooltip>
     </div>
   );
 }

@@ -1,6 +1,11 @@
+import classNames from 'classnames';
 import React from 'react';
 import NumberFormat, { NumberFormatValues } from 'react-number-format';
+import MasterCardSVG from '../../../assets/svgs/checkout/mastercard.svg';
+import MasteroSVG from '../../../assets/svgs/checkout/mastero.svg';
 import VisaSVG from '../../../assets/svgs/checkout/visa.svg';
+import { CardBrand } from '../../../types/checkout';
+import { PaymentEngine } from '../../../utils/payment';
 import { InputAbstract } from '../InputAbstract';
 
 interface Props {
@@ -13,20 +18,42 @@ const Input = (props: Props) => (
     inputMode="decimal"
     size="large"
     label="Card Number"
-    externalSuffix={}
+    className="font-mono"
+    externalSuffix={<CardRow value={props.value} />}
     {...props}
   />
 );
 
-interface CardRowProps {
-  that: string;
-}
+const CardRow = ({ value }: { value: string }) => {
+  const stripped = value.replace(/[_-\s]/gi, '');
+  const selected = PaymentEngine.getCardBrand(stripped);
 
-const CardRow = (props: CardRowProps) => {
+  console.log('InputCardNumber ➡️ value:', stripped);
+  console.log('InputCardNumber ➡️ selected:', selected);
+
+  // Cards light up in color when the card number matches the brand
   return (
     <div className="flex space-x-2">
-      <VisaSVG className="h-12" />
-      <VisaSVG className="h-12" />;<VisaSVG className="h-12" />
+      <VisaSVG
+        className={classNames(
+          'h-6',
+          selected === CardBrand.VISA ? 'filter-none' : 'filter-grayscale',
+        )}
+      />
+
+      <MasteroSVG
+        className={classNames(
+          'h-6',
+          selected !== CardBrand.MASTERO && 'filter-grayscale',
+        )}
+      />
+
+      <MasterCardSVG
+        className={classNames(
+          'h-6',
+          selected !== CardBrand.MASTERCARD && 'filter-grayscale',
+        )}
+      />
     </div>
   );
 };

@@ -10,6 +10,7 @@ module.exports = {
       desktop: '1100px',
     },
     fontFamily: {
+      mono: ['SourceCodePro'],
       somatic: ['SomaticRounded'],
       roboto: ['Roboto'],
       robotoslab: ['RobotoSlab'],
@@ -30,6 +31,9 @@ module.exports = {
       '7xl': ['5rem'],
       '8xl': ['6rem'],
       '9xl': ['7rem'],
+    },
+    filter: {
+      grayscale: 'grayscale(1)',
     },
     extend: {
       colors: {
@@ -67,6 +71,7 @@ module.exports = {
   },
   plugins: [
     require('tailwindcss-children'),
+    require('tailwindcss-filters'),
     require('@tailwindcss/aspect-ratio'),
   ],
 };

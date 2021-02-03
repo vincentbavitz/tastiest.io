@@ -40,7 +40,7 @@ function CheckoutDesktop() {
       <div className="flex w-full space-x-10">
         <div
           style={{ minWidth: '433px' }}
-          className="flex flex-col w-7/12 space-y-10"
+          className="flex flex-col w-7/12 mt-24 space-y-10"
         >
           <CheckoutStepIndicator />
 

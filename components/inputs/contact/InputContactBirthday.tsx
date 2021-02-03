@@ -10,7 +10,8 @@ const Input = (props: Props) => (
   <InputAbstract
     inputMode="decimal"
     size="large"
-    label="Expiration Date"
+    label="Birthday"
+    subLabel="So we can give you a gift :)"
     inputClassName="font-mono w-full"
     {...props}
   />
@@ -34,23 +35,26 @@ function limit(val, max) {
   return val;
 }
 
-function cardExpiry(val) {
-  const month = limit(val.substring(0, 2), '12');
-  const year = val.substring(2, 4);
+function birthdayFormat(value: string) {
+  const day = limit(value.substring(0, 2), '31');
+  const month = limit(value.substring(2, 4), '12');
+  const year = value.substring(4, 8);
 
-  return month + (year.length ? '/' + year : '');
+  return (
+    day + (month.length ? '/' + month : '') + (year.length ? '/' + year : '')
+  );
 }
 
-export function InputCardExpiry(props: Props) {
+export function InputContactBirthday(props: Props) {
   const handleOnChange = ({ value }: NumberFormatValues) => {
     props.onValueChange(String(value));
   };
 
   return (
     <NumberFormat
-      placeholder="MM/YY"
-      mask={['M', 'M', 'Y', 'Y']}
-      format={cardExpiry}
+      placeholder="DD/MM/YY"
+      mask={['M', 'M', 'D', 'D', 'Y', 'Y', 'Y', 'Y']}
+      format={birthdayFormat}
       customInput={Input}
       value={props.value}
       onValueChange={handleOnChange}

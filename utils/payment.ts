@@ -1,6 +1,7 @@
 import { IOrderDeal } from '../components/article/widgets/ArticleWidgetOrderNow';
+import { CardBrand } from '../types/checkout';
 
-export enum PaymentDetailsError {
+export enum PaymentEngineError {
   INVALID_CARD_NUMBER = 'INVALID_CARD_NUMBER',
   INVALID_CARD_CVV = 'INVALID_CARD_CVV',
   INVALID_CARD_EXPIRY = 'INVALID_CARD_EXPIRY',
@@ -9,7 +10,7 @@ export enum PaymentDetailsError {
 }
 
 // TODO WRITE TESTSSTSTSTS
-export class PaymentDetails {
+export class PaymentEngine {
   private cardNumber: string;
   private cardCvv: string;
   private cardExpiry: string;
@@ -23,7 +24,7 @@ export class PaymentDetails {
     cardHolderName: string,
     cardPostcode: string,
   ) {
-    const { isValid, errors } = PaymentDetails.verify(
+    const { isValid, errors } = PaymentEngine.verify(
       cardNumber,
       cardCvv,
       cardExpiry,
@@ -54,22 +55,22 @@ export class PaymentDetails {
     cardHolderName: string,
     cardPostcode: string,
   ) {
-    const errors: PaymentDetailsError[] = [];
+    const errors: PaymentEngineError[] = [];
 
-    if (!PaymentDetails.verifyCardNumber(cardNumber)) {
-      errors.push(PaymentDetailsError.INVALID_CARD_NUMBER);
+    if (!PaymentEngine.verifyCardNumber(cardNumber)) {
+      errors.push(PaymentEngineError.INVALID_CARD_NUMBER);
     }
-    if (!PaymentDetails.verifyCardCvv(cardCvv)) {
-      errors.push(PaymentDetailsError.INVALID_CARD_CVV);
+    if (!PaymentEngine.verifyCardCvv(cardCvv)) {
+      errors.push(PaymentEngineError.INVALID_CARD_CVV);
     }
-    if (!PaymentDetails.verifyCardExpiry(cardExpiry)) {
-      errors.push(PaymentDetailsError.INVALID_CARD_EXPIRY);
+    if (!PaymentEngine.verifyCardExpiry(cardExpiry)) {
+      errors.push(PaymentEngineError.INVALID_CARD_EXPIRY);
     }
-    if (!PaymentDetails.verifyCardHolderName(cardHolderName)) {
-      errors.push(PaymentDetailsError.INVALID_CARD_HOLDER_NAME);
+    if (!PaymentEngine.verifyCardHolderName(cardHolderName)) {
+      errors.push(PaymentEngineError.INVALID_CARD_HOLDER_NAME);
     }
-    if (!PaymentDetails.verifyCardPostcode(cardPostcode)) {
-      errors.push(PaymentDetailsError.INVLID_CARD_POSTCODE);
+    if (!PaymentEngine.verifyCardPostcode(cardPostcode)) {
+      errors.push(PaymentEngineError.INVLID_CARD_POSTCODE);
     }
 
     return {
@@ -104,19 +105,30 @@ export class PaymentDetails {
     return CARD_POSTCODE_REGEX.test(postcode);
   };
 
+  public static getCardBrand = (cardNumber: string) => {
+    const CARD_REGEX_VISA = /^4\d{15}$/;
+    const CARD_REGEX_MASTERO = /^xxxxxxxxxxxxxxxx$/;
+    const CARD_REGEX_MASTERCARD = /^5[1-5]\d{14}$/;
+
+    if (CARD_REGEX_VISA.test(cardNumber)) return CardBrand.VISA;
+    if (CARD_REGEX_MASTERCARD.test(cardNumber)) return CardBrand.MASTERCARD;
+    if (CARD_REGEX_MASTERO.test(cardNumber)) return CardBrand.MASTERO;
+    return;
+  };
+
   // // Convert to JSON compatible string format for encryption
   // // and saving to user's file.
   // public serialise() {
   //   //
   // }
 
-  // public static deserialise(details: string): PaymentDetails {
-  //   return new PaymentDetails();
+  // public static deserialise(details: string): PaymentEngine {
+  //   return new PaymentEngine();
   // }
 
-  // public saveUserPaymentDetails = () => {
+  // public saveUserPaymentEngine = () => {
   //   // Serialize and encrypt with Tastiest DB Public Key.
   // };
 
-  // public static fetchUserPaymentDetails = () => {};
+  // public static fetchUserPaymentEngine = () => {};
 }

@@ -33,7 +33,9 @@ export interface InputProps {
     | 'url';
 
   // Content
+  // Sublabel can be used as a subtle descriptor to the right of label
   label?: string;
+  subLabel?: string;
   prefix?: JSX.Element;
   suffix?: JSX.Element;
   externalSuffix?: JSX.Element;
@@ -222,6 +224,7 @@ export function InputAbstract(props: InputProps) {
               'outline-none',
               'flex-1',
               'w-0',
+              externalSuffix && 'w-full',
               disabled && 'cursor-not-allowed',
               size === 'large' ? 'h-12' : 'h-8',
               center && 'text-center',

@@ -4,9 +4,10 @@ import 'firebase/firestore'; // <- needed if using firestore
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Provider as StoreProvider } from 'react-redux';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
+import { useLocation } from 'react-use';
 import { createStore } from 'redux';
 import { createFirestoreInstance } from 'redux-firestore';
 import '../assets/style.scss';
@@ -15,7 +16,6 @@ import { FIREBASE, METADATA } from '../constants';
 import { AuthProvider } from '../contexts/auth';
 import ScreenProvider from '../contexts/screen';
 import { useAuth } from '../hooks/useAuth';
-import { useLocationChange } from '../hooks/useLocationChange';
 import { useTracking } from '../hooks/useTracking';
 import { openSignInModal } from '../state/navigation';
 import { rootReducer } from '../state/reducers';
@@ -47,10 +47,20 @@ function App({ Component, pageProps }: AppProps) {
     if (router.query?.login === '1' && !isSignedIn) {
       store.dispatch(openSignInModal());
     }
+
+    // Update onCheckoutPage when user is checking out
+    console.log('_app ➡️ router.;:', router);
+    if (router.pathname === '/checkout') {
+      store.dispatch();
+    }
   };
 
+  const location = useLocation();
+  useEffect(() => {
+    handleLocationChange();
+  }, [location]);
+
   useTracking();
-  useLocationChange(handleLocationChange);
 
   return (
     <StoreProvider store={store}>

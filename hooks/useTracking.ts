@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
-import { useLocalStorage } from 'react-use';
+import { useLocalStorage, useLocation } from 'react-use';
 import { LocalStorageItem } from '../types/data';
 import { useAuth } from './useAuth';
-import { useLocationChange } from './useLocationChange';
 
 enum TrackingType {
   ORDER = 'ORDER',
@@ -44,12 +43,15 @@ export function useTracking() {
   // ////////////////////////////////////// //
   // ////////////////////////////////////// //
 
-  const handleLocationChange = url => {
+  const handleLocationChange = () => {
     // Update analytics page location
     window.analytics.page();
   };
 
-  useLocationChange(handleLocationChange);
+  const location = useLocation();
+  useEffect(() => {
+    handleLocationChange();
+  }, [location]);
 
   // return { track, identify, hasAcceptedAnalytics };
   return { hasAcceptedAnalytics };

@@ -28,3 +28,9 @@ export interface ICheckoutDetails {
   payment: IPaymentDetails;
   contact: IContactDetails;
 }
+
+export enum CardBrand {
+  VISA = 'VISA',
+  MASTERO = 'MASTERO',
+  MASTERCARD = 'MASTERCARD',
+}
