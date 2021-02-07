@@ -32,6 +32,8 @@ const nextConfig = {
 
     ANANYTICS_SOURCE_ID: process.env.ANANYTICS_SOURCE_ID,
     ANALYTICS_WRITE_KEY: process.env.ANALYTICS_WRITE_KEY,
+
+    STRIPE_SECRET_KEY_TEST: process.env.STRIPE_SECRET_KEY_TEST,
   },
 };
 

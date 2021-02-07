@@ -1,7 +1,10 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import { GetServerSideProps } from 'next';
+import process from 'process';
 import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Stripe from 'stripe';
 import { CheckoutOrderSummary } from '../components/checkout/CheckoutOrderSummary';
 import { CheckoutStepIndicator } from '../components/checkout/CheckoutStepIndicator';
 import { CheckoutStepAuth } from '../components/checkout/steps/CheckoutStepAuth';
@@ -16,16 +19,37 @@ import { CheckoutStep } from '../types/checkout';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
-const stripePromise = loadStripe(
-  'pk_test_51HVFsIHZaOt3USRGOXhAlkKI9uBar8ZAnRY7lXJgyQWnfQwnlUoqgyKRPpjXYqSsFJQyGaAqeSbnsSi2IxAhnHZA00v99BVUGc',
-);
+const stripePromise = loadStripe(process.env.STRIPE_SECRET_KEY_TEST);
 
-function Checkout() {
-  const { isDesktop } = useContext(ScreenContext);
-  return isDesktop ? <CheckoutDesktop /> : <CheckoutMobile />;
+interface Props {
+  stripeClientSecret: string;
 }
 
-function CheckoutDesktop() {
+export const getServerSideProps: GetServerSideProps = async context => {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST, {});
+
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: 1099,
+    currency: 'gbp',
+    // Verify your integration in this guide by including this parameter
+    metadata: { integration_check: 'accept_a_payment' },
+  });
+
+  return {
+    props: { stripeClientSecret: paymentIntent.client_secret },
+  };
+};
+
+function Checkout({ stripeClientSecret }: Props) {
+  const { isDesktop } = useContext(ScreenContext);
+  return isDesktop ? (
+    <CheckoutDesktop stripeClientSecret={stripeClientSecret} />
+  ) : (
+    <CheckoutMobile stripeClientSecret={stripeClientSecret} />
+  );
+}
+
+function CheckoutDesktop({ stripeClientSecret }: Props) {
   const {
     flow: { step },
   } = useSelector((state: IState) => state.checkout);
@@ -80,14 +104,14 @@ function CheckoutDesktop() {
             {isCompleteStep && <CheckoutStepComplete />}
           </div>
 
-          <CheckoutOrderSummary />
+          <CheckoutOrderSummary stripeClientSecret={stripeClientSecret} />
         </div>
       </Contained>
     </Elements>
   );
 }
 
-function CheckoutMobile() {
+function CheckoutMobile(props: Props) {
   return <div></div>;
 }
 

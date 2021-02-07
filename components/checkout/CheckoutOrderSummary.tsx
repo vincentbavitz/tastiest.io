@@ -11,7 +11,11 @@ import { CheckoutStep, IOrderDeal } from '../../types/checkout';
 import { Button } from '../Button';
 import { InputAbstract } from '../inputs/InputAbstract';
 
-export function CheckoutOrderSummary() {
+interface Props {
+  stripeClientSecret: string;
+}
+
+export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
   const {
     flow: { step },
     order,
@@ -30,7 +34,14 @@ export function CheckoutOrderSummary() {
       card: elements.getElement(CardNumberElement),
     });
 
-    if (error) dispatch(setStripeError(error));
+    if (error) {
+      dispatch(setStripeError(error));
+      return;
+    }
+
+    await stripe.confirmCardPayment(stripeClientSecret, {
+      //
+    });
 
     console.log('CheckoutOrderSummary ➡️ error:', error);
     console.log('CheckoutOrderSummary ➡️ paymentMethod:', paymentMethod);
