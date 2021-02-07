@@ -112,7 +112,7 @@ export function Button(props: Props) {
           type !== 'text' &&
           type !== 'outline' &&
           'hover:text-white',
-        round ? 'rounded-lg' : 'rounded-xl',
+        round ? 'rounded-xl' : 'rounded-lg',
         type !== 'text' && ['border-2', 'border-solid', `border-${color}`],
         className,
       )}

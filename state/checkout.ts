@@ -1,7 +1,9 @@
+import { StripeError } from '@stripe/stripe-js';
 import {
   CheckoutSignInTabSelected,
   CheckoutStep,
   ICheckoutDetails,
+  IOrderDeal,
 } from '../types/checkout';
 
 export interface ICheckoutFlow {
@@ -13,11 +15,12 @@ export interface ICheckoutFlow {
 }
 
 export interface ICheckout {
-  cart?: string;
+  order?: IOrderDeal;
   coupon?: string;
   createdAt?: number;
   priceGBP?: number;
   flow?: ICheckoutFlow;
+  stripeError?: string;
   onCheckoutPage: boolean;
 }
 
@@ -28,8 +31,6 @@ export const initialCheckoutState: ICheckout = {
     verifiedDetails: {
       payment: {
         cardHolderName: '',
-        cardNumber: '',
-        cardCvv: '',
         cardExpiry: '',
         cardPostCode: '',
       },
@@ -41,14 +42,15 @@ export const initialCheckoutState: ICheckout = {
       },
     },
   },
+  stripeError: undefined,
+  order: undefined,
   onCheckoutPage: false,
 };
 
 export enum CheckoutActions {
-  ADD_TO_CART = 'ADD_TO_CART',
-  CLEAR_CART = 'CLEAR_CART',
+  SET_ORDER = 'SET_ORDER',
   SET_COUPON = 'SET_COUPON',
-  REMOVE_COUPON = 'REMOVE_COUPON',
+  SET_STRIPE_ERROR = 'SET_STRIPE_ERROR',
   SET_CHECKOUT_STEP = 'SET_CHECKOUT_STEP',
   SET_SIGN_IN_TAB_SELECTED = 'SET_SIGN_IN_TAB_SELECTED',
   SET_ON_CHECKOUT_PAGE = 'SET_ON_CHECKOUT_PAGE',
@@ -57,14 +59,15 @@ export enum CheckoutActions {
 // ////////////////////////////// //
 //         Action Creators        //
 // ////////////////////////////// //
-export const addToCard = (item: string) => ({
-  type: CheckoutActions.ADD_TO_CART,
+export const setOrder = (item: IOrderDeal) => ({
+  type: CheckoutActions.SET_ORDER,
   payload: item,
   // TRIGGER ANALYTICS
 });
 
-export const clearCart = () => ({
-  type: CheckoutActions.CLEAR_CART,
+export const clearOrder = () => ({
+  type: CheckoutActions.SET_ORDER,
+  payload: undefined,
   // TRIGGER ANALYTICS
 });
 
@@ -73,10 +76,20 @@ export const setCoupon = (coupon: string) => ({
   payload: coupon,
 }); // TRIGGER ANALYTICS;
 
-export const removeCoupon = (coupon: string) => ({
-  type: CheckoutActions.REMOVE_COUPON,
-  payload: coupon,
+export const removeCoupon = () => ({
+  type: CheckoutActions.SET_COUPON,
+  payload: undefined,
   // TRIGGER ANALYTICS
+});
+
+export const setStripeError = (error: StripeError) => ({
+  type: CheckoutActions.SET_STRIPE_ERROR,
+  payload: error,
+});
+
+export const clearPaymentError = () => ({
+  type: CheckoutActions.SET_STRIPE_ERROR,
+  payload: undefined,
 });
 
 export const setCheckoutStep = (step: CheckoutStep) => ({

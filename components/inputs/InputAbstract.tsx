@@ -54,6 +54,9 @@ export interface InputProps {
   onChange?(event: ChangeEvent<HTMLInputElement>): any;
   onValueChange?(value: string): any;
 
+  // Allows you to only accept values which satisfy this pattern
+  regex?: RegExp;
+
   // HTMLInputElement Props
 
   autofocus?: boolean;
@@ -65,9 +68,9 @@ export interface InputProps {
 
   // Validation
   max?: number | string;
-  maxLength?: number | string;
+  maxLength?: number;
   min?: number | string;
-  minLength?: number | string;
+  minLength?: number;
   disabled?: boolean;
   step?: number | string | undefined;
 }
@@ -83,12 +86,13 @@ export function InputAbstract(props: InputProps) {
     border = 'secondary',
     style,
     prefix,
+    maxLength,
     label,
     suffix,
     externalSuffix,
-    autofocus,
     disabled,
     min,
+    regex,
     max,
     step,
     placeholder = '',
@@ -119,6 +123,10 @@ export function InputAbstract(props: InputProps) {
     if (element.value === undefined) {
       return;
     }
+
+    // Test regex
+    const isValidRegex = regex && regex?.test(String(element.value));
+    if (!isValidRegex && element.value.length > 0) return;
 
     // Emails don't support selectionStart
     if (type !== 'email') {
@@ -195,10 +203,7 @@ export function InputAbstract(props: InputProps) {
             'duration-300',
             border !== 'none' && 'border-2',
             disabled && 'opacity-50 cursor-not-allowed',
-            border === 'primary' && 'border-primary',
-            border === 'secondary' && hasFocus
-              ? `border-primary`
-              : 'border-secondary',
+            hasFocus ? 'border-primary' : `border-${border}`,
             size === 'small' ? 'px-2' : 'px-4',
             size === 'large' ? 'rounded-xl' : 'rounded-lg',
             className,
@@ -241,6 +246,7 @@ export function InputAbstract(props: InputProps) {
             step={step}
             min={min}
             max={max}
+            maxLength={maxLength}
             onChange={handleOnChange}
             onFocus={handleOnFocus}
             onBlur={handleOnBlur}

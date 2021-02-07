@@ -11,6 +11,7 @@ export function InputContactLastName(props: Props) {
       size="large"
       label="Last Name"
       inputClassName="w-full"
+      value={props.value}
       onValueChange={props.onValueChange}
       {...props}
     />

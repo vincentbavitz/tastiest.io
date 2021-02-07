@@ -1,3 +1,17 @@
+import { IFigureImage } from './article';
+
+export interface IOrderDeal {
+  restaurantID: string;
+  restaurantName: string;
+  dealName: string; // Grizzly Grumble
+  dealImage: IFigureImage;
+  dealDescription: string; // Experience the best porterhouse steak in London
+  dealPrefix: string; // Only £25 and you'll get
+  dealItems: Array<string>; // ['300g Porterhouse', 'Fries', ...]
+  pricePerHeadGBP: number; // 25 (25 pounds)s
+  heads: number;
+}
+
 export enum CheckoutStep {
   SIGN_IN = 'SIGN_IN',
   PAYMENT = 'PAYMENT',
@@ -11,8 +25,6 @@ export enum CheckoutSignInTabSelected {
 
 export interface IPaymentDetails {
   cardHolderName: string;
-  cardNumber: string;
-  cardCvv: string;
   cardExpiry: string;
   cardPostCode: string;
 }

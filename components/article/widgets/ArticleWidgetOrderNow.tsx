@@ -3,19 +3,10 @@ import HeySpriteSVG from '../../../assets/svgs/article/hey-sprite.svg';
 import { ScreenContext } from '../../../contexts/screen';
 import { useAuth } from '../../../hooks/useAuth';
 import { useUserData } from '../../../hooks/useUserData';
+import { IOrderDeal } from '../../../types/checkout';
 import { UserData } from '../../../types/firebase';
 import { Button } from '../../Button';
 import { Title } from '../../Title';
-
-export interface IOrderDeal {
-  restaurantID: string;
-  dealName: string; // Grizzly Grumble
-  dealDescription: string; // Experience the best porterhouse steak in London
-  dealPrefix: string; // Only £25 and you'll get
-  dealItems: Array<string>; // ['300g Porterhouse', 'Fries', ...]
-  pricePerHeadGBP: number; // 25 (25 pounds)s
-  heads: number;
-}
 
 export function ArticleWidgetOrderNow(deal: IOrderDeal) {
   const { isDesktop } = useContext(ScreenContext);
