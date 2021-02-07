@@ -16,7 +16,8 @@ import { getTopPosts } from '../utils/posts';
 
 function Favourites() {
   const { isDesktop } = useContext(ScreenContext);
-  const { userData = {}, setUserData } = useUserData();
+  const { user } = useAuth();
+  const { userData = {}, setUserData } = useUserData(user);
   const { isSignedIn } = useAuth();
   const router = useRouter();
 
@@ -81,12 +82,12 @@ function Favourites() {
 
   return (
     <div>
-      <div className="relative w-full mb-12 mt-6">
+      <div className="relative w-full mt-6 mb-12">
         {!isDesktop ? (
           <>
             {BackdropSVG}
 
-            <div className="absolute inset-0 flex justify-center items-center">
+            <div className="absolute inset-0 flex items-center justify-center">
               <h1
                 style={{
                   fontSize: 'calc(1rem + 2vw)',
@@ -100,8 +101,8 @@ function Favourites() {
         ) : (
           <Contained>
             {BackdropSVG}
-            <div className="absolute inset-0 flex justify-center items-center">
-              <h1 className="font-somatic text-primary text-3xl">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <h1 className="text-3xl font-somatic text-primary">
                 Saved Dishes
               </h1>
             </div>

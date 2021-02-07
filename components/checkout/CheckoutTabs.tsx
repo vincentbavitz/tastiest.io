@@ -19,7 +19,7 @@ export function CheckoutTabs({ tabs }: { tabs: ITab[] }) {
           key={tab.label}
           onClick={tab?.onClick}
           style={{
-            marginBottom: '-2px',
+            marginBottom: '0px',
           }}
           className={classNames(
             'flex justify-center w-5/12 rounded-t-xl px-3 pt-2 pb-1',
@@ -30,8 +30,8 @@ export function CheckoutTabs({ tabs }: { tabs: ITab[] }) {
           )}
         >
           <span
-            style={{ fontSize: 'min(1rem, 2vw)' }}
-            className="px-2 font-semibold"
+            style={{ fontSize: 'min(0.9rem, 2vw)' }}
+            className="px-2 font-medium"
           >
             {tab.label}
           </span>

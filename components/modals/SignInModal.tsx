@@ -11,6 +11,7 @@ import { IState } from '../../state/reducers';
 import { Button } from '../Button';
 import { InputAbstract } from '../inputs/InputAbstract';
 import { Modal } from '../Modal';
+import { SignInTosInfo } from '../SignInTosInfo';
 
 enum LoginFlowStep {
   CONTINUE = 'CONTINUE',
@@ -55,7 +56,7 @@ export function SignInModal() {
       size="large"
       type="outline"
       color="secondary"
-      prefix={<EmailSVG className="h-6 w-8" />}
+      prefix={<EmailSVG className="w-8 h-6" />}
       suffix={<div className="w-6"></div>}
       onClick={() => setStep(LoginFlowStep.SIGN_IN)}
     >
@@ -68,7 +69,7 @@ export function SignInModal() {
       <InputAbstract
         size="large"
         type="email"
-        className="rounded-xl py-2"
+        className="py-2 rounded-xl"
         placeholder="Email address"
         prefix={<EmailSVG className="h-6" />}
         // suffix={<>!</>}
@@ -80,9 +81,9 @@ export function SignInModal() {
       <InputAbstract
         size="large"
         type="password"
-        className="rounded-xl py-2"
+        className="py-2 rounded-xl"
         placeholder="Password"
-        prefix={<PasswordSVG className="ml-2 mr-2 h-8" />}
+        prefix={<PasswordSVG className="h-8 ml-2 mr-2" />}
         value={signInPassword}
         onValueChange={value => setSignInPassword(cleanupInputValue(value))}
         maxLength={50}
@@ -93,14 +94,14 @@ export function SignInModal() {
         size="large"
         type="solid"
         color="primary"
-        className="rounded-xl py-3"
+        className="py-3 rounded-xl"
         onClick={() => signIn(signInEmail, signInPassword)}
       >
         Sign In
       </Button>
 
       {error && (
-        <div className="text-sm text-center mb-1 -mt-1 text-red-700">
+        <div className="mb-1 -mt-1 text-sm text-center text-red-700">
           {error?.message}
         </div>
       )}
@@ -115,7 +116,7 @@ export function SignInModal() {
       <InputAbstract
         size="large"
         type="email"
-        className="rounded-xl py-2"
+        className="py-2 rounded-xl"
         placeholder="Email address"
         prefix={<EmailSVG className="h-6" />}
         value={signUpEmail}
@@ -125,9 +126,9 @@ export function SignInModal() {
       <InputAbstract
         size="large"
         type="password"
-        className="rounded-xl py-2"
+        className="py-2 rounded-xl"
         placeholder="Create a password"
-        prefix={<PasswordSVG className="ml-2 mr-2 h-8" />}
+        prefix={<PasswordSVG className="h-8 ml-2 mr-2" />}
         value={signUpPassword}
         onValueChange={value => setSignUpPassword(cleanupInputValue(value))}
       ></InputAbstract>
@@ -137,14 +138,14 @@ export function SignInModal() {
         size="large"
         type="solid"
         color="primary"
-        className="rounded-xl py-3"
+        className="py-3 rounded-xl"
         onClick={() => onClickSignUp()}
       >
         Join
       </Button>
 
       {error && (
-        <div className="text-sm text-center mb-1 -mt-1 text-red-700">
+        <div className="mb-1 -mt-1 text-sm text-center text-red-700">
           {error?.message}
         </div>
       )}
@@ -155,14 +156,14 @@ export function SignInModal() {
     <>
       <p>
         Forgot password?{' '}
-        <a className="cursor-pointer font-semibold" onClick={resetPassword}>
+        <a className="font-semibold cursor-pointer" onClick={resetPassword}>
           Reset
         </a>
       </p>
       <p>
         Don't have an account?{' '}
         <a
-          className="cursor-pointer font-semibold"
+          className="font-semibold cursor-pointer"
           onClick={() => setStep(LoginFlowStep.SIGN_UP)}
         >
           Sign Up
@@ -176,7 +177,7 @@ export function SignInModal() {
       <p>
         Already have an account?{' '}
         <a
-          className="cursor-pointer font-semibold"
+          className="font-semibold cursor-pointer"
           onClick={() => setStep(LoginFlowStep.SIGN_IN)}
         >
           Sign In
@@ -230,29 +231,20 @@ export function SignInModal() {
         }}
         className="relative flex flex-col justify-between"
       >
-        <div className="flex flex-col flex-grow items-center space-y-5">
-          <TastiestLogo className="fill-current h-8" />
+        <div className="flex flex-col items-center flex-grow space-y-5">
+          <TastiestLogo className="h-8 fill-current" />
           <div className="w-full text-center">
-            <h1 className="font-somatic text-4xl">{title}</h1>
+            <h1 className="text-4xl font-somatic">{title}</h1>
             {subtitle && (
-              <h3 className="font-roboto font-semiobld -mt-1">{subtitle}</h3>
+              <h3 className="-mt-1 font-roboto font-semiobld">{subtitle}</h3>
             )}
           </div>
 
-          <div className="flex flex-col w-full space-y-4 pt-2">{content}</div>
-          <div className="text-center text-sm">{subtext}</div>
+          <div className="flex flex-col w-full pt-2 space-y-4">{content}</div>
+          <div className="text-sm text-center">{subtext}</div>
         </div>
 
-        <div className="text-xs">
-          By proceeding, you agree to our{' '}
-          <a href="/privacy" className="underline cursor-pointer font-semibold">
-            Terms of Use
-          </a>{' '}
-          and confirm that you have read our{' '}
-          <a href="/privacy" className="underline cursor-pointer font-semibold">
-            Privacy and Cookie Statement
-          </a>
-        </div>
+        <SignInTosInfo />
       </div>
     </Modal>
   );

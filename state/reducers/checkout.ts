@@ -31,6 +31,9 @@ export const checkoutReducer = (
         flow: { ...state.flow, signInTabSelected: action.payload },
       };
     }
+    case CheckoutActions.SET_ON_CHECKOUT_PAGE: {
+      return { ...state, onCheckoutPage: action.payload };
+    }
     default:
       return state;
   }

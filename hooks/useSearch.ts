@@ -30,7 +30,7 @@ dishName,
 
 export function useSearch() {
   const { user } = useAuth();
-  const { userData, setUserData } = useUserData();
+  const { userData, setUserData } = useUserData(user);
   const searchState = useSelector<IState>(state => state.search);
   const results = searchState?.searchResultItems ?? [];
   const query = searchState.searchQuery ?? '';

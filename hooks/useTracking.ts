@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocalStorage, useLocation } from 'react-use';
+import { useLocalStorage } from 'react-use';
 import { LocalStorageItem } from '../types/data';
 import { useAuth } from './useAuth';
 
@@ -42,16 +42,6 @@ export function useTracking() {
   }, [isSignedIn, hasAcceptedCookies]);
   // ////////////////////////////////////// //
   // ////////////////////////////////////// //
-
-  const handleLocationChange = () => {
-    // Update analytics page location
-    window.analytics.page();
-  };
-
-  const location = useLocation();
-  useEffect(() => {
-    handleLocationChange();
-  }, [location]);
 
   // return { track, identify, hasAcceptedAnalytics };
   return { hasAcceptedAnalytics };

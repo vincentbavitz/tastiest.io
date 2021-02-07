@@ -12,6 +12,7 @@ import { HomeSearchSection } from '../components/home/HomeSearchSection';
 import { SuggestDish } from '../components/SuggestDish';
 import { METADATA } from '../constants';
 import { ScreenContext } from '../contexts/screen';
+import { useAuth } from '../hooks/useAuth';
 // import withAuthUser from '../utils/pageWrappers/withAuthUser';
 // import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo';
 import { sanityPostQuery } from '../hooks/useSearch';
@@ -30,7 +31,8 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
 
   const { isDesktop } = useContext(ScreenContext);
 
-  const { userData } = useUserData();
+  const { user } = useAuth();
+  const { userData } = useUserData(user);
   console.log('userData', userData);
 
   return (
@@ -48,7 +50,7 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
         ></meta>
       </Head>
 
-      <div className="flex flex-col space-y-16 mb-16">
+      <div className="flex flex-col mb-16 space-y-16">
         <Contained>
           <HomeSearchSection />
         </Contained>

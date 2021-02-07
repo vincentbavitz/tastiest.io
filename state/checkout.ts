@@ -51,6 +51,7 @@ export enum CheckoutActions {
   REMOVE_COUPON = 'REMOVE_COUPON',
   SET_CHECKOUT_STEP = 'SET_CHECKOUT_STEP',
   SET_SIGN_IN_TAB_SELECTED = 'SET_SIGN_IN_TAB_SELECTED',
+  SET_ON_CHECKOUT_PAGE = 'SET_ON_CHECKOUT_PAGE',
 }
 
 // ////////////////////////////// //
@@ -87,6 +88,11 @@ export const setCheckoutStep = (step: CheckoutStep) => ({
 export const setSignInTabSelected = (selected: CheckoutSignInTabSelected) => ({
   type: CheckoutActions.SET_SIGN_IN_TAB_SELECTED,
   payload: selected,
+});
+
+export const setOnCheckoutPage = (value: boolean) => ({
+  type: CheckoutActions.SET_ON_CHECKOUT_PAGE,
+  payload: value,
 });
 
 // RETURNED TO CART EVENT

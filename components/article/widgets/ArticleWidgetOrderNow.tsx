@@ -21,7 +21,7 @@ export function ArticleWidgetOrderNow(deal: IOrderDeal) {
   const { isDesktop } = useContext(ScreenContext);
 
   const { user } = useAuth();
-  const { userData, setUserData } = useUserData();
+  const { userData, setUserData } = useUserData(user);
 
   const submit = () => {
     setUserData(UserData.DISPLAY_NAME, '234324');

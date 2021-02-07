@@ -12,8 +12,9 @@ import { useUserData } from './useUserData';
 export const useAuth = () => {
   const firebase = useFirebase();
   const router = useRouter();
-  const { user } = useContext(AuthContext);
   const [error, setError] = useState<Error | undefined>();
+  const { user } = useContext(AuthContext);
+  const { setUserData } = useUserData(user);
 
   const MAX_LOGIN_ATTEMPTS = 3;
 
@@ -92,46 +93,59 @@ export const useAuth = () => {
     setError(undefined);
 
     try {
-      await firebase.auth().createUserWithEmailAndPassword(email, password);
+      const { user } = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
 
-      const user = firebase.auth().currentUser;
-      if (user) {
-        await user.updateProfile({
-          displayName: titleCase(displayName),
-        });
-
-        const { setUserData } = useUserData();
-        setUserData(UserData.DISPLAY_NAME, displayName);
-
-        // Sign in user
-        signIn(email, password);
-
-        // User has accepted cookies implicitly
-        localStorage.setItem(LocalStorageItem.HAS_ACCEPTED_COOKIES, '1');
-
-        // Send email verification email
-        firebase.auth().currentUser.sendEmailVerification();
-
-        // Identify user with Segment
-        window.analytics.identify(user.uid, {
-          context: {
-            userAgent: navigator?.userAgent,
-          },
-          traits: {
-            // name: '',
-            // address: '',
-            // birthday: undefined,
-            // phone,
-            id: user.uid,
-            email: email,
-            createdAt: Date.now(),
-            username: user.displayName,
-          },
-        });
-
-        return true;
+      if (!user) {
+        console.log('Sign Up: No user!!!');
+        return false;
       }
+
+      await user.updateProfile({
+        displayName: titleCase(displayName),
+      });
+      console.log('Sign Up: Updated profile');
+
+      // User data
+      setUserData(UserData.DISPLAY_NAME, displayName);
+      console.log('Sign Up: Set display name');
+
+      // Sign in user
+      await signIn(email, password);
+      console.log('Sign Up: Signed in');
+
+      // User has accepted cookies implicitly
+      localStorage.setItem(LocalStorageItem.HAS_ACCEPTED_COOKIES, '1');
+      console.log('Sign Up: set cookies');
+
+      // Send email verification email
+      firebase.auth().currentUser.sendEmailVerification();
+      console.log('Sign Up: Sent email verification');
+
+      // Identify user with Segment
+      window.analytics.identify(user.uid, {
+        context: {
+          userAgent: navigator?.userAgent,
+        },
+        traits: {
+          // name: '',
+          // address: '',
+          // birthday: undefined,
+          // phone,
+          id: user.uid,
+          email: email,
+          createdAt: Date.now(),
+          username: user.displayName ?? null,
+        },
+      });
+
+      console.log('Sign Up: Tracked with segment');
+
+      return true;
     } catch (e) {
+      console.log('Sign Up: CAUGHT ERROR', e);
+
       setError(error);
       return false;
     }

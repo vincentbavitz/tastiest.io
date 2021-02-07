@@ -14,10 +14,15 @@ import { HeaderSearch } from './HeaderSearch';
 
 export function Header() {
   const { isDesktop } = useContext(ScreenContext);
+  const { onCheckoutPage } = useSelector((state: IState) => state.checkout);
 
   return (
     <div className="flex flex-col w-full">
-      <div>{!isDesktop ? <MobileHeader /> : <DesktopHeader />}</div>
+      {onCheckoutPage ? (
+        <CheckoutHeader />
+      ) : (
+        <div>{!isDesktop ? <MobileHeader /> : <DesktopHeader />}</div>
+      )}
     </div>
   );
 }
@@ -38,17 +43,17 @@ function MobileHeader() {
         paddingLeft: '5vw',
         paddingRight: '5vw',
       }}
-      className="fixed left-0 right-0 top-0 w-full h-24 bg-white"
+      className="fixed top-0 left-0 right-0 w-full h-24 bg-white"
     >
-      <div className="w-full h-full flex items-center justify-between">
+      <div className="flex items-center justify-between w-full h-full">
         <div className="flex flex-shrink-0" onMouseDown={handleExpandSearch}>
           <SearchPrimarySVG className="h-10 cursor-pointer" />
         </div>
 
         <div className="antialiased">
           <Link href="/">
-            <a className="tastiest-logo-link flex items-center flex-shrink-0 text-secondary">
-              <TastiestLogo className="fill-current h-8" />
+            <a className="flex items-center flex-shrink-0 tastiest-logo-link text-secondary">
+              <TastiestLogo className="h-8 fill-current" />
             </a>
           </Link>
         </div>
@@ -97,15 +102,15 @@ function DesktopHeader() {
             ? UI.Z_INDEX_HEADER_SEARCH
             : UI.Z_INDEX_HEADER,
       }}
-      className="fixed left-0 right-0 top-0 w-full h-20 bg-white flex items-center"
+      className="fixed top-0 left-0 right-0 flex items-center w-full h-20 bg-white"
     >
       <Contained>
-        <div className="w-full h-full flex items-center">
-          <div className="antialiased flex w-full items-center justify-between">
+        <div className="flex items-center w-full h-full">
+          <div className="flex items-center justify-between w-full antialiased">
             <div className="flex flex-grow">
               <Link href="/">
-                <a className="tastiest-logo-link flex items-center flex-shrink-0 text-secondary">
-                  <TastiestLogo className="fill-current h-8" />
+                <a className="flex items-center flex-shrink-0 tastiest-logo-link text-secondary">
+                  <TastiestLogo className="h-8 fill-current" />
                 </a>
               </Link>
               <HeaderSearch
@@ -122,5 +127,21 @@ function DesktopHeader() {
         </div>
       </Contained>
     </div>
+  );
+}
+
+function CheckoutHeader() {
+  return (
+    <Contained>
+      <div className="flex items-center w-full h-24">
+        <div className="flex items-center justify-between w-full antialiased">
+          <Link href="/">
+            <a className="flex items-center flex-shrink-0 tastiest-logo-link text-secondary">
+              <TastiestLogo className="h-8 fill-current" />
+            </a>
+          </Link>
+        </div>
+      </div>
+    </Contained>
   );
 }

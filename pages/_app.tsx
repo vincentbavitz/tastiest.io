@@ -7,7 +7,6 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { Provider as StoreProvider } from 'react-redux';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
-import { useLocation } from 'react-use';
 import { createStore } from 'redux';
 import { createFirestoreInstance } from 'redux-firestore';
 import '../assets/style.scss';
@@ -15,8 +14,7 @@ import Layout from '../components/layout';
 import { FIREBASE, METADATA } from '../constants';
 import { AuthProvider } from '../contexts/auth';
 import ScreenProvider from '../contexts/screen';
-import { useAuth } from '../hooks/useAuth';
-import { useTracking } from '../hooks/useTracking';
+import { setOnCheckoutPage } from '../state/checkout';
 import { openSignInModal } from '../state/navigation';
 import { rootReducer } from '../state/reducers';
 
@@ -39,28 +37,28 @@ const rrfProps = {
 };
 
 function App({ Component, pageProps }: AppProps) {
-  const { user, isSignedIn } = useAuth();
   const router = useRouter();
 
-  const handleLocationChange = () => {
+  const handleLocationChange = url => {
     // Open login modal from URL params
-    if (router.query?.login === '1' && !isSignedIn) {
+    if (METADATA.URL_SIGN_IN_REGEX.test(url)) {
       store.dispatch(openSignInModal());
     }
 
+    // Update analytics page location
+    window.analytics.page();
+
     // Update onCheckoutPage when user is checking out
-    console.log('_app ➡️ router.;:', router);
-    if (router.pathname === '/checkout') {
-      store.dispatch();
-    }
+    store.dispatch(
+      setOnCheckoutPage(METADATA.URL_CHECKOUT_PAGE_REGEX.test(url)),
+    );
   };
 
-  const location = useLocation();
   useEffect(() => {
-    handleLocationChange();
-  }, [location]);
+    router.events.on('routeChangeComplete', handleLocationChange);
 
-  useTracking();
+    return () => router.events.off('routeChangeComplete', handleLocationChange);
+  }, []);
 
   return (
     <StoreProvider store={store}>

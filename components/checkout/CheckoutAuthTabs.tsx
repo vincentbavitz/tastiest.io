@@ -5,7 +5,7 @@ import { IState } from '../../state/reducers';
 import { CheckoutSignInTabSelected } from '../../types/checkout';
 import { CheckoutTabs, ITab } from './CheckoutTabs';
 
-export function CheckoutSignInTabs() {
+export function CheckoutAuthTabs() {
   const {
     flow: { signInTabSelected },
   } = useSelector((state: IState) => state.checkout);

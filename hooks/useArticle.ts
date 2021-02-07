@@ -4,7 +4,8 @@ import { useAuth } from './useAuth';
 import { useUserData } from './useUserData';
 
 export function useArticle() {
-  const { userData = {}, setUserData } = useUserData();
+  const { user } = useAuth();
+  const { userData = {}, setUserData } = useUserData(user);
   const { isSignedIn } = useAuth();
   const router = useRouter();
 

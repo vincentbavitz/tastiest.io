@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CheckoutStepIndicator } from '../components/checkout/CheckoutStepIndicator';
+import { CheckoutStepAuth } from '../components/checkout/steps/CheckoutStepAuth';
 import { CheckoutStepComplete } from '../components/checkout/steps/CheckoutStepComplete';
 import { CheckoutStepPayment } from '../components/checkout/steps/CheckoutStepPayment';
-import { CheckoutStepSignIn } from '../components/checkout/steps/CheckoutStepSignIn';
 import { Contained } from '../components/Contained';
 import { ScreenContext } from '../contexts/screen';
 import { useAuth } from '../hooks/useAuth';
@@ -31,7 +31,7 @@ function CheckoutDesktop() {
     }
   }, [isSignedIn]);
 
-  const isSignInStep = !isSignedIn;
+  const isAuthStep = !isSignedIn;
   const isPaymentStep = isSignedIn && step === CheckoutStep.PAYMENT;
   const isCompleteStep = isSignedIn && step === CheckoutStep.COMPLETE;
 
@@ -40,11 +40,11 @@ function CheckoutDesktop() {
       <div className="flex w-full space-x-10">
         <div
           style={{ minWidth: '433px' }}
-          className="flex flex-col w-7/12 mt-24 space-y-10"
+          className="flex flex-col w-7/12 mt-12 space-y-10"
         >
           <CheckoutStepIndicator />
 
-          {isSignInStep && <CheckoutStepSignIn />}
+          {isAuthStep && <CheckoutStepAuth />}
           {isPaymentStep && <CheckoutStepPayment />}
           {isCompleteStep && <CheckoutStepComplete />}
         </div>

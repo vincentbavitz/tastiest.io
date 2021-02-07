@@ -24,25 +24,22 @@ export function CheckoutSignIn() {
         value={signInEmail}
         onValueChange={value => setSignInEmail(cleanupInputValue(value))}
       />
-
       <InputPassword
         value={signInPassword}
         onValueChange={value => setSignInPassword(cleanupInputValue(value))}
       />
-
       <Button
         wide
         size="large"
         type="solid"
         color="primary"
-        className="rounded-xl py-3"
+        className="py-3 rounded-xl"
         onClick={() => signIn(signInEmail, signInPassword)}
       >
         Sign In
       </Button>
-
       {error && (
-        <div className="text-sm text-center mb-1 -mt-1 text-red-700">
+        <div className="mb-1 -mt-1 text-sm text-center text-red-700">
           {error?.message}
         </div>
       )}

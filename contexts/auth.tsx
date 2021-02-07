@@ -2,6 +2,7 @@ import firebaseApp from 'firebase/app';
 import nookies from 'nookies';
 import React, { createContext, useEffect, useState } from 'react';
 import { useFirebase } from 'react-redux-firebase';
+import { useTracking } from '../hooks/useTracking';
 
 export const AuthContext = createContext<{ user: firebaseApp.User | null }>({
   user: null,
@@ -10,6 +11,8 @@ export const AuthContext = createContext<{ user: firebaseApp.User | null }>({
 export function AuthProvider({ children }: any) {
   const [user, setUser] = useState<firebaseApp.User | null>(null);
   const firebase = useFirebase();
+
+  useTracking();
 
   useEffect(() => {
     if (typeof window !== undefined) {

@@ -4,6 +4,7 @@ import HeartFilledPrimarySVG from '../../../assets/svgs/heart-filled-primary.svg
 import HeartPrimarySVG from '../../../assets/svgs/heart-primary.svg';
 import ShareSVG from '../../../assets/svgs/share.svg';
 import { useArticle } from '../../../hooks/useArticle';
+import { useAuth } from '../../../hooks/useAuth';
 import { useUserData } from '../../../hooks/useUserData';
 import {
   shareToFacebook,
@@ -33,7 +34,8 @@ export function ArticleSaveShareWidget(props: Props) {
   const { id, title, slug } = props;
 
   const { toggleSaveArticle } = useArticle();
-  const { userData = {} } = useUserData();
+  const { user } = useAuth();
+  const { userData = {} } = useUserData(user);
 
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -65,14 +67,14 @@ export function ArticleSaveShareWidget(props: Props) {
   ];
 
   return (
-    <div className="flex justify-center w-full z-10">
+    <div className="z-10 flex justify-center w-full">
       <div
         style={{ width: 'fit-content' }}
-        className="flex bg-soft cursor-pointer rounded-md text-primary my-4"
+        className="flex my-4 rounded-md cursor-pointer bg-soft text-primary"
       >
         <div
           onClick={() => toggleSaveArticle(id)}
-          className="flex flex-1 items-center cursor-pointer px-2 py-1 space-x-1 hover:bg-subtle-2 font-medium rounded-l-md"
+          className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium cursor-pointer hover:bg-subtle-2 rounded-l-md"
         >
           {isArticleSaved ? (
             <HeartFilledPrimarySVG className="h-8" />
@@ -83,7 +85,7 @@ export function ArticleSaveShareWidget(props: Props) {
         </div>
 
         <div
-          className="flex flex-1 items-center cursor-pointer px-2 py-1 space-x-1 hover:bg-subtle-2 font-medium rounded-r-md"
+          className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium cursor-pointer hover:bg-subtle-2 rounded-r-md"
           onClick={() => setIsDropdownOpen(true)}
         >
           <ShareSVG className="h-8" />
@@ -99,7 +101,7 @@ export function ArticleSaveShareWidget(props: Props) {
         >
           <>
             <div className="px-3 pt-1 pb-2">
-              <InputGroup className="w-full rounded-sm bg-secondary bg-opacity-25">
+              <InputGroup className="w-full bg-opacity-25 rounded-sm bg-secondary">
                 <InputAbstract
                   style={{ minWidth: '9rem' }}
                   border="none"

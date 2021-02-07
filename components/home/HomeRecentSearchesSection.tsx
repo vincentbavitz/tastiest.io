@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
+import { useAuth } from '../../hooks/useAuth';
 import { useUserData } from '../../hooks/useUserData';
 import { HorizontalScrollable } from '../HorizontalScrollable';
 import { OutlineBlock } from '../OutlineBlock';
@@ -8,7 +9,8 @@ import { SectionTitle } from '../SectionTitle';
 
 export function HomeRecentSearchesSection() {
   // Get recent searches from session / account data
-  const { userData } = useUserData();
+  const { user } = useAuth();
+  const { userData } = useUserData(user);
   const { recentSearches = [] } = userData ?? {};
 
   const router = useRouter();
