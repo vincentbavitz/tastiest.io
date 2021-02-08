@@ -1,6 +1,6 @@
 import { IFigureImage } from './article';
 
-export interface IOrderDeal {
+export interface IDeal {
   restaurantID: string;
   restaurantName: string;
   dealName: string; // Grizzly Grumble
@@ -9,7 +9,14 @@ export interface IOrderDeal {
   dealPrefix: string; // Only £25 and you'll get
   dealItems: Array<string>; // ['300g Porterhouse', 'Fries', ...]
   pricePerHeadGBP: number; // 25 (25 pounds)s
+}
+
+export interface IOrder {
+  deal: IDeal;
   heads: number;
+  // Timestamps
+  orderedAt: number;
+  dealDatedFor: number;
 }
 
 export enum CheckoutStep {

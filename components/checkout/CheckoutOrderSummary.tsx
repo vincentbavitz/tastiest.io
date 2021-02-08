@@ -50,7 +50,7 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
   if (!order) return null;
 
   return (
-    <div
+    <divl
       style={{
         minWidth: '250px',
         height: 'min-content',
