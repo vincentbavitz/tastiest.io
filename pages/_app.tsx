@@ -9,7 +9,6 @@ import { Provider as StoreProvider } from 'react-redux';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import { createStore } from 'redux';
 import { createFirestoreInstance } from 'redux-firestore';
-import '../assets/style.scss';
 import Layout from '../components/layout';
 import { FIREBASE, METADATA } from '../constants';
 import { AuthProvider } from '../contexts/auth';
@@ -17,6 +16,7 @@ import ScreenProvider from '../contexts/screen';
 import { setOnCheckoutPage } from '../state/checkout';
 import { openSignInModal } from '../state/navigation';
 import { rootReducer } from '../state/reducers';
+import '../styles/style.scss';
 
 if (!firebase.apps.length) {
   // Initialize firebase instance

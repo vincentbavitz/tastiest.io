@@ -1,5 +1,5 @@
+import PasswordSVG from '@svg/lock.svg';
 import React from 'react';
-import PasswordSVG from '../../assets/svgs/lock.svg';
 import { InputAbstract } from './InputAbstract';
 
 interface Props {

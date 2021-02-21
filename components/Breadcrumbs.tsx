@@ -1,7 +1,7 @@
+import HomeSVG from '@svg/home-primary.svg';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import HomeSVG from '../assets/svgs/home-primary.svg';
 
 export function Breadcrumbs() {
   const router = useRouter();

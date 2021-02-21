@@ -1,3 +1,4 @@
+import ExitSVG from '@svg/exit-primary.svg';
 import classNames from 'classnames';
 import React, {
   ReactNode,
@@ -8,7 +9,6 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useClickAway, useKey, useLockBodyScroll } from 'react-use';
-import ExitSVG from '../assets/svgs/exit-primary.svg';
 import { UI } from '../constants';
 import { ScreenContext } from '../contexts/screen';
 import { closeSignInModal, collapseSearchOverlay } from '../state/navigation';

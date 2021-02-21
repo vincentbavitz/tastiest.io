@@ -1,10 +1,10 @@
+import SearchPrimarySVG from '@svg/search-primary.svg';
+import SearchSecondarySVG from '@svg/search-secondary.svg';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, ReactNode, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useKey, useStartTyping } from 'react-use';
-import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
-import SearchSecondarySVG from '../../assets/svgs/search-secondary.svg';
 import { useSearch } from '../../hooks/useSearch';
 import {
   collapseSearchOverlay,
@@ -46,8 +46,8 @@ export function SearchInput(props: Props) {
   } = props;
 
   // State
-  // const navigationState = useSelector<IState>(state => state.navigation);
-  const searchState = useSelector<IState>(state => state.search);
+  // const navigationState = useSelector((state: IState) => state.navigation);
+  const searchState = useSelector((state: IState) => state.search);
   // const { searchOverlayExpanded } = navigationState;
   const searchOverlayExpanded = true;
   const dispatch = useDispatch();

@@ -1,6 +1,6 @@
+import SuggestDishDesktopSVG from '@svg/suggest-dish-desktop.svg';
 import classNames from 'classnames';
 import React, { useContext } from 'react';
-import SuggestDishDesktopSVG from '../assets/svgs/suggest-dish-desktop.svg';
 import { ScreenContext } from '../contexts/screen';
 import { Button } from './Button';
 import { Contained } from './Contained';

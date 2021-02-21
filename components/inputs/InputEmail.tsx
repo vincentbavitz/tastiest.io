@@ -1,5 +1,5 @@
+import EmailSVG from '@svg/email.svg';
 import React from 'react';
-import EmailSVG from '../../assets/svgs/email.svg';
 import { InputAbstract } from './InputAbstract';
 
 interface Props {

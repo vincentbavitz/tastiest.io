@@ -1,14 +1,14 @@
+import HomeHeroSVG from '@svg/home-hero.svg';
 import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import HomeHeroSVG from '../../assets/svgs/home-hero.svg';
 import { METADATA } from '../../constants';
 import { ScreenContext } from '../../contexts/screen';
 import { IState } from '../../state/reducers';
 import { HomeSearch } from './HomeSearch';
 
 export function HomeSearchSection(): JSX.Element {
-  const navigationState = useSelector<IState>(state => state.navigation);
-  const searchState = useSelector<IState>(state => state.search);
+  const navigationState = useSelector((state: IState) => state.navigation);
+  const searchState = useSelector((state: IState) => state.search);
   const { searchBarPinnedToHeader } = searchState;
   const { searchOverlayExpanded } = navigationState;
   const dispatch = useDispatch();

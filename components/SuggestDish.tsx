@@ -1,8 +1,8 @@
+import SuggestDishDesktopSVG from '@svg/suggest-dish-desktop.svg';
+import SuggestDishMobileSVG from '@svg/suggest-dish-mobile.svg';
 import classNames from 'classnames';
 import React, { useContext, useEffect } from 'react';
 import { useMeasure } from 'react-use';
-import SuggestDishDesktopSVG from '../assets/svgs/suggest-dish-desktop.svg';
-import SuggestDishMobileSVG from '../assets/svgs/suggest-dish-mobile.svg';
 import { ScreenContext } from '../contexts/screen';
 import { Button } from './Button';
 import { InputAbstract } from './inputs/InputAbstract';

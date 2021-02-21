@@ -8,8 +8,8 @@ import {
   StripeCardNumberElementChangeEvent,
   StripeCardNumberElementOptions,
 } from '@stripe/stripe-js';
+import HelpSVG from '@svg/checkout/help.svg';
 import React, { useState } from 'react';
-import HelpSVG from '../../../assets/svgs/checkout/help.svg';
 import { CardBrand } from '../../../types/checkout';
 import { InputCardNumberWrapper } from '../../inputs/card/InputCardNumberWrapper';
 import { InputContactBirthday } from '../../inputs/contact/InputContactBirthday';

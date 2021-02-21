@@ -1,8 +1,8 @@
+import HeartFilledPrimarySVG from '@svg/heart-filled-primary.svg';
+import HeartPrimarySVG from '@svg/heart-primary.svg';
+import ShareSVG from '@svg/share.svg';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import HeartFilledPrimarySVG from '../../../assets/svgs/heart-filled-primary.svg';
-import HeartPrimarySVG from '../../../assets/svgs/heart-primary.svg';
-import ShareSVG from '../../../assets/svgs/share.svg';
 import { useArticle } from '../../../hooks/useArticle';
 import { useAuth } from '../../../hooks/useAuth';
 import { useUserData } from '../../../hooks/useUserData';

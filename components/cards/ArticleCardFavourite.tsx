@@ -1,11 +1,11 @@
+import HeartFilledPrimarySVG from '@svg/heart-filled-primary.svg';
+import HeartPrimayrSVG from '@svg/heart-primary.svg';
+import ShareSVG from '@svg/share.svg';
 import classNames from 'classnames';
 import router from 'next/dist/client/router';
 import Link from 'next/link';
 import React, { SyntheticEvent, useContext } from 'react';
 import { useMeasure } from 'react-use';
-import HeartFilledPrimarySVG from '../../assets/svgs/heart-filled-primary.svg';
-import HeartPrimayrSVG from '../../assets/svgs/heart-primary.svg';
-import ShareSVG from '../../assets/svgs/share.svg';
 import { ScreenContext } from '../../contexts/screen';
 import { useArticle } from '../../hooks/useArticle';
 import { ISanityArticle } from '../../types/article';

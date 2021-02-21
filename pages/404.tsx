@@ -1,8 +1,8 @@
+import _404 from '@svg/404.svg';
 import classNames from 'classnames';
 import Head from 'next/head';
 import Link from 'next/link';
 import React, { useContext } from 'react';
-import _404 from '../assets/svgs/404.svg';
 import { UI } from '../constants';
 import { ScreenContext } from '../contexts/screen';
 import { generateTitle } from '../utils/metadata';

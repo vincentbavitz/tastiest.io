@@ -1,6 +1,6 @@
+import CharacterEatingSVG from '@svg/article/character-eating.svg';
+import XiaoDividerSVG from '@svg/article/xiao-divider.svg';
 import React, { ReactNode, useContext } from 'react';
-import CharacterEatingSVG from '../../../assets/svgs/article/character-eating.svg';
-import XiaoDividerSVG from '../../../assets/svgs/article/xiao-divider.svg';
 import { UI } from '../../../constants';
 import { ScreenContext } from '../../../contexts/screen';
 import { ILocation } from '../../../types/article';
@@ -27,7 +27,7 @@ export function ArticleSectionAbstract(props: Props) {
     <Contained backgroundColor="secondary-1">
       {!isDesktop ? <CharacterEatingMobile /> : <CharacterEatingDesktop />}
 
-      <div className="flex flex-col items-center desktop:pt-6 mb-16 space-y-10">
+      <div className="flex flex-col items-center mb-16 space-y-10 desktop:pt-6">
         {children}
 
         <ArticleWidgetMap
@@ -38,7 +38,7 @@ export function ArticleSectionAbstract(props: Props) {
         <ArticleFeatureVideoWidget video={video} />
       </div>
 
-      <div className="flex w-full justify-center h-4 mb-12">
+      <div className="flex justify-center w-full h-4 mb-12">
         <XiaoDividerSVG className="h-32 -mt-16 desktop:h-56 desktop:-mt-32" />
       </div>
     </Contained>
@@ -47,7 +47,7 @@ export function ArticleSectionAbstract(props: Props) {
 
 const CharacterEatingDesktop = () => (
   <div
-    className="flex justify-center absolute inset-0 z-0"
+    className="absolute inset-0 z-0 flex justify-center"
     style={{ height: 'fit-content', transform: 'translateY(-73%)' }}
   >
     <div
@@ -71,7 +71,7 @@ const CharacterEatingDesktop = () => (
 
 const CharacterEatingMobile = () => (
   <div
-    className="flex justify-center h-0 mb-16 z-0"
+    className="z-0 flex justify-center h-0 mb-16"
     style={{
       marginTop: '10.95rem',
     }}

@@ -1,7 +1,7 @@
+import FavouritesNoneSVG from '@svg/page/favourites-none.svg';
+import FavouritesBackdropSVG from '@svg/page/favourites.svg';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
-import FavouritesNoneSVG from '../assets/svgs/page/favourites-none.svg';
-import FavouritesBackdropSVG from '../assets/svgs/page/favourites.svg';
 import { ArticleCard } from '../components/cards/ArticleCard';
 import { ArticleCardFavourite } from '../components/cards/ArticleCardFavourite';
 import { CardGrid } from '../components/cards/CardGrid';

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import React from 'react';
-import { SVG } from '../../types';
+import { SVG } from 'types/assets';
 import { generateURL } from '../../utils/routing';
 
 interface Props {
@@ -26,7 +26,7 @@ export function CuisineItem(props: Props) {
   return (
     <Link href={href} as={as}>
       <div
-        className="cuisine-item flex py-6 mt-1 tablet:py-4 tablet:mt-0"
+        className="flex py-6 mt-1 cuisine-item tablet:py-4 tablet:mt-0"
         onClick={handleOnClick}
       >
         <div

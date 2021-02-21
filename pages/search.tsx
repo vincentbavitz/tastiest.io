@@ -1,8 +1,8 @@
+import SearchBackdropDesktopSVG from '@svg/page/search_desktop.svg';
+import SearchBackdropMobileSVG from '@svg/page/search_mobile.svg';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
-import SearchBackdropDesktopSVG from '../assets/svgs/page/search_desktop.svg';
-import SearchBackdropMobileSVG from '../assets/svgs/page/search_mobile.svg';
 import client from '../client';
 import { ArticleCard } from '../components/cards/ArticleCard';
 import { ArticleCardRow } from '../components/cards/ArticleCardRow';

@@ -1,6 +1,6 @@
+import CheckCircleSVG from '@svg/checkout/check-circle.svg';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
-import CheckCircleSVG from '../../assets/svgs/checkout/check-circle.svg';
 import { IState } from '../../state/reducers';
 import { CheckoutStep } from '../../types/checkout';
 

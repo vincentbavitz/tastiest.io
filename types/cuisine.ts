@@ -1,4 +1,4 @@
-import { SVG } from '../@types';
+import { SVG } from './assets';
 
 export interface ICuisine {
   // Name is the cuisine as it's rendered. Don't forget capitalizations

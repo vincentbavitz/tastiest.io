@@ -1,8 +1,8 @@
+import MasterCardSVG from '@svg/checkout/mastercard.svg';
+import MasteroSVG from '@svg/checkout/mastero.svg';
+import VisaSVG from '@svg/checkout/visa.svg';
 import classNames from 'classnames';
 import React, { ReactNode } from 'react';
-import MasterCardSVG from '../../../assets/svgs/checkout/mastercard.svg';
-import MasteroSVG from '../../../assets/svgs/checkout/mastero.svg';
-import VisaSVG from '../../../assets/svgs/checkout/visa.svg';
 import { CardBrand } from '../../../types/checkout';
 import { InputWrapper } from '../InputWrapper';
 

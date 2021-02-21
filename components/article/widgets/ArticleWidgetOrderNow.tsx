@@ -1,5 +1,5 @@
+import HeySpriteSVG from '@svg/article/hey-sprite.svg';
 import React, { useContext } from 'react';
-import HeySpriteSVG from '../../../assets/svgs/article/hey-sprite.svg';
 import { ScreenContext } from '../../../contexts/screen';
 import { useAuth } from '../../../hooks/useAuth';
 import { useUserData } from '../../../hooks/useUserData';

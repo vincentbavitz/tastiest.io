@@ -1,8 +1,8 @@
+import TastiestLogo from '@svg/brand.svg';
+import EmailSVG from '@svg/email.svg';
+import PasswordSVG from '@svg/lock.svg';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import TastiestLogo from '../../assets/svgs/brand.svg';
-import EmailSVG from '../../assets/svgs/email.svg';
-import PasswordSVG from '../../assets/svgs/lock.svg';
 import { METADATA } from '../../constants';
 import { ScreenContext } from '../../contexts/screen';
 import { useAuth } from '../../hooks/useAuth';

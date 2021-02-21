@@ -1,5 +1,4 @@
 const withPlugins = require('next-compose-plugins');
-const withSass = require('@zeit/next-sass');
 const withFonts = require('next-fonts');
 const withSvgr = require('next-svgr');
 
@@ -38,6 +37,9 @@ const nextConfig = {
 
     STRIPE_SECRET_KEY_TEST: process.env.STRIPE_SECRET_KEY_TEST,
   },
+  experimental: {
+    jsconfigPaths: true,
+  },
 };
 
-module.exports = withPlugins([withSass, withFonts, withSvgr], nextConfig);
+module.exports = withPlugins([withFonts, withSvgr], nextConfig);

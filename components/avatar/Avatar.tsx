@@ -1,5 +1,5 @@
+import LogoSVG from '@svg/logo.svg';
 import classNames from 'classnames';
-import LogoSVG from '../../assets/svgs/logo.svg';
 
 export interface AvatarProps {
   // Size is in the same units as Tailwind units

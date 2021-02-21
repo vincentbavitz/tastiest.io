@@ -1,3 +1,5 @@
+import ChevronLeftSecondarySVG from '@svg/chevron-left-secondary.svg';
+import ChevronRightSecondarySVG from '@svg/chevron-right-secondary.svg';
 import classNames from 'classnames';
 import React, {
   ReactNode,
@@ -7,8 +9,6 @@ import React, {
   useState,
 } from 'react';
 import { useScroll, useWindowSize } from 'react-use';
-import ChevronLeftSecondarySVG from '../assets/svgs/chevron-left-secondary.svg';
-import ChevronRightSecondarySVG from '../assets/svgs/chevron-right-secondary.svg';
 import { UI } from '../constants';
 import { ScreenContext } from '../contexts/screen';
 import { Contained } from './Contained';

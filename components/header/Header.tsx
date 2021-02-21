@@ -1,8 +1,8 @@
+import TastiestLogo from '@svg/brand.svg';
+import SearchPrimarySVG from '@svg/search-primary.svg';
 import Link from 'next/link';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import TastiestLogo from '../../assets/svgs/brand.svg';
-import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
 import { UI } from '../../constants';
 import { ScreenContext } from '../../contexts/screen';
 import { expandSearchOverlay } from '../../state/navigation';

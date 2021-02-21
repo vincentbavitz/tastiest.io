@@ -1,19 +1,19 @@
+import SpaghettiSVG from '@svg/cuisines/italian.svg';
+import SushiSVG from '@svg/cuisines/japanese.svg';
+import XiaoSVG from '@svg/cuisines/xiao.svg';
+import NewSVG from '@svg/hot.svg';
+import NearbySVG from '@svg/location.svg';
+import TrendingSVG from '@svg/trending.svg';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
-import SpaghettiSVG from '../../assets/svgs/cuisines/italian.svg';
-import SushiSVG from '../../assets/svgs/cuisines/japanese.svg';
-import XiaoSVG from '../../assets/svgs/cuisines/xiao.svg';
-import NewSVG from '../../assets/svgs/hot.svg';
-import NearbySVG from '../../assets/svgs/location.svg';
-import TrendingSVG from '../../assets/svgs/trending.svg';
+import { SVG } from 'types/assets';
 import { CUISINES } from '../../constants';
 import { ScreenContext } from '../../contexts/screen';
 import { useSearch } from '../../hooks/useSearch';
 import { IState } from '../../state/reducers';
-import { SVG } from '../../types';
 import { Button } from '../Button';
 import { ArticleCard } from '../cards/ArticleCard';
 import { OutlineBlock } from '../OutlineBlock';
@@ -41,7 +41,7 @@ const popularDishes: Array<IDynamicOptions> = [
 ];
 
 export function SearchOverlayInner() {
-  const searchState = useSelector<IState>(state => state.search);
+  const searchState = useSelector((state: IState) => state.search);
 
   const renderSearchResults =
     searchState.searchQuery.length > 0 &&
@@ -62,7 +62,7 @@ export function SearchOverlayInner() {
   return (
     <>
       <div className={classNames('w-full', !isDesktop ? 'px-0' : 'px-4')}>
-        <div className="border-secondary border-opacity-50 border-t-2"></div>
+        <div className="border-t-2 border-opacity-50 border-secondary"></div>
       </div>
 
       {renderSearchResults && <SearchOverlayInnerResults />}
@@ -88,12 +88,12 @@ function SearchOverlayInnerDefault() {
       )}
     >
       {/* FEATURED DYNAMIC CATEGORIES */}
-      <div className="flex flex-col space-y-1 mt-4">
+      <div className="flex flex-col mt-4 space-y-1">
         {dynamicCategories.map(category => (
           <div
             key={category.name.toLowerCase()}
             onClick={() => router.push(category.href)}
-            className="flex items-center text-lg cursor-pointer text-primary font-roboto font-medium rounded-lg hover:bg-primary hover:bg-opacity-10"
+            className="flex items-center text-lg font-medium rounded-lg cursor-pointer text-primary font-roboto hover:bg-primary hover:bg-opacity-10"
           >
             <category.svg className="h-8 mr-2" />
             {category.name}
@@ -103,7 +103,7 @@ function SearchOverlayInnerDefault() {
 
       {/* CUISINES */}
       <div className="flex flex-col mt-6">
-        <span className="text-black text-sm font-semibold tracking-wide ml-1">
+        <span className="ml-1 text-sm font-semibold tracking-wide text-black">
           Find your next favourite dish!
         </span>
 
@@ -133,7 +133,7 @@ function SearchOverlayInnerDefault() {
 
       {/* POPULAR DISHES */}
       <div className="flex flex-col mt-6">
-        <span className="text-black text-sm font-semibold tracking-wide ml-1">
+        <span className="ml-1 text-sm font-semibold tracking-wide text-black">
           Popular dishes
         </span>
 
@@ -141,9 +141,9 @@ function SearchOverlayInnerDefault() {
           {popularDishes.map(dish => (
             <div
               key={dish.name.toLowerCase()}
-              className="flex space-x-2 items-center w-full border-b border-secondary py-2"
+              className="flex items-center w-full py-2 space-x-2 border-b border-secondary"
             >
-              <dish.svg className="h-10 w-12" />
+              <dish.svg className="w-12 h-10" />
               <Link href={dish.href}>
                 <a className="text-primary hover:underline">{dish.name}</a>
               </Link>
@@ -213,7 +213,7 @@ function SearchOverlayInnerNoResults() {
     >
       No results found. Would you like to suggest a dish?
       <Button>Suggest</Button>
-      <div className="w-full h-px bg-red-500 bg-opacity-25 mt-2"></div>
+      <div className="w-full h-px mt-2 bg-red-500 bg-opacity-25"></div>
     </div>
   );
 }

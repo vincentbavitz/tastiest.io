@@ -1,7 +1,7 @@
+import BackSVG from '@svg/back.svg';
 import classNames from 'classnames';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import BackSVG from '../../assets/svgs/back.svg';
 import { UI } from '../../constants';
 import { collapseSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
@@ -10,7 +10,7 @@ import { SearchInput } from './SearchInput';
 import { SearchOverlayInner } from './SearchOverlayInner';
 
 export function SearchOverlayMobile() {
-  const navigationState = useSelector<IState>(state => state.navigation);
+  const navigationState = useSelector((state: IState) => state.navigation);
   const { searchOverlayExpanded } = navigationState;
 
   const dispatch = useDispatch();
