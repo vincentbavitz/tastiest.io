@@ -7,9 +7,11 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setStripeError } from '../../state/checkout';
 import { IState } from '../../state/reducers';
-import { CheckoutStep, IOrderDeal } from '../../types/checkout';
+import { CheckoutStep, IDeal } from '../../types/checkout';
 import { Button } from '../Button';
 import { InputAbstract } from '../inputs/InputAbstract';
+
+const heads = 33;
 
 interface Props {
   stripeClientSecret: string;
@@ -50,7 +52,7 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
   if (!order) return null;
 
   return (
-    <divl
+    <div
       style={{
         minWidth: '250px',
         height: 'min-content',
@@ -61,11 +63,11 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
         style={{}}
         className="w-full px-3 py-3 text-center bg-secondary font-somatic"
       >
-        {order?.dealName}
+        {order?.tagline}
       </div>
 
       <div className="bg-opacity-75 bg-primary aspect-w-16 aspect-h-9">
-        <img className="object-cover" src={order?.dealImage?.source} />
+        <img className="object-cover" src={order?.image?.source} />
       </div>
 
       <div className="flex flex-col px-3 pt-3 pb-4 space-y-3">
@@ -74,7 +76,10 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
         {step === CheckoutStep.SIGN_IN && (
           <div className="flex items-center justify-between">
             <p className="text-sm">
-              {order.dealItems} x{order.heads}
+              {order.includes.map(item => (
+                <p key={item}>{item}</p>
+              ))}{' '}
+              x{heads}
             </p>
 
             <CheckoutPrice {...order} />
@@ -87,7 +92,7 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
               <p className="text-lg font-medium text-primary">Qty</p>
               <select
                 name="zzz"
-                defaultValue={Math.floor(order.heads) ?? 1}
+                defaultValue={Math.floor(heads) ?? 1}
                 className="w-12 bg-transparent border-2 rounded-md border-secondary"
               >
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(o => (
@@ -99,9 +104,9 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
             </div>
 
             <div className="flex items-center justify-between text-xs">
-              <p>Booking for {order.heads} people</p>
+              <p>Booking for {heads} people</p>
               <p className="font-medium">
-                £{Math.floor(order.heads) * order.pricePerHeadGBP}
+                £{Math.floor(heads) * order.pricePerHeadGBP}
               </p>
             </div>
 
@@ -124,7 +129,7 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
 
             <div className="flex items-center justify-between mb-1 space-x-2 font-medium">
               <p>Total</p>
-              <p>£{Math.floor(order.heads) * order.pricePerHeadGBP}</p>
+              <p>£{Math.floor(heads) * order.pricePerHeadGBP}</p>
             </div>
 
             <Button
@@ -166,8 +171,8 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
   );
 }
 
-const CheckoutPrice = (order: IOrderDeal) => (
+const CheckoutPrice = (order: IDeal) => (
   <p className="text-lg font-medium">
-    £{Math.floor(order.heads) * order.pricePerHeadGBP}
+    £{Math.floor(heads) * order.pricePerHeadGBP}
   </p>
 );

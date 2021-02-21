@@ -74,4 +74,5 @@ module.exports = {
     require('tailwindcss-filters'),
     require('@tailwindcss/aspect-ratio'),
   ],
+  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
 };

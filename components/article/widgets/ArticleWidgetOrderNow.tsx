@@ -3,12 +3,12 @@ import HeySpriteSVG from '../../../assets/svgs/article/hey-sprite.svg';
 import { ScreenContext } from '../../../contexts/screen';
 import { useAuth } from '../../../hooks/useAuth';
 import { useUserData } from '../../../hooks/useUserData';
-import { IOrderDeal } from '../../../types/checkout';
+import { IDeal } from '../../../types/checkout';
 import { UserData } from '../../../types/firebase';
 import { Button } from '../../Button';
 import { Title } from '../../Title';
 
-export function ArticleWidgetOrderNow(deal: IOrderDeal) {
+export function ArticleWidgetOrderNow(deal: IDeal) {
   const { isDesktop } = useContext(ScreenContext);
 
   const { user } = useAuth();
@@ -36,7 +36,7 @@ export function ArticleWidgetOrderNow(deal: IOrderDeal) {
         </div>
 
         <h3 className="text-3xl leading-8 text-center font-somatic text-primary">
-          {deal.dealName}
+          {deal.restaurantName}
         </h3>
 
         <div className="pb-4 mx-4 overflow-hidden bg-secondary-1 rounded-xl">
@@ -44,7 +44,7 @@ export function ArticleWidgetOrderNow(deal: IOrderDeal) {
 
           <div className="flex flex-col justify-center pt-2 mx-4 space-y-4">
             <Title level={2} className="font-somatic">
-              {deal.dealDescription}
+              {deal.tagline}
             </Title>
 
             <div className="py-2 mb-3 text-center border-t-4 border-b-4 border-white border-dashed">
@@ -53,12 +53,12 @@ export function ArticleWidgetOrderNow(deal: IOrderDeal) {
                 margin={false}
                 className="font-somatic text-primary"
               >
-                {deal.dealPrefix}
+                Only £{deal.pricePerHeadGBP} and you'll get
               </Title>
             </div>
 
             <div className="text-center">
-              {deal.dealItems.map(item => (
+              {deal.includes.map(item => (
                 <div key={item}>{item}</div>
               ))}
             </div>

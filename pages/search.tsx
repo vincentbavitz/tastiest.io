@@ -70,7 +70,7 @@ function Search(props: Props) {
   const paginationHandler = page => {
     const currentPath = router.pathname;
 
-    //Copy current query to avoid its removing
+    // Copy current query to avoid its removing
     const currentQuery = { ...router.query };
     currentQuery.page = page.selected + 1;
 
@@ -113,7 +113,7 @@ function Search(props: Props) {
                 transform: 'translateX(-18%)',
               }}
             />
-            <div className="absolute inset-0 flex justify-center items-center">
+            <div className="absolute inset-0 flex items-center justify-center">
               <Title level={1} className="font-somatic text-primary">
                 {posts.length > 0 ? 'Search Results' : 'Nothing Found'}
               </Title>
@@ -122,7 +122,7 @@ function Search(props: Props) {
         ) : (
           <Contained>
             <SearchBackdropDesktopSVG className="w-full" />
-            <div className="absolute inset-0 flex justify-center items-center">
+            <div className="absolute inset-0 flex items-center justify-center">
               <Title level={1} className="font-somatic text-primary">
                 {posts.length > 0 ? 'Search Results' : 'Nothing Found'}
               </Title>
@@ -139,7 +139,7 @@ function Search(props: Props) {
         </div>
 
         {showPagination && (
-          <div className="mobile:mt-12 mt-8">
+          <div className="mt-8 mobile:mt-12">
             <ReactPaginate
               previousLabel={'<'}
               nextLabel={'>'}

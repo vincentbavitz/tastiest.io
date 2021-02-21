@@ -3,7 +3,7 @@ import {
   CheckoutSignInTabSelected,
   CheckoutStep,
   ICheckoutDetails,
-  IOrderDeal,
+  IDeal,
 } from '../types/checkout';
 
 export interface ICheckoutFlow {
@@ -15,7 +15,7 @@ export interface ICheckoutFlow {
 }
 
 export interface ICheckout {
-  order?: IOrderDeal;
+  order?: IDeal;
   coupon?: string;
   createdAt?: number;
   priceGBP?: number;
@@ -59,7 +59,7 @@ export enum CheckoutActions {
 // ////////////////////////////// //
 //         Action Creators        //
 // ////////////////////////////// //
-export const setOrder = (item: IOrderDeal) => ({
+export const setOrder = (item: IDeal) => ({
   type: CheckoutActions.SET_ORDER,
   payload: item,
   // TRIGGER ANALYTICS

@@ -78,7 +78,7 @@ export default function Cuisine({
           <div className="absolute inset-0">
             <div
               style={{ marginTop: '10vw' }}
-              className="flex w-full justify-center"
+              className="flex justify-center w-full"
             >
               <span className="text-3xl font-somatic text-primary">
                 {cuisineName}

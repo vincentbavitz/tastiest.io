@@ -3,11 +3,9 @@ import React, { useContext } from 'react';
 import { SANITY_CONSTATNTS } from '../../../client';
 import { ScreenContext } from '../../../contexts/screen';
 import { IArticle } from '../../../types/article';
+import { IDeal } from '../../../types/checkout';
 import { Contained } from '../../Contained';
-import {
-  ArticleWidgetOrderNow,
-  IOrderDeal,
-} from '../widgets/ArticleWidgetOrderNow';
+import { ArticleWidgetOrderNow } from '../widgets/ArticleWidgetOrderNow';
 import { ArticleSectionFeatureImage } from './ArticleSectionFeatureImage';
 
 const paragraphs = [
@@ -48,12 +46,13 @@ Architecto, aperiam impedit. Corrupti inventore eius, exercitationem
 odit est fugit, iste aspernatur incidunt quod iure aliquid fugiat.`,
 ];
 
-const deal: IOrderDeal = {
+const deal: IDeal = {
+  id: '3240234324032432432-4-324324324-23',
+  articleId: '3242973123',
   restaurantID: 'divine-steaks-market',
-  dealName: 'Grizzly Grumble Deal',
-  dealDescription: 'Experience the best porterhouse steak in London',
-  dealPrefix: "Only £25 and you'll get",
-  dealItems: [
+  restaurantName: 'Divine Steaks Market',
+  tagline: 'Experience the best porterhouse steak in London',
+  includes: [
     '300g Porterhouse',
     'Fries',
     'Salad',
@@ -61,6 +60,12 @@ const deal: IOrderDeal = {
     'House wine/beer',
   ],
   pricePerHeadGBP: 25,
+  image: {
+    source:
+      'https://www.homewetbar.com/blog/wp-content/uploads/2014/04/how-to-grill-steak.jpg?x48627',
+    altText: 'sdfs',
+    description: 'sdfs',
+  },
 };
 
 // TODO

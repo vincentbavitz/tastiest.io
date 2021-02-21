@@ -1,5 +1,4 @@
-import { IOrderDeal } from '../components/article/widgets/ArticleWidgetOrderNow';
-import { CardBrand } from '../types/checkout';
+import { CardBrand, IDeal } from '../types/checkout';
 
 export enum PaymentEngineError {
   INVALID_CARD_NUMBER = 'INVALID_CARD_NUMBER',
@@ -44,7 +43,7 @@ export class PaymentEngine {
     this.cardPostcode = cardPostcode;
   }
 
-  public makePaymentWithStripe(item: IOrderDeal, coupon: string) {
+  public makePaymentWithStripe(item: IDeal, coupon: string) {
     return null;
   }
 
