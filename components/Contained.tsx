@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { UI } from '../constants';
 
 interface Props {
-  backgroundColor?: 'primary' | 'secondary' | 'secondary-alt';
+  backgroundColor?: 'primary' | 'secondary' | 'secondary-1';
   children: ReactNode;
 }
 

@@ -1,30 +1,39 @@
+import { useRouter } from 'next/router';
 import React from 'react';
+import { v4 as uuid } from 'uuid';
+import { useAuth } from '../../hooks/useAuth';
+import { useUserData } from '../../hooks/useUserData';
+import { HorizontalScrollable } from '../HorizontalScrollable';
 import { OutlineBlock } from '../OutlineBlock';
 import { SectionTitle } from '../SectionTitle';
-import { v4 as uuid } from 'uuid';
-
-interface RecentSearchItem {
-  value: string;
-  timestamp: number;
-}
 
 export function HomeRecentSearchesSection() {
   // Get recent searches from session / account data
+  const { user } = useAuth();
+  const { userData } = useUserData(user);
+  const { recentSearches = [] } = userData ?? {};
 
-  const recentSearches = [
-    { value: 'Spanish', timestamp: Date.now() },
-    { value: 'Best Pasta', timestamp: Date.now() },
-    { value: 'Best Xiao Long Bao in London', timestamp: Date.now() },
-  ] as Array<RecentSearchItem>;
+  const router = useRouter();
 
   return (
-    <div>
-      <SectionTitle>Your recent searches</SectionTitle>
-      <div className="flex mt-8 space-x-4">
-        {recentSearches.map(search => (
-          <OutlineBlock key={uuid()}>{search.value}</OutlineBlock>
-        ))}
-      </div>
-    </div>
+    <>
+      {recentSearches.length ? (
+        <div className="flex flex-col space-y-6">
+          <SectionTitle>Your recent searches</SectionTitle>
+          <HorizontalScrollable>
+            <div className="flex space-x-4">
+              {recentSearches.slice(0, 10).map(item => (
+                <OutlineBlock
+                  key={uuid()}
+                  onClick={() => router.push(`/search?s=${item.query}`)}
+                >
+                  {item?.query.slice(0, 15)}
+                </OutlineBlock>
+              ))}
+            </div>
+          </HorizontalScrollable>
+        </div>
+      ) : null}
+    </>
   );
 }

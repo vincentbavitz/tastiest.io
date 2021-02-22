@@ -1,28 +1,21 @@
+import HeySpriteSVG from '@svg/article/hey-sprite.svg';
 import React, { useContext } from 'react';
-import HeySpriteSVG from '../../../assets/svgs/article/hey-sprite.svg';
 import { ScreenContext } from '../../../contexts/screen';
-import { useAuth } from '../../../hooks/auth';
-import { useUserData } from '../../../hooks/userData';
+import { useAuth } from '../../../hooks/useAuth';
+import { useUserData } from '../../../hooks/useUserData';
+import { IDeal } from '../../../types/checkout';
+import { UserData } from '../../../types/firebase';
 import { Button } from '../../Button';
 import { Title } from '../../Title';
 
-export interface IOrderDeal {
-  restaurantID: string;
-  dealName: string; // Grizzly Grumble
-  dealDescription: string; // Experience the best porterhouse steak in London
-  dealPrefix: string; // Only £25 and you'll get
-  dealItems: Array<string>; // ['300g Porterhouse', 'Fries', ...]
-  pricePerHeadGBP: number; // 25 (25 pounds)s
-}
-
-export function ArticleWidgetOrderNow(deal: IOrderDeal) {
+export function ArticleWidgetOrderNow(deal: IDeal) {
   const { isDesktop } = useContext(ScreenContext);
 
   const { user } = useAuth();
-  const { userData, setUserData } = useUserData();
+  const { userData, setUserData } = useUserData(user);
 
   const submit = () => {
-    setUserData('this', 'that');
+    setUserData(UserData.DISPLAY_NAME, '234324');
   };
 
   return (
@@ -33,7 +26,7 @@ export function ArticleWidgetOrderNow(deal: IOrderDeal) {
           minWidth: isDesktop ? '275px' : 'unset',
           maxWidth: isDesktop ? 'unset' : '75vw',
         }}
-        className="relative flex flex-col space-y-6 py-4 mt-20 mb-6 desktop:mt-0 border-4 border-secondary-alt rounded-xl"
+        className="relative flex flex-col py-4 mt-20 mb-6 space-y-6 border-4 desktop:mt-0 border-secondary-1 rounded-xl"
       >
         <div className="absolute top-0 right-0 mr-4 -mt-20 desktop:-mt-16">
           <HeySpriteSVG
@@ -42,30 +35,30 @@ export function ArticleWidgetOrderNow(deal: IOrderDeal) {
           />
         </div>
 
-        <h3 className="font-somatic text-threexl text-primary text-center leading-8">
-          {deal.dealName}
+        <h3 className="text-3xl leading-8 text-center font-somatic text-primary">
+          {deal.restaurantName}
         </h3>
 
-        <div className="mx-4 pb-4 overflow-hidden bg-secondary-alt rounded-xl">
+        <div className="pb-4 mx-4 overflow-hidden bg-secondary-1 rounded-xl">
           <img src="/img/steak-dish.jpeg" className="w-full" />
 
-          <div className="flex flex-col space-y-4 mx-4 pt-2 justify-center">
+          <div className="flex flex-col justify-center pt-2 mx-4 space-y-4">
             <Title level={2} className="font-somatic">
-              {deal.dealDescription}
+              {deal.tagline}
             </Title>
 
-            <div className="border-t-4 border-b-4 py-2 mb-3 border-white border-dashed text-center">
+            <div className="py-2 mb-3 text-center border-t-4 border-b-4 border-white border-dashed">
               <Title
                 level={2}
                 margin={false}
                 className="font-somatic text-primary"
               >
-                {deal.dealPrefix}
+                Only £{deal.pricePerHeadGBP} and you'll get
               </Title>
             </div>
 
             <div className="text-center">
-              {deal.dealItems.map(item => (
+              {deal.includes.map(item => (
                 <div key={item}>{item}</div>
               ))}
             </div>
@@ -80,7 +73,7 @@ export function ArticleWidgetOrderNow(deal: IOrderDeal) {
             <select
               name="zzz"
               defaultValue={1}
-              className="w-12 bg-transparent rounded-md border-2 border-secondary"
+              className="w-12 bg-transparent border-2 rounded-md border-secondary"
             >
               <option className="text-center" value="1">
                 1
@@ -96,9 +89,9 @@ export function ArticleWidgetOrderNow(deal: IOrderDeal) {
             <span>£50</span>
           </div>
 
-          <div className="border-t border-primary w-full my-2"></div>
+          <div className="w-full my-2 border-t border-primary"></div>
 
-          <div className="flex justify-between bold text-lg">
+          <div className="flex justify-between text-lg bold">
             <span>Total</span>
             <span>£50</span>
           </div>

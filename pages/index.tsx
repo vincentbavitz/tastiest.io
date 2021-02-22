@@ -12,10 +12,12 @@ import { HomeSearchSection } from '../components/home/HomeSearchSection';
 import { SuggestDish } from '../components/SuggestDish';
 import { METADATA } from '../constants';
 import { ScreenContext } from '../contexts/screen';
-import { ISanityArticle } from '../types/article';
+import { useAuth } from '../hooks/useAuth';
 // import withAuthUser from '../utils/pageWrappers/withAuthUser';
 // import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo';
-import { sanityPostQuery } from '../utils/search';
+import { sanityPostQuery } from '../hooks/useSearch';
+import { useUserData } from '../hooks/useUserData';
+import { ISanityArticle } from '../types/article';
 
 interface Props {
   posts: Array<ISanityArticle>;
@@ -27,16 +29,11 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
     ? posts.slice(0, 4).map(post => <ArticleCard key={post.id} {...post} />)
     : [];
 
-  console.log('posts', posts);
+  const { isDesktop } = useContext(ScreenContext);
 
-  // const { AuthUserInfo } = props;
-  // const authUser = AuthUserInfo.AuthUser;
-
-  // useEffect(() => {
-  //   console.log('Auth user', authUser);
-  // }, [AuthUserInfo]);
-
-  const { isMobile } = useContext(ScreenContext);
+  const { user } = useAuth();
+  const { userData } = useUserData(user);
+  console.log('userData', userData);
 
   return (
     <>
@@ -53,10 +50,16 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
         ></meta>
       </Head>
 
+      <div className="flex flex-col mb-16 space-y-16">
+        <Contained>
+          <HomeSearchSection />
+        </Contained>
+
+        <HomeRecentSearchesSection />
+      </div>
+
       <Contained>
         <div className="flex flex-col space-y-16">
-          <HomeSearchSection />
-          <HomeRecentSearchesSection />
           <HomeMapSection />
           <HomeFavouritesSection cards={cards} />
           <SuggestDish />
@@ -76,7 +79,6 @@ Index.getInitialProps = async () => {
   let posts: Array<ISanityArticle>;
   try {
     posts = await client.fetch(query);
-    console.log('Posts', posts);
   } catch (error) {
     console.warn('Error:', error);
   }

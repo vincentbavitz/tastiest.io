@@ -1,6 +1,5 @@
-import { useArticle } from '../../../hooks/article';
 import { IAuthor } from '../../../types/article';
-import { Avatar } from '../../Avatar';
+import { Avatar } from '../../avatar/Avatar';
 
 interface Props {
   author: IAuthor;

@@ -1,14 +1,17 @@
+import SearchPrimarySVG from '@svg/search-primary.svg';
+import SearchSecondarySVG from '@svg/search-secondary.svg';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, ReactNode, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useKey, useStartTyping } from 'react-use';
-import SearchPrimarySVG from '../../assets/svgs/search-primary.svg';
-import SearchSecondarySVG from '../../assets/svgs/search-secondary.svg';
-import { expandSearchOverlay } from '../../state/navigation';
+import { useSearch } from '../../hooks/useSearch';
+import {
+  collapseSearchOverlay,
+  expandSearchOverlay,
+} from '../../state/navigation';
 import { IState } from '../../state/reducers';
-import { setSearchQuery, setSearchResultItems } from '../../state/search';
-import { search } from '../../utils/search';
+import { setSearchQuery } from '../../state/search';
 
 interface Props {
   placeholder?: string;
@@ -43,9 +46,10 @@ export function SearchInput(props: Props) {
   } = props;
 
   // State
-  const nagivationState = useSelector((state: IState) => state.navigation);
+  // const navigationState = useSelector((state: IState) => state.navigation);
   const searchState = useSelector((state: IState) => state.search);
-  const { searchOverlayExpanded } = nagivationState;
+  // const { searchOverlayExpanded } = navigationState;
+  const searchOverlayExpanded = true;
   const dispatch = useDispatch();
 
   // References
@@ -53,6 +57,8 @@ export function SearchInput(props: Props) {
 
   // Hooks
   const router = useRouter();
+  const { search, saveUserSearch } = useSearch();
+
   // Force focus when user starts typing
   useStartTyping(() => inputRef?.current?.focus());
   const inputValue = searchState.searchQuery;
@@ -61,11 +67,15 @@ export function SearchInput(props: Props) {
   const pushToSearchPage = () => {
     const input = inputRef.current as HTMLInputElement;
     if (input?.value?.length && input?.focus) {
+      saveUserSearch(input?.value);
+
       router.push({
         pathname: '/search',
         query: { s: encodeURI(input?.value) },
       });
     }
+
+    dispatch(collapseSearchOverlay());
   };
 
   // Handler Functions
@@ -92,6 +102,7 @@ export function SearchInput(props: Props) {
     if (String(value).length > 0) {
       dispatch(expandSearchOverlay());
     }
+
     inputRef?.current?.focus();
   };
 
@@ -100,12 +111,7 @@ export function SearchInput(props: Props) {
 
   // Effects
   useEffect(() => {
-    const fetchSearchItems = async () => {
-      const query = String(inputValue);
-      dispatch(setSearchResultItems(await search(query)));
-    };
-
-    fetchSearchItems();
+    search(String(inputValue));
   }, [inputValue]);
 
   // Autofocus

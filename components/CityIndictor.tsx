@@ -1,4 +1,4 @@
-import LocationSVG from '../assets/svgs/location-brand.svg';
+import LocationSVG from '@svg/location-brand.svg';
 import { titleCase } from '../utils/text';
 
 interface Props {

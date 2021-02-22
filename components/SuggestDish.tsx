@@ -1,11 +1,11 @@
+import SuggestDishDesktopSVG from '@svg/suggest-dish-desktop.svg';
+import SuggestDishMobileSVG from '@svg/suggest-dish-mobile.svg';
 import classNames from 'classnames';
 import React, { useContext, useEffect } from 'react';
 import { useMeasure } from 'react-use';
-import SuggestDishDesktopSVG from '../assets/svgs/suggest-dish-desktop.svg';
-import SuggestDishMobileSVG from '../assets/svgs/suggest-dish-mobile.svg';
 import { ScreenContext } from '../contexts/screen';
 import { Button } from './Button';
-import { Input } from './Input';
+import { InputAbstract } from './inputs/InputAbstract';
 import { Title } from './Title';
 
 export function SuggestDish() {
@@ -21,7 +21,7 @@ export function SuggestDish() {
     <div
       ref={ref}
       className={classNames(
-        'relative flex w-full justify-end',
+        'relative flex w-full justify-end -mb-10',
         isDesktop && !isHuge && 'space-x-10',
       )}
     >
@@ -35,8 +35,9 @@ export function SuggestDish() {
         >
           <SuggestDishDesktopSVG
             style={{
-              height: '27.5rem',
-              marginLeft: isHuge ? '0' : '2rem',
+              height: '22rem',
+              marginTop: '2.5rem',
+              marginLeft: isHuge ? '0' : '6rem',
             }}
           />
         </div>
@@ -46,20 +47,20 @@ export function SuggestDish() {
         style={{ minWidth: '20rem', marginTop: '3vw' }}
         className={classNames(
           'relative flex flex-col flex-1 ',
-          isDesktop && 'mb-12',
+          isDesktop && 'mb-1',
         )}
       >
         {isDesktop ? (
           <div
             style={{ width: '8.1rem', marginLeft: 'calc(-9rem - 3vw)' }}
             className={classNames(
-              'flex justify-end absolute left-0 leading-tight text-primary font-somatic text-fourxl',
+              'flex justify-end absolute left-0 leading-tight text-primary font-somatic text-4xl',
             )}
           >
             <div>Suggest a dish</div>
           </div>
         ) : (
-          <div className="mb-2 flex justify-center text-fourxl text-primary font-somatic">
+          <div className="mb-2 flex justify-center text-4xl text-primary font-somatic">
             Suggest a dish
           </div>
         )}
@@ -68,7 +69,7 @@ export function SuggestDish() {
           <Title level={3} className="text-primary">
             Location of restaurant
           </Title>
-          <Input size="large"></Input>
+          <InputAbstract size="large"></InputAbstract>
         </div>
 
         <div className="flex space-x-4 mt-4">
@@ -76,14 +77,14 @@ export function SuggestDish() {
             <Title level={3} className="text-primary">
               Dish name
             </Title>
-            <Input size="large"></Input>
+            <InputAbstract size="large"></InputAbstract>
           </div>
 
           <div className="flex-1">
             <Title level={3} className="text-primary">
               Cuisine
             </Title>
-            <Input size="large"></Input>
+            <InputAbstract size="large"></InputAbstract>
           </div>
         </div>
 
@@ -91,7 +92,7 @@ export function SuggestDish() {
           <Title level={3} className="text-primary">
             Email address
           </Title>
-          <Input size="large"></Input>
+          <InputAbstract size="large"></InputAbstract>
         </div>
 
         {isDesktop ? (

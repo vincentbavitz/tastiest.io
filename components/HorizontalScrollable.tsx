@@ -1,3 +1,5 @@
+import ChevronLeftSecondarySVG from '@svg/chevron-left-secondary.svg';
+import ChevronRightSecondarySVG from '@svg/chevron-right-secondary.svg';
 import classNames from 'classnames';
 import React, {
   ReactNode,
@@ -7,8 +9,6 @@ import React, {
   useState,
 } from 'react';
 import { useScroll, useWindowSize } from 'react-use';
-import ChevronLeftSecondarySVG from '../assets/svgs/chevron-left-secondary.svg';
-import ChevronRightSecondarySVG from '../assets/svgs/chevron-right-secondary.svg';
 import { UI } from '../constants';
 import { ScreenContext } from '../contexts/screen';
 import { Contained } from './Contained';
@@ -20,11 +20,11 @@ interface Props {
 }
 
 export function HorizontalScrollable(props: Props) {
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
 
   return (
     <>
-      {isMobile ? (
+      {!isDesktop ? (
         <HorizontalScrollableInner {...props} />
       ) : (
         <Contained>
@@ -39,6 +39,8 @@ function HorizontalScrollableInner(props: Props) {
   const { onItemClick, children } = props;
 
   const scrollRef = useRef(null);
+  const innerContentRef = useRef(null);
+
   const { x } = useScroll(scrollRef);
   const pageWidth = useWindowSize().width;
   const scrollDistance = pageWidth > 1400 ? 450 : pageWidth / 3;
@@ -72,8 +74,11 @@ function HorizontalScrollableInner(props: Props) {
       scrollRef.current.scrollWidth - scrollRef.current.clientWidth ===
       scrollRef.current.scrollLeft;
 
-    setRightScrollHidden(isFullRight);
-  }, [x]);
+    const tooSmallToScroll =
+      innerContentRef.current.clientWidth < scrollRef.current.clientWidth;
+
+    setRightScrollHidden(tooSmallToScroll || isFullRight);
+  }, [x, children]);
 
   return (
     <div className="flex relative w-full">
@@ -91,7 +96,7 @@ function HorizontalScrollableInner(props: Props) {
         >
           <ChevronLeftSecondarySVG
             onClick={handleLeftScroll}
-            className="h-20 mt-1 cursor-pointer"
+            className={classNames('h-20 mt-1 cursor-pointer')}
           />
         </div>
 
@@ -118,10 +123,11 @@ function HorizontalScrollableInner(props: Props) {
         )}
       >
         <div
+          ref={innerContentRef}
           className={classNames('flex overflow-y-visible')}
           style={{
             width: 'min-content',
-            marginLeft: `${isMobile ? UI.PAGE_CONTAINED_PADDING_VW : 0}vw`,
+            marginLeft: `${!isDesktop ? UI.PAGE_CONTAINED_PADDING_VW : 0}vw`,
           }}
         >
           {children}

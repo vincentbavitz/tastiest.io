@@ -1,7 +1,11 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { useAuth } from '../../hooks/auth';
-import { Avatar } from '../Avatar';
+import React, { useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { ScreenContext } from '../../contexts/screen';
+import { useAuth } from '../../hooks/useAuth';
+import { openSignInModal } from '../../state/navigation';
+import { IState } from '../../state/reducers';
+import { UserAvatar } from '../avatar/UserAvatar';
 import { Dropdown } from '../Dropdown';
 import { DropdownItem } from '../DropdownItem';
 
@@ -14,8 +18,14 @@ interface IProfileDropdownItems {
 
 export function HeaderAvatar() {
   const { isSignedIn, signOut } = useAuth();
+  const { isSignInModalOpen } = useSelector(
+    (state: IState) => state.navigation,
+  );
+
+  const dispatch = useDispatch();
   const router = useRouter();
 
+  const { isDesktop } = useContext(ScreenContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Close dropdown on route change
@@ -23,24 +33,25 @@ export function HeaderAvatar() {
     setIsDropdownOpen(false);
   }, [router.pathname]);
 
-  const signedOutDropdownItems: Array<IProfileDropdownItems> = [
-    {
-      id: 'sign-in',
-      name: 'Sign In',
-      onClick: () => {
-        router.push('/login', '/login');
-        setIsDropdownOpen(false);
-      },
-    },
-    {
-      id: 'help',
-      name: 'Help',
-      onClick: () => {
-        router.push('/help', '/help');
-        setIsDropdownOpen(false);
-      },
-    },
-  ];
+  // const signedOutDropdownItems: Array<IProfileDropdownItems> = [
+  //   {
+  //     id: 'sign-in',
+  //     name: 'Sign In',
+  //     onClick: () => {
+  //       setIsDropdownOpen(false);
+  //       setSignInModalIsOpen(true);
+  //       // router.push('/login', '/login');
+  //     },
+  //   },
+  //   {
+  //     id: 'help',
+  //     name: 'Help',
+  //     onClick: () => {
+  //       router.push('/help', '/help');
+  //       setIsDropdownOpen(false);
+  //     },
+  //   },
+  // ];
 
   const signedInDropdownItems: Array<IProfileDropdownItems> = [
     {
@@ -65,13 +76,25 @@ export function HeaderAvatar() {
     },
   ];
 
-  const dropdownItems = isSignedIn
-    ? signedInDropdownItems
-    : signedOutDropdownItems;
+  // const dropdownItems = isSignedIn
+  //   ? signedInDropdownItems
+  //   : signedOutDropdownItems;
+
+  const dropdownItems = signedInDropdownItems;
+
+  const onAvatarClick = () => {
+    if (isSignedIn) {
+      setIsDropdownOpen(!isDropdownOpen);
+      return;
+    }
+
+    setIsDropdownOpen(false);
+    dispatch(openSignInModal());
+  };
 
   return (
     <div>
-      <Avatar onClick={() => setIsDropdownOpen(!isDropdownOpen)} />
+      <UserAvatar onClick={onAvatarClick} />
 
       <Dropdown
         isOpen={isDropdownOpen}

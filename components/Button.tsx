@@ -3,9 +3,10 @@ import React, { useContext } from 'react';
 import { ScreenContext } from '../contexts/screen';
 
 export interface Props {
-  color?: 'primary' | 'secondary' | 'danger';
-  type?: 'text' | 'ghost' | 'solid';
+  color?: 'black' | 'primary' | 'secondary' | 'danger';
+  type?: 'text' | 'ghost' | 'solid' | 'outline';
   size?: 'tiny' | 'small' | 'medium' | 'large';
+  round?: boolean;
 
   disabled?: boolean;
   selected?: boolean;
@@ -27,6 +28,7 @@ export function Button(props: Props) {
     type = 'solid',
     disabled = false,
     selected = false,
+    round = false,
     onClick,
     children,
     className,
@@ -61,6 +63,8 @@ export function Button(props: Props) {
     selected && 'bg-opacity-75',
   ];
 
+  const outlineClassNames = ['rounded-xl py-2 hover:underline'];
+
   const textTypeClassNames = [`text-${color}`, 'hover:opacity-75'];
 
   const off = disabled
@@ -79,6 +83,14 @@ export function Button(props: Props) {
   // Make bg crop to text with tailwind on gradient
   // https://tailwindcss.com/docs/background-clip#class-reference
 
+  // prettier-ignore
+  const typeStyles = 
+    type === 'ghost' ? ghostClassNames :
+    type === 'solid' ? solidClassNames :
+    type === 'text' ? textTypeClassNames :
+    type === 'outline' ? outlineClassNames :
+    '';
+
   return (
     <div
       className={classNames(
@@ -90,16 +102,17 @@ export function Button(props: Props) {
         'duration-300',
         'ease-in-out',
         'text-center',
-        'rounded-lg',
         'font-raleway',
         'font-semibold',
         off,
         sizeStyles,
+        typeStyles,
         wide && 'tracking-widest',
-        !disabled && type !== 'text' && 'hover:text-white',
-        type === 'ghost' && ghostClassNames,
-        type === 'solid' && solidClassNames,
-        type === 'text' && textTypeClassNames,
+        !disabled &&
+          type !== 'text' &&
+          type !== 'outline' &&
+          'hover:text-white',
+        round ? 'rounded-xl' : 'rounded-lg',
         type !== 'text' && ['border-2', 'border-solid', `border-${color}`],
         className,
       )}

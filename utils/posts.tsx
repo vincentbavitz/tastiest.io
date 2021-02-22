@@ -2,9 +2,9 @@ import groq from 'groq';
 import React from 'react';
 import client from '../client';
 import { ArticleCard } from '../components/cards/ArticleCard';
+import { sanityPostQuery } from '../hooks/useSearch';
 import { ISanityArticle } from '../types/article';
 import { CuisineSymbol } from '../types/cuisine';
-import { sanityPostQuery } from './search';
 import { titleCase } from './text';
 
 export async function getCuisinePosts(cuisine: CuisineSymbol, limit: number) {

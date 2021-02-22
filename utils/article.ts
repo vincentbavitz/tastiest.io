@@ -1,19 +1,21 @@
 import groq from 'groq';
 import moment from 'moment';
 import client from '../client';
+import { sanityPostQuery } from '../hooks/useSearch';
 import { IArticle, ISanityArticle } from '../types/article';
-import { sanityPostQuery } from './search';
 import { titleCase } from './text';
 
-export async function getArticleBySlug(
-  slug: string,
+export async function getArticleBy(
+  key: 'slug' | 'id',
+  value: string,
   onFail?: () => void,
 ): Promise<IArticle | Partial<IArticle>> {
-  const query = groq`*[_type == "post" && slug.current == "${slug}"][0]{
+  const query = groq`*[_type == "post" && ${
+    key === 'slug' ? 'slug.current' : 'id'
+  } == "${value}"][0]{
         ${sanityPostQuery}
       }`;
 
-  console.log('slug', slug);
   console.log('query', query);
 
   let sanityArticle: ISanityArticle;
@@ -31,6 +33,29 @@ export async function getArticleBySlug(
   return article;
 }
 
+export async function getArticlesHaving(
+  key: 'slug' | 'id',
+  values: Array<string>,
+  onFail?: () => void,
+): Promise<Array<IArticle | Partial<IArticle>>> {
+  const query = groq`*[_type == "post" && [${values
+    .map(i => `"${i}"`)
+    .join(', ')}] match ${key === 'slug' ? 'slug.current' : '_id'}]{
+    ${sanityPostQuery}
+  }`;
+
+  try {
+    const sanityArticles: ISanityArticle[] = await client.fetch(query);
+    return sanityArticles.map(a => buildArticleInfo(a));
+  } catch (error) {
+    if (onFail) {
+      onFail();
+    }
+
+    return [];
+  }
+}
+
 // Converts an ISanityArticle into an IArticle
 export function buildArticleInfo(
   article: ISanityArticle,
@@ -38,9 +63,10 @@ export function buildArticleInfo(
   const date = moment(article.publishedAt).format('MMMM D, YYYY');
 
   // YouTube video ID
-  const video = article.video.link?.split('?v=')[1] ?? '';
+  const video = article?.video?.link?.split('?v=')[1] ?? '';
 
   return {
+    id: article.id,
     slug: article.slug,
     title: titleCase(article.title ?? ''),
     subtitle: article.subtitle ?? '',

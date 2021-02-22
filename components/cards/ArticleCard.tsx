@@ -41,9 +41,17 @@ export function ArticleCard(props: ISanityArticle): JSX.Element {
     >
       <div
         style={{ paddingBottom: '60%' }}
-        className="w-full h-0 overflow-hidden"
+        className="relative w-full h-0 overflow-hidden bg-white bg-opacity-25"
       >
-        <img src={featureImage.source} alt={featureImage.altText} />
+        {featureImage.source && (
+          <div className="absolute inset-0">
+            <img
+              className="object-cover w-full h-full"
+              src={featureImage?.source}
+              alt={featureImage?.altText}
+            />
+          </div>
+        )}
       </div>
 
       <div className={isSmall ? 'px-3' : 'px-4'}>
@@ -70,7 +78,7 @@ export function ArticleCard(props: ISanityArticle): JSX.Element {
             // Maximum of three tags
             .slice(0, 3)
             .map(tag => (
-              <>
+              <div key={tag.toLowerCase()}>
                 {isSmall ? (
                   <span className="text-xs font-medium text-primary hover:underline">
                     {titleCase(tag)}
@@ -80,7 +88,7 @@ export function ArticleCard(props: ISanityArticle): JSX.Element {
                     {titleCase(tag)}
                   </OutlineBlock>
                 )}
-              </>
+              </div>
             ))}
         </div>
       </div>

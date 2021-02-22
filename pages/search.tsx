@@ -1,8 +1,8 @@
+import SearchBackdropDesktopSVG from '@svg/page/search_desktop.svg';
+import SearchBackdropMobileSVG from '@svg/page/search_mobile.svg';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
-import SearchBackdropDesktopSVG from '../assets/svgs/page/search_desktop.svg';
-import SearchBackdropMobileSVG from '../assets/svgs/page/search_mobile.svg';
 import client from '../client';
 import { ArticleCard } from '../components/cards/ArticleCard';
 import { ArticleCardRow } from '../components/cards/ArticleCardRow';
@@ -13,10 +13,10 @@ import { SuggestDish } from '../components/SuggestDish';
 import { Title } from '../components/Title';
 import { METADATA, SEARCH } from '../constants';
 import { ScreenContext } from '../contexts/screen';
+import { sanityPostQuery } from '../hooks/useSearch';
 import { ISanityArticle } from '../types/article';
 import { buildArticleInfo } from '../utils/article';
 import { getTopPosts } from '../utils/posts';
-import { sanityPostQuery } from '../utils/search';
 
 interface Props {
   sanityQuery: string;
@@ -36,7 +36,7 @@ function Search(props: Props) {
   // Show these options if the user is on this page without entering a query
   const recommendedOptions = <></>;
 
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
 
   const router = useRouter();
   const [isLoading, setLoading] = useState(false); //State for loading indicator
@@ -70,7 +70,7 @@ function Search(props: Props) {
   const paginationHandler = page => {
     const currentPath = router.pathname;
 
-    //Copy current query to avoid its removing
+    // Copy current query to avoid its removing
     const currentQuery = { ...router.query };
     currentQuery.page = page.selected + 1;
 
@@ -105,7 +105,7 @@ function Search(props: Props) {
       <title>{METADATA.TITLE_SUFFIX}</title>
 
       <div className="relative w-full mt-6 mb-12">
-        {isMobile ? (
+        {!isDesktop ? (
           <>
             <SearchBackdropMobileSVG
               style={{
@@ -113,7 +113,7 @@ function Search(props: Props) {
                 transform: 'translateX(-18%)',
               }}
             />
-            <div className="absolute inset-0 flex justify-center items-center">
+            <div className="absolute inset-0 flex items-center justify-center">
               <Title level={1} className="font-somatic text-primary">
                 {posts.length > 0 ? 'Search Results' : 'Nothing Found'}
               </Title>
@@ -122,7 +122,7 @@ function Search(props: Props) {
         ) : (
           <Contained>
             <SearchBackdropDesktopSVG className="w-full" />
-            <div className="absolute inset-0 flex justify-center items-center">
+            <div className="absolute inset-0 flex items-center justify-center">
               <Title level={1} className="font-somatic text-primary">
                 {posts.length > 0 ? 'Search Results' : 'Nothing Found'}
               </Title>
@@ -139,7 +139,7 @@ function Search(props: Props) {
         </div>
 
         {showPagination && (
-          <div className="mobile:mt-12 mt-8">
+          <div className="mt-8 mobile:mt-12">
             <ReactPaginate
               previousLabel={'<'}
               nextLabel={'>'}
@@ -165,10 +165,10 @@ function Search(props: Props) {
 
         <div className="mt-10">
           <HorizontalScrollable>
-            {topPosts.map(post => (
+            {topPosts?.map(post => (
               <div
                 key={post.id.toLowerCase()}
-                style={{ width: isMobile ? '13rem' : '14rem' }}
+                style={{ width: !isDesktop ? '13rem' : '14rem' }}
                 className="mr-6"
               >
                 <ArticleCard {...post} />

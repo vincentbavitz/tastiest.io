@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React, { CSSProperties, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-use';
+import { UI } from '../../constants';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { SearchDropdown } from '../search/SearchDropdown';
@@ -13,9 +14,9 @@ interface Props {
 }
 
 export function HeaderSearch({ isShown, innerOverlayStyle = {} }: Props) {
-  const nagivationState = useSelector((state: IState) => state.navigation);
+  const navigationState = useSelector((state: IState) => state.navigation);
   const searchState = useSelector((state: IState) => state.search);
-  const { searchOverlayExpanded } = nagivationState;
+  const { searchOverlayExpanded } = navigationState;
   const { searchBarPinnedToHeader } = searchState;
   const dispatch = useDispatch();
 
@@ -25,7 +26,11 @@ export function HeaderSearch({ isShown, innerOverlayStyle = {} }: Props) {
   return (
     <div
       style={{
-        zIndex: isShown ? (searchOverlayExpanded ? 20001 : 1) : -1,
+        zIndex: isShown
+          ? searchOverlayExpanded
+            ? UI.Z_INDEX_HEADER_SEARCH
+            : 1
+          : -1,
         maxWidth: '650px',
       }}
       className={classNames(

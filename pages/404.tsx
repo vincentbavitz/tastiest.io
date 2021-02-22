@@ -1,8 +1,8 @@
+import _404 from '@svg/404.svg';
 import classNames from 'classnames';
 import Head from 'next/head';
 import Link from 'next/link';
 import React, { useContext } from 'react';
-import _404 from '../assets/svgs/404.svg';
 import { UI } from '../constants';
 import { ScreenContext } from '../contexts/screen';
 import { generateTitle } from '../utils/metadata';
@@ -66,13 +66,13 @@ function Tastiest404() {
             <div style={_404SectionStyles} className="absolute left-0 z-50">
               <h1
                 style={_404TitleStyles}
-                className="font-somatic text-primary text-sevenxl text-opacity-25 -mb-4"
+                className="font-somatic text-primary text-7xl text-opacity-25 -mb-4"
               >
                 404
               </h1>
               <p
                 style={_404TextStyles}
-                className="font-somatic text-primary text-fourxl tracking-tight"
+                className="font-somatic text-primary text-4xl tracking-tight"
               >
                 Oops, this
                 <br />
@@ -98,7 +98,7 @@ function Tastiest404() {
                     'rounded-lg',
                     'text-center',
                     'tracking-tight',
-                    isMobile ? 'text-lg' : 'text-sm',
+                    !isDesktop ? 'text-lg' : 'text-sm',
                   )}
                 >
                   Discover food
@@ -110,13 +110,13 @@ function Tastiest404() {
           <div
             className={classNames(
               'z-10 flex items-start',
-              isMobile ? '-mt-10' : 'mt-0',
+              !isDesktop ? '-mt-10' : 'mt-0',
             )}
           >
             <div className="flex-col flex-grow z-50 my-4">
               <h2
                 className={classNames(
-                  'text-primary font-roboto font-semibold ml-1 font-somatic mt-6 text-twoxl whitespace-no-wrap',
+                  'text-primary font-roboto font-semibold ml-1 font-somatic mt-6 text-2xl whitespace-no-wrap',
                 )}
               >
                 Something went wrong?
@@ -137,8 +137,8 @@ function Tastiest404() {
                 role="button"
                 className={classNames(
                   'bg-primary cursor-pointer mt-4 text-white font-somatic px-4 py-2 select-none rounded-lg text-center',
-                  isMobile ? 'text-lg' : 'text-sm',
-                  isMobile ? 'w-full' : 'w-4/12',
+                  !isDesktop ? 'text-lg' : 'text-sm',
+                  !isDesktop ? 'w-full' : 'w-4/12',
                 )}
               >
                 Send

@@ -5,7 +5,7 @@ import { IArticle } from '../../types/article';
 import { generateURL } from '../../utils/routing';
 
 export function ArticleCardRow(post: IArticle) {
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
   const { city, slug, cuisine } = post;
   const { href, as } = generateURL({ city, slug, cuisine });
 
@@ -24,8 +24,8 @@ export function ArticleCardRow(post: IArticle) {
   const ArticlePreviewImage = () => (
     <div
       style={{
-        width: isMobile ? '33%' : '10rem',
-        height: isMobile ? '66%' : '6rem',
+        width: !isDesktop ? '33%' : '10rem',
+        height: !isDesktop ? '66%' : '6rem',
       }}
       className="relative rounded-lg bg-primary bg-opacity-10 overflow-hidden"
     >
@@ -41,12 +41,12 @@ export function ArticleCardRow(post: IArticle) {
 
   return (
     <>
-      {isMobile ? (
+      {!isDesktop ? (
         <div className="flex flex-col w-full space-y-4 mb-6">
           <div className="flex w-full space-x-6">
             <ArticlePreviewImage />
             <div className="w-2/3">
-              <h3 className="font-somatic text-twoxl text-primary">
+              <h3 className="font-somatic text-2xl text-primary">
                 {post.title}
               </h3>
             </div>

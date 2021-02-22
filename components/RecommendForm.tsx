@@ -1,10 +1,9 @@
+import SuggestDishDesktopSVG from '@svg/suggest-dish-desktop.svg';
 import classNames from 'classnames';
 import React, { useContext } from 'react';
+import { ScreenContext } from '../contexts/screen';
 import { Button } from './Button';
 import { Contained } from './Contained';
-import SuggestDishDesktopSVG from '../assets/svgs/suggest-dish-desktop.svg';
-import { useScreenSize } from '../hooks/screen';
-import { ScreenContext } from '../contexts/screen';
 
 interface Props {
   dish: string;
@@ -12,7 +11,6 @@ interface Props {
 }
 
 // Use klaviyo for emails
-// https://www.klaviyo.com/docs
 
 export function RecommendForm(props: Props) {
   const { isDesktop } = useContext(ScreenContext);
@@ -50,7 +48,7 @@ const RecommendFormContent = ({ dish, city }: Props) => {
   return (
     <>
       <div className="desktop:w-9/12 mb-4">
-        <span className="text-threexl font-somatic text-primary leading-tight">
+        <span className="text-3xl font-somatic text-primary leading-tight">
           Do you know a better {dish} in {city}?
         </span>
       </div>

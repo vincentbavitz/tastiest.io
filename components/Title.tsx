@@ -37,7 +37,7 @@ export function Title(props: Props) {
         <h1
           className={classNames(
             'font-raleway',
-            small ? 'text-xl' : 'text-twoxl',
+            small ? 'text-xl' : 'text-2xl',
             bold ? 'font-bold' : 'font-semibold',
             commonClassNames,
           )}

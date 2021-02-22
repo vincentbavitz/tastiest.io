@@ -1,45 +1,59 @@
-import { useRouter } from 'next/dist/client/router';
+import { InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { CardGrid } from '../../../components/cards/CardGrid';
 import { Contained } from '../../../components/Contained';
+import { SuggestDish } from '../../../components/SuggestDish';
 import { CUISINES } from '../../../constants';
+import { ScreenContext } from '../../../contexts/screen';
 import { ISanityArticle } from '../../../types/article';
 import { CuisineSymbol } from '../../../types/cuisine';
 import { generateTitle } from '../../../utils/metadata';
 import { getCuisinePosts, postsToCards } from '../../../utils/posts';
 import { titleCase } from '../../../utils/text';
 
-export default function Cuisine() {
-  const router = useRouter();
-  const cuisineQueryName = router.query?.cuisine;
-  const cuisineSymbol = String(cuisineQueryName).toUpperCase() as CuisineSymbol;
-  const cuisine = CUISINES[cuisineSymbol];
+export const getServerSideProps = async context => {
+  const cuisineSymbol = String(
+    context.params?.cuisine,
+  ).toUpperCase() as CuisineSymbol;
 
-  // Ensure cuisine exists on load; else 404
+  const cuisineExists = CUISINES[cuisineSymbol];
+
+  console.log('index ➡️ cuisineSymbol:', cuisineSymbol);
+  console.log('index ➡️ context:', context);
+
+  // Redirect to 404 for nonexistent page
+  if (!cuisineExists) {
+    return {
+      props: { cuisineSymbol: undefined },
+      notFound: true,
+    };
+  }
+
+  return {
+    props: { cuisineSymbol },
+  };
+};
+
+export default function Cuisine({
+  cuisineSymbol,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { isMobile } = useContext(ScreenContext);
+  const cuisine = CUISINES[cuisineSymbol];
   const cuisineName = titleCase(String(cuisine?.name));
   const cuisineExists = Boolean(cuisine);
-
-  console.log('cuisine info', {
-    cuisineQueryName,
-    cuisineSymbol,
-    cuisine,
-    cuisineName,
-  });
 
   const [posts, setPosts] = useState([] as ISanityArticle[]);
 
   const getPosts = async () => {
-    const posts = await getCuisinePosts(cuisineSymbol, 8);
-    if (!posts) return;
+    const posts = await getCuisinePosts(
+      String(cuisine.name).toUpperCase() as CuisineSymbol,
+      8,
+    );
 
+    if (!posts) return;
     setPosts(posts);
   };
-
-  useEffect(() => {
-    if (!cuisineExists) {
-      router.push('/404', '/404');
-    }
-  }, []);
 
   // Get new posts on location change
   useEffect(() => {
@@ -48,10 +62,10 @@ export default function Cuisine() {
 
   const cards = postsToCards(posts);
 
-  // Prevent user from seeing anything rendered when cuisine doesn't exist
-  if (!cuisineExists) {
-    return <></>;
-  }
+  // // Prevent user from seeing anything rendered when cuisine doesn't exist
+  // if (!cuisineExists) {
+  //   return <></>;
+  // }
 
   return (
     <div>
@@ -64,20 +78,29 @@ export default function Cuisine() {
           <div className="absolute inset-0">
             <div
               style={{ marginTop: '10vw' }}
-              className="flex w-full justify-center"
+              className="flex justify-center w-full"
             >
-              <span className="text-threexl font-somatic text-primary">
+              <span className="text-3xl font-somatic text-primary">
                 {cuisineName}
               </span>
             </div>
           </div>
 
-          {<cuisine.pageSvg />}
+          {
+            <cuisine.pageSvg
+              style={{
+                width: isMobile ? '133vw' : '100%',
+                marginLeft: isMobile ? '-20vw' : 'unset',
+              }}
+            />
+          }
         </div>
 
         <Contained>
-          <div className="flex justify-center items-baseline space-x-6 space-y-4 mt-6 mb-16">
-            {cards}
+          <CardGrid>{cards}</CardGrid>
+
+          <div className="mt-12">
+            <SuggestDish />
           </div>
         </Contained>
       </div>

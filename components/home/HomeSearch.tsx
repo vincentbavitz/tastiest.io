@@ -19,21 +19,21 @@ export interface ISearchBarGeometry {
 }
 
 export function HomeSearch() {
-  const nagivationState = useSelector((state: IState) => state.navigation);
+  const navigationState = useSelector((state: IState) => state.navigation);
   const searchState = useSelector((state: IState) => state.search);
-  const { searchOverlayExpanded } = nagivationState;
+  const { searchOverlayExpanded } = navigationState;
   const { searchBarPinnedToHeader } = searchState;
   const dispatch = useDispatch();
 
   // Contexts
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
 
   // References
   const searchRef = useRef(null);
   const [searchMeasureRef] = useMeasure();
 
   // Hooks
-  useLockBodyScroll(searchOverlayExpanded && isMobile);
+  useLockBodyScroll(searchOverlayExpanded && !isDesktop);
 
   const HEADER_FIXED_OFFSET = 70;
   const handleShouldHide = () => {
@@ -69,22 +69,22 @@ export function HomeSearch() {
         className={classNames(
           'flex items-center w-full justify-between h-10 bg-white px-2',
           'border-primary border-t-2 border-l-2 border-r-2',
-          searchOverlayExpanded && !searchBarPinnedToHeader && !isMobile
+          searchOverlayExpanded && !searchBarPinnedToHeader && !!isDesktop
             ? 'rounded-t-lg'
             : 'rounded-lg',
-          searchOverlayExpanded && !searchBarPinnedToHeader && !isMobile
+          searchOverlayExpanded && !searchBarPinnedToHeader && !!isDesktop
             ? 'border-b-0'
             : 'border-b-2',
-          isMobile && 'border-b border-gray-300',
+          !isDesktop && 'border-b border-gray-300',
         )}
       >
         <SearchInput
           searchIcon="primary"
           placeholder="Search..."
-          dummy={isMobile}
+          dummy={!isDesktop}
           dummyOnClick={() => dispatch(expandSearchOverlay())}
           onFocus={() => dispatch(expandSearchOverlay())}
-          inputClassName={classNames(['pl-2 pr-4', isMobile && 'text-xl'])}
+          inputClassName={classNames(['pl-2 pr-4', !isDesktop && 'text-xl'])}
         />
       </div>
 
