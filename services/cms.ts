@@ -1,6 +1,6 @@
 import { ContentfulClientApi, createClient } from 'contentful';
 import moment from 'moment';
-import { CMS } from '../constants';
+import CMS from '../constants/cms';
 import {
   IAuthor,
   IDeal,
@@ -9,6 +9,7 @@ import {
   IPost,
   IRestaurant,
 } from '../types/cms';
+import { CuisineSymbol } from '../types/cuisine';
 
 interface IFetchBlogEntriesReturn {
   posts: Array<IPost>;
@@ -38,35 +39,25 @@ export class CmsApi {
     console.log('cms ➡️ quantity:', quantity);
     console.log('cms ➡️ (page - 1) * quantity:', (page - 1) * quantity);
 
-    try {
-      const entries = await this.client.getEntries({
-        content_type: 'post', // only fetch blog post entry
-        order: '-fields.date',
-        limit: quantity,
-        skip: (page - 1) * quantity,
-      });
-
-      if (entries && entries.items && entries.items.length > 0) {
-        const blogPosts = entries.items.map(entry => this.convertPost(entry));
-        return { posts: blogPosts, total: entries.total };
-      }
-
-      return { posts: [], total: 0 } as IFetchBlogEntriesReturn;
-    } catch (e) {
-      return { posts: [], total: 0 } as IFetchBlogEntriesReturn;
-    }
-  }
-
-  public async fetchBlogById(id): Promise<IPost> {
-    return this.client.getEntry(id).then(entry => {
-      if (entry) {
-        return this.convertPost(entry);
-      }
-      return null;
+    const entries = await this.client.getEntries({
+      content_type: 'post',
+      order: '-fields.date',
+      limit: quantity,
+      skip: (page - 1) * quantity,
+      // Allows us to go N layers deep in nested JSON
+      // https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/links
+      include: 5,
     });
+
+    if (entries?.items?.length > 0) {
+      const blogPosts = entries.items.map(entry => this.convertPost(entry));
+      return { posts: blogPosts, total: entries.total };
+    }
+
+    return { posts: [], total: 0 } as IFetchBlogEntriesReturn;
   }
 
-  public async fetchBlogBySlug(slug: string): Promise<IPost> {
+  public async fetchPostBySlug(slug: string): Promise<IPost> {
     const entries = await this.client.getEntries({
       content_type: 'post',
       'fields.slug': slug,
@@ -101,6 +92,11 @@ export class CmsApi {
     return { posts: [], total: 0 } as IFetchBlogEntriesReturn;
   }
 
+  fetchRestaurantsOfOrganisation(organisationID: string) {
+    organisationID;
+    return null;
+  }
+
   public convertImage = (rawImage): IFigureImage =>
     rawImage
       ? {
@@ -125,9 +121,9 @@ export class CmsApi {
     rawDeal
       ? {
           id: rawDeal.sys.id ?? null,
-          tagline: rawDeal.tagline ?? null,
-          includes: rawDeal.tags ?? null,
-          pricePerHeadGBP: rawDeal.price ?? null,
+          tagline: rawDeal?.fields?.tagline ?? null,
+          includes: rawDeal?.fields?.tags ?? [],
+          pricePerHeadGBP: rawDeal?.fields?.price ?? null,
           image: this.convertImage(rawDeal?.image?.fields),
         }
       : null;
@@ -135,49 +131,60 @@ export class CmsApi {
   public convertLocation = (rawLocation): ILocation =>
     rawLocation
       ? {
-          address: rawLocation.address,
-          lat: rawLocation.lat,
-          lng: rawLocation.lng,
+          address: rawLocation.fields.address,
+          lat: rawLocation.fields.coordinates.lat,
+          lon: rawLocation.fields.coordinates.lon,
         }
       : null;
 
-  public convertRestaurant = (rawRestaurant): IRestaurant =>
-    rawRestaurant
+  public convertCuisines = (rawCuisines): CuisineSymbol[] =>
+    rawCuisines
+      ? rawCuisines
+          .map?.(c => CuisineSymbol[c?.fields?.name?.toUpperCase()] ?? null)
+          .filter(c => Boolean(c))
+      : null;
+
+  public convertRestaurant = (rawRestaurant): IRestaurant => {
+    console.log('cms ➡️ rawRestaurant:', rawRestaurant.fields.cuisines);
+
+    return rawRestaurant
       ? {
           id: rawRestaurant.sys.id ?? null,
-          name: rawRestaurant.name,
-          website: rawRestaurant.website,
-          businessType: rawRestaurant.businessType,
-          locations: rawRestaurant.locations?.map?.(location =>
-            this.convertLocation(location),
-          ),
-          cuisines: rawRestaurant.cuisines?.map?.(
-            cuisine => cuisine.sys?.name ?? null,
-          ),
+          name: rawRestaurant.fields.name,
+          website: rawRestaurant.fields.website,
+          businessType: rawRestaurant.fields.businessType,
+          location: this.convertLocation(rawRestaurant.fields.location),
+          cuisines: this.convertCuisines(rawRestaurant.fields.cuisines),
         }
       : null;
+  };
 
   public convertPost = (rawData): IPost => {
     const rawPost = rawData.fields;
     const rawFeatureImage = rawPost?.featureImage?.fields;
     const rawAuthor = rawPost.author ? rawPost.author.fields : null;
+    const rawCuisine = rawPost.cuisine
+      ? rawPost.cuisine?.fields?.name.toUpperCase()
+      : null;
 
-    return {
-      id: rawData.sys.id ?? null,
-      title: rawPost.title,
-      description: rawPost.description ?? null,
-      body: rawPost.body ?? null,
-      author: this.convertAuthor(rawAuthor),
-      date: moment(rawPost.date).format('DD MMMM YYYY'),
-      city: rawPost.city ?? null,
-      dishName: rawPost.dishName ?? null,
-      video: rawPost.video ?? null,
-      cuisine: rawPost.cuisine?.sys?.name ?? null,
-      deal: this.convertDeal(rawData.deal),
-      restaurant: this.convertRestaurant(rawData.restaurant),
-      featureImage: this.convertImage(rawFeatureImage),
-      tags: rawPost?.tags, //?.map(t => t?.fields?.label) ?? [],
-      slug: rawPost.slug,
-    };
+    return rawPost
+      ? {
+          id: rawData.sys.id ?? null,
+          title: rawPost.title ?? null,
+          description: rawPost.description ?? null,
+          body: rawPost.body ?? null,
+          author: this.convertAuthor(rawAuthor),
+          date: moment(rawPost.date).format('DD MMMM YYYY'),
+          city: rawPost.city ?? null,
+          dishName: rawPost.dishName ?? null,
+          video: rawPost.video ?? null,
+          cuisine: CuisineSymbol[rawCuisine] ?? null,
+          deal: this.convertDeal(rawPost.deal),
+          restaurant: this.convertRestaurant(rawPost.restaurant),
+          featureImage: this.convertImage(rawFeatureImage),
+          tags: rawPost?.tags ?? [], //?.map(t => t?.fields?.label) ?? [],
+          slug: rawPost.slug,
+        }
+      : null;
   };
 }

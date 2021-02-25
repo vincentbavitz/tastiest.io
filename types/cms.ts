@@ -30,7 +30,23 @@ export interface IDeal {
 export interface ILocation {
   address: string;
   lat: number;
-  lng: number;
+  lon: number;
+}
+
+export interface IContact {
+  firstName: string;
+  lastName: string;
+  email: string;
+  mobile: string;
+}
+
+export interface IOrganisation {
+  id: string;
+  name: string;
+  website: string;
+  contact: IContact;
+  // Restaurant IDs
+  restaurants: Array<string>;
 }
 
 export interface IRestaurant {
@@ -38,16 +54,11 @@ export interface IRestaurant {
   name: string;
   website: string;
   businessType: 'restaurant' | 'takeaway' | 'cafe';
-  locations: ILocation[];
-  cuisines: CuisineSymbol;
+  location: ILocation;
+  cuisines: CuisineSymbol[];
   // Contentful has a contact, but we don't want to
   // share that with the user.
-  contact?: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    mobile: string;
-  };
+  contact?: IContact;
 }
 
 export interface IPost {

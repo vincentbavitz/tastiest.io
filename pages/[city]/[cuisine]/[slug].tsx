@@ -1,53 +1,61 @@
 // [slug].js
-import { GetStaticProps } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { IPost } from 'types/cms';
 import { Article } from '../../../components/article/Article';
 import { CmsApi } from '../../../services/cms';
-import { setArticle } from '../../../state/reducers/article';
-import { IArticle } from '../../../types/article';
 import { generateTitle } from '../../../utils/metadata';
 
-export const getStaticProps: GetStaticProps = async context => {
-  const api = new CmsApi();
-  const post = await api.fetchBlogBySlug(String(context?.query?.slug) ?? '');
+interface IPath {
+  params: { slug: string };
+}
 
-  console.log('[slug] ➡️ context:', context);
+export const getStaticPaths: GetStaticPaths = async () => {
+  const cms = new CmsApi();
+  let posts: IPost[] = [];
+  let page = 1;
+  let foundAllPosts = false;
 
-  // Redirect to 404 for nonexistent page
+  // Contentful only allows 100 at a time
+  while (!foundAllPosts) {
+    const { posts: _posts } = await cms.fetchBlogEntries(100, page);
+
+    if (_posts.length === 0) {
+      foundAllPosts = true;
+      continue;
+    }
+
+    posts = [...posts, ..._posts];
+    page++;
+  }
+
+  const paths: IPath[] = posts.map(item => ({
+    params: { slug: item.slug },
+  }));
+
+  return { paths, fallback: true };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const cms = new CmsApi();
+  const post = await cms.fetchPostBySlug(String(params?.slug) ?? '');
+  console.log(`Building page: %c${params.slug}`, 'color: purple;');
+
   if (!post) {
-    return {
-      props: undefined,
-      notFound: true,
-    };
+    return { notFound: true };
   }
 
   return {
-    props: post,
-    // Revalidate every at most once per 60 seconds
+    props: {
+      post,
+    },
     revalidate: 60,
   };
 };
 
-function Post(props: IArticle) {
-  const {
-    body,
-    title,
-    subtitle,
-    author,
-    date,
-    city,
-    tags,
-    location,
-    restaurantName,
-    dishName,
-    video,
-    featureImage,
-  } = props;
-
-  const dispatch = useDispatch();
-  dispatch(setArticle(props));
+function Post(props: IPost) {
+  const { title } = props;
 
   // Scroll to top on load
   useEffect(() => {

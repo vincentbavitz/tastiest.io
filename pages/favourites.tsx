@@ -10,7 +10,7 @@ import { SectionTitle } from '../components/SectionTitle';
 import { ScreenContext } from '../contexts/screen';
 import { useAuth } from '../hooks/useAuth';
 import { useUserData } from '../hooks/useUserData';
-import { IArticle, ISanityArticle } from '../types/article';
+import { IPost, ISanityArticle } from '../types/article';
 import { getArticlesHaving } from '../utils/article';
 import { getTopPosts } from '../utils/posts';
 
@@ -23,7 +23,7 @@ function Favourites() {
 
   const [initialFetchDone, setInitialFetchDone] = useState(false);
   const [topPosts, setTopPosts] = useState([] as Array<ISanityArticle>);
-  const [savedPosts, setSavedPosts] = useState([] as Array<Partial<IArticle>>);
+  const [savedPosts, setSavedPosts] = useState([] as Array<Partial<IPost>>);
 
   useEffect(() => {
     const getPosts = async () => {

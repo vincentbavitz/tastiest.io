@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import React, { useContext } from 'react';
 import { ScreenContext } from '../../contexts/screen';
-import { IArticle } from '../../types/article';
+import { IPost } from '../../types/article';
 import { generateURL } from '../../utils/routing';
 
-export function ArticleCardRow(post: IArticle) {
+export function ArticleCardRow(post: IPost) {
   const { isDesktop } = useContext(ScreenContext);
   const { city, slug, cuisine } = post;
   const { href, as } = generateURL({ city, slug, cuisine });

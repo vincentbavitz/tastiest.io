@@ -11,7 +11,7 @@
     "staging": "func() { git add . && git commit -m \"$1\" && git push -u origin staging; }; func",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "lint:fix": "npm run lint -- --fix",
-    "test": "jest"
+    "test": "clear && jest"
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",

@@ -24,7 +24,7 @@ export function ArticleWidgetMap({ city, location, restaurantName }: Props) {
           className="h-full w-full object-cover border-4 border-primary "
           src={getMapBoxStaticSource(
             location.lat,
-            location.lng,
+            location.lon,
             !isDesktop ? 1200 : 400,
           )}
         />

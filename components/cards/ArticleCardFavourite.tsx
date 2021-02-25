@@ -6,12 +6,12 @@ import router from 'next/dist/client/router';
 import Link from 'next/link';
 import React, { SyntheticEvent, useContext } from 'react';
 import { useMeasure } from 'react-use';
+import { IPost } from 'types/cms';
 import { ScreenContext } from '../../contexts/screen';
 import { useArticle } from '../../hooks/useArticle';
-import { ISanityArticle } from '../../types/article';
 import { generateURL } from '../../utils/routing';
 
-interface Props extends Partial<ISanityArticle> {
+interface Props extends Partial<IPost> {
   isFavourite: boolean;
 }
 
@@ -45,12 +45,12 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
           isSmall ? 'rounded-lg' : 'rounded-xl',
         )}
       >
-        {featureImage.source && (
+        {featureImage.imageUrl && (
           <div className="absolute inset-0 ">
             <img
               className="object-cover w-full h-full"
-              src={featureImage?.source}
-              alt={featureImage?.altText}
+              src={featureImage?.imageUrl}
+              alt={featureImage?.description}
             />
           </div>
         )}
@@ -73,7 +73,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
           </Link>
         </div>
 
-        <div className="flex justify-between text-primary mt-2 pr-2">
+        <div className="flex justify-between pr-2 mt-2 text-primary">
           <div
             onClick={() => toggleSaveArticle(id)}
             className="flex items-center cursor-pointer"

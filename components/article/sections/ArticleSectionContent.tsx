@@ -1,8 +1,8 @@
 import BlockContent from '@sanity/block-content-to-react';
 import React, { useContext } from 'react';
+import { IPost } from 'types/cms';
 import { SANITY_CONSTATNTS } from '../../../client';
 import { ScreenContext } from '../../../contexts/screen';
-import { IArticle } from '../../../types/article';
 import { IDeal } from '../../../types/checkout';
 import { Contained } from '../../Contained';
 import { ArticleWidgetOrderNow } from '../widgets/ArticleWidgetOrderNow';
@@ -71,7 +71,7 @@ const deal: IDeal = {
 // TODO
 // Really want writers to be able to do {{CALL_TO_ACTION}} sorta things like Wordpress shortcodes
 // And that will then conditionally render our components
-export function ArticleSectionContent(post: IArticle) {
+export function ArticleSectionContent(post: IPost) {
   const { isDesktop } = useContext(ScreenContext);
 
   return (
@@ -81,7 +81,7 @@ export function ArticleSectionContent(post: IArticle) {
   );
 }
 
-const MobileContent = (post: IArticle) => (
+const MobileContent = (post: IPost) => (
   <div className="flex flex-col space-y-4">
     <div>{paragraphs[0]}</div>
 
@@ -97,7 +97,7 @@ const MobileContent = (post: IArticle) => (
   </div>
 );
 
-const DesktopContent = (post: IArticle) => (
+const DesktopContent = (post: IPost) => (
   <div className="flex flex-col">
     <div className="flex space-x-10">
       <div className="w-8/12 mt-16">

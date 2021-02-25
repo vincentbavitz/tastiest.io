@@ -1,13 +1,15 @@
-import { CmsApi } from 'services/cms';
+import dotenv from 'dotenv';
+import { CmsApi } from '../../services/cms';
+
+dotenv.config();
 
 describe('CMS Servcice', () => {
   test('Convert post', async () => {
     const cms = new CmsApi();
 
-    const posts = await cms.fetchBlogEntries();
+    const { posts } = await cms.fetchBlogEntries();
 
-    console.log('cms.test ➡️     posts:', posts);
-
+    console.log('cms.test ➡️ posts[0]:', posts[0].restaurant);
     expect(true).toBeDefined();
   });
 });

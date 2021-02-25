@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { ScreenContext } from '../../contexts/screen';
-import { IArticle } from '../../types/article';
+import { IPost } from '../../types/article';
 import { RecommendForm } from '../RecommendForm';
 import { ArticleSectionAbstract } from './sections/ArticleSectionAbstract';
 import { ArticleSectionContent } from './sections/ArticleSectionContent';
@@ -8,7 +8,7 @@ import { ArticleSectionTitle } from './sections/ArticleSectionTitle';
 import { ArticleSubtitleSection } from './sections/ArticleSubtitleSection';
 import { ArticleSaveShareWidget } from './widgets/ArticleSaveShareWidget';
 
-export function Article(props: IArticle) {
+export function Article(props: IPost) {
   const { isDesktop } = useContext(ScreenContext);
   const article = props;
 
@@ -24,7 +24,7 @@ export function Article(props: IArticle) {
   );
 }
 
-function ArticleMobile(props: IArticle) {
+function ArticleMobile(props: IPost) {
   const {
     id,
     title,
@@ -55,7 +55,7 @@ function ArticleMobile(props: IArticle) {
   );
 }
 
-function ArticleDesktop(props: IArticle) {
+function ArticleDesktop(props: IPost) {
   const {
     id,
     title,

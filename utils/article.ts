@@ -2,14 +2,14 @@ import groq from 'groq';
 import moment from 'moment';
 import client from '../client';
 import { sanityPostQuery } from '../hooks/useSearch';
-import { IArticle, ISanityArticle } from '../types/article';
+import { IPost, ISanityArticle } from '../types/article';
 import { titleCase } from './text';
 
 export async function getArticleBy(
   key: 'slug' | 'id',
   value: string,
   onFail?: () => void,
-): Promise<IArticle | Partial<IArticle>> {
+): Promise<IPost | Partial<IPost>> {
   const query = groq`*[_type == "post" && ${
     key === 'slug' ? 'slug.current' : 'id'
   } == "${value}"][0]{
@@ -37,7 +37,7 @@ export async function getArticlesHaving(
   key: 'slug' | 'id',
   values: Array<string>,
   onFail?: () => void,
-): Promise<Array<IArticle | Partial<IArticle>>> {
+): Promise<Array<IPost | Partial<IPost>>> {
   const query = groq`*[_type == "post" && [${values
     .map(i => `"${i}"`)
     .join(', ')}] match ${key === 'slug' ? 'slug.current' : '_id'}]{
@@ -56,10 +56,8 @@ export async function getArticlesHaving(
   }
 }
 
-// Converts an ISanityArticle into an IArticle
-export function buildArticleInfo(
-  article: ISanityArticle,
-): IArticle | undefined {
+// Converts an ISanityArticle into an IPost
+export function buildArticleInfo(article: ISanityArticle): IPost | undefined {
   const date = moment(article.publishedAt).format('MMMM D, YYYY');
 
   // YouTube video ID
