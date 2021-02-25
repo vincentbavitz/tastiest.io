@@ -1,12 +1,14 @@
 import classNames from 'classnames';
-import React, { useContext } from 'react';
-import { ScreenContext } from '../contexts/screen';
+import React from 'react';
 
 export interface Props {
   color?: 'black' | 'primary' | 'secondary' | 'danger';
   type?: 'text' | 'ghost' | 'solid' | 'outline';
   size?: 'tiny' | 'small' | 'medium' | 'large';
   round?: boolean;
+
+  // Is touch friendly
+  touch?: boolean;
 
   disabled?: boolean;
   selected?: boolean;
@@ -29,6 +31,7 @@ export function Button(props: Props) {
     disabled = false,
     selected = false,
     round = false,
+    touch,
     onClick,
     children,
     className,
@@ -36,8 +39,6 @@ export function Button(props: Props) {
     suffix,
     wide = false,
   } = props;
-
-  const { isDesktop } = useContext(ScreenContext);
 
   const clickHandler = (e: React.MouseEvent) => {
     if (onClick) {
@@ -64,7 +65,6 @@ export function Button(props: Props) {
   ];
 
   const outlineClassNames = ['rounded-xl py-2 hover:underline'];
-
   const textTypeClassNames = [`text-${color}`, 'hover:opacity-75'];
 
   const off = disabled
@@ -76,7 +76,7 @@ export function Button(props: Props) {
   const sizeStyles = [
     size === 'large' && 'text-lg py-2',
     size === 'medium' && 'text-base py-1',
-    size === 'small' && ['text-sm', isDesktop ? 'py-0' : 'py-1'],
+    size === 'small' && ['text-sm', touch ? 'py-1' : 'py-0'],
     size === 'tiny' && 'text-xs py-0',
   ];
 

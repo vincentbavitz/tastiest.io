@@ -1,15 +1,13 @@
 import { Document } from '@contentful/rich-text-types';
+import { CuisineSymbol } from './cuisine';
 
 export type IAuthor = {
   name: string;
-  avatar?: IFigureImage;
-  shortBio: string;
+  bio: string;
   email: string;
-  // Eg. Marketing Researcher
+  profileImage?: IFigureImage;
+  // Eg. Marketing, Researcher
   position: string | null;
-  twitter: string | null;
-  facebook: string | null;
-  github: string | null;
 };
 
 export type IFigureImage = {
@@ -18,15 +16,54 @@ export type IFigureImage = {
   imageUrl: string;
 };
 
+// Articles link to IDeal
+export interface IDeal {
+  id: string;
+  tagline: string; // Experience the best porterhouse steak in London
+  includes: Array<string>; // ['300g Porterhouse', 'Fries', ...]
+  pricePerHeadGBP: number; // 25 (25 pounds)s
+  image: IFigureImage;
+  // name: string; // Grizzly Grumble
+  // dealPrefix: string; // Only £25 and you'll get
+}
+
+export interface ILocation {
+  address: string;
+  lat: number;
+  lng: number;
+}
+
+export interface IRestaurant {
+  id: string;
+  name: string;
+  website: string;
+  businessType: 'restaurant' | 'takeaway' | 'cafe';
+  locations: ILocation[];
+  cuisines: CuisineSymbol;
+  // Contentful has a contact, but we don't want to
+  // share that with the user.
+  contact?: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    mobile: string;
+  };
+}
+
 export interface IPost {
   id: string;
   title: string;
-  subtitle: string;
   description: string;
   body: Document;
-  author?: IAuthor;
-  publishedDate: string;
-  featureImage?: IFigureImage;
+  author: IAuthor;
+  date: string;
+  city: string;
+  dishName: string;
+  video: string;
+  cuisine: string;
+  deal: IDeal;
+  restaurant: IRestaurant;
+  featureImage: IFigureImage;
   tags: Array<string>;
   slug: string;
 }

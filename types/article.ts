@@ -3,11 +3,6 @@ export interface IAuthor {
   description: string;
 }
 
-export interface ILocation {
-  lat: number;
-  lng: number;
-}
-
 export interface IFigureImage {
   source: string;
   altText: string;
