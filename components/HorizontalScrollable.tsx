@@ -1,13 +1,7 @@
 import ChevronLeftSecondarySVG from '@svg/chevron-left-secondary.svg';
 import ChevronRightSecondarySVG from '@svg/chevron-right-secondary.svg';
 import classNames from 'classnames';
-import React, {
-  ReactNode,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useScroll, useWindowSize } from 'react-use';
 import { UI } from '../constants';
 import { ScreenContext } from '../contexts/screen';
@@ -16,7 +10,11 @@ import { Contained } from './Contained';
 interface Props {
   onScroll?: (x: number) => void;
   onItemClick?: () => void;
-  children: ReactNode;
+  children: JSX.Element[];
+
+  // Number of items to fit in the available width
+  // when not on touch device
+  fit?: number;
 }
 
 export function HorizontalScrollable(props: Props) {
@@ -35,6 +33,9 @@ export function HorizontalScrollable(props: Props) {
   );
 }
 
+/*
+ * Intended for full width situations only
+ */
 function HorizontalScrollableInner(props: Props) {
   const { onItemClick, children } = props;
 
@@ -45,6 +46,7 @@ function HorizontalScrollableInner(props: Props) {
   const pageWidth = useWindowSize().width;
   const scrollDistance = pageWidth > 1400 ? 450 : pageWidth / 3;
 
+  const [itemWidth, setItemWidth] = useState<number>();
   const [rightScrollHidden, setRightScrollHidden] = useState(false);
 
   const { isDesktop, isMobile } = useContext(ScreenContext);
@@ -77,11 +79,21 @@ function HorizontalScrollableInner(props: Props) {
     const tooSmallToScroll =
       innerContentRef.current.clientWidth < scrollRef.current.clientWidth;
 
+    console.log(
+      'HorizontalScrollable ➡️ innerContentRef.current.clientWidth:',
+      innerContentRef.current.clientWidth,
+    );
+
+    const _itemWidth = props.fit
+      ? innerContentRef.current.clientWidth / props.fit
+      : undefined;
+
+    setItemWidth(_itemWidth);
     setRightScrollHidden(tooSmallToScroll || isFullRight);
   }, [x, children]);
 
   return (
-    <div className="flex relative w-full">
+    <div className="relative flex w-full">
       <div
         className={classNames(
           'absolute left-0 flex items-center justify-between h-full w-full',
@@ -124,13 +136,28 @@ function HorizontalScrollableInner(props: Props) {
       >
         <div
           ref={innerContentRef}
-          className={classNames('flex overflow-y-visible')}
+          className={classNames('flex space-x-4 overflow-y-visible')}
           style={{
-            width: 'min-content',
+            width: props.fit ? 'auto' : 'min-content',
             marginLeft: `${!isDesktop ? UI.PAGE_CONTAINED_PADDING_VW : 0}vw`,
           }}
         >
-          {children}
+          {/* Try to fit into a clean integer number across */}
+          {props.fit ? (
+            <>
+              {children?.map?.(child => (
+                <div
+                  key={child.key}
+                  style={{ width: props.fit ? `${itemWidth}px` : 'auto' }}
+                  className=""
+                >
+                  {child}
+                </div>
+              ))}
+            </>
+          ) : (
+            <>{children}</>
+          )}
         </div>
       </div>
     </div>

@@ -1,3 +1,6 @@
+import { HorizontalScrollable } from 'components/HorizontalScrollable';
+import { ScreenContext } from 'contexts/screen';
+import React, { useContext } from 'react';
 import { SectionTitle } from '../SectionTitle';
 
 interface Props {
@@ -5,14 +8,14 @@ interface Props {
 }
 
 export function HomeFavouritesSection(props: Props) {
+  const { isMobile, isTablet } = useContext(ScreenContext);
   const { cards } = props;
 
   return (
-    <div>
+    <div className="flex flex-col space-y-4">
       <SectionTitle>Discover your next favourite dish!</SectionTitle>
-      <div className="mobile:flex overflow-x-hidden my-8 space-x-6">
-        {cards}
-      </div>
+
+      <HorizontalScrollable fit={2}>{cards}</HorizontalScrollable>
     </div>
   );
 }

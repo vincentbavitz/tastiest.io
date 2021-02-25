@@ -1,8 +1,8 @@
-import groq from 'groq';
-import { NextPage } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import React, { useContext } from 'react';
-import client from '../client';
+import { CmsApi } from 'services/cms';
+import { IPost } from 'types/cms';
 import { ArticleCard } from '../components/cards/ArticleCard';
 import { Contained } from '../components/Contained';
 import { HomeFavouritesSection } from '../components/home/HomeFavouritesSection';
@@ -13,20 +13,30 @@ import { SuggestDish } from '../components/SuggestDish';
 import { METADATA } from '../constants';
 import { ScreenContext } from '../contexts/screen';
 import { useAuth } from '../hooks/useAuth';
-// import withAuthUser from '../utils/pageWrappers/withAuthUser';
-// import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo';
-import { sanityPostQuery } from '../hooks/useSearch';
 import { useUserData } from '../hooks/useUserData';
-import { ISanityArticle } from '../types/article';
 
 interface Props {
-  posts: Array<ISanityArticle>;
+  posts: Array<IPost>;
   // AuthUserInfo: any;
 }
 
+export const getStaticProps: GetStaticProps = async () => {
+  const cms = new CmsApi();
+  const { posts = [] } = await cms.fetchBlogEntries(12);
+
+  return {
+    props: {
+      posts,
+    },
+    revalidate: 60,
+  };
+};
+
 const Index: NextPage<Props> = ({ posts = [] }) => {
   const cards = posts
-    ? posts.slice(0, 4).map(post => <ArticleCard key={post.id} {...post} />)
+    ? posts
+        .slice?.(0, 6)
+        .map(post => <ArticleCard compact key={post.id} {...post} />)
     : [];
 
   const { isDesktop } = useContext(ScreenContext);
@@ -58,33 +68,19 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
         <HomeRecentSearchesSection />
       </div>
 
-      <Contained>
-        <div className="flex flex-col space-y-16">
+      <div className="flex flex-col space-y-16">
+        <Contained>
           <HomeMapSection />
-          <HomeFavouritesSection cards={cards} />
+        </Contained>
+
+        <HomeFavouritesSection cards={cards} />
+
+        <Contained>
           <SuggestDish />
-        </div>
-      </Contained>
+        </Contained>
+      </div>
     </>
   );
 };
 
-Index.getInitialProps = async () => {
-  const query = groq`
-    *[_type == "post"]|order(publishedAt desc) {
-      ${sanityPostQuery}
-    }
-  `;
-
-  let posts: Array<ISanityArticle>;
-  try {
-    posts = await client.fetch(query);
-  } catch (error) {
-    console.warn('Error:', error);
-  }
-
-  return { posts };
-};
-
-// export default withAuthUser(withAuthUserInfo(Index));
 export default Index;

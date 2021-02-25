@@ -35,10 +35,6 @@ export class CmsApi {
     quantity = CMS.BLOG_RESULTS_PER_PAGE,
     page = 1,
   ): Promise<IFetchBlogEntriesReturn> {
-    console.log('cms ➡️ page:', page);
-    console.log('cms ➡️ quantity:', quantity);
-    console.log('cms ➡️ (page - 1) * quantity:', (page - 1) * quantity);
-
     const entries = await this.client.getEntries({
       content_type: 'post',
       order: '-fields.date',
@@ -92,12 +88,12 @@ export class CmsApi {
     return { posts: [], total: 0 } as IFetchBlogEntriesReturn;
   }
 
-  fetchRestaurantsOfOrganisation(organisationID: string) {
+  public fetchRestaurantsOfOrganisation(organisationID: string) {
     organisationID;
     return null;
   }
 
-  public convertImage = (rawImage): IFigureImage =>
+  private convertImage = (rawImage): IFigureImage =>
     rawImage
       ? {
           imageUrl: rawImage.file.url.replace('//', 'https://'), // may need to put null check as well here
@@ -106,7 +102,7 @@ export class CmsApi {
         }
       : null;
 
-  public convertAuthor = (rawAuthor): IAuthor =>
+  private convertAuthor = (rawAuthor): IAuthor =>
     rawAuthor
       ? {
           name: rawAuthor?.name ?? null,
@@ -117,7 +113,7 @@ export class CmsApi {
         }
       : null;
 
-  public convertDeal = (rawDeal): IDeal =>
+  private convertDeal = (rawDeal): IDeal =>
     rawDeal
       ? {
           id: rawDeal.sys.id ?? null,
@@ -128,7 +124,7 @@ export class CmsApi {
         }
       : null;
 
-  public convertLocation = (rawLocation): ILocation =>
+  private convertLocation = (rawLocation): ILocation =>
     rawLocation
       ? {
           address: rawLocation.fields.address,
@@ -137,14 +133,14 @@ export class CmsApi {
         }
       : null;
 
-  public convertCuisines = (rawCuisines): CuisineSymbol[] =>
+  private convertCuisines = (rawCuisines): CuisineSymbol[] =>
     rawCuisines
       ? rawCuisines
           .map?.(c => CuisineSymbol[c?.fields?.name?.toUpperCase()] ?? null)
           .filter(c => Boolean(c))
       : null;
 
-  public convertRestaurant = (rawRestaurant): IRestaurant => {
+  private convertRestaurant = (rawRestaurant): IRestaurant => {
     console.log('cms ➡️ rawRestaurant:', rawRestaurant.fields.cuisines);
 
     return rawRestaurant
@@ -159,7 +155,7 @@ export class CmsApi {
       : null;
   };
 
-  public convertPost = (rawData): IPost => {
+  private convertPost = (rawData): IPost => {
     const rawPost = rawData.fields;
     const rawFeatureImage = rawPost?.featureImage?.fields;
     const rawAuthor = rawPost.author ? rawPost.author.fields : null;
