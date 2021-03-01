@@ -1,37 +1,75 @@
 import classNames from 'classnames';
 import _ from 'lodash';
 import React, { useContext } from 'react';
+import { useMeasure } from 'react-use';
 import { v4 as uuid } from 'uuid';
 import { ScreenContext } from '../../contexts/screen';
+import { Contained } from '../Contained';
+import { HorizontalScrollable } from '../HorizontalScrollable';
 
 interface Props {
+  rows?: number;
   children: JSX.Element[];
 }
 
-export function CardGrid({ children }: Props) {
-  const { isTablet, isDesktop, isHuge } = useContext(ScreenContext);
+export function CardGrid({ rows, children }: Props) {
+  const { isMobile, isDesktop, isHuge } = useContext(ScreenContext);
+
+  const [ref, { width }] = useMeasure();
+  const widthOfCardPx = 200;
+  const grouping = Math.max(1, Math.min(4, Math.floor(width / widthOfCardPx)));
+  const numPaddingCards =
+    Math.ceil(children.length / grouping) * grouping - children.length;
+
+  const spacing = isHuge ? 3 : isDesktop ? 6 : 4;
+  const spacingY = `space-y-${spacing}`;
+  const spacingX = `space-x-${spacing}`;
+
+  const items =
+    rows && rows > 0 ? children.slice(0, grouping * rows) : children;
+
+  // Add cards to ensure we fill up each row. Hidden where the row is incomplete
+  // to keep even widths
+  const cards = [
+    ...items,
+    ...Array.from(Array(numPaddingCards).keys()).map(i => <div key={i}></div>),
+  ];
 
   return (
-    <div className="flex flex-col space-y-4">
-      {_.chunk(children, isHuge ? 4 : isDesktop || isTablet ? 3 : 2).map(
-        group => (
-          <div key={uuid()} className="flex">
-            {group.map((item, index) => (
+    <>
+      {isMobile ? (
+        <div className="">
+          <HorizontalScrollable>
+            {children.map(child => (
               <div
                 key={uuid()}
-                className={classNames(
-                  index === 0 && 'pr-2',
-                  index === 1 && 'pl-2 pr-2',
-                  index === 2 && 'pl-2',
-                  isHuge ? 'w-1/4' : isDesktop || isTablet ? 'w-1/3' : 'w-1/2',
-                )}
+                style={{
+                  width: '80vw',
+                  minWidth: '275px',
+                  maxWidth: '330px',
+                }}
+                className="py-4"
               >
-                {item}
+                {child}
+              </div>
+            ))}
+          </HorizontalScrollable>
+        </div>
+      ) : (
+        <Contained>
+          <div ref={ref} className={classNames('flex flex-col', spacingY)}>
+            {_.chunk(cards, grouping).map(group => (
+              <div key={uuid()} className={classNames('flex w-full', spacingX)}>
+                {group.map(item => (
+                  <div key={uuid()} className="flex-1">
+                    {item}
+                  </div>
+                ))}
               </div>
             ))}
           </div>
-        ),
+        </Contained>
       )}
-    </div>
+    </>
   );
 }

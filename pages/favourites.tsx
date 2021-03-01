@@ -15,6 +15,7 @@ import { SectionTitle } from '../components/SectionTitle';
 import { ScreenContext } from '../contexts/screen';
 import { useAuth } from '../hooks/useAuth';
 import { useUserData } from '../hooks/useUserData';
+import BigBrain from '../services/brains';
 
 export const getServerSideProps: GetServerSideProps = async context => {
   // Get user ID from cookie.
@@ -40,22 +41,22 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const cms = new CmsApi();
   const { posts: savedPosts } = await cms.getPostsOfSlugs(savedPostSlugs);
 
-  console.log(
-    'favourites ➡️ savedPosts:',
-    savedPosts.map(p => p.slug),
-  );
+  // Get recommended posts for the user
+  const brain = new BigBrain();
+  const recommendedPosts = await brain.inferRecommendedPosts(userId);
 
   return {
-    props: { savedPosts },
+    props: { savedPosts, recommendedPosts },
   };
 };
 
 interface Props {
   savedPosts: IPost[];
+  recommendedPosts: IPost[];
 }
 
 function Favourites(props: Props) {
-  const { savedPosts } = props;
+  const { savedPosts, recommendedPosts } = props;
   const { isDesktop } = useContext(ScreenContext);
   const { user } = useAuth();
   const { toggleSaveArticle } = useArticle();
@@ -131,9 +132,9 @@ function Favourites(props: Props) {
           <SectionTitle>You might also like</SectionTitle>
         </div>
 
-        {/* Top Posts */}
+        {/* Recommended Posts */}
         <CardGrid>
-          {[]?.map(post => (
+          {recommendedPosts?.map(post => (
             <ArticleCard key={post.id} {...post} />
           ))}
         </CardGrid>
