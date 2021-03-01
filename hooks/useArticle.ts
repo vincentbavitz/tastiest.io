@@ -9,16 +9,16 @@ export function useArticle() {
   const { isSignedIn } = useAuth();
   const router = useRouter();
 
-  const toggleSaveArticle = (id: string) => {
+  const toggleSaveArticle = (slug: string) => {
     if (!isSignedIn) {
-      router.push('/login');
+      router.push('/?login=1');
     }
 
     const isArticleSaved =
-      id === userData?.savedArticles?.find(saved => saved === id);
+      slug === userData?.savedArticles?.find(saved => saved === slug);
 
     if (isArticleSaved) {
-      const filtered = userData?.savedArticles?.filter(saved => id !== saved);
+      const filtered = userData?.savedArticles?.filter(saved => slug !== saved);
 
       setUserData(UserData.SAVED_ARTICLES, filtered);
       return;
@@ -26,7 +26,7 @@ export function useArticle() {
 
     setUserData(UserData.SAVED_ARTICLES, [
       ...(userData?.savedArticles ?? []),
-      id,
+      slug,
     ]);
   };
 

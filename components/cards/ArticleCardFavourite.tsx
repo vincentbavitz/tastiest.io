@@ -8,18 +8,26 @@ import React, { SyntheticEvent, useContext } from 'react';
 import { useMeasure } from 'react-use';
 import { IPost } from 'types/cms';
 import { ScreenContext } from '../../contexts/screen';
-import { useArticle } from '../../hooks/useArticle';
 import { generateURL } from '../../utils/routing';
 
 interface Props extends Partial<IPost> {
   isFavourite: boolean;
+  onToggleFavourite: () => void;
 }
 
 export function ArticleCardFavourite(props: Props): JSX.Element {
-  const { id, featureImage, title, city, slug, cuisine, isFavourite } = props;
+  const {
+    id,
+    featureImage,
+    title,
+    city,
+    slug,
+    cuisine,
+    isFavourite,
+    onToggleFavourite,
+  } = props;
   const { isTablet, isDesktop, isHuge } = useContext(ScreenContext);
 
-  const { toggleSaveArticle } = useArticle();
   const [ref, { width }] = useMeasure();
   const isSmall = width < 130;
 
@@ -75,7 +83,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
 
         <div className="flex justify-between pr-2 mt-2 text-primary">
           <div
-            onClick={() => toggleSaveArticle(id)}
+            onClick={onToggleFavourite}
             className="flex items-center cursor-pointer"
           >
             {isFavourite ? (

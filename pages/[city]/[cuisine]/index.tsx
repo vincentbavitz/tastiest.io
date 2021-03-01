@@ -1,3 +1,4 @@
+import { ArticleCard } from 'components/cards/ArticleCard';
 import { InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import React, { useContext, useEffect, useState } from 'react';
@@ -9,7 +10,7 @@ import { CUISINES } from '../../../constants';
 import { ScreenContext } from '../../../contexts/screen';
 import { CuisineSymbol } from '../../../types/cuisine';
 import { generateTitle } from '../../../utils/metadata';
-import { getCuisinePosts, postsToCards } from '../../../utils/posts';
+import { getCuisinePosts } from '../../../utils/posts';
 import { titleCase } from '../../../utils/text';
 
 export const getServerSideProps = async context => {
@@ -60,7 +61,9 @@ export default function Cuisine({
     getPosts();
   }, [cuisine]);
 
-  const cards = postsToCards(posts);
+  const cards = posts
+    ? posts.slice(0, 4).map(post => <ArticleCard key={post.id} {...post} />)
+    : [];
 
   // // Prevent user from seeing anything rendered when cuisine doesn't exist
   // if (!cuisineExists) {

@@ -67,6 +67,7 @@ export class CmsApi {
       'fields.tags[in]': tag,
       limit: quantity,
       skip: (page - 1) * quantity,
+      include: 5,
     });
 
     if (entries?.items?.length > 0) {
@@ -77,18 +78,21 @@ export class CmsApi {
     return { posts: [], total: 0 } as IFetchPostsReturn;
   }
 
-  public async getPostsOfIds(
-    ids: Array<string>,
+  public async getPostsOfSlugs(
+    slugs: Array<string>,
     quantity = CMS.BLOG_RESULTS_PER_PAGE,
     page = 1,
   ) {
     const entries = await this.client.getEntries({
       content_type: 'post',
       order: '-fields.date',
-      'sys.id[in]': ids,
       limit: quantity,
       skip: (page - 1) * quantity,
+      include: 5,
+      'fields.slug[in]': slugs.join(','),
     });
+
+    console.log('cms ➡️ entries:', entries);
 
     if (entries?.items?.length > 0) {
       const posts = entries.items.map(entry => this.convertPost(entry));
@@ -102,6 +106,7 @@ export class CmsApi {
     const entries = await this.client.getEntries({
       content_type: 'post',
       'fields.slug': slug,
+      include: 5,
     });
 
     if (entries?.items?.length > 0) {
@@ -141,6 +146,50 @@ export class CmsApi {
     return { posts: [], total: 0 } as IFetchPostsReturn;
   }
 
+  public async getCuisinePosts(cuisine: CuisineSymbol, limit: number) {
+    // const query = groq`
+    //     *[_type == "post" && cuisine->title match "${titleCase(cuisine)}"][0..${
+    //   limit ?? 100
+    // }]|order(publishedAt desc) {
+    //       ${sanityPostQuery}
+    //     }
+    //   `;
+
+    // let posts: Array<ISanityArticle>;
+
+    // try {
+    //   posts = await client.fetch(query);
+    //   console.log('Posts', posts);
+    // } catch (error) {
+    //   console.warn('Error:', error);
+    // }
+
+    // return posts;
+
+    return [];
+  }
+
+  public async getTopPosts(limit?: number) {
+    // const query = groq`
+    //   *[_type == "post"][0..${(limit ?? 100) - 1}]|order(publishedAt desc) {
+    //     ${sanityPostQuery}
+    //   }
+    // `;
+
+    // let posts: Array<ISanityArticle>;
+
+    // try {
+    //   posts = await client.fetch(query);
+    //   console.log('Posts', posts);
+    // } catch (error) {
+    //   console.warn('Error:', error);
+    // }
+
+    // return posts;
+
+    return [];
+  }
+
   private convertImage = (rawImage): IFigureImage =>
     rawImage
       ? {
@@ -175,9 +224,9 @@ export class CmsApi {
   private convertLocation = (rawLocation): ILocation =>
     rawLocation
       ? {
-          address: rawLocation.fields.address,
-          lat: rawLocation.fields.coordinates.lat,
-          lon: rawLocation.fields.coordinates.lon,
+          address: rawLocation?.fields?.address ?? null,
+          lat: rawLocation?.fields?.coordinates.lat ?? null,
+          lon: rawLocation?.fields?.coordinates.lon ?? null,
         }
       : null;
 
@@ -189,8 +238,6 @@ export class CmsApi {
       : null;
 
   private convertRestaurant = (rawRestaurant): IRestaurant => {
-    console.log('cms ➡️ rawRestaurant:', rawRestaurant.fields.cuisines);
-
     return rawRestaurant
       ? {
           id: rawRestaurant.sys.id ?? null,

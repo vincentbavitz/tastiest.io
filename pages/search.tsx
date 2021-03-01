@@ -14,8 +14,6 @@ import { SuggestDish } from '../components/SuggestDish';
 import { Title } from '../components/Title';
 import { CMS, METADATA, SEARCH } from '../constants';
 import { ScreenContext } from '../contexts/screen';
-import { buildArticleInfo } from '../utils/article';
-import { getTopPosts } from '../utils/posts';
 
 interface Props {
   posts: IPost[];
@@ -24,8 +22,6 @@ interface Props {
 }
 
 function Search(props: Props) {
-  const posts = props.posts.map(p => buildArticleInfo(p));
-
   // Show these options if the user is on this page without entering a query
   const recommendedOptions = <></>;
 

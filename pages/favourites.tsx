@@ -1,11 +1,12 @@
 import FavouritesNoneSVG from '@svg/page/favourites-none.svg';
 import FavouritesBackdropSVG from '@svg/page/favourites.svg';
+import { useArticle } from 'hooks/useArticle';
 import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { CmsApi } from 'services/cms';
-import { verifyUserAuth } from 'services/firebaseAdmin';
+import { UserDataApi } from 'services/userData';
 import { IPost } from 'types/cms';
+import { UserData } from 'types/firebase';
 import { ArticleCard } from '../components/cards/ArticleCard';
 import { ArticleCardFavourite } from '../components/cards/ArticleCardFavourite';
 import { CardGrid } from '../components/cards/CardGrid';
@@ -17,7 +18,8 @@ import { useUserData } from '../hooks/useUserData';
 
 export const getServerSideProps: GetServerSideProps = async context => {
   // Get user ID from cookie.
-  const { userId } = await verifyUserAuth(context);
+  const userDataApi = new UserDataApi();
+  const { userId } = await userDataApi.init(context);
 
   // If no user, redirect to home
   if (!userId) {
@@ -30,65 +32,39 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
 
   // If user, get saved articles from firestore.
+  const savedPostSlugs = await userDataApi.getUserData(UserData.SAVED_ARTICLES);
+
+  console.log('favourites ➡️ savedPostSlugs:', savedPostSlugs);
 
   // Given ids of saved articles from firestore, get articles of these ids
-
   const cms = new CmsApi();
+  const { posts: savedPosts } = await cms.getPostsOfSlugs(savedPostSlugs);
+
+  console.log(
+    'favourites ➡️ savedPosts:',
+    savedPosts.map(p => p.slug),
+  );
 
   return {
-    props: {},
+    props: { savedPosts },
   };
 };
 
-function Favourites() {
+interface Props {
+  savedPosts: IPost[];
+}
+
+function Favourites(props: Props) {
+  const { savedPosts } = props;
   const { isDesktop } = useContext(ScreenContext);
   const { user } = useAuth();
-  const { userData = {}, setUserData } = useUserData(user);
-  const { isSignedIn } = useAuth();
-  const router = useRouter();
+  const { toggleSaveArticle } = useArticle();
+  const { userData = {} } = useUserData(user);
 
-  const [initialFetchDone, setInitialFetchDone] = useState(false);
-  const [topPosts, setTopPosts] = useState([] as Array<IPost>);
-  const [savedPosts, setSavedPosts] = useState([] as Array<Partial<IPost>>);
-
-  // useEffect(() => {
-  //   const getPosts = async () => {
-  //     if (initialFetchDone) {
-  //       return;
-  //     }
-
-  //     const posts = await getTopPosts(12);
-  //     // const saved = await getArticlesHaving(
-  //     //   'id',
-  //     //   userData?.savedArticles ?? [],
-  //     // );
-  //     const saved = [];
-
-  //     setTopPosts(posts);
-  //     setSavedPosts(saved);
-  //     setInitialFetchDone(true);
-  //   };
-
-  //   getPosts();
-  // }, [userData?.savedArticles]);
-
-  // // Redirect users who are not signed in
-  // useEffect(() => {
-  //   if (!isSignedIn) {
-  //     router.push('/');
-  //   }
-  // }, [isSignedIn]);
-
-  // console.log(
-  //   'favourites ➡️ userData?.savedArticles:',
-  //   userData?.savedArticles,
-  // );
-
-  // console.log('favourites ➡️ savedPosts:', savedPosts);
-
-  // if (!isSignedIn || !initialFetchDone) {
-  //   return null;
-  // }
+  // Initialize favourites with props, then allow firebase to manage in real time.
+  const savedPostSlugs = userData?.savedArticles
+    ? userData.savedArticles
+    : savedPosts.map(p => p.slug) ?? [];
 
   const BackdropSVG =
     savedPosts.length === 0 ? (
@@ -144,9 +120,10 @@ function Favourites() {
               <ArticleCardFavourite
                 {...post}
                 key={post.id}
-                isFavourite={(userData?.savedArticles ?? []).some(
-                  saved => saved === post?.id,
+                isFavourite={savedPostSlugs?.some(
+                  saved => saved === post?.slug,
                 )}
+                onToggleFavourite={() => toggleSaveArticle(post.slug)}
               />
             ))}
           </CardGrid>
@@ -156,8 +133,9 @@ function Favourites() {
           <SectionTitle>You might also like</SectionTitle>
         </div>
 
+        {/* Top Posts */}
         <CardGrid>
-          {topPosts?.map(post => (
+          {[]?.map(post => (
             <ArticleCard key={post.id} {...post} />
           ))}
         </CardGrid>
