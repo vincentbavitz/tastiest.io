@@ -19,12 +19,12 @@ export function ArticleWidgetMap({ city, location, restaurantName }: Props) {
   return (
     <div className="flex flex-col w-full desktop:flex-row desktop:justify-center desktop:space-x-8">
       {!isDesktop && <CityIndictor city={city} />}
-      <div className="mt-4 h-40 desktop:h-auto desktop:mt-0 desktop:w-1/2 w-full rounded-xl overflow-hidden">
+      <div className="w-full h-40 mt-4 overflow-hidden desktop:h-auto desktop:mt-0 desktop:w-1/2 rounded-xl">
         <img
-          className="h-full w-full object-cover border-4 border-primary "
+          className="object-cover w-full h-full border-4 border-primary "
           src={getMapBoxStaticSource(
-            location.lat,
-            location.lon,
+            location?.lat,
+            location?.lon,
             !isDesktop ? 1200 : 400,
           )}
         />
@@ -33,7 +33,7 @@ export function ArticleWidgetMap({ city, location, restaurantName }: Props) {
       <div className="flex flex-col justify-end pb-4 space-y-3">
         {isDesktop && <CityIndictor city={city} />}
 
-        <div className="flex flex-col font-medium ml-4 mt-3 desktop:ml-0 desktop:mt-0">
+        <div className="flex flex-col mt-3 ml-4 font-medium desktop:ml-0 desktop:mt-0">
           <Title level={1} bold>
             {restaurantName}
           </Title>

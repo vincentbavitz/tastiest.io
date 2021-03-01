@@ -1,12 +1,12 @@
 import { InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import React, { useContext, useEffect, useState } from 'react';
+import { IPost } from 'types/cms';
 import { CardGrid } from '../../../components/cards/CardGrid';
 import { Contained } from '../../../components/Contained';
 import { SuggestDish } from '../../../components/SuggestDish';
 import { CUISINES } from '../../../constants';
 import { ScreenContext } from '../../../contexts/screen';
-import { ISanityArticle } from '../../../types/article';
 import { CuisineSymbol } from '../../../types/cuisine';
 import { generateTitle } from '../../../utils/metadata';
 import { getCuisinePosts, postsToCards } from '../../../utils/posts';
@@ -43,7 +43,7 @@ export default function Cuisine({
   const cuisineName = titleCase(String(cuisine?.name));
   const cuisineExists = Boolean(cuisine);
 
-  const [posts, setPosts] = useState([] as ISanityArticle[]);
+  const [posts, setPosts] = useState([] as IPost[]);
 
   const getPosts = async () => {
     const posts = await getCuisinePosts(

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, ReactNode, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useKey, useStartTyping } from 'react-use';
+import { useKey } from 'react-use';
 import { useSearch } from '../../hooks/useSearch';
 import {
   collapseSearchOverlay,
@@ -60,7 +60,7 @@ export function SearchInput(props: Props) {
   const { search, saveUserSearch } = useSearch();
 
   // Force focus when user starts typing
-  useStartTyping(() => inputRef?.current?.focus());
+  // useStartTyping(() => inputRef?.current?.focus());
   const inputValue = searchState.searchQuery;
 
   // Internal functions
@@ -102,8 +102,6 @@ export function SearchInput(props: Props) {
     if (String(value).length > 0) {
       dispatch(expandSearchOverlay());
     }
-
-    inputRef?.current?.focus();
   };
 
   // Search on enter

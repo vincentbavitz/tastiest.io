@@ -1,5 +1,7 @@
+import { Button } from 'components/Button';
 import { ContentfulClientApi, createClient } from 'contentful';
 import moment from 'moment';
+import React from 'react';
 import CMS from '../constants/cms';
 import {
   IAuthor,
@@ -11,7 +13,7 @@ import {
 } from '../types/cms';
 import { CuisineSymbol } from '../types/cuisine';
 
-interface IFetchBlogEntriesReturn {
+interface IFetchPostsReturn {
   posts: Array<IPost>;
   total: number;
 }
@@ -22,6 +24,7 @@ export const unslugify = (slug: string) =>
   slug.replace(/-/g, '_').toUpperCase();
 
 export class CmsApi {
+  [x: string]: any;
   client: ContentfulClientApi;
 
   constructor() {
@@ -31,10 +34,10 @@ export class CmsApi {
     });
   }
 
-  public async fetchBlogEntries(
+  public async getPosts(
     quantity = CMS.BLOG_RESULTS_PER_PAGE,
     page = 1,
-  ): Promise<IFetchBlogEntriesReturn> {
+  ): Promise<IFetchPostsReturn> {
     const entries = await this.client.getEntries({
       content_type: 'post',
       order: '-fields.date',
@@ -50,28 +53,14 @@ export class CmsApi {
       return { posts: blogPosts, total: entries.total };
     }
 
-    return { posts: [], total: 0 } as IFetchBlogEntriesReturn;
+    return { posts: [], total: 0 } as IFetchPostsReturn;
   }
 
-  public async fetchPostBySlug(slug: string): Promise<IPost> {
-    const entries = await this.client.getEntries({
-      content_type: 'post',
-      'fields.slug': slug,
-    });
-
-    if (entries?.items?.length > 0) {
-      const post = this.convertPost(entries.items[0]);
-      return post;
-    }
-
-    return null;
-  }
-
-  public async fetchBlogEntriesByTag(
+  public async getPostsByTag(
     tag: string,
     quantity = CMS.BLOG_RESULTS_PER_PAGE,
     page = 1,
-  ): Promise<IFetchBlogEntriesReturn> {
+  ): Promise<IFetchPostsReturn> {
     const entries = await this.client.getEntries({
       content_type: 'post',
       order: '-fields.date',
@@ -85,12 +74,71 @@ export class CmsApi {
       return { posts, total: entries.total };
     }
 
-    return { posts: [], total: 0 } as IFetchBlogEntriesReturn;
+    return { posts: [], total: 0 } as IFetchPostsReturn;
   }
 
-  public fetchRestaurantsOfOrganisation(organisationID: string) {
+  public async getPostsOfIds(
+    ids: Array<string>,
+    quantity = CMS.BLOG_RESULTS_PER_PAGE,
+    page = 1,
+  ) {
+    const entries = await this.client.getEntries({
+      content_type: 'post',
+      order: '-fields.date',
+      'sys.id[in]': ids,
+      limit: quantity,
+      skip: (page - 1) * quantity,
+    });
+
+    if (entries?.items?.length > 0) {
+      const posts = entries.items.map(entry => this.convertPost(entry));
+      return { posts, total: entries.total };
+    }
+
+    return { posts: [], total: 0 } as IFetchPostsReturn;
+  }
+
+  public async getPostBySlug(slug: string): Promise<IPost> {
+    const entries = await this.client.getEntries({
+      content_type: 'post',
+      'fields.slug': slug,
+    });
+
+    if (entries?.items?.length > 0) {
+      const post = this.convertPost(entries.items[0]);
+      return post;
+    }
+
+    return null;
+  }
+
+  public async getRestaurantsOfOrganisation(organisationID: string) {
     organisationID;
     return null;
+  }
+
+  public async searchPosts(
+    query: string,
+    quantity = CMS.BLOG_RESULTS_PER_PAGE,
+    page = 1,
+  ): Promise<IFetchPostsReturn> {
+    const entries = await this.client.getEntries({
+      content_type: 'post',
+      order: '-fields.date',
+      limit: quantity,
+      skip: (page - 1) * quantity,
+      // Allows us to go N layers deep in nested JSON
+      // https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/links
+      include: 5,
+      'fields.title[match]': query.trim().toLowerCase(),
+    });
+
+    if (entries?.items?.length > 0) {
+      const blogPosts = entries.items.map(entry => this.convertPost(entry));
+      return { posts: blogPosts, total: entries.total };
+    }
+
+    return { posts: [], total: 0 } as IFetchPostsReturn;
   }
 
   private convertImage = (rawImage): IFigureImage =>
@@ -184,3 +232,34 @@ export class CmsApi {
       : null;
   };
 }
+
+const extractShortcodeGeneralButton = (shortcode: string) => {
+  if (!CMS.SHORTCODES.GENERAL_BUTTON.test(shortcode)) {
+    return null;
+  }
+
+  // Pull our href and text
+  const href = shortcode
+    .replace(/^{{[\s]*button[\s]*href="/, '')
+    .replace(/"[\s]*text="[^"]{1,99}"[\s]*}}/, '');
+
+  const text = shortcode
+    .replace(/^{{[\s]*button[\s]*href="[^"]{1,333}"[\s]*text="/, '')
+    .replace(/"[\s]*}}$/, '');
+
+  return { href, text };
+};
+
+export const renderShortcode = (shortcode: string) => {
+  // General button
+  if (CMS.SHORTCODES.GENERAL_BUTTON.test(shortcode)) {
+    const { href, text } = extractShortcodeGeneralButton(shortcode);
+    return (
+      <div className="flex justify-center mt-2 mb-4">
+        <Button onClick={() => open(href, '_blank')}>{text}</Button>
+      </div>
+    );
+  }
+
+  return null;
+};

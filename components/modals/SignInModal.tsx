@@ -64,6 +64,9 @@ export function SignInModal() {
     </Button>
   );
 
+  const cleanupInputValue = (value: string | number) =>
+    String(value).toLowerCase().trim();
+
   const signInContent = (
     <>
       <InputAbstract
@@ -107,9 +110,6 @@ export function SignInModal() {
       )}
     </>
   );
-
-  const cleanupInputValue = (value: string | number) =>
-    String(value).toLowerCase().trim();
 
   const signUpContent = (
     <>

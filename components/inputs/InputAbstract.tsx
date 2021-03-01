@@ -125,8 +125,8 @@ export function InputAbstract(props: InputProps) {
     }
 
     // Test regex
-    const isValidRegex = regex && regex?.test(String(element.value));
-    if (!isValidRegex && element.value.length > 0) return;
+    const isValid = regex ? regex?.test(String(element.value)) : true;
+    if (!isValid && element.value.length > 0) return;
 
     // Emails don't support selectionStart
     if (type !== 'email') {

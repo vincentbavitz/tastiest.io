@@ -1,7 +1,11 @@
 import FavouritesNoneSVG from '@svg/page/favourites-none.svg';
 import FavouritesBackdropSVG from '@svg/page/favourites.svg';
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { CmsApi } from 'services/cms';
+import { verifyUserAuth } from 'services/firebaseAdmin';
+import { IPost } from 'types/cms';
 import { ArticleCard } from '../components/cards/ArticleCard';
 import { ArticleCardFavourite } from '../components/cards/ArticleCardFavourite';
 import { CardGrid } from '../components/cards/CardGrid';
@@ -10,9 +14,31 @@ import { SectionTitle } from '../components/SectionTitle';
 import { ScreenContext } from '../contexts/screen';
 import { useAuth } from '../hooks/useAuth';
 import { useUserData } from '../hooks/useUserData';
-import { IPost, ISanityArticle } from '../types/article';
-import { getArticlesHaving } from '../utils/article';
-import { getTopPosts } from '../utils/posts';
+
+export const getServerSideProps: GetServerSideProps = async context => {
+  // Get user ID from cookie.
+  const { userId } = await verifyUserAuth(context);
+
+  // If no user, redirect to home
+  if (!userId) {
+    return {
+      redirect: {
+        destination: '/?login=1',
+        permanent: false,
+      },
+    };
+  }
+
+  // If user, get saved articles from firestore.
+
+  // Given ids of saved articles from firestore, get articles of these ids
+
+  const cms = new CmsApi();
+
+  return {
+    props: {},
+  };
+};
 
 function Favourites() {
   const { isDesktop } = useContext(ScreenContext);
@@ -22,46 +48,47 @@ function Favourites() {
   const router = useRouter();
 
   const [initialFetchDone, setInitialFetchDone] = useState(false);
-  const [topPosts, setTopPosts] = useState([] as Array<ISanityArticle>);
+  const [topPosts, setTopPosts] = useState([] as Array<IPost>);
   const [savedPosts, setSavedPosts] = useState([] as Array<Partial<IPost>>);
 
-  useEffect(() => {
-    const getPosts = async () => {
-      if (initialFetchDone) {
-        return;
-      }
+  // useEffect(() => {
+  //   const getPosts = async () => {
+  //     if (initialFetchDone) {
+  //       return;
+  //     }
 
-      const posts = await getTopPosts(12);
-      const saved = await getArticlesHaving(
-        'id',
-        userData?.savedArticles ?? [],
-      );
+  //     const posts = await getTopPosts(12);
+  //     // const saved = await getArticlesHaving(
+  //     //   'id',
+  //     //   userData?.savedArticles ?? [],
+  //     // );
+  //     const saved = [];
 
-      setTopPosts(posts);
-      setSavedPosts(saved);
-      setInitialFetchDone(true);
-    };
+  //     setTopPosts(posts);
+  //     setSavedPosts(saved);
+  //     setInitialFetchDone(true);
+  //   };
 
-    getPosts();
-  }, [userData?.savedArticles]);
+  //   getPosts();
+  // }, [userData?.savedArticles]);
 
-  // Redirect users who are not signed in
-  useEffect(() => {
-    if (!isSignedIn) {
-      router.push('/');
-    }
-  }, [isSignedIn]);
+  // // Redirect users who are not signed in
+  // useEffect(() => {
+  //   if (!isSignedIn) {
+  //     router.push('/');
+  //   }
+  // }, [isSignedIn]);
 
-  console.log(
-    'favourites ➡️ userData?.savedArticles:',
-    userData?.savedArticles,
-  );
+  // console.log(
+  //   'favourites ➡️ userData?.savedArticles:',
+  //   userData?.savedArticles,
+  // );
 
-  console.log('favourites ➡️ savedPosts:', savedPosts);
+  // console.log('favourites ➡️ savedPosts:', savedPosts);
 
-  if (!isSignedIn || !initialFetchDone) {
-    return null;
-  }
+  // if (!isSignedIn || !initialFetchDone) {
+  //   return null;
+  // }
 
   const BackdropSVG =
     savedPosts.length === 0 ? (

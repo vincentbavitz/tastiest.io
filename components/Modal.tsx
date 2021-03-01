@@ -80,7 +80,7 @@ export function Modal(props: Props) {
         paddingLeft: `${padding}vw`,
         paddingRight: `${padding}vw`,
       }}
-      className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-25"
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-25"
     >
       <div
         ref={boxRef}
@@ -93,7 +93,7 @@ export function Modal(props: Props) {
           className,
         )}
       >
-        <div className="absolute top-0 right-0 flex justify-end pt-3 pr-3 z-0">
+        <div className="absolute top-0 right-0 z-0 flex justify-end pt-3 pr-3">
           <ExitSVG onClick={close} className="h-8 cursor-pointer" />
         </div>
         {children}

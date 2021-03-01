@@ -24,7 +24,7 @@ if (!firebase.apps.length) {
 
   // Initialize other services on firebase instance
   firebase.firestore();
-  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 }
 
 const store = createStore(rootReducer);

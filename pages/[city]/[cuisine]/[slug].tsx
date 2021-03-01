@@ -19,7 +19,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   // Contentful only allows 100 at a time
   while (!foundAllPosts) {
-    const { posts: _posts } = await cms.fetchBlogEntries(100, page);
+    const { posts: _posts } = await cms.getPosts(100, page);
 
     if (_posts.length === 0) {
       foundAllPosts = true;
@@ -31,7 +31,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 
   const paths: IPath[] = posts.map(item => ({
-    params: { slug: item.slug },
+    params: {
+      city: item.city,
+      cuisine: item.cuisine.toLowerCase(),
+      slug: item.slug,
+    },
   }));
 
   return { paths, fallback: true };
@@ -39,7 +43,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const cms = new CmsApi();
-  const post = await cms.fetchPostBySlug(String(params?.slug) ?? '');
+  const post = await cms.getPostBySlug(String(params?.slug) ?? '');
   console.log(`Building page: %c${params.slug}`, 'color: purple;');
 
   if (!post) {

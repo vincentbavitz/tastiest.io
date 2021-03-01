@@ -1,56 +1,13 @@
-import BlockContent from '@sanity/block-content-to-react';
+import { RichBody } from 'components/RichBody';
 import React, { useContext } from 'react';
-import { IPost } from 'types/cms';
-import { SANITY_CONSTATNTS } from '../../../client';
+import { IDeal, IPost } from 'types/cms';
 import { ScreenContext } from '../../../contexts/screen';
-import { IDeal } from '../../../types/checkout';
 import { Contained } from '../../Contained';
 import { ArticleWidgetOrderNow } from '../widgets/ArticleWidgetOrderNow';
 import { ArticleSectionFeatureImage } from './ArticleSectionFeatureImage';
 
-const paragraphs = [
-  `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic, labore consequatur. Architecto, aperiam impedit. Corrupti inventore eius, exercitationem odit est fugit, iste aspernatur incidunt quod iure aliquid fugiat. Earum, voluptate. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic, labore consequatur. Architecto, aperiam impedit. Corrupti inventore eius, exercitationem odit est fugit, iste aspernatur incidunt quod iure aliquid fugiat. Earum, voluptate. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic, labore consequatur. Architecto, aperiam impedit. Corrupti inventore eius, exercitationem odit est fugit, iste aspernatur incidunt quod iure aliquid fugiat. Earum, voluptate. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic, labore consequatur. Architecto, aperiam impedit.', 'Corrupti inventore eius, exercitationem
-odit est fugit, iste aspernatur incidunt quod iure aliquid fugiat.
-Earum, voluptate. Lorem ipsum, dolor sit amet consectetur adipisicing
-elit. Hic, labore consequatur. Architecto, aperiam impedit. Corrupti
-inventore eius, exercitationem odit est fugit, iste aspernatur
-incidunt quod iure aliquid fugiat. Earum, voluptate. Lorem ipsum,
-dolor sit amet consectetur adipisicing elit. Hic, labore consequatur.
-Architecto, aperiam impedit. Corrupti inventore eius, exercitationem
-odit est fugit, iste aspernatur incidunt quod iure aliquid fugiat.
-Earum, voluptate. Lorem ipsum, dolor sit amet consectetur adipisicing
-elit. Hic, labore consequatur. Architecto, aperiam impedit. Corrupti
-inventore eius, exercitationem odit est fugit, iste aspernatur
-incidunt quod iure aliquid fugiat. Earum, voluptate.`,
-  `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic, labore
-consequatur. Architecto, aperiam impedit. Corrupti inventore eius,
-exercitationem odit est fugit, iste aspernatur incidunt quod iure
-aliquid fugiat. Earum, voluptate. Lorem ipsum, dolor sit amet
-consectetur adipisicing elit. Hic, labore consequatur. Architecto,
-aperiam impedit. Corrupti inventore eius, exercitationem odit est
-fugit, iste aspernatur incidunt quod iure aliquid fugiat. Earum,
-voluptate. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-Hic, labore consequatur. Architecto, aperiam impedit. Corrupti
-inventore eius, exercitationem odit est fugit, iste aspernatur
-incidunt quod iure aliquid fugiat.`,
-  `Earum, voluptate. Lorem ipsum,
-dolor sit amet consectetur adipisicing elit. Hic, labore consequatur.
-Architecto, aperiam impedit. Corrupti inventore eius, exercitationem
-odit est fugit, iste aspernatur incidunt quod iure aliquid fugiat.
-Earum, voluptate. Lorem ipsum, dolor sit amet consectetur adipisicing
-elit. Hic, labore consequatur. Architecto, aperiam impedit. Corrupti
-inventore eius, exercitationem odit est fugit, iste aspernatur
-incidunt quod iure aliquid fugiat. Earum, voluptate. Lorem ipsum,
-dolor sit amet consectetur adipisicing elit. Hic, labore consequatur.
-Architecto, aperiam impedit. Corrupti inventore eius, exercitationem
-odit est fugit, iste aspernatur incidunt quod iure aliquid fugiat.`,
-];
-
 const deal: IDeal = {
   id: '3240234324032432432-4-324324324-23',
-  articleId: '3242973123',
-  restaurantID: 'divine-steaks-market',
-  restaurantName: 'Divine Steaks Market',
   tagline: 'Experience the best porterhouse steak in London',
   includes: [
     '300g Porterhouse',
@@ -61,10 +18,10 @@ const deal: IDeal = {
   ],
   pricePerHeadGBP: 25,
   image: {
-    source:
+    imageUrl:
       'https://www.homewetbar.com/blog/wp-content/uploads/2014/04/how-to-grill-steak.jpg?x48627',
-    altText: 'sdfs',
-    description: 'sdfs',
+    title: '',
+    description: '',
   },
 };
 
@@ -83,15 +40,11 @@ export function ArticleSectionContent(post: IPost) {
 
 const MobileContent = (post: IPost) => (
   <div className="flex flex-col space-y-4">
-    <div>{paragraphs[0]}</div>
+    <div>{post.description}</div>
 
     <ArticleWidgetOrderNow {...deal} />
 
-    <BlockContent
-      blocks={post.body}
-      projectId={SANITY_CONSTATNTS.PROJECT_ID}
-      dataset={SANITY_CONSTATNTS.DATASET}
-    />
+    <RichBody body={post.body} />
 
     <ArticleSectionFeatureImage featureImage={post.featureImage} />
   </div>
@@ -101,11 +54,7 @@ const DesktopContent = (post: IPost) => (
   <div className="flex flex-col">
     <div className="flex space-x-10">
       <div className="w-8/12 mt-16">
-        <BlockContent
-          blocks={post.body}
-          projectId={SANITY_CONSTATNTS.PROJECT_ID}
-          dataset={SANITY_CONSTATNTS.DATASET}
-        />
+        <RichBody body={post.body} />
       </div>
 
       <div className="w-4/12 mt-12">

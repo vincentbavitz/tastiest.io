@@ -1,4 +1,4 @@
-import { IAuthor } from '../../../types/article';
+import { IAuthor } from 'types/cms';
 import { Avatar } from '../../avatar/Avatar';
 
 interface Props {
@@ -9,11 +9,11 @@ interface Props {
 export function ArticleWidgetAuthor({ author, date }: Props) {
   return (
     <div className="flex items-center space-x-3">
-      <Avatar size={10} imageSrc={author?.imageSrc} />
+      <Avatar size={10} imageSrc={author?.profileImage?.imageUrl} />
 
       <div className="flex flex-col leading-tight">
-        <span className="font-roboto tracking-wider text-sm font-bold">
-          By: {author.name}
+        <span className="text-sm font-bold tracking-wider font-roboto">
+          By: {author?.name}
         </span>
         <span>{date}</span>
       </div>

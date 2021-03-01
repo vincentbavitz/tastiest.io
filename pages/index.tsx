@@ -22,7 +22,7 @@ interface Props {
 
 export const getStaticProps: GetStaticProps = async () => {
   const cms = new CmsApi();
-  const { posts = [] } = await cms.fetchBlogEntries(12);
+  const { posts = [] } = await cms.getPosts(12);
 
   return {
     props: {

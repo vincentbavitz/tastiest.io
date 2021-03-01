@@ -3,7 +3,8 @@ import SearchBackdropMobileSVG from '@svg/page/search_mobile.svg';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
-import client from '../client';
+import { CmsApi } from 'services/cms';
+import { IPost } from 'types/cms';
 import { ArticleCard } from '../components/cards/ArticleCard';
 import { ArticleCardRow } from '../components/cards/ArticleCardRow';
 import { Contained } from '../components/Contained';
@@ -11,23 +12,15 @@ import { HorizontalScrollable } from '../components/HorizontalScrollable';
 import { SectionTitle } from '../components/SectionTitle';
 import { SuggestDish } from '../components/SuggestDish';
 import { Title } from '../components/Title';
-import { METADATA, SEARCH } from '../constants';
+import { CMS, METADATA, SEARCH } from '../constants';
 import { ScreenContext } from '../contexts/screen';
-import { sanityPostQuery } from '../hooks/useSearch';
-import { ISanityArticle } from '../types/article';
 import { buildArticleInfo } from '../utils/article';
 import { getTopPosts } from '../utils/posts';
 
 interface Props {
-  sanityQuery: string;
-  posts: ISanityArticle[];
+  posts: IPost[];
   totalCount: number;
   currentPage: number;
-}
-
-interface ISanityPageResults {
-  posts: ISanityArticle[];
-  count: number;
 }
 
 function Search(props: Props) {
@@ -43,7 +36,7 @@ function Search(props: Props) {
   const startLoading = () => setLoading(true);
   const stopLoading = () => setLoading(false);
 
-  const [topPosts, setTopPosts] = useState([] as ISanityArticle[]);
+  const [topPosts, setTopPosts] = useState([] as IPost[]);
 
   useEffect(() => {
     const getPosts = async () => {
@@ -184,42 +177,19 @@ function Search(props: Props) {
 }
 
 Search.getInitialProps = async ({ query }): Promise<Props> => {
+  const cms = new CmsApi();
   const page = query.page ?? 1;
   const { s: encodedSearchQuery } = query;
   const searchQuery = decodeURI(encodedSearchQuery);
 
-  let posts: ISanityArticle[] = [];
-  let totalCount = 0;
-
-  const resultsStart = SEARCH.SEARCH_ITEMS_PER_PAGE * (page - 1);
-  const resultsEnd = resultsStart + SEARCH.SEARCH_ITEMS_PER_PAGE;
-
-  const specifier = `*[_type == "post" && (title match "*${searchQuery}*" || description match "${searchQuery}*" || restaurantName match "${searchQuery}*" || location match "${searchQuery}*" || dishName match "${searchQuery}*" || cuisine match "${searchQuery}*")]`;
-  const sanityQuery = `
-    *[][0]{
-      "posts": ${specifier}[${resultsStart}..${resultsEnd}]{
-        ${sanityPostQuery}
-      },
-      "count": count(${specifier})
-    }
-  `;
-
-  if (searchQuery) {
-    try {
-      const results: ISanityPageResults = await client.fetch(sanityQuery);
-
-      if (results?.posts?.length) {
-        posts = results.posts;
-        totalCount = results.count;
-      }
-    } catch (error) {
-      console.warn('Error: ', error);
-    }
-  }
+  const { posts = [], total: totalCount = 0 } = await cms.searchPosts(
+    searchQuery,
+    CMS.BLOG_RESULTS_PER_PAGE,
+    page,
+  );
 
   return {
     posts,
-    sanityQuery,
     totalCount,
     currentPage: page,
   };

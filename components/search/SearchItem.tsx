@@ -2,11 +2,11 @@ import classNames from 'classnames';
 import { useRouter } from 'next/dist/client/router';
 import React, { SyntheticEvent, useContext } from 'react';
 import { useDispatch } from 'react-redux';
+import { IPost } from 'types/cms';
 import { ScreenContext } from '../../contexts/screen';
-import { ISanityArticle } from '../../types/article';
 import { generateURL } from '../../utils/routing';
 
-export function SearchItem(props: ISanityArticle) {
+export function SearchItem(props: IPost) {
   const dispatch = useDispatch();
   const router = useRouter();
   const { title, featureImage, city, cuisine, slug } = props;
@@ -37,13 +37,13 @@ export function SearchItem(props: ISanityArticle) {
       <div className={classNames('w-full', !isDesktop && 'h-64')}>
         <img
           className="w-full h-full"
-          src={featureImage.source}
-          alt={featureImage.altText}
+          src={featureImage.imageUrl}
+          alt={featureImage.description}
         />
       </div>
 
-      <div className="px-6 py-4 w-full">
-        <div className="font-bold text-xl">{title}</div>
+      <div className="w-full px-6 py-4">
+        <div className="text-xl font-bold">{title}</div>
       </div>
     </div>
   );

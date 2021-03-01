@@ -23,8 +23,6 @@ export interface IDeal {
   includes: Array<string>; // ['300g Porterhouse', 'Fries', ...]
   pricePerHeadGBP: number; // 25 (25 pounds)s
   image: IFigureImage;
-  // name: string; // Grizzly Grumble
-  // dealPrefix: string; // Only £25 and you'll get
 }
 
 export interface ILocation {
@@ -53,7 +51,7 @@ export interface IRestaurant {
   id: string;
   name: string;
   website: string;
-  businessType: 'restaurant' | 'takeaway' | 'cafe';
+  businessType: 'restaurant' | 'take-away' | 'cafe';
   location: ILocation;
   cuisines: CuisineSymbol[];
   // Contentful has a contact, but we don't want to

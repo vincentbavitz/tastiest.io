@@ -19,6 +19,10 @@ export const useAuth = () => {
   const MAX_LOGIN_ATTEMPTS = 3;
 
   const signIn = async (email: string, password: string) => {
+    if (!email?.length || !password?.length) {
+      return;
+    }
+
     const attemptSignIn = _.debounce(
       async () => firebase.auth().signInWithEmailAndPassword(email, password),
       2000,

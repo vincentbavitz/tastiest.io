@@ -79,13 +79,8 @@ function HorizontalScrollableInner(props: Props) {
     const tooSmallToScroll =
       innerContentRef.current.clientWidth < scrollRef.current.clientWidth;
 
-    console.log(
-      'HorizontalScrollable ➡️ innerContentRef.current.clientWidth:',
-      innerContentRef.current.clientWidth,
-    );
-
     const _itemWidth = props.fit
-      ? innerContentRef.current.clientWidth / props.fit
+      ? Math.floor(scrollRef.current.clientWidth / props.fit)
       : undefined;
 
     setItemWidth(_itemWidth);
@@ -131,14 +126,15 @@ function HorizontalScrollableInner(props: Props) {
           'w-full',
           'hide_scroll',
           'scrolling-touch',
-          isDesktop ? 'overflow-x-scroll' : 'overflow-x-scroll',
+          'overflow-x-scroll',
+          isDesktop ? '-ml-3 mr-3' : '-ml-3',
         )}
       >
         <div
           ref={innerContentRef}
-          className={classNames('flex space-x-4 overflow-y-visible')}
+          className={classNames('flex overflow-y-visible children:px-3')}
           style={{
-            width: props.fit ? 'auto' : 'min-content',
+            width: 'min-content',
             marginLeft: `${!isDesktop ? UI.PAGE_CONTAINED_PADDING_VW : 0}vw`,
           }}
         >

@@ -65,7 +65,13 @@ module.exports = {
   },
   variants: {
     borderWidth: ['children', 'children-last'],
-    padding: ['children-odd', 'children-even'],
+    padding: [
+      'children',
+      'children-first',
+      'children-odd',
+      'children-even',
+      'children-not-first',
+    ],
     margin: ['children-last'],
     fontWeight: ['children-last'],
   },
