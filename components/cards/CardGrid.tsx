@@ -9,10 +9,11 @@ import { HorizontalScrollable } from '../HorizontalScrollable';
 
 interface Props {
   rows?: number;
+  horizontalScroll?: boolean;
   children: JSX.Element[];
 }
 
-export function CardGrid({ rows, children }: Props) {
+export function CardGrid({ rows, children, horizontalScroll }: Props) {
   const { isMobile, isDesktop, isHuge } = useContext(ScreenContext);
 
   const [ref, { width }] = useMeasure();
@@ -37,7 +38,7 @@ export function CardGrid({ rows, children }: Props) {
 
   return (
     <>
-      {isMobile ? (
+      {isMobile && horizontalScroll ? (
         <div className="">
           <HorizontalScrollable>
             {children.map(child => (

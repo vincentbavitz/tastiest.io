@@ -78,11 +78,26 @@ export class CmsApi {
     return { posts: [], total: 0 } as IFetchPostsReturn;
   }
 
+  public async getPostBySlug(slug: string): Promise<IPost> {
+    const entries = await this.client.getEntries({
+      content_type: 'post',
+      'fields.slug': slug,
+      include: 5,
+    });
+
+    if (entries?.items?.length > 0) {
+      const post = this.convertPost(entries.items[0]);
+      return post;
+    }
+
+    return null;
+  }
+
   public async getPostsOfSlugs(
     slugs: Array<string>,
     quantity = CMS.BLOG_RESULTS_PER_PAGE,
     page = 1,
-  ) {
+  ): Promise<IFetchPostsReturn> {
     const entries = await this.client.getEntries({
       content_type: 'post',
       order: '-fields.date',
@@ -102,19 +117,30 @@ export class CmsApi {
     return { posts: [], total: 0 } as IFetchPostsReturn;
   }
 
-  public async getPostBySlug(slug: string): Promise<IPost> {
+  public async getPostsOfCuisine(
+    cuisine: CuisineSymbol,
+    quantity = CMS.BLOG_RESULTS_PER_PAGE,
+    page = 1,
+  ): Promise<IFetchPostsReturn> {
+    const cuisineToMatch = cuisine.toLowerCase();
+
     const entries = await this.client.getEntries({
       content_type: 'post',
-      'fields.slug': slug,
+      order: '-fields.date',
+      limit: quantity,
+      skip: (page - 1) * quantity,
       include: 5,
+      'fields.cuisine.fields.name[in]': cuisineToMatch,
     });
 
+    console.log('cms ➡️ entries:', entries);
+
     if (entries?.items?.length > 0) {
-      const post = this.convertPost(entries.items[0]);
-      return post;
+      const posts = entries.items.map(entry => this.convertPost(entry));
+      return { posts, total: entries.total };
     }
 
-    return null;
+    return { posts: [], total: 0 } as IFetchPostsReturn;
   }
 
   public async getRestaurantsOfOrganisation(organisationID: string) {

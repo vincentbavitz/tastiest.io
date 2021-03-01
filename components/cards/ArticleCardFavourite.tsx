@@ -54,9 +54,9 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
         )}
       >
         {featureImage.imageUrl && (
-          <div className="absolute inset-0 ">
+          <div className="absolute inset-0">
             <img
-              className="object-cover w-full h-full"
+              className="object-cover w-full h-full cursor-pointer"
               src={featureImage?.imageUrl}
               alt={featureImage?.description}
             />

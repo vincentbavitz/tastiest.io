@@ -1,7 +1,8 @@
 import { ArticleCard } from 'components/cards/ArticleCard';
-import { InferGetServerSidePropsType } from 'next';
+import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
+import { CmsApi } from 'services/cms';
 import { IPost } from 'types/cms';
 import { CardGrid } from '../../../components/cards/CardGrid';
 import { Contained } from '../../../components/Contained';
@@ -10,65 +11,84 @@ import { CUISINES } from '../../../constants';
 import { ScreenContext } from '../../../contexts/screen';
 import { CuisineSymbol } from '../../../types/cuisine';
 import { generateTitle } from '../../../utils/metadata';
-import { getCuisinePosts } from '../../../utils/posts';
 import { titleCase } from '../../../utils/text';
 
-export const getServerSideProps = async context => {
-  const cuisineSymbol = String(
-    context.params?.cuisine,
-  ).toUpperCase() as CuisineSymbol;
+interface IPath {
+  params: { city: string; cuisine: string };
+}
 
+export const getStaticPaths: GetStaticPaths = async () => {
+  const cms = new CmsApi();
+  let posts: IPost[] = [];
+  let page = 1;
+  let foundAllPosts = false;
+
+  // Contentful only allows 100 at a time
+  while (!foundAllPosts) {
+    const { posts: _posts } = await cms.getPosts(100, page);
+
+    if (_posts.length === 0) {
+      foundAllPosts = true;
+      continue;
+    }
+
+    posts = [...posts, ..._posts];
+    page++;
+  }
+
+  const paths: IPath[] = posts.map(item => ({
+    params: {
+      city: item.city,
+      cuisine: item.cuisine.toLowerCase(),
+    },
+  }));
+
+  return { paths, fallback: true };
+};
+
+export const getStaticProps = async ({ params }) => {
+  const cuisineSymbol = String(params?.cuisine).toUpperCase() as CuisineSymbol;
   const cuisineExists = CUISINES[cuisineSymbol];
-
-  console.log('index ➡️ cuisineSymbol:', cuisineSymbol);
-  console.log('index ➡️ context:', context);
 
   // Redirect to 404 for nonexistent page
   if (!cuisineExists) {
     return {
-      props: { cuisineSymbol: undefined },
+      props: { cuisineSymbol, posts: [] as IPost[] },
+      notFound: true,
+    };
+  }
+
+  const cms = new CmsApi();
+  const { posts } = await cms.getPostsOfCuisine(cuisineSymbol);
+  console.log(`Building cuisine page: %c${params.cuisine}`, 'color: purple;');
+
+  if (!posts) {
+    return {
+      props: { cuisineSymbol, posts: [] as IPost[] },
       notFound: true,
     };
   }
 
   return {
-    props: { cuisineSymbol },
+    props: {
+      posts,
+      cuisineSymbol,
+    },
+    revalidate: 60,
   };
 };
 
-export default function Cuisine({
-  cuisineSymbol,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Cuisine(
+  props: InferGetStaticPropsType<typeof getStaticProps>,
+) {
+  const { posts, cuisineSymbol } = props;
   const { isMobile } = useContext(ScreenContext);
   const cuisine = CUISINES[cuisineSymbol];
   const cuisineName = titleCase(String(cuisine?.name));
-  const cuisineExists = Boolean(cuisine);
-
-  const [posts, setPosts] = useState([] as IPost[]);
-
-  const getPosts = async () => {
-    const posts = await getCuisinePosts(
-      String(cuisine.name).toUpperCase() as CuisineSymbol,
-      8,
-    );
-
-    if (!posts) return;
-    setPosts(posts);
-  };
-
-  // Get new posts on location change
-  useEffect(() => {
-    getPosts();
-  }, [cuisine]);
 
   const cards = posts
     ? posts.slice(0, 4).map(post => <ArticleCard key={post.id} {...post} />)
     : [];
-
-  // // Prevent user from seeing anything rendered when cuisine doesn't exist
-  // if (!cuisineExists) {
-  //   return <></>;
-  // }
 
   return (
     <div>

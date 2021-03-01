@@ -3,10 +3,10 @@ import { ScreenContext } from '../../../contexts/screen';
 import { Contained } from '../../Contained';
 
 interface Props {
-  subtitle: string;
+  description: string;
 }
 
-export function ArticleSubtitleSection({ subtitle }: Props) {
+export function ArticleDescriptionSection({ description }: Props) {
   const { isDesktop } = useContext(ScreenContext);
 
   return (
@@ -16,9 +16,9 @@ export function ArticleSubtitleSection({ subtitle }: Props) {
           style={{
             maxWidth: isDesktop ? '700px' : 'unset',
           }}
-          className="text-lg w-full desktop:text-xl text-center font-medium font-roboto text-gray-900"
+          className="w-full text-lg font-medium text-center text-gray-900 desktop:text-xl font-roboto"
         >
-          {subtitle}
+          {description}
         </span>
       </div>
     </Contained>

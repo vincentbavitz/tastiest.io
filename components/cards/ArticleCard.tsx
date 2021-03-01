@@ -1,11 +1,10 @@
 import classNames from 'classnames';
+import { TagRow } from 'components/TagRow';
 import router from 'next/dist/client/router';
-import { SyntheticEvent } from 'react';
+import React, { SyntheticEvent } from 'react';
 import { useMeasure } from 'react-use';
 import { IPost } from 'types/cms';
 import { generateURL } from '../../utils/routing';
-import { titleCase } from '../../utils/text';
-import { OutlineBlock } from '../OutlineBlock';
 
 interface Props extends IPost {
   // Compact omits description
@@ -18,7 +17,8 @@ export function ArticleCard(props: Props): JSX.Element {
     featureImage,
     title,
     description,
-    /*tags*/ slug,
+    tags,
+    slug,
     city,
     cuisine,
   } = props;
@@ -33,13 +33,11 @@ export function ArticleCard(props: Props): JSX.Element {
     router.push(href, as);
   };
 
-  const tags = ['crepes', 'sweet'];
-
   return (
     <div
       ref={ref}
       className={classNames(
-        'overflow-hidden w-full bg-secondary bg-opacity-75',
+        'overflow-hidden w-full bg-aux-orange bg-opacity-75',
         isSmall ? 'rounded-lg' : 'rounded-xl',
         isSmall ? 'pb-3' : 'pb-1',
       )}
@@ -80,23 +78,7 @@ export function ArticleCard(props: Props): JSX.Element {
         </div>
 
         <div className={classNames('flex space-x-1 mt-1', !isSmall && 'mb-2')}>
-          {tags
-            .filter(tag => Boolean(tag))
-            // Maximum of three tags
-            .slice(0, 3)
-            .map(tag => (
-              <div key={tag.toLowerCase()}>
-                {isSmall ? (
-                  <span className="text-xs font-medium text-primary hover:underline">
-                    {titleCase(tag)}
-                  </span>
-                ) : (
-                  <OutlineBlock size="tiny" theme="alt" bold key={tag}>
-                    {titleCase(tag)}
-                  </OutlineBlock>
-                )}
-              </div>
-            ))}
+          <TagRow tags={tags} limit={3} />
         </div>
       </div>
     </div>

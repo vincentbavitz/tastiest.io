@@ -8,7 +8,7 @@ import { CmsApi } from '../../../services/cms';
 import { generateTitle } from '../../../utils/metadata';
 
 interface IPath {
-  params: { slug: string };
+  params: { slug: string; city: string; cuisine: string };
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

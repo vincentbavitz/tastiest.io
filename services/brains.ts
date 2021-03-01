@@ -57,6 +57,8 @@ export default class BigBrain {
     // Ping the TensorFlow model
 
     const cms = new CmsApi();
-    return cms.getPosts(quantity);
+    const { posts } = await cms.getPosts(quantity);
+
+    return posts;
   };
 }

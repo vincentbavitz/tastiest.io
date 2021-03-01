@@ -67,6 +67,8 @@ function Favourites(props: Props) {
     ? userData.savedArticles
     : savedPosts.map(p => p.slug) ?? [];
 
+  console.log('favourites ➡️ recommendedPosts:', recommendedPosts);
+
   const BackdropSVG =
     savedPosts.length === 0 ? (
       <FavouritesNoneSVG
@@ -128,14 +130,14 @@ function Favourites(props: Props) {
           </CardGrid>
         </div>
 
-        <div className="mt-20 mb-6">
+        <div className="mt-20 mb-10">
           <SectionTitle>You might also like</SectionTitle>
         </div>
 
         {/* Recommended Posts */}
-        <CardGrid>
+        <CardGrid rows={1}>
           {recommendedPosts?.map(post => (
-            <ArticleCard key={post.id} {...post} />
+            <ArticleCard compact key={post.id} {...post} />
           ))}
         </CardGrid>
       </Contained>
