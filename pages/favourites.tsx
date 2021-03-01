@@ -75,12 +75,7 @@ function Favourites(props: Props) {
         }}
       />
     ) : (
-      <FavouritesBackdropSVG
-        style={{
-          width: '100%',
-          transform: 'translateX(-15%)',
-        }}
-      />
+      <FavouritesBackdropSVG className="w-10/12" />
     );
 
   return (
@@ -103,7 +98,10 @@ function Favourites(props: Props) {
           </>
         ) : (
           <Contained>
-            {BackdropSVG}
+            <div className="relative flex justify-center w-full">
+              {BackdropSVG}
+            </div>
+
             <div className="absolute inset-0 flex items-center justify-center">
               <h1 className="text-3xl font-somatic text-primary">
                 Saved Dishes
