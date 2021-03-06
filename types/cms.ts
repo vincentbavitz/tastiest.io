@@ -27,6 +27,7 @@ export interface IDeal {
 
 export interface ILocation {
   address: string;
+  postalCode?: string;
   lat: number;
   lon: number;
 }

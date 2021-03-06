@@ -22,7 +22,6 @@
     "@segment/snippet": "^4.13.1",
     "@stripe/react-stripe-js": "^1.2.2",
     "@stripe/stripe-js": "^1.12.1",
-    "@tailwindcss/aspect-ratio": "^0.2.0",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "D": "^1.0.0",
@@ -68,6 +67,8 @@
     "webpack": "4.46.0"
   },
   "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.2.0",
+    "@tailwindcss/forms": "^0.2.1",
     "@types/crypto-js": "^4.0.1",
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.161",
@@ -97,6 +98,7 @@
     "tailwindcss-children": "^2.1.0",
     "tailwindcss-filters": "^3.0.0",
     "ts-jest": "^26.5.2",
+    "typescript": "^4.2.2",
     "webpack-cli": "^4.5.0"
   },
   "lint-staged": {

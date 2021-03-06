@@ -9,10 +9,12 @@ import {
   StripeCardNumberElementOptions,
 } from '@stripe/stripe-js';
 import HelpSVG from '@svg/checkout/help.svg';
+import { InputDate } from 'components/inputs/InputDate';
 import React, { useState } from 'react';
+import { IDateObject } from 'types/various';
+import { USER } from '../../../constants';
 import { CardBrand } from '../../../types/checkout';
 import { InputCardNumberWrapper } from '../../inputs/card/InputCardNumberWrapper';
-import { InputContactBirthday } from '../../inputs/contact/InputContactBirthday';
 import { InputContactFirstName } from '../../inputs/contact/InputContactFirstName';
 import { InputContactLastName } from '../../inputs/contact/InputContactLastName';
 import { InputAbstract } from '../../inputs/InputAbstract';
@@ -31,7 +33,7 @@ export function CheckoutStepPayment() {
   // Contact
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [birthday, setBirthday] = useState('');
+  const [birthday, setBirthday] = useState<IDateObject>();
 
   // Payment
   const [cardholderName, setCardholderName] = useState('');
@@ -71,9 +73,15 @@ export function CheckoutStepPayment() {
 
           <InputContactLastName value={lastName} onValueChange={setLastName} />
 
-          <InputContactBirthday
-            value={birthday}
-            onValueChange={value => setBirthday(value)}
+          <InputDate
+            wide
+            size="large"
+            label="Birthday"
+            subLabel="So we can give you a gift :)"
+            date={birthday}
+            onDateChange={value => setBirthday(value)}
+            minYear={USER.OLDEST_BIRTH_YEAR}
+            maxYear={USER.YOUNGEST_BIRTH_YEAR}
           />
         </div>
       </div>

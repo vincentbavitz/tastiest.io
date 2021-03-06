@@ -60,7 +60,9 @@ export class UserDataApi {
 
       const userData = await doc.data();
 
-      return userData ? (userData?.[field] as TUserData<T>) : null;
+      console.log('userData ➡️ userData:', userData);
+
+      return (userData?.[field] as TUserData<T>) ?? null;
     } catch (error) {
       return null;
     }

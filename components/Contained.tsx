@@ -5,6 +5,7 @@ import { UI } from '../constants';
 interface Props {
   backgroundColor?: 'primary' | 'secondary' | 'secondary-1';
   children: ReactNode;
+  maxWidth?: number;
 }
 
 export function Contained(props: Props) {
@@ -14,7 +15,9 @@ export function Contained(props: Props) {
     paddingLeft: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
     paddingRight: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
     width: '100%',
-    maxWidth: `${UI.MAX_CONTENT_WIDTH}px`,
+    maxWidth: `calc(${2 * UI.PAGE_CONTAINED_PADDING_VW}vw + ${
+      props.maxWidth ?? UI.MAX_CONTENT_WIDTH
+    }px)`,
     margin: '0 auto',
   };
 
