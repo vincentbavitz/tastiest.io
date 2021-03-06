@@ -55,15 +55,9 @@ export function HeaderAvatar() {
 
   const signedInDropdownItems: Array<IProfileDropdownItems> = [
     {
-      id: 'view-profile',
-      name: 'View Profile',
-      onClick: () => router.push('/profile', '/profile'),
-      isSelected: false,
-    },
-    {
-      id: 'account-info',
-      name: 'Account Info',
-      onClick: () => router.push('/account', '/account'),
+      id: 'preferences',
+      name: 'Preferences',
+      onClick: () => router.push('/preferences'),
       isSelected: false,
     },
     {

@@ -17,6 +17,7 @@ enum LoginFlowStep {
   CONTINUE = 'CONTINUE',
   SIGN_IN = 'SIGN_IN',
   SIGN_UP = 'SIGN_UP',
+  RESET_PASSWORD = 'RESET_PASSWORD',
 }
 
 export function SignInModal() {
@@ -35,6 +36,8 @@ export function SignInModal() {
   const [signUpPassword, setSignUpPassword] = useState('');
   const [step, setStep] = useState<LoginFlowStep>(LoginFlowStep.SIGN_IN);
 
+  const [resetPasswordSuccess, setResetPasswordSuccess] = useState(null);
+
   // Close if the user is signed in
   useEffect(() => {
     if (isSignedIn) {
@@ -42,12 +45,22 @@ export function SignInModal() {
     }
   }, []);
 
+  // Reset password success message when moving between steps
+  useEffect(() => {
+    setResetPasswordSuccess(null);
+  }, [step]);
+
   const onClickSignUp = async () => {
     const signUpSuccessful = await signUp('', signUpEmail, signUpPassword);
 
     if (signUpSuccessful) {
       dispatch(closeSignInModal());
     }
+  };
+
+  const onClickResetPassword = async () => {
+    const resetPasswordSuccessful = await resetPassword(signInEmail);
+    setResetPasswordSuccess(resetPasswordSuccessful);
   };
 
   const continueContent = (
@@ -105,7 +118,7 @@ export function SignInModal() {
 
       {error && (
         <div className="mb-1 -mt-1 text-sm text-center text-red-700">
-          {error?.message}
+          {error}
         </div>
       )}
     </>
@@ -139,14 +152,51 @@ export function SignInModal() {
         type="solid"
         color="primary"
         className="py-3 rounded-xl"
-        onClick={() => onClickSignUp()}
+        onClick={onClickSignUp}
       >
         Join
       </Button>
 
       {error && (
         <div className="mb-1 -mt-1 text-sm text-center text-red-700">
-          {error?.message}
+          {error}
+        </div>
+      )}
+    </>
+  );
+
+  const resetPasswordContent = (
+    <>
+      <InputAbstract
+        size="large"
+        type="email"
+        className="py-2 rounded-xl"
+        placeholder="Email address"
+        prefix={<EmailSVG className="h-6" />}
+        value={signInEmail}
+        onValueChange={value => setSignInEmail(cleanupInputValue(value))}
+      ></InputAbstract>
+
+      <Button
+        wide
+        size="large"
+        type="solid"
+        color="primary"
+        className="py-3 rounded-xl"
+        onClick={onClickResetPassword}
+      >
+        Reset
+      </Button>
+
+      {error && (
+        <div className="mb-1 -mt-1 text-sm text-center text-red-700">
+          {error}
+        </div>
+      )}
+
+      {!error && resetPasswordSuccess && (
+        <div className="mb-1 -mt-1 text-sm text-center">
+          We've sent you an email with instructions to reset your password.
         </div>
       )}
     </>
@@ -156,7 +206,10 @@ export function SignInModal() {
     <>
       <p>
         Forgot password?{' '}
-        <a className="font-semibold cursor-pointer" onClick={resetPassword}>
+        <a
+          className="font-semibold cursor-pointer"
+          onClick={() => setStep(LoginFlowStep.RESET_PASSWORD)}
+        >
           Reset
         </a>
       </p>
@@ -186,30 +239,58 @@ export function SignInModal() {
     </>
   );
 
+  const resetPasswordSubtext = (
+    <>
+      <p>
+        Found your account?{' '}
+        <a
+          className="font-semibold cursor-pointer"
+          onClick={() => setStep(LoginFlowStep.SIGN_IN)}
+        >
+          Sign In
+        </a>
+      </p>
+      <p>
+        Otherwise, you can{' '}
+        <a
+          className="font-semibold cursor-pointer"
+          onClick={() => setStep(LoginFlowStep.SIGN_UP)}
+        >
+          Sign Up{' '}
+        </a>
+        here.
+      </p>
+    </>
+  );
+
   // prettier-ignore
   const title = 
     step === LoginFlowStep.CONTINUE ? 'Hello!' :
     step === LoginFlowStep.SIGN_IN ? 'Welcome Back!' :
-    step === LoginFlowStep.SIGN_UP? "Join Now! - It's free!" :
+    step === LoginFlowStep.SIGN_UP ? "Join Now! - It's free!" :
+    step === LoginFlowStep.RESET_PASSWORD? 'Reset your password' :
     null;
 
   // prettier-ignore
   const subtitle = 
     step === LoginFlowStep.SIGN_IN ? 'Sign in to your account here.' :
-    step === LoginFlowStep.SIGN_UP? METADATA.TAGLINE :
+    step === LoginFlowStep.SIGN_UP ? METADATA.TAGLINE :
+    step === LoginFlowStep.RESET_PASSWORD ? 'Forgot your password? No worries.' :
     null;
 
   // prettier-ignore
   const content = 
     step === LoginFlowStep.CONTINUE ? continueContent :
     step === LoginFlowStep.SIGN_IN ? signInContent :
-    step === LoginFlowStep.SIGN_UP? signUpContent :
+    step === LoginFlowStep.SIGN_UP ? signUpContent :
+    step === LoginFlowStep.RESET_PASSWORD ? resetPasswordContent :
     null;
 
   // prettier-ignore
   const subtext = 
     step === LoginFlowStep.SIGN_IN ? signInSubtext :
-    step === LoginFlowStep.SIGN_UP? signUpSubtext :
+    step === LoginFlowStep.SIGN_UP ? signUpSubtext :
+    step === LoginFlowStep.RESET_PASSWORD ? resetPasswordSubtext :
     null;
 
   if (isSignedIn) {

@@ -1,11 +1,18 @@
+import { FirebaseAuthError } from '../types/firebase';
+
 export interface IFirestore {
   data: any;
 }
 
-export const CERT = {
-  privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-  clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-  projectId: process.env.FIREBASE_PROJECT_ID,
+const ERROR_MESSAGES = {
+  [FirebaseAuthError.INVALID_EMAIL]: 'Please enter a valid email address.',
+  [FirebaseAuthError.INVALID_PASSWORD]:
+    'Please include at least six characters in your password.',
+  [FirebaseAuthError.EMAIL_ALREADY_EXISTS]:
+    'An account already exists wiith this email.',
+  [FirebaseAuthError.USER_NOT_FOUND]:
+    "We couldn't find your account. Why not sign up now?",
+  [FirebaseAuthError.OTHER]: 'There was an unknown error.',
 };
 
 const FIREBASE = {
@@ -20,6 +27,8 @@ const FIREBASE = {
     measurementId: process.env.FIREBASE_MEASUREMENT_ID,
   },
   RRF_CONFIG: {},
+  ERROR_MESSAGES,
+  MAX_LOGIN_ATTEMPTS: 3,
 };
 
 export default FIREBASE;

@@ -114,8 +114,7 @@ export function InputAbstract(props: InputProps) {
   const [hasFocus, setHasFocus] = useState(false);
 
   // Styles
-  const fontSize =
-    size !== 'medium' && size === 'large' ? 'text-lg' : 'text-sm';
+  const fontSize = size === 'large' ? 'text-lg' : 'text-base';
 
   // Functions
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -228,7 +227,7 @@ export function InputAbstract(props: InputProps) {
               'w-0',
               externalSuffix && 'w-full',
               disabled && 'cursor-not-allowed',
-              size === 'large' ? 'h-12' : 'h-8',
+              size === 'large' ? 'py-3' : 'py-2',
               center && 'text-center',
               fontSize,
               inputClassName,

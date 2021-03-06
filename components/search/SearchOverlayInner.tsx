@@ -175,7 +175,7 @@ function SearchOverlayInnerResults() {
       >
         {results?.map(card => (
           <div key={card.id.toLowerCase()} className={classNames('w-1/2 mb-8')}>
-            <ArticleCard {...card} />
+            <ArticleCard compact {...card} />
           </div>
         ))}
       </div>

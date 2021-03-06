@@ -1,30 +1,39 @@
+import DebouncePromise from 'awesome-debounce-promise';
 import firebaseApp from 'firebase/app';
-import _ from 'lodash';
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import { useFirebase } from 'react-redux-firebase';
+import { FIREBASE } from '../constants';
 import { AuthContext } from '../contexts/auth';
 import { LocalStorageItem } from '../types/data';
-import { UserData } from '../types/firebase';
+import { FirebaseAuthError, UserData } from '../types/firebase';
 import { titleCase } from '../utils/text';
 import { useUserData } from './useUserData';
 
 export const useAuth = () => {
   const firebase = useFirebase();
   const router = useRouter();
-  const [error, setError] = useState<Error | undefined>();
+  const [error, _setError] = useState<string>(null);
   const { user } = useContext(AuthContext);
   const { setUserData } = useUserData(user);
 
-  const MAX_LOGIN_ATTEMPTS = 3;
+  // Convert firebase error code to Tastiest auth error message
+  const setError = (e: { code: string; message: string }) => {
+    const error =
+      FIREBASE.ERROR_MESSAGES[e?.code] ??
+      FIREBASE.ERROR_MESSAGES[FirebaseAuthError.OTHER];
+
+    _setError(error);
+  };
 
   const signIn = async (email: string, password: string) => {
+    _setError(null);
     if (!email?.length || !password?.length) {
       return;
     }
 
-    const attemptSignIn = _.debounce(
-      async () => firebase.auth().signInWithEmailAndPassword(email, password),
+    const attemptSignIn = DebouncePromise(
+      () => firebase.auth().signInWithEmailAndPassword(email, password),
       2000,
     );
 
@@ -32,10 +41,13 @@ export const useAuth = () => {
       // Retry on fail
       let credential: firebaseApp.auth.UserCredential;
       let i = 0;
-      while (!user && i < MAX_LOGIN_ATTEMPTS) {
-        console.log(`Attempting to log user in. (${i}/${MAX_LOGIN_ATTEMPTS})`);
+      while (!user && i < FIREBASE.MAX_LOGIN_ATTEMPTS) {
         credential = await attemptSignIn();
-        i += 1;
+        i++;
+
+        console.log(
+          `Attempting to log user in. (${i}/${FIREBASE.MAX_LOGIN_ATTEMPTS})`,
+        );
       }
 
       if (credential) {
@@ -66,7 +78,7 @@ export const useAuth = () => {
   // If redirectTo is given, will redirect there after sign out.
   // Else, the page will simply reload.
   const signOut = async (redirectTo?: string) => {
-    setError(undefined);
+    _setError(null);
 
     try {
       await firebase.auth().signOut();
@@ -81,12 +93,21 @@ export const useAuth = () => {
     }
   };
 
-  const resetPassword = async () => {
-    if (!user.email) {
+  const resetPassword = async (email: string) => {
+    _setError(null);
+
+    //  Email must be given as a parameter because user might not be logged in.
+    if (!email?.length) {
       return;
     }
 
-    return firebase.auth().sendPasswordResetEmail(user.email);
+    try {
+      await firebase.auth().sendPasswordResetEmail(email);
+      return true;
+    } catch (error) {
+      setError(error);
+      return false;
+    }
   };
 
   const signUp = async (
@@ -94,7 +115,7 @@ export const useAuth = () => {
     email: string,
     password: string,
   ) => {
-    setError(undefined);
+    _setError(null);
 
     try {
       const { user } = await firebase
@@ -136,7 +157,6 @@ export const useAuth = () => {
           // name: '',
           // address: '',
           // birthday: undefined,
-          // phone,
           id: user.uid,
           email: email,
           createdAt: Date.now(),
@@ -144,12 +164,11 @@ export const useAuth = () => {
         },
       });
 
+      // Sends a confirmation email with firebase funnctions
       console.log('Sign Up: Tracked with segment');
 
       return true;
-    } catch (e) {
-      console.log('Sign Up: CAUGHT ERROR', e);
-
+    } catch (error) {
       setError(error);
       return false;
     }

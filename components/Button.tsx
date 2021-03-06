@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import React from 'react';
 
 export interface Props {
-  color?: 'black' | 'primary' | 'secondary' | 'danger';
+  // eslint-disable-next-line prettier/prettier
+  color?: 'black' | 'danger' | `${'primary' | 'secondary' }${'' | '-1' | '-2'}`
   type?: 'text' | 'ghost' | 'solid' | 'outline';
   size?: 'tiny' | 'small' | 'medium' | 'large';
   round?: boolean;
