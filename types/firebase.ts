@@ -18,6 +18,15 @@ export enum UserData {
   USER_DEVICE = 'userDevice',
 }
 
+export enum FirebaseAuthError {
+  INVALID_EMAIL = 'auth/invalid-email',
+  INVALID_PASSWORD = 'auth/invalid-password',
+  EMAIL_ALREADY_EXISTS = 'auth/email-already-exists',
+  WRONG_PASSWORD = 'auth/wrong-password',
+  USER_NOT_FOUND = 'auth/user-not-found',
+  OTHER = 'other',
+}
+
 export interface IUserSession {
   device: 'mobile' | 'tablet' | 'desktop';
   sessionStartTimestamp: number;

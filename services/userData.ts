@@ -2,14 +2,27 @@ import * as firebaseAdmin from 'firebase-admin';
 import { GetServerSidePropsContext } from 'next';
 import nookies from 'nookies';
 import { TUserData, UserData } from 'types/firebase';
-import { CERT } from '../constants/firebase';
 
-if (!firebaseAdmin.apps.length) {
-  firebaseAdmin.initializeApp({
-    credential: firebaseAdmin.credential.cert(CERT),
-    databaseURL: process.env.FIREBASE_DATABASE_URL,
-  });
-}
+const init = () => {
+  if (!firebaseAdmin.apps.length) {
+    if (typeof window !== undefined) {
+      return;
+    }
+
+    const cert = {
+      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      projectId: process.env.FIREBASE_PROJECT_ID,
+    };
+
+    firebaseAdmin.initializeApp({
+      credential: firebaseAdmin.credential.cert(cert),
+      databaseURL: process.env.FIREBASE_DATABASE_URL,
+    });
+  }
+};
+
+init();
 
 // Intended for server-side use ONLY!
 export class UserDataApi {
