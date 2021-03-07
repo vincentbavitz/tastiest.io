@@ -13,7 +13,7 @@ import { CheckoutStepPayment } from '../components/checkout/steps/CheckoutStepPa
 import { Contained } from '../components/Contained';
 import { ScreenContext } from '../contexts/screen';
 import { useAuth } from '../hooks/useAuth';
-import { setCheckoutStep, setOrder } from '../state/checkout';
+import { setCheckoutStep } from '../state/checkout';
 import { IState } from '../state/reducers';
 import { CheckoutStep } from '../types/checkout';
 
@@ -34,6 +34,12 @@ export const getServerSideProps: GetServerSideProps = async context => {
     // Verify your integration in this guide by including this parameter
     metadata: { integration_check: 'accept_a_payment' },
   });
+
+  // Get user data sever side.
+
+  // Get deal from url params
+
+  // Check if cart is expired or invalid
 
   return {
     props: { stripeClientSecret: paymentIntent.client_secret },
@@ -64,26 +70,26 @@ function CheckoutDesktop({ stripeClientSecret }: Props) {
     }
   }, [isSignedIn]);
 
-  useEffect(() => {
-    dispatch(
-      setOrder({
-        restaurantID: '41214324322',
-        restaurantName: 'Steakhouse Bar & Grill',
-        dealName: 'Experience the best steak in London',
-        dealImage: {
-          source:
-            'https://www.tasteofhome.com/wp-content/uploads/2019/01/medium-rare-steak-shutterstock_706040446.jpg',
-          altText: 'sdfsdf',
-          description: '',
-        },
-        dealDescription: '',
-        dealPrefix: '',
-        dealItems: ['Two-course-meal'],
-        pricePerHeadGBP: 25,
-        heads: 3,
-      }),
-    );
-  }, []);
+  // useEffect(() => {
+  //   dispatch(
+  //     setOrder({
+  //       restaurantID: '41214324322',
+  //       restaurantName: 'Steakhouse Bar & Grill',
+  //       dealName: 'Experience the best steak in London',
+  //       dealImage: {
+  //         source:
+  //           'https://www.tasteofhome.com/wp-content/uploads/2019/01/medium-rare-steak-shutterstock_706040446.jpg',
+  //         altText: 'sdfsdf',
+  //         description: '',
+  //       },
+  //       dealDescription: '',
+  //       dealPrefix: '',
+  //       dealItems: ['Two-course-meal'],
+  //       pricePerHeadGBP: 25,
+  //       heads: 3,
+  //     }),
+  //   );
+  // }, []);
 
   const isAuthStep = !isSignedIn;
   const isPaymentStep = isSignedIn && step === CheckoutStep.PAYMENT;

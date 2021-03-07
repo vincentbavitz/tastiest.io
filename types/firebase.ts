@@ -34,7 +34,13 @@ export interface IUserSession {
 }
 
 export interface IBooking {
-  never;
+  datetime: Date;
+  // Confirmed with restaurant
+  hasBooked: boolean;
+  heads: number;
+  totalPriceGBP: number;
+  restaurantId: string;
+  fromSlug: string;
 }
 
 export interface ICover {

@@ -1,5 +1,7 @@
 import HeySpriteSVG from '@svg/article/hey-sprite.svg';
+import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
+import { IOrder } from 'types/checkout';
 import { ScreenContext } from '../../../contexts/screen';
 import { useAuth } from '../../../hooks/useAuth';
 import { useUserData } from '../../../hooks/useUserData';
@@ -10,23 +12,48 @@ import { Title } from '../../Title';
 
 interface Props {
   deal: IDeal;
+  slug: string;
+  restaurantId: string;
   restaurantName: string;
 }
 
 type ValidHead = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8'; //| '9' | '10+';
 const valdHeads: ValidHead[] = ['1', '2', '3', '4', '5', '6', '7', '8'];
 
-export function ArticleWidgetOrderNow({ deal, restaurantName }: Props) {
-  const { isDesktop } = useContext(ScreenContext);
+export function ArticleWidgetOrderNow(props: Props) {
+  const { deal, slug, restaurantId, restaurantName } = props;
 
   const { user } = useAuth();
+  const router = useRouter();
+  const { isDesktop } = useContext(ScreenContext);
   const { userData, setUserData } = useUserData(user);
 
   const [heads, setHeads] = useState<ValidHead>('1');
   const totalPrice = (Number(heads) * deal?.pricePerHeadGBP).toFixed(2);
 
   const submit = () => {
+    // Send the order request to Firebase as a token: orderId
+    // which can be verified on the /checkout page as verification.
+    const order: IOrder = {
+      deal,
+      restaurantId,
+      restaurantName,
+      userId: user.uid,
+      heads: Number(heads),
+      orderedAt: Date.now(),
+      dealDatedFor: Date.now(),
+    };
+
     // Submit user clicked buy now to segment
+    window.analytics.track("User clicked 'Buy Now' from article page", {
+      userId: user.uid,
+      heads,
+      totalPrice,
+      fromSlug: slug,
+      orderId,
+    });
+
+    router.push('/checkout');
   };
 
   return (

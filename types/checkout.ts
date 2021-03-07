@@ -1,9 +1,10 @@
 // TODO CHANGE IDEAL TO IOFFER
-
 import { IDeal } from './cms';
 
 export interface IOrder {
   deal: IDeal;
+  restaurantName: string;
+  restaurantId: string;
   userId: string;
   heads: number;
   // Timestamps

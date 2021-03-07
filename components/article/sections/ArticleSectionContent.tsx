@@ -43,6 +43,8 @@ const MobileContent = (post: IPost) => (
     <div>{post.description}</div>
     <ArticleWidgetOrderNow
       deal={deal}
+      slug={post.slug}
+      restaurantId={post?.restaurant.id}
       restaurantName={post?.restaurant?.name}
     />
     <RichBody body={post.body} />
@@ -60,6 +62,8 @@ const DesktopContent = (post: IPost) => (
       <div className="w-4/12 mt-12">
         <ArticleWidgetOrderNow
           deal={deal}
+          slug={post.slug}
+          restaurantId={post?.restaurant.id}
           restaurantName={post?.restaurant?.name}
         />
       </div>
