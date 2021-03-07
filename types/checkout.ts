@@ -10,6 +10,7 @@ export interface IOrder {
   // Timestamps
   orderedAt: number;
   dealDatedFor: number;
+  fromSlug: string;
 }
 
 export enum CheckoutStep {

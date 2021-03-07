@@ -9,11 +9,11 @@ export function ArticleFeatureVideoWidget({ video }: Props) {
   console.log('ArticleFeatureVideoWidget ➡️ video:', video);
 
   const videoId = video
-    .replace(
+    ?.replace(
       /^(http[s]?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)/,
       '',
     )
-    .slice(0, 11);
+    ?.slice(0, 11);
 
   return (
     <div className="w-full">

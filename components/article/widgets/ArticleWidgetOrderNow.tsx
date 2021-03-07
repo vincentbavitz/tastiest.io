@@ -1,10 +1,10 @@
 import HeySpriteSVG from '@svg/article/hey-sprite.svg';
+import { useCheckout } from 'hooks/useCheckout';
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
 import { IOrder } from 'types/checkout';
 import { ScreenContext } from '../../../contexts/screen';
 import { useAuth } from '../../../hooks/useAuth';
-import { useUserData } from '../../../hooks/useUserData';
 import { IDeal } from '../../../types/cms';
 import { Button } from '../../Button';
 import { Select } from '../../inputs/Select';
@@ -26,14 +26,12 @@ export function ArticleWidgetOrderNow(props: Props) {
   const { user } = useAuth();
   const router = useRouter();
   const { isDesktop } = useContext(ScreenContext);
-  const { userData, setUserData } = useUserData(user);
+  const { initOrder } = useCheckout();
 
   const [heads, setHeads] = useState<ValidHead>('1');
   const totalPrice = (Number(heads) * deal?.pricePerHeadGBP).toFixed(2);
 
-  const submit = () => {
-    // Send the order request to Firebase as a token: orderId
-    // which can be verified on the /checkout page as verification.
+  const submit = async () => {
     const order: IOrder = {
       deal,
       restaurantId,
@@ -42,18 +40,13 @@ export function ArticleWidgetOrderNow(props: Props) {
       heads: Number(heads),
       orderedAt: Date.now(),
       dealDatedFor: Date.now(),
+      fromSlug: slug,
     };
 
-    // Submit user clicked buy now to segment
-    window.analytics.track("User clicked 'Buy Now' from article page", {
-      userId: user.uid,
-      heads,
-      totalPrice,
-      fromSlug: slug,
-      orderId,
-    });
+    const orderId = await initOrder(order);
 
-    router.push('/checkout');
+    console.log('ArticleWidgetOrderNow ➡️ orderId:', orderId);
+    // router.push('/checkout');
   };
 
   return (

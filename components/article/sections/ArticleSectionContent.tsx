@@ -44,7 +44,7 @@ const MobileContent = (post: IPost) => (
     <ArticleWidgetOrderNow
       deal={deal}
       slug={post.slug}
-      restaurantId={post?.restaurant.id}
+      restaurantId={post?.restaurant?.id}
       restaurantName={post?.restaurant?.name}
     />
     <RichBody body={post.body} />
