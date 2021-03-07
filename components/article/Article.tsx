@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { IPost } from 'types/cms';
 import { ScreenContext } from '../../contexts/screen';
+import { IPost } from '../../types/cms';
 import { RecommendForm } from '../RecommendForm';
 import { ArticleDescriptionSection } from './sections/ArticleDescriptionSection';
 import { ArticleSectionAbstract } from './sections/ArticleSectionAbstract';
@@ -8,23 +8,18 @@ import { ArticleSectionContent } from './sections/ArticleSectionContent';
 import { ArticleSectionTitle } from './sections/ArticleSectionTitle';
 import { ArticleSaveShareWidget } from './widgets/ArticleSaveShareWidget';
 
-export function Article(props: IPost) {
+export function Article(post: IPost) {
   const { isDesktop } = useContext(ScreenContext);
-  const article = props;
 
   return (
     <div>
-      {!isDesktop ? (
-        <ArticleMobile {...props} />
-      ) : (
-        <ArticleDesktop {...props} />
-      )}
-      <RecommendForm dish={article.dishName} city={article.city} />
+      {!isDesktop ? <ArticleMobile {...post} /> : <ArticleDesktop {...post} />}
+      <RecommendForm dish={post?.dishName} city={post?.city} />
     </div>
   );
 }
 
-function ArticleMobile(props: IPost) {
+function ArticleMobile(post: IPost) {
   const {
     id,
     title,
@@ -35,7 +30,7 @@ function ArticleMobile(props: IPost) {
     city,
     restaurant,
     video,
-  } = props;
+  } = post;
 
   return (
     <article>
@@ -49,12 +44,12 @@ function ArticleMobile(props: IPost) {
         location={restaurant?.location}
         restaurantName={restaurant?.name}
       ></ArticleSectionAbstract>
-      <ArticleSectionContent {...props} />
+      <ArticleSectionContent {...post} />
     </article>
   );
 }
 
-function ArticleDesktop(props: IPost) {
+function ArticleDesktop(post: IPost) {
   const {
     id,
     title,
@@ -65,7 +60,9 @@ function ArticleDesktop(props: IPost) {
     city,
     restaurant,
     video,
-  } = props;
+  } = post;
+
+  console.log('Article ➡️ props:', post);
 
   return (
     <article>
@@ -79,7 +76,7 @@ function ArticleDesktop(props: IPost) {
         <ArticleSaveShareWidget id={id} title={title} slug={slug} />
         <ArticleDescriptionSection description={description} />
       </ArticleSectionAbstract>
-      <ArticleSectionContent {...props} />
+      <ArticleSectionContent {...post} />
     </article>
   );
 }

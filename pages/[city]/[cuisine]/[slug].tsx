@@ -2,9 +2,9 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
-import { IPost } from 'types/cms';
 import { Article } from '../../../components/article/Article';
 import { CmsApi } from '../../../services/cms';
+import { IPost } from '../../../types/cms';
 import { generateTitle } from '../../../utils/metadata';
 
 interface IPath {
@@ -46,21 +46,25 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const post = await cms.getPostBySlug(String(params?.slug) ?? '');
   console.log(`Building page: %c${params.slug}`, 'color: purple;');
 
+  console.log('[slug] ➡️ post:', post);
+  console.log('[slug] ➡️ params:', params);
+
   if (!post) {
     return { notFound: true };
   }
 
   return {
     props: {
-      post,
+      ...post,
     },
     revalidate: 60,
   };
 };
 
-function Post(props: IPost) {
-  const { title } = props;
+function Post(post: IPost) {
+  const { title } = post;
 
+  // TODO; abstract away into onlocationchange in app.tsx
   // Scroll to top on load
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -74,7 +78,7 @@ function Post(props: IPost) {
         <title>{generateTitle(title)}</title>
       </Head>
 
-      <Article {...props} />
+      <Article {...post} />
     </>
   );
 }

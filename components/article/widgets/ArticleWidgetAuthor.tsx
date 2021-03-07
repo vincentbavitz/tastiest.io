@@ -1,4 +1,4 @@
-import { IAuthor } from 'types/cms';
+import { IAuthor } from '../../../types/cms';
 import { Avatar } from '../../avatar/Avatar';
 
 interface Props {

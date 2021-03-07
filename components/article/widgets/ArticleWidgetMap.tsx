@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
+import { ILocation } from 'types/cms';
 import { ScreenContext } from '../../../contexts/screen';
 import { getMapBoxStaticSource } from '../../../services/mapbox';
-import { ILocation } from '../../../types/article';
 import { CityIndictor } from '../../CityIndictor';
 import { Title } from '../../Title';
 

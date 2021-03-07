@@ -1,4 +1,5 @@
 import TriangleSVG from '@svg/triangle.svg';
+import classNames from 'classnames';
 import React from 'react';
 
 export type SelectOption = React.DetailedHTMLProps<
@@ -14,11 +15,19 @@ interface Props {
   promptText?: string;
   children: SelectOption | SelectOption[];
   onChange?: (value: string) => void;
+  size?: 'small' | 'medium';
 }
 
 // eslint-disable-next-line react/display-name
 export const Select = (props: Props) => {
-  const { children, noDefault, defaultSelected, promptText, label } = props;
+  const {
+    children,
+    noDefault,
+    defaultSelected,
+    promptText,
+    label,
+    size = 'medium',
+  } = props;
 
   return (
     <label className="relative block w-full">
@@ -28,7 +37,11 @@ export const Select = (props: Props) => {
         className="relative flex items-center"
       >
         <select
-          className="block w-full py-2 pl-2 pr-10 tracking-wider bg-transparent border-2 rounded-lg outline-none appearance-none border-secondary center"
+          className={classNames(
+            'block w-full pl-2 tracking-wider bg-transparent border-2 rounded-lg outline-none appearance-none border-secondary center',
+            size === 'small' && 'py-1 text-sm pr-2',
+            size === 'medium' && 'py-2 pr-10',
+          )}
           onChange={event => props?.onChange?.(event?.target?.value)}
         >
           {noDefault && (
@@ -38,7 +51,13 @@ export const Select = (props: Props) => {
           )}
           {children}
         </select>
-        <TriangleSVG className="absolute right-0 z-0 h-4 mr-4 transform rotate-90 fill-current text-secondary" />
+        <TriangleSVG
+          className={classNames(
+            'absolute right-0 z-0 transform rotate-90 fill-current text-secondary',
+            size === 'small' && 'h-3 mr-2',
+            size === 'medium' && 'h-4 mr-4',
+          )}
+        />
       </div>
     </label>
   );

@@ -1,8 +1,8 @@
-import { RichBody } from 'components/RichBody';
 import React, { useContext } from 'react';
-import { IDeal, IPost } from 'types/cms';
 import { ScreenContext } from '../../../contexts/screen';
+import { IDeal, IPost } from '../../../types/cms';
 import { Contained } from '../../Contained';
+import { RichBody } from '../../RichBody';
 import { ArticleWidgetOrderNow } from '../widgets/ArticleWidgetOrderNow';
 import { ArticleSectionFeatureImage } from './ArticleSectionFeatureImage';
 
@@ -41,12 +41,12 @@ export function ArticleSectionContent(post: IPost) {
 const MobileContent = (post: IPost) => (
   <div className="flex flex-col space-y-4">
     <div>{post.description}</div>
-
-    <ArticleWidgetOrderNow {...deal} />
-
+    <ArticleWidgetOrderNow
+      deal={deal}
+      restaurantName={post?.restaurant?.name}
+    />
     <RichBody body={post.body} />
-
-    <ArticleSectionFeatureImage featureImage={post.featureImage} />
+    <ArticleSectionFeatureImage featureImage={post?.featureImage} />
   </div>
 );
 
@@ -58,9 +58,12 @@ const DesktopContent = (post: IPost) => (
       </div>
 
       <div className="w-4/12 mt-12">
-        <ArticleWidgetOrderNow {...deal} />
+        <ArticleWidgetOrderNow
+          deal={deal}
+          restaurantName={post?.restaurant?.name}
+        />
       </div>
     </div>
-    <ArticleSectionFeatureImage featureImage={post.featureImage} />
+    <ArticleSectionFeatureImage featureImage={post?.featureImage} />
   </div>
 );

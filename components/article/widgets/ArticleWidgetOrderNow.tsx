@@ -1,21 +1,32 @@
 import HeySpriteSVG from '@svg/article/hey-sprite.svg';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { ScreenContext } from '../../../contexts/screen';
 import { useAuth } from '../../../hooks/useAuth';
 import { useUserData } from '../../../hooks/useUserData';
-import { IDeal } from '../../../types/checkout';
-import { UserData } from '../../../types/firebase';
+import { IDeal } from '../../../types/cms';
 import { Button } from '../../Button';
+import { Select } from '../../inputs/Select';
 import { Title } from '../../Title';
 
-export function ArticleWidgetOrderNow(deal: IDeal) {
+interface Props {
+  deal: IDeal;
+  restaurantName: string;
+}
+
+type ValidHead = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8'; //| '9' | '10+';
+const valdHeads: ValidHead[] = ['1', '2', '3', '4', '5', '6', '7', '8'];
+
+export function ArticleWidgetOrderNow({ deal, restaurantName }: Props) {
   const { isDesktop } = useContext(ScreenContext);
 
   const { user } = useAuth();
   const { userData, setUserData } = useUserData(user);
 
+  const [heads, setHeads] = useState<ValidHead>('1');
+  const totalPrice = (Number(heads) * deal?.pricePerHeadGBP).toFixed(2);
+
   const submit = () => {
-    setUserData(UserData.DISPLAY_NAME, '234324');
+    // Submit user clicked buy now to segment
   };
 
   return (
@@ -36,15 +47,15 @@ export function ArticleWidgetOrderNow(deal: IDeal) {
         </div>
 
         <h3 className="text-3xl leading-8 text-center font-somatic text-primary">
-          {deal.restaurantName}
+          {restaurantName}
         </h3>
 
         <div className="pb-4 mx-4 overflow-hidden bg-secondary-1 rounded-xl">
-          <img src="/img/steak-dish.jpeg" className="w-full" />
+          <img src={`${deal?.image?.imageUrl}?w=300`} className="w-full" />
 
           <div className="flex flex-col justify-center pt-2 mx-4 space-y-4">
             <Title level={2} className="font-somatic">
-              {deal.tagline}
+              {deal?.tagline}
             </Title>
 
             <div className="py-2 mb-3 text-center border-t-4 border-b-4 border-white border-dashed">
@@ -53,7 +64,7 @@ export function ArticleWidgetOrderNow(deal: IDeal) {
                 margin={false}
                 className="font-somatic text-primary"
               >
-                Only £{deal.pricePerHeadGBP} and you'll get
+                Only £{deal?.pricePerHeadGBP} and you'll get
               </Title>
             </div>
 
@@ -67,33 +78,33 @@ export function ArticleWidgetOrderNow(deal: IDeal) {
 
         <div className="flex flex-col mx-4 space-y-3">
           <div className="flex justify-between">
-            <span className="text-lg font-roboto bold text-primary">
+            <span className="text-lg font-medium font-roboto bold text-primary">
               Book for
             </span>
-            <select
-              name="zzz"
-              defaultValue={1}
-              className="w-12 bg-transparent border-2 rounded-md border-secondary"
-            >
-              <option className="text-center" value="1">
-                1
-              </option>
-              <option className="text-center" value="2">
-                2
-              </option>
-            </select>
+            <div className="w-16">
+              <Select
+                size="small"
+                onChange={value => setHeads(value as ValidHead)}
+              >
+                {valdHeads.map(n => (
+                  <option key={n} className="text-center" value={n}>
+                    {n}
+                  </option>
+                ))}
+              </Select>
+            </div>
           </div>
 
           <div className="flex justify-between text-sm">
-            <span>Booking for 2x people</span>
-            <span>£50</span>
+            <span>Booking for {heads} people</span>
+            <span>£{totalPrice}</span>
           </div>
 
           <div className="w-full my-2 border-t border-primary"></div>
 
           <div className="flex justify-between text-lg bold">
             <span>Total</span>
-            <span>£50</span>
+            <span>£{totalPrice}</span>
           </div>
 
           <Button

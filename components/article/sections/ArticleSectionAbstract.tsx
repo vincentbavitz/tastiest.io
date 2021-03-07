@@ -1,10 +1,10 @@
 import CharacterEatingSVG from '@svg/article/character-eating.svg';
 import XiaoDividerSVG from '@svg/article/xiao-divider.svg';
+import { Contained } from 'components/Contained';
 import React, { ReactNode, useContext } from 'react';
 import { UI } from '../../../constants';
 import { ScreenContext } from '../../../contexts/screen';
-import { ILocation } from '../../../types/article';
-import { Contained } from '../../Contained';
+import { ILocation } from '../../../types/cms';
 import { ArticleFeatureVideoWidget } from '../widgets/ArticleFeatureVideoWidget';
 import { ArticleWidgetMap } from '../widgets/ArticleWidgetMap';
 
