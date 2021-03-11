@@ -7,18 +7,6 @@
       "presets": ["next/babel"]
     }
   },
-  "test": {
-    "presets": [
-      [
-        "next/babel",
-        {
-          "preset-env": {
-            "modules": "commonjs"
-          }
-        }
-      ]
-    ]
-  },
   "plugins": [
     ["tailwind", { "ssr": true, "displayName": true, "preprocess": false }]
   ]
