@@ -2,15 +2,14 @@
 import { IDeal } from './cms';
 
 export interface IOrder {
+  id: string;
   deal: IDeal;
-  restaurantName: string;
-  restaurantId: string;
   userId: string;
   heads: number;
-  // Timestamps
   orderedAt: number;
   dealDatedFor: number;
   fromSlug: string;
+  isPaid: boolean;
 }
 
 export enum CheckoutStep {

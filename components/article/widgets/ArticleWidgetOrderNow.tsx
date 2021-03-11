@@ -33,10 +33,10 @@ export function ArticleWidgetOrderNow(props: Props) {
 
   const submit = async () => {
     const order: IOrder = {
-      deal,
+      dealId: deal.id,
       restaurantId,
       restaurantName,
-      userId: user.uid,
+      userId: user?.uid ?? null,
       heads: Number(heads),
       orderedAt: Date.now(),
       dealDatedFor: Date.now(),
@@ -44,9 +44,9 @@ export function ArticleWidgetOrderNow(props: Props) {
     };
 
     const orderId = await initOrder(order);
-
-    console.log('ArticleWidgetOrderNow ➡️ orderId:', orderId);
-    // router.push('/checkout');
+    if (orderId) {
+      router.push({ pathname: '/checkout', query: { orderId } });
+    }
   };
 
   return (
@@ -89,7 +89,7 @@ export function ArticleWidgetOrderNow(props: Props) {
             </div>
 
             <div className="text-center">
-              {deal.includes.map(item => (
+              {deal?.includes.map(item => (
                 <div key={item}>{item}</div>
               ))}
             </div>

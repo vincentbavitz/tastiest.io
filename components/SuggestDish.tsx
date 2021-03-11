@@ -60,7 +60,7 @@ export function SuggestDish() {
             <div>Suggest a dish</div>
           </div>
         ) : (
-          <div className="mb-2 flex justify-center text-4xl text-primary font-somatic">
+          <div className="flex justify-center mb-2 text-4xl text-primary font-somatic">
             Suggest a dish
           </div>
         )}
@@ -72,7 +72,7 @@ export function SuggestDish() {
           <InputAbstract size="large"></InputAbstract>
         </div>
 
-        <div className="flex space-x-4 mt-4">
+        <div className="flex mt-4 space-x-4">
           <div className="flex-1">
             <Title level={3} className="text-primary">
               Dish name
@@ -88,7 +88,7 @@ export function SuggestDish() {
           </div>
         </div>
 
-        <div className="mb-2 mt-4">
+        <div className="mt-4 mb-2">
           <Title level={3} className="text-primary">
             Email address
           </Title>
@@ -106,8 +106,8 @@ export function SuggestDish() {
         )}
 
         {!isDesktop && (
-          <div className="mt-6 flex-grow justify-center flex">
-            <SuggestDishMobileSVG className="md:w-full h-full w-3/4" />
+          <div className="flex justify-center flex-grow mt-6">
+            <SuggestDishMobileSVG className="w-3/4 h-full md:w-full" />
           </div>
         )}
       </div>

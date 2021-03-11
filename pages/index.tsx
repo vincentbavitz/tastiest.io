@@ -45,6 +45,11 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
   const { userData } = useUserData(user);
   console.log('userData', userData);
 
+  console.log(
+    'index ➡️ process.env.STRIPE_TEST_SECRET_KEY:',
+    process.env.STRIPE_TEST_SECRET_KEY,
+  );
+
   return (
     <>
       <Head>

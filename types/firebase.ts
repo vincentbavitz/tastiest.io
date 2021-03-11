@@ -12,6 +12,8 @@ export enum UserData {
 
   RESTAURANTS_VISITED = 'restaurantsVisited',
   SAVED_ARTICLES = 'savedArticles',
+
+  DETAILS = 'details',
   PREFERENCES = 'preferences',
 
   USER_SESSIONS = 'userSessions',
@@ -31,6 +33,20 @@ export interface IUserSession {
   device: 'mobile' | 'tablet' | 'desktop';
   sessionStartTimestamp: number;
   sessionEndTimestamp: number;
+}
+
+// Order type in the raw DB form
+// We don't want the IDeal etc stored here directly,
+// as the user generates this  information client side.
+// We get the actual deal informatiuon server-side from Contentful
+export interface IFirebaseOrder {
+  dealId?: string;
+  userId?: string;
+  heads?: number;
+  orderedAt?: number;
+  dealDatedFor?: number;
+  fromSlug?: string;
+  isPaid?: boolean;
 }
 
 export interface IBooking {
@@ -57,15 +73,20 @@ export type TFavouriteCuisine = {
   other: string | null;
 };
 
-export interface IUserPreferences {
+export interface IUserDetails {
   // Lookup latitude and longitude using Mapbox API to search by location
   // with contentful
+  firstName: string;
+  lastName: string;
   address: ILocation | null;
+  birthday: IDateObject | null;
+}
+
+export interface IUserPreferences {
   // In order of decreasing proference. Max of three.
   favouriteCuisines:
     | [TFavouriteCuisine?, TFavouriteCuisine?, TFavouriteCuisine?]
     | null;
-  birthday: IDateObject | null;
 }
 
 // prettier-ignore
@@ -84,8 +105,9 @@ export type TUserData<T extends UserData> =
     // User metadata
     T extends UserData.USER_SESSIONS ? Array<IUserSession> :
         
-    // User preferences
-    T extends UserData.PREFERENCES ? IUserPreferences :
+    // User details and preferences
+    T extends UserData.DETAILS ? Partial<IUserDetails> :
+    T extends UserData.PREFERENCES ? Partial<IUserPreferences> :
 
     // User orders
     T extends UserData.BOOKINGS ? Array<IBooking> :

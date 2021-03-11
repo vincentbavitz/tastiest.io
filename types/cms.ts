@@ -19,6 +19,7 @@ export type IFigureImage = {
 // Articles link to IDeal
 export interface IDeal {
   id: string;
+  restaurant: IRestaurant;
   tagline: string; // Experience the best porterhouse steak in London
   includes: Array<string>; // ['300g Porterhouse', 'Fries', ...]
   pricePerHeadGBP: number; // 25 (25 pounds)s

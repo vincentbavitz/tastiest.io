@@ -15,7 +15,7 @@ export function AuthProvider({ children }: any) {
   useTracking();
 
   useEffect(() => {
-    if (typeof window !== undefined) {
+    if (typeof window !== 'undefined') {
       (window as any).nookies = nookies;
     }
 

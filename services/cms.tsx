@@ -98,13 +98,15 @@ export class CmsApi {
     quantity = CMS.BLOG_RESULTS_PER_PAGE,
     page = 1,
   ): Promise<IFetchPostsReturn> {
+    console.log('cms ➡️ slugs:', slugs);
+
     const entries = await this.client.getEntries({
       content_type: 'post',
       order: '-fields.date',
       limit: quantity,
       skip: (page - 1) * quantity,
       include: 5,
-      'fields.slug[in]': slugs.join(','),
+      'fields.slug[in]': slugs?.join(','),
     });
 
     console.log('cms ➡️ entries:', entries);
@@ -216,6 +218,13 @@ export class CmsApi {
     return [];
   }
 
+  public getDeal = async (dealId: string): Promise<IDeal> => {
+    const entry = await this.client.getEntry(dealId);
+    const deal = this.convertDeal(entry);
+
+    return deal ?? null;
+  };
+
   private convertImage = (rawImage): IFigureImage =>
     rawImage
       ? {
@@ -240,6 +249,7 @@ export class CmsApi {
     rawDeal
       ? {
           id: rawDeal.sys.id ?? null,
+          restaurant: this.convertRestaurant(rawDeal.restaurant),
           tagline: rawDeal?.fields?.tagline ?? null,
           includes: rawDeal?.fields?.tags ?? [],
           pricePerHeadGBP: rawDeal?.fields?.price ?? null,

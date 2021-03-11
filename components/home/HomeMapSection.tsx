@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { getMapBoxStaticSource } from '../../services/mapbox';
+import { getMapBoxStaticSource } from 'utils/location';
 import { expandSearchOverlay } from '../../state/navigation';
 import { Button } from '../Button';
 import { Title } from '../Title';
@@ -11,18 +11,18 @@ export function HomeMapSection() {
   const dispatch = useDispatch();
 
   return (
-    <div className="relative w-full rounded-xl overflow-hidden">
+    <div className="relative w-full overflow-hidden rounded-xl">
       {/* MAP BACKDROP */}
-      <div className="absolute top-0 right-0 bottom-0 left-0">
+      <div className="absolute top-0 bottom-0 left-0 right-0">
         <img
-          className="w-full h-full object-cover"
+          className="object-cover w-full h-full"
           src={getMapBoxStaticSource(-0.1127, 51.5188)}
         />
       </div>
 
       {/* BACKGROUND OVERLAY */}
-      {/* <div className="absolute top-0 right-0 bottom-0 left-0 bg-white bg-opacity-50"></div> */}
-      <div className="absolute top-0 right-0 bottom-0 left-0"></div>
+      {/* <div className="absolute top-0 bottom-0 left-0 right-0 bg-white bg-opacity-50"></div> */}
+      <div className="absolute top-0 bottom-0 left-0 right-0"></div>
 
       {/* TEXT OVERLAY */}
       <div className="flex justify-end w-full px-6">
@@ -30,9 +30,9 @@ export function HomeMapSection() {
           style={{
             boxShadow: '0px 0px 75px 75px rgba(255,255,255,0.5)',
           }}
-          className="flex flex-col items-center justify-center py-4 z-10 bg-white bg-opacity-50"
+          className="z-10 flex flex-col items-center justify-center py-4 bg-white bg-opacity-50"
         >
-          <Title level={3} className="text-primary font-somatic text-center">
+          <Title level={3} className="text-center text-primary font-somatic">
             Discover and
             <br />
             save your new

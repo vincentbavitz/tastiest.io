@@ -7,6 +7,10 @@ import { IState } from '../state/reducers';
 interface IUseCheckout {
   orders: IOrder[];
   initOrder: (order: IOrder) => Promise<string>;
+  updateOrder: (
+    orderId: string,
+    orderPartial: Partial<IOrder>,
+  ) => Promise<void>;
 }
 
 export function useCheckout(): IUseCheckout {
@@ -30,8 +34,6 @@ export function useCheckout(): IUseCheckout {
     try {
       const { id: orderId } = await firestore.collection('orders').add(order);
 
-      console.log('useCheckout ➡️ orderId:', orderId);
-
       // Submit user clicked buy now to segment
       window.analytics.track('User clicked Buy Now from Article Page', {
         ...order,
@@ -41,10 +43,23 @@ export function useCheckout(): IUseCheckout {
       return orderId;
     } catch (e) {
       setError(new Error(`setUserData Error: ${e}`));
-
       return null;
     }
   };
 
-  return { orders, initOrder };
+  const updateOrder = async (
+    orderId: string,
+    orderPartial: Partial<IOrder>,
+  ) => {
+    try {
+      firestore
+        .collection('orders')
+        .doc(orderId)
+        .set(orderPartial, { merge: true });
+    } catch (e) {
+      setError(new Error(`updateOrder Error: ${e}`));
+    }
+  };
+
+  return { orders, initOrder, updateOrder };
 }

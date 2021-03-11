@@ -1,4 +1,4 @@
-const MIN_AGE = '16';
+const MIN_AGE = '10';
 const MAX_AGE = '90';
 
 const YOUNGEST_BIRTH_YEAR = String(

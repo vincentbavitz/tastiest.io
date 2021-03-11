@@ -10,10 +10,11 @@ import {
 } from '@stripe/stripe-js';
 import HelpSVG from '@svg/checkout/help.svg';
 import { InputDate } from 'components/inputs/InputDate';
-import React, { useState } from 'react';
+import { useCheckout } from 'hooks/useCheckout';
+import React, { useEffect, useState } from 'react';
 import { IDateObject } from 'types/various';
 import { USER } from '../../../constants';
-import { CardBrand } from '../../../types/checkout';
+import { CardBrand, IOrder } from '../../../types/checkout';
 import { InputCardNumberWrapper } from '../../inputs/card/InputCardNumberWrapper';
 import { InputContactFirstName } from '../../inputs/contact/InputContactFirstName';
 import { InputContactLastName } from '../../inputs/contact/InputContactLastName';
@@ -28,8 +29,13 @@ const CARD_ELEMENT_OPTIONS: StripeCardNumberElementOptions = {
   },
 };
 
-export function CheckoutStepPayment() {
-  // IF PAYMENT / CONTACT DETAILS ARE VALID, UPDATE THEIR USER FILES
+interface Props {
+  order: IOrder;
+}
+
+export function CheckoutStepPayment({ order }: Props) {
+  const { userId } = order;
+
   // Contact
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -43,6 +49,16 @@ export function CheckoutStepPayment() {
   const submit = () => {
     null;
   };
+
+  // IF PAYMENT / CONTACT DETAILS ARE VALID, UPDATE THEIR USER FILES
+  // IF PAYMENT / CONTACT DETAILS ARE VALID, UPDATE THEIR USER FILES
+  // IF PAYMENT / CONTACT DETAILS ARE VALID, UPDATE THEIR USER FILES
+
+  // Now that we're logged in, update the user ID on the Firebase order
+  const { updateOrder } = useCheckout();
+  useEffect(() => {
+    updateOrder(order.id, { userId });
+  }, []);
 
   const onCardNumberChange = (event: StripeCardNumberElementChangeEvent) => {
     // prettier-ignore
@@ -74,7 +90,6 @@ export function CheckoutStepPayment() {
           <InputContactLastName value={lastName} onValueChange={setLastName} />
 
           <InputDate
-            wide
             size="large"
             label="Birthday"
             subLabel="So we can give you a gift :)"

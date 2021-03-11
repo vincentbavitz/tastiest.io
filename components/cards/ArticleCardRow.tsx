@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React, { useContext } from 'react';
+import { IPost } from 'types/cms';
 import { ScreenContext } from '../../contexts/screen';
-import { IPost } from '../../types/article';
 import { generateURL } from '../../utils/routing';
 
 export function ArticleCardRow(post: IPost) {
@@ -15,9 +15,9 @@ export function ArticleCardRow(post: IPost) {
         lineHeight: '1.33em',
         height: '4em',
       }}
-      className="text-base overflow-hidden"
+      className="overflow-hidden text-base"
     >
-      {post.subtitle}
+      {post.description}
     </p>
   );
 
@@ -27,13 +27,13 @@ export function ArticleCardRow(post: IPost) {
         width: !isDesktop ? '33%' : '10rem',
         height: !isDesktop ? '66%' : '6rem',
       }}
-      className="relative rounded-lg bg-primary bg-opacity-10 overflow-hidden"
+      className="relative overflow-hidden rounded-lg bg-primary bg-opacity-10"
     >
-      {post?.featureImage?.source && (
+      {post?.featureImage?.imageUrl && (
         <img
-          src={post.featureImage.source}
-          alt={post.featureImage.altText}
-          className="w-full h-full rounded-lg object-cover"
+          src={post.featureImage.imageUrl}
+          alt={post.featureImage?.description}
+          className="object-cover w-full h-full rounded-lg"
         />
       )}
     </div>
@@ -42,11 +42,11 @@ export function ArticleCardRow(post: IPost) {
   return (
     <>
       {!isDesktop ? (
-        <div className="flex flex-col w-full space-y-4 mb-6">
+        <div className="flex flex-col w-full mb-6 space-y-4">
           <div className="flex w-full space-x-6">
             <ArticlePreviewImage />
             <div className="w-2/3">
-              <h3 className="font-somatic text-2xl text-primary">
+              <h3 className="text-2xl font-somatic text-primary">
                 {post.title}
               </h3>
             </div>
@@ -62,7 +62,7 @@ export function ArticleCardRow(post: IPost) {
             className="flex flex-col flex-grow"
           >
             <Link href={href} as={as}>
-              <a className="font-somatic text-xl text-primary">{post.title}</a>
+              <a className="text-xl font-somatic text-primary">{post.title}</a>
             </Link>
 
             <ArticlePreviewContent />

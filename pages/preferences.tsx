@@ -10,7 +10,12 @@ import { useUserData } from 'hooks/useUserData';
 import { InferGetServerSidePropsType } from 'next';
 import React, { ReactNode, useContext, useState } from 'react';
 import { UserDataApi } from 'services/userData';
-import { IUserPreferences, TFavouriteCuisine, UserData } from 'types/firebase';
+import {
+  IUserDetails,
+  IUserPreferences,
+  TFavouriteCuisine,
+  UserData,
+} from 'types/firebase';
 import { IDateObject } from 'types/various';
 import { USER } from '../constants';
 
@@ -20,6 +25,8 @@ export const getServerSideProps = async context => {
   // Get user ID from cookie.
   const userDataApi = new UserDataApi();
   const { userId } = await userDataApi.init(context);
+
+  console.log('preferences ➡️ userId:', userId);
 
   // If no user, redirect to home
   if (!userId) {
@@ -33,40 +40,42 @@ export const getServerSideProps = async context => {
 
   // Grab user's preferences
   const preferences = await userDataApi.getUserData(UserData.PREFERENCES);
+  const details = await userDataApi.getUserData(UserData.DETAILS);
 
   return {
-    props: { userId, preferences },
+    props: { userId, preferences, details },
   };
 };
 
 const Preferences = ({
   userId,
+  details,
   preferences,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { isMobile, isTablet } = useContext(ScreenContext);
 
   const [streetAddress, setStreetAddress] = useState<string>(
-    preferences?.address?.address ?? null,
+    details?.address?.address ?? null,
   );
   const [postalCode, setPostalCode] = useState<string>(
-    preferences?.address?.postalCode ?? null,
+    details?.address?.postalCode ?? null,
   );
   const [birthday, setBirthday] = useState<IDateObject>(
-    preferences?.birthday ?? null,
+    details?.birthday ?? null,
   );
   const [cuisine_1, setCuisine_1] = useState<TFavouriteCuisine | null>(
-    preferences.favouriteCuisines?.[0] ?? null,
+    preferences?.favouriteCuisines?.[0] ?? null,
   );
   const [cuisine_2, setCuisine_2] = useState<TFavouriteCuisine | null>(
-    preferences.favouriteCuisines?.[1] ?? null,
+    preferences?.favouriteCuisines?.[1] ?? null,
   );
   const [cuisine_3, setCuisine_3] = useState<TFavouriteCuisine | null>(
-    preferences.favouriteCuisines?.[2] ?? null,
+    preferences?.favouriteCuisines?.[2] ?? null,
   );
 
   // Update user data
   const { user } = useAuth();
-  const { setUserData } = useUserData(user);
+  const { userData, setUserData } = useUserData(user);
 
   const submit = async () => {
     const favouriteCuisines = [
@@ -79,7 +88,11 @@ const Preferences = ({
       TFavouriteCuisine?,
     ];
 
-    const updatedPreferences: IUserPreferences = {
+    const updatedPreferences: Partial<IUserPreferences> = {
+      favouriteCuisines,
+    };
+
+    const updatedDetails: Partial<IUserDetails> = {
       address: {
         lat: 0,
         lon: 0,
@@ -87,11 +100,12 @@ const Preferences = ({
         postalCode: postalCode?.trim() ?? null,
       },
       birthday,
-      favouriteCuisines,
     };
 
-    const result = await setUserData(UserData.PREFERENCES, updatedPreferences);
-    console.log('preferences ➡️ result:', result);
+    // TODO; ensure they are actually changing to avoid
+    // overwriting anything with null
+    await setUserData(UserData.PREFERENCES, updatedPreferences);
+    await setUserData(UserData.DETAILS, updatedDetails);
   };
 
   console.log(
@@ -143,6 +157,7 @@ const Preferences = ({
 
       <Contained maxWidth={PAGE_WIDTH}>
         <div className="flex flex-col space-y-8 tablet:space-y-12">
+          FIRST NAME
           <PreferenceBlock
             title="Your favourite Cuisines"
             subtitle="So we know what to recommend to you."
@@ -163,7 +178,6 @@ const Preferences = ({
               onChange={setCuisine_3}
             />
           </PreferenceBlock>
-
           <PreferenceBlock
             title="Birthday"
             subtitle="So we can give you something special."
@@ -177,7 +191,6 @@ const Preferences = ({
               />
             </div>
           </PreferenceBlock>
-
           <PreferenceBlock
             title="Address"
             subtitle="So we can find the tastiest food near you."

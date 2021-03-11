@@ -63,11 +63,11 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
         style={{}}
         className="w-full px-3 py-3 text-center bg-secondary font-somatic"
       >
-        {order?.tagline}
+        {order?.deal.tagline}
       </div>
 
       <div className="bg-opacity-75 bg-primary aspect-w-16 aspect-h-9">
-        <img className="object-cover" src={order?.image?.source} />
+        <img className="object-cover" src={order?.deal.image?.imageUrl} />
       </div>
 
       <div className="flex flex-col px-3 pt-3 pb-4 space-y-3">
@@ -76,7 +76,7 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
         {step === CheckoutStep.SIGN_IN && (
           <div className="flex items-center justify-between">
             <p className="text-sm">
-              {order.includes.map(item => (
+              {order.deal.includes.map(item => (
                 <p key={item}>{item}</p>
               ))}{' '}
               x{heads}
@@ -106,7 +106,7 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
             <div className="flex items-center justify-between text-xs">
               <p>Booking for {heads} people</p>
               <p className="font-medium">
-                £{Math.floor(heads) * order.pricePerHeadGBP}
+                £{Math.floor(heads) * order.deal.pricePerHeadGBP}
               </p>
             </div>
 
@@ -129,7 +129,7 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
 
             <div className="flex items-center justify-between mb-1 space-x-2 font-medium">
               <p>Total</p>
-              <p>£{Math.floor(heads) * order.pricePerHeadGBP}</p>
+              <p>£{Math.floor(heads) * order.deal.pricePerHeadGBP}</p>
             </div>
 
             <Button

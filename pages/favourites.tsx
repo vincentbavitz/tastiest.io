@@ -35,8 +35,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
   // If user, get saved articles from firestore.
   const savedPostSlugs = await userDataApi.getUserData(UserData.SAVED_ARTICLES);
 
-  console.log('favourites ➡️ savedPostSlugs:', savedPostSlugs);
-
   // Given ids of saved articles from firestore, get articles of these ids
   const cms = new CmsApi();
   const { posts: savedPosts } = await cms.getPostsOfSlugs(savedPostSlugs);

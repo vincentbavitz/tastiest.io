@@ -48,9 +48,12 @@ export function useUserData(user: firebase.User): IUseUserData {
       firestore
         .collection('users')
         .doc(user.uid)
-        .update({
-          [field]: value,
-        });
+        .set(
+          {
+            [field]: value,
+          },
+          { merge: true },
+        );
     } catch (e) {
       setError(new Error(`setUserData Error: ${e}`));
     }

@@ -7,7 +7,6 @@ import { InputAbstract } from './InputAbstract';
 import { Select } from './Select';
 
 type CuisineKey = CuisineSymbol | 'ALL_FOOD' | 'OTHER';
-
 interface ICuisineOption {
   key: CuisineKey;
   label: string;
@@ -55,11 +54,14 @@ export default function CuisineSelect(props: Props) {
     props.onChange(mapToFavouriteCuisine(selected));
   };
 
+  console.log('CuisineSelect ➡️ initial:', initial);
+  console.log('CuisineSelect ➡️ !initial?.length:', !initial?.length);
+
   return (
     <div className="w-64">
       <Select
-        noDefault={Boolean(initial?.length)}
-        defaultSelected={Boolean(initial?.length)}
+        noDefault={!initial?.length}
+        defaultSelected={!initial?.length}
         onChange={handleOnChange}
       >
         {options.map(option => (

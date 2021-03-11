@@ -4,7 +4,8 @@ import { GetServerSideProps } from 'next';
 import process from 'process';
 import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Stripe from 'stripe';
+import { CheckoutApi } from 'services/checkout';
+import { UserDataApi } from 'services/userData';
 import { CheckoutOrderSummary } from '../components/checkout/CheckoutOrderSummary';
 import { CheckoutStepIndicator } from '../components/checkout/CheckoutStepIndicator';
 import { CheckoutStepAuth } from '../components/checkout/steps/CheckoutStepAuth';
@@ -12,56 +13,80 @@ import { CheckoutStepComplete } from '../components/checkout/steps/CheckoutStepC
 import { CheckoutStepPayment } from '../components/checkout/steps/CheckoutStepPayment';
 import { Contained } from '../components/Contained';
 import { ScreenContext } from '../contexts/screen';
-import { useAuth } from '../hooks/useAuth';
 import { setCheckoutStep } from '../state/checkout';
 import { IState } from '../state/reducers';
-import { CheckoutStep } from '../types/checkout';
+import { CheckoutStep, IOrder } from '../types/checkout';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
-const stripePromise = loadStripe(process.env.STRIPE_SECRET_KEY_TEST);
+const stripePromise = loadStripe(process.env.STRIPE_TEST_PUBLISHABLE_KEY);
 
 interface Props {
+  userId: string;
+  order: IOrder;
   stripeClientSecret: string;
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST, {});
+  // Get user ID from cookie.
+  const userDataApi = new UserDataApi();
+  const { userId } = await userDataApi.init(context);
 
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: 1099,
-    currency: 'gbp',
-    // Verify your integration in this guide by including this parameter
-    metadata: { integration_check: 'accept_a_payment' },
-  });
+  // Verify order is legit; else redirect and wipe order data.
+  const orderId = String(context.query.orderId ?? '') ?? null;
 
-  // Get user data sever side.
+  // If no order exists in URI, redirect to home
+  if (!orderId) {
+    return {
+      redirect: {
+        destination: '/?login=1',
+        permanent: false,
+      },
+    };
+  }
 
-  // Get deal from url params
+  // Verify order exists with Firebase
+  const checkoutApi = new CheckoutApi(context);
+  const order: IOrder = await checkoutApi.getOrder(orderId);
 
-  // Check if cart is expired or invalid
+  // If no order exists in Firebase, redirect to home
+  if (!order) {
+    return {
+      redirect: {
+        destination: '/?login=1',
+        permanent: false,
+      },
+    };
+  }
+
+  // Get or create payment intent
+  const paymentIntent = await checkoutApi.getOrCreatePaymentIntent(order);
+  const stripeClientSecret = paymentIntent.client_secret;
 
   return {
-    props: { stripeClientSecret: paymentIntent.client_secret },
+    props: { stripeClientSecret, userId, order },
   };
 };
 
-function Checkout({ stripeClientSecret }: Props) {
+function Checkout(props: Props) {
   const { isDesktop } = useContext(ScreenContext);
+
   return isDesktop ? (
-    <CheckoutDesktop stripeClientSecret={stripeClientSecret} />
+    <CheckoutDesktop {...props} />
   ) : (
-    <CheckoutMobile stripeClientSecret={stripeClientSecret} />
+    <CheckoutMobile {...props} />
   );
 }
 
-function CheckoutDesktop({ stripeClientSecret }: Props) {
+function CheckoutDesktop(props: Props) {
+  const { stripeClientSecret, userId, order } = props;
+
   const {
     flow: { step },
   } = useSelector((state: IState) => state.checkout);
 
   // If user is signed in, skip to payment screen
-  const { isSignedIn } = useAuth();
+  const isSignedIn = Boolean(userId);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -69,27 +94,6 @@ function CheckoutDesktop({ stripeClientSecret }: Props) {
       dispatch(setCheckoutStep(CheckoutStep.PAYMENT));
     }
   }, [isSignedIn]);
-
-  // useEffect(() => {
-  //   dispatch(
-  //     setOrder({
-  //       restaurantID: '41214324322',
-  //       restaurantName: 'Steakhouse Bar & Grill',
-  //       dealName: 'Experience the best steak in London',
-  //       dealImage: {
-  //         source:
-  //           'https://www.tasteofhome.com/wp-content/uploads/2019/01/medium-rare-steak-shutterstock_706040446.jpg',
-  //         altText: 'sdfsdf',
-  //         description: '',
-  //       },
-  //       dealDescription: '',
-  //       dealPrefix: '',
-  //       dealItems: ['Two-course-meal'],
-  //       pricePerHeadGBP: 25,
-  //       heads: 3,
-  //     }),
-  //   );
-  // }, []);
 
   const isAuthStep = !isSignedIn;
   const isPaymentStep = isSignedIn && step === CheckoutStep.PAYMENT;
@@ -106,7 +110,7 @@ function CheckoutDesktop({ stripeClientSecret }: Props) {
             <CheckoutStepIndicator />
 
             {isAuthStep && <CheckoutStepAuth />}
-            {isPaymentStep && <CheckoutStepPayment />}
+            {isPaymentStep && <CheckoutStepPayment order={order} />}
             {isCompleteStep && <CheckoutStepComplete />}
           </div>
 

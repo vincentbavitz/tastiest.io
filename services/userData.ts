@@ -3,26 +3,18 @@ import { GetServerSidePropsContext } from 'next';
 import nookies from 'nookies';
 import { TUserData, UserData } from 'types/firebase';
 
-const init = () => {
-  if (!firebaseAdmin.apps.length) {
-    if (typeof window !== undefined) {
-      return;
-    }
+if (!firebaseAdmin.apps.length) {
+  const cert = {
+    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+  };
 
-    const cert = {
-      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      projectId: process.env.FIREBASE_PROJECT_ID,
-    };
-
-    firebaseAdmin.initializeApp({
-      credential: firebaseAdmin.credential.cert(cert),
-      databaseURL: process.env.FIREBASE_DATABASE_URL,
-    });
-  }
-};
-
-init();
+  firebaseAdmin.initializeApp({
+    credential: firebaseAdmin.credential.cert(cert),
+    databaseURL: process.env.FIREBASE_DATABASE_URL,
+  });
+}
 
 // Intended for server-side use ONLY!
 export class UserDataApi {
@@ -32,7 +24,7 @@ export class UserDataApi {
    * Get context from getServerSideProps
    */
   constructor() {
-    if (typeof window !== undefined) {
+    if (typeof window !== 'undefined') {
       return null;
     }
 
@@ -46,12 +38,18 @@ export class UserDataApi {
   private async verfiyUserAuth(ctx: GetServerSidePropsContext) {
     try {
       const cookies = nookies.get(ctx);
+
+      console.log('userData ➡️ cookies:', cookies);
+
       const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
+
+      console.log('userData ➡️ tokenm:', token);
 
       // User is authenticated!
       this.userId = token.uid;
       return { userId: token.uid, email: token.email };
-    } catch (_) {
+    } catch (error) {
+      console.log('userData ➡️ error:', error);
       return { userId: null, email: null };
     }
   }
