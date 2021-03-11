@@ -7,9 +7,9 @@ export interface IOrder {
   userId: string;
   heads: number;
   orderedAt: number;
-  dealDatedFor: number;
   fromSlug: string;
   isPaid: boolean;
+  totalPrice: number;
 }
 
 export enum CheckoutStep {

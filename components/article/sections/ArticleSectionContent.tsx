@@ -41,12 +41,7 @@ export function ArticleSectionContent(post: IPost) {
 const MobileContent = (post: IPost) => (
   <div className="flex flex-col space-y-4">
     <div>{post.description}</div>
-    <ArticleWidgetOrderNow
-      deal={post?.deal}
-      slug={post.slug}
-      restaurantId={post?.restaurant?.id}
-      restaurantName={post?.restaurant?.name}
-    />
+    <ArticleWidgetOrderNow deal={post?.deal} slug={post.slug} />
     <RichBody body={post.body} />
     <ArticleSectionFeatureImage featureImage={post?.featureImage} />
   </div>
@@ -60,12 +55,7 @@ const DesktopContent = (post: IPost) => (
       </div>
 
       <div className="w-4/12 mt-12">
-        <ArticleWidgetOrderNow
-          deal={post?.deal}
-          slug={post?.slug}
-          restaurantId={post?.restaurant?.id}
-          restaurantName={post?.restaurant?.name}
-        />
+        <ArticleWidgetOrderNow deal={post?.deal} slug={post?.slug} />
       </div>
     </div>
     <ArticleSectionFeatureImage featureImage={post?.featureImage} />

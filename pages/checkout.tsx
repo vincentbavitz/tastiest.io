@@ -47,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   // Verify order exists with Firebase
   const checkoutApi = new CheckoutApi(context);
-  const order: IOrder = await checkoutApi.getOrder(orderId);
+  const order: IOrder = await checkoutApi.getOrderFromOrderRequest(orderId);
 
   // If no order exists in Firebase, redirect to home
   if (!order) {

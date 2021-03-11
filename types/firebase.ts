@@ -39,14 +39,12 @@ export interface IUserSession {
 // We don't want the IDeal etc stored here directly,
 // as the user generates this  information client side.
 // We get the actual deal informatiuon server-side from Contentful
-export interface IFirebaseOrder {
+export interface IOrderRequest {
   dealId?: string;
   userId?: string;
   heads?: number;
-  orderedAt?: number;
-  dealDatedFor?: number;
   fromSlug?: string;
-  isPaid?: boolean;
+  timestamp?: number;
 }
 
 export interface IBooking {

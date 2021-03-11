@@ -81,9 +81,11 @@ export class CmsApi {
   public async getPostBySlug(slug: string): Promise<IPost> {
     const entries = await this.client.getEntries({
       content_type: 'post',
-      'fields.slug': slug,
+      'fields.slug[in]': slug,
       include: 5,
     });
+
+    console.log('cms ➡️ entries:', entries);
 
     if (entries?.items?.length > 0) {
       const post = this.convertPost(entries.items[0]);
@@ -249,11 +251,11 @@ export class CmsApi {
     rawDeal
       ? {
           id: rawDeal.sys.id ?? null,
-          restaurant: this.convertRestaurant(rawDeal.restaurant),
+          restaurant: this.convertRestaurant(rawDeal?.fields?.restaurant),
           tagline: rawDeal?.fields?.tagline ?? null,
           includes: rawDeal?.fields?.tags ?? [],
           pricePerHeadGBP: rawDeal?.fields?.price ?? null,
-          image: this.convertImage(rawDeal?.image?.fields),
+          image: this.convertImage(rawDeal?.fields?.image?.fields),
         }
       : null;
 

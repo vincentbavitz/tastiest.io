@@ -2,9 +2,7 @@ import HeySpriteSVG from '@svg/article/hey-sprite.svg';
 import { useCheckout } from 'hooks/useCheckout';
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
-import { IOrder } from 'types/checkout';
 import { ScreenContext } from '../../../contexts/screen';
-import { useAuth } from '../../../hooks/useAuth';
 import { IDeal } from '../../../types/cms';
 import { Button } from '../../Button';
 import { Select } from '../../inputs/Select';
@@ -13,37 +11,28 @@ import { Title } from '../../Title';
 interface Props {
   deal: IDeal;
   slug: string;
-  restaurantId: string;
-  restaurantName: string;
 }
 
 type ValidHead = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8'; //| '9' | '10+';
 const valdHeads: ValidHead[] = ['1', '2', '3', '4', '5', '6', '7', '8'];
 
 export function ArticleWidgetOrderNow(props: Props) {
-  const { deal, slug, restaurantId, restaurantName } = props;
+  const { deal, slug } = props;
 
-  const { user } = useAuth();
   const router = useRouter();
   const { isDesktop } = useContext(ScreenContext);
-  const { initOrder } = useCheckout();
+  const { initOrderRequest } = useCheckout();
 
   const [heads, setHeads] = useState<ValidHead>('1');
   const totalPrice = (Number(heads) * deal?.pricePerHeadGBP).toFixed(2);
 
   const submit = async () => {
-    const order: IOrder = {
-      dealId: deal.id,
-      restaurantId,
-      restaurantName,
-      userId: user?.uid ?? null,
-      heads: Number(heads),
-      orderedAt: Date.now(),
-      dealDatedFor: Date.now(),
-      fromSlug: slug,
-    };
+    const orderId = await initOrderRequest(
+      deal.id,
+      Math.floor(Number(heads)),
+      slug,
+    );
 
-    const orderId = await initOrder(order);
     if (orderId) {
       router.push({ pathname: '/checkout', query: { orderId } });
     }
@@ -67,7 +56,7 @@ export function ArticleWidgetOrderNow(props: Props) {
         </div>
 
         <h3 className="text-3xl leading-8 text-center font-somatic text-primary">
-          {restaurantName}
+          {deal.restaurant.name}
         </h3>
 
         <div className="pb-4 mx-4 overflow-hidden bg-secondary-1 rounded-xl">

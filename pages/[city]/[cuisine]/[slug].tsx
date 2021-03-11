@@ -53,6 +53,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return { notFound: true };
   }
 
+  console.log('[slug] ➡️ post:', post);
+
   return {
     props: {
       ...post,
@@ -71,6 +73,8 @@ function Post(post: IPost) {
       window.scrollTo(0, 0);
     }
   }, []);
+
+  console.log('[slug] ➡️ post:', post);
 
   return (
     <>
