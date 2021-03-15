@@ -6,25 +6,6 @@ import { RichBody } from '../../RichBody';
 import { ArticleWidgetOrderNow } from '../widgets/ArticleWidgetOrderNow';
 import { ArticleSectionFeatureImage } from './ArticleSectionFeatureImage';
 
-// const deal: IDeal = {
-//   id: '3240234324032432432-4-324324324-23',
-//   tagline: 'Experience the best porterhouse steak in London',
-//   includes: [
-//     '300g Porterhouse',
-//     'Fries',
-//     'Salad',
-//     'Choice of steak sauces',
-//     'House wine/beer',
-//   ],
-//   pricePerHeadGBP: 25,
-//   image: {
-//     imageUrl:
-//       'https://www.homewetbar.com/blog/wp-content/uploads/2014/04/how-to-grill-steak.jpg?x48627',
-//     title: '',
-//     description: '',
-//   },
-// };
-
 // TODO
 // Really want writers to be able to do {{CALL_TO_ACTION}} sorta things like Wordpress shortcodes
 // And that will then conditionally render our components

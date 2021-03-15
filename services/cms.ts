@@ -27,8 +27,8 @@ export class CmsApi {
 
   constructor() {
     this.client = createClient({
-      space: process.env.CONTENTFUL_SPACE_ID,
-      accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+      space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID,
+      accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN,
     });
   }
 
@@ -43,7 +43,7 @@ export class CmsApi {
       skip: (page - 1) * quantity,
       // Allows us to go N layers deep in nested JSON
       // https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/links
-      include: 5,
+      include: 8,
     });
 
     if (entries?.items?.length > 0) {
@@ -65,7 +65,7 @@ export class CmsApi {
       'fields.tags[in]': tag,
       limit: quantity,
       skip: (page - 1) * quantity,
-      include: 5,
+      include: 8,
     });
 
     if (entries?.items?.length > 0) {
@@ -81,10 +81,8 @@ export class CmsApi {
       content_type: 'post',
       // 'fields.slug[in]': slug,
       limit: 1,
-      include: 5,
+      include: 8,
     });
-
-    console.log('cms ➡️ entries:', entries);
 
     if (entries?.items?.length > 0) {
       const post = this.convertPost(entries.items[0]);
@@ -106,7 +104,7 @@ export class CmsApi {
       order: '-fields.date',
       limit: quantity,
       skip: (page - 1) * quantity,
-      include: 5,
+      include: 8,
       'fields.slug[in]': slugs?.join(','),
     });
 
@@ -132,7 +130,7 @@ export class CmsApi {
       order: '-fields.date',
       limit: quantity,
       skip: (page - 1) * quantity,
-      include: 5,
+      include: 8,
       'fields.cuisine.fields.name[in]': cuisineToMatch,
     });
 
@@ -163,7 +161,7 @@ export class CmsApi {
       skip: (page - 1) * quantity,
       // Allows us to go N layers deep in nested JSON
       // https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/links
-      include: 5,
+      include: 8,
       'fields.title[match]': query.trim().toLowerCase(),
     });
 

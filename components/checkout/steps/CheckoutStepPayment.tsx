@@ -2,6 +2,8 @@ import {
   CardCvcElement,
   CardExpiryElement,
   CardNumberElement,
+  useElements,
+  useStripe,
 } from '@stripe/react-stripe-js';
 import {
   StripeCardExpiryElementChangeEvent,
@@ -9,11 +11,14 @@ import {
   StripeCardNumberElementOptions,
 } from '@stripe/stripe-js';
 import HelpSVG from '@svg/checkout/help.svg';
-import { InputDate } from 'components/inputs/InputDate';
+import { InputContactBirthday } from 'components/inputs/contact/InputContactBirthday';
+import { useAuth } from 'hooks/useAuth';
 import { useCheckout } from 'hooks/useCheckout';
+import { useUserData } from 'hooks/useUserData';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useFirestore } from 'react-redux-firebase';
 import { IDateObject } from 'types/various';
-import { USER } from '../../../constants';
 import { CardBrand, IOrder } from '../../../types/checkout';
 import { InputCardNumberWrapper } from '../../inputs/card/InputCardNumberWrapper';
 import { InputContactFirstName } from '../../inputs/contact/InputContactFirstName';
@@ -21,6 +26,7 @@ import { InputContactLastName } from '../../inputs/contact/InputContactLastName'
 import { InputAbstract } from '../../inputs/InputAbstract';
 import { InputWrapper } from '../../inputs/InputWrapper';
 import { Tooltip } from '../../Tooltip';
+import { CheckoutOrderSummaryPayment } from '../CheckoutOrderSummaryPayment';
 import { CheckoutTabs } from '../CheckoutTabs';
 
 const CARD_ELEMENT_OPTIONS: StripeCardNumberElementOptions = {
@@ -31,10 +37,22 @@ const CARD_ELEMENT_OPTIONS: StripeCardNumberElementOptions = {
 
 interface Props {
   order: IOrder;
+  stripeClientSecret: string;
 }
 
-export function CheckoutStepPayment({ order }: Props) {
+export function CheckoutStepPayment(props: Props) {
+  const { order, stripeClientSecret } = props;
   const { userId } = order;
+
+  const { user } = useAuth();
+  const { pay, updateOrder } = useCheckout();
+  const { setUserData } = useUserData(user);
+
+  const stripe = useStripe();
+  const elements = useElements();
+  const router = useRouter();
+
+  const firestore = useFirestore();
 
   // Contact
   const [firstName, setFirstName] = useState('');
@@ -45,9 +63,34 @@ export function CheckoutStepPayment({ order }: Props) {
   const [cardholderName, setCardholderName] = useState('');
   const [cardPostcode, setCardPostcode] = useState('');
   const [cardBrand, setCardBrand] = useState<CardBrand | undefined>(undefined);
+  const [paymentError, setPaymentError] = useState<string>(null);
 
-  const submit = () => {
-    null;
+  const handleSubmit = async () => {
+    // Ensure all inputs are valid
+    if (
+      firstName.length < 2 ||
+      lastName.length < 2 ||
+      !birthday.day ||
+      !birthday.month ||
+      !birthday.year
+    ) {
+      alert('Please fill out contact details');
+    }
+
+    const { success, error } = await pay(stripeClientSecret);
+
+    if (success) {
+      // Segment: Payment success event
+      router.push('/thank-you');
+
+      return;
+    }
+
+    if (error) {
+      // Segment: Payment failure event
+    }
+
+    console.log('CheckoutOrderSummary ➡️ error:', error);
   };
 
   // IF PAYMENT / CONTACT DETAILS ARE VALID, UPDATE THEIR USER FILES
@@ -55,7 +98,6 @@ export function CheckoutStepPayment({ order }: Props) {
   // IF PAYMENT / CONTACT DETAILS ARE VALID, UPDATE THEIR USER FILES
 
   // Now that we're logged in, update the user ID on the Firebase order
-  const { updateOrder } = useCheckout();
   useEffect(() => {
     updateOrder(order.id, { userId });
   }, []);
@@ -89,14 +131,9 @@ export function CheckoutStepPayment({ order }: Props) {
 
           <InputContactLastName value={lastName} onValueChange={setLastName} />
 
-          <InputDate
-            size="large"
-            label="Birthday"
-            subLabel="So we can give you a gift :)"
+          <InputContactBirthday
             date={birthday}
             onDateChange={value => setBirthday(value)}
-            minYear={USER.OLDEST_BIRTH_YEAR}
-            maxYear={USER.YOUNGEST_BIRTH_YEAR}
           />
         </div>
       </div>
@@ -151,6 +188,8 @@ export function CheckoutStepPayment({ order }: Props) {
             onValueChange={setCardPostcode}
           />
         </div>
+
+        <CheckoutOrderSummaryPayment order={order} onSubmit={handleSubmit} />
       </div>
     </div>
   );

@@ -1,13 +1,17 @@
+import {
+  CardNumberElement,
+  useElements,
+  useStripe,
+} from '@stripe/react-stripe-js';
+import 'firebase/firestore'; // REMEMBER to include this for all useFirestore things
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
+import { useFirestore } from 'react-redux-firebase';
 import { IOrder } from 'types/checkout';
 import { IOrderRequest } from 'types/firebase';
-import { IState } from '../state/reducers';
 import { useAuth } from './useAuth';
 
 interface IUseCheckout {
-  orders: IOrder[];
+  // orders: IOrder[];
   initOrderRequest: (
     dealId: string,
     heads: number,
@@ -17,19 +21,21 @@ interface IUseCheckout {
     orderId: string,
     orderPartial: Partial<IOrder>,
   ) => Promise<void>;
+  pay: (
+    stripeClientSecret: string,
+  ) => Promise<{ success: null | boolean; error: null | string }>;
 }
 
 export function useCheckout(): IUseCheckout {
-  const { user } = useAuth();
+  // const firebase = useFirebase();
+  // console.log('useCheckout ➡️ firebase:', firebase);
 
+  const { user } = useAuth();
+  const stripe = useStripe();
+  const elements = useElements();
   const firestore = useFirestore();
-  useFirestoreConnect(['orders']);
 
   const [error, setError] = useState(undefined as Error | undefined);
-
-  const orders: IOrder[] = useSelector(
-    ({ firestore: { data } }: IState) => data.orders,
-  );
 
   const initOrderRequest = async (
     dealId: string,
@@ -60,8 +66,6 @@ export function useCheckout(): IUseCheckout {
         .collection('order-requests')
         .add(orderRequest);
 
-      console.log('useCheckout ➡️ orderId:', orderId);
-
       // Submit user clicked buy now to segment
       window.analytics.track('User clicked Buy Now from Article Page', {
         ...orderRequest,
@@ -89,5 +93,43 @@ export function useCheckout(): IUseCheckout {
     }
   };
 
-  return { orders, initOrderRequest, updateOrder };
+  const pay = async (stripeClientSecret: string) => {
+    if (!stripe || !elements) {
+      return { success: null, error: null };
+    }
+
+    try {
+      const { paymentMethod } = await stripe.createPaymentMethod({
+        type: 'card',
+        card: elements.getElement(CardNumberElement),
+      });
+
+      const {
+        error,
+        paymentIntent: { status },
+      } = await stripe.confirmCardPayment(stripeClientSecret, {
+        payment_method: paymentMethod.id,
+      });
+
+      if (error) {
+        return { success: false, error: error?.message };
+      }
+
+      // Payment success
+      if (status === 'succeeded') {
+        // Remove order request from Firestore
+
+        // Segment: Payment success event
+
+        return { success: true, error: null };
+      }
+    } catch (error) {
+      null;
+    }
+
+    // Segment: Payment failure event
+    return { success: false, error: error?.message ?? 'Unknown error' };
+  };
+
+  return { initOrderRequest, updateOrder, pay };
 }

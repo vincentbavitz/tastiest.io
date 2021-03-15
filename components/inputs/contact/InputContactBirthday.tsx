@@ -2,30 +2,25 @@ import React from 'react';
 import NumberFormat, { NumberFormatValues } from 'react-number-format';
 import { IDateObject } from 'types/various';
 import { dateFormat, dateToString, stringToDate } from 'utils/text';
-import { InputAbstract } from './InputAbstract';
+import { USER } from '../../../constants';
+import { InputAbstract } from './../InputAbstract';
 
 interface Props {
-  // Data
   date: IDateObject;
-  minYear?: string;
-  maxYear?: string;
   onDateChange: (date: IDateObject) => void;
-
-  // Styling
-  size?: 'large' | 'medium' | 'small';
-  label?: string;
-  subLabel?: string;
 }
 
 const Input = (props: Props) => (
   <InputAbstract
+    size="large"
+    label="Birthday"
     inputMode="decimal"
     inputClassName="font-mono w-full"
     {...props}
   />
 );
 
-export function InputDate(props: Props) {
+export function InputContactBirthday(props: Props) {
   console.log('InputDate ➡️ props:', props);
 
   const handleOnChange = ({ value }: NumberFormatValues) => {
@@ -33,8 +28,8 @@ export function InputDate(props: Props) {
 
     const date = stringToDate(
       value,
-      props.minYear ?? '1900',
-      props.maxYear ?? '2099',
+      USER.OLDEST_BIRTH_YEAR,
+      USER.YOUNGEST_BIRTH_YEAR,
     );
 
     props.onDateChange(date);
@@ -44,7 +39,9 @@ export function InputDate(props: Props) {
     <NumberFormat
       placeholder="DD/MM/YYYY"
       mask={['M', 'M', 'D', 'D', 'Y', 'Y', 'Y', 'Y']}
-      format={value => dateFormat(value, props?.minYear, props?.maxYear)}
+      format={value =>
+        dateFormat(value, USER.OLDEST_BIRTH_YEAR, USER.YOUNGEST_BIRTH_YEAR)
+      }
       customInput={Input}
       value={dateToString(props.date)}
       onValueChange={handleOnChange}

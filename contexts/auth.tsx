@@ -9,7 +9,11 @@ export const AuthContext = createContext<{ user: firebaseApp.User | null }>({
 });
 
 export function AuthProvider({ children }: any) {
-  const [user, setUser] = useState<firebaseApp.User | null>(null);
+  // Undefined while loading, null if not logged in
+  const [user, setUser] = useState<firebaseApp.User | null | undefined>(
+    undefined,
+  );
+
   const firebase = useFirebase();
 
   useTracking();

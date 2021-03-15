@@ -174,7 +174,8 @@ export const useAuth = () => {
     }
   };
 
-  const isSignedIn = Boolean(user);
+  // Null if the user information has not been loaded yet. else boolean
+  const isSignedIn = user === undefined ? null : Boolean(user?.uid);
 
   return {
     user,

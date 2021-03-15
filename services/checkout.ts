@@ -28,11 +28,6 @@ if (!firebaseAdmin.apps.length) {
   });
 }
 
-console.log(
-  'checkout ➡️ process.env.STRIPE_TEST_SECRET_KEY 1:',
-  process.env.STRIPE_TEST_SECRET_KEY,
-);
-
 // Intended for server-side use ONLY!
 export class CheckoutApi {
   private stripe: Stripe;
@@ -42,11 +37,6 @@ export class CheckoutApi {
     if (typeof window !== 'undefined') {
       return null;
     }
-
-    console.log(
-      'checkout ➡️ process.env.STRIPE_TEST_SECRET_KEY 1:',
-      process.env.STRIPE_TEST_SECRET_KEY,
-    );
 
     this.context = context;
     this.stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY, {
@@ -80,6 +70,8 @@ export class CheckoutApi {
       currency: 'gbp',
     });
 
+    console.log('checkout ➡️ orderId:', order.id);
+
     // Set paymentIntent for this specific order ID.
     const cookieValue: PaymentIntentCookie = {
       orderId: order.id,
@@ -102,6 +94,9 @@ export class CheckoutApi {
 
       const orderRequest = (await doc.data()) as Partial<IOrderRequest>;
 
+      console.log('checkout ➡️ await doc.data();:', doc.data());
+
+      console.log('checkout ➡️ doc:', doc);
       console.log('checkout ➡️ orderRequest:', orderRequest);
 
       // Get user ID. User MUST be logged in.
@@ -109,12 +104,21 @@ export class CheckoutApi {
       const { userId } = await userDataApi.init(this.context);
       const userIsValid = Boolean(userId) && userId === orderRequest?.userId;
 
+      console.log('checkout ➡️ userId:', userId);
+      console.log('checkout ➡️ userIsValid:', userIsValid);
+
       // Ensure all the types and values from Firebase are valid in the order request
       const orderRequestHeadsValid = orderRequest?.heads >= 1;
       const orderRequestSlugIsValid = orderRequest?.fromSlug?.length > 1;
       const orderRequestExpired =
         Date.now() >
         orderRequest?.timestamp + FIREBASE.ORDER_REQUEST_MAX_AGE_MS;
+
+      console.log(
+        'checkout ➡️ orderRequestHeadsValid:',
+        orderRequestHeadsValid,
+      );
+      console.log('checkout ➡️ orderRequestExpired:', orderRequestExpired);
 
       // TODO - Make descriptive errors;
       if (
@@ -145,11 +149,12 @@ export class CheckoutApi {
         deal,
         userId,
         heads: orderRequest.heads,
-        orderedAt: Date.now(),
         fromSlug: orderRequest.fromSlug,
-        // TODO - isPaid should be updated with Firebase functions
-        isPaid: false,
         totalPrice: deal.pricePerHeadGBP * orderRequest.heads,
+        // TODO - paidAt should be updated with Firebase functions
+        paidAt: null,
+        orderedAt: Date.now(),
+        abandonedAt: null,
       };
 
       console.log('checkout ➡️ order:', order);

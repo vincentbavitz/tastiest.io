@@ -56,14 +56,12 @@ export interface InputProps {
 
   // Allows you to only accept values which satisfy this pattern
   regex?: RegExp;
+  onBlurRegex?: RegExp;
+  // The warning given when invalid on blur.
+  onBlurInvalidWarning?: string;
 
   // HTMLInputElement Props
-
   autofocus?: boolean;
-  // required?: boolean;
-  // validity?: ValidityState;
-  // validationMessage?: string;
-  // willValidate?: boolean;
   // autocomplete?: string;
 
   // Validation

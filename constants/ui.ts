@@ -17,6 +17,8 @@ const UI = {
   ARTICLE: {
     TITLE_MAX_WIDTH_REM: 29,
   },
+
+  CHECKOUT_SPLIT_WIDTH_PX: 360,
 };
 
 export default UI;

@@ -15,8 +15,8 @@ import {
   Text,
 } from '@contentful/rich-text-types';
 import React, { ReactNode } from 'react';
-import { renderShortcode } from 'utils/shortcodes';
 import { CMS } from '../constants';
+import { renderShortcode } from '../utils/shortcodes';
 import { ArticleCallout } from './article/ArticleCallout';
 
 const Bold = ({ children }) => (

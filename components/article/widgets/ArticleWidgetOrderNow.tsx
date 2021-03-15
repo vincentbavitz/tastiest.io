@@ -1,9 +1,10 @@
 import HeySpriteSVG from '@svg/article/hey-sprite.svg';
+import { useAuth } from 'hooks/useAuth';
 import { useCheckout } from 'hooks/useCheckout';
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
 import { ScreenContext } from '../../../contexts/screen';
-import { IDeal } from '../../../types/cms';
+import { IDeal, valdHeads, ValidHead } from '../../../types/cms';
 import { Button } from '../../Button';
 import { Select } from '../../inputs/Select';
 import { Title } from '../../Title';
@@ -13,28 +14,23 @@ interface Props {
   slug: string;
 }
 
-type ValidHead = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8'; //| '9' | '10+';
-const valdHeads: ValidHead[] = ['1', '2', '3', '4', '5', '6', '7', '8'];
-
 export function ArticleWidgetOrderNow(props: Props) {
-  const { deal, slug } = props;
+  const { deal, slug: fromSlug } = props;
 
+  const { user } = useAuth();
   const router = useRouter();
   const { isDesktop } = useContext(ScreenContext);
   const { initOrderRequest } = useCheckout();
 
-  const [heads, setHeads] = useState<ValidHead>('1');
+  const [heads, setHeads] = useState<ValidHead>(1);
   const totalPrice = (Number(heads) * deal?.pricePerHeadGBP).toFixed(2);
 
   const submit = async () => {
-    const orderId = await initOrderRequest(
-      deal.id,
-      Math.floor(Number(heads)),
-      slug,
-    );
+    const orderId = await initOrderRequest(deal.id, heads, fromSlug);
+    console.log('ArticleWidgetOrderNow ➡️ orderId:', orderId);
 
     if (orderId) {
-      router.push({ pathname: '/checkout', query: { orderId } });
+      router.push(`/checkout/?orderId=${orderId}`);
     }
   };
 
@@ -56,7 +52,7 @@ export function ArticleWidgetOrderNow(props: Props) {
         </div>
 
         <h3 className="text-3xl leading-8 text-center font-somatic text-primary">
-          {deal.restaurant.name}
+          {deal?.restaurant?.name}
         </h3>
 
         <div className="pb-4 mx-4 overflow-hidden bg-secondary-1 rounded-xl">
@@ -93,7 +89,7 @@ export function ArticleWidgetOrderNow(props: Props) {
             <div className="w-16">
               <Select
                 size="small"
-                onChange={value => setHeads(value as ValidHead)}
+                onChange={value => setHeads(Number(value) as ValidHead)}
               >
                 {valdHeads.map(n => (
                   <option key={n} className="text-center" value={n}>

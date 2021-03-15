@@ -10,6 +10,9 @@ export type IAuthor = {
   position: string | null;
 };
 
+export type ValidHead = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+export const valdHeads: ValidHead[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
 export type IFigureImage = {
   title: string | null;
   description: string | null;

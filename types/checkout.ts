@@ -6,10 +6,14 @@ export interface IOrder {
   deal: IDeal;
   userId: string;
   heads: number;
-  orderedAt: number;
   fromSlug: string;
-  isPaid: boolean;
   totalPrice: number;
+
+  // Timestamps
+  // Null denotes not paid yet; not done yet.
+  paidAt: null | number;
+  orderedAt: null | number;
+  abandonedAt: null | number;
 }
 
 export enum CheckoutStep {
@@ -34,6 +38,7 @@ export interface IContactDetails {
   lastName: string;
   birthday: { day: string; month: string; year: string };
   address: string;
+  mobile: string;
 }
 
 export interface ICheckoutDetails {

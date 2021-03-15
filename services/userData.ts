@@ -5,9 +5,9 @@ import { TUserData, UserData } from 'types/firebase';
 
 if (!firebaseAdmin.apps.length) {
   const cert = {
-    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    projectId: process.env.FIREBASE_PROJECT_ID,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
   };
 
   firebaseAdmin.initializeApp({
@@ -38,18 +38,12 @@ export class UserDataApi {
   private async verfiyUserAuth(ctx: GetServerSidePropsContext) {
     try {
       const cookies = nookies.get(ctx);
-
-      console.log('userData ➡️ cookies:', cookies);
-
       const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
-
-      console.log('userData ➡️ tokenm:', token);
 
       // User is authenticated!
       this.userId = token.uid;
       return { userId: token.uid, email: token.email };
     } catch (error) {
-      console.log('userData ➡️ error:', error);
       return { userId: null, email: null };
     }
   }
@@ -70,8 +64,6 @@ export class UserDataApi {
         .get();
 
       const userData = await doc.data();
-
-      console.log('userData ➡️ userData:', userData);
 
       return (userData?.[field] as TUserData<T>) ?? null;
     } catch (error) {

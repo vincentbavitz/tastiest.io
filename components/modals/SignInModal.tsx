@@ -26,7 +26,7 @@ export function SignInModal() {
     (state: IState) => state.navigation,
   );
 
-  const isOpen = isSignInModalOpen && !isSignedIn;
+  const isOpen = isSignInModalOpen && isSignedIn === false;
   const { isMobile } = useContext(ScreenContext);
   const dispatch = useDispatch();
 

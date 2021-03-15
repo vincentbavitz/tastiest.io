@@ -1,53 +1,26 @@
-import {
-  CardNumberElement,
-  useElements,
-  useStripe,
-} from '@stripe/react-stripe-js';
+import { Select } from 'components/inputs/Select';
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setStripeError } from '../../state/checkout';
+import { useSelector } from 'react-redux';
 import { IState } from '../../state/reducers';
-import { CheckoutStep, IDeal } from '../../types/checkout';
+import { CheckoutStep, IOrder } from '../../types/checkout';
+import { IDeal, valdHeads, ValidHead } from '../../types/cms';
 import { Button } from '../Button';
 import { InputAbstract } from '../inputs/InputAbstract';
 
-const heads = 33;
-
 interface Props {
-  stripeClientSecret: string;
+  order: IOrder;
+  onSubmit: () => void;
 }
 
-export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
+export function CheckoutOrderSummaryPayment(props: Props) {
+  const { order, onSubmit } = props;
+
   const {
     flow: { step },
-    order,
   } = useSelector((state: IState) => state.checkout);
 
-  const stripe = useStripe();
-  const elements = useElements();
-  const dispatch = useDispatch();
+  const [heads, setHeads] = useState(order.heads);
   const [discountCode, setDiscountCode] = useState('');
-
-  const handleSubmit = async () => {
-    if (!stripe || !elements) return;
-
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: elements.getElement(CardNumberElement),
-    });
-
-    if (error) {
-      dispatch(setStripeError(error));
-      return;
-    }
-
-    await stripe.confirmCardPayment(stripeClientSecret, {
-      //
-    });
-
-    console.log('CheckoutOrderSummary ➡️ error:', error);
-    console.log('CheckoutOrderSummary ➡️ paymentMethod:', paymentMethod);
-  };
 
   if (!order) return null;
 
@@ -71,7 +44,7 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
       </div>
 
       <div className="flex flex-col px-3 pt-3 pb-4 space-y-3">
-        <p className="text-sm font-medium">{order?.restaurantName}</p>
+        <p className="text-sm font-medium">{order?.deal.restaurant.name}</p>
 
         {step === CheckoutStep.SIGN_IN && (
           <div className="flex items-center justify-between">
@@ -82,7 +55,7 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
               x{heads}
             </p>
 
-            <CheckoutPrice {...order} />
+            <CheckoutPrice deal={order.deal} heads={heads} />
           </div>
         )}
 
@@ -90,21 +63,30 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
           <>
             <div className="flex items-center justify-between">
               <p className="text-lg font-medium text-primary">Qty</p>
-              <select
-                name="zzz"
-                defaultValue={Math.floor(heads) ?? 1}
-                className="w-12 bg-transparent border-2 rounded-md border-secondary"
-              >
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(o => (
-                  <option key={o} className="text-center" value="1">
-                    {o}
-                  </option>
-                ))}
-              </select>
+
+              <div className="w-12">
+                <Select
+                  size="small"
+                  onChange={value => setHeads(Number(value) as ValidHead)}
+                >
+                  {valdHeads.map(n => (
+                    <option
+                      key={n}
+                      value={n}
+                      selected={n === heads}
+                      className="text-center"
+                    >
+                      {n}
+                    </option>
+                  ))}
+                </Select>
+              </div>
             </div>
 
             <div className="flex items-center justify-between text-xs">
-              <p>Booking for {heads} people</p>
+              <p>
+                Booking for {heads} {heads === 1 ? 'person' : 'people'}
+              </p>
               <p className="font-medium">
                 £{Math.floor(heads) * order.deal.pricePerHeadGBP}
               </p>
@@ -136,12 +118,12 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
               className="w-full py-2"
               type="solid"
               size="small"
-              onClick={handleSubmit}
+              onClick={onSubmit}
             >
               Place Order
             </Button>
 
-            <div className="text-xs">
+            <div className="text-2xs">
               By placing this order, I agree to the{' '}
               <a
                 href="/privacy"
@@ -171,8 +153,8 @@ export function CheckoutOrderSummary({ stripeClientSecret }: Props) {
   );
 }
 
-const CheckoutPrice = (order: IDeal) => (
+const CheckoutPrice = ({ deal, heads }: { deal: IDeal; heads: number }) => (
   <p className="text-lg font-medium">
-    £{Math.floor(heads) * order.pricePerHeadGBP}
+    £{Math.floor(heads) * deal.pricePerHeadGBP}
   </p>
 );
