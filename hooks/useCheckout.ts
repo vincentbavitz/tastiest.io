@@ -1,40 +1,19 @@
-import {
-  CardNumberElement,
-  useElements,
-  useStripe,
-} from '@stripe/react-stripe-js';
 import 'firebase/firestore'; // REMEMBER to include this for all useFirestore things
 import { useState } from 'react';
 import { useFirestore } from 'react-redux-firebase';
-import { IOrder } from 'types/checkout';
-import { IOrderRequest } from 'types/firebase';
+import { IOrder, IPaymentDetails } from 'types/checkout';
+import { IOrderRequest, IUserDetails, UserData } from 'types/firebase';
 import { useAuth } from './useAuth';
+import { useUserData } from './useUserData';
 
-interface IUseCheckout {
-  // orders: IOrder[];
-  initOrderRequest: (
-    dealId: string,
-    heads: number,
-    fromSlug: string,
-  ) => Promise<string>;
-  updateOrder: (
-    orderId: string,
-    orderPartial: Partial<IOrder>,
-  ) => Promise<void>;
-  pay: (
-    stripeClientSecret: string,
-  ) => Promise<{ success: null | boolean; error: null | string }>;
-}
-
-export function useCheckout(): IUseCheckout {
+export function useCheckout() {
   // const firebase = useFirebase();
   // console.log('useCheckout ➡️ firebase:', firebase);
 
   const { user } = useAuth();
-  const stripe = useStripe();
-  const elements = useElements();
-  const firestore = useFirestore();
+  const { setUserData } = useUserData(user);
 
+  const firestore = useFirestore();
   const [error, setError] = useState(undefined as Error | undefined);
 
   const initOrderRequest = async (
@@ -52,7 +31,7 @@ export function useCheckout(): IUseCheckout {
     // Do NOT trust the client. We make an order request client side that is
     // verified server side.
     const orderRequest: IOrderRequest = {
-      userId: user.uid,
+      userId: user?.uid ?? null,
       dealId,
       heads,
       fromSlug,
@@ -62,15 +41,10 @@ export function useCheckout(): IUseCheckout {
     try {
       // We don't want to use useFirebase -> firebase.push here because
       // we need the order ID back.
+      // Tracking is done server side for this event
       const { id: orderId } = await firestore
         .collection('order-requests')
         .add(orderRequest);
-
-      // Submit user clicked buy now to segment
-      window.analytics.track('User clicked Buy Now from Article Page', {
-        ...orderRequest,
-        orderId,
-      });
 
       return orderId;
     } catch (e) {
@@ -88,48 +62,52 @@ export function useCheckout(): IUseCheckout {
         .collection('orders')
         .doc(orderId)
         .set(orderPartial, { merge: true });
+
+      return true;
     } catch (e) {
       setError(new Error(`updateOrder Error: ${e}`));
+      return false;
     }
   };
 
-  const pay = async (stripeClientSecret: string) => {
-    if (!stripe || !elements) {
-      return { success: null, error: null };
+  const markOrderSuccess = async (
+    order: IOrder,
+    userDetails: IUserDetails,
+    paymentDetails: IPaymentDetails,
+  ) => {
+    const updatedOrder = updateOrder(order.id, {
+      paymentDetails,
+      paidAt: Date.now(),
+    });
+
+    if (!updatedOrder) {
+      return { success: false, error: 'Failed to update order' };
     }
 
+    // Update user details if changed
+    setUserData(UserData.DETAILS, userDetails);
+    setUserData(UserData.PAYMENT_DETAILS, paymentDetails);
+
+    // Segment: Payment success event
+    window.analytics.track(
+      `Payment Success from ${userDetails.firstName}${
+        userDetails?.lastName ? ' ' + userDetails.lastName : ''
+      } `,
+      {
+        ...userDetails,
+        ...paymentDetails,
+      },
+    );
+
+    // Delete order request
     try {
-      const { paymentMethod } = await stripe.createPaymentMethod({
-        type: 'card',
-        card: elements.getElement(CardNumberElement),
-      });
-
-      const {
-        error,
-        paymentIntent: { status },
-      } = await stripe.confirmCardPayment(stripeClientSecret, {
-        payment_method: paymentMethod.id,
-      });
-
-      if (error) {
-        return { success: false, error: error?.message };
-      }
-
-      // Payment success
-      if (status === 'succeeded') {
-        // Remove order request from Firestore
-
-        // Segment: Payment success event
-
-        return { success: true, error: null };
-      }
+      firestore.collection('order-requests').doc(order.id).delete();
     } catch (error) {
-      null;
+      return { success: false, error: error?.message };
     }
 
-    // Segment: Payment failure event
-    return { success: false, error: error?.message ?? 'Unknown error' };
+    return { success: true, error: null };
   };
 
-  return { initOrderRequest, updateOrder, pay };
+  return { initOrderRequest, updateOrder, markOrderSuccess };
 }

@@ -141,6 +141,8 @@ function CheckoutHeader() {
             </a>
           </Link>
         </div>
+
+        <HeaderAvatar />
       </div>
     </Contained>
   );

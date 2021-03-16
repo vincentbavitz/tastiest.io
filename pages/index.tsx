@@ -17,7 +17,6 @@ import { useUserData } from '../hooks/useUserData';
 
 interface Props {
   posts: Array<IPost>;
-  // AuthUserInfo: any;
 }
 
 export const getStaticProps: GetStaticProps = async () => {

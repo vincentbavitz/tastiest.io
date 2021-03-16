@@ -63,7 +63,7 @@ export const useAuth = () => {
 
         // Track user sign in
         window.analytics.track('User Signed In', {
-          //
+          userId: user.uid,
         });
 
         return credential;

@@ -1,4 +1,3 @@
-import { StripeError } from '@stripe/stripe-js';
 import {
   CheckoutSignInTabSelected,
   CheckoutStep,
@@ -32,13 +31,14 @@ export const initialCheckoutState: ICheckout = {
       payment: {
         cardHolderName: '',
         cardExpiry: '',
-        cardPostCode: '',
+        cardPostcode: '',
       },
       contact: {
         firstName: '',
         lastName: '',
         birthday: { day: '', month: '', year: '' },
         address: '',
+        mobile: '',
       },
     },
   },
@@ -59,38 +59,6 @@ export enum CheckoutActions {
 // ////////////////////////////// //
 //         Action Creators        //
 // ////////////////////////////// //
-export const setOrder = (item: IOrder) => ({
-  type: CheckoutActions.SET_ORDER,
-  payload: item,
-  // TRIGGER ANALYTICS
-});
-
-export const clearOrder = () => ({
-  type: CheckoutActions.SET_ORDER,
-  payload: undefined,
-  // TRIGGER ANALYTICS
-});
-
-export const setCoupon = (coupon: string) => ({
-  type: CheckoutActions.SET_COUPON,
-  payload: coupon,
-}); // TRIGGER ANALYTICS;
-
-export const removeCoupon = () => ({
-  type: CheckoutActions.SET_COUPON,
-  payload: undefined,
-  // TRIGGER ANALYTICS
-});
-
-export const setStripeError = (error: StripeError) => ({
-  type: CheckoutActions.SET_STRIPE_ERROR,
-  payload: error,
-});
-
-export const clearPaymentError = () => ({
-  type: CheckoutActions.SET_STRIPE_ERROR,
-  payload: undefined,
-});
 
 export const setCheckoutStep = (step: CheckoutStep) => ({
   type: CheckoutActions.SET_CHECKOUT_STEP,

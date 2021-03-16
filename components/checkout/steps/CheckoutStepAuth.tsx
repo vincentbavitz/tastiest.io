@@ -3,12 +3,17 @@ import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { UI } from '../../../constants';
 import { IState } from '../../../state/reducers';
-import { CheckoutSignInTabSelected } from '../../../types/checkout';
+import { CheckoutSignInTabSelected, IOrder } from '../../../types/checkout';
 import { CheckoutAuthTabs } from '../CheckoutAuthTabs';
+import CheckoutOrderSummaryAuth from '../CheckoutOrderSummaryAuth';
 import { CheckoutSignIn } from '../CheckoutSignIn';
 import { CheckoutSignUp } from '../CheckoutSignUp';
 
-export function CheckoutStepAuth() {
+interface Props {
+  order: IOrder;
+}
+
+export function CheckoutStepAuth({ order }: Props) {
   const {
     flow: { signInTabSelected: tab },
   } = useSelector((state: IState) => state.checkout);
@@ -31,6 +36,8 @@ export function CheckoutStepAuth() {
           <CheckoutSignIn />
         )}
       </div>
+
+      <CheckoutOrderSummaryAuth order={order} />
     </div>
   );
 }

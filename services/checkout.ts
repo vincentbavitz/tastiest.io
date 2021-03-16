@@ -66,7 +66,7 @@ export class CheckoutApi {
 
     // We can trust the price, since we got order.deal from Contentful
     paymentIntent = await this.stripe.paymentIntents.create({
-      amount: order.deal.pricePerHeadGBP,
+      amount: Math.ceil(order.deal.pricePerHeadGBP * order.heads * 100),
       currency: 'gbp',
     });
 
@@ -94,18 +94,10 @@ export class CheckoutApi {
 
       const orderRequest = (await doc.data()) as Partial<IOrderRequest>;
 
-      console.log('checkout ➡️ await doc.data();:', doc.data());
-
-      console.log('checkout ➡️ doc:', doc);
-      console.log('checkout ➡️ orderRequest:', orderRequest);
-
       // Get user ID. User MUST be logged in.
       const userDataApi = new UserDataApi();
       const { userId } = await userDataApi.init(this.context);
       const userIsValid = Boolean(userId) && userId === orderRequest?.userId;
-
-      console.log('checkout ➡️ userId:', userId);
-      console.log('checkout ➡️ userIsValid:', userIsValid);
 
       // Ensure all the types and values from Firebase are valid in the order request
       const orderRequestHeadsValid = orderRequest?.heads >= 1;
@@ -114,18 +106,11 @@ export class CheckoutApi {
         Date.now() >
         orderRequest?.timestamp + FIREBASE.ORDER_REQUEST_MAX_AGE_MS;
 
-      console.log(
-        'checkout ➡️ orderRequestHeadsValid:',
-        orderRequestHeadsValid,
-      );
-      console.log('checkout ➡️ orderRequestExpired:', orderRequestExpired);
-
       // TODO - Make descriptive errors;
       if (
         orderRequestExpired ||
         !orderRequestHeadsValid ||
-        !orderRequestSlugIsValid ||
-        !userIsValid
+        !orderRequestSlugIsValid
       ) {
         console.log('exited early, wrong details');
         return null;
@@ -136,8 +121,6 @@ export class CheckoutApi {
       // This could be an innocent error, or the user is sending nefarious requests.
       const cms = new CmsApi();
       const deal = await cms.getDeal(orderRequest.dealId ?? '');
-
-      console.log('checkout ➡️ deal :', deal);
 
       if (!deal) {
         console.log('exited early, no deal');
@@ -155,9 +138,9 @@ export class CheckoutApi {
         paidAt: null,
         orderedAt: Date.now(),
         abandonedAt: null,
+        paymentDetails: null,
+        refund: null,
       };
-
-      console.log('checkout ➡️ order:', order);
 
       // Track the order creation Server Side
       const analytics = new Analytics(process.env.ANALYTICS_WRITE_KEY);

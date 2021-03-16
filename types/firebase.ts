@@ -1,3 +1,4 @@
+import { IPaymentDetails } from './checkout';
 import { ILocation } from './cms';
 import { CuisineSymbol } from './cuisine';
 import { IDateObject } from './various';
@@ -14,6 +15,7 @@ export enum UserData {
   SAVED_ARTICLES = 'savedArticles',
 
   DETAILS = 'details',
+  PAYMENT_DETAILS = 'paymentDetails',
   PREFERENCES = 'preferences',
 
   USER_SESSIONS = 'userSessions',
@@ -47,16 +49,6 @@ export interface IOrderRequest {
   timestamp?: number;
 }
 
-export interface IBooking {
-  datetime: Date;
-  // Confirmed with restaurant
-  hasBooked: boolean;
-  heads: number;
-  totalPriceGBP: number;
-  restaurantId: string;
-  fromSlug: string;
-}
-
 export interface ICover {
   never;
 }
@@ -74,10 +66,11 @@ export type TFavouriteCuisine = {
 export interface IUserDetails {
   // Lookup latitude and longitude using Mapbox API to search by location
   // with contentful
-  firstName: string;
-  lastName: string;
+  firstName: string | null;
+  lastName: string | null;
   address: ILocation | null;
   birthday: IDateObject | null;
+  mobile: string | null;
 }
 
 export interface IUserPreferences {
@@ -105,10 +98,10 @@ export type TUserData<T extends UserData> =
         
     // User details and preferences
     T extends UserData.DETAILS ? Partial<IUserDetails> :
+    T extends UserData.PAYMENT_DETAILS ? Partial<IPaymentDetails> :
     T extends UserData.PREFERENCES ? Partial<IUserPreferences> :
 
     // User orders
-    T extends UserData.BOOKINGS ? Array<IBooking> :
     T extends UserData.COVERS ? Array<ICover> : 
     T extends UserData.RESTAURANTS_VISITED ? Array<string> :
 

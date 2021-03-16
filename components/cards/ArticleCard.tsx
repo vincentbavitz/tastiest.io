@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { TagRow } from 'components/TagRow';
-import router from 'next/dist/client/router';
-import React, { SyntheticEvent } from 'react';
+import Link from 'next/link';
+import React from 'react';
 import { useMeasure } from 'react-use';
 import { IPost } from 'types/cms';
 import { generateURL } from '../../utils/routing';
@@ -26,12 +26,11 @@ export function ArticleCard(props: Props): JSX.Element {
   const [ref, { width }] = useMeasure();
   const isSmall = width < 130;
 
-  const handleClick = (e: SyntheticEvent) => {
-    const { href, as } = generateURL({ city, slug, cuisine });
-
-    e.preventDefault();
-    router.push(href, as);
-  };
+  const { href, as } = generateURL({ city, slug, cuisine });
+  // const handleClick = (e: SyntheticEvent) => {
+  //   e.preventDefault();
+  //   router.push(href, as);
+  // };
 
   return (
     <div
@@ -41,7 +40,7 @@ export function ArticleCard(props: Props): JSX.Element {
         isSmall ? 'rounded-lg' : 'rounded-xl',
         isSmall ? 'pb-3' : 'pb-1',
       )}
-      onClick={e => handleClick(e)}
+      // onClick={e => handleClick(e)}
     >
       <div
         style={{ paddingBottom: '60%' }}
@@ -51,7 +50,7 @@ export function ArticleCard(props: Props): JSX.Element {
           <div className="absolute inset-0">
             <img
               className="object-cover w-full h-full"
-              src={featureImage?.imageUrl}
+              src={`${featureImage?.imageUrl}?w=300`}
               alt={featureImage?.description}
             />
           </div>
@@ -71,7 +70,9 @@ export function ArticleCard(props: Props): JSX.Element {
               'font-somatic overflow-hidden cursor-pointer',
             )}
           >
-            {title}
+            <Link href={href} as={as}>
+              <a href="">{title}</a>
+            </Link>
           </div>
 
           {!compact && <p className="text-base text-gray-700">{description}</p>}

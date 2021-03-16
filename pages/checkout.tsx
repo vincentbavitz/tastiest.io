@@ -1,6 +1,7 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { GetServerSideProps } from 'next';
+import Head from 'next/head';
 import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CheckoutApi } from 'services/checkout';
@@ -10,7 +11,6 @@ import { CheckoutStepAuth } from '../components/checkout/steps/CheckoutStepAuth'
 import { CheckoutStepComplete } from '../components/checkout/steps/CheckoutStepComplete';
 import { CheckoutStepPayment } from '../components/checkout/steps/CheckoutStepPayment';
 import { Contained } from '../components/Contained';
-import { UI } from '../constants';
 import { ScreenContext } from '../contexts/screen';
 import { setCheckoutStep } from '../state/checkout';
 import { IState } from '../state/reducers';
@@ -50,6 +50,8 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const checkoutApi = new CheckoutApi(context);
   const order: IOrder = await checkoutApi.getOrderFromOrderRequest(orderId);
 
+  console.log('checkout ➡️ order:', order);
+
   // If no order exists in Firebase, redirect to home
   if (!order) {
     return {
@@ -72,10 +74,19 @@ export const getServerSideProps: GetServerSideProps = async context => {
 function Checkout(props: Props) {
   const { isDesktop } = useContext(ScreenContext);
 
-  return isDesktop ? (
-    <CheckoutDesktop {...props} />
-  ) : (
-    <CheckoutMobile {...props} />
+  return (
+    <div>
+      <Head>
+        <title>Checkout - Tastiest</title>
+      </Head>
+      <Elements stripe={stripePromise}>
+        {isDesktop ? (
+          <CheckoutDesktop {...props} />
+        ) : (
+          <CheckoutMobile {...props} />
+        )}
+      </Elements>
+    </div>
   );
 }
 
@@ -101,24 +112,21 @@ function CheckoutDesktop(props: Props) {
   const isCompleteStep = isSignedIn && step === CheckoutStep.COMPLETE;
 
   return (
-    <Elements stripe={stripePromise}>
-      <Contained>
-        <div className="flex flex-col w-7/12 mt-12 space-y-10">
-          <div style={{ minWidth: `${UI.CHECKOUT_SPLIT_WIDTH_PX}px` }}>
-            <CheckoutStepIndicator />
-          </div>
+    <Contained>
+      <div className="relative flex flex-col w-full mt-12 space-y-10">
+        <CheckoutStepIndicator />
 
-          {isAuthStep && <CheckoutStepAuth />}
-          {isPaymentStep && (
-            <CheckoutStepPayment
-              stripeClientSecret={stripeClientSecret}
-              order={order}
-            />
-          )}
-          {isCompleteStep && <CheckoutStepComplete />}
-        </div>
-      </Contained>
-    </Elements>
+        {isAuthStep && <CheckoutStepAuth order={order} />}
+        {isPaymentStep && (
+          <CheckoutStepPayment
+            userId={userId}
+            stripeClientSecret={stripeClientSecret}
+            order={order}
+          />
+        )}
+        {isCompleteStep && <CheckoutStepComplete />}
+      </div>
+    </Contained>
   );
 }
 

@@ -14,7 +14,8 @@ interface Props {
 export function ArticleWidgetMap({ city, location, restaurantName }: Props) {
   const { isDesktop } = useContext(ScreenContext);
 
-  console.log('ArticleWidgetMap ➡️ location:', location);
+  console.log('ArticleWidgetMap ➡️ fsadasd:');
+  console.log('ArticleWidgetMap ➡️ isDesktop:', isDesktop);
 
   return (
     <div className="flex flex-col w-full desktop:flex-row desktop:justify-center desktop:space-x-8">
@@ -25,7 +26,9 @@ export function ArticleWidgetMap({ city, location, restaurantName }: Props) {
           src={getMapBoxStaticSource(
             location?.lat,
             location?.lon,
-            !isDesktop ? 1200 : 400,
+            isDesktop ? 1100 : 900,
+            isDesktop ? 300 : 500,
+            isDesktop ? 10 : 15,
           )}
         />
       </div>

@@ -1,6 +1,7 @@
 import TastiestLogo from '@svg/brand.svg';
 import EmailSVG from '@svg/email.svg';
 import PasswordSVG from '@svg/lock.svg';
+import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { METADATA } from '../../constants';
@@ -30,6 +31,7 @@ export function SignInModal() {
   const { isMobile } = useContext(ScreenContext);
   const dispatch = useDispatch();
 
+  const router = useRouter();
   const [signInEmail, setSignInEmail] = useState('');
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
@@ -37,6 +39,16 @@ export function SignInModal() {
   const [step, setStep] = useState<LoginFlowStep>(LoginFlowStep.SIGN_IN);
 
   const [resetPasswordSuccess, setResetPasswordSuccess] = useState(null);
+
+  const handleLocationChange = () => {
+    dispatch(closeSignInModal());
+  };
+
+  // Close modal on location change
+  useEffect(() => {
+    router.events.on('routeChangeComplete', handleLocationChange);
+    return () => router.events.off('routeChangeComplete', handleLocationChange);
+  }, []);
 
   // Close if the user is signed in
   useEffect(() => {

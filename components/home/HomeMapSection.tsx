@@ -16,7 +16,7 @@ export function HomeMapSection() {
       <div className="absolute top-0 bottom-0 left-0 right-0">
         <img
           className="object-cover w-full h-full"
-          src={getMapBoxStaticSource(-0.1127, 51.5188)}
+          src={getMapBoxStaticSource(51.5188, -0.1127)}
         />
       </div>
 

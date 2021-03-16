@@ -1,8 +1,8 @@
+import { CityIndictor } from 'components/CityIndictor';
 import React from 'react';
 import { UI } from '../../../constants';
 import { IAuthor } from '../../../types/cms';
 import { Contained } from '../../Contained';
-import { ArticleWidgetAuthor } from '../widgets/ArticleWidgetAuthor';
 
 interface Props {
   title: string;
@@ -28,7 +28,7 @@ export function ArticleSectionTitle(props: Props) {
           </h1>
         </div>
 
-        <ArticleWidgetAuthor author={author} date={date} />
+        <CityIndictor />
       </div>
     </Contained>
   );

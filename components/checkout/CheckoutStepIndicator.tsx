@@ -1,6 +1,7 @@
 import CheckCircleSVG from '@svg/checkout/check-circle.svg';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
+import { UI } from '../../constants';
 import { IState } from '../../state/reducers';
 import { CheckoutStep } from '../../types/checkout';
 
@@ -14,14 +15,19 @@ export function CheckoutStepIndicator() {
   } = useSelector((state: IState) => state.checkout);
 
   return (
-    <div className="relative flex items-center justify-between w-full">
-      <ProgressBar step={step} />
-      <CheckCircle complete label="Log in" />
-      <CheckCircle
-        complete={step !== CheckoutStep.SIGN_IN}
-        label="Details and Checkout"
-      />
-      <CheckCircle complete={step === CheckoutStep.COMPLETE} label="Done!" />
+    <div
+      className="w-full tablet:w-7/12"
+      style={{ minWidth: `${UI.CHECKOUT_SPLIT_WIDTH_PX}px` }}
+    >
+      <div className="relative flex items-center justify-between w-full">
+        <ProgressBar step={step} />
+        <CheckCircle complete label="Log in" />
+        <CheckCircle
+          complete={step !== CheckoutStep.SIGN_IN}
+          label="Details and Checkout"
+        />
+        <CheckCircle complete={step === CheckoutStep.COMPLETE} label="Done!" />
+      </div>
     </div>
   );
 }

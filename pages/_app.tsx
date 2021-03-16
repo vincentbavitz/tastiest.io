@@ -48,6 +48,16 @@ function App({ Component, pageProps }: AppProps) {
     // Update analytics page location
     window.analytics.page();
 
+    console.log('_app ➡️ url:', url);
+    console.log(
+      '_app ➡️ METADATA.URL_CHECKOUT_PAGE_REGEX:',
+      METADATA.URL_CHECKOUT_PAGE_REGEX,
+    );
+    console.log(
+      '_app ➡️ METADATA.URL_CHECKOUT_PAGE_REGEX.test(url):',
+      METADATA.URL_CHECKOUT_PAGE_REGEX.test(url),
+    );
+
     // Update onCheckoutPage when user is checking out
     store.dispatch(
       setOnCheckoutPage(METADATA.URL_CHECKOUT_PAGE_REGEX.test(url)),
@@ -55,6 +65,8 @@ function App({ Component, pageProps }: AppProps) {
   };
 
   useEffect(() => {
+    handleLocationChange(router.route);
+
     router.events.on('routeChangeComplete', handleLocationChange);
 
     return () => router.events.off('routeChangeComplete', handleLocationChange);

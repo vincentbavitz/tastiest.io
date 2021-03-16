@@ -8,12 +8,18 @@ export interface IOrder {
   heads: number;
   fromSlug: string;
   totalPrice: number;
+  paymentDetails: null | IPaymentDetails;
 
   // Timestamps
   // Null denotes not paid yet; not done yet.
   paidAt: null | number;
   orderedAt: null | number;
   abandonedAt: null | number;
+
+  refund: null | {
+    amountGBP: number;
+    timestamp: number;
+  };
 }
 
 export enum CheckoutStep {
@@ -29,21 +35,8 @@ export enum CheckoutSignInTabSelected {
 
 export interface IPaymentDetails {
   cardHolderName: string;
-  cardExpiry: string;
-  cardPostCode: string;
-}
-
-export interface IContactDetails {
-  firstName: string;
-  lastName: string;
-  birthday: { day: string; month: string; year: string };
-  address: string;
-  mobile: string;
-}
-
-export interface ICheckoutDetails {
-  payment: IPaymentDetails;
-  contact: IContactDetails;
+  cardLastFour: string;
+  cardPostcode: string;
 }
 
 export enum CardBrand {
