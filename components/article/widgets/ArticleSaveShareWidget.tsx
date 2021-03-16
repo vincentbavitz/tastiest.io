@@ -76,7 +76,7 @@ export function ArticleSaveShareWidget(props: Props) {
       >
         <div
           onClick={() => toggleSaveArticle(id)}
-          className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium cursor-pointer hover:bg-subtle-2 rounded-l-md"
+          className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 cursor-pointer hover:bg-white rounded-l-md"
         >
           {isArticleSaved ? (
             <HeartFilledPrimarySVG className={isDesktop ? 'h-6' : 'h-8'} />
@@ -87,7 +87,7 @@ export function ArticleSaveShareWidget(props: Props) {
         </div>
 
         <div
-          className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium cursor-pointer hover:bg-subtle-2 rounded-r-md"
+          className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 cursor-pointer hover:bg-white rounded-r-md"
           onClick={() => setIsDropdownOpen(true)}
         >
           <ShareSVG className={isDesktop ? 'h-5' : 'h-8'} />

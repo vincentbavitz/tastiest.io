@@ -66,8 +66,8 @@ export function ArticleCard(props: Props): JSX.Element {
               paddingBottom: '2.1em',
             }}
             className={classNames(
-              isSmall ? 'text-base' : 'text-xl',
-              'font-somatic overflow-hidden cursor-pointer',
+              isSmall ? 'text-base' : 'text-lg',
+              'font-somatic overflow-hidden cursor-pointer hover:underline',
             )}
           >
             <Link href={href} as={as}>
