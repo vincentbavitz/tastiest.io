@@ -16,7 +16,7 @@ export default function Layout({ children }: Props) {
       <SignInModal />
 
       <div
-        style={{ height: '100vh' }}
+        style={{ minHeight: '100vh' }}
         className="flex flex-col justify-between"
       >
         <div className="relative flex-grow">

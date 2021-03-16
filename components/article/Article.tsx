@@ -34,48 +34,26 @@ function ArticleMobile(post: IPost) {
 
   return (
     <article>
-      <ArticleSectionTitle title={title} author={author} date={date} />
+      <ArticleSectionTitle title={title} city={city} />
       <ArticleDescriptionSection description={description} />
 
       <ArticleSaveShareWidget id={id} title={title} slug={slug} />
-      <ArticleSectionAbstract
-        city={city}
-        video={video}
-        location={restaurant?.location}
-        restaurantName={restaurant?.name}
-      ></ArticleSectionAbstract>
+      <ArticleSectionAbstract {...post} />
       <ArticleSectionContent {...post} />
     </article>
   );
 }
 
 function ArticleDesktop(post: IPost) {
-  const {
-    id,
-    title,
-    description,
-    author,
-    date,
-    slug,
-    city,
-    restaurant,
-    video,
-  } = post;
+  const { id, title, description, slug, city, restaurant, video } = post;
 
   console.log('Article ➡️ props:', post);
 
   return (
     <article>
-      <ArticleSectionTitle title={title} author={author} date={date} />
-      <ArticleSectionAbstract
-        city={city}
-        video={video}
-        location={restaurant?.location}
-        restaurantName={restaurant?.name}
-      >
-        <ArticleSaveShareWidget id={id} title={title} slug={slug} />
-        <ArticleDescriptionSection description={description} />
-      </ArticleSectionAbstract>
+      <ArticleSectionTitle title={title} city={city} />
+      <ArticleSectionAbstract {...post} />
+
       <ArticleSectionContent {...post} />
     </article>
   );

@@ -1,9 +1,11 @@
+import CovidAwareSVG from '@svg/article/covid-aware.svg';
 import React, { useContext } from 'react';
 import { ScreenContext } from '../../../contexts/screen';
 import { IPost } from '../../../types/cms';
 import { Contained } from '../../Contained';
 import { RichBody } from '../../RichBody';
-import { ArticleWidgetOrderNow } from '../widgets/ArticleWidgetOrderNow';
+import ArticleContained from '../ArticleContained';
+import { ArticleOrderNowDesktop } from '../widgets/ArticleOrderNowDesktop';
 import { ArticleSectionFeatureImage } from './ArticleSectionFeatureImage';
 
 // TODO
@@ -12,33 +14,33 @@ import { ArticleSectionFeatureImage } from './ArticleSectionFeatureImage';
 export function ArticleSectionContent(post: IPost) {
   const { isDesktop } = useContext(ScreenContext);
 
-  return (
-    <Contained>
-      {isDesktop ? <DesktopContent {...post} /> : <MobileContent {...post} />}
-    </Contained>
-  );
+  return isDesktop ? <DesktopContent {...post} /> : <MobileContent {...post} />;
 }
 
 const MobileContent = (post: IPost) => (
-  <div className="flex flex-col space-y-4">
-    <div>{post.description}</div>
-    <ArticleWidgetOrderNow deal={post?.deal} slug={post.slug} />
-    <RichBody body={post.body} />
-    <ArticleSectionFeatureImage featureImage={post?.featureImage} />
-  </div>
+  <Contained>
+    <div className="flex flex-col space-y-4">
+      <div>{post.description}</div>
+      <ArticleOrderNowDesktop deal={post?.deal} slug={post.slug} />
+      <RichBody body={post.body} />
+      <ArticleSectionFeatureImage featureImage={post?.featureImage} />
+    </div>
+  </Contained>
 );
 
 const DesktopContent = (post: IPost) => (
-  <div className="flex flex-col">
-    <div className="flex space-x-10">
-      <div className="w-8/12 mt-16">
-        <RichBody body={post.body} />
-      </div>
-
-      <div className="w-4/12 mt-12">
-        <ArticleWidgetOrderNow deal={post?.deal} slug={post?.slug} />
-      </div>
+  <ArticleContained>
+    <div className="flex items-center justify-start space-x-4">
+      <h3 className="text-xl font-medium">{post?.restaurant?.name}</h3>
+      <CovidAwareSVG className="h-12" />
     </div>
-    <ArticleSectionFeatureImage featureImage={post?.featureImage} />
-  </div>
+
+    <div className="flex flex-col mt-4 space-y-6">
+      <div className="">{post?.description}</div>
+
+      <ArticleSectionFeatureImage featureImage={post?.featureImage} />
+
+      <RichBody body={post.body} />
+    </div>
+  </ArticleContained>
 );

@@ -1,57 +1,79 @@
 import CharacterEatingSVG from '@svg/article/character-eating.svg';
 import XiaoDividerSVG from '@svg/article/xiao-divider.svg';
-import { Contained } from 'components/Contained';
-import React, { ReactNode, useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useWindowScroll } from 'react-use';
+import { setArticleOfferIsFloating } from 'state/navigation';
+import { IState } from 'state/reducers';
+import { IPost } from 'types/cms';
 import { UI } from '../../../constants';
 import { ScreenContext } from '../../../contexts/screen';
-import { ILocation } from '../../../types/cms';
+import ArticleContained from '../ArticleContained';
 import { ArticleFeatureVideoWidget } from '../widgets/ArticleFeatureVideoWidget';
-import { ArticleWidgetMap } from '../widgets/ArticleWidgetMap';
-
-interface Props {
-  city: string;
-  video: string;
-  location: ILocation;
-  restaurantName: string;
-  children?: ReactNode;
-}
+import { ArticleOrderNowDesktop } from '../widgets/ArticleOrderNowDesktop';
+import { ArticleSaveShareWidget } from '../widgets/ArticleSaveShareWidget';
 
 const EATING_CHARACTER_SIZE_REM = 22;
 
-export function ArticleSectionAbstract(props: Props) {
-  const { city, location, video, restaurantName, children } = props;
-
+export function ArticleSectionAbstract(props: IPost) {
+  const { id, title, slug, video, deal } = props;
   const { isDesktop } = useContext(ScreenContext);
 
+  const dispatch = useDispatch();
+
+  const ref = useRef(null);
+  const { y: windowScrollY } = useWindowScroll();
+
+  // Whether or not we follow scroll or remain in place
+  const { articleOfferIsFloating: isFloating } = useSelector(
+    (state: IState) => state.navigation,
+  );
+
+  useEffect(() => {
+    const locationY = ref.current?.getBoundingClientRect()?.top;
+
+    console.log('ArticleOrderNowDesktop ➡️ locationY:', locationY);
+    console.log('ArticleOrderNowDesktop ➡️ isFloating:', isFloating);
+
+    if (locationY < UI.ARTICLE.OFFER_WIDGET_FLOAT_TOP_PX && !isFloating) {
+      dispatch(setArticleOfferIsFloating(true));
+    }
+
+    if (isFloating && locationY >= UI.ARTICLE.OFFER_WIDGET_FLOAT_TOP_PX) {
+      dispatch(setArticleOfferIsFloating(false));
+    }
+  }, [windowScrollY]);
+
   return (
-    <Contained backgroundColor="secondary-1">
+    <div className="relative w-full bg-secondary-1">
       {!isDesktop ? <CharacterEatingMobile /> : <CharacterEatingDesktop />}
 
-      <div className="flex flex-col items-center mb-16 space-y-10 desktop:pt-6">
-        {children}
+      <ArticleSaveShareWidget id={id} title={title} slug={slug} />
 
-        <ArticleWidgetMap
-          city={city}
-          restaurantName={restaurantName}
-          location={location}
-        />
-        <ArticleFeatureVideoWidget video={video} />
-      </div>
+      <ArticleContained>
+        <div className="mt-6">
+          <div ref={ref}>
+            <ArticleFeatureVideoWidget video={video} />
+          </div>
+        </div>
 
-      <div className="flex justify-center w-full h-4 mb-12">
-        <XiaoDividerSVG className="h-32 -mt-16 desktop:h-56 desktop:-mt-32" />
-      </div>
-    </Contained>
+        <div className="flex justify-center w-full h-4 pt-20 mb-12">
+          <XiaoDividerSVG className="h-32 -mt-20 desktop:h-56 desktop:-mt-32" />
+        </div>
+      </ArticleContained>
+
+      <ArticleOrderNowDesktop deal={deal} slug={slug} />
+    </div>
   );
 }
 
 const CharacterEatingDesktop = () => (
   <div
-    className="absolute inset-0 z-0 flex justify-center"
+    className="absolute inset-0 flex justify-center pointer-events-none"
     style={{ height: 'fit-content', transform: 'translateY(-73%)' }}
   >
     <div
-      className="relative flex flex-start"
+      className="relative z-0 flex flex-start"
       style={{
         width: '80vw',
         minWidth: `${

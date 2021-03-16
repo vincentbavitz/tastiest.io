@@ -1,17 +1,15 @@
 import { CityIndictor } from 'components/CityIndictor';
 import React from 'react';
 import { UI } from '../../../constants';
-import { IAuthor } from '../../../types/cms';
 import { Contained } from '../../Contained';
 
 interface Props {
   title: string;
-  author: IAuthor;
-  date: string;
+  city: string;
 }
 
 export function ArticleSectionTitle(props: Props) {
-  const { title, author, date } = props;
+  const { title, city } = props;
 
   return (
     <Contained>
@@ -23,12 +21,12 @@ export function ArticleSectionTitle(props: Props) {
             maxWidth: `${UI.ARTICLE.TITLE_MAX_WIDTH_REM}rem`,
           }}
         >
-          <h1 className="text-4xl leading-none text-center font-somatic text-primary desktop:text-5xl tablet:text-fixexl">
+          <h1 className="text-4xl leading-tight text-center font-somatic text-primary desktop:text-5xl tablet:text-fixexl">
             {title}
           </h1>
         </div>
 
-        <CityIndictor />
+        <CityIndictor city={city} />
       </div>
     </Contained>
   );

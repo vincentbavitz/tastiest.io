@@ -38,9 +38,9 @@ export const Select = (props: Props) => {
       >
         <select
           className={classNames(
-            'block w-full pl-2 tracking-wider bg-transparent border-2 rounded-lg outline-none appearance-none border-secondary center',
-            size === 'small' && 'py-1 text-sm pr-2',
-            size === 'medium' && 'py-2 pr-10',
+            'block w-full pl-2 tracking-wider bg-transparent border-2 outline-none appearance-none border-secondary center',
+            size === 'small' && 'py-0 text-sm pr-2 rounded',
+            size === 'medium' && 'py-2 pr-10 rounded-lg',
           )}
           onChange={event => props?.onChange?.(event?.target?.value)}
         >
@@ -53,8 +53,8 @@ export const Select = (props: Props) => {
         </select>
         <TriangleSVG
           className={classNames(
-            'absolute right-0 z-0 transform rotate-90 fill-current text-secondary',
-            size === 'small' && 'h-3 mr-2',
+            'absolute right-0 z-0 transform rotate-90 fill-current text-primary pointer-events-none',
+            size === 'small' && 'h-2 mr-2',
             size === 'medium' && 'h-4 mr-4',
           )}
         />

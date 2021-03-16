@@ -44,18 +44,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const cms = new CmsApi();
 
-  console.log('[slug] ➡️ params', params);
-  console.log('[slug] ➡️ (String(params?.slug)', String(params?.slug) ?? '');
-
   const post = await cms.getPostBySlug(String(params?.slug) ?? '');
   console.log(`Building page: %c${params.slug}`, 'color: purple;');
-  console.log('[slug] ➡️ params:', params);
 
   if (!post) {
     return { notFound: true };
   }
-
-  console.log('[slug] ➡️ post:', post);
 
   return {
     props: {
@@ -75,8 +69,6 @@ function Post(post: IPost) {
       window.scrollTo(0, 0);
     }
   }, []);
-
-  console.log('[slug] ➡️ post:', post);
 
   return (
     <>

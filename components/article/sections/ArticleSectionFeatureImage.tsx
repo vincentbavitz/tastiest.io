@@ -6,17 +6,13 @@ interface Props {
 
 export function ArticleSectionFeatureImage({ featureImage }: Props) {
   return (
-    <div className="pb-4 my-10 desktop:pb-0">
-      <div
-        style={{ paddingBottom: '40%' }}
-        className="relative w-full h-0 mb-4 overflow-hidden bg-gray-300 rounded-md"
-      >
+    <div className="pb-4">
+      <div className="relative w-full mb-4 overflow-hidden bg-gray-300 rounded-md aspect-w-16 aspect-h-9">
         <div className="absolute inset-0">
           <img
-            src={featureImage?.imageUrl}
+            src={`${featureImage?.imageUrl}?w=600`}
             alt={featureImage?.description}
-            style={{ objectFit: 'cover' }}
-            className="w-full h-full"
+            className="object-cover w-full h-full"
           />
         </div>
       </div>

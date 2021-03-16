@@ -7,6 +7,7 @@ export interface INavigation {
   isSignInModalOpen: boolean;
   cuisineBarScrollPos: number;
   openedModal: ModalInstance | null;
+  articleOfferIsFloating: boolean;
 }
 
 export const initialNavigationState: INavigation = {
@@ -14,6 +15,7 @@ export const initialNavigationState: INavigation = {
   isSignInModalOpen: false,
   cuisineBarScrollPos: 0,
   openedModal: null,
+  articleOfferIsFloating: false,
 };
 
 export enum NavigationActions {
@@ -24,6 +26,7 @@ export enum NavigationActions {
   TOGGLE_SEARCH_OVERLAY = 'TOGGLE_SEARCH_OVERLAY',
   SAVE_CUISINE_BAR_SCROLL_POS = 'SAVE_CUISINE_BAR_SCROLL_POS',
   SET_MODAL_IS_OPEN = 'SET_MODAL_IS_OPEN',
+  SET_ARTICLE_OFFER_IS_FLOATING = 'SET_ARTICLE_OFFER_IS_FLOATING',
 }
 
 // ////////////////////////////// //
@@ -58,4 +61,9 @@ export const closeSignInModal = () => ({
 export const setCurrentOpenModal = (isOpen: boolean) => ({
   type: NavigationActions.SET_MODAL_IS_OPEN,
   payload: isOpen,
+});
+
+export const setArticleOfferIsFloating = (floating: boolean) => ({
+  type: NavigationActions.SET_ARTICLE_OFFER_IS_FLOATING,
+  payload: floating,
 });

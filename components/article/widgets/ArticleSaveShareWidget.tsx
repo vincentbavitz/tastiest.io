@@ -1,8 +1,9 @@
 import HeartFilledPrimarySVG from '@svg/heart-filled-primary.svg';
 import HeartPrimarySVG from '@svg/heart-primary.svg';
 import ShareSVG from '@svg/share.svg';
+import { ScreenContext } from 'contexts/screen';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useArticle } from '../../../hooks/useArticle';
 import { useAuth } from '../../../hooks/useAuth';
 import { useUserData } from '../../../hooks/useUserData';
@@ -41,6 +42,7 @@ export function ArticleSaveShareWidget(props: Props) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const articleUrl = `tastiest.io${router.asPath}`;
 
+  const { isDesktop } = useContext(ScreenContext);
   const isArticleSaved = userData?.savedArticles?.find(saved => id === saved);
 
   const dropdownItems: Array<IShareDropdownItems> = [
@@ -77,9 +79,9 @@ export function ArticleSaveShareWidget(props: Props) {
           className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium cursor-pointer hover:bg-subtle-2 rounded-l-md"
         >
           {isArticleSaved ? (
-            <HeartFilledPrimarySVG className="h-8" />
+            <HeartFilledPrimarySVG className={isDesktop ? 'h-6' : 'h-8'} />
           ) : (
-            <HeartPrimarySVG className="h-8" />
+            <HeartPrimarySVG className={isDesktop ? 'h-6' : 'h-8'} />
           )}
           <span>Save</span>
         </div>
@@ -88,7 +90,7 @@ export function ArticleSaveShareWidget(props: Props) {
           className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium cursor-pointer hover:bg-subtle-2 rounded-r-md"
           onClick={() => setIsDropdownOpen(true)}
         >
-          <ShareSVG className="h-8" />
+          <ShareSVG className={isDesktop ? 'h-5' : 'h-8'} />
           <span>Share</span>
         </div>
 
@@ -97,12 +99,13 @@ export function ArticleSaveShareWidget(props: Props) {
           onClickAway={() => setIsDropdownOpen(false)}
           pull="center"
           offsetX={-50}
-          offsetY={25}
+          offsetY={35}
         >
           <>
             <div className="px-3 pt-1 pb-2">
               <InputGroup className="w-full bg-opacity-25 rounded-sm bg-secondary">
                 <InputAbstract
+                  size="small"
                   style={{ minWidth: '9rem' }}
                   border="none"
                   readonly

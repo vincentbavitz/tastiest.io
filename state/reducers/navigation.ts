@@ -35,6 +35,9 @@ export const navigationReducer = (
     case NavigationActions.SET_MODAL_IS_OPEN: {
       return { ...state, modalIsOpen: action.payload };
     }
+    case NavigationActions.SET_ARTICLE_OFFER_IS_FLOATING: {
+      return { ...state, articleOfferIsFloating: action.payload };
+    }
     default:
       return state;
   }
