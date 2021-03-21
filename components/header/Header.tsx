@@ -52,8 +52,8 @@ function MobileHeader() {
 
         <div className="antialiased">
           <Link href="/">
-            <a className="flex items-center flex-shrink-0 tastiest-logo-link text-secondary">
-              <TastiestLogo className="h-8 fill-current" />
+            <a className="flex items-center flex-shrink-0">
+              <TastiestLogo className="h-8 fill-current text-primary" />
             </a>
           </Link>
         </div>
@@ -109,8 +109,8 @@ function DesktopHeader() {
           <div className="flex items-center justify-between w-full antialiased">
             <div className="flex flex-grow">
               <Link href="/">
-                <a className="flex items-center flex-shrink-0 tastiest-logo-link text-secondary">
-                  <TastiestLogo className="h-8 fill-current" />
+                <a className="flex items-center flex-shrink-0">
+                  <TastiestLogo className="h-8 fill-current text-primary" />
                 </a>
               </Link>
               <HeaderSearch
