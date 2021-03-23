@@ -157,7 +157,6 @@ const Preferences = ({
 
       <Contained maxWidth={PAGE_WIDTH}>
         <div className="flex flex-col space-y-8 tablet:space-y-12">
-          FIRST NAME
           <PreferenceBlock
             title="Your favourite Cuisines"
             subtitle="So we know what to recommend to you."

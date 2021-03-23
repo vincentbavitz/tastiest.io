@@ -21,7 +21,7 @@ export function SuggestDish() {
     <div
       ref={ref}
       className={classNames(
-        'relative flex w-full justify-end -mb-10',
+        'relative flex w-full justify-end',
         isDesktop && !isHuge && 'space-x-10',
       )}
     >
@@ -30,7 +30,7 @@ export function SuggestDish() {
           className="relative"
           style={{
             width: '30rem',
-            marginLeft: isHuge ? '0' : '-12vw',
+            marginLeft: isHuge ? '0' : '-22vw',
           }}
         >
           <SuggestDishDesktopSVG
@@ -66,33 +66,33 @@ export function SuggestDish() {
         )}
 
         <div className="mt-1">
-          <Title level={3} className="text-primary">
+          <Title level={3} className="font-medium text-primary">
             Location of restaurant
           </Title>
-          <InputAbstract size="large"></InputAbstract>
+          <InputAbstract></InputAbstract>
         </div>
 
         <div className="flex mt-4 space-x-4">
           <div className="flex-1">
-            <Title level={3} className="text-primary">
+            <Title level={3} className="font-medium text-primary">
               Dish name
             </Title>
-            <InputAbstract size="large"></InputAbstract>
+            <InputAbstract></InputAbstract>
           </div>
 
           <div className="flex-1">
-            <Title level={3} className="text-primary">
+            <Title level={3} className="font-medium text-primary">
               Cuisine
             </Title>
-            <InputAbstract size="large"></InputAbstract>
+            <InputAbstract></InputAbstract>
           </div>
         </div>
 
         <div className="mt-4 mb-2">
-          <Title level={3} className="text-primary">
+          <Title level={3} className="font-medium text-primary">
             Email address
           </Title>
-          <InputAbstract size="large"></InputAbstract>
+          <InputAbstract></InputAbstract>
         </div>
 
         {isDesktop ? (

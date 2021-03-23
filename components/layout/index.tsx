@@ -1,4 +1,6 @@
+import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
+import { NAVIGATION } from '../../constants';
 import { CuisineBar } from '../cuisine/CuisineBar';
 import { Footer } from '../Footer';
 import { Header } from '../header/Header';
@@ -11,6 +13,12 @@ interface Props {
 }
 
 export default function Layout({ children }: Props) {
+  // We sometimes render elements which stick to the footer,
+  // like <SuggestDish />
+
+  const { pathname } = useRouter();
+  const renderSuggestDish = NAVIGATION.SUGGEST_DISH_RENDER_PAGES.test(pathname);
+
   return (
     <>
       <SignInModal />
@@ -19,12 +27,16 @@ export default function Layout({ children }: Props) {
         style={{ minHeight: '100vh' }}
         className="flex flex-col justify-between"
       >
-        <div className="relative flex-grow">
+        <div className="relative flex flex-col flex-grow">
           <SearchOverlay />
           <Header />
           <CuisineBar />
 
-          <div className="flex-grow">{children}</div>
+          {/* If you'd like an element to stick to the footer in your page, simply wrap the */}
+          {/* top <div> and the button <div> in <></> and they'll be split */}
+          <div className="relative flex flex-col justify-between flex-grow">
+            {children}
+          </div>
         </div>
 
         <div>

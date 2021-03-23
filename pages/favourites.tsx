@@ -93,54 +93,55 @@ function Favourites(props: Props) {
 
   return (
     <div>
-      <div className="relative w-full mt-6 mb-12">
-        {isDesktop ? (
-          <Contained>
-            <div className="relative flex justify-center w-full">
+      <div className="w-full h-full">
+        <div className="relative w-full h-full mt-6 mb-12">
+          {isDesktop ? (
+            <Contained>
+              <div className="relative flex justify-center w-full">
+                {BackdropSVG}
+              </div>
+
+              <div className="absolute inset-0 flex items-center justify-center">
+                <h1 className="text-3xl text-center font-somatic text-primary">
+                  {displayTitle}
+                </h1>
+              </div>
+            </Contained>
+          ) : (
+            <>
               {BackdropSVG}
-            </div>
 
-            <div className="absolute inset-0 flex items-center justify-center">
-              <h1 className="text-3xl text-center font-somatic text-primary">
-                {displayTitle}
-              </h1>
-            </div>
-          </Contained>
-        ) : (
-          <>
-            {BackdropSVG}
-
-            <div className="absolute inset-0 flex items-center justify-center">
-              <h1
-                style={{
-                  fontSize: 'calc(1rem + 2vw)',
-                }}
-                className="text-center font-somatic text-primary"
-              >
-                {displayTitle}
-              </h1>
-            </div>
-          </>
-        )}
-      </div>
-
-      {savedPosts?.length ? (
-        <div className="flex flex-col">
-          <CardGrid>
-            {savedPosts?.map(post => (
-              <ArticleCardFavourite
-                {...post}
-                key={post.id}
-                isFavourite={savedPostSlugs?.some(
-                  saved => saved === post?.slug,
-                )}
-                onToggleFavourite={() => toggleSaveArticle(post.slug)}
-              />
-            ))}
-          </CardGrid>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <h1
+                  style={{
+                    fontSize: 'calc(1rem + 2vw)',
+                  }}
+                  className="text-center font-somatic text-primary"
+                >
+                  {displayTitle}
+                </h1>
+              </div>
+            </>
+          )}
         </div>
-      ) : null}
 
+        {savedPosts?.length ? (
+          <div className="flex flex-col">
+            <CardGrid>
+              {savedPosts?.map(post => (
+                <ArticleCardFavourite
+                  {...post}
+                  key={post.id}
+                  isFavourite={savedPostSlugs?.some(
+                    saved => saved === post?.slug,
+                  )}
+                  onToggleFavourite={() => toggleSaveArticle(post.slug)}
+                />
+              ))}
+            </CardGrid>
+          </div>
+        ) : null}
+      </div>
       <div className="mt-20 mb-10">
         <RecommendedPosts
           small

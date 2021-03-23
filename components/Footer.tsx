@@ -14,7 +14,7 @@ export function Footer() {
   const { isDesktop, isHuge } = useContext(ScreenContext);
 
   return (
-    <div className="py-8 mt-10 font-normal text-center text-white bg-primary">
+    <div className="py-8 font-normal text-center text-white bg-primary">
       <Contained>
         {isDesktop ? <DesktopFooter isHuge={isHuge} /> : <MobileFooter />}
       </Contained>
@@ -27,20 +27,19 @@ const MobileFooter = () => (
     <div className="hidden mobile:inline-block">
       <FooterColumn title="Quick Links">
         <div className="space-y-4 text-sm font-normal leading-tight whitespace-nowrap">
-          <p className="">How It Works</p>
-          <p className="">Our Mission</p>
-          <p className="">Tastiest For Restaurants</p>
-          <p className="">Press Kit</p>
+          <a className="hover:underline">How It Works</a>
+          <a className="hover:underline">Our Mission</a>
+          <a href="restaurants.tastiest.io" className="hover:underline">
+            Tastiest For Restaurants
+          </a>
+          <a className="hover:underline">Press Kit</a>
         </div>
       </FooterColumn>
     </div>
 
     <FooterColumn title="Follow Us">
       <div className="grid grid-cols-2 grid-rows-2 gap-y-2 justify-items-center">
-        <InstagramSVG className="w-10 h-10" />
-        <FacebookSVG className="w-10 h-10" />
-        <TwitterSVG className="w-10 h-10" />
-        <YouTubeSVG className="w-10 h-10" />
+        <SocialsBlock />
       </div>
     </FooterColumn>
   </div>
@@ -52,29 +51,36 @@ const DesktopFooter = ({ isHuge }: { isHuge: boolean }) => (
       <div className="flex justify-start pr-20 space-x-12">
         <FooterColumn title="Quick Links">
           <div className="space-y-4 text-sm font-normal leading-tight">
-            <p className="">How It Works</p>
-            <p className="">Our Mission</p>
-            <p className="">
-              Tastiest For
-              <br />
-              Restaurants
+            <p>
+              <a className="cursor-pointer hover:underline">How It Works</a>
             </p>
-            <p className="">Press Kit</p>
+            <p>
+              <a className="cursor-pointer hover:underline">Our Mission</a>
+            </p>
+            <p>
+              <a
+                href="restaurants.tastiest.io"
+                className="cursor-pointer hover:underline"
+              >
+                Tastiest For <br />
+                Restaurants
+              </a>
+            </p>
+            <p>
+              <a className="cursor-pointer hover:underline">Press Kit</a>
+            </p>
           </div>
         </FooterColumn>
 
         <FooterColumn title="Follow Us">
           <div className="grid grid-cols-2 grid-rows-2 gap-y-2 justify-items-center">
-            <InstagramSVG className="w-10 h-10" />
-            <FacebookSVG className="w-10 h-10" />
-            <TwitterSVG className="w-10 h-10" />
-            <YouTubeSVG className="w-10 h-10" />
+            <SocialsBlock />
           </div>
         </FooterColumn>
       </div>
 
       <div className="flex justify-end flex-grow">
-        <div className="flex flex-col items-end justify-between h-full text-right">
+        <div className="flex flex-col items-end justify-between h-full space-y-2 text-right">
           <div className="leading-tight whitespace-nowrap">
             <p className="font-bold">Don't See Your Favourite Restaurant?</p>
             <a href="/" className="text-sm underline">
@@ -97,9 +103,9 @@ const DesktopFooter = ({ isHuge }: { isHuge: boolean }) => (
           </div>
 
           {isHuge ? (
-            <YummySVG className="h-8 mt-4 fill-current" />
+            <YummySVG className="h-8 mt-6 fill-current" />
           ) : (
-            <BrandSVG className="h-8 mt-4 fill-current" />
+            <BrandSVG className="h-8 mt-6 fill-current" />
           )}
         </div>
 
@@ -139,4 +145,13 @@ const ThanksForSupportMessage = () => (
 
     <TastiestSVG className="h-8 fill-current" />
   </div>
+);
+
+const SocialsBlock = () => (
+  <>
+    <InstagramSVG className="w-10 h-10 cursor-pointer" />
+    <FacebookSVG className="w-10 h-10 cursor-pointer" />
+    <TwitterSVG className="w-10 h-10 cursor-pointer" />
+    <YouTubeSVG className="w-10 h-10 cursor-pointer" />
+  </>
 );

@@ -27,7 +27,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       posts,
     },
-    revalidate: 60,
+    revalidate: 360,
   };
 };
 
@@ -42,6 +42,8 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
 
   const { user } = useAuth();
   const { userData } = useUserData(user);
+
+  console.log('index ➡️ user:', user?.uid);
   console.log('userData', userData);
 
   return (

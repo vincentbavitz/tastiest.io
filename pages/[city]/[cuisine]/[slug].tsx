@@ -38,7 +38,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
     },
   }));
 
-  return { paths, fallback: true };
+  // Blocking ensures that if the path isn't cached,
+  // we build it before serving.
+  return { paths, fallback: 'blocking' };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
@@ -55,7 +57,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       ...post,
     },
-    revalidate: 60,
+    revalidate: 360,
   };
 };
 
