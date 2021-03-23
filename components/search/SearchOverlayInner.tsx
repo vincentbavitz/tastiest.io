@@ -5,7 +5,6 @@ import NewSVG from '@svg/hot.svg';
 import NearbySVG from '@svg/location.svg';
 import TrendingSVG from '@svg/trending.svg';
 import classNames from 'classnames';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
@@ -131,7 +130,7 @@ function SearchOverlayInnerDefault() {
         </div>
       </div>
 
-      {/* POPULAR DISHES */}
+      {/* POPULAR DISHES
       <div className="flex flex-col mt-6">
         <span className="ml-1 text-sm font-semibold tracking-wide text-black">
           Popular dishes
@@ -150,7 +149,7 @@ function SearchOverlayInnerDefault() {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

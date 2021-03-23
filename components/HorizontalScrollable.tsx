@@ -15,6 +15,7 @@ interface Props {
   // Number of items to fit in the available width
   // when not on touch device
   fit?: number;
+  spacing?: 0 | 1 | 2 | 3 | 4 | 6 | 8;
 }
 
 export function HorizontalScrollable(props: Props) {
@@ -37,7 +38,7 @@ export function HorizontalScrollable(props: Props) {
  * Intended for full width situations only
  */
 function HorizontalScrollableInner(props: Props) {
-  const { onItemClick, children } = props;
+  const { onItemClick, spacing = 3, children } = props;
 
   const scrollRef = useRef(null);
   const innerContentRef = useRef(null);
@@ -121,21 +122,25 @@ function HorizontalScrollableInner(props: Props) {
       </div>
       <div
         ref={scrollRef}
+        style={{ width: `calc(100% + ${spacing / 4}rem)` }}
         className={classNames(
           'relative',
-          'w-full',
           'hide_scroll',
           'scrolling-touch',
           'overflow-x-scroll',
-          isDesktop ? '-ml-3 mr-3' : '-ml-3',
+          isDesktop ? `-ml-${spacing} mr-${spacing}` : `-ml-${spacing}`,
         )}
       >
         <div
           ref={innerContentRef}
-          className={classNames('flex overflow-y-visible children:px-3')}
+          className={classNames(
+            'flex overflow-y-visible',
+            `children:px-${spacing}`,
+          )}
           style={{
             width: 'min-content',
             marginLeft: `${!isDesktop ? UI.PAGE_CONTAINED_PADDING_VW : 0}vw`,
+            paddingRight: `${spacing / 4}rem`,
           }}
         >
           {/* Try to fit into a clean integer number across */}

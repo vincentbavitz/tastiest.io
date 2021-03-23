@@ -1,40 +1,45 @@
 import classNames from 'classnames';
-import _ from 'lodash';
+import { Contained } from 'components/Contained';
 import React, { useContext } from 'react';
-import { useMeasure } from 'react-use';
 import { v4 as uuid } from 'uuid';
 import { ScreenContext } from '../../contexts/screen';
-import { Contained } from '../Contained';
 import { HorizontalScrollable } from '../HorizontalScrollable';
 
 interface Props {
-  rows?: number;
+  rowLimit?: number;
   horizontalScroll?: boolean;
   children: JSX.Element[];
+
+  size?: 'small' | 'medium' | 'large';
+
+  // If you are paginating, do not set rowLimit
+  paginate?: boolean;
+  rowsPerPage?: number;
 }
 
-export function CardGrid({ rows, children, horizontalScroll }: Props) {
-  const { isMobile, isDesktop, isHuge } = useContext(ScreenContext);
+export function CardGrid(props: Props) {
+  const {
+    rowsPerPage,
+    paginate,
+    children,
+    horizontalScroll,
+    rowLimit = 2,
+    size = 'medium',
+  } = props;
 
-  const [ref, { width }] = useMeasure();
-  const widthOfCardPx = 200;
-  const grouping = Math.max(1, Math.min(4, Math.floor(width / widthOfCardPx)));
-  const numPaddingCards =
-    Math.ceil(children.length / grouping) * grouping - children.length;
+  const { isMobile, isTablet, isDesktop, isHuge } = useContext(ScreenContext);
 
-  const spacing = isHuge ? 3 : isDesktop ? 6 : 4;
-  const spacingY = `space-y-${spacing}`;
-  const spacingX = `space-x-${spacing}`;
+  // prettier-ignore
+  const cols =
+    isHuge ? 4 : 
+    isDesktop ? size === 'small' ? 4 : 3 : 
+    isTablet ? 2 :
+    1;
 
-  const items =
-    rows && rows > 0 ? children.slice(0, grouping * rows) : children;
-
-  // Add cards to ensure we fill up each row. Hidden where the row is incomplete
-  // to keep even widths
-  const cards = [
-    ...items,
-    ...Array.from(Array(numPaddingCards).keys()).map(i => <div key={i}></div>),
-  ];
+  // Pagination
+  const cards = rowLimit
+    ? children.slice(0, isMobile && !horizontalScroll ? 4 : cols * rowLimit)
+    : children;
 
   return (
     <>
@@ -46,8 +51,8 @@ export function CardGrid({ rows, children, horizontalScroll }: Props) {
                 key={uuid()}
                 style={{
                   width: '80vw',
-                  minWidth: '275px',
-                  maxWidth: '330px',
+                  minWidth: '250px',
+                  maxWidth: '275px',
                 }}
                 className="py-4"
               >
@@ -58,14 +63,15 @@ export function CardGrid({ rows, children, horizontalScroll }: Props) {
         </div>
       ) : (
         <Contained>
-          <div ref={ref} className={classNames('flex flex-col', spacingY)}>
-            {_.chunk(cards, grouping).map(group => (
-              <div key={uuid()} className={classNames('flex w-full', spacingX)}>
-                {group.map(item => (
-                  <div key={uuid()} className="flex-1">
-                    {item}
-                  </div>
-                ))}
+          <div
+            className={classNames(
+              `grid grid-rows-${Math.ceil(rowLimit)} gap-8`,
+              `grid-cols-${cols}`,
+            )}
+          >
+            {cards.map(item => (
+              <div key={uuid()} className="w-full">
+                {item}
               </div>
             ))}
           </div>

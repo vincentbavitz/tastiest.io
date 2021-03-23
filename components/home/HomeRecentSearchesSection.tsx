@@ -21,16 +21,14 @@ export function HomeRecentSearchesSection() {
         <div className="flex flex-col space-y-6">
           <SectionTitle>Your recent searches</SectionTitle>
           <HorizontalScrollable>
-            <div className="flex space-x-4">
-              {recentSearches.slice(0, 10).map(item => (
-                <OutlineBlock
-                  key={uuid()}
-                  onClick={() => router.push(`/search?s=${item.query}`)}
-                >
-                  {item?.query.slice(0, 15)}
-                </OutlineBlock>
-              ))}
-            </div>
+            {recentSearches.slice(0, 10).map(item => (
+              <OutlineBlock
+                key={uuid()}
+                onClick={() => router.push(`/search?s=${item.query}`)}
+              >
+                {item?.query.slice(0, 15)}
+              </OutlineBlock>
+            ))}
           </HorizontalScrollable>
         </div>
       ) : null}

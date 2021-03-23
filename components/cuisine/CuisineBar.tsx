@@ -25,12 +25,12 @@ export function CuisineBar(props: Props) {
 
   return (
     <div className="mt-20">
-      <HorizontalScrollable {...props}>
+      <HorizontalScrollable spacing={0} {...props}>
         {Object.values(CUISINES).map(cuisine => (
           <CuisineItem
-            key={cuisine.name}
-            name={cuisine.name}
-            svg={cuisine.svg}
+            key={cuisine?.name}
+            name={cuisine?.name}
+            svg={cuisine?.svg}
             onClick={handleItemClick}
           />
         ))}

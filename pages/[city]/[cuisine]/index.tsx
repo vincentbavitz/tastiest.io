@@ -1,3 +1,4 @@
+import NothingFoundSVG from '@svg/illustrations/nothing-found.svg';
 import { ArticleCard } from 'components/cards/ArticleCard';
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
@@ -48,7 +49,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }) => {
   const cuisineSymbol = String(params?.cuisine).toUpperCase() as CuisineSymbol;
-  const cuisineExists = CUISINES[cuisineSymbol];
+  const cuisineExists = Boolean(CUISINES[cuisineSymbol]);
 
   // Redirect to 404 for nonexistent page
   if (!cuisineExists) {
@@ -59,7 +60,8 @@ export const getStaticProps = async ({ params }) => {
   }
 
   const cms = new CmsApi();
-  const { posts } = await cms.getPostsOfCuisine(cuisineSymbol);
+  const { posts = [] } = await cms.getPostsOfCuisine(cuisineSymbol);
+
   console.log(`Building cuisine page: %c${params.cuisine}`, 'color: purple;');
 
   if (!posts) {
@@ -87,7 +89,7 @@ export default function Cuisine(
   const cuisineName = titleCase(String(cuisine?.name));
 
   const cards = posts
-    ? posts.slice(0, 4).map(post => <ArticleCard key={post.id} {...post} />)
+    ? posts.map(post => <ArticleCard key={post.id} compact {...post} />)
     : [];
 
   return (
@@ -109,18 +111,34 @@ export default function Cuisine(
             </div>
           </div>
 
-          {
+          {cuisine?.pageSvg && (
             <cuisine.pageSvg
               style={{
                 width: isMobile ? '133vw' : '100%',
                 marginLeft: isMobile ? '-20vw' : 'unset',
               }}
             />
-          }
+          )}
         </div>
 
         <Contained>
-          <CardGrid>{cards}</CardGrid>
+          {cards.length ? (
+            <CardGrid rowLimit={2}>
+              {[
+                ...cards,
+                ...cards,
+                ...cards,
+                ...cards,
+                ...cards,
+                ...cards,
+                ...cards,
+              ]}
+            </CardGrid>
+          ) : (
+            <div className="flex w-full">
+              <NothingFoundSVG />
+            </div>
+          )}
 
           <div className="mt-12">
             <SuggestDish />

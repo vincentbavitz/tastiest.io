@@ -40,7 +40,7 @@ export function CheckoutSignIn() {
       </Button>
       {error && (
         <div className="mb-1 -mt-1 text-sm text-center text-red-700">
-          {error?.message}
+          {error}
         </div>
       )}
     </>

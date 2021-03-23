@@ -131,6 +131,7 @@ export class CmsApi {
       limit: quantity,
       skip: (page - 1) * quantity,
       include: 8,
+      'fields.cuisine.sys.contentType.sys.id': 'cuisine',
       'fields.cuisine.fields.name[in]': cuisineToMatch,
     });
 
@@ -197,24 +198,8 @@ export class CmsApi {
   }
 
   public async getTopPosts(limit?: number) {
-    // const query = groq`
-    //   *[_type == "post"][0..${(limit ?? 100) - 1}]|order(publishedAt desc) {
-    //     ${sanityPostQuery}
-    //   }
-    // `;
-
-    // let posts: Array<ISanityArticle>;
-
-    // try {
-    //   posts = await client.fetch(query);
-    //   console.log('Posts', posts);
-    // } catch (error) {
-    //   console.warn('Error:', error);
-    // }
-
-    // return posts;
-
-    return [];
+    // For now this is just a wrapper around getPosts
+    return this.getPosts(limit);
   }
 
   public getDeal = async (dealId: string): Promise<IDeal> => {

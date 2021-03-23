@@ -1,4 +1,4 @@
-import _404 from '@svg/404.svg';
+import _404 from '@svg/illustrations/404.svg';
 import classNames from 'classnames';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -61,18 +61,18 @@ function Tastiest404() {
             !isDesktop && 'flex-col',
           )}
         >
-          <div style={absoluteBoxStyles} className="relative w-full flex">
+          <div style={absoluteBoxStyles} className="relative flex w-full">
             <_404 style={svgStyles} className="absolute top-0 z-0" />
             <div style={_404SectionStyles} className="absolute left-0 z-50">
               <h1
                 style={_404TitleStyles}
-                className="font-somatic text-primary text-7xl text-opacity-25 -mb-4"
+                className="-mb-4 text-opacity-25 font-somatic text-primary text-7xl"
               >
                 404
               </h1>
               <p
                 style={_404TextStyles}
-                className="font-somatic text-primary text-4xl tracking-tight"
+                className="text-4xl tracking-tight font-somatic text-primary"
               >
                 Oops, this
                 <br />
@@ -113,7 +113,7 @@ function Tastiest404() {
               !isDesktop ? '-mt-10' : 'mt-0',
             )}
           >
-            <div className="flex-col flex-grow z-50 my-4">
+            <div className="z-50 flex-col flex-grow my-4">
               <h2
                 className={classNames(
                   'text-primary font-roboto font-semibold ml-1 font-somatic mt-6 text-2xl whitespace-no-wrap',
@@ -125,12 +125,12 @@ function Tastiest404() {
               <textarea
                 maxLength={UI.USER_QUERY_404_MAX_LEN}
                 placeholder="Let us know what you were looking for and we'll get back to you soon."
-                className="border-secondary border-2 rounded-xl focus:outline-none focus:border-primary placeholder-primary placeholder-opacity-50 w-full h-48 px-3 py-3 resize-none"
+                className="w-full h-48 px-3 py-3 placeholder-opacity-50 border-2 resize-none border-secondary rounded-xl focus:outline-none focus:border-primary placeholder-primary"
               />
               <input
                 type="text"
                 placeholder="Email address..."
-                className="mt-2 border-secondary border-2 rounded-xl focus:outline-none focus:border-primary py-2 placeholder-primary placeholder-opacity-50 w-full pl-3 pt-3 pr-1"
+                className="w-full py-2 pt-3 pl-3 pr-1 mt-2 placeholder-opacity-50 border-2 border-secondary rounded-xl focus:outline-none focus:border-primary placeholder-primary"
               />
 
               <div

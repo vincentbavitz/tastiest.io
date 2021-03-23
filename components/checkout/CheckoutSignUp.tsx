@@ -73,7 +73,7 @@ export function CheckoutSignUp() {
 
       {(firebaseAuthError || error.length) && (
         <div className="mb-1 -mt-1 text-sm text-center text-red-700">
-          {error || firebaseAuthError?.message}
+          {error || firebaseAuthError}
         </div>
       )}
 
