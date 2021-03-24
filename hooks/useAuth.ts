@@ -134,6 +134,7 @@ export const useAuth = () => {
 
       // User data
       setUserData(UserData.DISPLAY_NAME, displayName);
+      setUserData(UserData.DETAILS, { email });
       console.log('Sign Up: Set display name');
 
       // Sign in user

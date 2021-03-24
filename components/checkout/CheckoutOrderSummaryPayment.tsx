@@ -1,11 +1,10 @@
 import PoundSVG from '@svg/icons/pound.svg';
 import LockSVG from '@svg/lock.svg';
-import { Button } from '@tastiest-io/tastiest-components';
+import { Button, Input } from '@tastiest-io/tastiest-components';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IState } from '../../state/reducers';
 import { IOrder } from '../../types/checkout';
-import { InputAbstract } from '../inputs/InputAbstract';
 
 interface Props {
   order: IOrder;
@@ -85,7 +84,7 @@ export function CheckoutOrderSummaryPayment(props: Props) {
           </div>
 
           <div className="flex items-center justify-between h-10 space-x-2 text-xs">
-            <InputAbstract
+            <Input
               placeholder="Discount Code"
               className="h-10"
               border="primary"

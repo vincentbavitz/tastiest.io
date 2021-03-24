@@ -11,6 +11,7 @@ import {
   StripeCardNumberElementOptions,
 } from '@stripe/stripe-js';
 import HelpSVG from '@svg/checkout/help.svg';
+import { Input } from '@tastiest-io/tastiest-components';
 import { InputContactBirthday } from 'components/inputs/contact/InputContactBirthday';
 import { ScreenContext } from 'contexts/screen';
 import { useAuth } from 'hooks/useAuth';
@@ -25,7 +26,6 @@ import { CardBrand, IOrder, IPaymentDetails } from '../../../types/checkout';
 import { InputCardNumberWrapper } from '../../inputs/card/InputCardNumberWrapper';
 import { InputContactFirstName } from '../../inputs/contact/InputContactFirstName';
 import { InputContactLastName } from '../../inputs/contact/InputContactLastName';
-import { InputAbstract } from '../../inputs/InputAbstract';
 import { InputWrapper } from '../../inputs/InputWrapper';
 import { Tooltip } from '../../Tooltip';
 import { CheckoutOrderSummaryPayment } from '../CheckoutOrderSummaryPayment';
@@ -230,7 +230,7 @@ export function CheckoutStepPayment(props: Props) {
           <CheckoutTabs tabs={[{ label: 'Payment' }]} />
 
           <div className="flex flex-col space-y-4">
-            <InputAbstract
+            <Input
               type="text"
               className="py-1 rounded-xl"
               label="Cardholder's Full Name"
@@ -272,7 +272,7 @@ export function CheckoutStepPayment(props: Props) {
               </InputWrapper>
             </div>
 
-            <InputAbstract
+            <Input
               label="Postcode"
               className="py-1 rounded-xl"
               regex={/^([a-zA-Z0-8]){1,10}$/}

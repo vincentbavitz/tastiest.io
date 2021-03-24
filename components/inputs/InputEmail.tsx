@@ -1,6 +1,6 @@
 import EmailSVG from '@svg/email.svg';
+import { Input } from '@tastiest-io/tastiest-components';
 import React from 'react';
-import { InputAbstract } from './InputAbstract';
 
 interface Props {
   value: string;
@@ -10,7 +10,7 @@ export function InputEmail(props: Props) {
   const { value, onValueChange } = props;
 
   return (
-    <InputAbstract
+    <Input
       size="large"
       type="email"
       placeholder="Email address"
@@ -18,6 +18,6 @@ export function InputEmail(props: Props) {
       maxLength={50}
       value={value}
       onValueChange={onValueChange}
-    ></InputAbstract>
+    ></Input>
   );
 }

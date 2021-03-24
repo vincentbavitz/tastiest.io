@@ -1,8 +1,7 @@
 import PreferencesSVG from '@svg/page/preferences.svg';
-import { Button } from '@tastiest-io/tastiest-components';
+import { Button, Input } from '@tastiest-io/tastiest-components';
 import { Contained } from 'components/Contained';
 import CuisineSelect from 'components/inputs/CuisineSelect';
-import { InputAbstract } from 'components/inputs/InputAbstract';
 import { InputDate } from 'components/inputs/InputDate';
 import { ScreenContext } from 'contexts/screen';
 import { useAuth } from 'hooks/useAuth';
@@ -17,9 +16,7 @@ import {
   UserData,
 } from 'types/firebase';
 import { IDateObject } from 'types/various';
-import { USER } from '../constants';
-
-const PAGE_WIDTH = 600;
+import { UI, USER } from '../constants';
 
 export const getServerSideProps = async context => {
   // Get user ID from cookie.
@@ -147,7 +144,7 @@ const Preferences = ({
         {isMobile ? (
           <PreferencesSVG className="w-10/12" />
         ) : (
-          <Contained maxWidth={PAGE_WIDTH}>
+          <Contained maxWidth={UI.FORM_WIDTH_PX}>
             <div className="flex justify-center">
               <PreferencesSVG className="w-full" />
             </div>
@@ -155,7 +152,7 @@ const Preferences = ({
         )}
       </div>
 
-      <Contained maxWidth={PAGE_WIDTH}>
+      <Contained maxWidth={UI.FORM_WIDTH_PX}>
         <div className="flex flex-col space-y-8 tablet:space-y-12">
           <PreferenceBlock
             title="Your favourite Cuisines"
@@ -198,7 +195,7 @@ const Preferences = ({
               style={{ maxWidth: '70vw', width: '30rem' }}
               className="w-full"
             >
-              <InputAbstract
+              <Input
                 center={isMobile || isTablet}
                 placeholder="Street Address"
                 value={streetAddress}
@@ -208,7 +205,7 @@ const Preferences = ({
             </div>
 
             <div style={{ width: '8.5rem' }}>
-              <InputAbstract
+              <Input
                 center={isMobile || isTablet}
                 placeholder="Postal Code"
                 value={postalCode}

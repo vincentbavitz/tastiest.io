@@ -1,11 +1,10 @@
 import SuggestDishDesktopSVG from '@svg/suggest-dish-desktop.svg';
 import SuggestDishMobileSVG from '@svg/suggest-dish-mobile.svg';
-import { Button } from '@tastiest-io/tastiest-components';
+import { Button, Input } from '@tastiest-io/tastiest-components';
 import classNames from 'classnames';
 import React, { useContext, useEffect } from 'react';
 import { useMeasure } from 'react-use';
 import { ScreenContext } from '../contexts/screen';
-import { InputAbstract } from './inputs/InputAbstract';
 import { Title } from './Title';
 
 export function SuggestDish() {
@@ -69,7 +68,7 @@ export function SuggestDish() {
           <Title level={3} className="font-medium text-primary">
             Location of restaurant
           </Title>
-          <InputAbstract></InputAbstract>
+          <Input></Input>
         </div>
 
         <div className="flex mt-4 space-x-4">
@@ -77,14 +76,14 @@ export function SuggestDish() {
             <Title level={3} className="font-medium text-primary">
               Dish name
             </Title>
-            <InputAbstract></InputAbstract>
+            <Input></Input>
           </div>
 
           <div className="flex-1">
             <Title level={3} className="font-medium text-primary">
               Cuisine
             </Title>
-            <InputAbstract></InputAbstract>
+            <Input></Input>
           </div>
         </div>
 
@@ -92,17 +91,13 @@ export function SuggestDish() {
           <Title level={3} className="font-medium text-primary">
             Email address
           </Title>
-          <InputAbstract></InputAbstract>
+          <Input></Input>
         </div>
 
         {isDesktop ? (
-          <div className="flex">
-            <Button size="small" className="mt-6 tracking-widest">
-              Send
-            </Button>
-          </div>
+          <Button className="mt-6 tracking-widest">Send</Button>
         ) : (
-          <Button className="mt-6">Submit</Button>
+          <Button className="mt-6">Send</Button>
         )}
 
         {!isDesktop && (

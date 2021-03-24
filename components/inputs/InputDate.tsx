@@ -1,8 +1,8 @@
+import { Input } from '@tastiest-io/tastiest-components';
 import React from 'react';
 import NumberFormat, { NumberFormatValues } from 'react-number-format';
 import { IDateObject } from 'types/various';
 import { dateFormat, dateToString, stringToDate } from 'utils/text';
-import { InputAbstract } from './InputAbstract';
 
 interface Props {
   // Data
@@ -17,12 +17,8 @@ interface Props {
   subLabel?: string;
 }
 
-const Input = (props: Props) => (
-  <InputAbstract
-    inputMode="decimal"
-    inputClassName="font-mono w-full"
-    {...props}
-  />
+const InputCustom = (props: Props) => (
+  <Input inputMode="decimal" inputClassName="font-mono w-full" {...props} />
 );
 
 export function InputDate(props: Props) {
@@ -45,7 +41,7 @@ export function InputDate(props: Props) {
       placeholder="DD/MM/YYYY"
       mask={['M', 'M', 'D', 'D', 'Y', 'Y', 'Y', 'Y']}
       format={value => dateFormat(value, props?.minYear, props?.maxYear)}
-      customInput={Input}
+      customInput={InputCustom}
       value={dateToString(props.date)}
       onValueChange={handleOnChange}
     />

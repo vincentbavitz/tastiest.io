@@ -1,17 +1,17 @@
+import { Input } from '@tastiest-io/tastiest-components';
 import React from 'react';
 import NumberFormat, { NumberFormatValues } from 'react-number-format';
 import { IDateObject } from 'types/various';
 import { dateFormat, dateToString, stringToDate } from 'utils/text';
 import { USER } from '../../../constants';
-import { InputAbstract } from './../InputAbstract';
 
 interface Props {
   date: IDateObject;
   onDateChange: (date: IDateObject) => void;
 }
 
-const Input = (props: Props) => (
-  <InputAbstract
+const InputCustom = (props: Props) => (
+  <Input
     size="large"
     label="Birthday"
     inputMode="decimal"
@@ -42,7 +42,7 @@ export function InputContactBirthday(props: Props) {
       format={value =>
         dateFormat(value, USER.OLDEST_BIRTH_YEAR, USER.YOUNGEST_BIRTH_YEAR)
       }
-      customInput={Input}
+      customInput={InputCustom}
       value={dateToString(props.date)}
       onValueChange={handleOnChange}
     />

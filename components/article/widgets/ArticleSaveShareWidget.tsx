@@ -1,7 +1,7 @@
 import HeartFilledPrimarySVG from '@svg/heart-filled-primary.svg';
 import HeartPrimarySVG from '@svg/heart-primary.svg';
 import ShareSVG from '@svg/share.svg';
-import { Button } from '@tastiest-io/tastiest-components';
+import { Button, Input } from '@tastiest-io/tastiest-components';
 import { ScreenContext } from 'contexts/screen';
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
@@ -16,7 +16,6 @@ import {
 } from '../../../utils/share';
 import { Dropdown } from '../../Dropdown';
 import { DropdownItem } from '../../DropdownItem';
-import { InputAbstract } from '../../inputs/InputAbstract';
 import { InputGroup } from '../../inputs/InputGroup';
 
 interface IShareDropdownItems {
@@ -104,7 +103,7 @@ export function ArticleSaveShareWidget(props: Props) {
           <>
             <div className="px-3 pt-1 pb-2">
               <InputGroup className="w-full bg-opacity-25 rounded-sm bg-secondary">
-                <InputAbstract
+                <Input
                   size="small"
                   style={{ minWidth: '9rem' }}
                   border="none"

@@ -1,4 +1,4 @@
-import { InputAbstract } from '../InputAbstract';
+import React from 'react';
 
 interface Props {
   value: string;
@@ -7,7 +7,7 @@ interface Props {
 
 export function InputContactLastName(props: Props) {
   return (
-    <InputAbstract
+    <Input
       size="large"
       label="Last Name"
       inputClassName="w-full"

@@ -70,6 +70,7 @@ export interface IUserDetails {
   lastName: string | null;
   address: ILocation | null;
   birthday: IDateObject | null;
+  email: string | null;
   mobile: string | null;
 }
 

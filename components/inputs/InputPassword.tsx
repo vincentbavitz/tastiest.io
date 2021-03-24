@@ -1,6 +1,6 @@
 import PasswordSVG from '@svg/lock.svg';
+import { Input } from '@tastiest-io/tastiest-components';
 import React from 'react';
-import { InputAbstract } from './InputAbstract';
 
 interface Props {
   value: string;
@@ -19,7 +19,7 @@ export function InputPassword(props: Props) {
   } = props;
 
   return (
-    <InputAbstract
+    <Input
       size="large"
       type={show ? 'text' : 'password'}
       placeholder={placeholder}
@@ -33,6 +33,6 @@ export function InputPassword(props: Props) {
       }
       value={value}
       onValueChange={onValueChange}
-    ></InputAbstract>
+    ></Input>
   );
 }

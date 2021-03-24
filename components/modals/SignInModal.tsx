@@ -1,7 +1,7 @@
 import TastiestLogo from '@svg/brand.svg';
 import EmailSVG from '@svg/email.svg';
 import PasswordSVG from '@svg/lock.svg';
-import { Button } from '@tastiest-io/tastiest-components';
+import { Button, Input } from '@tastiest-io/tastiest-components';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,7 +10,6 @@ import { ScreenContext } from '../../contexts/screen';
 import { useAuth } from '../../hooks/useAuth';
 import { closeSignInModal, ModalInstance } from '../../state/navigation';
 import { IState } from '../../state/reducers';
-import { InputAbstract } from '../inputs/InputAbstract';
 import { Modal } from '../Modal';
 import { SignInTosInfo } from '../SignInTosInfo';
 
@@ -94,7 +93,7 @@ export function SignInModal() {
 
   const signInContent = (
     <>
-      <InputAbstract
+      <Input
         size="large"
         type="email"
         className="py-2 rounded-xl"
@@ -104,9 +103,9 @@ export function SignInModal() {
         value={signInEmail}
         maxLength={50}
         onValueChange={value => setSignInEmail(cleanupInputValue(value))}
-      ></InputAbstract>
+      ></Input>
 
-      <InputAbstract
+      <Input
         size="large"
         type="password"
         className="py-2 rounded-xl"
@@ -115,7 +114,7 @@ export function SignInModal() {
         value={signInPassword}
         onValueChange={value => setSignInPassword(cleanupInputValue(value))}
         maxLength={50}
-      ></InputAbstract>
+      ></Input>
 
       <Button
         wide
@@ -138,7 +137,7 @@ export function SignInModal() {
 
   const signUpContent = (
     <>
-      <InputAbstract
+      <Input
         size="large"
         type="email"
         className="py-2 rounded-xl"
@@ -146,9 +145,9 @@ export function SignInModal() {
         prefix={<EmailSVG className="h-6" />}
         value={signUpEmail}
         onValueChange={value => setSignUpEmail(cleanupInputValue(value))}
-      ></InputAbstract>
+      ></Input>
 
-      <InputAbstract
+      <Input
         size="large"
         type="password"
         className="py-2 rounded-xl"
@@ -156,7 +155,7 @@ export function SignInModal() {
         prefix={<PasswordSVG className="h-8 ml-2 mr-2" />}
         value={signUpPassword}
         onValueChange={value => setSignUpPassword(cleanupInputValue(value))}
-      ></InputAbstract>
+      ></Input>
 
       <Button
         wide
@@ -179,7 +178,7 @@ export function SignInModal() {
 
   const resetPasswordContent = (
     <>
-      <InputAbstract
+      <Input
         size="large"
         type="email"
         className="py-2 rounded-xl"
@@ -187,7 +186,7 @@ export function SignInModal() {
         prefix={<EmailSVG className="h-6" />}
         value={signInEmail}
         onValueChange={value => setSignInEmail(cleanupInputValue(value))}
-      ></InputAbstract>
+      ></Input>
 
       <Button
         wide
