@@ -1,10 +1,9 @@
-import { Input } from '@tastiest-io/tastiest-components';
+import { Input, Select } from '@tastiest-io/tastiest-components';
 import { ScreenContext } from 'contexts/screen';
 import React, { useContext, useState } from 'react';
 import { CuisineSymbol } from 'types/cuisine';
 import { TFavouriteCuisine } from 'types/firebase';
 import { titleCase } from 'utils/text';
-import { Select } from './Select';
 
 type CuisineKey = CuisineSymbol | 'ALL_FOOD' | 'OTHER';
 interface ICuisineOption {

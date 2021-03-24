@@ -1,7 +1,7 @@
 import HeartFilledPrimarySVG from '@svg/heart-filled-primary.svg';
 import HeartPrimarySVG from '@svg/heart-primary.svg';
 import ShareSVG from '@svg/share.svg';
-import { Button, Input } from '@tastiest-io/tastiest-components';
+import { Button } from '@tastiest-io/tastiest-components';
 import { ScreenContext } from 'contexts/screen';
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
@@ -103,11 +103,10 @@ export function ArticleSaveShareWidget(props: Props) {
           <>
             <div className="px-3 pt-1 pb-2">
               <InputGroup className="w-full bg-opacity-25 rounded-sm bg-secondary">
-                <Input
-                  size="small"
+                <input
+                  className="text-sm bg-gray-200"
                   style={{ minWidth: '9rem' }}
-                  border="none"
-                  readonly
+                  readOnly
                   value={articleUrl}
                 />
 

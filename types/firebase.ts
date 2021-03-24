@@ -58,6 +58,14 @@ export interface IRecentSearch {
   timestamp: number;
 }
 
+export enum SupportRequestType {
+  GENERAL = 'GENERAL',
+  ORDER = 'ORDER',
+  FEATURE_REQUEST = 'FEATURE_REQUEST',
+  BUG = 'BUG',
+  OTHER = 'OTHER',
+}
+
 export type TFavouriteCuisine = {
   existing: CuisineSymbol | 'ALL_FOOD' | null;
   other: string | null;

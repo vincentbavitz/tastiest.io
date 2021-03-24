@@ -1,5 +1,5 @@
 import PoundSVG from '@svg/icons/pound.svg';
-import { Button } from '@tastiest-io/tastiest-components';
+import { Button, Select } from '@tastiest-io/tastiest-components';
 import classNames from 'classnames';
 import { Contained } from 'components/Contained';
 import { useRouter } from 'next/router';
@@ -11,7 +11,6 @@ import { ScreenContext } from '../../../contexts/screen';
 import { useAuth } from '../../../hooks/useAuth';
 import { useCheckout } from '../../../hooks/useCheckout';
 import { IDeal, valdHeads, ValidHead } from '../../../types/cms';
-import { Select } from '../../inputs/Select';
 
 interface Props {
   deal: IDeal;

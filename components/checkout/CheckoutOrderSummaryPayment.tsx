@@ -86,9 +86,6 @@ export function CheckoutOrderSummaryPayment(props: Props) {
           <div className="flex items-center justify-between h-10 space-x-2 text-xs">
             <Input
               placeholder="Discount Code"
-              className="h-10"
-              border="primary"
-              inputClassName="w-full"
               value={typedDiscountCode}
               onValueChange={setTypedDiscountCode}
               regex={/^[a-zA-Z0-9]{1,10}$/}
