@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="Layer_1"
+   data-name="Layer 1"
+   viewBox="0 0 46.5 58.820001"
+   version="1.1"
+   sodipodi:docname="pound.svg"
+   inkscape:version="1.0.1 (0767f8302a, 2020-10-17)">
+  <metadata
+     id="metadata11">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>pounds</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs9" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1014"
+     id="namedview7"
+     showgrid="false"
+     inkscape:zoom="6.8374004"
+     inkscape:cx="27.135"
+     inkscape:cy="30.344999"
+     inkscape:window-x="0"
+     inkscape:window-y="34"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="Layer_1" />
+  <title
+     id="title2">pounds</title>
+  <path
+     d="m 41.86,49.51 h -25.3 l 1.82,-3.34 0.23,-0.48 c 1.31,-3.43 3.24,-7.05 3.54,-11.65 h 15.13 a 4.64,4.64 0 0 0 0,-9.28 H 18.72 l -0.73,-0.78 a 9,9 0 0 1 -2.43,-6.14 v -0.86 a 7.71,7.71 0 0 1 7.69,-7.72 h 6.24 A 7.76,7.76 0 0 1 37.22,17 4.64,4.64 0 0 0 46.5,17 17,17 0 0 0 29.5,0 H 23.25 A 17,17 0 0 0 6.2499998,17 v 0.86 a 18.15,18.15 0 0 0 1.39,6.92 h -3 a 4.64,4.64 0 0 0 0,9.28 H 12.85 c -0.22,1.79 -1.32,4.52 -2.74,7.9 l -5.4500002,10 a 4.64,4.64 0 0 0 4.07,6.86 H 41.86 a 4.64,4.64 0 0 0 0,-9.28 z"
+     id="path4" />
+</svg>

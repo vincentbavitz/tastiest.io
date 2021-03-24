@@ -1,17 +1,19 @@
 import FavouritesNoneSVG from '@svg/illustrations/nothing-found.svg';
 import FavouritesBackdropSVG from '@svg/page/favourites.svg';
+import { Button } from '@tastiest-io/tastiest-components';
+import { ArticleCardFavourite } from 'components/cards/ArticleCardFavourite';
+import { CardGrid } from 'components/cards/CardGrid';
+import { Contained } from 'components/Contained';
 import RecommendedPosts from 'components/sections/RecommendedPosts';
 import { useArticle } from 'hooks/useArticle';
 import { GetServerSideProps } from 'next';
+import Link from 'next/link';
 import React, { useContext } from 'react';
 import { CmsApi } from 'services/cms';
 import { UserDataApi } from 'services/userData';
 import { IPost } from 'types/cms';
 import { UserData } from 'types/firebase';
-import { ArticleCardFavourite } from '../components/cards/ArticleCardFavourite';
-import { CardGrid } from '../components/cards/CardGrid';
-import { Contained } from '../components/Contained';
-import { ScreenContext } from '../contexts/screen';
+import { IScreen, ScreenContext } from '../contexts/screen';
 import { useAuth } from '../hooks/useAuth';
 import { useUserData } from '../hooks/useUserData';
 import BigBrain from '../services/brains';
@@ -54,7 +56,7 @@ interface Props {
 
 function Favourites(props: Props) {
   const { savedPosts, recommendedPosts } = props;
-  const { isDesktop } = useContext(ScreenContext);
+  const screen = useContext(ScreenContext);
   const { user } = useAuth();
   const { toggleSaveArticle } = useArticle();
   const { userData = {} } = useUserData(user);
@@ -65,83 +67,39 @@ function Favourites(props: Props) {
     : savedPosts.map(p => p.slug) ?? [];
 
   console.log('favourites ➡️ recommendedPosts:', recommendedPosts);
-
-  const BackdropSVG = savedPosts?.length ? (
-    <FavouritesBackdropSVG className="w-10/12" />
-  ) : (
-    <FavouritesNoneSVG
-      style={{
-        height: isDesktop ? '300px' : 'unset',
-        width: isDesktop ? 'unset' : '70%',
-        transform: `translateX(${isDesktop ? -25 : -20}%)`,
-      }}
-    />
-  );
-
   console.log('favourites ➡️ savedPosts:', savedPosts);
 
-  const displayTitle =
-    savedPosts.length > 0 ? (
-      'Saved Dishes'
-    ) : (
-      <span>
-        You haven't saved any
-        <br />
-        dishes yet
-      </span>
-    );
-
   return (
-    <div>
-      <div className="w-full h-full">
-        <div className="relative w-full h-full mt-6 mb-12">
-          {isDesktop ? (
-            <Contained>
-              <div className="relative flex justify-center w-full">
-                {BackdropSVG}
-              </div>
-
-              <div className="absolute inset-0 flex items-center justify-center">
-                <h1 className="text-3xl text-center font-somatic text-primary">
-                  {displayTitle}
-                </h1>
-              </div>
-            </Contained>
-          ) : (
-            <>
-              {BackdropSVG}
-
-              <div className="absolute inset-0 flex items-center justify-center">
-                <h1
-                  style={{
-                    fontSize: 'calc(1rem + 2vw)',
-                  }}
-                  className="text-center font-somatic text-primary"
-                >
-                  {displayTitle}
-                </h1>
-              </div>
-            </>
-          )}
-        </div>
-
-        {savedPosts?.length ? (
-          <div className="flex flex-col">
-            <CardGrid>
-              {savedPosts?.map(post => (
-                <ArticleCardFavourite
-                  {...post}
-                  key={post.id}
-                  isFavourite={savedPostSlugs?.some(
-                    saved => saved === post?.slug,
-                  )}
-                  onToggleFavourite={() => toggleSaveArticle(post.slug)}
-                />
-              ))}
-            </CardGrid>
+    <>
+      <div>
+        <div className="w-full h-full">
+          <div className="relative w-full h-full mt-6 mb-12">
+            {savedPosts.length ? (
+              <SavedPlacesBackdrop {...screen} />
+            ) : (
+              <NoSavedPlacesBackdrop {...screen} />
+            )}
           </div>
-        ) : null}
+
+          {savedPosts?.length ? (
+            <div className="flex flex-col">
+              <CardGrid>
+                {savedPosts?.map(post => (
+                  <ArticleCardFavourite
+                    {...post}
+                    key={post.id}
+                    isFavourite={savedPostSlugs?.some(
+                      saved => saved === post?.slug,
+                    )}
+                    onToggleFavourite={() => toggleSaveArticle(post.slug)}
+                  />
+                ))}
+              </CardGrid>
+            </div>
+          ) : null}
+        </div>
       </div>
+
       <div className="mt-20 mb-10">
         <RecommendedPosts
           small
@@ -150,8 +108,86 @@ function Favourites(props: Props) {
           rowLimit={1}
         />
       </div>
-    </div>
+    </>
   );
 }
+
+const SavedPlacesBackdrop = ({ isDesktop }: IScreen) => {
+  return (
+    <>
+      {isDesktop ? (
+        <Contained>
+          <div className="relative flex justify-center w-full">
+            <FavouritesBackdropSVG className="w-10/12" />
+          </div>
+
+          <div className="absolute inset-0 flex items-center justify-center">
+            <h1 className="text-3xl text-center font-somatic text-primary">
+              Saved Dishes
+            </h1>
+          </div>
+        </Contained>
+      ) : (
+        <>
+          <FavouritesBackdropSVG className="w-10/12" />
+
+          <div className="absolute inset-0 flex items-center justify-center">
+            <h1
+              style={{
+                fontSize: 'calc(1rem + 2vw)',
+              }}
+              className="text-center font-somatic text-primary"
+            >
+              Saved Dishes
+            </h1>
+          </div>
+        </>
+      )}
+    </>
+  );
+};
+
+const NoSavedPlacesBackdrop = ({ isMobile, isTablet, isDesktop }: IScreen) => {
+  return (
+    <Contained>
+      <div className="relative flex justify-center w-full">
+        <FavouritesNoneSVG
+          style={{
+            width: isDesktop ? '100%' : isTablet ? '70%' : '110%',
+            transform: isDesktop
+              ? 'translateX(0)'
+              : isTablet
+              ? 'translateX(5%)'
+              : 'translateX(5%)',
+            maxWidth: '700px',
+          }}
+        />
+        <div className="absolute inset-0 flex justify-center w-full">
+          <div className="flex items-center justify-start w-full h-full mobile:justify-center">
+            <div
+              style={{
+                width: 'max-content',
+                marginLeft: isMobile ? '5vw' : 'unset',
+              }}
+              className="flex flex-col items-center space-y-3 transform mobile:-translate-x-16"
+            >
+              <h2 className="text-2xl leading-none text-center font-somatic text-primary">
+                You haven't saved
+                <br />
+                any places yet!
+              </h2>
+
+              <Link href="/search">
+                <a>
+                  <Button>Discover</Button>
+                </a>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Contained>
+  );
+};
 
 export default Favourites;

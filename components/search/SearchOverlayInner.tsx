@@ -4,6 +4,7 @@ import XiaoSVG from '@svg/cuisines/xiao.svg';
 import NewSVG from '@svg/hot.svg';
 import NearbySVG from '@svg/location.svg';
 import TrendingSVG from '@svg/trending.svg';
+import { Button } from '@tastiest-io/tastiest-components';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
@@ -13,7 +14,6 @@ import { CUISINES } from '../../constants';
 import { ScreenContext } from '../../contexts/screen';
 import { useSearch } from '../../hooks/useSearch';
 import { IState } from '../../state/reducers';
-import { Button } from '../Button';
 import { ArticleCard } from '../cards/ArticleCard';
 import { OutlineBlock } from '../OutlineBlock';
 

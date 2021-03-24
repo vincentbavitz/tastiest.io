@@ -1,3 +1,4 @@
+import PoundSVG from '@svg/icons/pound.svg';
 import React from 'react';
 import { IOrder } from 'types/checkout';
 
@@ -17,7 +18,8 @@ export default function CheckoutOrderSummaryAuth({ order }: Props) {
         </p>
 
         <p className="text-lg font-medium">
-          £{Math.floor(order.heads) * order.deal.pricePerHeadGBP}
+          <PoundSVG className="h-4" />
+          {Math.floor(order.heads) * order.deal.pricePerHeadGBP}
         </p>
       </div>
     </div>

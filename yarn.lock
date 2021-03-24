@@ -2215,6 +2215,13 @@
   dependencies:
     mini-svg-data-uri "^1.2.3"
 
+"@tastiest-io/tastiest-components@^0.6.0":
+  version "0.6.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.6.0/3de818d586f3821e48761d93822879fc9444dc20df9142b40754e330108a7adc#c38d222b0dc01e7dd4002cb8213d0e2f0b1e5110"
+  integrity sha512-Qd7R7FauZZ9tVaKtnAev+2DbFH/zHMCf/CsW+l0/j4g0ngs8jcRVvsq3Pkm0UvmtLJnMg+pzMtsyjKDCagGyUA==
+  dependencies:
+    clsx "^1.1.1"
+
 "@testing-library/dom@^7.28.1":
   version "7.30.0"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-7.30.0.tgz#53697851f7708a1448cc30b74a2ea056dd709cd6"
@@ -4669,6 +4676,11 @@ clone-response@^1.0.2:
   integrity sha1-0dyXOSAxTfZ/vrlCI7TuNQI56Ws=
   dependencies:
     mimic-response "^1.0.0"
+
+clsx@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
+  integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
 
 co@^4.6.0:
   version "4.6.0"

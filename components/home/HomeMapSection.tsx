@@ -1,8 +1,8 @@
+import { Button } from '@tastiest-io/tastiest-components';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { getMapBoxStaticSource } from 'utils/location';
 import { expandSearchOverlay } from '../../state/navigation';
-import { Button } from '../Button';
 import { Title } from '../Title';
 
 export function HomeMapSection() {

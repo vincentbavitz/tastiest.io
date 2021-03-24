@@ -1,3 +1,5 @@
+import PoundSVG from '@svg/icons/pound.svg';
+import { Button } from '@tastiest-io/tastiest-components';
 import classNames from 'classnames';
 import { Contained } from 'components/Contained';
 import { useRouter } from 'next/router';
@@ -9,7 +11,6 @@ import { ScreenContext } from '../../../contexts/screen';
 import { useAuth } from '../../../hooks/useAuth';
 import { useCheckout } from '../../../hooks/useCheckout';
 import { IDeal, valdHeads, ValidHead } from '../../../types/cms';
-import { Button } from '../../Button';
 import { Select } from '../../inputs/Select';
 
 interface Props {
@@ -84,8 +85,9 @@ export function ArticleOrderNowDesktop(props: Props) {
                 </p>
 
                 <div className="py-2 mb-3 text-center border-t-2 border-b-2 border-white border-dashed">
-                  <p className="text-base font-somatic text-primary">
-                    For £{deal?.pricePerHeadGBP}, you'll get
+                  <p className="flex items-center text-base font-somatic text-primary">
+                    For <PoundSVG className="inline h-3 mx-1 fill-current" />
+                    {deal?.pricePerHeadGBP}, you'll get
                   </p>
                 </div>
 
@@ -116,16 +118,25 @@ export function ArticleOrderNowDesktop(props: Props) {
                 </div>
               </div>
 
-              <div className="flex justify-between text-xs">
+              <div className="flex items-end justify-between text-xs">
                 <span>Booking for {heads} people</span>
-                <span>£{totalPrice}</span>
+                <div className="flex items-center h-full">
+                  <PoundSVG
+                    style={{ height: '0.6rem' }}
+                    className="inline mr-1"
+                  />
+                  <p>{totalPrice}</p>
+                </div>
               </div>
 
               <div className="w-full my-2 border-t border-primary"></div>
 
               <div className="flex justify-between font-medium">
                 <span>Total</span>
-                <span>£{totalPrice}</span>
+                <span>
+                  <PoundSVG className="inline h-3 mr-1 -mt-1" />
+                  {totalPrice}
+                </span>
               </div>
 
               <Button

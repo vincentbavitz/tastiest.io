@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useScreenSize } from '../hooks/useScreen';
 
-interface IScreen {
+export interface IScreen {
   isMobile: boolean;
   isTablet: boolean;
   isDesktop: boolean;

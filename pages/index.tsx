@@ -43,8 +43,7 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
   const { user } = useAuth();
   const { userData } = useUserData(user);
 
-  console.log('index ➡️ user:', user?.uid);
-  console.log('userData', userData);
+  console.log('index ➡️ user:', user);
 
   return (
     <>

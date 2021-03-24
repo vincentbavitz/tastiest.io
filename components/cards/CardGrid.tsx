@@ -33,7 +33,7 @@ export function CardGrid(props: Props) {
   const cols =
     isHuge ? 4 : 
     isDesktop ? size === 'small' ? 4 : 3 : 
-    isTablet ? 2 :
+    isTablet ? size === 'small' ? 3 : 2 :
     1;
 
   // Pagination

@@ -90,7 +90,7 @@ export default function Cuisine(
   props: InferGetStaticPropsType<typeof getStaticProps>,
 ) {
   const { posts = [], cuisineSymbol } = props;
-  const { isMobile, isTablet, isDesktop } = useContext(ScreenContext);
+  const { isMobile, isTablet, isDesktop, isHuge } = useContext(ScreenContext);
   const cuisine = CUISINES[cuisineSymbol];
   const cuisineName = titleCase(String(cuisine?.name));
 
@@ -106,26 +106,38 @@ export default function Cuisine(
         </Head>
 
         <div className="flex flex-col w-full space-y-10">
-          <div className="relative">
+          <div className="relative mt-0 tablet:mt-6">
+            {cuisine?.pageSvg && (
+              <>
+                {isHuge ? (
+                  <Contained>
+                    <cuisine.pageSvg className="w-full pt-6" />
+                  </Contained>
+                ) : (
+                  <>
+                    <cuisine.pageSvg
+                      style={{
+                        width: isDesktop ? '100%' : isTablet ? '150%' : '150%',
+                        transform: `translateX(${
+                          isDesktop ? '0' : isTablet ? '-15%' : '-25%'
+                        })`,
+                      }}
+                    />
+                  </>
+                )}
+              </>
+            )}
+
             <div className="absolute inset-0">
               <div
-                style={{ marginTop: '10vw' }}
+                style={{ marginTop: '3vw' }}
                 className="flex justify-center w-full"
               >
-                <span className="text-3xl font-somatic text-primary">
+                <span className="text-4xl font-somatic text-primary">
                   {cuisineName}
                 </span>
               </div>
             </div>
-
-            {cuisine?.pageSvg && (
-              <cuisine.pageSvg
-                style={{
-                  width: isDesktop ? '100%' : isTablet ? '133%' : '150%',
-                  // marginLeft: isMobile ? '-20vw' : 'unset',
-                }}
-              />
-            )}
           </div>
 
           <Contained>

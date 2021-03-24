@@ -55,6 +55,10 @@ export function AuthProvider({ children }: any) {
     return () => clearInterval(handle);
   }, []);
 
+  useEffect(() => {
+    console.log('User', user);
+  }, [user]);
+
   return (
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
   );

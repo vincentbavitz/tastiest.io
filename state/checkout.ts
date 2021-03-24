@@ -1,16 +1,12 @@
 import {
   CheckoutSignInTabSelected,
   CheckoutStep,
-  ICheckoutDetails,
   IOrder,
 } from '../types/checkout';
 
 export interface ICheckoutFlow {
   step: CheckoutStep;
   signInTabSelected: CheckoutSignInTabSelected;
-  // Details as they have been verified either serverside
-  // or from Firebase
-  verifiedDetails: ICheckoutDetails;
 }
 
 export interface ICheckout {
@@ -27,20 +23,6 @@ export const initialCheckoutState: ICheckout = {
   flow: {
     step: CheckoutStep.SIGN_IN,
     signInTabSelected: CheckoutSignInTabSelected.HAS_ACCOUNT,
-    verifiedDetails: {
-      payment: {
-        cardHolderName: '',
-        cardExpiry: '',
-        cardPostcode: '',
-      },
-      contact: {
-        firstName: '',
-        lastName: '',
-        birthday: { day: '', month: '', year: '' },
-        address: '',
-        mobile: '',
-      },
-    },
   },
   stripeError: undefined,
   order: undefined,

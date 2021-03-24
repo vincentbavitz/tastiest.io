@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { ScreenContext } from '../../contexts/screen';
 import { IPost } from '../../types/cms';
-import { RecommendForm } from '../RecommendForm';
 import { ArticleDescriptionSection } from './sections/ArticleDescriptionSection';
 import { ArticleSectionAbstract } from './sections/ArticleSectionAbstract';
 import { ArticleSectionContent } from './sections/ArticleSectionContent';
@@ -14,7 +13,6 @@ export function Article(post: IPost) {
   return (
     <div>
       {!isDesktop ? <ArticleMobile {...post} /> : <ArticleDesktop {...post} />}
-      <RecommendForm dish={post?.dishName} city={post?.city} />
     </div>
   );
 }

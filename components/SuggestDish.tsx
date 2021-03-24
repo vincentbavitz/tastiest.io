@@ -1,10 +1,10 @@
 import SuggestDishDesktopSVG from '@svg/suggest-dish-desktop.svg';
 import SuggestDishMobileSVG from '@svg/suggest-dish-mobile.svg';
+import { Button } from '@tastiest-io/tastiest-components';
 import classNames from 'classnames';
 import React, { useContext, useEffect } from 'react';
 import { useMeasure } from 'react-use';
 import { ScreenContext } from '../contexts/screen';
-import { Button } from './Button';
 import { InputAbstract } from './inputs/InputAbstract';
 import { Title } from './Title';
 

@@ -1,9 +1,9 @@
+import { Button } from '@tastiest-io/tastiest-components';
 import React, { useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useToggle } from 'react-use';
 import { ScreenContext } from '../../contexts/screen';
 import { useAuth } from '../../hooks/useAuth';
-import { Button } from '../Button';
 import { InputEmail } from '../inputs/InputEmail';
 import { InputPassword } from '../inputs/InputPassword';
 import { SignInTosInfo } from '../SignInTosInfo';

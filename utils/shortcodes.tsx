@@ -1,4 +1,4 @@
-import { Button } from 'components/Button';
+import { Button } from '@tastiest-io/tastiest-components';
 import React from 'react';
 import { CMS } from '../constants';
 

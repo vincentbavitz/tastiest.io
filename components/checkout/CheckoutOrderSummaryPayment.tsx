@@ -1,9 +1,10 @@
+import PoundSVG from '@svg/icons/pound.svg';
 import LockSVG from '@svg/lock.svg';
+import { Button } from '@tastiest-io/tastiest-components';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IState } from '../../state/reducers';
 import { IOrder } from '../../types/checkout';
-import { Button } from '../Button';
 import { InputAbstract } from '../inputs/InputAbstract';
 
 interface Props {
@@ -64,7 +65,10 @@ export function CheckoutOrderSummaryPayment(props: Props) {
           <div>
             <div className="flex justify-between text-sm">
               <p className="font-medium">{order?.deal.restaurant.name}</p>
-              <p className="font-medium">£{order?.deal?.pricePerHeadGBP}</p>
+              <p className="font-medium">
+                <PoundSVG className="h-4" />
+                {order?.deal?.pricePerHeadGBP}
+              </p>
             </div>
             <p className="text-sm">{order?.deal?.tagline}</p>
           </div>
@@ -75,7 +79,8 @@ export function CheckoutOrderSummaryPayment(props: Props) {
               {order.heads === 1 ? 'person' : 'people'}
             </p>
             <p className="font-medium">
-              £{Math.floor(order.heads) * order.deal.pricePerHeadGBP}
+              <PoundSVG className="h-4" />
+              {Math.floor(order.heads) * order.deal.pricePerHeadGBP}
             </p>
           </div>
 
@@ -103,7 +108,10 @@ export function CheckoutOrderSummaryPayment(props: Props) {
 
           <div className="flex items-center justify-between mb-1 space-x-2 font-medium">
             <p>Total</p>
-            <p>£{Math.floor(order.heads) * order.deal.pricePerHeadGBP}</p>
+            <p>
+              <PoundSVG className="h-4" />
+              {Math.floor(order.heads) * order.deal.pricePerHeadGBP}
+            </p>
           </div>
 
           <Button

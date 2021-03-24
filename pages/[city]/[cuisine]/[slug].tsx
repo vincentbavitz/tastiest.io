@@ -1,4 +1,5 @@
 // [slug].js
+import { RecommendForm } from 'components/RecommendForm';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
@@ -79,6 +80,8 @@ function Post(post: IPost) {
       </Head>
 
       <Article {...post} />
+
+      <RecommendForm dish={post?.dishName} city={post?.city} />
     </>
   );
 }

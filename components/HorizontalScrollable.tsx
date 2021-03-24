@@ -99,7 +99,7 @@ function HorizontalScrollableInner(props: Props) {
         <div
           className={classNames(
             'flex flex-col justify-center h-full z-50 duration-300 -ml-8',
-            x <= 1 && 'opacity-0',
+            x <= 1 && 'opacity-0 pointer-events-none',
           )}
         >
           <ChevronLeftSecondarySVG
@@ -111,7 +111,7 @@ function HorizontalScrollableInner(props: Props) {
         <div
           className={classNames(
             'flex flex-col justify-center h-full z-50 duration-300 -mr-8',
-            rightScrollHidden && 'opacity-0',
+            rightScrollHidden && 'opacity-0 pointer-events-none',
           )}
         >
           <ChevronRightSecondarySVG

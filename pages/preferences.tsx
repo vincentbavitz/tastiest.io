@@ -1,5 +1,5 @@
 import PreferencesSVG from '@svg/page/preferences.svg';
-import { Button } from 'components/Button';
+import { Button } from '@tastiest-io/tastiest-components';
 import { Contained } from 'components/Contained';
 import CuisineSelect from 'components/inputs/CuisineSelect';
 import { InputAbstract } from 'components/inputs/InputAbstract';

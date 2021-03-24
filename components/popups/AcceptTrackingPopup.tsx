@@ -1,8 +1,8 @@
+import { Button } from '@tastiest-io/tastiest-components';
 import React from 'react';
 import { useLocalStorage } from 'react-use';
 import { UI } from '../../constants';
 import { LocalStorageItem } from '../../types/data';
-import { Button } from '../Button';
 
 export function AcceptTrackingPopup() {
   const [hasAcceptedCookies, setHasAcceptedCookies] = useLocalStorage(
@@ -23,7 +23,7 @@ export function AcceptTrackingPopup() {
             style={{
               zIndex: UI.Z_INDEX_GPDR_POPUP,
             }}
-            className="flex items-center bg-white shadow-md rounded-md text-black px-3 py-2 mb-2"
+            className="flex items-center px-3 py-2 mb-2 text-black bg-white rounded-md shadow-md"
           >
             <p className="pl-1 pr-1">
               By using Tastiest, you agree to our{' '}

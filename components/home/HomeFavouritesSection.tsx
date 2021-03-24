@@ -15,7 +15,7 @@ export function HomeFavouritesSection(props: Props) {
     <div className="flex flex-col space-y-4">
       <SectionTitle>Discover your next favourite dish!</SectionTitle>
 
-      <HorizontalScrollable fit={3}>{cards}</HorizontalScrollable>
+      <HorizontalScrollable fit={4}>{cards}</HorizontalScrollable>
     </div>
   );
 }

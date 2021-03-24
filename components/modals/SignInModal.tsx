@@ -1,6 +1,7 @@
 import TastiestLogo from '@svg/brand.svg';
 import EmailSVG from '@svg/email.svg';
 import PasswordSVG from '@svg/lock.svg';
+import { Button } from '@tastiest-io/tastiest-components';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +10,6 @@ import { ScreenContext } from '../../contexts/screen';
 import { useAuth } from '../../hooks/useAuth';
 import { closeSignInModal, ModalInstance } from '../../state/navigation';
 import { IState } from '../../state/reducers';
-import { Button } from '../Button';
 import { InputAbstract } from '../inputs/InputAbstract';
 import { Modal } from '../Modal';
 import { SignInTosInfo } from '../SignInTosInfo';

@@ -1,6 +1,7 @@
 import HeartFilledPrimarySVG from '@svg/heart-filled-primary.svg';
 import HeartPrimarySVG from '@svg/heart-primary.svg';
 import ShareSVG from '@svg/share.svg';
+import { Button } from '@tastiest-io/tastiest-components';
 import { ScreenContext } from 'contexts/screen';
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
@@ -13,7 +14,6 @@ import {
   shareToTwitter,
   shareToWhatsApp,
 } from '../../../utils/share';
-import { Button } from '../../Button';
 import { Dropdown } from '../../Dropdown';
 import { DropdownItem } from '../../DropdownItem';
 import { InputAbstract } from '../../inputs/InputAbstract';
