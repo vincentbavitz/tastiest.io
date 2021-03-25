@@ -102,8 +102,7 @@ function ThankYou(
               style={{ maxWidth: !isDesktop ? '28rem' : '50rem' }}
               className="text-2xl font-somatic text-primary"
             >
-              Thanks {firstName}, congratulations on taking advantage of this
-              offer.
+              Thanks {firstName}! You're going to love it
             </h2>
           </div>
         </div>

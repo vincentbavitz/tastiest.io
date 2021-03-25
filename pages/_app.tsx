@@ -18,13 +18,15 @@ import { openSignInModal } from '../state/navigation';
 import { rootReducer } from '../state/reducers';
 import '../styles/style.scss';
 
-if (!firebase.apps.length) {
-  // Initialize firebase instance
-  firebase.initializeApp(FIREBASE.CLIENT_CONFIG);
+if (typeof window !== 'undefined') {
+  if (!firebase.apps.length) {
+    // Initialize firebase instance
+    firebase.initializeApp(FIREBASE.CLIENT_CONFIG);
 
-  // Initialize other services on firebase instance
-  firebase.firestore();
-  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+    // Initialize other services on firebase instance
+    firebase.firestore();
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+  }
 }
 
 const store = createStore(rootReducer);

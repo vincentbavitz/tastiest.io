@@ -1,4 +1,5 @@
 // TODO CHANGE IDEAL TO IOFFER
+
 import { IDeal } from './cms';
 
 export interface IOrder {
