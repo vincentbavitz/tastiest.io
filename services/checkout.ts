@@ -143,7 +143,10 @@ export class CheckoutApi {
       };
 
       // Track the order creation Server Side
-      const analytics = new Analytics(process.env.ANALYTICS_WRITE_KEY);
+      const analytics = new Analytics(
+        process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY,
+      );
+
       analytics.track({
         userId,
         event: 'Order Created',
