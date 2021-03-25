@@ -3,12 +3,79 @@ import ThankYouOnlineSVG from '@svg/page/thank-you-online.svg';
 import ThankYouPhoneButtonSVG from '@svg/page/thank-you-phone-button.svg';
 import ThankYouPhoneSVG from '@svg/page/thank-you-phone.svg';
 import ThankYouBackdropSVG from '@svg/page/thank-you.svg';
+import { InferGetServerSidePropsType } from 'next';
 import React, { useContext } from 'react';
+import { CheckoutApi } from 'services/checkout';
+import { UserDataApi } from 'services/userData';
 import { SVG } from 'types/assets';
+import { IOrder } from 'types/checkout';
+import { UserData } from 'types/firebase';
 import { Contained } from '../components/Contained';
 import { ScreenContext } from '../contexts/screen';
 
-function ThankYou() {
+export const getServerSideProps = async context => {
+  // Get user ID from cookie.
+  const userDataApi = new UserDataApi();
+  const { userId } = await userDataApi.init(context);
+
+  // Verify order is legit; else redirect and wipe order data.
+  const orderId = String(context.query.orderId ?? '') ?? null;
+
+  console.log('thank-you ➡️ orderId:', orderId);
+
+  // If no order exists in URI, redirect to home
+  if (!orderId) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  // Verify order exists with Firebase
+  const checkoutApi = new CheckoutApi(context);
+  const order: IOrder = await checkoutApi.getOrderFromOrderRequest(orderId);
+
+  console.log('thank-you ➡️ order:', order);
+
+  // If no order exists in Firebase, redirect to home
+  if (!order) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  // Ensure payment succeeded. Return to checkout if it failed.
+  const paymentIntent = await checkoutApi.getOrCreatePaymentIntent(order);
+
+  console.log('thank-you ➡️ paymentIntent:', paymentIntent);
+
+  if (paymentIntent.status !== 'succeeded') {
+    return {
+      redirect: {
+        destination: '/checkout',
+        permanent: false,
+      },
+    };
+  }
+
+  const { firstName } = await userDataApi.getUserData(UserData.DETAILS);
+
+  console.log('thank-you ➡️ firstName:', firstName);
+  return {
+    props: { firstName, order },
+  };
+};
+
+function ThankYou(
+  props: InferGetServerSidePropsType<typeof getServerSideProps>,
+) {
+  const { firstName, order } = props;
+
   const { isDesktop } = useContext(ScreenContext);
 
   return (
@@ -35,7 +102,8 @@ function ThankYou() {
               style={{ maxWidth: !isDesktop ? '28rem' : '50rem' }}
               className="text-2xl font-somatic text-primary"
             >
-              Thank you and congratulations on taking advantage of this offer.
+              Thanks {firstName}, congratulations on taking advantage of this
+              offer.
             </h2>
           </div>
         </div>

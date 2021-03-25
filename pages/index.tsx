@@ -3,7 +3,6 @@ import Head from 'next/head';
 import React, { useContext } from 'react';
 import { CmsApi } from 'services/cms';
 import { IPost } from 'types/cms';
-import { ArticleCard } from '../components/cards/ArticleCard';
 import { Contained } from '../components/Contained';
 import { HomeFavouritesSection } from '../components/home/HomeFavouritesSection';
 import { HomeMapSection } from '../components/home/HomeMapSection';
@@ -32,11 +31,7 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Index: NextPage<Props> = ({ posts = [] }) => {
-  const cards = posts
-    ? posts
-        .slice?.(0, 6)
-        .map(post => <ArticleCard compact key={post.id} {...post} />)
-    : [];
+  const cards = posts ? posts.slice?.(0, 6) : [];
 
   const { isDesktop } = useContext(ScreenContext);
 

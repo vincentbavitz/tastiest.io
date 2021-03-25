@@ -1,3 +1,4 @@
+import { Input } from '@tastiest-io/tastiest-components';
 import React from 'react';
 
 interface Props {

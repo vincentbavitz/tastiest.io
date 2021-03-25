@@ -58,14 +58,6 @@ export interface IRecentSearch {
   timestamp: number;
 }
 
-export enum SupportRequestType {
-  GENERAL = 'GENERAL',
-  ORDER = 'ORDER',
-  FEATURE_REQUEST = 'FEATURE_REQUEST',
-  BUG = 'BUG',
-  OTHER = 'OTHER',
-}
-
 export type TFavouriteCuisine = {
   existing: CuisineSymbol | 'ALL_FOOD' | null;
   other: string | null;
@@ -119,3 +111,37 @@ export type TUserData<T extends UserData> =
 export type IUserData = {
   [key in UserData]: TUserData<key>;
 };
+
+// Support requests and so forth!
+export enum SupportRequestType {
+  GENERAL = 'GENERAL',
+  ORDER = 'ORDER',
+  FEATURE_REQUEST = 'FEATURE_REQUEST',
+  BUG = 'BUG',
+  OTHER = 'OTHER',
+}
+
+export interface ISupportMessage {
+  // TODO - Allow formatting in the future
+  name: string;
+  message: string;
+  timestamp: number;
+  role: 'user' | 'restaurant' | 'support';
+}
+
+// User requests are stored in Firestore as support-users/<list of support requests>
+// We can't store in terms of user IDs because they might not have an account.
+export interface IUserSupportRequest {
+  userId: string | null;
+  name: string;
+  email: string;
+  type: SupportRequestType;
+  subject: string;
+  conversation: ISupportMessage[];
+  priority: 'critical' | 'high' | 'normal' | 'low';
+  seen: boolean;
+  resolved: boolean;
+  // Timestamps
+  openedAt: number;
+  updatedAt: number;
+}

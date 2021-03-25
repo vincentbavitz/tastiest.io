@@ -1,6 +1,7 @@
 import ChevronLeftSecondarySVG from '@svg/chevron-left-secondary.svg';
 import ChevronRightSecondarySVG from '@svg/chevron-right-secondary.svg';
 import classNames from 'classnames';
+import { useDevice } from 'hooks/useDevice';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useScroll, useWindowSize } from 'react-use';
 import { UI } from '../constants';
@@ -50,6 +51,7 @@ function HorizontalScrollableInner(props: Props) {
   const [itemWidth, setItemWidth] = useState<number>();
   const [rightScrollHidden, setRightScrollHidden] = useState(false);
 
+  const { isTouchDevice } = useDevice();
   const { isDesktop, isMobile } = useContext(ScreenContext);
 
   const handleLeftScroll = () => {
@@ -93,7 +95,7 @@ function HorizontalScrollableInner(props: Props) {
       <div
         className={classNames(
           'absolute left-0 flex items-center justify-between h-full w-full',
-          !isDesktop && 'hidden',
+          isTouchDevice && 'hidden',
         )}
       >
         <div

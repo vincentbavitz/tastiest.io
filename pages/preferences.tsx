@@ -136,7 +136,7 @@ const Preferences = ({
 
   return (
     <div>
-      <div className="relative flex flex-col items-center w-full mt-6 mb-12 space-y-4">
+      <div className="relative flex flex-col items-center w-full pb-12 mt-6 space-y-4">
         <h1 className="text-3xl text-center font-somatic text-primary">
           Set your preferences
         </h1>
@@ -216,7 +216,7 @@ const Preferences = ({
           </PreferenceBlock>
         </div>
 
-        <div className="flex justify-center w-full mt-10">
+        <div className="flex justify-center w-full pb-16 mt-6 tablet:mt-10">
           <Button
             color="primary"
             className="w-32 font-somatic tablet:w-auto"

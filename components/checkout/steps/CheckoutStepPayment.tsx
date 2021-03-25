@@ -144,6 +144,7 @@ export function CheckoutStepPayment(props: Props) {
         lat: null,
         lon: null,
       },
+      email: userData?.details?.email ?? null,
       mobile: null,
     };
 
@@ -161,7 +162,7 @@ export function CheckoutStepPayment(props: Props) {
       );
 
       if (orderMarkedSuccess) {
-        router.push('/thank-you');
+        router.push(`/thank-you?orderId=${order.id}`);
         return;
       }
 

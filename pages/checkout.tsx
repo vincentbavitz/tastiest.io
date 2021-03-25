@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   if (!orderId) {
     return {
       redirect: {
-        destination: '/?login=1',
+        destination: '/',
         permanent: false,
       },
     };
@@ -56,7 +56,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   if (!order) {
     return {
       redirect: {
-        destination: '/?login=1',
+        destination: '/',
         permanent: false,
       },
     };

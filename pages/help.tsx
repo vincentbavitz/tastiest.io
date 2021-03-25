@@ -3,6 +3,7 @@ import { Button, Input, Select } from '@tastiest-io/tastiest-components';
 import { Contained } from 'components/Contained';
 import { ScreenContext } from 'contexts/screen';
 import { useAuth } from 'hooks/useAuth';
+import { useSupport } from 'hooks/useSupport';
 import { useUserData } from 'hooks/useUserData';
 import { InferGetServerSidePropsType } from 'next';
 import React, { useContext, useState } from 'react';
@@ -40,34 +41,58 @@ const Help = (
     .join(' ')
     .trim();
 
-  const [name, setName] = useState<string>(_name);
+  const [name, setName] = useState<string>(_name ?? '');
   const [email, setEmail] = useState<string>(_email ?? '');
 
-  const [subject, setSubject] = useState<string>('');
-  const [subjectType, setSubjectType] = useState<string>(
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
+  const [supportType, setSupportType] = useState<SupportRequestType>(
     SupportRequestType.GENERAL,
   );
 
-  const [orderId, setOrderId] = useState<string>();
+  const [sent, setSent] = useState(false);
+
+  const { supportRequests, makeSupportRequest } = useSupport();
 
   const handleOnSelect = (value: SupportRequestType) => {
     setSubject('');
-    setSubjectType(value);
+    setSupportType(value);
 
     console.log('help ➡️     value:', value);
   };
 
+  console.log('help ➡️ supportRequests:', supportRequests);
+
+  console.log('help ➡️ name;:', name);
+  console.log('help ➡️ email:', email);
+
   const submit = async () => {
-    null;
+    const { success, errors } = await makeSupportRequest(
+      name,
+      email,
+      supportType,
+      subject,
+      message,
+      user?.uid,
+    );
+
+    if (success) {
+      setSubject('');
+      setMessage('');
+      setSent(true);
+    }
+
+    console.log('help ➡️ success:', success);
+    console.log('help ➡️ errors:', errors);
   };
 
   // prettier-ignore
   const textareaPlaceholder = 
-    subjectType === SupportRequestType.GENERAL ? 'How can we help you?' : 
-    subjectType === SupportRequestType.ORDER ? 'Please explain what went wrong with your order' : 
-    subjectType === SupportRequestType.FEATURE_REQUEST ? "Describe the feature you'd like to see" : 
-    subjectType === SupportRequestType.BUG ? 'Please describe the bug you encountered' : 
-    subjectType === SupportRequestType.OTHER ? 'Please describe your issue' : 
+    supportType === SupportRequestType.GENERAL ? 'How can we help you?' : 
+    supportType === SupportRequestType.ORDER ? 'Please explain what went wrong with your order' : 
+    supportType === SupportRequestType.FEATURE_REQUEST ? "Describe the feature you'd like to see" : 
+    supportType === SupportRequestType.BUG ? 'Please describe the bug you encountered' : 
+    supportType === SupportRequestType.OTHER ? 'Please describe your issue' : 
     ''
 
   return (
@@ -131,39 +156,43 @@ const Help = (
               </Select>
             </div>
             <div className="flex-grow">
-              {subjectType === SupportRequestType.GENERAL && (
+              {supportType === SupportRequestType.GENERAL && (
                 <Input
                   placeholder="What's your request?"
                   value={subject}
                   onValueChange={setSubject}
+                  maxLength={80}
                 />
               )}
 
-              {subjectType === SupportRequestType.ORDER && (
+              {supportType === SupportRequestType.ORDER && (
                 <Input
                   placeholder="Order #"
                   value={subject}
                   onValueChange={setSubject}
+                  maxLength={80}
                 />
               )}
 
-              {subjectType === SupportRequestType.FEATURE_REQUEST && (
+              {supportType === SupportRequestType.FEATURE_REQUEST && (
                 <Input
                   placeholder="What would you like to see?"
                   value={subject}
                   onValueChange={setSubject}
+                  maxLength={80}
                 />
               )}
 
-              {subjectType === SupportRequestType.BUG && (
+              {supportType === SupportRequestType.BUG && (
                 <Input
                   placeholder="What was the bug?"
                   value={subject}
                   onValueChange={setSubject}
+                  maxLength={80}
                 />
               )}
 
-              {subjectType === SupportRequestType.OTHER && (
+              {supportType === SupportRequestType.OTHER && (
                 <Input
                   placeholder="Please explain your issue"
                   value={subject}
@@ -177,17 +206,24 @@ const Help = (
             className="h-32 px-4 py-2 duration-300 border-2 rounded-lg outline-none border-secondary hover:border-primary"
             placeholder={textareaPlaceholder}
             maxLength={500}
+            value={message}
+            disabled={sent}
+            onChange={e => setMessage(e.target.value)}
           />
 
-          <div className="w-32">
+          <div className="flex items-center space-x-4">
             <Button
               color="primary"
               className="font-somatic"
               wide={isMobile || isTablet}
               onClick={submit}
             >
-              Send
+              {sent ? 'Sent!' : 'Send'}
             </Button>
+
+            {sent && (
+              <p className="cursor-pointer hover:underline">Another request</p>
+            )}
           </div>
         </div>
       </Contained>

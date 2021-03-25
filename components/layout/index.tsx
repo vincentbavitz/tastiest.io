@@ -1,6 +1,4 @@
-import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
-import { NAVIGATION } from '../../constants';
 import { CuisineBar } from '../cuisine/CuisineBar';
 import { Footer } from '../Footer';
 import { Header } from '../header/Header';
@@ -15,9 +13,6 @@ interface Props {
 export default function Layout({ children }: Props) {
   // We sometimes render elements which stick to the footer,
   // like <SuggestDish />
-
-  const { pathname } = useRouter();
-  const renderSuggestDish = NAVIGATION.SUGGEST_DISH_RENDER_PAGES.test(pathname);
 
   return (
     <>

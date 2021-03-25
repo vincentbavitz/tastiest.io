@@ -7,7 +7,9 @@ import TwitterSVG from '@svg/socials/twitter.svg';
 import YouTubeSVG from '@svg/socials/youtube.svg';
 import TastiestSVG from '@svg/tastiest.svg';
 import { ScreenContext } from 'contexts/screen';
+import Link from 'next/link';
 import React, { FC, ReactNode, useContext } from 'react';
+import { SupportRequestType } from 'types/firebase';
 import { Contained } from './Contained';
 
 export function Footer() {
@@ -56,13 +58,15 @@ const MobileFooter = () => (
       <ThanksForSupportMessage />
     </div>
 
-    <ImprovementPrompts />
+    <div className="flex flex-col space-y-2">
+      <ImprovementPrompts />
+    </div>
   </div>
 );
 
 const DesktopFooter = ({ isHuge }: { isHuge: boolean }) => (
   <Contained>
-    <div className="flex justify-between">
+    <div className="flex justify-between mt-6">
       <div className="flex justify-start pr-20 space-x-12">
         <FooterColumn title="Quick Links">
           <div className="space-y-4 text-sm font-normal leading-tight">
@@ -78,7 +82,7 @@ const DesktopFooter = ({ isHuge }: { isHuge: boolean }) => (
       </div>
 
       <div className="flex justify-end flex-grow">
-        <div className="flex flex-col items-end justify-between h-full space-y-2 text-right">
+        <div className="flex flex-col items-end justify-between h-full space-y-4 text-right">
           <ImprovementPrompts />
 
           {isHuge ? (
@@ -165,23 +169,23 @@ const ImprovementPrompts = () => (
   <>
     <div className="leading-tight whitespace-nowrap">
       <p className="font-bold">Don't See Your Favourite Restaurant?</p>
-      <a href="/" className="text-sm underline">
-        Help our sales team sign them
-      </a>
+      <Link href={`/help?type=${SupportRequestType.GENERAL}`}>
+        <a className="text-sm underline">Help our sales team sign them</a>
+      </Link>
     </div>
 
     <div className="leading-tight">
       <p className="font-bold">Don't See A Key Feature?</p>
-      <a href="/" className="text-sm underline">
-        Help our product team add it
-      </a>
+      <Link href={`/help?type=${SupportRequestType.FEATURE_REQUEST}`}>
+        <a className="text-sm underline">Help our product team add it</a>
+      </Link>
     </div>
 
     <div className="leading-tight">
       <p className="font-bold">Found a bug?</p>
-      <a href="/" className="text-sm underline">
-        Help our engineering team fix it
-      </a>
+      <Link href={`/help?type=${SupportRequestType.BUG}`}>
+        <a className="text-sm underline">Help our engineering team fix it</a>
+      </Link>
     </div>
   </>
 );
