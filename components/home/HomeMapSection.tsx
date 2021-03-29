@@ -11,7 +11,7 @@ export function HomeMapSection() {
   const dispatch = useDispatch();
 
   return (
-    <div className="relative w-full overflow-hidden rounded-xl">
+    <div className="relative z-0 w-full overflow-hidden rounded-xl">
       {/* MAP BACKDROP */}
       <div className="absolute top-0 bottom-0 left-0 right-0">
         <img
@@ -19,10 +19,6 @@ export function HomeMapSection() {
           src={getMapBoxStaticSource(51.5188, -0.1127)}
         />
       </div>
-
-      {/* BACKGROUND OVERLAY */}
-      {/* <div className="absolute top-0 bottom-0 left-0 right-0 bg-white bg-opacity-50"></div> */}
-      <div className="absolute top-0 bottom-0 left-0 right-0"></div>
 
       {/* TEXT OVERLAY */}
       <div className="flex justify-end w-full px-6">
@@ -41,9 +37,9 @@ export function HomeMapSection() {
           </Title>
 
           {/* 
-Map styles
-mapbox://styles/tastiestvince/ckj6mv0zb04uz1amskq1bpi3u
-*/}
+          Map styles
+          mapbox://styles/tastiestvince/ckj6mv0zb04uz1amskq1bpi3u
+          */}
 
           <Button
             onClick={() => dispatch(expandSearchOverlay())}

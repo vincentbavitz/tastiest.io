@@ -1,11 +1,11 @@
 import Analytics from 'analytics-node';
-import * as firebaseAdmin from 'firebase-admin';
 import { GetServerSidePropsContext } from 'next';
 import { parseCookies, setCookie } from 'nookies';
 import { ParsedUrlQuery } from 'querystring';
 import Stripe from 'stripe';
 import { IOrder } from 'types/checkout';
 import { IOrderRequest } from 'types/firebase';
+import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { FIREBASE } from '../constants';
 import { CmsApi } from './cms';
 import { UserDataApi } from './userData';
@@ -13,19 +13,6 @@ import { UserDataApi } from './userData';
 interface PaymentIntentCookie {
   orderId: string;
   paymentIntentId: string;
-}
-
-if (!firebaseAdmin.apps.length) {
-  const cert = {
-    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    projectId: process.env.FIREBASE_PROJECT_ID,
-  };
-
-  firebaseAdmin.initializeApp({
-    credential: firebaseAdmin.credential.cert(cert),
-    databaseURL: process.env.FIREBASE_DATABASE_URL,
-  });
 }
 
 // Intended for server-side use ONLY!

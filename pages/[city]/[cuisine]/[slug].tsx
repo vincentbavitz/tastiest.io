@@ -31,9 +31,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
     page++;
   }
 
+  console.log('[slug] ➡️ item:', posts?.[0]);
+
   const paths: IPath[] = posts.map(item => ({
     params: {
-      city: item.city,
+      city: item.city.toLowerCase(),
       cuisine: item.cuisine.toLowerCase(),
       slug: item.slug,
     },

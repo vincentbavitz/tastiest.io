@@ -1,7 +1,5 @@
-import { useEffect } from 'react';
-import { useLocalStorage } from 'react-use';
-import { LocalStorageItem } from '../types/data';
-import { useAuth } from './useAuth';
+import { TrackingContext } from 'contexts/tracking';
+import { useContext } from 'react';
 
 enum TrackingType {
   ORDER = 'ORDER',
@@ -25,24 +23,5 @@ enum TrackingType {
 // So we need an abstract event firing tool that splits each event
 // into these routes.
 export function useTracking() {
-  const { isSignedIn, user } = useAuth();
-
-  // ////////////////////////////////////// //
-  // Turn off analytics until user opts in  //
-  // ////////////////////////////////////// //
-  const [hasAcceptedCookies] = useLocalStorage(
-    LocalStorageItem.HAS_ACCEPTED_COOKIES,
-  );
-
-  const hasAcceptedAnalytics = isSignedIn || hasAcceptedCookies;
-  useEffect(() => {
-    if (!hasAcceptedAnalytics) {
-      window.analytics?.off();
-    }
-  }, [isSignedIn, hasAcceptedCookies]);
-  // ////////////////////////////////////// //
-  // ////////////////////////////////////// //
-
-  // return { track, identify, hasAcceptedAnalytics };
-  return { hasAcceptedAnalytics };
+  return useContext(TrackingContext);
 }
