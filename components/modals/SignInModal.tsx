@@ -96,7 +96,7 @@ export function SignInModal() {
       <Input
         size="large"
         type="email"
-        className="py-2 rounded-xl"
+        className="py-2"
         placeholder="Email address"
         prefix={<EmailSVG className="h-6" />}
         // suffix={<>!</>}
@@ -108,7 +108,7 @@ export function SignInModal() {
       <Input
         size="large"
         type="password"
-        className="py-2 rounded-xl"
+        className="py-2"
         placeholder="Password"
         prefix={<PasswordSVG className="h-8 ml-2 mr-2" />}
         value={signInPassword}
@@ -140,7 +140,7 @@ export function SignInModal() {
       <Input
         size="large"
         type="email"
-        className="py-2 rounded-xl"
+        className="py-2"
         placeholder="Email address"
         prefix={<EmailSVG className="h-6" />}
         value={signUpEmail}
@@ -150,7 +150,7 @@ export function SignInModal() {
       <Input
         size="large"
         type="password"
-        className="py-2 rounded-xl"
+        className="py-2"
         placeholder="Create a password"
         prefix={<PasswordSVG className="h-8 ml-2 mr-2" />}
         value={signUpPassword}
@@ -181,7 +181,7 @@ export function SignInModal() {
       <Input
         size="large"
         type="email"
-        className="py-2 rounded-xl"
+        className="py-2"
         placeholder="Email address"
         prefix={<EmailSVG className="h-6" />}
         value={signInEmail}
@@ -193,7 +193,7 @@ export function SignInModal() {
         size="large"
         type="solid"
         color="primary"
-        className="py-3 rounded-xl"
+        className="py-3"
         onClick={onClickResetPassword}
       >
         Reset
@@ -324,7 +324,7 @@ export function SignInModal() {
         className="relative flex flex-col justify-between"
       >
         <div className="flex flex-col items-center flex-grow space-y-5">
-          <TastiestLogo className="h-8 fill-current" />
+          <TastiestLogo className="h-8 fill-current text-primary" />
           <div className="w-full text-center">
             <h1 className="text-4xl font-somatic">{title}</h1>
             {subtitle && (

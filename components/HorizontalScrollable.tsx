@@ -1,11 +1,11 @@
 import ChevronLeftSecondarySVG from '@svg/chevron-left-secondary.svg';
 import ChevronRightSecondarySVG from '@svg/chevron-right-secondary.svg';
 import classNames from 'classnames';
-import { useDevice } from 'hooks/useDevice';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useScroll, useWindowSize } from 'react-use';
 import { UI } from '../constants';
 import { ScreenContext } from '../contexts/screen';
+import { useDevice } from '../hooks/useDevice';
 import { Contained } from './Contained';
 
 interface Props {

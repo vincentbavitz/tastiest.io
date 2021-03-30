@@ -85,7 +85,7 @@ export function Modal(props: Props) {
       <div
         ref={boxRef}
         style={{
-          height: onMobileFullscreen && isMobile ? '100vh' : 'unset',
+          height: onMobileFullscreen && isMobile ? '100%' : 'unset',
           width: onMobileFullscreen && isMobile ? '100vw' : 'unset',
         }}
         className={classNames(

@@ -24,9 +24,9 @@ interface IDynamicOptions {
 }
 
 const dynamicCategories: Array<IDynamicOptions> = [
-  { name: 'Nearby', href: '/search/nearby', svg: NearbySVG },
-  { name: 'Trending', href: '/search/trending', svg: TrendingSVG },
-  { name: 'New!', href: '/search/new', svg: NewSVG },
+  { name: 'Nearby', href: '/search?key=nearby', svg: NearbySVG },
+  { name: 'Trending', href: '/search?key=trending', svg: TrendingSVG },
+  { name: 'New!', href: '/search?key=new', svg: NewSVG },
 ];
 
 const popularDishes: Array<IDynamicOptions> = [

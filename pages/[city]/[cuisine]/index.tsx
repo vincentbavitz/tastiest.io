@@ -1,4 +1,5 @@
-import NothingFoundSVG from '@svg/illustrations/nothing-found.svg';
+import LookingSVG from '@svg/illustrations/looking.svg';
+import clsx from 'clsx';
 import { ArticleCard } from 'components/cards/ArticleCard';
 import { SuggestDish } from 'components/SuggestDish';
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
@@ -154,9 +155,10 @@ export default function Cuisine(
                 ]}
               </CardGrid>
             ) : (
-              <div className="flex w-full">
-                <NothingFoundSVG />
-              </div>
+              <NoPostsForCuisine
+                isMobile={isMobile}
+                cuisineName={cuisine.name}
+              />
             )}
           </Contained>
         </div>
@@ -168,3 +170,40 @@ export default function Cuisine(
     </>
   );
 }
+
+interface NoPostsForCuisineProps {
+  isMobile: boolean;
+  cuisineName: string;
+}
+
+const NoPostsForCuisine = ({
+  isMobile,
+  cuisineName,
+}: NoPostsForCuisineProps) => (
+  <div className="mb-20 tablet:flex tablet:justify-end tablet:w-full">
+    <div
+      style={{ minWidth: isMobile ? 'unset' : '600px', maxWidth: '1100px' }}
+      className={clsx(
+        isMobile
+          ? 'flex flex-col space-y-10 w-full'
+          : 'grid grid-cols-12 place-items-center pl-10',
+      )}
+    >
+      <div className="col-span-4">
+        <h4 className="mb-4 text-lg text-center mobile:text-left">
+          Sorry! There are no articles {!isMobile && <br />} for {cuisineName}{' '}
+          yet.
+        </h4>
+        <h2 className="text-3xl leading-tight text-center mobile:text-left font-somatic text-primary mobile:whitespace-nowrap">
+          We are still {!isMobile && <br />}
+          on the lookout {!isMobile && <br />} for the best dishes
+          {!isMobile && <br />} near you!
+        </h2>
+      </div>
+
+      <div className="col-span-8">
+        <LookingSVG style={{ minWidth: isMobile ? 'unset' : '500px' }} />
+      </div>
+    </div>
+  </div>
+);

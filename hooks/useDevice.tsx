@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export function useDevice() {
-  const [isTouchDevice, setIsTouchDevice] = useState<boolean>(null);
+  const [isTouchDevice, setIsTouchDevice] = useState<boolean>(true);
 
   useEffect(() => {
     const deviceAgent = navigator.userAgent.toLowerCase();
@@ -23,8 +23,6 @@ export function useDevice() {
       setIsTouchDevice(false);
     }
   }, []);
-
-  console.log('useDevice ➡️ isTouchDevice:', isTouchDevice);
 
   return { isTouchDevice };
 }

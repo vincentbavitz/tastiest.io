@@ -1,5 +1,7 @@
 import { Button } from '@tastiest-io/tastiest-components';
-import React from 'react';
+import clsx from 'clsx';
+import { ScreenContext } from 'contexts/screen';
+import React, { useContext } from 'react';
 import { useLocalStorage } from 'react-use';
 import { UI } from '../../constants';
 import { LocalStorageItem } from '../../types/data';
@@ -15,6 +17,8 @@ export function AcceptTrackingPopup() {
     window?.analytics?.on();
   };
 
+  const { isMobile } = useContext(ScreenContext);
+
   return (
     <>
       {!hasAcceptedCookies && (
@@ -25,7 +29,7 @@ export function AcceptTrackingPopup() {
             }}
             className="flex items-center px-3 py-2 mb-2 text-black bg-white rounded-md shadow-md"
           >
-            <p className="pl-1 pr-1">
+            <p className={clsx('pl-1 pr-1', isMobile && 'text-xs')}>
               By using Tastiest, you agree to our{' '}
               <a href="#" className="underline">
                 cookie policy
