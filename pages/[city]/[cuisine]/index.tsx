@@ -141,9 +141,9 @@ export default function Cuisine(
             </div>
           </div>
 
-          <Contained>
-            {cards.length ? (
-              <CardGrid rowLimit={2}>
+          {cards.length ? (
+            <div className="pt-10 pb-20 ">
+              <CardGrid horizontalScroll rowLimit={2}>
                 {[
                   ...cards,
                   ...cards,
@@ -154,13 +154,15 @@ export default function Cuisine(
                   ...cards,
                 ]}
               </CardGrid>
-            ) : (
+            </div>
+          ) : (
+            <Contained>
               <NoPostsForCuisine
                 isMobile={isMobile}
                 cuisineName={cuisine.name}
               />
-            )}
-          </Contained>
+            </Contained>
+          )}
         </div>
       </div>
 
