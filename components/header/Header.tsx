@@ -137,11 +137,9 @@ function CheckoutHeader() {
     <Contained>
       <div className="flex items-center w-full h-24">
         <div className="flex items-center justify-between w-full antialiased">
-          <Link href="/">
-            <a className="flex items-center flex-shrink-0 tastiest-logo-link text-secondary">
-              <TastiestLogo className="h-8 fill-current" />
-            </a>
-          </Link>
+          <div className="flex items-center flex-shrink-0 tastiest-logo-link text-secondary">
+            <TastiestLogo className="h-8 fill-current" />
+          </div>
         </div>
 
         <HeaderAvatar />

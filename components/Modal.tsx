@@ -1,4 +1,4 @@
-import ExitSVG from '@svg/exit-primary.svg';
+import ExitSVG from '@svg/icons/exit.svg';
 import classNames from 'classnames';
 import React, {
   ReactNode,
@@ -94,7 +94,10 @@ export function Modal(props: Props) {
         )}
       >
         <div className="absolute top-0 right-0 z-0 flex justify-end pt-3 pr-3">
-          <ExitSVG onClick={close} className="h-8 cursor-pointer" />
+          <ExitSVG
+            onClick={close}
+            className="h-8 cursor-pointer fill-current text-primary"
+          />
         </div>
         {children}
       </div>

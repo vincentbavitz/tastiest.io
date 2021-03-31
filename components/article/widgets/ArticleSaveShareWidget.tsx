@@ -183,13 +183,18 @@ function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
       className="fixed top-0 left-0 right-0"
     >
       <div className="flex items-center justify-between w-full h-12 px-6 bg-white shadow-lg">
-        <p className="text-xl tracking-wide">{dishName}</p>
+        <p className="text-lg tracking-wide whitespace-nowrap mobile:text-xl">
+          {dishName}
+        </p>
 
         <div className="flex items-center mt-1 space-x-2">
           {isArticleSaved ? (
-            <HeartFilledPrimarySVG className={isDesktop ? 'h-6' : 'h-8'} />
+            <HeartFilledPrimarySVG
+              onClick={toggleSaveArticle}
+              className="h-8"
+            />
           ) : (
-            <HeartPrimarySVG className="h-10" />
+            <HeartPrimarySVG onClick={toggleSaveArticle} className="h-10" />
           )}
 
           <ShareSVG

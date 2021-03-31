@@ -10,7 +10,7 @@ export function Article(post: IPost) {
 
   return (
     <div>
-      {!isDesktop ? <ArticleMobile {...post} /> : <ArticleDesktop {...post} />}
+      {isDesktop ? <ArticleDesktop {...post} /> : <ArticleMobile {...post} />}
     </div>
   );
 }

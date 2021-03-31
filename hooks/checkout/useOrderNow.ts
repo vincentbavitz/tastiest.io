@@ -19,7 +19,7 @@ export const useOrderNow = (deal: IDeal, fromSlug: string) => {
 
   const submit = async () => {
     const orderId = await initOrderRequest(deal.id, heads, fromSlug);
-    console.log('ArticleOrderNowDesktop ➡️ orderId:', orderId);
+    console.log('useOrderNow ➡️ orderId:', orderId);
 
     if (orderId) {
       router.push(`/checkout/?orderId=${orderId}`);
