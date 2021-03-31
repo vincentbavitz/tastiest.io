@@ -11,7 +11,8 @@ import { ScreenContext } from '../../../contexts/screen';
 import ArticleContained from '../ArticleContained';
 import { ArticleFeatureVideoWidget } from '../widgets/ArticleFeatureVideoWidget';
 import { ArticleOrderNowDesktop } from '../widgets/ArticleOrderNowDesktop';
-import { ArticleSaveShareStatic } from '../widgets/ArticleSaveShareStatic';
+import ArticleOrderNowMobile from '../widgets/ArticleOrderNowMobile';
+import { ArticleSaveShareWidget } from '../widgets/ArticleSaveShareWidget';
 
 const EATING_CHARACTER_SIZE_REM = 22;
 
@@ -21,19 +22,19 @@ export function ArticleSectionAbstract(props: IPost) {
 
   const dispatch = useDispatch();
 
-  const ref = useRef(null);
-  const { y: windowScrollY } = useWindowScroll();
-
+  // Desktop - Manage scrolling behaviour
   // Whether or not we follow scroll or remain in place
+  const desktopScrollRef = useRef(null);
+  const { y: windowScrollY } = useWindowScroll();
   const { articleOfferIsFloating: isFloating } = useSelector(
     (state: IState) => state.navigation,
   );
 
   useEffect(() => {
-    const locationY = ref.current?.getBoundingClientRect()?.top;
+    const locationY = desktopScrollRef.current?.getBoundingClientRect()?.top;
 
-    console.log('ArticleOrderNowDesktop ➡️ locationY:', locationY);
-    console.log('ArticleOrderNowDesktop ➡️ isFloating:', isFloating);
+    // console.log('ArticleOrderNowDesktop ➡️ locationY:', locationY);
+    // console.log('ArticleOrderNowDesktop ➡️ isFloating:', isFloating);
 
     if (locationY < UI.ARTICLE.OFFER_WIDGET_FLOAT_TOP_PX && !isFloating) {
       dispatch(setArticleOfferIsFloating(true));
@@ -48,12 +49,12 @@ export function ArticleSectionAbstract(props: IPost) {
     <div className="relative w-full bg-secondary-1">
       {!isDesktop ? <CharacterEatingMobile /> : <CharacterEatingDesktop />}
 
-      <ArticleSaveShareStatic id={id} title={title} slug={slug} />
+      <ArticleSaveShareWidget id={id} title={title} slug={slug} />
 
       {isDesktop ? (
         <ArticleContained>
           <div className="mt-6">
-            <div ref={ref}>
+            <div ref={desktopScrollRef}>
               <ArticleFeatureVideoWidget video={video} />
             </div>
           </div>
@@ -80,7 +81,11 @@ export function ArticleSectionAbstract(props: IPost) {
         </Contained>
       )}
 
-      {isDesktop && <ArticleOrderNowDesktop deal={deal} slug={slug} />}
+      {isDesktop ? (
+        <ArticleOrderNowDesktop deal={deal} slug={slug} />
+      ) : (
+        <ArticleOrderNowMobile deal={deal} slug={slug} />
+      )}
     </div>
   );
 }

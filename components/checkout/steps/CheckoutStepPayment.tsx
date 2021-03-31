@@ -14,8 +14,8 @@ import HelpSVG from '@svg/checkout/help.svg';
 import { Input } from '@tastiest-io/tastiest-components';
 import { InputContactBirthday } from 'components/inputs/contact/InputContactBirthday';
 import { ScreenContext } from 'contexts/screen';
+import { useCheckout } from 'hooks/checkout/useCheckout';
 import { useAuth } from 'hooks/useAuth';
-import { useCheckout } from 'hooks/useCheckout';
 import { useUserData } from 'hooks/useUserData';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
@@ -72,7 +72,6 @@ export function CheckoutStepPayment(props: Props) {
   const [cardHolderName, setCardholderName] = useState('');
   const [cardPostcode, setCardPostcode] = useState('');
   const [cardBrand, setCardBrand] = useState<CardBrand | undefined>(undefined);
-  const [paymentError, setPaymentError] = useState<string>(null);
 
   const { isMobile, isTablet } = useContext(ScreenContext);
 

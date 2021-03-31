@@ -1,11 +1,10 @@
 import PoundSVG from '@svg/icons/pound.svg';
+import RightSVG from '@svg/icons/right.svg';
 import { Button, Select } from '@tastiest-io/tastiest-components';
 import classNames from 'classnames';
 import { Contained } from 'components/Contained';
 import { useOrderNow } from 'hooks/checkout/useOrderNow';
-import React, { useContext } from 'react';
 import { UI } from '../../../constants';
-import { ScreenContext } from '../../../contexts/screen';
 import { IDeal, valdHeads, ValidHead } from '../../../types/cms';
 
 interface Props {
@@ -13,39 +12,39 @@ interface Props {
   slug: string;
 }
 
-export function ArticleOrderNowDesktop(props: Props) {
-  const { deal, slug: fromSlug } = props;
+export default function ArticleOrderNowMobile({ deal, slug }: Props) {
+  return (
+    <div
+      style={{ zIndex: UI.ARTICLE.FLOATING_COMPONENTS_Z_INDEX }}
+      className="fixed bottom-0 left-0 right-0 pb-6"
+    >
+      <Contained>
+        <Button wide size="large" className="shadow-md">
+          <div className="flex items-center justify-between w-full text-xl font-somatic">
+            <div className="w-5"></div>
+            <span>Get the offer!</span>
+            <RightSVG className="h-5 text-white stroke-current" />
+          </div>
+        </Button>
+      </Contained>
+      <OrderNowOverlay deal={deal} slug={slug} />
+    </div>
+  );
+}
+
+const OrderNowOverlay = ({ deal, slug }: Props) => {
   const { totalPrice, isFloating, heads, setHeads, submit } = useOrderNow(
     deal,
-    fromSlug,
+    slug,
   );
-
-  const { isDesktop } = useContext(ScreenContext);
 
   return (
     <div
-      style={{
-        marginTop: isFloating
-          ? `${UI.ARTICLE.OFFER_WIDGET_FLOAT_GAP_PX}px`
-          : 'unset',
-      }}
-      className={classNames(
-        'w-full pointer-events-none',
-        isFloating && 'fixed top-0 right-0',
-        !isFloating && 'absolute top-0 right-0',
-      )}
+      className={classNames('fixed inset-0 hidden w-full pointer-events-none')}
     >
       <Contained>
         <div className="flex justify-end w-full">
-          <div
-            style={{
-              width: isDesktop
-                ? `calc(${UI.ARTICLE.DESKTOP_OFFER_WIDGET_WIDTH_PX}px - 2rem)`
-                : '300px',
-              maxWidth: isDesktop ? 'unset' : '75vw',
-            }}
-            className="relative z-30 pt-2 pb-4 mt-20 bg-white border-4 pointer-events-auto desktop:mt-0 border-secondary-1 rounded-xl"
-          >
+          <div className="relative z-30 w-full pt-2 pb-4 mt-20 bg-white border-4 pointer-events-auto desktop:mt-0 border-secondary-1 rounded-xl">
             <h3 className="mb-2 text-xl text-center font-somatic text-primary">
               Get the offer!
             </h3>
@@ -132,4 +131,4 @@ export function ArticleOrderNowDesktop(props: Props) {
       </Contained>
     </div>
   );
-}
+};

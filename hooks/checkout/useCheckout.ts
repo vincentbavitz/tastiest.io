@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { useFirestore } from 'react-redux-firebase';
 import { IOrder, IPaymentDetails } from 'types/checkout';
 import { IOrderRequest, IUserDetails, UserData } from 'types/firebase';
-import { useAuth } from './useAuth';
-import { useUserData } from './useUserData';
+import { useAuth } from '../useAuth';
+import { useUserData } from '../useUserData';
 
 export function useCheckout() {
   // const firebase = useFirebase();

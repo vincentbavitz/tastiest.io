@@ -39,11 +39,12 @@ function MobileHeader() {
   return (
     <div
       style={{
-        zIndex: UI.Z_INDEX_HEADER,
         paddingLeft: '5vw',
         paddingRight: '5vw',
+        height: `${UI.HEADER_HEIGHT_MOBILE_REM}rem`,
+        zIndex: UI.Z_INDEX_HEADER,
       }}
-      className="fixed top-0 left-0 right-0 w-full h-24 bg-white"
+      className="absolute top-0 left-0 right-0 w-full bg-white"
     >
       <div className="flex items-center justify-between w-full h-full">
         <div className="flex flex-shrink-0" onMouseDown={handleExpandSearch}>
@@ -101,8 +102,9 @@ function DesktopHeader() {
           searchOverlayExpanded && searchIsShown
             ? UI.Z_INDEX_HEADER_SEARCH
             : UI.Z_INDEX_HEADER,
+        height: `${UI.HEADER_HEIGHT_DESKTOP_REM}rem`,
       }}
-      className="fixed top-0 left-0 right-0 flex items-center w-full h-20 bg-white"
+      className="fixed top-0 left-0 right-0 flex items-center w-full bg-white"
     >
       <Contained>
         <div className="flex items-center w-full h-full">

@@ -6,8 +6,6 @@ interface Props {
 }
 
 export function ArticleFeatureVideoWidget({ video }: Props) {
-  console.log('ArticleFeatureVideoWidget ➡️ video:', video);
-
   const videoId = video
     ?.replace(
       /^(http[s]?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)/,
