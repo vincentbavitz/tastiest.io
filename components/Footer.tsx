@@ -33,13 +33,13 @@ const MobileFooter = () => {
     <div className="flex flex-col pb-10 space-y-6">
       <BrandSVG className="h-8 mt-6 fill-current" />
 
-      <div className="flex flex-col w-full mt-6 space-x-0 space-y-6 mobile:space-y-0 mobile:flex-row mobile:space-x-6">
+      <div className="flex flex-col w-full pt-4 mt-6 space-x-0 space-y-4 mobile:space-y-0 mobile:flex-row mobile:space-x-6">
         <div className="flex-1">
           <p className="mb-3 text-lg font-medium uppercase border-b border-white opacity-75 whitespace-nowrap">
             Quick Links
           </p>
 
-          <div className="grid grid-cols-2 justify-items-stretch">
+          <div className="grid grid-cols-2 pb-4 gap-y-4 justify-items-stretch">
             <QuickLinksBlock />
           </div>
         </div>

@@ -1,7 +1,7 @@
 import SuggestDishDesktopSVG from '@svg/suggest-dish-desktop.svg';
-import { Button } from '@tastiest-io/tastiest-components';
-import classNames from 'classnames';
-import React, { useContext } from 'react';
+import { Button, Input } from '@tastiest-io/tastiest-components';
+import { useFeedback } from 'hooks/useFeedback';
+import React, { useContext, useState } from 'react';
 import { ScreenContext } from '../contexts/screen';
 import { Contained } from './Contained';
 
@@ -31,7 +31,7 @@ export function RecommendForm(props: Props) {
         </div>
       ) : (
         <div className="flex flex-col items-center mt-10 space-y-6">
-          <SuggestDishDesktopSVG style={{ width: '90%', maxHeight: '22rem' }} />
+          <SuggestDishDesktopSVG style={{ maxHeight: '22rem' }} />
 
           <div className="pb-8 pl-3">
             <RecommendFormContent {...props} />
@@ -43,7 +43,18 @@ export function RecommendForm(props: Props) {
 }
 
 const RecommendFormContent = ({ dish, city }: Props) => {
+  const { suggestRestaurant } = useFeedback();
+
   const { isDesktop } = useContext(ScreenContext);
+  const [recommendedName, setRecommendedName] = useState('');
+  const [requestRecieved, setRequestRecieved] = useState(false);
+
+  const submit = async () => {
+    if (requestRecieved) return;
+
+    const { success } = await suggestRestaurant(recommendedName);
+    setRequestRecieved(success);
+  };
 
   return (
     <>
@@ -52,42 +63,21 @@ const RecommendFormContent = ({ dish, city }: Props) => {
           Do you know a better {dish} in {city}?
         </span>
       </div>
-      <div
-        className={classNames(
-          'flex',
-          'w-full',
-          'focus:outline-none',
-          'focus:shadow-outline',
-          'border-4',
-          'border-secondary',
-          'rounded-xl',
-        )}
-      >
-        <input
-          className={classNames(
-            'flex-1',
-            'border-none',
-            'outline-none',
-            'px-4',
-            'self-center',
-            'block',
-            'appearance-none',
-            'leading-normal',
-            'bg-transparent',
-            'h-12',
-            'text-xl',
-          )}
-          type="text"
-          maxLength={50}
-          placeholder="Name of restaurant"
-        ></input>
-      </div>
+      <Input
+        value={recommendedName}
+        onValueChange={setRecommendedName}
+        disabled={requestRecieved}
+        maxLength={80}
+        size="large"
+        placeholder="Name of Restaurant"
+      />
 
       <Button
         size={isDesktop ? 'small' : 'medium'}
         className="w-32 mt-6 text-xl font-somatic"
+        onClick={submit}
       >
-        Recommend
+        {requestRecieved ? 'Thanks!' : 'Recommend'}
       </Button>
     </>
   );

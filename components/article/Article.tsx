@@ -1,11 +1,9 @@
 import React, { useContext } from 'react';
 import { ScreenContext } from '../../contexts/screen';
 import { IPost } from '../../types/cms';
-import { ArticleDescriptionSection } from './sections/ArticleDescriptionSection';
 import { ArticleSectionAbstract } from './sections/ArticleSectionAbstract';
 import { ArticleSectionContent } from './sections/ArticleSectionContent';
 import { ArticleSectionTitle } from './sections/ArticleSectionTitle';
-import { ArticleSaveShareWidget } from './widgets/ArticleSaveShareWidget';
 
 export function Article(post: IPost) {
   const { isDesktop } = useContext(ScreenContext);
@@ -33,9 +31,7 @@ function ArticleMobile(post: IPost) {
   return (
     <article>
       <ArticleSectionTitle title={title} city={city} />
-      <ArticleDescriptionSection description={description} />
 
-      <ArticleSaveShareWidget id={id} title={title} slug={slug} />
       <ArticleSectionAbstract {...post} />
       <ArticleSectionContent {...post} />
     </article>

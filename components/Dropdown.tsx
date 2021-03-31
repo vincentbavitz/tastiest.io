@@ -6,6 +6,7 @@ interface Props {
   isOpen: boolean;
   pull?: 'left' | 'right' | 'center';
   style?: 'default' | 'outline';
+  opacity?: 25 | 50 | 75 | 100;
   onClickAway: () => void;
   center?: boolean;
 
@@ -22,7 +23,7 @@ export function Dropdown(props: Props) {
     isOpen,
     pull = 'right',
     style = 'default',
-    center = false,
+    opacity = 100,
     offsetX,
     offsetY,
     onClickAway,
@@ -52,14 +53,15 @@ export function Dropdown(props: Props) {
       >
         <div
           ref={ref}
+          style={{ filter: 'drop-shadow(2px 4px 6px rgba(0,0,0,0.11))' }}
           className={classNames(
             'bg-white',
             'duration-300',
             'rounded-lg',
-            'transform',
-            'shadow-lg',
+            'transform -translate-x-1/2',
             'overflow-hidden',
             'children:last:border-b-0',
+            `bg-opacity-${opacity}`,
             style === 'default' && ['pt-2'],
             style === 'outline' && ['py-2', 'border-2', 'border-secondary'],
           )}

@@ -115,16 +115,14 @@ export default function Cuisine(
                     <cuisine.pageSvg className="w-full pt-6" />
                   </Contained>
                 ) : (
-                  <>
-                    <cuisine.pageSvg
-                      style={{
-                        width: isDesktop ? '100%' : isTablet ? '150%' : '150%',
-                        transform: `translateX(${
-                          isDesktop ? '0' : isTablet ? '-15%' : '-25%'
-                        })`,
-                      }}
-                    />
-                  </>
+                  <cuisine.pageSvg
+                    style={{
+                      width: isDesktop ? '100%' : isTablet ? '150%' : '150%',
+                      transform: `translateX(${
+                        isDesktop ? '0' : isTablet ? '-15%' : '-25%'
+                      })`,
+                    }}
+                  />
                 )}
               </>
             )}
@@ -145,6 +143,9 @@ export default function Cuisine(
             <div className="pt-10 pb-20 ">
               <CardGrid horizontalScroll rowLimit={2}>
                 {[
+                  ...cards,
+                  ...cards,
+                  ...cards,
                   ...cards,
                   ...cards,
                   ...cards,

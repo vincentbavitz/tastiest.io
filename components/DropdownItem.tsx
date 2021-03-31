@@ -30,7 +30,7 @@ export const DropdownItem = (props: DropdownItemProps) => {
         'select-none',
         'cursor-pointer',
         style === 'default' &&
-          'border-b border-secondary font-semibold py-2 mx-3',
+          'border-b border-secondary border-opacity-25 font-semibold py-2 mx-3',
         style === 'outline' && ['pl-4', 'pr-6', 'py-1'],
         selected && 'bold text-opacity-100',
       )}

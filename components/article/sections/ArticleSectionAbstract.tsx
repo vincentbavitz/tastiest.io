@@ -1,5 +1,5 @@
 import CharacterEatingSVG from '@svg/article/character-eating.svg';
-import XiaoDividerSVG from '@svg/article/xiao-divider.svg';
+import { Contained } from 'components/Contained';
 import React, { useContext, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useWindowScroll } from 'react-use';
@@ -11,12 +11,12 @@ import { ScreenContext } from '../../../contexts/screen';
 import ArticleContained from '../ArticleContained';
 import { ArticleFeatureVideoWidget } from '../widgets/ArticleFeatureVideoWidget';
 import { ArticleOrderNowDesktop } from '../widgets/ArticleOrderNowDesktop';
-import { ArticleSaveShareWidget } from '../widgets/ArticleSaveShareWidget';
+import { ArticleSaveShareStatic } from '../widgets/ArticleSaveShareStatic';
 
 const EATING_CHARACTER_SIZE_REM = 22;
 
 export function ArticleSectionAbstract(props: IPost) {
-  const { id, title, slug, video, deal } = props;
+  const { id, title, slug, video, deal, abstractDivider } = props;
   const { isDesktop } = useContext(ScreenContext);
 
   const dispatch = useDispatch();
@@ -48,21 +48,39 @@ export function ArticleSectionAbstract(props: IPost) {
     <div className="relative w-full bg-secondary-1">
       {!isDesktop ? <CharacterEatingMobile /> : <CharacterEatingDesktop />}
 
-      <ArticleSaveShareWidget id={id} title={title} slug={slug} />
+      <ArticleSaveShareStatic id={id} title={title} slug={slug} />
 
-      <ArticleContained>
-        <div className="mt-6">
-          <div ref={ref}>
+      {isDesktop ? (
+        <ArticleContained>
+          <div className="mt-6">
+            <div ref={ref}>
+              <ArticleFeatureVideoWidget video={video} />
+            </div>
+          </div>
+
+          <div className="flex justify-center w-full h-4 pt-20 mb-12">
+            <img
+              src={abstractDivider?.imageUrl}
+              className="h-32 -mt-20 desktop:h-56 desktop:-mt-32"
+            />
+          </div>
+        </ArticleContained>
+      ) : (
+        <Contained>
+          <div className="pb-10">
             <ArticleFeatureVideoWidget video={video} />
           </div>
-        </div>
 
-        <div className="flex justify-center w-full h-4 pt-20 mb-12">
-          <XiaoDividerSVG className="h-32 -mt-20 desktop:h-56 desktop:-mt-32" />
-        </div>
-      </ArticleContained>
+          <div className="flex justify-center w-full h-4 pt-20 mb-12">
+            <img
+              src={abstractDivider?.imageUrl}
+              className="h-32 -mt-20 desktop:h-56 desktop:-mt-32"
+            />
+          </div>
+        </Contained>
+      )}
 
-      <ArticleOrderNowDesktop deal={deal} slug={slug} />
+      {isDesktop && <ArticleOrderNowDesktop deal={deal} slug={slug} />}
     </div>
   );
 }

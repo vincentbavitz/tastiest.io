@@ -1,5 +1,6 @@
+import MapPinSVG from '@svg/icons/pin.svg';
 import React, { useContext } from 'react';
-import { ILocation } from 'types/cms';
+import { IRestaurant } from 'types/cms';
 import { getMapBoxStaticSource } from 'utils/location';
 import { ScreenContext } from '../../../contexts/screen';
 import { CityIndictor } from '../../CityIndictor';
@@ -7,11 +8,10 @@ import { Title } from '../../Title';
 
 interface Props {
   city: string;
-  location: ILocation;
-  restaurantName: string;
+  restaurant: IRestaurant;
 }
 
-export function ArticleWidgetMap({ city, location, restaurantName }: Props) {
+export function ArticleWidgetMap({ city, restaurant }: Props) {
   const { isDesktop } = useContext(ScreenContext);
 
   console.log('ArticleWidgetMap ➡️ fsadasd:');
@@ -19,13 +19,16 @@ export function ArticleWidgetMap({ city, location, restaurantName }: Props) {
 
   return (
     <div className="flex flex-col w-full desktop:flex-row desktop:justify-center desktop:space-x-8">
-      {!isDesktop && <CityIndictor city={city} />}
-      <div className="w-full h-40 mt-4 overflow-hidden desktop:h-auto desktop:mt-0 desktop:w-1/2 rounded-xl">
+      <div className="relative w-full h-40 overflow-hidden rounded desktop:h-auto desktop:mt-0 desktop:w-1/2">
+        <div className="absolute flex items-center justify-center w-full h-full">
+          <MapPinSVG className="h-10" />
+        </div>
+
         <img
-          className="object-cover w-full h-full border-4 border-primary "
+          className="object-cover w-full h-full"
           src={getMapBoxStaticSource(
-            location?.lat,
-            location?.lon,
+            restaurant?.location?.lat,
+            restaurant?.location?.lon,
             isDesktop ? 1100 : 900,
             isDesktop ? 300 : 500,
             isDesktop ? 10 : 15,
@@ -36,13 +39,20 @@ export function ArticleWidgetMap({ city, location, restaurantName }: Props) {
       <div className="flex flex-col justify-end pb-4 space-y-3">
         {isDesktop && <CityIndictor city={city} />}
 
-        <div className="flex flex-col mt-3 ml-4 font-medium desktop:ml-0 desktop:mt-0">
-          <Title level={1} bold>
-            {restaurantName}
+        <div className="flex flex-col mt-3 font-medium desktop:ml-0 desktop:mt-0">
+          <Title level={1} bold margin={false}>
+            {restaurant?.name}
           </Title>
 
-          <span>Address line</span>
-          <span>Address line</span>
+          <span>{restaurant?.location?.address}</span>
+          <a
+            href={restaurant?.website}
+            target="_blank"
+            rel="noreferrer"
+            className="font-normal hover:underline"
+          >
+            {restaurant?.website.replace(/^(https?:\/\/)?(www\.)?/g, '')}
+          </a>
         </div>
       </div>
     </div>

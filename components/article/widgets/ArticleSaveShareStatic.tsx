@@ -30,7 +30,7 @@ interface Props {
   slug: string;
 }
 
-export function ArticleSaveShareWidget(props: Props) {
+export function ArticleSaveShareStatic(props: Props) {
   const { id, title, slug } = props;
 
   const { toggleSaveArticle } = useArticle();
@@ -68,47 +68,52 @@ export function ArticleSaveShareWidget(props: Props) {
   ];
 
   return (
-    <div className="z-10 flex justify-center w-full">
-      <div
-        style={{ width: 'fit-content' }}
-        className="flex my-4 rounded-md cursor-pointer bg-soft text-primary"
-      >
+    <div className="flex flex-col items-center">
+      <div className="z-10 flex justify-center w-full">
         <div
-          onClick={() => toggleSaveArticle(id)}
-          className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 cursor-pointer hover:bg-white rounded-l-md"
+          style={{ width: 'fit-content' }}
+          className="flex my-4 rounded-md cursor-pointer bg-soft text-primary"
         >
-          {isArticleSaved ? (
-            <HeartFilledPrimarySVG className={isDesktop ? 'h-6' : 'h-8'} />
-          ) : (
-            <HeartPrimarySVG className={isDesktop ? 'h-6' : 'h-8'} />
-          )}
-          <span>Save</span>
-        </div>
+          <div
+            onClick={() => toggleSaveArticle(id)}
+            className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 cursor-pointer hover:bg-white rounded-l-md"
+          >
+            {isArticleSaved ? (
+              <HeartFilledPrimarySVG className={isDesktop ? 'h-6' : 'h-8'} />
+            ) : (
+              <HeartPrimarySVG className={isDesktop ? 'h-6' : 'h-8'} />
+            )}
+            <span>Save</span>
+          </div>
 
-        <div
-          className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 cursor-pointer hover:bg-white rounded-r-md"
-          onClick={() => setIsDropdownOpen(true)}
-        >
-          <ShareSVG className={isDesktop ? 'h-5' : 'h-8'} />
-          <span>Share</span>
+          <div
+            className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 cursor-pointer hover:bg-white rounded-r-md"
+            onClick={() => setIsDropdownOpen(true)}
+          >
+            <ShareSVG className={isDesktop ? 'h-5' : 'h-8'} />
+            <span>Share</span>
+          </div>
         </div>
+      </div>
 
+      <div className="relative flex justify-center w-px">
         <Dropdown
           isOpen={isDropdownOpen}
           onClickAway={() => setIsDropdownOpen(false)}
-          pull="center"
-          offsetX={-50}
-          offsetY={35}
+          style="outline"
+          offsetY={-5}
         >
           <>
             <div className="px-3 pt-1 pb-2">
-              <InputGroup className="w-full bg-opacity-25 rounded-sm bg-secondary">
-                <input
-                  className="text-sm bg-gray-200"
-                  style={{ minWidth: '9rem' }}
-                  readOnly
-                  value={articleUrl}
-                />
+              <InputGroup className="w-full border rounded-md bg-soft border-soft">
+                <div>
+                  <input
+                    className="pl-3 text-sm border-l outline-none bg-soft border-soft rounded-l-md"
+                    style={{ minWidth: '9rem' }}
+                    readOnly
+                    value={articleUrl}
+                  />
+                </div>
 
                 <Button type="text" size="small" color="primary">
                   COPY

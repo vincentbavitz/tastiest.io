@@ -235,7 +235,7 @@ export class CmsApi {
           id: rawDeal.sys.id ?? null,
           restaurant: this.convertRestaurant(rawDeal?.fields?.restaurant),
           tagline: rawDeal?.fields?.tagline ?? null,
-          includes: rawDeal?.fields?.tags ?? [],
+          includes: rawDeal?.fields?.includes ?? [],
           pricePerHeadGBP: rawDeal?.fields?.price ?? null,
           image: this.convertImage(rawDeal?.fields?.image?.fields),
         }
@@ -273,6 +273,8 @@ export class CmsApi {
   private convertPost = (rawData): IPost => {
     const rawPost = rawData.fields;
     const rawFeatureImage = rawPost?.featureImage?.fields;
+    const rawAbstractDivider = rawPost?.abstractDivider?.fields;
+    const rawOfferDivider = rawPost?.offerDivider?.fields;
     const rawAuthor = rawPost.author ? rawPost.author.fields : null;
     const rawCuisine = rawPost.cuisine
       ? rawPost.cuisine?.fields?.name.toUpperCase()
@@ -295,6 +297,8 @@ export class CmsApi {
           featureImage: this.convertImage(rawFeatureImage),
           tags: rawPost?.tags ?? [], //?.map(t => t?.fields?.label) ?? [],
           slug: rawPost.slug,
+          abstractDivider: this.convertImage(rawAbstractDivider),
+          offerDivider: this.convertImage(rawOfferDivider),
         }
       : null;
   };

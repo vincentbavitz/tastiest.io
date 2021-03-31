@@ -80,6 +80,8 @@ export interface IPost {
   featureImage: IFigureImage;
   tags: Array<string>;
   slug: string;
+  abstractDivider: IFigureImage;
+  offerDivider: IFigureImage;
 }
 
 export type BodyDocument = {

@@ -13,7 +13,7 @@ export function ArticleSectionTitle(props: Props) {
 
   return (
     <Contained>
-      <div className="flex flex-col items-center mt-16 mb-4 space-y-4">
+      <div className="flex flex-col items-center mt-6 mb-4 space-y-4 tablet:mt-16">
         <div
           className="flex items-center"
           style={{
@@ -21,7 +21,7 @@ export function ArticleSectionTitle(props: Props) {
             maxWidth: `${UI.ARTICLE.TITLE_MAX_WIDTH_REM}rem`,
           }}
         >
-          <h1 className="text-4xl leading-tight text-center font-somatic text-primary desktop:text-5xl tablet:text-fixexl">
+          <h1 className="text-5xl leading-tight text-center mobile:text-4xl font-somatic text-primary desktop:text-5xl">
             {title}
           </h1>
         </div>
