@@ -1,6 +1,5 @@
 import PoundSVG from '@svg/icons/pound.svg';
 import { Button, Select } from '@tastiest-io/tastiest-components';
-import classNames from 'classnames';
 import { Contained } from 'components/Contained';
 import { useOrderNow } from 'hooks/checkout/useOrderNow';
 import React, { useContext } from 'react';
@@ -16,126 +15,113 @@ interface Props {
 
 export function ArticleOrderNowDesktop(props: Props) {
   const { deal, slug: fromSlug } = props;
-  const { totalPrice, offerPosition, heads, setHeads, submit } = useOrderNow(
+  const { totalPrice, heads, offerPosition, setHeads, submit } = useOrderNow(
     deal,
     fromSlug,
   );
 
   const { isDesktop } = useContext(ScreenContext);
-
   const isFixedTop = offerPosition === ArticleOfferLocation.FIXED_TOP;
-  const isFloating = offerPosition === ArticleOfferLocation.FLOATING;
-  const isFixedBottom = offerPosition === ArticleOfferLocation.FIXED_BOTTOM;
 
   return (
-    <div
-      style={{
-        marginTop: !isFixedTop
-          ? `${UI.ARTICLE.OFFER_WIDGET_FLOAT_GAP_PX}px`
-          : 'unset',
-      }}
-      className={classNames(
-        'w-full pointer-events-none',
-        isFloating && 'fixed top-0 right-0',
-        !isFloating && 'absolute top-0 right-0',
-      )}
-    >
-      <Contained>
-        <div className="flex justify-end w-full">
-          <div
-            style={{
-              width: isDesktop
-                ? `calc(${UI.ARTICLE.DESKTOP_OFFER_WIDGET_WIDTH_PX}px - 2rem)`
-                : '300px',
-              maxWidth: isDesktop ? 'unset' : '75vw',
-            }}
-            className="relative z-30 pt-2 pb-4 mt-20 bg-white border-4 pointer-events-auto desktop:mt-0 border-secondary-1 rounded-xl"
-          >
-            <h3 className="mb-2 text-xl text-center font-somatic text-primary">
-              Get the offer!
-            </h3>
+    <Contained>
+      <div className="flex justify-end w-full">
+        <div
+          style={{
+            width: isDesktop
+              ? `calc(${UI.ARTICLE.DESKTOP_OFFER_WIDGET_WIDTH_PX}px - 2rem)`
+              : '300px',
+            maxWidth: isDesktop ? 'unset' : '75vw',
+            marginTop: !isFixedTop
+              ? `${UI.HEADER_HEIGHT_DESKTOP_REM}rem`
+              : 'unset',
+          }}
+          className="relative z-30 pt-2 pb-4 bg-white border-4 pointer-events-auto desktop:mt-0 border-secondary-1 rounded-xl"
+        >
+          <h3 className="mb-2 text-xl text-center font-somatic text-primary">
+            Get the offer!
+          </h3>
 
-            <div className="pb-4 mx-4 overflow-hidden bg-secondary-1 rounded-xl">
-              <div className="aspect-w-16 aspect-h-9">
-                <img
-                  src={`${deal?.image?.imageUrl}?w=300`}
-                  className="object-cover"
-                />
-              </div>
-
-              <div className="flex flex-col justify-center pt-2 mx-4 space-y-4">
-                <p className="text-base leading-none text-center font-somatic">
-                  {deal?.tagline}
-                </p>
-
-                <div className="py-2 mb-3 text-center border-t-2 border-b-2 border-white border-dashed">
-                  <p className="flex items-center text-base font-somatic text-primary">
-                    For <PoundSVG className="inline h-3 mx-1 fill-current" />
-                    {deal?.pricePerHeadGBP}, you'll get
-                  </p>
-                </div>
-
-                <div className="text-center">
-                  {deal?.includes.map(item => (
-                    <div key={item}>{item}</div>
-                  ))}
-                </div>
-              </div>
+          <div className="pb-4 mx-4 overflow-hidden bg-secondary-1 rounded-xl">
+            <div className="aspect-w-16 aspect-h-9">
+              <img
+                src={`${deal?.image?.imageUrl}?w=300`}
+                className="object-cover"
+              />
             </div>
 
-            <div className="flex flex-col mx-4 space-y-3">
-              <div className="flex items-center justify-between mt-4">
-                <span className="font-medium font-roboto bold text-primary">
-                  Book for
-                </span>
-                <div className="w-12">
-                  <Select
-                    size="small"
-                    onChange={value => setHeads(Number(value) as ValidHead)}
-                  >
-                    {valdHeads.map(n => (
-                      <option key={n} className="text-center" value={n}>
-                        {n}
-                      </option>
-                    ))}
-                  </Select>
-                </div>
+            <div className="flex flex-col justify-center pt-2 mx-4 space-y-4">
+              <p className="text-base leading-none text-center font-somatic">
+                {deal?.tagline}
+              </p>
+
+              <div className="py-2 mb-3 text-center border-t-2 border-b-2 border-white border-dashed">
+                <p className="flex items-center text-base font-somatic text-primary">
+                  For <PoundSVG className="inline h-3 mx-1 fill-current" />
+                  {deal?.pricePerHeadGBP}, you'll get
+                </p>
               </div>
 
-              <div className="flex items-end justify-between text-xs">
-                <span>Booking for {heads} people</span>
-                <div className="flex items-center h-full">
-                  <PoundSVG
-                    style={{ height: '0.6rem' }}
-                    className="inline mr-1"
-                  />
-                  <p>{totalPrice}</p>
-                </div>
+              <div className="text-center">
+                {deal?.includes.map(item => (
+                  <div key={item}>{item}</div>
+                ))}
               </div>
-
-              <div className="w-full my-2 border-t border-primary"></div>
-
-              <div className="flex justify-between font-medium">
-                <span>Total</span>
-                <span>
-                  <PoundSVG className="inline h-3 mr-1 -mt-1" />
-                  {totalPrice}
-                </span>
-              </div>
-
-              <Button
-                wide
-                onClick={submit}
-                type="solid"
-                size="small"
-                className="text-base font-somatic"
-              >
-                Buy now
-              </Button>
             </div>
           </div>
+
+          <div className="flex flex-col mx-4 space-y-3">
+            <div className="flex items-center justify-between mt-4">
+              <span className="font-medium font-roboto bold text-primary">
+                Book for
+              </span>
+              <div className="w-12">
+                <Select
+                  size="small"
+                  onChange={value => setHeads(Number(value) as ValidHead)}
+                >
+                  {valdHeads.map(n => (
+                    <option key={n} className="text-center" value={n}>
+                      {n}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            </div>
+
+            <div className="flex items-end justify-between text-xs">
+              <span>Booking for {heads} people</span>
+              <div className="flex items-center h-full">
+                <PoundSVG
+                  style={{ height: '0.6rem' }}
+                  className="inline mr-1"
+                />
+                <p>{totalPrice}</p>
+              </div>
+            </div>
+
+            <div className="w-full my-2 border-t border-primary"></div>
+
+            <div className="flex justify-between font-medium">
+              <span>Total</span>
+              <span>
+                <PoundSVG className="inline h-3 mr-1 -mt-1" />
+                {totalPrice}
+              </span>
+            </div>
+
+            <Button
+              wide
+              onClick={submit}
+              type="solid"
+              size="small"
+              className="text-base font-somatic"
+            >
+              Buy now
+            </Button>
+          </div>
         </div>
-      </Contained>
-    </div>
+      </div>
+    </Contained>
   );
 }

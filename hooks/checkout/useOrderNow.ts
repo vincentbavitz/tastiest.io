@@ -10,9 +10,10 @@ export const useOrderNow = (deal: IDeal, fromSlug: string) => {
   const { initOrderRequest } = useCheckout();
 
   // Whether or not we follow scroll or remain in place
-  const { articleOfferPosition: offerPosition } = useSelector(
-    (state: IState) => state.navigation,
-  );
+  const {
+    articleOfferPosition: offerPosition,
+    articleOfferGeometry: offerGeometry,
+  } = useSelector((state: IState) => state.navigation);
 
   const [heads, setHeads] = useState<ValidHead>(1);
   const totalPrice = (Number(heads) * deal?.pricePerHeadGBP).toFixed(2);
@@ -26,5 +27,5 @@ export const useOrderNow = (deal: IDeal, fromSlug: string) => {
     }
   };
 
-  return { totalPrice, offerPosition, heads, setHeads, submit };
+  return { totalPrice, offerPosition, offerGeometry, heads, setHeads, submit };
 };

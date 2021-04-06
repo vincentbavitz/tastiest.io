@@ -9,8 +9,9 @@ export enum ArticleOfferLocation {
 }
 
 export interface ArticleOfferGeometry {
-  location: ArticleOfferLocation;
-  pxFromBottom: number;
+  articlePxFromTop: number;
+  contentPxFromTop: number;
+  contentPxFromBottom: number;
 }
 
 export interface INavigation {
@@ -18,7 +19,10 @@ export interface INavigation {
   isSignInModalOpen: boolean;
   cuisineBarScrollPos: number;
   openedModal: ModalInstance | null;
-  articleOfferPosition: ArticleOfferGeometry;
+
+  // For floating offer on desktop
+  articleOfferPosition: ArticleOfferLocation;
+  articleOfferGeometry: ArticleOfferGeometry;
 }
 
 export const initialNavigationState: INavigation = {
@@ -26,9 +30,11 @@ export const initialNavigationState: INavigation = {
   isSignInModalOpen: false,
   cuisineBarScrollPos: 0,
   openedModal: null,
-  articleOfferPosition: {
-    location: ArticleOfferLocation.FIXED_TOP,
-    pxFromBottom: 0,
+  articleOfferPosition: ArticleOfferLocation.FIXED_TOP,
+  articleOfferGeometry: {
+    articlePxFromTop: 0,
+    contentPxFromTop: 0,
+    contentPxFromBottom: 0,
   },
 };
 
@@ -41,6 +47,7 @@ export enum NavigationActions {
   SAVE_CUISINE_BAR_SCROLL_POS = 'SAVE_CUISINE_BAR_SCROLL_POS',
   SET_MODAL_IS_OPEN = 'SET_MODAL_IS_OPEN',
   SET_ARTICLE_OFFER_POSITION = 'SET_ARTICLE_OFFER_POSITION',
+  SET_ARTICLE_OFFER_GEOMETRY = 'SET_ARTICLE_OFFER_GEOMETRY',
 }
 
 // ////////////////////////////// //
@@ -77,7 +84,14 @@ export const setCurrentOpenModal = (isOpen: boolean) => ({
   payload: isOpen,
 });
 
-export const setArticleOfferPosition = (position: ArticleOfferGeometry) => ({
+export const setArticleOfferPosition = (position: ArticleOfferLocation) => ({
   type: NavigationActions.SET_ARTICLE_OFFER_POSITION,
   payload: position,
+});
+
+export const setArticleOfferGeometry = (
+  geometry: Partial<ArticleOfferGeometry>,
+) => ({
+  type: NavigationActions.SET_ARTICLE_OFFER_GEOMETRY,
+  payload: geometry,
 });

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useWindowScroll } from 'react-use';
 import {
   ArticleOfferLocation,
+  setArticleOfferGeometry,
   setArticleOfferPosition,
 } from 'state/navigation';
 import { IState } from 'state/reducers';
@@ -13,7 +14,6 @@ import { UI } from '../../../constants';
 import { ScreenContext } from '../../../contexts/screen';
 import ArticleContained from '../ArticleContained';
 import { ArticleFeatureVideoWidget } from '../widgets/ArticleFeatureVideoWidget';
-import { ArticleOrderNowDesktop } from '../widgets/ArticleOrderNowDesktop';
 import ArticleOrderNowMobile from '../widgets/ArticleOrderNowMobile';
 import { ArticleSaveShareWidget } from '../widgets/ArticleSaveShareWidget';
 
@@ -34,36 +34,35 @@ export function ArticleSectionAbstract(props: IPost) {
   );
 
   useEffect(() => {
-    const locationY = desktopScrollRef.current?.getBoundingClientRect()?.top;
+    const rects = desktopScrollRef?.current?.getBoundingClientRect();
+    const top = rects?.top ?? 0;
+    const contentPxFromTop = windowScrollY + (rects?.top ?? 0);
 
-    // console.log('ArticleOrderNowDesktop ➡️ locationY:', locationY);
-    // console.log('ArticleOrderNowDesktop ➡️ isFloating:', isFloating);
-
-    console.log('ArticleSectionAbstract ➡️ offerPosition:', offerPosition);
+    console.log('ArticleSectionAbstract ➡️ top:', top);
+    console.log(
+      'ArticleSectionAbstract ➡️ contentPxFromTop:',
+      contentPxFromTop,
+    );
 
     if (
-      locationY < UI.ARTICLE.OFFER_WIDGET_FLOAT_TOP_PX &&
-      offerPosition.location !== ArticleOfferLocation.FLOATING
+      top < UI.ARTICLE.OFFER_WIDGET_FLOAT_TOP_PX &&
+      offerPosition === ArticleOfferLocation.FIXED_TOP
     ) {
-      dispatch(
-        setArticleOfferPosition({
-          ...offerPosition,
-          location: ArticleOfferLocation.FLOATING,
-        }),
-      );
+      dispatch(setArticleOfferPosition(ArticleOfferLocation.FLOATING));
     }
 
     if (
-      offerPosition.location === ArticleOfferLocation.FLOATING &&
-      locationY >= UI.ARTICLE.OFFER_WIDGET_FLOAT_TOP_PX
+      offerPosition !== ArticleOfferLocation.FIXED_TOP &&
+      top >= UI.ARTICLE.OFFER_WIDGET_FLOAT_TOP_PX
     ) {
-      dispatch(
-        setArticleOfferPosition({
-          ...offerPosition,
-          location: ArticleOfferLocation.FIXED_TOP,
-        }),
-      );
+      dispatch(setArticleOfferPosition(ArticleOfferLocation.FIXED_TOP));
     }
+
+    dispatch(
+      setArticleOfferGeometry({
+        contentPxFromTop,
+      }),
+    );
   }, [windowScrollY]);
 
   return (
@@ -102,11 +101,7 @@ export function ArticleSectionAbstract(props: IPost) {
         </Contained>
       )}
 
-      {isDesktop ? (
-        <ArticleOrderNowDesktop deal={deal} slug={slug} />
-      ) : (
-        <ArticleOrderNowMobile deal={deal} slug={slug} />
-      )}
+      {!isDesktop && <ArticleOrderNowMobile deal={deal} slug={slug} />}
     </div>
   );
 }
