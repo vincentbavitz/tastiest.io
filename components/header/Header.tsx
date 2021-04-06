@@ -93,7 +93,6 @@ function DesktopHeader() {
   }, [location.pathname, searchBarPinnedToHeader]);
 
   const navBarRef = useRef(null);
-  console.log('Header ➡️ location.pathname:', location.pathname);
 
   return (
     <div

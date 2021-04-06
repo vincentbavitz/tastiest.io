@@ -1,14 +1,6 @@
 import CharacterEatingSVG from '@svg/article/character-eating.svg';
 import { Contained } from 'components/Contained';
-import React, { useContext, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useWindowScroll } from 'react-use';
-import {
-  ArticleOfferLocation,
-  setArticleOfferGeometry,
-  setArticleOfferPosition,
-} from 'state/navigation';
-import { IState } from 'state/reducers';
+import React, { useContext } from 'react';
 import { IPost } from 'types/cms';
 import { UI } from '../../../constants';
 import { ScreenContext } from '../../../contexts/screen';
@@ -23,48 +15,6 @@ export function ArticleSectionAbstract(props: IPost) {
   const { id, title, slug, video, deal, abstractDivider } = props;
   const { isDesktop } = useContext(ScreenContext);
 
-  const dispatch = useDispatch();
-
-  // Desktop - Manage scrolling behaviour
-  // Whether or not we follow scroll or remain in place
-  const desktopScrollRef = useRef(null);
-  const { y: windowScrollY } = useWindowScroll();
-  const { articleOfferPosition: offerPosition } = useSelector(
-    (state: IState) => state.navigation,
-  );
-
-  useEffect(() => {
-    const rects = desktopScrollRef?.current?.getBoundingClientRect();
-    const top = rects?.top ?? 0;
-    const contentPxFromTop = windowScrollY + (rects?.top ?? 0);
-
-    console.log('ArticleSectionAbstract ➡️ top:', top);
-    console.log(
-      'ArticleSectionAbstract ➡️ contentPxFromTop:',
-      contentPxFromTop,
-    );
-
-    if (
-      top < UI.ARTICLE.OFFER_WIDGET_FLOAT_TOP_PX &&
-      offerPosition === ArticleOfferLocation.FIXED_TOP
-    ) {
-      dispatch(setArticleOfferPosition(ArticleOfferLocation.FLOATING));
-    }
-
-    if (
-      offerPosition !== ArticleOfferLocation.FIXED_TOP &&
-      top >= UI.ARTICLE.OFFER_WIDGET_FLOAT_TOP_PX
-    ) {
-      dispatch(setArticleOfferPosition(ArticleOfferLocation.FIXED_TOP));
-    }
-
-    dispatch(
-      setArticleOfferGeometry({
-        contentPxFromTop,
-      }),
-    );
-  }, [windowScrollY]);
-
   return (
     <div className="relative w-full bg-secondary-1">
       {!isDesktop ? <CharacterEatingMobile /> : <CharacterEatingDesktop />}
@@ -74,9 +24,7 @@ export function ArticleSectionAbstract(props: IPost) {
       {isDesktop ? (
         <ArticleContained>
           <div className="mt-6">
-            <div ref={desktopScrollRef}>
-              <ArticleFeatureVideoWidget video={video} />
-            </div>
+            <ArticleFeatureVideoWidget video={video} />
           </div>
 
           <div className="flex justify-center w-full h-4 pt-20 mb-12">

@@ -32,9 +32,10 @@ export const initialNavigationState: INavigation = {
   openedModal: null,
   articleOfferPosition: ArticleOfferLocation.FIXED_TOP,
   articleOfferGeometry: {
-    articlePxFromTop: 0,
-    contentPxFromTop: 0,
-    contentPxFromBottom: 0,
+    // Estimations on load
+    articlePxFromTop: 100,
+    contentPxFromTop: 200,
+    contentPxFromBottom: 200,
   },
 };
 

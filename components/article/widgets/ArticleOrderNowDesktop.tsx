@@ -32,11 +32,8 @@ export function ArticleOrderNowDesktop(props: Props) {
               ? `calc(${UI.ARTICLE.DESKTOP_OFFER_WIDGET_WIDTH_PX}px - 2rem)`
               : '300px',
             maxWidth: isDesktop ? 'unset' : '75vw',
-            marginTop: !isFixedTop
-              ? `${UI.HEADER_HEIGHT_DESKTOP_REM}rem`
-              : 'unset',
           }}
-          className="relative z-30 pt-2 pb-4 bg-white border-4 pointer-events-auto desktop:mt-0 border-secondary-1 rounded-xl"
+          className="relative z-30 pt-2 pb-4 mt-20 bg-white border-4 pointer-events-auto desktop:mt-0 border-secondary-1 rounded-xl"
         >
           <h3 className="mb-2 text-xl text-center font-somatic text-primary">
             Get the offer!
