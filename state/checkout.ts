@@ -22,7 +22,7 @@ export interface ICheckout {
 export const initialCheckoutState: ICheckout = {
   flow: {
     step: CheckoutStep.SIGN_IN,
-    signInTabSelected: CheckoutSignInTabSelected.HAS_ACCOUNT,
+    signInTabSelected: CheckoutSignInTabSelected.NONE,
   },
   stripeError: undefined,
   order: undefined,

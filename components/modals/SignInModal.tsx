@@ -121,7 +121,6 @@ export function SignInModal() {
         size="large"
         type="solid"
         color="primary"
-        className="py-3 rounded-xl"
         onClick={() => signIn(signInEmail, signInPassword)}
       >
         Sign In
@@ -162,7 +161,6 @@ export function SignInModal() {
         size="large"
         type="solid"
         color="primary"
-        className="py-3 rounded-xl"
         onClick={onClickSignUp}
       >
         Join

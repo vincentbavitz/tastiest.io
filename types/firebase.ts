@@ -47,6 +47,7 @@ export interface IOrderRequest {
   heads?: number;
   fromSlug?: string;
   timestamp?: number;
+  promoCode?: string;
 }
 
 export interface ICover {

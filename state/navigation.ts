@@ -2,12 +2,23 @@ export enum ModalInstance {
   LOGIN = 'LOGIN',
 }
 
+export enum ArticleOfferLocation {
+  FIXED_TOP = 'FIXED_TOP',
+  FIXED_BOTTOM = 'FIXED_BOTTOM',
+  FLOATING = 'FLOATING',
+}
+
+export interface ArticleOfferGeometry {
+  location: ArticleOfferLocation;
+  pxFromBottom: number;
+}
+
 export interface INavigation {
   searchOverlayExpanded: boolean;
   isSignInModalOpen: boolean;
   cuisineBarScrollPos: number;
   openedModal: ModalInstance | null;
-  articleOfferIsFloating: boolean;
+  articleOfferPosition: ArticleOfferGeometry;
 }
 
 export const initialNavigationState: INavigation = {
@@ -15,7 +26,10 @@ export const initialNavigationState: INavigation = {
   isSignInModalOpen: false,
   cuisineBarScrollPos: 0,
   openedModal: null,
-  articleOfferIsFloating: false,
+  articleOfferPosition: {
+    location: ArticleOfferLocation.FIXED_TOP,
+    pxFromBottom: 0,
+  },
 };
 
 export enum NavigationActions {
@@ -26,7 +40,7 @@ export enum NavigationActions {
   TOGGLE_SEARCH_OVERLAY = 'TOGGLE_SEARCH_OVERLAY',
   SAVE_CUISINE_BAR_SCROLL_POS = 'SAVE_CUISINE_BAR_SCROLL_POS',
   SET_MODAL_IS_OPEN = 'SET_MODAL_IS_OPEN',
-  SET_ARTICLE_OFFER_IS_FLOATING = 'SET_ARTICLE_OFFER_IS_FLOATING',
+  SET_ARTICLE_OFFER_POSITION = 'SET_ARTICLE_OFFER_POSITION',
 }
 
 // ////////////////////////////// //
@@ -63,7 +77,7 @@ export const setCurrentOpenModal = (isOpen: boolean) => ({
   payload: isOpen,
 });
 
-export const setArticleOfferIsFloating = (floating: boolean) => ({
-  type: NavigationActions.SET_ARTICLE_OFFER_IS_FLOATING,
-  payload: floating,
+export const setArticleOfferPosition = (position: ArticleOfferGeometry) => ({
+  type: NavigationActions.SET_ARTICLE_OFFER_POSITION,
+  payload: position,
 });

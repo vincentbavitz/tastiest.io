@@ -2212,10 +2212,10 @@
   dependencies:
     mini-svg-data-uri "^1.2.3"
 
-"@tastiest-io/tastiest-components@^0.12.0":
-  version "0.12.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.12.0/f303c9f8cd96687aff582e1d89b154cdbac021bc4d7c730e676df7a46ef066f4#5684de9b8c80a35d02c3a3f99c5de8294da95196"
-  integrity sha512-10ufQWald2j/gF7EnhXTRXYO+ovgOAvE1cgkzSVavuM5jsXy1usoKLMWLHAjrMHAmL3D0q72zl1yJ/SJtpQRNQ==
+"@tastiest-io/tastiest-components@^0.18.0":
+  version "0.18.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.18.0/72ffe8dfbeaec49248fb60175ae91e47c99ef64f4f2b80b47623bda811173f68#977988f577b8afee8a37f588fffc172c484a8058"
+  integrity sha512-ZxorQES0VnN3HuphLrCbuqke1YkrxX8fr6/j2QJTGA+VKh63quDZcCllTPoNAY96HSGQ0H6uLQ/bwvdutveRLw==
 
 "@testing-library/dom@^7.28.1":
   version "7.30.0"

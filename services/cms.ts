@@ -1,5 +1,6 @@
 import { ContentfulClientApi, createClient } from 'contentful';
 import moment from 'moment';
+import { DiscountAmount, IDiscount } from 'types/checkout';
 import CMS from '../constants/cms';
 import {
   IAuthor,
@@ -209,6 +210,21 @@ export class CmsApi {
     return deal ?? null;
   };
 
+  public getPromo = async (code: string): Promise<IDiscount> => {
+    const entries = await this.client.getEntries({
+      content_type: 'post',
+      'fields.code[in]': code,
+      limit: 1,
+    });
+
+    if (entries?.items?.length > 0) {
+      const discount = this.convertPromo(entries.items[0]);
+      return discount;
+    }
+
+    return null;
+  };
+
   private convertImage = (rawImage): IFigureImage =>
     rawImage
       ? {
@@ -299,6 +315,22 @@ export class CmsApi {
           slug: rawPost.slug,
           abstractDivider: this.convertImage(rawAbstractDivider),
           offerDivider: this.convertImage(rawOfferDivider),
+        }
+      : null;
+  };
+
+  private convertPromo = (rawPromo): IDiscount => {
+    const amount = rawPromo?.amountOff ?? null;
+    const unit = (rawPromo?.discountUnit as '%' | '£') ?? null;
+
+    const amountOff =
+      amount && unit ? ([amount ?? 0, unit ?? '%'] as DiscountAmount) : null;
+
+    return rawPromo
+      ? {
+          name: rawPromo?.name ?? null,
+          promoCode: rawPromo?.code ?? null,
+          amountOff,
         }
       : null;
   };

@@ -10,7 +10,7 @@ export const useOrderNow = (deal: IDeal, fromSlug: string) => {
   const { initOrderRequest } = useCheckout();
 
   // Whether or not we follow scroll or remain in place
-  const { articleOfferIsFloating: isFloating } = useSelector(
+  const { articleOfferPosition: offerPosition } = useSelector(
     (state: IState) => state.navigation,
   );
 
@@ -26,5 +26,5 @@ export const useOrderNow = (deal: IDeal, fromSlug: string) => {
     }
   };
 
-  return { totalPrice, isFloating, heads, setHeads, submit };
+  return { totalPrice, offerPosition, heads, setHeads, submit };
 };

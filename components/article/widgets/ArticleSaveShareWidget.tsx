@@ -178,7 +178,7 @@ function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
   return (
     <div
       style={{
-        zIndex: UI.ARTICLE.FLOATING_COMPONENTS_Z_INDEX,
+        zIndex: UI.Z_INDEX_FLOATING_COMPONENTS,
       }}
       className="fixed top-0 left-0 right-0"
     >

@@ -26,11 +26,15 @@ export function CuisineItem(props: Props) {
   return (
     <Link href={href} as={as}>
       <div
-        className="flex py-6 mt-1 cuisine-item tablet:py-4 tablet:mt-0"
+        className="flex py-6 mx-2 mt-1 cursor-pointer tablet:py-4 tablet:mt-0"
         onClick={handleOnClick}
       >
         <div
+          style={{
+            maxHeight: '3.33em',
+          }}
           className={classNames(
+            'relative',
             'select-none',
             'overflow-y-visible',
             'rounded-xl',
@@ -52,7 +56,7 @@ export function CuisineItem(props: Props) {
           )}
         >
           <span className="pr-1">{props.name}</span>
-          <props.svg />
+          <props.svg className="pr-1 h-14" />
         </div>
       </div>
     </Link>

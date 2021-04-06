@@ -1,5 +1,6 @@
 import TastiestLogo from '@svg/brand.svg';
 import SearchPrimarySVG from '@svg/search-primary.svg';
+import clsx from 'clsx';
 import Link from 'next/link';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,7 +20,7 @@ export function Header() {
   return (
     <div className="flex flex-col w-full">
       {onCheckoutPage ? (
-        <CheckoutHeader />
+        <CheckoutHeader isDesktop={isDesktop} />
       ) : (
         <div>{!isDesktop ? <MobileHeader /> : <DesktopHeader />}</div>
       )}
@@ -132,18 +133,30 @@ function DesktopHeader() {
   );
 }
 
-function CheckoutHeader() {
-  return (
-    <Contained>
-      <div className="flex items-center w-full h-24">
-        <div className="flex items-center justify-between w-full antialiased">
-          <div className="flex items-center flex-shrink-0 tastiest-logo-link text-secondary">
-            <TastiestLogo className="h-8 fill-current" />
-          </div>
-        </div>
-
-        <HeaderAvatar />
+function CheckoutHeader({ isDesktop }: { isDesktop: boolean }) {
+  const InnerContent = () => (
+    <div
+      style={{
+        height: `${
+          isDesktop ? UI.HEADER_HEIGHT_DESKTOP_REM : UI.HEADER_HEIGHT_MOBILE_REM
+        }rem`,
+      }}
+      className={clsx(
+        'flex items-center w-full antialiased',
+        isDesktop ? 'justify-between' : 'justify-center',
+      )}
+    >
+      <div className="flex items-center flex-shrink-0 text-secondary">
+        <TastiestLogo className="h-8 fill-current text-primary" />
       </div>
+    </div>
+  );
+
+  return isDesktop ? (
+    <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
+      <InnerContent />
     </Contained>
+  ) : (
+    <InnerContent />
   );
 }

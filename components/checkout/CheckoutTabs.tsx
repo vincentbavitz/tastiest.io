@@ -10,7 +10,7 @@ export function CheckoutTabs({ tabs }: { tabs: ITab[] }) {
   return (
     <div
       className={classNames(
-        'flex space-x-10 border-b-4 border-secondary mb-6',
+        'flex space-x-10 border-b-4 border-secondary mb-6 whitespace-nowrap',
         tabs.length === 1 ? 'justify-start' : 'justify-center px-6',
       )}
     >

@@ -37,7 +37,7 @@ export default function ArticleOrderNowMobile({ deal, slug }: Props) {
   return (
     <>
       <div
-        style={{ zIndex: UI.ARTICLE.FLOATING_COMPONENTS_Z_INDEX }}
+        style={{ zIndex: UI.Z_INDEX_FLOATING_COMPONENTS }}
         className="fixed bottom-0 left-0 right-0 pb-6"
       >
         <Contained>
@@ -90,10 +90,10 @@ const OrderNowOverlay = ({
   return (
     <div
       style={{
-        zIndex: UI.ARTICLE.FLOATING_COMPONENTS_Z_INDEX + 1,
+        zIndex: UI.Z_INDEX_FLOATING_COMPONENTS + 1,
       }}
       className={classNames(
-        'fixed flex flex-col justify-between inset-0 bg-white w-full',
+        'fixed flex flex-col justify-between inset-0 bg-white w-full overflow-y-auto',
         isLoading && 'pointer-events-none',
       )}
     >
@@ -101,7 +101,7 @@ const OrderNowOverlay = ({
       {isLoading && (
         <div
           style={{
-            zIndex: UI.ARTICLE.FLOATING_COMPONENTS_Z_INDEX + 2,
+            zIndex: UI.Z_INDEX_FLOATING_COMPONENTS + 2,
           }}
           className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30"
         >
@@ -161,35 +161,7 @@ const OverlayInner = (props: OverlayInnerProps) => {
 
   return (
     <div className="relative z-30 w-full py-6 bg-white">
-      <div
-        style={{ width: '15rem' }}
-        className="pb-4 mx-4 overflow-hidden bg-secondary-1 rounded-xl"
-      >
-        <div className="aspect-w-16 aspect-h-9">
-          <img
-            src={`${deal?.image?.imageUrl}?w=300`}
-            className="object-cover"
-          />
-        </div>
-
-        <div className="flex flex-col justify-center pt-2 mx-4 space-y-4">
-          <p className="text-base leading-none text-center font-somatic">
-            {deal?.tagline}
-          </p>
-
-          <div className="py-2 mb-3 text-center border-t-2 border-b-2 border-white border-dashed">
-            <p className="flex items-center justify-center text-base font-medium text-primary">
-              Only £{deal?.pricePerHeadGBP}, you'll get
-            </p>
-          </div>
-
-          <div className="text-center">
-            {deal?.includes.map(item => (
-              <div key={item}>{item}</div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <OverlayInnerCard deal={deal} />
 
       <div className="my-4 -mx-2 border-b border-gray-500"></div>
 
@@ -217,6 +189,46 @@ const OverlayInner = (props: OverlayInnerProps) => {
           <span>Booking for {heads} people</span>
           <div className="flex items-center h-full tracking-wide">
             £<p>{totalPrice}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+interface OverlayInnerCardProps {
+  deal: IDeal;
+}
+
+const OverlayInnerCard = ({ deal }: OverlayInnerCardProps) => {
+  return (
+    <div className="flex justify-center w-full">
+      <div
+        style={{ width: '16rem' }}
+        className="pb-4 mx-4 mb-3 overflow-hidden text-lg bg-secondary-1 rounded-xl"
+      >
+        <div className="aspect-w-16 aspect-h-9">
+          <img
+            src={`${deal?.image?.imageUrl}?w=600`}
+            className="object-cover"
+          />
+        </div>
+
+        <div className="flex flex-col justify-center pt-2 mx-4 space-y-4">
+          <p className="text-xl leading-none text-center font-somatic">
+            {deal?.tagline}
+          </p>
+
+          <div className="py-2 mb-3 text-center border-t-2 border-b-2 border-white border-dashed">
+            <p className="flex items-center justify-center text-xl font-medium text-primary">
+              Only £{deal?.pricePerHeadGBP}, you'll get
+            </p>
+          </div>
+
+          <div className="text-center">
+            {deal?.includes.map(item => (
+              <div key={item}>{item}</div>
+            ))}
           </div>
         </div>
       </div>

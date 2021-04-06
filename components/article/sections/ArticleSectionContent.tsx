@@ -1,5 +1,9 @@
 import CovidAwareSVG from '@svg/article/covid-aware.svg';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useWindowScroll } from 'react-use';
+import { setArticleOfferPosition } from 'state/navigation';
+import { IState } from 'state/reducers';
 import { ScreenContext } from '../../../contexts/screen';
 import { IPost } from '../../../types/cms';
 import { Contained } from '../../Contained';
@@ -39,22 +43,56 @@ const MobileContent = (post: IPost) => (
   </Contained>
 );
 
-const DesktopContent = (post: IPost) => (
-  <ArticleContained>
-    <div className="flex items-center justify-start space-x-4">
-      <h3 className="text-xl font-medium">{post?.restaurant?.name}</h3>
-      <CovidAwareSVG className="h-12" />
+const DesktopContent = (post: IPost) => {
+  const dispatch = useDispatch();
+
+  // Desktop - Manage scrolling behaviour
+  // Whether or not we follow scroll or remain in place
+  const ref = useRef(null);
+  const { y: windowScrollY } = useWindowScroll();
+
+  const { width } = useContext(ScreenContext);
+  const { articleOfferPosition: offerPosition } = useSelector(
+    (state: IState) => state.navigation,
+  );
+
+  // Set the pixels-from-bottom value of the article content
+  // this is used to determine the fixed-bottom state of the
+  // floating article offer item.
+  useEffect(() => {
+    const { height = 0, top = 0 } = ref.current?.getBoundingClientRect();
+
+    const bottom = windowScrollY + top + height;
+    const pxFromBottom =
+      (document?.body?.parentNode as any)?.offsetHeight - bottom;
+
+    dispatch(
+      setArticleOfferPosition({
+        ...offerPosition,
+        pxFromBottom,
+      }),
+    );
+  }, [width]);
+
+  return (
+    <div ref={ref}>
+      <ArticleContained>
+        <div className="flex items-center justify-start space-x-4">
+          <h3 className="text-xl font-medium">{post?.restaurant?.name}</h3>
+          <CovidAwareSVG className="h-12" />
+        </div>
+
+        <div className="flex flex-col mt-4 space-y-6">
+          <div className="">{post?.description}</div>
+
+          <ArticleSectionFeatureImage featureImage={post?.featureImage} />
+
+          <RichBody body={post.body} />
+        </div>
+      </ArticleContained>
     </div>
-
-    <div className="flex flex-col mt-4 space-y-6">
-      <div className="">{post?.description}</div>
-
-      <ArticleSectionFeatureImage featureImage={post?.featureImage} />
-
-      <RichBody body={post.body} />
-    </div>
-  </ArticleContained>
-);
+  );
+};
 
 const AuxiliaryDivider = ({ url }: { url: string }) => (
   <div className="flex items-center justify-center h-24 pb-10 -mt-20 space-x-10 desktop:h-56 desktop:-mt-32">

@@ -3,7 +3,10 @@ import { Contained } from 'components/Contained';
 import React, { useContext, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useWindowScroll } from 'react-use';
-import { setArticleOfferIsFloating } from 'state/navigation';
+import {
+  ArticleOfferLocation,
+  setArticleOfferPosition,
+} from 'state/navigation';
 import { IState } from 'state/reducers';
 import { IPost } from 'types/cms';
 import { UI } from '../../../constants';
@@ -26,7 +29,7 @@ export function ArticleSectionAbstract(props: IPost) {
   // Whether or not we follow scroll or remain in place
   const desktopScrollRef = useRef(null);
   const { y: windowScrollY } = useWindowScroll();
-  const { articleOfferIsFloating: isFloating } = useSelector(
+  const { articleOfferPosition: offerPosition } = useSelector(
     (state: IState) => state.navigation,
   );
 
@@ -36,12 +39,30 @@ export function ArticleSectionAbstract(props: IPost) {
     // console.log('ArticleOrderNowDesktop ➡️ locationY:', locationY);
     // console.log('ArticleOrderNowDesktop ➡️ isFloating:', isFloating);
 
-    if (locationY < UI.ARTICLE.OFFER_WIDGET_FLOAT_TOP_PX && !isFloating) {
-      dispatch(setArticleOfferIsFloating(true));
+    console.log('ArticleSectionAbstract ➡️ offerPosition:', offerPosition);
+
+    if (
+      locationY < UI.ARTICLE.OFFER_WIDGET_FLOAT_TOP_PX &&
+      offerPosition.location !== ArticleOfferLocation.FLOATING
+    ) {
+      dispatch(
+        setArticleOfferPosition({
+          ...offerPosition,
+          location: ArticleOfferLocation.FLOATING,
+        }),
+      );
     }
 
-    if (isFloating && locationY >= UI.ARTICLE.OFFER_WIDGET_FLOAT_TOP_PX) {
-      dispatch(setArticleOfferIsFloating(false));
+    if (
+      offerPosition.location === ArticleOfferLocation.FLOATING &&
+      locationY >= UI.ARTICLE.OFFER_WIDGET_FLOAT_TOP_PX
+    ) {
+      dispatch(
+        setArticleOfferPosition({
+          ...offerPosition,
+          location: ArticleOfferLocation.FIXED_TOP,
+        }),
+      );
     }
   }, [windowScrollY]);
 

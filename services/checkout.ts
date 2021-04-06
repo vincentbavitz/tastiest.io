@@ -6,6 +6,7 @@ import Stripe from 'stripe';
 import { IOrder } from 'types/checkout';
 import { IOrderRequest } from 'types/firebase';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { v4 as uuid } from 'uuid';
 import { FIREBASE } from '../constants';
 import { CmsApi } from './cms';
 import { UserDataApi } from './userData';
@@ -114,6 +115,12 @@ export class CheckoutApi {
         return null;
       }
 
+      // Get discount from Contentful; verify that it's valid.
+
+      const discount = orderRequest?.promoCode
+        ? await cms.getDiscount(orderRequest?.promoCode)
+        : null;
+
       const order: IOrder = {
         id: orderId,
         deal,
@@ -121,6 +128,7 @@ export class CheckoutApi {
         heads: orderRequest.heads,
         fromSlug: orderRequest.fromSlug,
         totalPrice: deal.pricePerHeadGBP * orderRequest.heads,
+        discount: null,
         // TODO - paidAt should be updated with Firebase functions
         paidAt: null,
         orderedAt: Date.now(),
@@ -136,6 +144,7 @@ export class CheckoutApi {
 
       analytics.track({
         userId,
+        anonymousId: userId ? null : uuid(),
         event: 'Order Created',
         properties: {
           ...order,
@@ -149,8 +158,11 @@ export class CheckoutApi {
         .doc(order.id)
         .set(order);
 
+      console.log('checkout ➡️         order:', order);
+
       return order;
     } catch (error) {
+      console.log('checkout ➡️ error:', error);
       return null;
     }
   };

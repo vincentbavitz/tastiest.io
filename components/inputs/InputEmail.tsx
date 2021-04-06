@@ -14,7 +14,7 @@ export function InputEmail(props: Props) {
       size="large"
       type="email"
       placeholder="Email address"
-      prefix={<EmailSVG className="h-6" />}
+      prefix={<EmailSVG className="w-8 h-4" />}
       maxLength={50}
       value={value}
       onValueChange={onValueChange}

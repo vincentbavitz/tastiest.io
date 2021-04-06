@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Contained } from 'components/Contained';
 import { useOrderNow } from 'hooks/checkout/useOrderNow';
 import React, { useContext } from 'react';
+import { ArticleOfferLocation } from 'state/navigation';
 import { UI } from '../../../constants';
 import { ScreenContext } from '../../../contexts/screen';
 import { IDeal, valdHeads, ValidHead } from '../../../types/cms';
@@ -15,17 +16,21 @@ interface Props {
 
 export function ArticleOrderNowDesktop(props: Props) {
   const { deal, slug: fromSlug } = props;
-  const { totalPrice, isFloating, heads, setHeads, submit } = useOrderNow(
+  const { totalPrice, offerPosition, heads, setHeads, submit } = useOrderNow(
     deal,
     fromSlug,
   );
 
   const { isDesktop } = useContext(ScreenContext);
 
+  const isFixedTop = offerPosition === ArticleOfferLocation.FIXED_TOP;
+  const isFloating = offerPosition === ArticleOfferLocation.FLOATING;
+  const isFixedBottom = offerPosition === ArticleOfferLocation.FIXED_BOTTOM;
+
   return (
     <div
       style={{
-        marginTop: isFloating
+        marginTop: !isFixedTop
           ? `${UI.ARTICLE.OFFER_WIDGET_FLOAT_GAP_PX}px`
           : 'unset',
       }}
@@ -119,6 +124,7 @@ export function ArticleOrderNowDesktop(props: Props) {
               </div>
 
               <Button
+                wide
                 onClick={submit}
                 type="solid"
                 size="small"

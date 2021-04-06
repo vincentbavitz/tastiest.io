@@ -24,7 +24,7 @@ const Bold = ({ children }) => (
 );
 
 const Paragraph = ({ children }) => (
-  <p className="mb-3 font-sans tracking-wide text-justify">{children}</p>
+  <p className="mb-3 font-roboto tracking-wide text-justify">{children}</p>
 );
 
 const options = {
@@ -54,7 +54,7 @@ const options = {
     [BLOCKS.HEADING_2]: (node: Heading2) => {
       const content = (node.content[0] as Text)?.value;
       return (
-        <h2 className="mt-8 mb-2 font-sans text-3xl font-semibold tracking-wide">
+        <h2 className="mt-8 mb-2 font-roboto text-3xl font-semibold tracking-wide">
           {content}
         </h2>
       );
@@ -62,13 +62,15 @@ const options = {
     [BLOCKS.HEADING_3]: (node: Heading3) => {
       const content = (node.content[0] as Text)?.value;
       return (
-        <h2 className="mt-6 mb-2 font-sans text-xl font-semibold">{content}</h2>
+        <h2 className="mt-6 mb-2 font-roboto text-xl font-semibold">
+          {content}
+        </h2>
       );
     },
     [BLOCKS.HEADING_4]: (node: Heading4) => {
       const content = (node.content[0] as Text)?.value;
       return (
-        <h2 className="mt-6 mb-2 font-sans text-lg font-bold">{content}</h2>
+        <h2 className="mt-6 mb-2 font-roboto text-lg font-bold">{content}</h2>
       );
     },
     [BLOCKS.QUOTE]: (_node, children: ReactNode) => {

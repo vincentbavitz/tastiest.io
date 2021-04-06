@@ -1,5 +1,7 @@
+import clsx from 'clsx';
 import { CityIndictor } from 'components/CityIndictor';
-import React from 'react';
+import { ScreenContext } from 'contexts/screen';
+import React, { useContext } from 'react';
 import { UI } from '../../../constants';
 import { Contained } from '../../Contained';
 
@@ -10,10 +12,16 @@ interface Props {
 
 export function ArticleSectionTitle(props: Props) {
   const { title, city } = props;
+  const { isDesktop } = useContext(ScreenContext);
 
   return (
     <Contained>
-      <div className="flex flex-col items-center mt-6 mb-4 space-y-4 tablet:mt-16">
+      <div
+        className={clsx(
+          'flex flex-col items-center mt-6 mb-4 space-y-4',
+          isDesktop && 'pt-10',
+        )}
+      >
         <div
           className="flex items-center"
           style={{

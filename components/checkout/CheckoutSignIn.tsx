@@ -1,14 +1,17 @@
 import { Button } from '@tastiest-io/tastiest-components';
 import React, { useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { setSignInTabSelected } from 'state/checkout';
+import { CheckoutSignInTabSelected } from 'types/checkout';
 import { ScreenContext } from '../../contexts/screen';
 import { useAuth } from '../../hooks/useAuth';
 import { InputEmail } from '../inputs/InputEmail';
 import { InputPassword } from '../inputs/InputPassword';
 
 export function CheckoutSignIn() {
-  const { signIn, signUp, resetPassword, isSignedIn, error } = useAuth();
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
+
+  const { signIn, error } = useAuth();
   const dispatch = useDispatch();
 
   const [signInEmail, setSignInEmail] = useState('');
@@ -33,14 +36,22 @@ export function CheckoutSignIn() {
         size="large"
         type="solid"
         color="primary"
-        className="py-3 rounded-xl"
         onClick={() => signIn(signInEmail, signInPassword)}
       >
-        Sign In
+        Sign in to Proceed to Checkout
       </Button>
-      {error && (
-        <div className="mb-1 -mt-1 text-sm text-center text-red-700">
-          {error}
+
+      {!isDesktop && (
+        <div className="flex justify-center">
+          Don't have an account?
+          <a
+            className="ml-1 font-semibold cursor-pointer"
+            onClick={() =>
+              dispatch(setSignInTabSelected(CheckoutSignInTabSelected.NEW_USER))
+            }
+          >
+            Sign Up
+          </a>
         </div>
       )}
     </>

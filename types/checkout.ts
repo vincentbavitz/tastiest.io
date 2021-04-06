@@ -2,6 +2,14 @@
 
 import { IDeal } from './cms';
 
+export type DiscountAmount = [number, '%' | '£'];
+
+export interface IDiscount {
+  name: string;
+  promoCode: string;
+  amountOff: DiscountAmount;
+}
+
 export interface IOrder {
   id: string;
   deal: IDeal;
@@ -10,6 +18,8 @@ export interface IOrder {
   fromSlug: string;
   totalPrice: number;
   paymentDetails: null | IPaymentDetails;
+
+  discount: null | IDiscount;
 
   // Timestamps
   // Null denotes not paid yet; not done yet.
@@ -32,6 +42,7 @@ export enum CheckoutStep {
 export enum CheckoutSignInTabSelected {
   HAS_ACCOUNT = 'HAS_ACCOUNT',
   NEW_USER = 'NEW_USER',
+  NONE = 'NONE',
 }
 
 export interface IPaymentDetails {

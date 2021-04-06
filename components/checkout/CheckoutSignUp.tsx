@@ -2,6 +2,8 @@ import { Button } from '@tastiest-io/tastiest-components';
 import React, { useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useToggle } from 'react-use';
+import { setSignInTabSelected } from 'state/checkout';
+import { CheckoutSignInTabSelected } from 'types/checkout';
 import { ScreenContext } from '../../contexts/screen';
 import { useAuth } from '../../hooks/useAuth';
 import { InputEmail } from '../inputs/InputEmail';
@@ -15,7 +17,7 @@ export function CheckoutSignUp() {
     isSignedIn,
     error: firebaseAuthError,
   } = useAuth();
-  const { isMobile } = useContext(ScreenContext);
+  const { isDesktop } = useContext(ScreenContext);
   const dispatch = useDispatch();
 
   const [signUpEmail, setSignUpEmail] = useState('');
@@ -44,12 +46,15 @@ export function CheckoutSignUp() {
     console.log('error', firebaseAuthError);
 
     if (signUpSuccessful) {
-      alert('SUCCESSFUL');
       return;
     }
-
-    alert('SIGN UP FAILURE');
   };
+
+  console.log(
+    'CheckoutSignUCheckoutSignUp ➡️ firebaseAuthError:',
+    firebaseAuthError,
+  );
+  console.log('CheckoutSignUp ➡️ error:', error);
 
   return (
     <>
@@ -71,9 +76,25 @@ export function CheckoutSignUp() {
         onValueChange={value => setSignUpPassword1(cleanupInputValue(value))}
       />
 
-      {(firebaseAuthError || error.length) && (
+      {(firebaseAuthError?.length || error?.length > 1) && (
         <div className="mb-1 -mt-1 text-sm text-center text-red-700">
-          {error || firebaseAuthError}
+          {error ?? firebaseAuthError}
+        </div>
+      )}
+
+      {!isDesktop && (
+        <div className="flex justify-center">
+          Already have an account?
+          <a
+            className="ml-1 font-semibold cursor-pointer"
+            onClick={() =>
+              dispatch(
+                setSignInTabSelected(CheckoutSignInTabSelected.HAS_ACCOUNT),
+              )
+            }
+          >
+            Sign in
+          </a>
         </div>
       )}
 
@@ -87,14 +108,7 @@ export function CheckoutSignUp() {
         </div>
       </div>
 
-      <Button
-        wide
-        size="large"
-        type="solid"
-        color="primary"
-        className="py-3 rounded-xl"
-        onClick={submit}
-      >
+      <Button wide size="large" type="solid" color="primary" onClick={submit}>
         Sign up to Proceed to Checkout
       </Button>
     </>

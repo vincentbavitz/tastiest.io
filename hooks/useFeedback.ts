@@ -14,7 +14,11 @@ export function useFeedback() {
   const { user } = useAuth();
   const { userData = {} } = useUserData(user);
 
-  const { details: { firstName = 'User', lastName } = {} } = userData;
+  const { firstName, lastName } = userData?.details ?? {
+    firstName: 'User',
+    lastName: undefined,
+  };
+
   const name = `${firstName}${lastName ? ' ' + lastName : ''}`;
 
   const suggestRestaurant = async (

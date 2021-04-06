@@ -15,6 +15,7 @@ export function SignInTosInfo({ center }: Props) {
       <a href="/privacy" className="font-semibold underline cursor-pointer">
         Privacy and Cookie Statement
       </a>
+      .
     </div>
   );
 }

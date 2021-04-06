@@ -1,5 +1,7 @@
 import CheckCircleSVG from '@svg/checkout/check-circle.svg';
 import classNames from 'classnames';
+import { ScreenContext } from 'contexts/screen';
+import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { UI } from '../../constants';
 import { IState } from '../../state/reducers';
@@ -14,10 +16,13 @@ export function CheckoutStepIndicator() {
     flow: { step },
   } = useSelector((state: IState) => state.checkout);
 
+  const { isDesktop } = useContext(ScreenContext);
   return (
     <div
       className="w-full tablet:w-7/12"
-      style={{ minWidth: `${UI.CHECKOUT_SPLIT_WIDTH_PX}px` }}
+      style={{
+        minWidth: isDesktop ? `${UI.CHECKOUT_SPLIT_WIDTH_PX}px` : 'unset',
+      }}
     >
       <div className="relative flex items-center justify-between w-full">
         <ProgressBar step={step} />
@@ -49,7 +54,7 @@ function CheckCircle({ label, complete }: CheckCircleProps) {
       <span
         className={classNames(
           complete ? 'text-primary' : 'text-gray-600',
-          'mt-1',
+          'mt-1 text-sm mobile:text-base',
         )}
       >
         {label}

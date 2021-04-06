@@ -8,12 +8,17 @@ import YouTubeSVG from '@svg/socials/youtube.svg';
 import TastiestSVG from '@svg/tastiest.svg';
 import { ScreenContext } from 'contexts/screen';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { FC, ReactNode, useContext } from 'react';
 import { SupportRequestType } from 'types/firebase';
 import { Contained } from './Contained';
 
 export function Footer() {
   const { isDesktop, isHuge } = useContext(ScreenContext);
+  const router = useRouter();
+  const isCheckout = /^\/checkout/.test(router.pathname);
+
+  if (isCheckout) return <CheckoutFooter />;
 
   return (
     <div className="py-4 font-normal text-center text-white mobile:py-8 bg-primary">
@@ -114,7 +119,7 @@ const HugeFooter = () => (
       </div>
 
       <div className="flex justify-end flex-grow">
-        <div className="flex flex-col items-end justify-between h-full space-y-4 text-right">
+        <div className="flex flex-col items-end justify-between h-full pr-4 mr-4 space-y-4 text-right border-r">
           <ImprovementPrompts />
 
           <YummySVG className="h-8 mt-6 fill-current" />
@@ -123,6 +128,12 @@ const HugeFooter = () => (
         <ThanksForSupportMessage withLogo />
       </div>
     </div>
+  </Contained>
+);
+
+const CheckoutFooter = () => (
+  <Contained>
+    <></>
   </Contained>
 );
 

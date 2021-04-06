@@ -20,6 +20,7 @@ export function useCheckout() {
     dealId: string,
     heads: number,
     fromSlug: string,
+    promoCode?: string,
   ) => {
     // Send the order request to Firebase as a token: orderId
     // which can be verified server side with getServerSideProps
@@ -35,6 +36,7 @@ export function useCheckout() {
       dealId,
       heads,
       fromSlug,
+      promoCode: promoCode ?? null,
       timestamp: Date.now(),
     };
 

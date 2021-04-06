@@ -168,6 +168,9 @@ export const useAuth = () => {
       // Sends a confirmation email with firebase funnctions
       console.log('Sign Up: Tracked with segment');
 
+      // Reload page
+      router.reload();
+
       return true;
     } catch (error) {
       setError(error);

@@ -4,7 +4,7 @@ import React from 'react';
 import { Favicon } from '../components/Favicon';
 
 export default class CustomDocument extends Document<any> {
-  private renderSnippet() {
+  private renderSegmentSnippet() {
     const opts = {
       apiKey: process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY,
       // note: the page option only covers SSR tracking.
@@ -19,12 +19,30 @@ export default class CustomDocument extends Document<any> {
     return snippet.min(opts);
   }
 
+  private renderHotJarSnippet = () => `
+    (function(h,o,t,j,a,r){
+      h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+      h._hjSettings={hjid:2332749,hjsv:6};
+      a=o.getElementsByTagName('head')[0];
+      r=o.createElement('script');r.async=1;
+      r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+      a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+  `;
+
   render() {
     return (
       <Html lang="en">
         <Head>
-          {/* Inject the Segment snippet into the <head> of the document  */}
-          <script dangerouslySetInnerHTML={{ __html: this.renderSnippet() }} />
+          {/* Inject Segment */}
+          <script
+            dangerouslySetInnerHTML={{ __html: this.renderSegmentSnippet() }}
+          />
+
+          {/* Inject HotJar */}
+          <script
+            dangerouslySetInnerHTML={{ __html: this.renderHotJarSnippet() }}
+          />
 
           <Favicon />
           {this.props?.styleTags}

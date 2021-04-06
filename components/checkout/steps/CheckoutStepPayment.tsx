@@ -12,6 +12,7 @@ import {
 } from '@stripe/stripe-js';
 import HelpSVG from '@svg/checkout/help.svg';
 import { Input } from '@tastiest-io/tastiest-components';
+import clsx from 'clsx';
 import { InputContactBirthday } from 'components/inputs/contact/InputContactBirthday';
 import { ScreenContext } from 'contexts/screen';
 import { useCheckout } from 'hooks/checkout/useCheckout';
@@ -28,7 +29,7 @@ import { InputContactFirstName } from '../../inputs/contact/InputContactFirstNam
 import { InputContactLastName } from '../../inputs/contact/InputContactLastName';
 import { InputWrapper } from '../../inputs/InputWrapper';
 import { Tooltip } from '../../Tooltip';
-import { CheckoutOrderSummaryPayment } from '../CheckoutOrderSummaryPayment';
+import { CheckoutCardPayment } from '../CheckoutCardPayment';
 import { CheckoutTabs } from '../CheckoutTabs';
 
 const CARD_ELEMENT_OPTIONS: StripeCardNumberElementOptions = {
@@ -73,7 +74,7 @@ export function CheckoutStepPayment(props: Props) {
   const [cardPostcode, setCardPostcode] = useState('');
   const [cardBrand, setCardBrand] = useState<CardBrand | undefined>(undefined);
 
-  const { isMobile, isTablet } = useContext(ScreenContext);
+  const { isMobile, isTablet, isDesktop } = useContext(ScreenContext);
 
   // Now that we're logged in, update order with user ID
   useEffect(() => {
@@ -178,10 +179,6 @@ export function CheckoutStepPayment(props: Props) {
     console.log('CheckoutOrderSummary ➡️ error:', error);
   };
 
-  // IF PAYMENT / CONTACT DETAILS ARE VALID, UPDATE THEIR USER FILES
-  // IF PAYMENT / CONTACT DETAILS ARE VALID, UPDATE THEIR USER FILES
-  // IF PAYMENT / CONTACT DETAILS ARE VALID, UPDATE THEIR USER FILES
-
   const onCardNumberChange = (event: StripeCardNumberElementChangeEvent) => {
     // prettier-ignore
     const brand = 
@@ -197,13 +194,13 @@ export function CheckoutStepPayment(props: Props) {
   };
 
   return (
-    <div className="flex justify-between w-full">
+    <div className="flex flex-col-reverse w-full tablet:flex-row tablet:justify-between">
       <div
         style={{
           minWidth:
             isMobile || isTablet ? 'unset' : `${UI.CHECKOUT_SPLIT_WIDTH_PX}px`,
         }}
-        className="flex flex-col w-7/12 pb-24 space-y-16"
+        className="flex flex-col w-full pb-24 space-y-16 tablet:w-7/12"
       >
         <div className="">
           <CheckoutTabs tabs={[{ label: 'Contact Details' }]} />
@@ -283,8 +280,13 @@ export function CheckoutStepPayment(props: Props) {
         </div>
       </div>
 
-      <div className="flex-grow w-5/12 pl-10">
-        <CheckoutOrderSummaryPayment order={order} onSubmit={handleSubmit} />
+      <div
+        className={clsx(
+          'w-full tablet:flex-grow tablet:w-5/12',
+          isDesktop && 'pl-10',
+        )}
+      >
+        <CheckoutCardPayment order={order} onSubmit={handleSubmit} />
       </div>
     </div>
   );
