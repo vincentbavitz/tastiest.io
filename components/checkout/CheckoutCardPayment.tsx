@@ -1,4 +1,4 @@
-import LockSVG from '@svg/lock.svg';
+import LockSVG from '@svg/icons/lock.svg';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';

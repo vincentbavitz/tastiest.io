@@ -1,4 +1,4 @@
-import MapPinSVG from '@svg/icons/pin.svg';
+import MapPinSVG from '@svg/icons/location-brand.svg';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
 import { IRestaurant } from 'types/cms';

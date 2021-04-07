@@ -1,5 +1,5 @@
-import ChevronLeftSecondarySVG from '@svg/chevron-left-secondary.svg';
-import ChevronRightSecondarySVG from '@svg/chevron-right-secondary.svg';
+import ChevronLeftSecondarySVG from '@svg/icons/chevron-left-secondary.svg';
+import ChevronRightSecondarySVG from '@svg/icons/chevron-right-secondary.svg';
 import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useEffect, useRef, useState } from 'react';

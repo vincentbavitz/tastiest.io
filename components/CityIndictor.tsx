@@ -1,4 +1,4 @@
-import LocationSVG from '@svg/location-brand.svg';
+import LocationSVG from '@svg/icons/location-brand.svg';
 import classNames from 'classnames';
 import { titleCase } from '../utils/text';
 

@@ -1,4 +1,4 @@
-import HomeHeroSVG from '@svg/home-hero.svg';
+import HomeHeroSVG from '@svg/page/home.svg';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';

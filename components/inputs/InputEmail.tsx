@@ -1,4 +1,4 @@
-import EmailSVG from '@svg/email.svg';
+import EmailSVG from '@svg/icons/email.svg';
 import { Input } from '@tastiest-io/tastiest-components';
 import React from 'react';
 

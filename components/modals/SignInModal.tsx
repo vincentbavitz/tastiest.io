@@ -1,6 +1,6 @@
 import TastiestLogo from '@svg/brand.svg';
-import EmailSVG from '@svg/email.svg';
-import PasswordSVG from '@svg/lock.svg';
+import EmailSVG from '@svg/icons/email.svg';
+import PasswordSVG from '@svg/icons/lock.svg';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useRouter } from 'next/router';

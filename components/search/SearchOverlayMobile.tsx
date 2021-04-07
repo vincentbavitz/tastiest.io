@@ -1,4 +1,4 @@
-import BackSVG from '@svg/back.svg';
+import BackSVG from '@svg/icons/back.svg';
 import classNames from 'classnames';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';

@@ -1,4 +1,4 @@
-import CheckCircleSVG from '@svg/checkout/check-circle.svg';
+import CheckCircleSVG from '@svg/icons/check-circle.svg';
 import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useSelector } from 'react-redux';

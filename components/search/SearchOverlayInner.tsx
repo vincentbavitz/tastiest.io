@@ -1,9 +1,9 @@
 import SpaghettiSVG from '@svg/cuisines/italian.svg';
 import SushiSVG from '@svg/cuisines/japanese.svg';
 import XiaoSVG from '@svg/cuisines/xiao.svg';
-import NewSVG from '@svg/hot.svg';
-import NearbySVG from '@svg/location.svg';
-import TrendingSVG from '@svg/trending.svg';
+import NewSVG from '@svg/icons/hot.svg';
+import NearbySVG from '@svg/icons/location.svg';
+import TrendingSVG from '@svg/icons/trending.svg';
 import { Button } from '@tastiest-io/tastiest-components';
 import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';

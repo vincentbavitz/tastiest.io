@@ -1,5 +1,5 @@
-import SuggestDishDesktopSVG from '@svg/suggest-dish-desktop.svg';
-import SuggestDishMobileSVG from '@svg/suggest-dish-mobile.svg';
+import SuggestDishDesktopSVG from '@svg/illustrations/suggest-dish-desktop.svg';
+import SuggestDishMobileSVG from '@svg/illustrations/suggest-dish-mobile.svg';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';

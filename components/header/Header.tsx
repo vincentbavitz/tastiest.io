@@ -1,5 +1,5 @@
 import TastiestLogo from '@svg/brand.svg';
-import SearchPrimarySVG from '@svg/search-primary.svg';
+import SearchPrimarySVG from '@svg/icons/search-primary.svg';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';

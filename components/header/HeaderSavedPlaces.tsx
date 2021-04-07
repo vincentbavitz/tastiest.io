@@ -1,4 +1,4 @@
-import HeartPrimarySVG from '@svg/heart-primary.svg';
+import HeartPrimarySVG from '@svg/icons/heart-primary.svg';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { useWindowSize } from 'react-use';

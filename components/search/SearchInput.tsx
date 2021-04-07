@@ -1,5 +1,5 @@
-import SearchPrimarySVG from '@svg/search-primary.svg';
-import SearchSecondarySVG from '@svg/search-secondary.svg';
+import SearchPrimarySVG from '@svg/icons/search-primary.svg';
+import SearchSecondarySVG from '@svg/icons/search-secondary.svg';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, ReactNode, useEffect, useRef } from 'react';

@@ -50,10 +50,6 @@ export interface IOrderRequest {
   promoCode?: string;
 }
 
-export interface ICover {
-  never;
-}
-
 export interface IRecentSearch {
   query: string;
   timestamp: number;
@@ -104,7 +100,6 @@ export type TUserData<T extends UserData> =
     T extends UserData.PREFERENCES ? Partial<IUserPreferences> :
 
     // User orders
-    T extends UserData.COVERS ? Array<ICover> : 
     T extends UserData.RESTAURANTS_VISITED ? Array<string> :
 
     never;

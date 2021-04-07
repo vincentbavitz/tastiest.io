@@ -1,6 +1,6 @@
-import HeartFilledPrimarySVG from '@svg/heart-filled-primary.svg';
-import HeartPrimarySVG from '@svg/heart-primary.svg';
-import ShareSVG from '@svg/share.svg';
+import HeartFilledPrimarySVG from '@svg/icons/heart-filled-primary.svg';
+import HeartPrimarySVG from '@svg/icons/heart-primary.svg';
+import ShareSVG from '@svg/icons/share.svg';
 import { Button } from '@tastiest-io/tastiest-components';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useRouter } from 'next/router';

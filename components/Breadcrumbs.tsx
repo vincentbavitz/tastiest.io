@@ -1,4 +1,4 @@
-import HomeSVG from '@svg/home-primary.svg';
+import HomeSVG from '@svg/icons/home-primary.svg';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';

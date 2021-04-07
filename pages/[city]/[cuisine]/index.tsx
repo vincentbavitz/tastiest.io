@@ -96,6 +96,9 @@ export default function Cuisine(
     <ArticleCard key={post.id} compact {...post} />
   ));
 
+  const isLargeDesktop = isHuge;
+  const isRegularDesktop = isDesktop && !isHuge;
+
   return (
     <>
       <div>
@@ -105,23 +108,39 @@ export default function Cuisine(
 
         <div className="flex flex-col w-full space-y-10">
           <div className="relative mt-0 tablet:mt-6">
-            {cuisine?.pageSvg && (
-              <>
-                {isHuge ? (
-                  <Contained>
-                    <cuisine.pageSvg className="w-full pt-6" />
-                  </Contained>
-                ) : (
-                  <cuisine.pageSvg
-                    style={{
-                      width: isDesktop ? '100%' : isTablet ? '150%' : '150%',
-                      transform: `translateX(${
-                        isDesktop ? '0' : isTablet ? '-15%' : '-25%'
-                      })`,
-                    }}
-                  />
-                )}
-              </>
+            {isLargeDesktop && (
+              <Contained maxWidth={933}>
+                <cuisine.pageSvgDesktop className="w-full pt-6" />
+              </Contained>
+            )}
+
+            {isRegularDesktop && (
+              <cuisine.pageSvgDesktop
+                style={{
+                  width: isDesktop ? '100%' : isTablet ? '150%' : '150%',
+                  transform: `translateX(${
+                    isDesktop ? '0' : isTablet ? '-15%' : '-25%'
+                  })`,
+                }}
+              />
+            )}
+
+            {isTablet && (
+              <cuisine.pageSvgDesktop
+                style={{
+                  width: '150%',
+                  transform: `translateX(-15%)`,
+                }}
+              />
+            )}
+
+            {isMobile && (
+              <cuisine.pageSvgMobile
+                style={{
+                  width: '150%',
+                  transform: `translateX(-15%)`,
+                }}
+              />
             )}
 
             <div className="absolute inset-0">

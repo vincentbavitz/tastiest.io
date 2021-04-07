@@ -89,7 +89,8 @@ export class CheckoutApi {
       const userIsValid = Boolean(userId) && userId === orderRequest?.userId;
 
       // Ensure all the types and values from Firebase are valid in the order request
-      const orderRequestHeadsValid = orderRequest?.heads >= 1;
+      const orderRequestHeadsValid =
+        orderRequest?.heads >= 1 && orderRequest.heads < 100;
       const orderRequestSlugIsValid = orderRequest?.fromSlug?.length > 1;
       const orderRequestExpired =
         Date.now() >
@@ -115,12 +116,6 @@ export class CheckoutApi {
         dlog('exited early, no deal');
         return null;
       }
-
-      // Get discount from Contentful; verify that it's valid.
-
-      const discount = orderRequest?.promoCode
-        ? await cms.getDiscount(orderRequest?.promoCode)
-        : null;
 
       const order: IOrder = {
         id: orderId,

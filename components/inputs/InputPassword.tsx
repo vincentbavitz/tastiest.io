@@ -1,4 +1,4 @@
-import PasswordSVG from '@svg/lock.svg';
+import PasswordSVG from '@svg/icons/lock.svg';
 import { Input } from '@tastiest-io/tastiest-components';
 import React from 'react';
 

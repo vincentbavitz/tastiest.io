@@ -1,5 +1,5 @@
 import BrandSVG from '@svg/brand.svg';
-import HeartSVG from '@svg/heart.svg';
+import HeartSVG from '@svg/icons/heart.svg';
 import YummySVG from '@svg/logo.svg';
 import FacebookSVG from '@svg/socials/facebook.svg';
 import InstagramSVG from '@svg/socials/instagram.svg';

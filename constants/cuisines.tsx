@@ -1,7 +1,8 @@
 // Ensure SVGs dont have any width or height attrs.
 import AmericaSVG from '@svg/cuisine-pages/america.svg';
 import BritianSVG from '@svg/cuisine-pages/britain.svg';
-import TheCaribbeanSVG from '@svg/cuisine-pages/caribbean.svg';
+import TheCaribbeanDesktopSVG from '@svg/cuisine-pages/caribbean-desktop.svg';
+import TheCaribbeanMobileSVG from '@svg/cuisine-pages/caribbean-mobile.svg';
 import ChinaSVG from '@svg/cuisine-pages/china.svg';
 import FranceSVG from '@svg/cuisine-pages/france.svg';
 import IndiaSVG from '@svg/cuisine-pages/india.svg';
@@ -91,7 +92,8 @@ const CUISINES = {
     name: 'Caribbean',
     href: '/caribbean',
     svg: CaribbeanSVG,
-    pageSvg: TheCaribbeanSVG,
+    pageSvgDesktop: TheCaribbeanDesktopSVG,
+    pageSvgMobile: TheCaribbeanMobileSVG,
     popularity: 903,
   },
   [CuisineSymbol.MEDITERRANEAN]: {

@@ -10,7 +10,7 @@ import {
   StripeCardNumberElementChangeEvent,
   StripeCardNumberElementOptions,
 } from '@stripe/stripe-js';
-import HelpSVG from '@svg/checkout/help.svg';
+import HelpSVG from '@svg/icons/help.svg';
 import { Input } from '@tastiest-io/tastiest-components';
 import clsx from 'clsx';
 import { InputContactBirthday } from 'components/inputs/contact/InputContactBirthday';
