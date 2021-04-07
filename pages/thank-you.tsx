@@ -3,15 +3,16 @@ import ThankYouOnlineSVG from '@svg/page/thank-you-online.svg';
 import ThankYouPhoneButtonSVG from '@svg/page/thank-you-phone-button.svg';
 import ThankYouPhoneSVG from '@svg/page/thank-you-phone.svg';
 import ThankYouBackdropSVG from '@svg/page/thank-you.svg';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetServerSidePropsType } from 'next';
-import React, { useContext } from 'react';
+import React from 'react';
 import { CheckoutApi } from 'services/checkout';
 import { UserDataApi } from 'services/userData';
 import { SVG } from 'types/assets';
 import { IOrder } from 'types/checkout';
 import { UserData } from 'types/firebase';
+import { dlog } from 'utils/development';
 import { Contained } from '../components/Contained';
-import { ScreenContext } from '../contexts/screen';
 
 export const getServerSideProps = async context => {
   // Get user ID from cookie.
@@ -21,7 +22,7 @@ export const getServerSideProps = async context => {
   // Verify order is legit; else redirect and wipe order data.
   const orderId = String(context.query.orderId ?? '') ?? null;
 
-  console.log('thank-you ➡️ orderId:', orderId);
+  dlog('thank-you ➡️ orderId:', orderId);
 
   // If no order exists in URI, redirect to home
   if (!orderId) {
@@ -37,7 +38,7 @@ export const getServerSideProps = async context => {
   const checkoutApi = new CheckoutApi(context);
   const order: IOrder = await checkoutApi.getOrderFromOrderRequest(orderId);
 
-  console.log('thank-you ➡️ order:', order);
+  dlog('thank-you ➡️ order:', order);
 
   // If no order exists in Firebase, redirect to home
   if (!order) {
@@ -52,7 +53,7 @@ export const getServerSideProps = async context => {
   // Ensure payment succeeded. Return to checkout if it failed.
   const paymentIntent = await checkoutApi.getOrCreatePaymentIntent(order);
 
-  console.log('thank-you ➡️ paymentIntent:', paymentIntent);
+  dlog('thank-you ➡️ paymentIntent:', paymentIntent);
 
   if (paymentIntent.status !== 'succeeded') {
     return {
@@ -65,7 +66,7 @@ export const getServerSideProps = async context => {
 
   const { firstName } = await userDataApi.getUserData(UserData.DETAILS);
 
-  console.log('thank-you ➡️ firstName:', firstName);
+  dlog('thank-you ➡️ firstName:', firstName);
   return {
     props: { firstName, order },
   };
@@ -76,7 +77,7 @@ function ThankYou(
 ) {
   const { firstName, order } = props;
 
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   return (
     <Contained>
@@ -130,7 +131,7 @@ interface BookingSectionProps {
 }
 
 function BookingSection(props: BookingSectionProps) {
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
   const promptText = (
     <>
       Please quote <b>"Tastiest"</b> when you book to get this offer!

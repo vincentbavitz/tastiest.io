@@ -3,6 +3,7 @@ import firebaseApp from 'firebase/app';
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import { useFirebase } from 'react-redux-firebase';
+import { dlog } from 'utils/development';
 import { FIREBASE } from '../constants';
 import { AuthContext } from '../contexts/auth';
 import { LocalStorageItem } from '../types/data';
@@ -45,7 +46,7 @@ export const useAuth = () => {
         credential = await attemptSignIn();
         i++;
 
-        console.log(
+        dlog(
           `Attempting to log user in. (${i}/${FIREBASE.MAX_LOGIN_ATTEMPTS})`,
         );
       }
@@ -123,31 +124,32 @@ export const useAuth = () => {
         .createUserWithEmailAndPassword(email, password);
 
       if (!user) {
-        console.log('Sign Up: No user!!!');
+        dlog('Sign Up: No user!!!');
         return false;
       }
 
       await user.updateProfile({
         displayName: titleCase(displayName),
       });
-      console.log('Sign Up: Updated profile');
+
+      dlog('Sign Up: Updated profile');
 
       // User data
       setUserData(UserData.DISPLAY_NAME, displayName);
       setUserData(UserData.DETAILS, { email });
-      console.log('Sign Up: Set display name');
+      dlog('Sign Up: Set display name');
 
       // Sign in user
       await signIn(email, password);
-      console.log('Sign Up: Signed in');
+      dlog('Sign Up: Signed in');
 
       // User has accepted cookies implicitly
       localStorage.setItem(LocalStorageItem.HAS_ACCEPTED_COOKIES, '1');
-      console.log('Sign Up: set cookies');
+      dlog('Sign Up: set cookies');
 
       // Send email verification email
       firebase.auth().currentUser.sendEmailVerification();
-      console.log('Sign Up: Sent email verification');
+      dlog('Sign Up: Sent email verification');
 
       // Identify user with Segment
       window.analytics.identify(user.uid, {
@@ -166,7 +168,7 @@ export const useAuth = () => {
       });
 
       // Sends a confirmation email with firebase funnctions
-      console.log('Sign Up: Tracked with segment');
+      dlog('Sign Up: Tracked with segment');
 
       // Reload page
       router.reload();

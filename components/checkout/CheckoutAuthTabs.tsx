@@ -1,6 +1,6 @@
 import { Button } from '@tastiest-io/tastiest-components';
-import { ScreenContext } from 'contexts/screen';
-import React, { useContext } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSignInTabSelected } from '../../state/checkout';
 import { IState } from '../../state/reducers';
@@ -12,7 +12,7 @@ export function CheckoutAuthTabs() {
     flow: { signInTabSelected: tab },
   } = useSelector((state: IState) => state.checkout);
 
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
   const dispatch = useDispatch();
 
   const tabs: ITab[] = [

@@ -1,8 +1,17 @@
-import { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useWindowSize } from 'react-use';
 import { UI } from '../constants';
 
-export function useScreenSize() {
+export interface IScreen {
+  isMobile: boolean;
+  isTablet: boolean;
+  isDesktop: boolean;
+  isHuge: boolean;
+}
+
+export const ScreenContext = React.createContext(undefined);
+
+export const ScreenProvider = ({ children }) => {
   const { width } = useWindowSize();
 
   // Default to mobile view
@@ -24,5 +33,15 @@ export function useScreenSize() {
     if (isHuge !== _isHuge) setIsHuge(_isHuge);
   }, [width]);
 
-  return { isMobile, isTablet, isDesktop, isHuge };
+  const screenParams = { isMobile, isTablet, isDesktop, isHuge, width };
+
+  return (
+    <ScreenContext.Provider value={screenParams}>
+      {children}
+    </ScreenContext.Provider>
+  );
+};
+
+export function useScreenSize() {
+  return useContext(ScreenContext);
 }

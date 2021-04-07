@@ -2,13 +2,12 @@ import _404 from '@svg/illustrations/404.svg';
 import classNames from 'classnames';
 import Head from 'next/head';
 import Link from 'next/link';
-import React, { useContext } from 'react';
+import React from 'react';
 import { UI } from '../constants';
-import { ScreenContext } from '../contexts/screen';
 import { generateTitle } from '../utils/metadata';
 
 function Tastiest404() {
-  const { isMobile, isTablet, isDesktop, isHuge } = useContext(ScreenContext);
+  const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
 
   const wrapperStyles = {
     width: '100%',
@@ -152,3 +151,11 @@ function Tastiest404() {
 }
 
 export default Tastiest404;
+function useScreenSize(): {
+  isMobile: any;
+  isTablet: any;
+  isDesktop: any;
+  isHuge: any;
+} {
+  throw new Error('Function not implemented.');
+}

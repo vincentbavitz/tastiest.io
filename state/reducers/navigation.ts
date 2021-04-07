@@ -35,18 +35,6 @@ export const navigationReducer = (
     case NavigationActions.SET_MODAL_IS_OPEN: {
       return { ...state, modalIsOpen: action.payload };
     }
-    case NavigationActions.SET_ARTICLE_OFFER_POSITION: {
-      return { ...state, articleOfferPosition: action.payload };
-    }
-    case NavigationActions.SET_ARTICLE_OFFER_GEOMETRY: {
-      return {
-        ...state,
-        articleOfferGeometry: {
-          ...state.articleOfferGeometry,
-          ...action.payload,
-        },
-      };
-    }
     default:
       return state;
   }

@@ -1,15 +1,15 @@
 import { Button } from '@tastiest-io/tastiest-components';
-import React, { useContext, useState } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setSignInTabSelected } from 'state/checkout';
 import { CheckoutSignInTabSelected } from 'types/checkout';
-import { ScreenContext } from '../../contexts/screen';
 import { useAuth } from '../../hooks/useAuth';
 import { InputEmail } from '../inputs/InputEmail';
 import { InputPassword } from '../inputs/InputPassword';
 
 export function CheckoutSignIn() {
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   const { signIn, error } = useAuth();
   const dispatch = useDispatch();

@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useKey, useLocation } from 'react-use';
-import { ScreenContext } from '../../contexts/screen';
 import { collapseSearchOverlay } from '../../state/navigation';
 import { SearchOverlayBackdrop } from './SearchOverlayBackdrop';
 import { SearchOverlayMobile } from './SearchOverlayMobile';
@@ -9,7 +9,7 @@ import { SearchOverlayMobile } from './SearchOverlayMobile';
 // Search overlay includes the backdrop and the mobile overlay.
 // Search dropdown is desktop only and is rendered per component
 export function SearchOverlay() {
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
   const dispatch = useDispatch();
 
   const close = () => dispatch(collapseSearchOverlay());

@@ -3,6 +3,7 @@ import { RecommendForm } from 'components/RecommendForm';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
+import { dlog } from 'utils/development';
 import { Article } from '../../../components/article/Article';
 import { CmsApi } from '../../../services/cms';
 import { IPost } from '../../../types/cms';
@@ -31,7 +32,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     page++;
   }
 
-  console.log('[slug] ➡️ item:', posts?.[0]);
+  dlog('[slug] ➡️ item:', posts?.[0]);
 
   const paths: IPath[] = posts.map(item => ({
     params: {
@@ -50,7 +51,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const cms = new CmsApi();
 
   const post = await cms.getPostBySlug(String(params?.slug) ?? '');
-  console.log(`Building page: %c${params.slug}`, 'color: purple;');
+  dlog(`Building page: %c${params.slug}`, 'color: purple;');
 
   if (!post) {
     return { notFound: true };

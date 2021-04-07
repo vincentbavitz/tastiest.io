@@ -5,6 +5,7 @@ import { ParsedUrlQuery } from 'querystring';
 import Stripe from 'stripe';
 import { IOrder } from 'types/checkout';
 import { IOrderRequest } from 'types/firebase';
+import { dlog } from 'utils/development';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { v4 as uuid } from 'uuid';
 import { FIREBASE } from '../constants';
@@ -58,7 +59,7 @@ export class CheckoutApi {
       currency: 'gbp',
     });
 
-    console.log('checkout ➡️ orderId:', order.id);
+    dlog('checkout ➡️ orderId:', order.id);
 
     // Set paymentIntent for this specific order ID.
     const cookieValue: PaymentIntentCookie = {
@@ -100,7 +101,7 @@ export class CheckoutApi {
         !orderRequestHeadsValid ||
         !orderRequestSlugIsValid
       ) {
-        console.log('exited early, wrong details');
+        dlog('exited early, wrong details');
         return null;
       }
 
@@ -111,7 +112,7 @@ export class CheckoutApi {
       const deal = await cms.getDeal(orderRequest.dealId ?? '');
 
       if (!deal) {
-        console.log('exited early, no deal');
+        dlog('exited early, no deal');
         return null;
       }
 
@@ -158,11 +159,11 @@ export class CheckoutApi {
         .doc(order.id)
         .set(order);
 
-      console.log('checkout ➡️         order:', order);
+      dlog('checkout ➡️         order:', order);
 
       return order;
     } catch (error) {
-      console.log('checkout ➡️ error:', error);
+      dlog('checkout ➡️ error:', error);
       return null;
     }
   };

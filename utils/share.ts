@@ -4,9 +4,6 @@ import { METADATA } from '../constants';
 // https://crunchify.com/list-of-all-social-sharing-urls-for-handy-reference-social-media-sharing-buttons-without-javascript/
 
 const shareURL = (title: string, url: string) => {
-  console.log('Sharing title:, ', title);
-  console.log('Sharing URL: ', url);
-
   // Attempt to use native share API
   if (navigator.share) {
     navigator.share({ title, url });

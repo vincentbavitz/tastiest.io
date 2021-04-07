@@ -1,16 +1,11 @@
 import ExitSVG from '@svg/icons/exit.svg';
 import classNames from 'classnames';
-import React, {
-  ReactNode,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useClickAway, useKey, useLockBodyScroll } from 'react-use';
+import { dlog } from 'utils/development';
 import { UI } from '../constants';
-import { ScreenContext } from '../contexts/screen';
 import { closeSignInModal, collapseSearchOverlay } from '../state/navigation';
 import { IState } from '../state/reducers';
 
@@ -34,7 +29,7 @@ export function Modal(props: Props) {
     onMobileFullscreen,
   } = props;
 
-  const { isMobile } = useContext(ScreenContext);
+  const { isMobile } = useScreenSize();
   const { searchOverlayExpanded, openedModal } = useSelector(
     (state: IState) => state.navigation,
   );
@@ -57,9 +52,7 @@ export function Modal(props: Props) {
     // Refuse to open if another modal is currently open
 
     if (modalId !== openedModal) {
-      console.log(
-        `Cannot open modal ${modalId}, ${openedModal} is already open.`,
-      );
+      dlog(`Cannot open modal ${modalId}, ${openedModal} is already open.`);
 
       setShouldRender(true);
     }

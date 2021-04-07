@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { CmsApi } from 'services/cms';
 import { IPost } from 'types/cms';
+import { dlog } from 'utils/development';
 import { IState } from '../state/reducers';
 import { setSearchResultItems } from '../state/search';
 import { IRecentSearch, UserData } from '../types/firebase';
@@ -25,7 +26,7 @@ export function useSearch() {
       Object.values(post).every(value => Boolean(value)),
     );
 
-    console.log('search ➡️ results:', results);
+    dlog('search ➡️ results:', results);
 
     // throttledSetSearchResultItems(results);
     dispatch(setSearchResultItems(results));

@@ -1,5 +1,6 @@
 import nookies from 'nookies';
 import React, { createContext, useEffect, useState } from 'react';
+import { dlog } from 'utils/development';
 import { firebaseClient } from '../utils/firebaseClient';
 
 // Example taken from  https://github1s.com/colinhacks/next-firebase-ssr/blob/HEAD/auth.tsx
@@ -19,16 +20,16 @@ export function AuthProvider({ children }: any) {
     }
 
     return firebaseClient.auth().onIdTokenChanged(async user => {
-      console.log(`token changed!`);
+      dlog(`token changed!`);
       if (!user) {
-        console.log(`no token found...`);
+        dlog(`no token found...`);
         setUser(null);
         nookies.destroy(null, 'token');
         nookies.set(null, 'token', '', { path: '/' });
         return;
       }
 
-      console.log(`updating token...`);
+      dlog(`updating token...`);
       const token = await user.getIdToken();
       setUser(user);
       nookies.destroy(null, 'token');
@@ -39,7 +40,7 @@ export function AuthProvider({ children }: any) {
   // force refresh the token every 10 minutes
   useEffect(() => {
     const handle = setInterval(async () => {
-      console.log(`refreshing token...`);
+      dlog(`refreshing token...`);
       const user = firebaseClient.auth().currentUser;
       if (user) await user.getIdToken(true);
     }, 10 * 60 * 1000);
@@ -48,7 +49,7 @@ export function AuthProvider({ children }: any) {
   }, []);
 
   useEffect(() => {
-    console.log('User', user);
+    dlog('User', user);
   }, [user]);
 
   return (

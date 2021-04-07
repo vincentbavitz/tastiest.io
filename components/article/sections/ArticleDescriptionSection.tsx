@@ -1,5 +1,4 @@
-import { useContext } from 'react';
-import { ScreenContext } from '../../../contexts/screen';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { Contained } from '../../Contained';
 
 interface Props {
@@ -7,7 +6,7 @@ interface Props {
 }
 
 export function ArticleDescriptionSection({ description }: Props) {
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   return (
     <Contained>

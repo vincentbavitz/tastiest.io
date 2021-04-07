@@ -39,16 +39,9 @@ export function limitYear(year: string, minYear: string, maxYear: string) {
     minYear = maxYear;
   }
 
-  console.log('InputDate ➡️ minYear:', minYear);
-  console.log('InputDate ➡️ maxYear:', maxYear);
-
   const yearSlice = year.slice(0, year.length);
   const maxSlice = maxYear.slice(0, year.length);
   const minSlice = minYear.slice(0, year.length);
-
-  console.log('InputDate ➡️ yearSlice:', yearSlice);
-  console.log('InputDate ➡️ maxSlice:', maxSlice);
-  console.log('InputDate ➡️ minSlice:', minSlice);
 
   if (Number(yearSlice) > Number(maxSlice)) return maxSlice;
   if (Number(yearSlice) < Number(minSlice)) return minSlice;
@@ -70,9 +63,6 @@ export const stringToDate = (
     minYear ?? '1900',
     maxYear ?? '2099',
   ) as TYear;
-
-  console.log('InputDate ➡️ minYear:', minYear);
-  console.log('InputDate ➡️ year:', year);
 
   return { day, month, year };
 };

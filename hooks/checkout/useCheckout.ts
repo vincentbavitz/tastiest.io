@@ -8,7 +8,7 @@ import { useUserData } from '../useUserData';
 
 export function useCheckout() {
   // const firebase = useFirebase();
-  // console.log('useCheckout ➡️ firebase:', firebase);
+  // dlog('useCheckout ➡️ firebase:', firebase);
 
   const { user } = useAuth();
   const { setUserData } = useUserData(user);

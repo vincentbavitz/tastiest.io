@@ -1,7 +1,7 @@
 import LockSVG from '@svg/lock.svg';
 import { Button, Input } from '@tastiest-io/tastiest-components';
-import { ScreenContext } from 'contexts/screen';
-import React, { useContext, useState } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CmsApi } from 'services/cms';
 import { CHECKOUT, UI } from '../../constants';
@@ -42,7 +42,7 @@ const usePromoCode = (order: IOrder) => {
 
 export function CheckoutCardPayment(props: Props) {
   const { order, onSubmit } = props;
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   const {
     flow: { step },

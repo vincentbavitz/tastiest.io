@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { CityIndictor } from 'components/CityIndictor';
-import { ScreenContext } from 'contexts/screen';
-import React, { useContext } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React from 'react';
 import { UI } from '../../../constants';
 import { Contained } from '../../Contained';
 
@@ -12,7 +12,7 @@ interface Props {
 
 export function ArticleSectionTitle(props: Props) {
   const { title, city } = props;
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   return (
     <Contained>

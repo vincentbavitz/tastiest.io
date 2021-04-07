@@ -1,7 +1,6 @@
 import CheckCircleSVG from '@svg/checkout/check-circle.svg';
 import classNames from 'classnames';
-import { ScreenContext } from 'contexts/screen';
-import { useContext } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { useSelector } from 'react-redux';
 import { UI } from '../../constants';
 import { IState } from '../../state/reducers';
@@ -16,7 +15,7 @@ export function CheckoutStepIndicator() {
     flow: { step },
   } = useSelector((state: IState) => state.checkout);
 
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
   return (
     <div
       className="w-full tablet:w-7/12"

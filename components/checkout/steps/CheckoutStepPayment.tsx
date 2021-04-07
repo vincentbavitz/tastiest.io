@@ -14,14 +14,15 @@ import HelpSVG from '@svg/checkout/help.svg';
 import { Input } from '@tastiest-io/tastiest-components';
 import clsx from 'clsx';
 import { InputContactBirthday } from 'components/inputs/contact/InputContactBirthday';
-import { ScreenContext } from 'contexts/screen';
 import { useCheckout } from 'hooks/checkout/useCheckout';
 import { useAuth } from 'hooks/useAuth';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IUserDetails } from 'types/firebase';
 import { IDateObject } from 'types/various';
+import { dlog } from 'utils/development';
 import { UI } from '../../../constants';
 import { CardBrand, IOrder, IPaymentDetails } from '../../../types/checkout';
 import { InputCardNumberWrapper } from '../../inputs/card/InputCardNumberWrapper';
@@ -74,7 +75,7 @@ export function CheckoutStepPayment(props: Props) {
   const [cardPostcode, setCardPostcode] = useState('');
   const [cardBrand, setCardBrand] = useState<CardBrand | undefined>(undefined);
 
-  const { isMobile, isTablet, isDesktop } = useContext(ScreenContext);
+  const { isMobile, isTablet, isDesktop } = useScreenSize();
 
   // Now that we're logged in, update order with user ID
   useEffect(() => {
@@ -176,7 +177,7 @@ export function CheckoutStepPayment(props: Props) {
       // Segment: Payment failure event
     }
 
-    console.log('CheckoutOrderSummary ➡️ error:', error);
+    dlog('CheckoutOrderSummary ➡️ error:', error);
   };
 
   const onCardNumberChange = (event: StripeCardNumberElementChangeEvent) => {

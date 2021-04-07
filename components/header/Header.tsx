@@ -1,11 +1,11 @@
 import TastiestLogo from '@svg/brand.svg';
 import SearchPrimarySVG from '@svg/search-primary.svg';
 import clsx from 'clsx';
+import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { UI } from '../../constants';
-import { ScreenContext } from '../../contexts/screen';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Contained } from '../Contained';
@@ -14,7 +14,7 @@ import { HeaderSavedPlaces } from './HeaderSavedPlaces';
 import { HeaderSearch } from './HeaderSearch';
 
 export function Header() {
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
   const { onCheckoutPage } = useSelector((state: IState) => state.checkout);
 
   return (

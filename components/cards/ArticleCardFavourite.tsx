@@ -4,10 +4,9 @@ import ShareSVG from '@svg/share.svg';
 import classNames from 'classnames';
 import router from 'next/dist/client/router';
 import Link from 'next/link';
-import React, { SyntheticEvent, useContext } from 'react';
+import React, { SyntheticEvent } from 'react';
 import { useMeasure } from 'react-use';
 import { IPost } from 'types/cms';
-import { ScreenContext } from '../../contexts/screen';
 import { generateURL } from '../../utils/routing';
 
 interface Props extends Partial<IPost> {
@@ -26,7 +25,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
     isFavourite,
     onToggleFavourite,
   } = props;
-  const { isTablet, isDesktop, isHuge } = useContext(ScreenContext);
+  const { isTablet, isDesktop, isHuge } = useScreenSize();
 
   const [ref, { width }] = useMeasure();
   const isSmall = width < 130;

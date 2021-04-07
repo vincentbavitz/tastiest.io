@@ -1,5 +1,5 @@
-import { ScreenContext } from 'contexts/screen';
-import React, { ReactNode, useContext } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React, { ReactNode } from 'react';
 import { IOrder } from '../../types/checkout';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 
 export function CheckoutCard(props: Props) {
   const { title, order, children } = props;
-  const { isMobile } = useContext(ScreenContext);
+  const { isMobile } = useScreenSize();
 
   if (!order) return null;
 

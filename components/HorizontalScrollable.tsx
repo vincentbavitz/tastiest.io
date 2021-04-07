@@ -1,10 +1,10 @@
 import ChevronLeftSecondarySVG from '@svg/chevron-left-secondary.svg';
 import ChevronRightSecondarySVG from '@svg/chevron-right-secondary.svg';
 import classNames from 'classnames';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React, { useEffect, useRef, useState } from 'react';
 import { useScroll, useWindowSize } from 'react-use';
 import { UI } from '../constants';
-import { ScreenContext } from '../contexts/screen';
 import { useDevice } from '../hooks/useDevice';
 import { Contained } from './Contained';
 
@@ -20,7 +20,7 @@ interface Props {
 }
 
 export function HorizontalScrollable(props: Props) {
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   return (
     <>
@@ -52,7 +52,7 @@ function HorizontalScrollableInner(props: Props) {
   const [rightScrollHidden, setRightScrollHidden] = useState(false);
 
   const { isTouchDevice } = useDevice();
-  const { isDesktop, isMobile } = useContext(ScreenContext);
+  const { isDesktop, isMobile } = useScreenSize();
 
   const handleLeftScroll = () => {
     scrollRef.current.scrollBy({

@@ -1,9 +1,9 @@
 import CharacterEatingSVG from '@svg/article/character-eating.svg';
 import { Contained } from 'components/Contained';
-import React, { useContext } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React from 'react';
 import { IPost } from 'types/cms';
 import { UI } from '../../../constants';
-import { ScreenContext } from '../../../contexts/screen';
 import ArticleContained from '../ArticleContained';
 import { ArticleFeatureVideoWidget } from '../widgets/ArticleFeatureVideoWidget';
 import ArticleOrderNowMobile from '../widgets/ArticleOrderNowMobile';
@@ -13,7 +13,7 @@ const EATING_CHARACTER_SIZE_REM = 22;
 
 export function ArticleSectionAbstract(props: IPost) {
   const { id, title, slug, video, deal, abstractDivider } = props;
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   return (
     <div className="relative w-full bg-secondary-1">

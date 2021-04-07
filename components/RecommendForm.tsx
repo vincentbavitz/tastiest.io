@@ -1,8 +1,8 @@
 import SuggestDishDesktopSVG from '@svg/suggest-dish-desktop.svg';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import { useFeedback } from 'hooks/useFeedback';
-import React, { useContext, useState } from 'react';
-import { ScreenContext } from '../contexts/screen';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React, { useState } from 'react';
 import { Contained } from './Contained';
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 // Use klaviyo for emails
 
 export function RecommendForm(props: Props) {
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   return (
     <Contained>
@@ -45,7 +45,7 @@ export function RecommendForm(props: Props) {
 const RecommendFormContent = ({ dish, city }: Props) => {
   const { suggestRestaurant } = useFeedback();
 
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
   const [recommendedName, setRecommendedName] = useState('');
   const [requestRecieved, setRequestRecieved] = useState(false);
 

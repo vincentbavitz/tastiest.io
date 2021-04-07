@@ -1,18 +1,19 @@
 import SearchBackdropDesktopSVG from '@svg/page/search_desktop.svg';
 import SearchBackdropMobileSVG from '@svg/page/search_mobile.svg';
 import RecommendedPosts from 'components/sections/RecommendedPosts';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
-import React, { useContext } from 'react';
+import React from 'react';
 import ReactPaginate from 'react-paginate';
 import { CmsApi } from 'services/cms';
 import { IPost } from 'types/cms';
+import { dlog } from 'utils/development';
 import { ArticleCardRow } from '../components/cards/ArticleCardRow';
 import { Contained } from '../components/Contained';
 import { SuggestDish } from '../components/SuggestDish';
 import { Title } from '../components/Title';
 import { CMS, METADATA, SEARCH } from '../constants';
-import { ScreenContext } from '../contexts/screen';
 
 interface Props {
   posts: IPost[];
@@ -55,7 +56,7 @@ const Search = (
   const { posts, topPosts, totalCount, currentPage } = props;
 
   const router = useRouter();
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   // Show these options if the user is on this page without entering a query
   const recommendedOptions = <></>;
@@ -84,8 +85,8 @@ const Search = (
   const pageCount = Math.ceil(props.totalCount / SEARCH.SEARCH_ITEMS_PER_PAGE);
   const showPagination = posts.length > 0 && pageCount > 1;
 
-  console.log('search ➡️ pageCount:', pageCount);
-  console.log('search ➡️ props.totalCount:', props.totalCount);
+  dlog('search ➡️ pageCount:', pageCount);
+  dlog('search ➡️ props.totalCount:', props.totalCount);
 
   return (
     <div>

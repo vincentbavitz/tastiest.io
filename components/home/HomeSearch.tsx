@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import React, { useContext, useEffect, useRef } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLockBodyScroll, useMeasure } from 'react-use';
-import { ScreenContext } from '../../contexts/screen';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { setSearchBarPinnedToHeader } from '../../state/search';
@@ -26,7 +26,7 @@ export function HomeSearch() {
   const dispatch = useDispatch();
 
   // Contexts
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   // References
   const searchRef = useRef(null);

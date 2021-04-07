@@ -1,13 +1,14 @@
 import HelpSVG from '@svg/page/help.svg';
 import { Button, Input, Select } from '@tastiest-io/tastiest-components';
 import { Contained } from 'components/Contained';
-import { ScreenContext } from 'contexts/screen';
 import { useAuth } from 'hooks/useAuth';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { useSupport } from 'hooks/useSupport';
 import { useUserData } from 'hooks/useUserData';
 import { InferGetServerSidePropsType } from 'next';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { SupportRequestType } from 'types/firebase';
+import { dlog } from 'utils/development';
 import { UI } from '../constants';
 
 export const getServerSideProps = async context => {
@@ -30,7 +31,7 @@ const helpOptions: IHelpOption[] = [
 const Help = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
-  const { isMobile, isTablet } = useContext(ScreenContext);
+  const { isMobile, isTablet } = useScreenSize();
 
   // Update user data
   const { user } = useAuth();
@@ -58,13 +59,13 @@ const Help = (
     setSubject('');
     setSupportType(value);
 
-    console.log('help ➡️     value:', value);
+    dlog('help ➡️     value:', value);
   };
 
-  console.log('help ➡️ supportRequests:', supportRequests);
+  dlog('help ➡️ supportRequests:', supportRequests);
 
-  console.log('help ➡️ name;:', name);
-  console.log('help ➡️ email:', email);
+  dlog('help ➡️ name;:', name);
+  dlog('help ➡️ email:', email);
 
   const submit = async () => {
     const { success, errors } = await makeSupportRequest(
@@ -82,8 +83,8 @@ const Help = (
       setSent(true);
     }
 
-    console.log('help ➡️ success:', success);
-    console.log('help ➡️ errors:', errors);
+    dlog('help ➡️ success:', success);
+    dlog('help ➡️ errors:', errors);
   };
 
   // prettier-ignore

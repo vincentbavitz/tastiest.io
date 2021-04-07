@@ -1,11 +1,11 @@
+import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
-import React, { useContext } from 'react';
+import React from 'react';
 import { IPost } from 'types/cms';
-import { ScreenContext } from '../../contexts/screen';
 import { generateURL } from '../../utils/routing';
 
 export function ArticleCardRow(post: IPost) {
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
   const { city, slug, cuisine } = post;
   const { href, as } = generateURL({ city, slug, cuisine });
 

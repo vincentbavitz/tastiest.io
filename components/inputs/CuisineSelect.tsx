@@ -1,8 +1,9 @@
 import { Input, Select } from '@tastiest-io/tastiest-components';
-import { ScreenContext } from 'contexts/screen';
-import React, { useContext, useState } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React, { useState } from 'react';
 import { CuisineSymbol } from 'types/cuisine';
 import { TFavouriteCuisine } from 'types/firebase';
+import { dlog } from 'utils/development';
 import { titleCase } from 'utils/text';
 
 type CuisineKey = CuisineSymbol | 'ALL_FOOD' | 'OTHER';
@@ -20,7 +21,7 @@ const options: ICuisineOption[] = [
   { key: 'ALL_FOOD', label: 'I just love food!' },
 ];
 
-console.log('CuisineSelect ➡️ options:', options);
+dlog('CuisineSelect ➡️ options:', options);
 
 interface Props {
   initial: CuisineKey;
@@ -30,7 +31,7 @@ interface Props {
 
 export default function CuisineSelect(props: Props) {
   const { initial, initialOther } = props;
-  const { isMobile, isTablet } = useContext(ScreenContext);
+  const { isMobile, isTablet } = useScreenSize();
 
   const [selected, setSelected] = useState<CuisineKey>(initial);
   const [other, setOther] = useState<string>(initialOther);
@@ -53,8 +54,8 @@ export default function CuisineSelect(props: Props) {
     props.onChange(mapToFavouriteCuisine(selected));
   };
 
-  console.log('CuisineSelect ➡️ initial:', initial);
-  console.log('CuisineSelect ➡️ !initial?.length:', !initial?.length);
+  dlog('CuisineSelect ➡️ initial:', initial);
+  dlog('CuisineSelect ➡️ !initial?.length:', !initial?.length);
 
   return (
     <div className="w-64">

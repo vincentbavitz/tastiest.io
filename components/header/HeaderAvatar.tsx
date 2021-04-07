@@ -1,7 +1,7 @@
+import { useScreenSize } from 'hooks/useScreenSize';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ScreenContext } from '../../contexts/screen';
 import { useAuth } from '../../hooks/useAuth';
 import { openSignInModal } from '../../state/navigation';
 import { IState } from '../../state/reducers';
@@ -25,7 +25,7 @@ export function HeaderAvatar() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Close dropdown on route change

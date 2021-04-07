@@ -1,6 +1,7 @@
 import { ContentfulClientApi, createClient } from 'contentful';
 import moment from 'moment';
 import { DiscountAmount, IDiscount } from 'types/checkout';
+import { dlog } from 'utils/development';
 import CMS from '../constants/cms';
 import {
   IAuthor,
@@ -98,7 +99,7 @@ export class CmsApi {
     quantity = CMS.BLOG_RESULTS_PER_PAGE,
     page = 1,
   ): Promise<IFetchPostsReturn> {
-    console.log('cms ➡️ slugs:', slugs);
+    dlog('cms ➡️ slugs:', slugs);
 
     const entries = await this.client.getEntries({
       content_type: 'post',
@@ -108,8 +109,6 @@ export class CmsApi {
       include: 8,
       'fields.slug[in]': slugs?.join(','),
     });
-
-    console.log('cms ➡️ entries:', entries);
 
     if (entries?.items?.length > 0) {
       const posts = entries.items.map(entry => this.convertPost(entry));
@@ -135,8 +134,6 @@ export class CmsApi {
       'fields.cuisine.sys.contentType.sys.id': 'cuisine',
       'fields.cuisine.fields.name[in]': cuisineToMatch,
     });
-
-    console.log('cms ➡️ entries:', entries);
 
     if (entries?.items?.length > 0) {
       const posts = entries.items.map(entry => this.convertPost(entry));
@@ -188,7 +185,7 @@ export class CmsApi {
 
     // try {
     //   posts = await client.fetch(query);
-    //   console.log('Posts', posts);
+    //   dlog('Posts', posts);
     // } catch (error) {
     //   console.warn('Error:', error);
     // }

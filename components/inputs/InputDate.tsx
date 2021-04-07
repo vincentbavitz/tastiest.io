@@ -2,6 +2,7 @@ import { Input } from '@tastiest-io/tastiest-components';
 import React from 'react';
 import NumberFormat, { NumberFormatValues } from 'react-number-format';
 import { IDateObject } from 'types/various';
+import { dlog } from 'utils/development';
 import { dateFormat, dateToString, stringToDate } from 'utils/text';
 
 interface Props {
@@ -22,10 +23,10 @@ const InputCustom = (props: Props) => (
 );
 
 export function InputDate(props: Props) {
-  console.log('InputDate ➡️ props:', props);
+  dlog('InputDate ➡️ props:', props);
 
   const handleOnChange = ({ value }: NumberFormatValues) => {
-    console.log('value', value);
+    dlog('value', value);
 
     const date = stringToDate(
       value,

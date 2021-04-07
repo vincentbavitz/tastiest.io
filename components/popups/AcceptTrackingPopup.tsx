@@ -1,7 +1,7 @@
 import { Button } from '@tastiest-io/tastiest-components';
 import clsx from 'clsx';
-import { ScreenContext } from 'contexts/screen';
-import React, { useContext } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React from 'react';
 import { useLocalStorage } from 'react-use';
 import { UI } from '../../constants';
 import { LocalStorageItem } from '../../types/data';
@@ -17,7 +17,7 @@ export function AcceptTrackingPopup() {
     window?.analytics?.on();
   };
 
-  const { isMobile } = useContext(ScreenContext);
+  const { isMobile } = useScreenSize();
 
   return (
     <>

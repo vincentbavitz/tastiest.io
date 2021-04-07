@@ -1,10 +1,11 @@
 import { Button } from '@tastiest-io/tastiest-components';
-import React, { useContext, useState } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useToggle } from 'react-use';
 import { setSignInTabSelected } from 'state/checkout';
 import { CheckoutSignInTabSelected } from 'types/checkout';
-import { ScreenContext } from '../../contexts/screen';
+import { dlog } from 'utils/development';
 import { useAuth } from '../../hooks/useAuth';
 import { InputEmail } from '../inputs/InputEmail';
 import { InputPassword } from '../inputs/InputPassword';
@@ -17,7 +18,7 @@ export function CheckoutSignUp() {
     isSignedIn,
     error: firebaseAuthError,
   } = useAuth();
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
   const dispatch = useDispatch();
 
   const [signUpEmail, setSignUpEmail] = useState('');
@@ -43,18 +44,15 @@ export function CheckoutSignUp() {
 
     setError('');
     const signUpSuccessful = await signUp('', signUpEmail, signUpPassword0);
-    console.log('error', firebaseAuthError);
+    dlog('error', firebaseAuthError);
 
     if (signUpSuccessful) {
       return;
     }
   };
 
-  console.log(
-    'CheckoutSignUCheckoutSignUp ➡️ firebaseAuthError:',
-    firebaseAuthError,
-  );
-  console.log('CheckoutSignUp ➡️ error:', error);
+  dlog('CheckoutSignUCheckoutSignUp ➡️ firebaseAuthError:', firebaseAuthError);
+  dlog('CheckoutSignUp ➡️ error:', error);
 
   return (
     <>

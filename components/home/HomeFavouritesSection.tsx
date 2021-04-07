@@ -1,7 +1,7 @@
 import { ArticleCard } from 'components/cards/ArticleCard';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
-import { ScreenContext } from 'contexts/screen';
-import React, { useContext } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React from 'react';
 import { IPost } from 'types/cms';
 import { SectionTitle } from '../SectionTitle';
 
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export function HomeFavouritesSection(props: Props) {
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
   const { cards } = props;
 
   return (

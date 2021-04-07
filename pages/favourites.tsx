@@ -6,14 +6,16 @@ import { CardGrid } from 'components/cards/CardGrid';
 import { Contained } from 'components/Contained';
 import RecommendedPosts from 'components/sections/RecommendedPosts';
 import { useArticle } from 'hooks/useArticle';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
-import React, { useContext } from 'react';
+import React from 'react';
 import { CmsApi } from 'services/cms';
 import { UserDataApi } from 'services/userData';
 import { IPost } from 'types/cms';
 import { UserData } from 'types/firebase';
-import { IScreen, ScreenContext } from '../contexts/screen';
+import { dlog } from 'utils/development';
+import { IScreen } from '../contexts/screen';
 import { useAuth } from '../hooks/useAuth';
 import { useUserData } from '../hooks/useUserData';
 import BigBrain from '../services/brains';
@@ -56,7 +58,7 @@ interface Props {
 
 function Favourites(props: Props) {
   const { savedPosts, recommendedPosts } = props;
-  const screen = useContext(ScreenContext);
+  const screen = useScreenSize();
   const { user } = useAuth();
   const { toggleSaveArticle } = useArticle();
   const { userData = {} } = useUserData(user);
@@ -66,8 +68,8 @@ function Favourites(props: Props) {
     ? userData.savedArticles
     : savedPosts.map(p => p.slug) ?? [];
 
-  console.log('favourites ➡️ recommendedPosts:', recommendedPosts);
-  console.log('favourites ➡️ savedPosts:', savedPosts);
+  dlog('favourites ➡️ recommendedPosts:', recommendedPosts);
+  dlog('favourites ➡️ savedPosts:', savedPosts);
 
   return (
     <>

@@ -1,6 +1,6 @@
 import CovidAwareSVG from '@svg/article/covid-aware.svg';
-import React, { useContext } from 'react';
-import { ScreenContext } from '../../../contexts/screen';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React from 'react';
 import { IPost } from '../../../types/cms';
 import { Contained } from '../../Contained';
 import { RichBody } from '../../RichBody';
@@ -13,7 +13,7 @@ import ArticleSectionOfferBreakdown from './ArticleSectionOfferBreakdown';
 // Really want writers to be able to do {{CALL_TO_ACTION}} sorta things like Wordpress shortcodes
 // And that will then conditionally render our components
 export function ArticleSectionContent(post: IPost) {
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   return isDesktop ? <DesktopContent {...post} /> : <MobileContent {...post} />;
 }

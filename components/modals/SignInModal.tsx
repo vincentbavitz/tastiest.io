@@ -2,11 +2,11 @@ import TastiestLogo from '@svg/brand.svg';
 import EmailSVG from '@svg/email.svg';
 import PasswordSVG from '@svg/lock.svg';
 import { Button, Input } from '@tastiest-io/tastiest-components';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { METADATA } from '../../constants';
-import { ScreenContext } from '../../contexts/screen';
 import { useAuth } from '../../hooks/useAuth';
 import { closeSignInModal, ModalInstance } from '../../state/navigation';
 import { IState } from '../../state/reducers';
@@ -27,7 +27,7 @@ export function SignInModal() {
   );
 
   const isOpen = isSignInModalOpen && isSignedIn === false;
-  const { isMobile } = useContext(ScreenContext);
+  const { isMobile } = useScreenSize();
   const dispatch = useDispatch();
 
   const router = useRouter();

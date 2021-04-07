@@ -1,9 +1,8 @@
 import classNames from 'classnames';
 import { useRouter } from 'next/dist/client/router';
-import React, { SyntheticEvent, useContext } from 'react';
+import React, { SyntheticEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { IPost } from 'types/cms';
-import { ScreenContext } from '../../contexts/screen';
 import { generateURL } from '../../utils/routing';
 
 export function SearchItem(props: IPost) {
@@ -11,7 +10,7 @@ export function SearchItem(props: IPost) {
   const router = useRouter();
   const { title, featureImage, city, cuisine, slug } = props;
 
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   const handleClick = (e: SyntheticEvent) => {
     const { href, as } = generateURL({ city, cuisine, slug });
@@ -47,4 +46,7 @@ export function SearchItem(props: IPost) {
       </div>
     </div>
   );
+}
+function useScreenSize(): { isDesktop: any } {
+  throw new Error('Function not implemented.');
 }

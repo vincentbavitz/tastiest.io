@@ -1,20 +1,21 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { useAuth } from 'hooks/useAuth';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CheckoutApi } from 'services/checkout';
 import { UserDataApi } from 'services/userData';
 import { setCheckoutStep } from 'state/checkout';
 import { IState } from 'state/reducers';
+import { dlog } from 'utils/development';
 import { CheckoutStepIndicator } from '../components/checkout/CheckoutStepIndicator';
 import { CheckoutStepAuth } from '../components/checkout/steps/CheckoutStepAuth';
 import { CheckoutStepPayment } from '../components/checkout/steps/CheckoutStepPayment';
 import { Contained } from '../components/Contained';
 import { UI } from '../constants';
-import { ScreenContext } from '../contexts/screen';
 import { CheckoutStep, IOrder } from '../types/checkout';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
@@ -39,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   // If no order exists in URI, redirect to home
   if (!orderId) {
-    console.log('no order id');
+    dlog('no order id');
 
     return {
       redirect: {
@@ -53,11 +54,11 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const checkoutApi = new CheckoutApi(context);
   const order: IOrder = await checkoutApi.getOrderFromOrderRequest(orderId);
 
-  console.log('checkout ➡️ order:', order);
+  dlog('checkout ➡️ order:', order);
 
   // If no order exists in Firebase, redirect to home
   if (!order) {
-    console.log('no actual order ');
+    dlog('no actual order ');
 
     return {
       redirect: {
@@ -92,8 +93,8 @@ const useCheckoutStep = () => {
     }
   }, [isSignedIn]);
 
-  console.log('checkout ➡️ isSignedIn:', isSignedIn);
-  console.log('checkout ➡️ user:', user?.uid);
+  dlog('checkout ➡️ isSignedIn:', isSignedIn);
+  dlog('checkout ➡️ user:', user?.uid);
 
   const stepIsAuth = !isSignedIn;
   const stepIsPayment = isSignedIn && step === CheckoutStep.PAYMENT;
@@ -116,7 +117,7 @@ const useCheckoutStep = () => {
 // paymentIntent = await TastiestApiBackend.createPaymetnIntent();
 
 function Checkout(props: Props) {
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   return (
     <div>

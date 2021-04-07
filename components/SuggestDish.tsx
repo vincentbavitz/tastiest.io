@@ -2,18 +2,19 @@ import SuggestDishDesktopSVG from '@svg/suggest-dish-desktop.svg';
 import SuggestDishMobileSVG from '@svg/suggest-dish-mobile.svg';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import classNames from 'classnames';
-import React, { useContext, useEffect } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React, { useEffect } from 'react';
 import { useMeasure } from 'react-use';
-import { ScreenContext } from '../contexts/screen';
+import { dlog } from 'utils/development';
 import { Title } from './Title';
 
 export function SuggestDish() {
-  const { isDesktop, isHuge } = useContext(ScreenContext);
+  const { isDesktop, isHuge } = useScreenSize();
 
   const [ref, { width }] = useMeasure();
 
   useEffect(() => {
-    console.log('width', width);
+    dlog('width', width);
   }, [width]);
 
   return (

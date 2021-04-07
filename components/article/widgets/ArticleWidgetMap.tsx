@@ -1,8 +1,9 @@
 import MapPinSVG from '@svg/icons/pin.svg';
-import React, { useContext } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React from 'react';
 import { IRestaurant } from 'types/cms';
+import { dlog } from 'utils/development';
 import { getMapBoxStaticSource } from 'utils/location';
-import { ScreenContext } from '../../../contexts/screen';
 import { CityIndictor } from '../../CityIndictor';
 import { Title } from '../../Title';
 
@@ -12,10 +13,10 @@ interface Props {
 }
 
 export function ArticleWidgetMap({ city, restaurant }: Props) {
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
-  console.log('ArticleWidgetMap ➡️ fsadasd:');
-  console.log('ArticleWidgetMap ➡️ isDesktop:', isDesktop);
+  dlog('ArticleWidgetMap ➡️ fsadasd:');
+  dlog('ArticleWidgetMap ➡️ isDesktop:', isDesktop);
 
   return (
     <div className="flex flex-col w-full desktop:flex-row desktop:justify-center desktop:space-x-8">

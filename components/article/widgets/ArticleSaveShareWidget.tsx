@@ -2,9 +2,9 @@ import HeartFilledPrimarySVG from '@svg/heart-filled-primary.svg';
 import HeartPrimarySVG from '@svg/heart-primary.svg';
 import ShareSVG from '@svg/share.svg';
 import { Button } from '@tastiest-io/tastiest-components';
-import { ScreenContext } from 'contexts/screen';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useIntersection } from 'react-use';
 import { UI } from '../../../constants';
 import { useArticle } from '../../../hooks/useArticle';
@@ -73,7 +73,7 @@ const useSaveShare = ({ id, title, slug }: ArticleSaveShareProps) => {
 };
 
 const useSaveShareGeometry = () => {
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   // Mobile - Manage scrolling behaviour
   const ref = useRef(null);
@@ -93,7 +93,7 @@ const useSaveShareGeometry = () => {
 
 export function ArticleSaveShareWidget(props: ArticleSaveShareProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   const {
     articleUrl,

@@ -1,4 +1,5 @@
 import * as firebaseAdmin from 'firebase-admin';
+import { dlog } from './development';
 
 const cert = {
   privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
@@ -7,7 +8,7 @@ const cert = {
 };
 
 if (!cert.privateKey || !cert.clientEmail || !cert.projectId) {
-  console.log(
+  dlog(
     `Failed to load Firebase credentials. Follow the instructions in the README to set your Firebase credentials inside environment variables.`,
   );
 }

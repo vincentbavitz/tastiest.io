@@ -6,12 +6,13 @@ import NearbySVG from '@svg/location.svg';
 import TrendingSVG from '@svg/trending.svg';
 import { Button } from '@tastiest-io/tastiest-components';
 import classNames from 'classnames';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { useRouter } from 'next/router';
-import React, { useContext } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { SVG } from 'types/assets';
+import { dlog } from 'utils/development';
 import { CUISINES } from '../../constants';
-import { ScreenContext } from '../../contexts/screen';
 import { useSearch } from '../../hooks/useSearch';
 import { IState } from '../../state/reducers';
 import { ArticleCard } from '../cards/ArticleCard';
@@ -55,7 +56,7 @@ export function SearchOverlayInner() {
     searchState.searchQuery.length > 0 &&
     searchState?.searchResultItems?.length === 0;
 
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
   const router = useRouter();
 
   return (
@@ -76,7 +77,7 @@ function SearchOverlayInnerDefault() {
     (state: IState) => state.search,
   );
 
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
   const router = useRouter();
 
   return (
@@ -156,11 +157,11 @@ function SearchOverlayInnerDefault() {
 
 function SearchOverlayInnerResults() {
   const { results: allResults, query: searchQuery } = useSearch();
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
   const router = useRouter();
 
   // Sort results by popularity and filter down to four results
-  console.log('Results', allResults);
+  dlog('Results', allResults);
   const results = allResults?.slice(0, 4);
 
   return (
@@ -202,7 +203,7 @@ function SearchOverlayInnerResults() {
 }
 
 function SearchOverlayInnerNoResults() {
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   return (
     <div

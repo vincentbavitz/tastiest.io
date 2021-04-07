@@ -3,11 +3,11 @@ import { Button, Input } from '@tastiest-io/tastiest-components';
 import { Contained } from 'components/Contained';
 import CuisineSelect from 'components/inputs/CuisineSelect';
 import { InputDate } from 'components/inputs/InputDate';
-import { ScreenContext } from 'contexts/screen';
 import { useAuth } from 'hooks/useAuth';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import { InferGetServerSidePropsType } from 'next';
-import React, { ReactNode, useContext, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { UserDataApi } from 'services/userData';
 import {
   IUserDetails,
@@ -16,6 +16,7 @@ import {
   UserData,
 } from 'types/firebase';
 import { IDateObject } from 'types/various';
+import { dlog } from 'utils/development';
 import { UI, USER } from '../constants';
 
 export const getServerSideProps = async context => {
@@ -23,7 +24,7 @@ export const getServerSideProps = async context => {
   const userDataApi = new UserDataApi();
   const { userId } = await userDataApi.init(context);
 
-  console.log('preferences ➡️ userId:', userId);
+  dlog('preferences ➡️ userId:', userId);
 
   // If no user, redirect to home
   if (!userId) {
@@ -49,7 +50,7 @@ const Preferences = ({
   details,
   preferences,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { isMobile, isTablet } = useContext(ScreenContext);
+  const { isMobile, isTablet } = useScreenSize();
 
   const [streetAddress, setStreetAddress] = useState<string>(
     details?.address?.address ?? null,
@@ -105,17 +106,17 @@ const Preferences = ({
     await setUserData(UserData.DETAILS, updatedDetails);
   };
 
-  console.log(
+  dlog(
     'preferences ➡️ preferences?.favouriteCuisines?.[0]?.existing:',
     preferences?.favouriteCuisines?.[0]?.existing,
   );
 
-  console.log(
+  dlog(
     'preferences ➡️ preferences?.favouriteCuisines?.[0]?.other:',
     preferences?.favouriteCuisines?.[0]?.other,
   );
 
-  console.log(
+  dlog(
     'preferences ➡️ preferences?.favouriteCuisines:',
     preferences?.favouriteCuisines,
   );
@@ -238,7 +239,7 @@ interface PreferenceBlockProps {
 }
 
 function PreferenceBlock({ title, subtitle, children }: PreferenceBlockProps) {
-  const { isMobile, isTablet } = useContext(ScreenContext);
+  const { isMobile, isTablet } = useScreenSize();
 
   return (
     <div>

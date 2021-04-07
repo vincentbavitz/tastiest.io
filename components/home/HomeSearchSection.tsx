@@ -1,8 +1,8 @@
 import HomeHeroSVG from '@svg/home-hero.svg';
-import React, { useContext } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { METADATA } from '../../constants';
-import { ScreenContext } from '../../contexts/screen';
 import { IState } from '../../state/reducers';
 import { HomeSearch } from './HomeSearch';
 
@@ -13,11 +13,11 @@ export function HomeSearchSection(): JSX.Element {
   const { searchOverlayExpanded } = navigationState;
   const dispatch = useDispatch();
 
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   return (
     <div className="flex flex-col items-center">
-      <h1 className="text-primary text-center text-3xl font-somatic mt-12 mb-5">
+      <h1 className="mt-12 mb-5 text-3xl text-center text-primary font-somatic">
         {METADATA.TAGLINE}
       </h1>
       <div className="relative w-full">
@@ -28,7 +28,7 @@ export function HomeSearchSection(): JSX.Element {
           }}
         >
           <HomeHeroSVG />
-          <div className="flex items-center justify-center w-full absolute top-0 right-0 bottom-0 left-0">
+          <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center w-full">
             <div
               className={!isDesktop ? 'w-full' : 'w-7/12'}
               style={{

@@ -1,8 +1,10 @@
+import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
-import React, { useContext } from 'react';
+import React from 'react';
 import { CmsApi } from 'services/cms';
 import { IPost } from 'types/cms';
+import { dlog } from 'utils/development';
 import { Contained } from '../components/Contained';
 import { HomeFavouritesSection } from '../components/home/HomeFavouritesSection';
 import { HomeMapSection } from '../components/home/HomeMapSection';
@@ -10,7 +12,6 @@ import { HomeRecentSearchesSection } from '../components/home/HomeRecentSearches
 import { HomeSearchSection } from '../components/home/HomeSearchSection';
 import { SuggestDish } from '../components/SuggestDish';
 import { METADATA } from '../constants';
-import { ScreenContext } from '../contexts/screen';
 import { useAuth } from '../hooks/useAuth';
 import { useUserData } from '../hooks/useUserData';
 
@@ -33,12 +34,12 @@ export const getStaticProps: GetStaticProps = async () => {
 const Index: NextPage<Props> = ({ posts = [] }) => {
   const cards = posts ? posts.slice?.(0, 6) : [];
 
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   const { user } = useAuth();
   const { userData } = useUserData(user);
 
-  console.log('index ➡️ user:', user);
+  dlog('index ➡️ user:', user);
 
   return (
     <>

@@ -6,15 +6,15 @@ import InstagramSVG from '@svg/socials/instagram.svg';
 import TwitterSVG from '@svg/socials/twitter.svg';
 import YouTubeSVG from '@svg/socials/youtube.svg';
 import TastiestSVG from '@svg/tastiest.svg';
-import { ScreenContext } from 'contexts/screen';
+import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { FC, ReactNode, useContext } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { SupportRequestType } from 'types/firebase';
 import { Contained } from './Contained';
 
 export function Footer() {
-  const { isDesktop, isHuge } = useContext(ScreenContext);
+  const { isDesktop, isHuge } = useScreenSize();
   const router = useRouter();
   const isCheckout = /^\/checkout/.test(router.pathname);
 
@@ -32,7 +32,7 @@ export function Footer() {
 }
 
 const MobileFooter = () => {
-  const { isTablet } = useContext(ScreenContext);
+  const { isTablet } = useScreenSize();
 
   return (
     <div className="flex flex-col pb-10 space-y-6">

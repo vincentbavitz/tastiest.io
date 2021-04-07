@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import { Contained } from 'components/Contained';
-import React, { useContext } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React from 'react';
 import { v4 as uuid } from 'uuid';
-import { ScreenContext } from '../../contexts/screen';
 import { HorizontalScrollable } from '../HorizontalScrollable';
 
 interface Props {
@@ -27,7 +27,7 @@ export function CardGrid(props: Props) {
     size = 'medium',
   } = props;
 
-  const { isMobile, isTablet, isDesktop, isHuge } = useContext(ScreenContext);
+  const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
 
   // prettier-ignore
   const cols =

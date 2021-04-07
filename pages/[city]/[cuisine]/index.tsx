@@ -2,15 +2,16 @@ import LookingSVG from '@svg/illustrations/looking.svg';
 import clsx from 'clsx';
 import { ArticleCard } from 'components/cards/ArticleCard';
 import { SuggestDish } from 'components/SuggestDish';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
-import React, { useContext } from 'react';
+import React from 'react';
 import { CmsApi } from 'services/cms';
 import { IPost } from 'types/cms';
+import { dlog } from 'utils/development';
 import { CardGrid } from '../../../components/cards/CardGrid';
 import { Contained } from '../../../components/Contained';
 import { CUISINES } from '../../../constants';
-import { ScreenContext } from '../../../contexts/screen';
 import { CuisineSymbol } from '../../../types/cuisine';
 import { generateTitle } from '../../../utils/metadata';
 import { titleCase } from '../../../utils/text';
@@ -45,7 +46,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     },
   }));
 
-  console.log('index ➡️ paths:', paths);
+  dlog('index ➡️ paths:', paths);
 
   return { paths, fallback: 'blocking' };
 };
@@ -53,10 +54,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps = async ({ params }) => {
   const cuisineSymbol = String(params?.cuisine).toUpperCase() as CuisineSymbol;
   const cuisineExists = Boolean(CUISINES[cuisineSymbol]);
-
-  console.log('index ➡️ params:', params);
-  console.log('index ➡️ cuisineSymbol:', cuisineSymbol);
-  console.log('index ➡️ cuisineExists:', cuisineExists);
 
   // Redirect to 404 for nonexistent page
   if (!cuisineExists) {
@@ -69,7 +66,7 @@ export const getStaticProps = async ({ params }) => {
   const cms = new CmsApi();
   const { posts } = await cms.getPostsOfCuisine(cuisineSymbol);
 
-  console.log(`Building cuisine page: %c${params.cuisine}`, 'color: purple;');
+  dlog(`Building cuisine page: %c${params.cuisine}`, 'color: purple;');
 
   if (posts?.length > 0) {
     return {
@@ -91,7 +88,7 @@ export default function Cuisine(
   props: InferGetStaticPropsType<typeof getStaticProps>,
 ) {
   const { posts = [], cuisineSymbol } = props;
-  const { isMobile, isTablet, isDesktop, isHuge } = useContext(ScreenContext);
+  const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
   const cuisine = CUISINES[cuisineSymbol];
   const cuisineName = titleCase(String(cuisine?.name));
 

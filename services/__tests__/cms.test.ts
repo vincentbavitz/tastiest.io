@@ -13,7 +13,7 @@ describe('CMS Servcice', () => {
     const cms = new CmsApi();
 
     const post = await cms.getPostBySlug('this-is-a-slug');
-    console.log('cms.test ➡️ post:', post);
+    dlog('cms.test ➡️ post:', post);
 
     expect(true).toBeDefined();
   });
@@ -55,3 +55,6 @@ describe('CMS Servcice', () => {
     return { paths, fallback: true };
   });
 });
+function dlog(arg0: string, post: IPost) {
+  throw new Error('Function not implemented.');
+}

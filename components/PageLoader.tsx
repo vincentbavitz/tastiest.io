@@ -20,10 +20,8 @@ export default function PageLoader() {
   router?.events?.on('routeChangeStart', () => {
     // Delay the display of the loading so quick routes look instantaneous
     setLoading(true);
-    setTimeout(() => setDisplayLoading(true), 800);
+    setTimeout(() => setDisplayLoading(true), 500);
   });
-
-  console.log('PageLoader ➡️ loading:', loading);
 
   // Lock scrolling on loading
   useLockBodyScroll(loading);

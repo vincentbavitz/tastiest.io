@@ -1,5 +1,5 @@
-import { ScreenContext } from 'contexts/screen';
-import React, { useContext, useEffect } from 'react';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSignInTabSelected } from 'state/checkout';
 import { UI } from '../../../constants';
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export function CheckoutStepAuth(props: Props) {
-  const { isDesktop } = useContext(ScreenContext);
+  const { isDesktop } = useScreenSize();
 
   return isDesktop ? (
     <CheckoutStepAuthDesktop {...props} />

@@ -2,10 +2,9 @@ import PoundSVG from '@svg/icons/pound.svg';
 import { Button, Select } from '@tastiest-io/tastiest-components';
 import { Contained } from 'components/Contained';
 import { useOrderNow } from 'hooks/checkout/useOrderNow';
-import React, { useContext } from 'react';
-import { ArticleOfferLocation } from 'state/navigation';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React from 'react';
 import { UI } from '../../../constants';
-import { ScreenContext } from '../../../contexts/screen';
 import { IDeal, valdHeads, ValidHead } from '../../../types/cms';
 
 interface Props {
@@ -15,13 +14,9 @@ interface Props {
 
 export function ArticleOrderNowDesktop(props: Props) {
   const { deal, slug: fromSlug } = props;
-  const { totalPrice, heads, offerPosition, setHeads, submit } = useOrderNow(
-    deal,
-    fromSlug,
-  );
+  const { totalPrice, heads, setHeads, submit } = useOrderNow(deal, fromSlug);
 
-  const { isDesktop } = useContext(ScreenContext);
-  const isFixedTop = offerPosition === ArticleOfferLocation.FIXED_TOP;
+  const { isDesktop } = useScreenSize();
 
   return (
     <Contained>

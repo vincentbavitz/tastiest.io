@@ -2,8 +2,6 @@ import React from 'react';
 import { IDeal } from 'types/cms';
 
 export default function ArticleSectionOfferBreakdown(deal: IDeal) {
-  console.log('ArticleSectionOfferBreakdown ➡️ deal:', deal);
-
   return (
     <div className="w-full pb-6">
       <div className="flex w-full space-x-4 border-b border-gray-300">
