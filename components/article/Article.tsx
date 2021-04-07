@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { useOrderNow } from 'hooks/checkout/useOrderNow';
 import React, { useContext, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import Sticky from 'react-stickynode';
 import { useWindowScroll } from 'react-use';
 import { ArticleOfferLocation } from 'state/navigation';
 import { UI } from '../../constants';
@@ -157,28 +158,45 @@ function ArticleDesktop(post: IPost) {
   //   isFloating ? UI.ARTICLE.OFFER_WIDGET_FLOAT_GAP_PX :
   //   0;
 
-  return (
-    <div ref={ref} className="relative">
-      {/* Floating deal */}
-      <div
-        ref={refOrderNowSection}
-        style={{
-          transform: `translateY(${translateY}px)`,
-          zIndex: UI.Z_INDEX_HEADER - 1,
-          top: isFixedBottom ? 'unset' : '0',
-          bottom: isFixedBottom ? '0' : 'unset',
-          position: isFloating ? 'fixed' : 'absolute',
-        }}
-        className={clsx('w-full pointer-events-none duration-150 right-0')}
-      >
-        <ArticleOrderNowDesktop deal={post.deal} slug={post.slug} />
-      </div>
+  const contentRects = refContentSection?.current?.getBoundingClientRect();
+  const { bottom: contentBottom = 100 } = contentRects ?? {};
 
+  const contentPxFromBottom =
+    document?.documentElement?.scrollHeight - (contentBottom + windowScrollY);
+
+  const contentPxScrollBottom =
+    document?.documentElement?.scrollHeight -
+    contentPxFromBottom -
+    refOrderNowSection?.current?.getBoundingClientRect().height;
+
+  return (
+    <div className="relative">
       <article>
-        <ArticleSectionTitle title={title} city={city} />\
-        <div ref={refAbstractSection}>
+        <ArticleSectionTitle title={title} city={city} />
+
+        {/* Floating deal */}
+        <Sticky
+          // top="#article-abstract"
+          top={UI.ARTICLE.OFFER_WIDGET_FLOAT_GAP_PX}
+          bottomBoundary={contentPxScrollBottom}
+          innerZ={UI.Z_INDEX_HEADER - 1}
+        >
+          <div className="h-0">
+            <div
+              ref={refOrderNowSection}
+              className={clsx(
+                'w-full pointer-events-none duration-150 right-0',
+              )}
+            >
+              <ArticleOrderNowDesktop deal={post.deal} slug={post.slug} />
+            </div>
+          </div>
+        </Sticky>
+
+        <div id="article-abstract" ref={refAbstractSection}>
           <ArticleSectionAbstract {...post} />
         </div>
+
         <div ref={refContentSection}>
           <ArticleSectionContent {...post} />
         </div>

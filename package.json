@@ -62,6 +62,7 @@
     "react-paginate": "^6.5.0",
     "react-redux": "^7.2.1",
     "react-redux-firebase": "^3.9.0",
+    "react-stickynode": "^3.0.5",
     "react-use": "^15.3.4",
     "react-youtube": "^7.13.0",
     "redux": "^4.0.5",
