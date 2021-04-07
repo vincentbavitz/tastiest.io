@@ -1,3 +1,4 @@
+import PageLoader from 'components/PageLoader';
 import React, { ReactNode } from 'react';
 import { CuisineBar } from '../cuisine/CuisineBar';
 import { Footer } from '../Footer';
@@ -16,6 +17,8 @@ export default function Layout({ children }: Props) {
 
   return (
     <>
+      <PageLoader />
+
       <SignInModal />
 
       <div

@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import ExitSVG from '@svg/icons/exit.svg';
 import RightSVG from '@svg/icons/right.svg';
 import { Button, Select } from '@tastiest-io/tastiest-components';
@@ -18,20 +17,12 @@ interface Props {
 
 export default function ArticleOrderNowMobile({ deal, slug }: Props) {
   const [displayOverlay, setDisplayOverlay] = useState(false);
-
-  const [isLoading, setIsLoading] = useState(false);
   useLockBodyScroll(displayOverlay);
 
   // Close mobile overlay once we move to /checkout
   const router = useRouter();
   router?.events?.on('routeChangeComplete', () => {
-    setIsLoading(false);
     setDisplayOverlay(false);
-  });
-
-  // Loading overlay for feedback
-  router?.events?.on('routeChangeStart', () => {
-    setIsLoading(true);
   });
 
   return (
@@ -67,7 +58,6 @@ export default function ArticleOrderNowMobile({ deal, slug }: Props) {
           deal={deal}
           slug={slug}
           onClose={() => setDisplayOverlay(false)}
-          isLoading={isLoading}
         />
       )}
     </>
@@ -76,15 +66,9 @@ export default function ArticleOrderNowMobile({ deal, slug }: Props) {
 
 interface OrderNowOverlayProps extends Props {
   onClose: () => void;
-  isLoading: boolean;
 }
 
-const OrderNowOverlay = ({
-  deal,
-  slug,
-  onClose,
-  isLoading,
-}: OrderNowOverlayProps) => {
+const OrderNowOverlay = ({ deal, slug, onClose }: OrderNowOverlayProps) => {
   const { totalPrice, heads, setHeads, submit } = useOrderNow(deal, slug);
 
   return (
@@ -94,21 +78,8 @@ const OrderNowOverlay = ({
       }}
       className={classNames(
         'fixed flex flex-col justify-between inset-0 bg-white w-full overflow-y-auto',
-        isLoading && 'pointer-events-none',
       )}
     >
-      {/* Loading Overlay */}
-      {isLoading && (
-        <div
-          style={{
-            zIndex: UI.Z_INDEX_FLOATING_COMPONENTS + 2,
-          }}
-          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30"
-        >
-          <LoadingOutlined className="text-5xl text-white" />
-        </div>
-      )}
-
       <Contained>
         <div className="flex items-center justify-between py-2">
           <div className="w-10"></div>
