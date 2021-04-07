@@ -1,4 +1,4 @@
-import { IAuthor } from '../../../types/cms';
+import { IAuthor } from '@tastiest-io/tastiest-utils';
 import { Avatar } from '../../avatar/Avatar';
 
 interface Props {

@@ -1,8 +1,13 @@
+import {
+  IOrder,
+  IOrderRequest,
+  IPaymentDetails,
+  IUserDetails,
+  UserData,
+} from '@tastiest-io/tastiest-utils';
 import 'firebase/firestore'; // REMEMBER to include this for all useFirestore things
 import { useState } from 'react';
 import { useFirestore } from 'react-redux-firebase';
-import { IOrder, IPaymentDetails } from 'types/checkout';
-import { IOrderRequest, IUserDetails, UserData } from 'types/firebase';
 import { useAuth } from '../useAuth';
 import { useUserData } from '../useUserData';
 

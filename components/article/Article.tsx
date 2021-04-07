@@ -1,10 +1,10 @@
+import { IPost } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useRef } from 'react';
 import Sticky from 'react-stickynode';
 import { useWindowScroll } from 'react-use';
 import { UI } from '../../constants';
-import { IPost } from '../../types/cms';
 import { ArticleSectionAbstract } from './sections/ArticleSectionAbstract';
 import { ArticleSectionContent } from './sections/ArticleSectionContent';
 import { ArticleSectionTitle } from './sections/ArticleSectionTitle';

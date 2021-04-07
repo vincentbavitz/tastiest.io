@@ -1,10 +1,13 @@
+import { IOrder } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSignInTabSelected } from 'state/checkout';
+import {
+  CheckoutSignInTabSelected,
+  setSignInTabSelected,
+} from 'state/checkout';
 import { UI } from '../../../constants';
 import { IState } from '../../../state/reducers';
-import { CheckoutSignInTabSelected, IOrder } from '../../../types/checkout';
 import { CheckoutAuthTabs } from '../CheckoutAuthTabs';
 import { CheckoutCard } from '../CheckoutCard';
 import { CheckoutSignIn } from '../CheckoutSignIn';

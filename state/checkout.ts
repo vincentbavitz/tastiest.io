@@ -1,9 +1,4 @@
-import {
-  CheckoutSignInTabSelected,
-  CheckoutStep,
-  IOrder,
-} from '../types/checkout';
-
+import { IOrder } from '@tastiest-io/tastiest-utils';
 export interface ICheckoutFlow {
   step: CheckoutStep;
   signInTabSelected: CheckoutSignInTabSelected;
@@ -15,8 +10,19 @@ export interface ICheckout {
   createdAt?: number;
   priceGBP?: number;
   flow?: ICheckoutFlow;
-  stripeError?: string;
   onCheckoutPage: boolean;
+}
+
+export enum CheckoutStep {
+  SIGN_IN = 'SIGN_IN',
+  PAYMENT = 'PAYMENT',
+  COMPLETE = 'COMPLETE',
+}
+
+export enum CheckoutSignInTabSelected {
+  HAS_ACCOUNT = 'HAS_ACCOUNT',
+  NEW_USER = 'NEW_USER',
+  NONE = 'NONE',
 }
 
 export const initialCheckoutState: ICheckout = {
@@ -24,15 +30,10 @@ export const initialCheckoutState: ICheckout = {
     step: CheckoutStep.SIGN_IN,
     signInTabSelected: CheckoutSignInTabSelected.NONE,
   },
-  stripeError: undefined,
-  order: undefined,
   onCheckoutPage: false,
 };
 
 export enum CheckoutActions {
-  SET_ORDER = 'SET_ORDER',
-  SET_COUPON = 'SET_COUPON',
-  SET_STRIPE_ERROR = 'SET_STRIPE_ERROR',
   SET_CHECKOUT_STEP = 'SET_CHECKOUT_STEP',
   SET_SIGN_IN_TAB_SELECTED = 'SET_SIGN_IN_TAB_SELECTED',
   SET_ON_CHECKOUT_PAGE = 'SET_ON_CHECKOUT_PAGE',
@@ -57,11 +58,3 @@ export const setOnCheckoutPage = (value: boolean) => ({
   type: CheckoutActions.SET_ON_CHECKOUT_PAGE,
   payload: value,
 });
-
-// RETURNED TO CART EVENT
-
-// IF USER TRIGGERS ADD TO CARD BUT NOT COMPLETE CART;
-// SEND
-//
-//
-//

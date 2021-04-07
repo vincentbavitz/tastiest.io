@@ -6,13 +6,10 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import React from 'react';
-import { CmsApi } from 'services/cms';
-import { IPost } from 'types/cms';
 import { dlog } from 'utils/development';
 import { CardGrid } from '../../../components/cards/CardGrid';
 import { Contained } from '../../../components/Contained';
 import { CUISINES } from '../../../constants';
-import { CuisineSymbol } from '../../../types/cuisine';
 import { generateTitle } from '../../../utils/metadata';
 import { titleCase } from '../../../utils/text';
 

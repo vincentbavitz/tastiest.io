@@ -1,4 +1,4 @@
-import { FirebaseAuthError } from '../types/firebase';
+import { FirebaseAuthError } from '@tastiest-io/tastiest-utils';
 
 export interface IFirestore {
   data: any;

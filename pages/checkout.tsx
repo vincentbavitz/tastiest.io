@@ -1,5 +1,6 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import { CheckoutStep, IOrder } from '@tastiest-io/tastiest-utils';
 import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetServerSideProps } from 'next';
@@ -16,7 +17,6 @@ import { CheckoutStepAuth } from '../components/checkout/steps/CheckoutStepAuth'
 import { CheckoutStepPayment } from '../components/checkout/steps/CheckoutStepPayment';
 import { Contained } from '../components/Contained';
 import { UI } from '../constants';
-import { CheckoutStep, IOrder } from '../types/checkout';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.

@@ -1,6 +1,6 @@
+import { IOrder } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { ReactNode } from 'react';
-import { IOrder } from '../../types/checkout';
 
 interface Props {
   title: string;

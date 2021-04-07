@@ -2,9 +2,9 @@ import CheckCircleSVG from '@svg/icons/check-circle.svg';
 import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useSelector } from 'react-redux';
+import { CheckoutStep } from 'state/checkout';
 import { UI } from '../../constants';
 import { IState } from '../../state/reducers';
-import { CheckoutStep } from '../../types/checkout';
 
 interface Props {
   step: CheckoutStep;

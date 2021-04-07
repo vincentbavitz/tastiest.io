@@ -1,5 +1,6 @@
 import HelpSVG from '@svg/page/help.svg';
 import { Button, Input, Select } from '@tastiest-io/tastiest-components';
+import { SupportRequestType } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -7,7 +8,6 @@ import { useSupport } from 'hooks/useSupport';
 import { useUserData } from 'hooks/useUserData';
 import { InferGetServerSidePropsType } from 'next';
 import React, { useState } from 'react';
-import { SupportRequestType } from 'types/firebase';
 import { dlog } from 'utils/development';
 import { UI } from '../constants';
 

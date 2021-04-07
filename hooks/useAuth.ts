@@ -1,4 +1,6 @@
+import { FirebaseAuthError, UserData } from '@tastiest-io/tastiest-utils';
 import DebouncePromise from 'awesome-debounce-promise';
+import { LocalStorageItem } from 'contexts/tracking';
 import firebaseApp from 'firebase/app';
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
@@ -6,8 +8,6 @@ import { useFirebase } from 'react-redux-firebase';
 import { dlog } from 'utils/development';
 import { FIREBASE } from '../constants';
 import { AuthContext } from '../contexts/auth';
-import { LocalStorageItem } from '../types/data';
-import { FirebaseAuthError, UserData } from '../types/firebase';
 import { useUserData } from './useUserData';
 
 export const useAuth = () => {

@@ -1,11 +1,11 @@
 import PoundSVG from '@svg/icons/pound.svg';
 import { Button, Select } from '@tastiest-io/tastiest-components';
+import { IDeal, valdHeads, ValidHead } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import { useOrderNow } from 'hooks/checkout/useOrderNow';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
 import { UI } from '../../../constants';
-import { IDeal, valdHeads, ValidHead } from '../../../types/cms';
 
 interface Props {
   deal: IDeal;

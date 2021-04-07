@@ -1,9 +1,9 @@
+import { IUserData, TUserData, UserData } from '@tastiest-io/tastiest-utils';
 import firebase from 'firebase';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
 import { IState } from '../state/reducers';
-import { IUserData, TUserData, UserData } from '../types/firebase';
 
 interface IUseUserData {
   userData: Partial<IUserData>;

@@ -2,8 +2,10 @@ import { Button } from '@tastiest-io/tastiest-components';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setSignInTabSelected } from 'state/checkout';
-import { CheckoutSignInTabSelected } from 'types/checkout';
+import {
+  CheckoutSignInTabSelected,
+  setSignInTabSelected,
+} from 'state/checkout';
 import { useAuth } from '../../hooks/useAuth';
 import { InputEmail } from '../inputs/InputEmail';
 import { InputPassword } from '../inputs/InputPassword';

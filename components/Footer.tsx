@@ -6,11 +6,11 @@ import InstagramSVG from '@svg/socials/instagram.svg';
 import TwitterSVG from '@svg/socials/twitter.svg';
 import YouTubeSVG from '@svg/socials/youtube.svg';
 import TastiestSVG from '@svg/tastiest.svg';
+import { SupportRequestType } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, ReactNode } from 'react';
-import { SupportRequestType } from 'types/firebase';
 import { Contained } from './Contained';
 
 export function Footer() {

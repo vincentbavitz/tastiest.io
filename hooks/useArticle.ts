@@ -1,5 +1,5 @@
+import { UserData } from '@tastiest-io/tastiest-utils';
 import { useRouter } from 'next/router';
-import { UserData } from '../types/firebase';
 import { useAuth } from './useAuth';
 import { useUserData } from './useUserData';
 

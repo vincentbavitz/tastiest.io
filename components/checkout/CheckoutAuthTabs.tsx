@@ -2,9 +2,11 @@ import { Button } from '@tastiest-io/tastiest-components';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSignInTabSelected } from '../../state/checkout';
+import {
+  CheckoutSignInTabSelected,
+  setSignInTabSelected,
+} from '../../state/checkout';
 import { IState } from '../../state/reducers';
-import { CheckoutSignInTabSelected } from '../../types/checkout';
 import { CheckoutTabs, ITab } from './CheckoutTabs';
 
 export function CheckoutAuthTabs() {

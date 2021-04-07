@@ -1,7 +1,7 @@
 import CovidAwareSVG from '@svg/article/covid-aware.svg';
+import { IPost } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
-import { IPost } from '../../../types/cms';
 import { Contained } from '../../Contained';
 import { RichBody } from '../../RichBody';
 import ArticleContained from '../ArticleContained';

@@ -1,15 +1,13 @@
+import { CmsApi, IOrder, IOrderRequest } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
 import { GetServerSidePropsContext } from 'next';
 import { parseCookies, setCookie } from 'nookies';
 import { ParsedUrlQuery } from 'querystring';
 import Stripe from 'stripe';
-import { IOrder } from 'types/checkout';
-import { IOrderRequest } from 'types/firebase';
 import { dlog } from 'utils/development';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { v4 as uuid } from 'uuid';
 import { FIREBASE } from '../constants';
-import { CmsApi } from './cms';
 import { UserDataApi } from './userData';
 
 interface PaymentIntentCookie {

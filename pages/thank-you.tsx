@@ -3,14 +3,12 @@ import ThankYouOnlineSVG from '@svg/page/thank-you-online.svg';
 import ThankYouPhoneButtonSVG from '@svg/page/thank-you-phone-button.svg';
 import ThankYouPhoneSVG from '@svg/page/thank-you-phone.svg';
 import ThankYouBackdropSVG from '@svg/page/thank-you.svg';
+import { IOrder, SVG, UserData } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetServerSidePropsType } from 'next';
 import React from 'react';
 import { CheckoutApi } from 'services/checkout';
 import { UserDataApi } from 'services/userData';
-import { SVG } from 'types/assets';
-import { IOrder } from 'types/checkout';
-import { UserData } from 'types/firebase';
 import { dlog } from 'utils/development';
 import { Contained } from '../components/Contained';
 

@@ -22,7 +22,7 @@ import JapaneseSVG from '@svg/cuisines/japanese.svg';
 import MediterraneanSVG from '@svg/cuisines/mediterranean.svg';
 import MexicanSVG from '@svg/cuisines/mexican.svg';
 import SpanishSVG from '@svg/cuisines/spanish.svg';
-import { CuisineSymbol, ICuisine } from '../types/cuisine';
+import { CuisineSymbol, ICuisine } from '@tastiest-io/tastiest-utils';
 
 const CUISINES = {
   [CuisineSymbol.ITALIAN]: {

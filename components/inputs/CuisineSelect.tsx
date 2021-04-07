@@ -1,8 +1,7 @@
 import { Input, Select } from '@tastiest-io/tastiest-components';
+import { CuisineSymbol, TFavouriteCuisine } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
-import { CuisineSymbol } from 'types/cuisine';
-import { TFavouriteCuisine } from 'types/firebase';
 import { dlog } from 'utils/development';
 import { titleCase } from 'utils/text';
 

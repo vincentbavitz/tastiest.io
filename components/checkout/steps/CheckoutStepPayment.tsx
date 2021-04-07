@@ -12,6 +12,13 @@ import {
 } from '@stripe/stripe-js';
 import HelpSVG from '@svg/icons/help.svg';
 import { Input } from '@tastiest-io/tastiest-components';
+import {
+  CardBrand,
+  IDateObject,
+  IOrder,
+  IPaymentDetails,
+  IUserDetails,
+} from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { InputContactBirthday } from 'components/inputs/contact/InputContactBirthday';
 import { useCheckout } from 'hooks/checkout/useCheckout';
@@ -20,11 +27,8 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { IUserDetails } from 'types/firebase';
-import { IDateObject } from 'types/various';
 import { dlog } from 'utils/development';
 import { UI } from '../../../constants';
-import { CardBrand, IOrder, IPaymentDetails } from '../../../types/checkout';
 import { InputCardNumberWrapper } from '../../inputs/card/InputCardNumberWrapper';
 import { InputContactFirstName } from '../../inputs/contact/InputContactFirstName';
 import { InputContactLastName } from '../../inputs/contact/InputContactLastName';

@@ -10,15 +10,6 @@ export const checkoutReducer = (
   action: CheckoutAction,
 ): ICheckout => {
   switch (action.type) {
-    case CheckoutActions.SET_ORDER: {
-      return { ...state, order: action.payload };
-    }
-    case CheckoutActions.SET_COUPON: {
-      return { ...state, coupon: action.payload };
-    }
-    case CheckoutActions.SET_STRIPE_ERROR: {
-      return { ...state, stripeError: action.payload };
-    }
     case CheckoutActions.SET_CHECKOUT_STEP: {
       return { ...state, flow: { ...state.flow, step: action.payload } };
     }

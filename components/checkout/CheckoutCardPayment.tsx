@@ -1,12 +1,16 @@
 import LockSVG from '@svg/icons/lock.svg';
 import { Button, Input } from '@tastiest-io/tastiest-components';
+import {
+  CmsApi,
+  IDiscount,
+  IOrder,
+  PAYMENTS,
+} from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { CmsApi } from 'services/cms';
-import { CHECKOUT, UI } from '../../constants';
+import { UI } from '../../constants';
 import { IState } from '../../state/reducers';
-import { IDiscount, IOrder } from '../../types/checkout';
 import { CheckoutCard } from './CheckoutCard';
 
 interface Props {
@@ -173,7 +177,7 @@ const PromoCodeInput = ({ disabled, applyPromoCode }: PromoCodeInputProps) => {
         placeholder="Promo Code"
         value={promoCode}
         onValueChange={setPromoCode}
-        regex={CHECKOUT.PROMO_CODE_REGEX}
+        regex={PAYMENTS.PROMO_CODE_REGEX}
         formatter={value => value.toLowerCase()}
       />
       <Button

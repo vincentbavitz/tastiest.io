@@ -1,10 +1,10 @@
+import { IRecentSearch, UserData } from '@tastiest-io/tastiest-utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { CmsApi } from 'services/cms';
 import { IPost } from 'types/cms';
 import { dlog } from 'utils/development';
 import { IState } from '../state/reducers';
 import { setSearchResultItems } from '../state/search';
-import { IRecentSearch, UserData } from '../types/firebase';
 import { useAuth } from './useAuth';
 import { useUserData } from './useUserData';
 

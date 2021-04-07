@@ -1,9 +1,9 @@
 import MasterCardSVG from '@svg/icons/mastercard.svg';
 import MasteroSVG from '@svg/icons/mastero.svg';
 import VisaSVG from '@svg/icons/visa.svg';
+import { CardBrand } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import React, { ReactNode } from 'react';
-import { CardBrand } from '../../../types/checkout';
 import { InputWrapper } from '../InputWrapper';
 
 interface Props {

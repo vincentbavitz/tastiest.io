@@ -1,12 +1,12 @@
-import { useSelector } from 'react-redux';
-import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
-import { v4 as uuid } from 'uuid';
-import { IState } from '../state/reducers';
 import {
   ISupportMessage,
   IUserSupportRequest,
   SupportRequestType,
-} from '../types/firebase';
+} from '@tastiest-io/tastiest-utils';
+import { useSelector } from 'react-redux';
+import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
+import { v4 as uuid } from 'uuid';
+import { IState } from '../state/reducers';
 
 export enum SupportRequestGenerationError {
   NO_NAME = 'NO_NAME',

@@ -1,4 +1,4 @@
-import { IDateObject, TDay, TMonth, TYear } from 'types/various';
+import { IDateObject, TDay, TMonth, TYear } from '@tastiest-io/tastiest-utils';
 
 export function titleCase(str: string) {
   return str?.length

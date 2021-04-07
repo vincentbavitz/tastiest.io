@@ -1,5 +1,13 @@
 import PreferencesSVG from '@svg/page/preferences.svg';
 import { Button, Input } from '@tastiest-io/tastiest-components';
+import {
+  IDateObject,
+  IUserDetails,
+  IUserPreferences,
+  TFavouriteCuisine,
+  USER,
+  UserData,
+} from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import CuisineSelect from 'components/inputs/CuisineSelect';
 import { InputDate } from 'components/inputs/InputDate';
@@ -9,15 +17,8 @@ import { useUserData } from 'hooks/useUserData';
 import { InferGetServerSidePropsType } from 'next';
 import React, { ReactNode, useState } from 'react';
 import { UserDataApi } from 'services/userData';
-import {
-  IUserDetails,
-  IUserPreferences,
-  TFavouriteCuisine,
-  UserData,
-} from 'types/firebase';
-import { IDateObject } from 'types/various';
 import { dlog } from 'utils/development';
-import { UI, USER } from '../constants';
+import { UI } from '../constants';
 
 export const getServerSideProps = async context => {
   // Get user ID from cookie.

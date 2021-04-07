@@ -3,8 +3,10 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useToggle } from 'react-use';
-import { setSignInTabSelected } from 'state/checkout';
-import { CheckoutSignInTabSelected } from 'types/checkout';
+import {
+  CheckoutSignInTabSelected,
+  setSignInTabSelected,
+} from 'state/checkout';
 import { dlog } from 'utils/development';
 import { useAuth } from '../../hooks/useAuth';
 import { InputEmail } from '../inputs/InputEmail';
