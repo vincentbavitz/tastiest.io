@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2017",
+    // Avoid duplicate identifier issue
+    "typeRoots": ["node_modules/@types"]
+  },
+  "compileOnSave": true,
+  "include": ["src"]
+}

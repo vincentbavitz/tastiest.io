@@ -18,16 +18,41 @@ export function useArticle() {
       slug === userData?.savedArticles?.find(saved => saved === slug);
 
     if (isArticleSaved) {
-      const filtered = userData?.savedArticles?.filter(saved => slug !== saved);
-
-      setUserData(UserData.SAVED_ARTICLES, filtered);
+      unsaveArticle(slug);
       return;
     }
 
+    saveArticle(slug);
+  };
+
+  const unsaveArticle = (slug: string) => {
+    const filtered = userData?.savedArticles?.filter(saved => slug !== saved);
+    setUserData(UserData.SAVED_ARTICLES, filtered);
+
+    // Track with Segment
+    const firstName = userData?.details?.firstName ?? 'User';
+    const lastName = userData?.details?.lastName;
+    const name = `${firstName}${lastName ? ' ' + lastName : ''}`;
+    window.analytics.track(`${name} removed article to favourites`, {
+      name,
+      slug,
+    });
+  };
+
+  const saveArticle = (slug: string) => {
     setUserData(UserData.SAVED_ARTICLES, [
       ...(userData?.savedArticles ?? []),
       slug,
     ]);
+
+    // Track with Segment
+    const firstName = userData?.details?.firstName ?? 'User';
+    const lastName = userData?.details?.lastName;
+    const name = `${firstName}${lastName ? ' ' + lastName : ''}`;
+    window.analytics.track(`${name} added article to favourites`, {
+      name,
+      slug,
+    });
   };
 
   return { toggleSaveArticle };

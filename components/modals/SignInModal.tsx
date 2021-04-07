@@ -62,7 +62,7 @@ export function SignInModal() {
   }, [step]);
 
   const onClickSignUp = async () => {
-    const signUpSuccessful = await signUp('', signUpEmail, signUpPassword);
+    const signUpSuccessful = await signUp(signUpEmail, signUpPassword);
 
     if (signUpSuccessful) {
       dispatch(closeSignInModal());

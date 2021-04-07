@@ -1,16 +1,14 @@
+import { useUserData } from 'hooks/useUserData';
 import React from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { Avatar, AvatarProps } from './Avatar';
 
 export function UserAvatar(props: Omit<AvatarProps, 'imageSrc'>) {
   const { user } = useAuth();
-  const { email, displayName } = user ?? { email: '', displayName: '' };
+  const { userData } = useUserData(user);
 
-  const initial =
-    // prettier-ignore
-    displayName?.length ? displayName[0].toUpperCase() : 
-    email?.length ? email[0].toUpperCase() :
-    undefined;
+  const firstWord = userData?.details?.firstName ?? user?.email;
+  const initial = firstWord?.[0]?.toUpperCase();
 
   return <Avatar {...props} initial={initial}></Avatar>;
 }

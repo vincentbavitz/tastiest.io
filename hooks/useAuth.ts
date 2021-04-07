@@ -8,7 +8,6 @@ import { FIREBASE } from '../constants';
 import { AuthContext } from '../contexts/auth';
 import { LocalStorageItem } from '../types/data';
 import { FirebaseAuthError, UserData } from '../types/firebase';
-import { titleCase } from '../utils/text';
 import { useUserData } from './useUserData';
 
 export const useAuth = () => {
@@ -111,11 +110,7 @@ export const useAuth = () => {
     }
   };
 
-  const signUp = async (
-    displayName: string,
-    email: string,
-    password: string,
-  ) => {
+  const signUp = async (email: string, password: string) => {
     _setError(null);
 
     try {
@@ -128,14 +123,7 @@ export const useAuth = () => {
         return false;
       }
 
-      await user.updateProfile({
-        displayName: titleCase(displayName),
-      });
-
-      dlog('Sign Up: Updated profile');
-
       // User data
-      setUserData(UserData.DISPLAY_NAME, displayName);
       setUserData(UserData.DETAILS, { email });
       dlog('Sign Up: Set display name');
 
@@ -151,26 +139,12 @@ export const useAuth = () => {
       firebase.auth().currentUser.sendEmailVerification();
       dlog('Sign Up: Sent email verification');
 
-      // Identify user with Segment
-      window.analytics.identify(user.uid, {
-        context: {
-          userAgent: navigator?.userAgent,
-        },
-        traits: {
-          // name: '',
-          // address: '',
-          // birthday: undefined,
-          id: user.uid,
-          email: email,
-          createdAt: Date.now(),
-          username: user.displayName ?? null,
-        },
-      });
-
+      // Identify user with SegmentcurrentUser
       // Sends a confirmation email with firebase funnctions
       dlog('Sign Up: Tracked with segment');
 
       // Reload page
+      dlog('reloading');
       router.reload();
 
       return true;

@@ -43,7 +43,7 @@ export function CheckoutSignUp() {
     }
 
     setError('');
-    const signUpSuccessful = await signUp('', signUpEmail, signUpPassword0);
+    const signUpSuccessful = await signUp(signUpEmail, signUpPassword0);
     dlog('error', firebaseAuthError);
 
     if (signUpSuccessful) {
