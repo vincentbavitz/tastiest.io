@@ -18,7 +18,6 @@ export default function Layout({ children }: Props) {
   return (
     <>
       <PageLoader />
-
       <SignInModal />
 
       <div

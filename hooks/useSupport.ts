@@ -1,7 +1,10 @@
 import {
+  FirestoreCollection,
   ISupportMessage,
+  IUserQuery,
   IUserSupportRequest,
   SupportRequestType,
+  UserQueryType,
 } from '@tastiest-io/tastiest-utils';
 import { useSelector } from 'react-redux';
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
@@ -61,6 +64,8 @@ export function useSupport() {
       subject,
       conversation: [initialMessage],
       userId: userId ?? null,
+      // TODO POST MVP: MAKE THE FOLLOWING FILL OUT WITH A FIREBASE
+      // FUNCTION --> for security
       seen: false,
       resolved: false,
       priority: 'normal',
@@ -70,8 +75,8 @@ export function useSupport() {
 
     try {
       await firestore
-        .collection('support-users')
-        .doc(uuid())
+        .collection(FirestoreCollection.SUPPORT_USERS)
+        .doc(userId ?? uuid())
         .set(supportRequest);
 
       return { success: true, errors: [] };
@@ -86,5 +91,47 @@ export function useSupport() {
   const updateSupportRequest = async () => {
     return null;
   };
+
+  // Queries are unlike support requests in that they don't
+  // require a conversation or priority.
+  const makeGeneralQuery = async (
+    email: string,
+    message: string,
+    type: UserQueryType,
+    userId?: string,
+  ): Promise<{ success: boolean; errors: SupportRequestGenerationError[] }> => {
+    const errors: SupportRequestGenerationError[] = [];
+    if (!email?.length) errors.push(SupportRequestGenerationError.NO_EMAIL);
+    if (!message?.length) errors.push(SupportRequestGenerationError.NO_MESSAGE);
+
+    if (errors.length) {
+      return { success: false, errors };
+    }
+
+    const query: IUserQuery = {
+      email,
+      message,
+      type,
+      userId: userId ?? null,
+      seen: false,
+      resolved: false,
+      openedAt: Date.now(),
+    };
+
+    try {
+      await firestore
+        .collection(FirestoreCollection.USER_QUERIES)
+        .doc(userId ?? uuid())
+        .set(query);
+
+      return { success: true, errors: [] };
+    } catch (_) {
+      return {
+        success: false,
+        errors: [SupportRequestGenerationError.FIRESTORE_ERROR],
+      };
+    }
+  };
+
   return { supportRequests, makeSupportRequest };
 }

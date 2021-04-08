@@ -1,4 +1,8 @@
-import { TUserData, UserData } from '@tastiest-io/tastiest-utils';
+import {
+  FirestoreCollection,
+  TUserData,
+  UserData,
+} from '@tastiest-io/tastiest-utils';
 import { GetServerSidePropsContext } from 'next';
 import nookies from 'nookies';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
@@ -46,7 +50,7 @@ export class UserDataApi {
     try {
       const doc = await firebaseAdmin
         .firestore()
-        .collection('users')
+        .collection(FirestoreCollection.USERS)
         .doc(this.userId)
         .get();
 
@@ -70,7 +74,7 @@ export class UserDataApi {
     try {
       await firebaseAdmin
         .firestore()
-        .collection('users')
+        .collection(FirestoreCollection.USERS)
         .doc(this.userId)
         .update({
           [field]: value,

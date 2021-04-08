@@ -1,8 +1,12 @@
 import _404 from '@svg/illustrations/404.svg';
+import { Button, Input, TextArea } from '@tastiest-io/tastiest-components';
 import classNames from 'classnames';
+import { useAuth } from 'hooks/useAuth';
+import { useScreenSize } from 'hooks/useScreenSize';
+import { useUserData } from 'hooks/useUserData';
 import Head from 'next/head';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { UI } from '../constants';
 import { generateTitle } from '../utils/metadata';
 
@@ -45,6 +49,16 @@ function Tastiest404() {
 
   const goBackHomeStyles = {
     width: '9rem',
+  };
+
+  const { user, isSignedIn } = useAuth();
+  const { userData } = useUserData(user);
+
+  const [email, setEmail] = useState(userData?.details?.email ?? '');
+  const [lookingForText, setLookingForText] = useState('');
+
+  const submit = () => {
+    null;
   };
 
   return (
@@ -107,6 +121,7 @@ function Tastiest404() {
           </div>
 
           <div
+            style={{ minWidth: '250px' }}
             className={classNames(
               'z-10 flex items-start',
               !isDesktop ? '-mt-10' : 'mt-0',
@@ -115,32 +130,30 @@ function Tastiest404() {
             <div className="z-50 flex-col flex-grow my-4">
               <h2
                 className={classNames(
-                  'text-primary font-roboto font-semibold ml-1 font-somatic mt-6 text-2xl whitespace-no-wrap',
+                  'text-primary leading-tight ml-1 mb-4 font-somatic mt-6 text-2xl whitespace-no-wrap',
                 )}
               >
                 Something went wrong?
               </h2>
 
-              <textarea
-                maxLength={UI.USER_QUERY_404_MAX_LEN}
-                placeholder="Let us know what you were looking for and we'll get back to you soon."
-                className="w-full h-48 px-3 py-3 placeholder-opacity-50 border-2 resize-none border-secondary rounded-xl focus:outline-none focus:border-primary placeholder-primary"
-              />
-              <input
-                type="text"
-                placeholder="Email address..."
-                className="w-full py-2 pt-3 pl-3 pr-1 mt-2 placeholder-opacity-50 border-2 border-secondary rounded-xl focus:outline-none focus:border-primary placeholder-primary"
-              />
+              <div className="flex flex-col space-y-3">
+                <TextArea
+                  value={lookingForText}
+                  onValueChange={setLookingForText}
+                  rows={5}
+                  maxLength={UI.USER_QUERY_404_MAX_LEN}
+                  placeholder="Let us know what you were looking for and we'll get back to you soon."
+                />
 
-              <div
-                role="button"
-                className={classNames(
-                  'bg-primary cursor-pointer mt-4 text-white font-somatic px-4 py-2 select-none rounded-lg text-center',
-                  !isDesktop ? 'text-lg' : 'text-sm',
-                  !isDesktop ? 'w-full' : 'w-4/12',
+                {!isSignedIn && (
+                  <Input
+                    value={email}
+                    onValueChange={setEmail}
+                    placeholder="Email Address"
+                  />
                 )}
-              >
-                Send
+
+                <Button onClick={submit}>Send</Button>
               </div>
             </div>
           </div>
@@ -151,11 +164,3 @@ function Tastiest404() {
 }
 
 export default Tastiest404;
-function useScreenSize(): {
-  isMobile: any;
-  isTablet: any;
-  isDesktop: any;
-  isHuge: any;
-} {
-  throw new Error('Function not implemented.');
-}

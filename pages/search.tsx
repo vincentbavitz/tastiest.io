@@ -11,7 +11,6 @@ import { dlog } from 'utils/development';
 import { ArticleCardRow } from '../components/cards/ArticleCardRow';
 import { Contained } from '../components/Contained';
 import { SuggestDish } from '../components/SuggestDish';
-import { Title } from '../components/Title';
 import { METADATA, SEARCH } from '../constants';
 
 interface Props {
@@ -23,6 +22,7 @@ interface Props {
   topPosts: IPost[];
 }
 
+// Search client side to keep page load times down.
 export const getServerSideProps = async ({ query }) => {
   const cms = new CmsApi();
   const page = Number(query.page ?? 1);
@@ -101,18 +101,18 @@ const Search = (
               }}
             />
             <div className="absolute inset-0 flex items-center justify-center">
-              <Title level={1} className="font-somatic text-primary">
+              <h1 className="text-2xl text-thin font-somatic text-primary">
                 {posts.length > 0 ? 'Search Results' : 'Nothing Found'}
-              </Title>
+              </h1>
             </div>
           </>
         ) : (
           <Contained>
             <SearchBackdropDesktopSVG className="w-full" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <Title level={1} className="font-somatic text-primary">
+              <h1 className="text-2xl font-somatic text-primary">
                 {posts.length > 0 ? 'Search Results' : 'Nothing Found'}
-              </Title>
+              </h1>
             </div>
           </Contained>
         )}
@@ -145,14 +145,16 @@ const Search = (
         )}
       </Contained>
 
-      <div className="mt-12 mb-12">
+      <div className="pt-20 mb-12">
         <RecommendedPosts
           label="Didn't find what you were looking for?"
           posts={topPosts}
         ></RecommendedPosts>
       </div>
 
-      <SuggestDish />
+      <Contained>
+        <SuggestDish />
+      </Contained>
     </div>
   );
 };

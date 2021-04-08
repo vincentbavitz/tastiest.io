@@ -1,3 +1,4 @@
+import { FirestoreCollection } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
@@ -65,8 +66,8 @@ export const pay = functions.https.onRequest(async (req, res) => {
   // Push the new message into Firestore using the Firebase Admin SDK.
   const writeResult = await admin
     .firestore()
-    .collection('messages')
-    .add({ original: original });
+    .collection(FirestoreCollection.ORDERS)
+    .add({ original: '' });
   // Send back a message that we've successfully written the message
   res.json({ result: `Message with ID: ${writeResult.id} added.` });
 });
@@ -91,10 +92,14 @@ export const createStripeCustomer = functions.auth
     const intent = await stripe.setupIntents.create({
       customer: customer.id,
     });
-    await admin.firestore().collection('stripe_customers').doc(user.uid).set({
-      customer_id: customer.id,
-      setup_secret: intent.client_secret,
-    });
+    await admin
+      .firestore()
+      .collection(FirestoreCollection.STRIPE_CUSTOMERS)
+      .doc(user.uid)
+      .set({
+        customer_id: customer.id,
+        setup_secret: intent.client_secret,
+      });
     return;
   });
 
@@ -204,7 +209,9 @@ export const confirmStripePayment = functions.firestore
  * When a user deletes their account, clean up after them
  */
 export const cleanupUser = functions.auth.user().onDelete(async user => {
-  const dbRef = admin.firestore().collection('stripe_customers');
+  const dbRef = admin
+    .firestore()
+    .collection(FirestoreCollection.STRIPE_CUSTOMERS);
   const customer = (await dbRef.doc(user.uid).get()).data();
 
   if (customer) {
@@ -215,12 +222,13 @@ export const cleanupUser = functions.auth.user().onDelete(async user => {
   const batch = admin.firestore().batch();
   const paymetsMethodsSnapshot = await dbRef
     .doc(user.uid)
-    .collection('payment_methods')
+    .collection(FirestoreCollection.ORDERS)
     .get();
+
   paymetsMethodsSnapshot.forEach(snap => batch.delete(snap.ref));
   const paymentsSnapshot = await dbRef
     .doc(user.uid)
-    .collection('payments')
+    .collection(FirestoreCollection.ORDERS)
     .get();
   paymentsSnapshot.forEach(snap => batch.delete(snap.ref));
 

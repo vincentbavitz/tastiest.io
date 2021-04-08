@@ -1,4 +1,9 @@
-import { IUserData, TUserData, UserData } from '@tastiest-io/tastiest-utils';
+import {
+  FirestoreCollection,
+  IUserData,
+  TUserData,
+  UserData,
+} from '@tastiest-io/tastiest-utils';
 import firebase from 'firebase';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -46,7 +51,7 @@ export function useUserData(user: firebase.User): IUseUserData {
 
     try {
       firestore
-        .collection('users')
+        .collection(FirestoreCollection.USERS)
         .doc(user.uid)
         .set(
           {

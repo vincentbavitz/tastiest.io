@@ -1,3 +1,4 @@
+import { FirestoreCollection } from '@tastiest-io/tastiest-utils';
 import { useFirestore } from 'react-redux-firebase';
 import { v4 as uuid } from 'uuid';
 import { useAuth } from './useAuth';
@@ -33,7 +34,7 @@ export function useFeedback() {
 
     try {
       await firestore
-        .collection('suggestions-restaurants')
+        .collection(FirestoreCollection.SUGGESTIONS_RESTAURANTS)
         .doc(uuid())
         .set(recommendation);
 
@@ -66,7 +67,7 @@ export function useFeedback() {
 
   //     try {
   //       await firestore
-  //         .collection('support-users')
+  //         .collection(FirestoreCollection.SUPPORT_USERS)
   //         .doc(uuid())
   //         .set(supportRequest);
 

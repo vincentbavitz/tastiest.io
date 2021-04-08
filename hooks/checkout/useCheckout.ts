@@ -1,4 +1,5 @@
 import {
+  FirestoreCollection,
   IOrder,
   IOrderRequest,
   IPaymentDetails,
@@ -50,7 +51,7 @@ export function useCheckout() {
       // we need the order ID back.
       // Tracking is done server side for this event
       const { id: orderId } = await firestore
-        .collection('order-requests')
+        .collection(FirestoreCollection.ORDER_REQUESTS)
         .add(orderRequest);
 
       return orderId;
@@ -66,7 +67,7 @@ export function useCheckout() {
   ) => {
     try {
       firestore
-        .collection('orders')
+        .collection(FirestoreCollection.ORDERS)
         .doc(orderId)
         .set(orderPartial, { merge: true });
 
@@ -108,7 +109,10 @@ export function useCheckout() {
 
     // Delete order request
     try {
-      firestore.collection('order-requests').doc(order.id).delete();
+      firestore
+        .collection(FirestoreCollection.ORDER_REQUESTS)
+        .doc(order.id)
+        .delete();
     } catch (error) {
       return { success: false, error: error?.message };
     }

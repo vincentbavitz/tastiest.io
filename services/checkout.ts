@@ -1,4 +1,9 @@
-import { CmsApi, IOrder, IOrderRequest } from '@tastiest-io/tastiest-utils';
+import {
+  CmsApi,
+  FirestoreCollection,
+  IOrder,
+  IOrderRequest,
+} from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
 import { GetServerSidePropsContext } from 'next';
 import { parseCookies, setCookie } from 'nookies';
@@ -75,7 +80,7 @@ export class CheckoutApi {
     try {
       const doc = await firebaseAdmin
         .firestore()
-        .collection('order-requests')
+        .collection(FirestoreCollection.ORDER_REQUESTS)
         .doc(orderId)
         .get();
 
@@ -148,7 +153,7 @@ export class CheckoutApi {
       // NOW set Firebase order given that we've validated everything server side.
       await firebaseAdmin
         .firestore()
-        .collection('orders')
+        .collection(FirestoreCollection.ORDERS)
         .doc(order.id)
         .set(order);
 

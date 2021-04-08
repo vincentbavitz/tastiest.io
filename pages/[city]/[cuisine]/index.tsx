@@ -199,8 +199,12 @@ const CuisineHero = ({ cuisine }: { cuisine: ICuisine }) => {
   const isLargeDesktop = isHuge;
   const isRegularDesktop = isDesktop && !isHuge;
 
+  if (!cuisine?.pageSvgDesktop || !cuisine?.pageSvgMobile) {
+    return null;
+  }
+
   return (
-    <>
+    <div>
       {isLargeDesktop && (
         <Contained maxWidth={933}>
           <cuisine.pageSvgDesktop className="w-full pt-6" />
@@ -235,6 +239,6 @@ const CuisineHero = ({ cuisine }: { cuisine: ICuisine }) => {
           }}
         />
       )}
-    </>
+    </div>
   );
 };
