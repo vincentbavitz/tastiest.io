@@ -5,24 +5,17 @@ import {
   UserData,
 } from '@tastiest-io/tastiest-utils';
 import firebase from 'firebase';
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
 import { IState } from '../state/reducers';
 
-interface IUseUserData {
-  userData: Partial<IUserData>;
-  setUserData: <T extends UserData>(
-    field: T,
-    value: TUserData<T>,
-    onInvalidUser?: () => void,
-  ) => void;
-  error?: Error;
+export interface IGenericReturnSuccess {
+  success: boolean;
+  error: Error | null;
 }
 
-export function useUserData(user: firebase.User): IUseUserData {
+export function useUserData(user: firebase.User) {
   const firestore = useFirestore();
-  const [error, setError] = useState(undefined as Error | undefined);
 
   useFirestoreConnect([
     {
@@ -46,7 +39,10 @@ export function useUserData(user: firebase.User): IUseUserData {
         onInvalidUser();
       }
 
-      return;
+      return {
+        success: false,
+        error: new Error('setUserData Error: Invalid user'),
+      };
     }
 
     try {
@@ -59,10 +55,12 @@ export function useUserData(user: firebase.User): IUseUserData {
           },
           { merge: true },
         );
+
+      return { success: true, error: null };
     } catch (e) {
-      setError(new Error(`setUserData Error: ${e}`));
+      return { success: false, error: new Error(`setUserData Error: ${e}`) };
     }
   };
 
-  return { userData, setUserData, error };
+  return { userData, setUserData };
 }

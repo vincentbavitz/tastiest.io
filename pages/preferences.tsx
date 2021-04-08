@@ -1,3 +1,4 @@
+import CheckSVG from '@svg/icons/check.svg';
 import PreferencesSVG from '@svg/page/preferences.svg';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import {
@@ -76,6 +77,25 @@ const Preferences = ({
   const { user } = useAuth();
   const { userData, setUserData } = useUserData(user);
 
+  // Check whether details differ from database
+  // Controls the disabled status of the save button
+  const [savable, setSavable] = useState(false);
+  const [userHasSaved, setUserHasSaved] = useState(false);
+
+  const compareModifiedValues = () => {
+    const valuesModified =
+      userData?.details?.address?.address !== streetAddress ||
+      userData?.details?.address?.postalCode !== postalCode ||
+      userData?.details?.birthday !== birthday ||
+      userData?.preferences?.favouriteCuisines?.[0] !== cuisine_1 ||
+      userData?.preferences?.favouriteCuisines?.[1] !== cuisine_2 ||
+      userData?.preferences?.favouriteCuisines?.[2] !== cuisine_3;
+
+    if (valuesModified) {
+      setSavable(true);
+    }
+  };
+
   const submit = async () => {
     const favouriteCuisines = [
       cuisine_1 ?? null,
@@ -103,24 +123,20 @@ const Preferences = ({
 
     // TODO; ensure they are actually changing to avoid
     // overwriting anything with null
-    await setUserData(UserData.PREFERENCES, updatedPreferences);
-    await setUserData(UserData.DETAILS, updatedDetails);
+    const { success: preferencesSuccess } = await setUserData(
+      UserData.PREFERENCES,
+      updatedPreferences,
+    );
+    const { success: detailsSuccess } = await setUserData(
+      UserData.DETAILS,
+      updatedDetails,
+    );
+
+    if (detailsSuccess && preferencesSuccess) {
+      setUserHasSaved(true);
+      setSavable(false);
+    }
   };
-
-  dlog(
-    'preferences ➡️ preferences?.favouriteCuisines?.[0]?.existing:',
-    preferences?.favouriteCuisines?.[0]?.existing,
-  );
-
-  dlog(
-    'preferences ➡️ preferences?.favouriteCuisines?.[0]?.other:',
-    preferences?.favouriteCuisines?.[0]?.other,
-  );
-
-  dlog(
-    'preferences ➡️ preferences?.favouriteCuisines:',
-    preferences?.favouriteCuisines,
-  );
 
   const initial_1 =
     preferences?.favouriteCuisines?.[0]?.existing ??
@@ -163,17 +179,26 @@ const Preferences = ({
             <CuisineSelect
               initial={initial_1}
               initialOther={other_1}
-              onChange={setCuisine_1}
+              onChange={value => {
+                setCuisine_1(value);
+                compareModifiedValues();
+              }}
             />
             <CuisineSelect
               initial={initial_2}
               initialOther={other_2}
-              onChange={setCuisine_2}
+              onChange={value => {
+                setCuisine_2(value);
+                compareModifiedValues();
+              }}
             />
             <CuisineSelect
               initial={initial_3}
               initialOther={other_3}
-              onChange={setCuisine_3}
+              onChange={value => {
+                setCuisine_3(value);
+                compareModifiedValues();
+              }}
             />
           </PreferenceBlock>
           <PreferenceBlock
@@ -183,7 +208,10 @@ const Preferences = ({
             <div style={{ width: '8.5rem' }}>
               <InputDate
                 date={birthday}
-                onDateChange={setBirthday}
+                onDateChange={date => {
+                  setBirthday(date);
+                  compareModifiedValues();
+                }}
                 minYear={USER.OLDEST_BIRTH_YEAR}
                 maxYear={USER.YOUNGEST_BIRTH_YEAR}
               />
@@ -201,7 +229,10 @@ const Preferences = ({
                 center={isMobile || isTablet}
                 placeholder="Street Address"
                 value={streetAddress}
-                onValueChange={setStreetAddress}
+                onValueChange={value => {
+                  setStreetAddress(value);
+                  compareModifiedValues();
+                }}
                 maxLength={120}
               />
             </div>
@@ -211,7 +242,10 @@ const Preferences = ({
                 center={isMobile || isTablet}
                 placeholder="Postal Code"
                 value={postalCode}
-                onValueChange={setPostalCode}
+                onValueChange={value => {
+                  setPostalCode(value);
+                  compareModifiedValues();
+                }}
                 maxLength={20}
               />
             </div>
@@ -223,9 +257,15 @@ const Preferences = ({
             color="primary"
             className="w-32 font-somatic tablet:w-auto"
             size={isMobile || isTablet ? 'large' : 'medium'}
+            off={!savable}
             onClick={submit}
+            suffix={
+              userHasSaved && !savable ? (
+                <CheckSVG className="h-6 text-white fill-current" />
+              ) : null
+            }
           >
-            Save
+            {userHasSaved && !savable ? 'Saved' : 'Save'}
           </Button>
         </div>
       </Contained>
