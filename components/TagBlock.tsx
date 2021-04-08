@@ -15,10 +15,11 @@ export function TagBlock(props: Props) {
       href={href}
       style={{ width: 'min-content' }}
       className={classNames(
-        'flex items-center cursor-pointer rounded whitespace-nowrap border border-white bg-opacity-25 text-primary tracking-wide',
+        'flex items-center cursor-pointer rounded whitespace-nowrap border border-white bg-opacity-25 text-primary tracking-wider',
         size === 'small' && 'h-5 text-xs',
         size === 'medium' && 'h-5 text-sm',
         size === 'medium' && 'h-6 text-base',
+        'hover:bg-white duration-150',
       )}
     >
       <span className="px-2 font-roboto">{tag.toLowerCase()}</span>

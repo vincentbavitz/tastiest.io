@@ -231,6 +231,7 @@ const ShareDropdown = (props: ShareDropdownProps) => {
   return (
     <div className="relative flex justify-center w-px">
       <Dropdown
+        pull="center"
         isOpen={isOpen}
         onClickAway={() => setIsOpen(false)}
         style="outline"

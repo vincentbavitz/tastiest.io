@@ -20,15 +20,15 @@ export function SuggestDish() {
   const [cuisine, setCuisine] = useState('');
 
   // prettier-ignore
-  const svgMarginLeft = isHuge ?
-    isSignedIn ? '7rem' : '10rem' :
-    isSignedIn ? '10rem' : '6rem';
+  const svgDesktopMarginLeft = isHuge ?
+    isSignedIn ? '0rem' : '1rem' :
+    isSignedIn ? '2rem' : '6rem';
 
   return (
     <Contained>
       <div
         className={clsx(
-          'relative flex w-full justify-start',
+          'relative flex w-full justify-end desktop:justify-center',
           isDesktop && !isHuge && 'space-x-10',
         )}
       >
@@ -36,7 +36,7 @@ export function SuggestDish() {
           <div
             className="relative"
             style={{
-              width: '30rem',
+              width: '22rem',
               marginLeft: isHuge ? '0' : '-22vw',
             }}
           >
@@ -44,7 +44,7 @@ export function SuggestDish() {
               style={{
                 height: isSignedIn ? '16rem' : '22rem',
                 marginTop: isSignedIn ? '0' : '2.5rem',
-                marginLeft: svgMarginLeft,
+                marginLeft: svgDesktopMarginLeft,
               }}
             />
           </div>
@@ -53,7 +53,7 @@ export function SuggestDish() {
         <div
           style={{
             minWidth: '20rem',
-            maxWidth: isDesktop ? '25rem' : 'unset',
+            maxWidth: isDesktop ? (isHuge ? '25rem' : '23rem') : 'unset',
             marginTop: isSignedIn ? '0' : '1rem',
           }}
           className={clsx('relative flex-1 tablet:mb-1')}

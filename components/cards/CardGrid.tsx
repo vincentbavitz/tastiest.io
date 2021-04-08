@@ -65,8 +65,10 @@ export function CardGrid(props: Props) {
         <Contained>
           <div
             className={classNames(
-              `grid grid-rows-${Math.ceil(rowLimit)} gap-8`,
+              `grid grid-rows-${Math.ceil(rowLimit)}`,
               `grid-cols-${cols}`,
+              isDesktop && (size === 'small' ? 'gap-6' : 'gap-8'),
+              isTablet && (size === 'small' ? 'gap-4' : 'gap-6'),
             )}
           >
             {cards.map(item => (

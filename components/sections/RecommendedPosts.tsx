@@ -14,7 +14,7 @@ interface RecommendedPostsProps {
 
 export default function RecommendedPosts(props: RecommendedPostsProps) {
   const { label, posts, rowLimit = 2 } = props;
-  const { isDesktop } = useScreenSize();
+  const { isMobile } = useScreenSize();
 
   return (
     <div>
@@ -24,7 +24,7 @@ export default function RecommendedPosts(props: RecommendedPostsProps) {
 
       <div className="mt-10">
         <CardGrid
-          size={isDesktop ? 'small' : 'medium'}
+          size={!isMobile ? 'small' : 'medium'}
           rowLimit={rowLimit}
           horizontalScroll
         >

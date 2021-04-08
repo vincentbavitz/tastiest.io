@@ -58,12 +58,12 @@ export function Dropdown(props: Props) {
             'bg-white',
             'duration-300',
             'rounded-lg',
-            'transform -translate-x-1/2',
             'overflow-hidden',
             'children:last:border-b-0',
             `bg-opacity-${opacity}`,
             style === 'default' && ['pt-2'],
             style === 'outline' && ['py-2', 'border-2', 'border-secondary'],
+            pull === 'center' && 'transform -translate-x-1/2',
           )}
         >
           {children}

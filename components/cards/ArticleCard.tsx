@@ -24,7 +24,7 @@ export function ArticleCard(props: Props): JSX.Element {
   } = props;
 
   const [ref, { width }] = useMeasure();
-  const isSmall = width < 150;
+  const isSmall = width < 170;
 
   const { href, as } = generateURL({ city, slug, cuisine });
   // const handleClick = (e: SyntheticEvent) => {
