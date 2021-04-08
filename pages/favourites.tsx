@@ -100,7 +100,6 @@ function Favourites(props: Props) {
 
       <div className="mt-20 mb-10">
         <RecommendedPosts
-          small
           label="You might also like"
           posts={recommendedPosts}
           rowLimit={1}

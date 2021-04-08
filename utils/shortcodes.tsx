@@ -1,6 +1,6 @@
 import { Button } from '@tastiest-io/tastiest-components';
+import { CMS } from '@tastiest-io/tastiest-utils';
 import React from 'react';
-import { CMS } from '../constants';
 
 const extractShortcodeGeneralButton = (shortcode: string) => {
   if (!CMS.SHORTCODES.GENERAL_BUTTON.test(shortcode)) {

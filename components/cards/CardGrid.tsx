@@ -31,7 +31,7 @@ export function CardGrid(props: Props) {
 
   // prettier-ignore
   const cols =
-    isHuge ? 4 : 
+    isHuge ? 5 : 
     isDesktop ? size === 'small' ? 4 : 3 : 
     isTablet ? size === 'small' ? 3 : 2 :
     1;

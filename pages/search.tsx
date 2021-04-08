@@ -152,9 +152,7 @@ const Search = (
         ></RecommendedPosts>
       </div>
 
-      <Contained>
-        <SuggestDish />
-      </Contained>
+      <SuggestDish />
     </div>
   );
 };

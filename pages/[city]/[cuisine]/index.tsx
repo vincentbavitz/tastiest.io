@@ -150,9 +150,7 @@ export default function Cuisine(
         </div>
       </div>
 
-      <Contained>
-        <SuggestDish />
-      </Contained>
+      <SuggestDish />
     </>
   );
 }

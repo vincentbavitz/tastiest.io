@@ -70,9 +70,7 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
 
         <HomeFavouritesSection cards={cards} />
 
-        <Contained>
-          <SuggestDish />
-        </Contained>
+        <SuggestDish />
       </div>
     </>
   );

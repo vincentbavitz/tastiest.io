@@ -3,17 +3,18 @@ import { ArticleCard } from 'components/cards/ArticleCard';
 import { CardGrid } from 'components/cards/CardGrid';
 import { Contained } from 'components/Contained';
 import { SectionTitle } from 'components/SectionTitle';
+import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
 
 interface RecommendedPostsProps {
   label: string;
   posts: IPost[];
   rowLimit?: number;
-  small?: boolean;
 }
 
 export default function RecommendedPosts(props: RecommendedPostsProps) {
-  const { label, posts, small, rowLimit = 2 } = props;
+  const { label, posts, rowLimit = 2 } = props;
+  const { isDesktop } = useScreenSize();
 
   return (
     <div>
@@ -23,7 +24,7 @@ export default function RecommendedPosts(props: RecommendedPostsProps) {
 
       <div className="mt-10">
         <CardGrid
-          size={small ? 'small' : 'medium'}
+          size={isDesktop ? 'small' : 'medium'}
           rowLimit={rowLimit}
           horizontalScroll
         >
