@@ -164,7 +164,7 @@ const NoPostsForCuisine = ({
   isMobile,
   cuisineName,
 }: NoPostsForCuisineProps) => (
-  <div className="mb-20 tablet:flex tablet:justify-end tablet:w-full">
+  <div className="mt-6 tablet:flex tablet:justify-center tablet:w-full">
     <div
       style={{ minWidth: isMobile ? 'unset' : '600px', maxWidth: '1100px' }}
       className={clsx(

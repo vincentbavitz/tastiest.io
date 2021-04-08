@@ -46,7 +46,6 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
       )}
     >
       <div
-        onClick={e => handleClick(e)}
         style={{ paddingBottom: '80%' }}
         className={classNames(
           'relative w-full h-0 overflow-hidden bg-primary bg-opacity-10',
@@ -56,7 +55,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
         {featureImage.imageUrl && (
           <div className="absolute inset-0">
             <img
-              className="object-cover w-full h-full cursor-pointer"
+              className="object-cover w-full h-full"
               src={featureImage?.imageUrl}
               alt={featureImage?.description}
             />
@@ -72,8 +71,8 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
             paddingBottom: '2.1em',
           }}
           className={classNames(
-            !isDesktop ? 'text-base' : isSmall ? 'text-lg' : 'text-2xl',
-            'font-somatic text-primary overflow-hidden cursor-pointer',
+            !isDesktop ? 'text-base' : isSmall ? 'text-lg' : 'text-xl',
+            'font-somatic text-primary hover:underline overflow-hidden cursor-pointer',
           )}
         >
           <Link href={href} as={as}>
@@ -84,7 +83,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
         <div className="flex justify-between pr-2 mt-2 text-primary">
           <div
             onClick={onToggleFavourite}
-            className="flex items-center cursor-pointer"
+            className="flex items-center text-sm cursor-pointer"
           >
             {isFavourite ? (
               <HeartFilledPrimarySVG className={!isDesktop ? 'h-8' : 'h-8'} />
@@ -94,7 +93,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
             {!!isDesktop && isFavourite ? 'Unsave' : 'Save'}
           </div>
 
-          <div className="flex items-center cursor-pointer">
+          <div className="flex items-center text-sm cursor-pointer">
             <ShareSVG className={!isDesktop ? 'h-8' : 'h-8'} />
             {!!isDesktop && 'Share'}
           </div>

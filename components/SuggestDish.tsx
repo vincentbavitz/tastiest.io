@@ -21,8 +21,8 @@ export function SuggestDish() {
 
   // prettier-ignore
   const svgDesktopMarginLeft = isHuge ?
-    isSignedIn ? '0rem' : '1rem' :
-    isSignedIn ? '2rem' : '6rem';
+    isSignedIn ? '0rem' : '-4rem' :
+    isSignedIn ? '2rem' : '1rem';
 
   return (
     <Contained>
@@ -37,12 +37,11 @@ export function SuggestDish() {
             className="relative"
             style={{
               width: '22rem',
-              marginLeft: isHuge ? '0' : '-22vw',
             }}
           >
             <SuggestDishDesktopSVG
               style={{
-                height: isSignedIn ? '16rem' : '22rem',
+                height: isSignedIn ? '16rem' : '20rem',
                 marginTop: isSignedIn ? '0' : '2.5rem',
                 marginLeft: svgDesktopMarginLeft,
               }}

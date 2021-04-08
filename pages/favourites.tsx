@@ -80,20 +80,18 @@ function Favourites(props: Props) {
           </div>
 
           {savedPosts?.length ? (
-            <div className="flex flex-col">
-              <CardGrid>
-                {savedPosts?.map(post => (
-                  <ArticleCardFavourite
-                    {...post}
-                    key={post.id}
-                    isFavourite={savedPostSlugs?.some(
-                      saved => saved === post?.slug,
-                    )}
-                    onToggleFavourite={() => toggleSaveArticle(post.slug)}
-                  />
-                ))}
-              </CardGrid>
-            </div>
+            <CardGrid>
+              {savedPosts?.map(post => (
+                <ArticleCardFavourite
+                  {...post}
+                  key={post.id}
+                  isFavourite={savedPostSlugs?.some(
+                    saved => saved === post?.slug,
+                  )}
+                  onToggleFavourite={() => toggleSaveArticle(post.slug)}
+                />
+              ))}
+            </CardGrid>
           ) : null}
         </div>
       </div>

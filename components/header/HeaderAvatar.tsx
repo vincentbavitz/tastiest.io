@@ -1,10 +1,10 @@
-import { useScreenSize } from 'hooks/useScreenSize';
+import { useUserData } from 'hooks/useUserData';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { titleCase } from 'utils/text';
 import { useAuth } from '../../hooks/useAuth';
 import { openSignInModal } from '../../state/navigation';
-import { IState } from '../../state/reducers';
 import { UserAvatar } from '../avatar/UserAvatar';
 import { Dropdown } from '../Dropdown';
 import { DropdownItem } from '../DropdownItem';
@@ -17,41 +17,22 @@ interface IProfileDropdownItems {
 }
 
 export function HeaderAvatar() {
-  const { isSignedIn, signOut } = useAuth();
-  const { isSignInModalOpen } = useSelector(
-    (state: IState) => state.navigation,
-  );
+  const { user, isSignedIn, signOut } = useAuth();
+  const { userData } = useUserData(user);
 
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const { isDesktop } = useScreenSize();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const displayName = userData?.details?.firstName
+    ? titleCase(userData?.details?.firstName)
+    : user?.email.replace(/@.*$/, '');
 
   // Close dropdown on route change
   useEffect(() => {
     setIsDropdownOpen(false);
   }, [router.pathname]);
-
-  // const signedOutDropdownItems: Array<IProfileDropdownItems> = [
-  //   {
-  //     id: 'sign-in',
-  //     name: 'Sign In',
-  //     onClick: () => {
-  //       setIsDropdownOpen(false);
-  //       setSignInModalIsOpen(true);
-  //       // router.push('/login', '/login');
-  //     },
-  //   },
-  //   {
-  //     id: 'help',
-  //     name: 'Help',
-  //     onClick: () => {
-  //       router.push('/help', '/help');
-  //       setIsDropdownOpen(false);
-  //     },
-  //   },
-  // ];
 
   const signedInDropdownItems: Array<IProfileDropdownItems> = [
     {
@@ -96,6 +77,9 @@ export function HeaderAvatar() {
         onClickAway={() => setIsDropdownOpen(false)}
         pull="left"
       >
+        <p className="pb-1 pl-4 pr-6 mb-1 text-sm text-gray-900 border-b border-gray-200">
+          Eat well, {displayName}
+        </p>
         {dropdownItems.map(item => (
           <DropdownItem
             style="outline"
