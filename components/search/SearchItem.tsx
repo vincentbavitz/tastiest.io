@@ -1,8 +1,8 @@
+import { IPost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import { useRouter } from 'next/dist/client/router';
 import React, { SyntheticEvent } from 'react';
 import { useDispatch } from 'react-redux';
-import { IPost } from 'types/cms';
 import { generateURL } from '../../utils/routing';
 
 export function SearchItem(props: IPost) {

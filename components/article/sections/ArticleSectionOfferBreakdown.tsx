@@ -1,5 +1,5 @@
+import { IDeal } from '@tastiest-io/tastiest-utils';
 import React from 'react';
-import { IDeal } from 'types/cms';
 
 export default function ArticleSectionOfferBreakdown(deal: IDeal) {
   return (

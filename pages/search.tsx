@@ -1,19 +1,18 @@
 import SearchBackdropDesktopSVG from '@svg/page/search_desktop.svg';
 import SearchBackdropMobileSVG from '@svg/page/search_mobile.svg';
+import { CMS, CmsApi, IPost } from '@tastiest-io/tastiest-utils';
 import RecommendedPosts from 'components/sections/RecommendedPosts';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import React from 'react';
 import ReactPaginate from 'react-paginate';
-import { CmsApi } from 'services/cms';
-import { IPost } from 'types/cms';
 import { dlog } from 'utils/development';
 import { ArticleCardRow } from '../components/cards/ArticleCardRow';
 import { Contained } from '../components/Contained';
 import { SuggestDish } from '../components/SuggestDish';
 import { Title } from '../components/Title';
-import { CMS, METADATA, SEARCH } from '../constants';
+import { METADATA, SEARCH } from '../constants';
 
 interface Props {
   posts: IPost[];

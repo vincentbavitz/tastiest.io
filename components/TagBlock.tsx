@@ -8,14 +8,14 @@ interface Props {
 
 export function TagBlock(props: Props) {
   const { tag, size = 'small' } = props;
-  const href = `/blog?tag=${tag.toLowerCase()}`;
+  const href = `/search?tag=${tag.toLowerCase()}`;
 
   return (
     <a
       href={href}
       style={{ width: 'min-content' }}
       className={classNames(
-        'flex items-center cursor-pointer rounded whitespace-nowrap border border-white bg-opacity-25 text-primary font-medium',
+        'flex items-center cursor-pointer rounded whitespace-nowrap border border-white bg-opacity-25 text-primary tracking-wide',
         size === 'small' && 'h-5 text-xs',
         size === 'medium' && 'h-5 text-sm',
         size === 'medium' && 'h-6 text-base',

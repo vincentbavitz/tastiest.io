@@ -1,9 +1,9 @@
+import { IPost } from '@tastiest-io/tastiest-utils';
 import { ArticleCard } from 'components/cards/ArticleCard';
 import { CardGrid } from 'components/cards/CardGrid';
 import { Contained } from 'components/Contained';
 import { SectionTitle } from 'components/SectionTitle';
 import React from 'react';
-import { IPost } from 'types/cms';
 
 interface RecommendedPostsProps {
   label: string;

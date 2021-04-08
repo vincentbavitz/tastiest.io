@@ -1,8 +1,8 @@
+import { IPost } from '@tastiest-io/tastiest-utils';
 import { ArticleCard } from 'components/cards/ArticleCard';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
-import { IPost } from 'types/cms';
 import { SectionTitle } from '../SectionTitle';
 
 interface Props {

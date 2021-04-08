@@ -1,9 +1,8 @@
+import { CmsApi, IPost } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import React from 'react';
-import { CmsApi } from 'services/cms';
-import { IPost } from 'types/cms';
 import { dlog } from 'utils/development';
 import { Contained } from '../components/Contained';
 import { HomeFavouritesSection } from '../components/home/HomeFavouritesSection';

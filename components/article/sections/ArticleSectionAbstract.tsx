@@ -1,8 +1,8 @@
 import CharacterEatingSVG from '@svg/article/character-eating.svg';
+import { IPost } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
-import { IPost } from 'types/cms';
 import { UI } from '../../../constants';
 import ArticleContained from '../ArticleContained';
 import { ArticleFeatureVideoWidget } from '../widgets/ArticleFeatureVideoWidget';

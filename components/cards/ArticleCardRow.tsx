@@ -1,7 +1,7 @@
+import { IPost } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import React from 'react';
-import { IPost } from 'types/cms';
 import { generateURL } from '../../utils/routing';
 
 export function ArticleCardRow(post: IPost) {

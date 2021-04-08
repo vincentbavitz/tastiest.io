@@ -1,6 +1,6 @@
+import { IDeal, ValidHead } from '@tastiest-io/tastiest-utils';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { IDeal, ValidHead } from 'types/cms';
 import { dlog } from 'utils/development';
 import { useCheckout } from './useCheckout';
 

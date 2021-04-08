@@ -1,12 +1,13 @@
 import HeartFilledPrimarySVG from '@svg/icons/heart-filled-primary.svg';
 import HeartPrimayrSVG from '@svg/icons/heart-primary.svg';
 import ShareSVG from '@svg/icons/share.svg';
+import { IPost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
+import { useScreenSize } from 'hooks/useScreenSize';
 import router from 'next/dist/client/router';
 import Link from 'next/link';
 import React, { SyntheticEvent } from 'react';
 import { useMeasure } from 'react-use';
-import { IPost } from 'types/cms';
 import { generateURL } from '../../utils/routing';
 
 interface Props extends Partial<IPost> {

@@ -1,7 +1,7 @@
 import MapPinSVG from '@svg/icons/location-brand.svg';
+import { IRestaurant } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
-import { IRestaurant } from 'types/cms';
 import { dlog } from 'utils/development';
 import { getMapBoxStaticSource } from 'utils/location';
 import { CityIndictor } from '../../CityIndictor';

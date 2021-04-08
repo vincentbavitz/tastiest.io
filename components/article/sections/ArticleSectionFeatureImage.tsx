@@ -1,4 +1,4 @@
-import { IFigureImage } from 'types/cms';
+import { IFigureImage } from '@tastiest-io/tastiest-utils';
 
 interface Props {
   featureImage: IFigureImage;

@@ -1,6 +1,6 @@
+import { TUserData, UserData } from '@tastiest-io/tastiest-utils';
 import { GetServerSidePropsContext } from 'next';
 import nookies from 'nookies';
-import { TUserData, UserData } from 'types/firebase';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 
 // Intended for server-side use ONLY!

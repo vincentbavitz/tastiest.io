@@ -1,4 +1,4 @@
-import { IPost } from 'types/cms';
+import { IPost } from '@tastiest-io/tastiest-utils';
 
 export interface ISearch {
   searchQuery: string;

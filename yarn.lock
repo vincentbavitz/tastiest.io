@@ -2217,10 +2217,10 @@
   resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.18.0/72ffe8dfbeaec49248fb60175ae91e47c99ef64f4f2b80b47623bda811173f68#977988f577b8afee8a37f588fffc172c484a8058"
   integrity sha512-ZxorQES0VnN3HuphLrCbuqke1YkrxX8fr6/j2QJTGA+VKh63quDZcCllTPoNAY96HSGQ0H6uLQ/bwvdutveRLw==
 
-"@tastiest-io/tastiest-utils@^0.4.0":
-  version "0.4.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.4.0/ed4a6021f98edea201521a550f22c7b566ccc510408c7beab6cd6451502bea11#c89b9208597b46cbe534b16adfc1e67a57a9bafc"
-  integrity sha512-Gi5vNjJkEm0knOIYxZzp2+Rk1O5fwfnVruJRsCYGMZh0ovY1lQytZwV+ot1085Df2aJ8UERpTtqUzrl6v+s70Q==
+"@tastiest-io/tastiest-utils@^0.7.0":
+  version "0.7.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.7.0/2bbe37565dc169f0d811b7bf8b641f19a158ca0ad95c89decb0917122de90ccf#ef71fcdc0326330a93de94cadb9d9039ad9ec9c6"
+  integrity sha512-Bpc1TllsykP+JRxKBlXkfD4Pe7ZIVQk62XIRarUja4/TfTOepf4IgzVgsv+8df98dNAcFO3EbQYRrXP7iFl9iQ==
   dependencies:
     "@contentful/rich-text-types" "^14.1.2"
     "@types/react" "^17.0.3"

@@ -1,4 +1,10 @@
 import LookingSVG from '@svg/illustrations/looking.svg';
+import {
+  CmsApi,
+  CuisineSymbol,
+  ICuisine,
+  IPost,
+} from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { ArticleCard } from 'components/cards/ArticleCard';
 import { SuggestDish } from 'components/SuggestDish';
@@ -93,9 +99,6 @@ export default function Cuisine(
     <ArticleCard key={post.id} compact {...post} />
   ));
 
-  const isLargeDesktop = isHuge;
-  const isRegularDesktop = isDesktop && !isHuge;
-
   return (
     <>
       <div>
@@ -105,40 +108,7 @@ export default function Cuisine(
 
         <div className="flex flex-col w-full space-y-10">
           <div className="relative mt-0 tablet:mt-6">
-            {isLargeDesktop && (
-              <Contained maxWidth={933}>
-                <cuisine.pageSvgDesktop className="w-full pt-6" />
-              </Contained>
-            )}
-
-            {isRegularDesktop && (
-              <cuisine.pageSvgDesktop
-                style={{
-                  width: isDesktop ? '100%' : isTablet ? '150%' : '150%',
-                  transform: `translateX(${
-                    isDesktop ? '0' : isTablet ? '-15%' : '-25%'
-                  })`,
-                }}
-              />
-            )}
-
-            {isTablet && (
-              <cuisine.pageSvgDesktop
-                style={{
-                  width: '150%',
-                  transform: `translateX(-15%)`,
-                }}
-              />
-            )}
-
-            {isMobile && (
-              <cuisine.pageSvgMobile
-                style={{
-                  width: '150%',
-                  transform: `translateX(-15%)`,
-                }}
-              />
-            )}
+            <CuisineHero cuisine={cuisine} />
 
             <div className="absolute inset-0">
               <div
@@ -223,3 +193,48 @@ const NoPostsForCuisine = ({
     </div>
   </div>
 );
+
+const CuisineHero = ({ cuisine }: { cuisine: ICuisine }) => {
+  const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
+  const isLargeDesktop = isHuge;
+  const isRegularDesktop = isDesktop && !isHuge;
+
+  return (
+    <>
+      {isLargeDesktop && (
+        <Contained maxWidth={933}>
+          <cuisine.pageSvgDesktop className="w-full pt-6" />
+        </Contained>
+      )}
+
+      {isRegularDesktop && (
+        <cuisine.pageSvgDesktop
+          style={{
+            width: isDesktop ? '100%' : isTablet ? '150%' : '150%',
+            transform: `translateX(${
+              isDesktop ? '0' : isTablet ? '-15%' : '-25%'
+            })`,
+          }}
+        />
+      )}
+
+      {isTablet && (
+        <cuisine.pageSvgDesktop
+          style={{
+            width: '150%',
+            transform: `translateX(-15%)`,
+          }}
+        />
+      )}
+
+      {isMobile && (
+        <cuisine.pageSvgMobile
+          style={{
+            width: '150%',
+            transform: `translateX(-15%)`,
+          }}
+        />
+      )}
+    </>
+  );
+};

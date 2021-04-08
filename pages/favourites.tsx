@@ -1,7 +1,7 @@
 import FavouritesNoneSVG from '@svg/illustrations/nothing-found.svg';
 import FavouritesBackdropSVG from '@svg/page/favourites.svg';
 import { Button } from '@tastiest-io/tastiest-components';
-import { CmsApi, IPost, UserData } from '@tastiest-io/tastiest-utils';
+import { BigBrain, CmsApi, IPost, UserData } from '@tastiest-io/tastiest-utils';
 import { ArticleCardFavourite } from 'components/cards/ArticleCardFavourite';
 import { CardGrid } from 'components/cards/CardGrid';
 import { Contained } from 'components/Contained';
@@ -15,7 +15,6 @@ import { UserDataApi } from 'services/userData';
 import { dlog } from 'utils/development';
 import { useAuth } from '../hooks/useAuth';
 import { useUserData } from '../hooks/useUserData';
-import BigBrain from '../services/brains';
 
 export const getServerSideProps: GetServerSideProps = async context => {
   // Get user ID from cookie.

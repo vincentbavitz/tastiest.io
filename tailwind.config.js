@@ -71,6 +71,7 @@ module.exports = {
       'children-odd',
       'children-even',
       'children-not-first',
+      'children-not-last',
     ],
     margin: ['children-last'],
     fontWeight: ['children-last'],

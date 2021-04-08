@@ -1,9 +1,9 @@
+import { IPost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import { TagRow } from 'components/TagRow';
 import Link from 'next/link';
 import React from 'react';
 import { useMeasure } from 'react-use';
-import { IPost } from 'types/cms';
 import { generateURL } from '../../utils/routing';
 
 interface Props extends IPost {
@@ -24,7 +24,7 @@ export function ArticleCard(props: Props): JSX.Element {
   } = props;
 
   const [ref, { width }] = useMeasure();
-  const isSmall = width < 130;
+  const isSmall = width < 150;
 
   const { href, as } = generateURL({ city, slug, cuisine });
   // const handleClick = (e: SyntheticEvent) => {
@@ -58,7 +58,7 @@ export function ArticleCard(props: Props): JSX.Element {
       </div>
 
       <div className={isSmall ? 'px-3' : 'px-4'}>
-        <div className={isSmall ? 'py-1' : 'py-3'}>
+        <div className={isSmall ? 'py-2' : 'py-3'}>
           <div
             style={{
               lineHeight: '1em',

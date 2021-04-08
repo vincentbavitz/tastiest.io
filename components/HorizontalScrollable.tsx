@@ -1,9 +1,10 @@
-import ChevronLeftSecondarySVG from '@svg/icons/chevron-left-secondary.svg';
-import ChevronRightSecondarySVG from '@svg/icons/chevron-right-secondary.svg';
+import ChevronLeftSVG from '@svg/icons/chevron-left.svg';
+import ChevronRightSVG from '@svg/icons/chevron-right.svg';
 import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useEffect, useRef, useState } from 'react';
 import { useScroll, useWindowSize } from 'react-use';
+import { convertRemToPixels } from 'utils/text';
 import { UI } from '../constants';
 import { useDevice } from '../hooks/useDevice';
 import { Contained } from './Contained';
@@ -46,7 +47,7 @@ function HorizontalScrollableInner(props: Props) {
 
   const { x } = useScroll(scrollRef);
   const pageWidth = useWindowSize().width;
-  const scrollDistance = pageWidth > 1400 ? 450 : pageWidth / 3;
+  const scrollDistance = pageWidth > 1400 ? 450 : pageWidth / 2;
 
   const [itemWidth, setItemWidth] = useState<number>();
   const [rightScrollHidden, setRightScrollHidden] = useState(false);
@@ -82,8 +83,9 @@ function HorizontalScrollableInner(props: Props) {
     const tooSmallToScroll =
       innerContentRef.current.clientWidth < scrollRef.current.clientWidth;
 
+    const spacingPx = convertRemToPixels(spacing / 4) / props.fit;
     const _itemWidth = props.fit
-      ? Math.floor(scrollRef.current.clientWidth / props.fit)
+      ? Math.floor(scrollRef.current.clientWidth / props.fit + spacingPx)
       : undefined;
 
     setItemWidth(_itemWidth);
@@ -99,26 +101,32 @@ function HorizontalScrollableInner(props: Props) {
         )}
       >
         <div
+          style={{
+            transform: `translateX(${isDesktop ? '-50%' : '50%'})`,
+          }}
           className={classNames(
-            'flex flex-col justify-center h-full z-50 duration-300 -ml-8',
+            'flex flex-col justify-center h-full z-50 duration-300',
             x <= 1 && 'opacity-0 pointer-events-none',
           )}
         >
-          <ChevronLeftSecondarySVG
+          <ChevronLeftSVG
             onClick={handleLeftScroll}
-            className={classNames('h-20 mt-1 cursor-pointer')}
+            className={classNames('h-8 mt-1 cursor-pointer')}
           />
         </div>
 
         <div
+          style={{
+            transform: `translateX(${isDesktop ? '50%' : '-50%'})`,
+          }}
           className={classNames(
-            'flex flex-col justify-center h-full z-50 duration-300 -mr-8',
+            'flex flex-col justify-center h-full z-50 duration-300',
             rightScrollHidden && 'opacity-0 pointer-events-none',
           )}
         >
-          <ChevronRightSecondarySVG
+          <ChevronRightSVG
             onClick={handleRightScroll}
-            className="h-20 mt-1 cursor-pointer"
+            className="h-8 mt-1 cursor-pointer"
           />
         </div>
       </div>
@@ -130,7 +138,7 @@ function HorizontalScrollableInner(props: Props) {
           'hide_scroll',
           'scrolling-touch',
           'overflow-x-scroll',
-          isDesktop ? `-ml-${spacing} mr-${spacing}` : `-ml-${spacing}`,
+          isDesktop ? `-ml-${spacing} ` : `-ml-${spacing}`,
         )}
       >
         <div
@@ -142,7 +150,6 @@ function HorizontalScrollableInner(props: Props) {
           style={{
             width: 'min-content',
             marginLeft: `${!isDesktop ? UI.PAGE_CONTAINED_PADDING_VW : 0}vw`,
-            paddingRight: `${spacing / 4}rem`,
           }}
         >
           {/* Try to fit into a clean integer number across */}

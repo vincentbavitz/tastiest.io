@@ -78,3 +78,7 @@ export function dateFormat(value: string, minYear?: string, maxYear?: string) {
     day + (month.length ? '/' + month : '') + (year.length ? '/' + year : '')
   );
 }
+
+export function convertRemToPixels(rem) {
+  return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+}
