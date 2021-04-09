@@ -56,6 +56,9 @@ export const useAuth = () => {
 
         // Identify user with Segment
         window.analytics.identify(credential.user.uid, {
+          traits: {
+            email: user.email,
+          },
           context: {
             userAgent: navigator?.userAgent,
           },
@@ -73,6 +76,49 @@ export const useAuth = () => {
     }
 
     return false;
+  };
+
+  const signUp = async (email: string, password: string) => {
+    _setError(null);
+
+    try {
+      const { user } = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+
+      if (!user) {
+        dlog('Sign Up: No user!!!');
+        return false;
+      }
+
+      // User data
+      setUserData(UserData.DETAILS, { email });
+      dlog('Sign Up: Set display name');
+
+      // User has accepted cookies implicitly
+      localStorage.setItem(LocalStorageItem.HAS_ACCEPTED_COOKIES, '1');
+
+      // Track user sign up
+      // Sends a confirmation email with Klaviyo flow
+      window.analytics.identify(user?.uid, {
+        traits: {
+          email: user.email,
+        },
+        context: {
+          userAgent: navigator?.userAgent,
+        },
+      });
+
+      // Reload page
+      dlog('reloading');
+      router.reload();
+
+      dlog('FINISHED DOING STUFF');
+      return true;
+    } catch (error) {
+      setError(error);
+      return false;
+    }
   };
 
   // If redirectTo is given, will redirect there after sign out.
@@ -103,50 +149,6 @@ export const useAuth = () => {
 
     try {
       await firebase.auth().sendPasswordResetEmail(email);
-      return true;
-    } catch (error) {
-      setError(error);
-      return false;
-    }
-  };
-
-  const signUp = async (email: string, password: string) => {
-    _setError(null);
-
-    try {
-      const { user } = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
-
-      if (!user) {
-        dlog('Sign Up: No user!!!');
-        return false;
-      }
-
-      // User data
-      setUserData(UserData.DETAILS, { email });
-      dlog('Sign Up: Set display name');
-
-      // Sign in user
-      await signIn(email, password);
-      dlog('Sign Up: Signed in');
-
-      // User has accepted cookies implicitly
-      localStorage.setItem(LocalStorageItem.HAS_ACCEPTED_COOKIES, '1');
-      dlog('Sign Up: set cookies');
-
-      // Send email verification email
-      firebase.auth().currentUser.sendEmailVerification();
-      dlog('Sign Up: Sent email verification');
-
-      // Identify user with SegmentcurrentUser
-      // Sends a confirmation email with firebase funnctions
-      dlog('Sign Up: Tracked with segment');
-
-      // Reload page
-      dlog('reloading');
-      router.reload();
-
       return true;
     } catch (error) {
       setError(error);

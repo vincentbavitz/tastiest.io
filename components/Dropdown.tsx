@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
 import { useClickAway } from 'react-use';
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
   offsetY?: number;
 
   // Use DropdownItem
-  children?: JSX.Element | JSX.Element[];
+  children?: ReactNode;
 }
 
 export function Dropdown(props: Props) {

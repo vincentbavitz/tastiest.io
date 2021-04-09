@@ -33,7 +33,7 @@ export function useArticle() {
     const firstName = userData?.details?.firstName ?? 'User';
     const lastName = userData?.details?.lastName;
     const name = `${firstName}${lastName ? ' ' + lastName : ''}`;
-    window.analytics.track(`${name} removed article to favourites`, {
+    window.analytics.track('User removed article to favourites', {
       name,
       slug,
     });
@@ -49,7 +49,7 @@ export function useArticle() {
     const firstName = userData?.details?.firstName ?? 'User';
     const lastName = userData?.details?.lastName;
     const name = `${firstName}${lastName ? ' ' + lastName : ''}`;
-    window.analytics.track(`${name} added article to favourites`, {
+    window.analytics.track('User added article to favourites', {
       name,
       slug,
     });

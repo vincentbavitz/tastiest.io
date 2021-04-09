@@ -25,9 +25,9 @@ export function HeaderAvatar() {
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const displayName = userData?.details?.firstName
-    ? titleCase(userData?.details?.firstName)
-    : user?.email.replace(/@.*$/, '');
+  const displayName = titleCase(
+    userData?.details?.firstName ?? user?.email.replace(/@.*$/, ''),
+  );
 
   // Close dropdown on route change
   useEffect(() => {

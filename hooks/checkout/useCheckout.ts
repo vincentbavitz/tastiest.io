@@ -97,15 +97,10 @@ export function useCheckout() {
     setUserData(UserData.PAYMENT_DETAILS, paymentDetails);
 
     // Segment: Payment success event
-    window.analytics.track(
-      `Payment Success from ${userDetails.firstName}${
-        userDetails?.lastName ? ' ' + userDetails.lastName : ''
-      } `,
-      {
-        ...userDetails,
-        ...paymentDetails,
-      },
-    );
+    window.analytics.track('Payment Success', {
+      ...userDetails,
+      ...paymentDetails,
+    });
 
     // Delete order request
     try {

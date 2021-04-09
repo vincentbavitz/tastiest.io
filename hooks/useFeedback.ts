@@ -38,7 +38,8 @@ export function useFeedback() {
         .doc(uuid())
         .set(recommendation);
 
-      window.analytics.track(`${name} suggested a restaurant`, {
+      window.analytics.track('User suggested a restaurant', {
+        name,
         ...recommendation,
       });
 
