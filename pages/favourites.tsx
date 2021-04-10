@@ -1,5 +1,3 @@
-import FavouritesNoneSVG from '@svg/illustrations/nothing-found.svg';
-import FavouritesBackdropSVG from '@svg/page/favourites.svg';
 import { Button } from '@tastiest-io/tastiest-components';
 import { BigBrain, CmsApi, IPost, UserData } from '@tastiest-io/tastiest-utils';
 import { ArticleCardFavourite } from 'components/cards/ArticleCardFavourite';
@@ -10,6 +8,8 @@ import { useArticle } from 'hooks/useArticle';
 import { IScreen, useScreenSize } from 'hooks/useScreenSize';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
+import { NothingFoundIllustration } from 'public/assets/illustrations';
+import { FavouritesHero } from 'public/assets/page';
 import React from 'react';
 import { UserDataApi } from 'services/userData';
 import { dlog } from 'utils/development';
@@ -113,7 +113,7 @@ const SavedPlacesBackdrop = ({ isDesktop }: IScreen) => {
       {isDesktop ? (
         <Contained>
           <div className="relative flex justify-center w-full">
-            <FavouritesBackdropSVG className="w-10/12" />
+            <FavouritesHero className="w-10/12" />
           </div>
 
           <div className="absolute inset-0 flex items-center justify-center">
@@ -124,7 +124,7 @@ const SavedPlacesBackdrop = ({ isDesktop }: IScreen) => {
         </Contained>
       ) : (
         <>
-          <FavouritesBackdropSVG className="w-10/12" />
+          <FavouritesHero className="w-10/12" />
 
           <div className="absolute inset-0 flex items-center justify-center">
             <h1
@@ -146,7 +146,7 @@ const NoSavedPlacesBackdrop = ({ isMobile, isTablet, isDesktop }: IScreen) => {
   return (
     <Contained>
       <div className="relative flex justify-center w-full">
-        <FavouritesNoneSVG
+        <NothingFoundIllustration
           style={{
             width: isDesktop ? '100%' : isTablet ? '70%' : '110%',
             transform: isDesktop

@@ -1,11 +1,13 @@
-import ThankYouOnlineButtonSVG from '@svg/page/thank-you-online-button.svg';
-import ThankYouOnlineSVG from '@svg/page/thank-you-online.svg';
-import ThankYouPhoneButtonSVG from '@svg/page/thank-you-phone-button.svg';
-import ThankYouPhoneSVG from '@svg/page/thank-you-phone.svg';
-import ThankYouBackdropSVG from '@svg/page/thank-you.svg';
 import { IOrder, SVG, UserData } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetServerSidePropsType } from 'next';
+import {
+  ThankYouHero,
+  ThankYouOnline,
+  ThankYouOnlineButton,
+  ThankYouPhone,
+  ThankYouPhoneButton,
+} from 'public/assets/page';
 import React from 'react';
 import { CheckoutApi } from 'services/checkout';
 import { UserDataApi } from 'services/userData';
@@ -87,7 +89,7 @@ function ThankYou(
           className="flex flex-col items-center w-full tablet:flex-row"
         >
           <div className="flex justify-center order-last w-full tablet:order-first">
-            <ThankYouBackdropSVG
+            <ThankYouHero
               style={{
                 maxWidth: '500px',
               }}
@@ -108,14 +110,14 @@ function ThankYou(
 
         <BookingSection
           title="Book via the Restaurant's Phone line"
-          buttonSvg={ThankYouPhoneButtonSVG}
-          bookingSvg={ThankYouPhoneSVG}
+          buttonSvg={ThankYouPhoneButton}
+          bookingSvg={ThankYouPhone}
         />
 
         <BookingSection
           title="Book via the Restaurant's online booking system"
-          buttonSvg={ThankYouOnlineButtonSVG}
-          bookingSvg={ThankYouOnlineSVG}
+          buttonSvg={ThankYouOnlineButton}
+          bookingSvg={ThankYouOnline}
         />
       </div>
     </Contained>

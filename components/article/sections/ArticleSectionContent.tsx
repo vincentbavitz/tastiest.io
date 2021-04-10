@@ -1,6 +1,6 @@
-import CovidAwareSVG from '@svg/article/covid-aware.svg';
 import { IPost } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
+import { CovidAware } from 'public/assets/article';
 import React from 'react';
 import { Contained } from '../../Contained';
 import { RichBody } from '../../RichBody';
@@ -23,7 +23,7 @@ const MobileContent = (post: IPost) => (
     <div className="flex flex-col space-y-4">
       <div>
         <h3 className="text-xl font-medium">{post?.restaurant?.name}</h3>
-        <CovidAwareSVG className="h-12 -mt-1" />
+        <CovidAware className="h-12 -mt-1" />
       </div>
 
       <p className="pb-4 leading-7 font-roboto">{post.description}</p>
@@ -44,7 +44,7 @@ const DesktopContent = (post: IPost) => {
     <ArticleContained>
       <div className="flex items-center justify-start space-x-4">
         <h3 className="text-xl font-medium">{post?.restaurant?.name}</h3>
-        <CovidAwareSVG className="h-12" />
+        <CovidAware className="h-12" />
       </div>
 
       <div className="flex flex-col mt-4 space-y-6">

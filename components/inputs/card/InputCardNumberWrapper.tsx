@@ -1,6 +1,8 @@
-import MasterCardSVG from '@svg/icons/mastercard.svg';
-import MasteroSVG from '@svg/icons/mastero.svg';
-import VisaSVG from '@svg/icons/visa.svg';
+import {
+  MastercardIcon,
+  MasteroIcon,
+  VisaIcon,
+} from '@tastiest-io/tastiest-icons';
 import { CardBrand } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import React, { ReactNode } from 'react';
@@ -15,21 +17,21 @@ const CardRow = ({ brand }: { brand: CardBrand }) => {
   // Cards light up in color when the card number matches the brand
   return (
     <div className="flex space-x-2">
-      <VisaSVG
+      <VisaIcon
         className={classNames(
           'h-6',
           brand === CardBrand.VISA ? 'filter-none' : 'filter-grayscale',
         )}
       />
 
-      <MasteroSVG
+      <MasteroIcon
         className={classNames(
           'h-6',
           brand !== CardBrand.MASTERO && 'filter-grayscale',
         )}
       />
 
-      <MasterCardSVG
+      <MastercardIcon
         className={classNames(
           'h-6',
           brand !== CardBrand.MASTERCARD && 'filter-grayscale',

@@ -1,5 +1,5 @@
-import EmailSVG from '@svg/icons/email.svg';
 import { Input } from '@tastiest-io/tastiest-components';
+import { EmailIcon } from '@tastiest-io/tastiest-icons';
 import React from 'react';
 
 interface Props {
@@ -14,7 +14,7 @@ export function InputEmail(props: Props) {
       size="large"
       type="email"
       placeholder="Email address"
-      prefix={<EmailSVG className="w-8 h-4" />}
+      prefix={<EmailIcon className="w-8 h-4" />}
       maxLength={50}
       value={value}
       onValueChange={onValueChange}

@@ -1,6 +1,5 @@
 const withPlugins = require('next-compose-plugins');
 const withFonts = require('next-fonts');
-const withSvgr = require('next-svgr');
 
 const nextConfig = {
   webpack(config, _options) {
@@ -22,4 +21,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withPlugins([withFonts, withSvgr], nextConfig);
+module.exports = withPlugins([withFonts], nextConfig);

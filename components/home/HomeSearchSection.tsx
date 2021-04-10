@@ -1,5 +1,5 @@
-import HomeHeroSVG from '@svg/page/home.svg';
 import { useScreenSize } from 'hooks/useScreenSize';
+import { Home as HomeHero } from 'public/assets/page';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { METADATA } from '../../constants';
@@ -27,7 +27,7 @@ export function HomeSearchSection(): JSX.Element {
             marginLeft: !isDesktop ? '-40%' : 'unset',
           }}
         >
-          <HomeHeroSVG />
+          <HomeHero />
           <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center w-full">
             <div
               className={!isDesktop ? 'w-full' : 'w-7/12'}

@@ -1,5 +1,5 @@
-import PasswordSVG from '@svg/icons/lock.svg';
 import { Input } from '@tastiest-io/tastiest-components';
+import { LockIcon } from '@tastiest-io/tastiest-icons';
 import React from 'react';
 
 interface Props {
@@ -23,7 +23,7 @@ export function InputPassword(props: Props) {
       size="large"
       type={show ? 'text' : 'password'}
       placeholder={placeholder}
-      prefix={<PasswordSVG className="h-6 ml-2 mr-2" />}
+      prefix={<LockIcon className="h-6 ml-2 mr-2" />}
       suffix={
         toggleShow ? (
           <a onClick={() => toggleShow()} className="text-gray-500">

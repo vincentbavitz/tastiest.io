@@ -1,6 +1,8 @@
-import HeartFilledPrimarySVG from '@svg/icons/heart-filled-primary.svg';
-import HeartPrimayrSVG from '@svg/icons/heart-primary.svg';
-import ShareSVG from '@svg/icons/share.svg';
+import {
+  HeartFilledPrimaryIcon,
+  HeartPrimaryIcon,
+  ShareIcon,
+} from '@tastiest-io/tastiest-icons';
 import { IPost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -86,15 +88,15 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
             className="flex items-center text-sm cursor-pointer"
           >
             {isFavourite ? (
-              <HeartFilledPrimarySVG className={!isDesktop ? 'h-8' : 'h-8'} />
+              <HeartFilledPrimaryIcon className={!isDesktop ? 'h-8' : 'h-8'} />
             ) : (
-              <HeartPrimayrSVG className={!isDesktop ? 'h-8' : 'h-8'} />
+              <HeartPrimaryIcon className={!isDesktop ? 'h-8' : 'h-8'} />
             )}
             {!!isDesktop && isFavourite ? 'Unsave' : 'Save'}
           </div>
 
           <div className="flex items-center text-sm cursor-pointer">
-            <ShareSVG className={!isDesktop ? 'h-8' : 'h-8'} />
+            <ShareIcon className={!isDesktop ? 'h-8' : 'h-8'} />
             {!!isDesktop && 'Share'}
           </div>
         </div>

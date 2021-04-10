@@ -1,4 +1,4 @@
-import CheckCircleSVG from '@svg/icons/check-circle.svg';
+import { CheckCircleIcon } from '@tastiest-io/tastiest-icons';
 import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useSelector } from 'react-redux';
@@ -45,7 +45,7 @@ function CheckCircle({ label, complete }: CheckCircleProps) {
   return (
     <div className="z-10 flex flex-col items-center">
       {complete ? (
-        <CheckCircleSVG className="h-8 bg-white" />
+        <CheckCircleIcon className="h-8 bg-white" />
       ) : (
         <div className="w-8 h-8 bg-white border-2 border-gray-400 rounded-full"></div>
       )}

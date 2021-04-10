@@ -19,7 +19,6 @@ package-lock.json
 
 # misc
 .DS_Store
-.env*
 
 # debug
 ui-debug.log*
@@ -28,8 +27,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # Environment Variables
-.env
-.env.build
-
+.env*
 .now
 .vercel
+
+*.log

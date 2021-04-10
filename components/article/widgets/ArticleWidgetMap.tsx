@@ -1,4 +1,4 @@
-import MapPinSVG from '@svg/icons/location-brand.svg';
+import { LocationBrandIcon } from '@tastiest-io/tastiest-icons';
 import { IRestaurant } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
@@ -22,7 +22,7 @@ export function ArticleWidgetMap({ city, restaurant }: Props) {
     <div className="flex flex-col w-full desktop:flex-row desktop:justify-center desktop:space-x-8">
       <div className="relative w-full h-40 overflow-hidden rounded desktop:h-auto desktop:mt-0 desktop:w-1/2">
         <div className="absolute flex items-center justify-center w-full h-full">
-          <MapPinSVG className="h-10" />
+          <LocationBrandIcon className="h-10" />
         </div>
 
         <img

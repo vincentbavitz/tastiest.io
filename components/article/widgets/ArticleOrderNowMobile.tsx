@@ -1,6 +1,5 @@
-import ExitSVG from '@svg/icons/exit.svg';
-import RightSVG from '@svg/icons/right.svg';
 import { Button, Select } from '@tastiest-io/tastiest-components';
+import { ExitIcon, RightIcon } from '@tastiest-io/tastiest-icons';
 import { IDeal, valdHeads, ValidHead } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import { Contained } from 'components/Contained';
@@ -46,7 +45,7 @@ export default function ArticleOrderNowMobile({ deal, slug }: Props) {
               <div className="flex items-center justify-between w-full text-xl font-somatic">
                 <div className="w-5"></div>
                 <span>Get the offer!</span>
-                <RightSVG className="h-5 text-white stroke-current" />
+                <RightIcon className="h-5 text-white stroke-current" />
               </div>
             </Button>
           </div>
@@ -86,7 +85,7 @@ const OrderNowOverlay = ({ deal, slug, onClose }: OrderNowOverlayProps) => {
           <h3 className="text-3xl text-center font-somatic text-primary">
             Get the offer!
           </h3>
-          <ExitSVG
+          <ExitIcon
             onClick={onClose}
             className="w-10 fill-current text-primary"
           />

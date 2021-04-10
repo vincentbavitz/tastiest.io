@@ -1,10 +1,12 @@
-import SuggestDishDesktopSVG from '@svg/illustrations/suggest-dish-desktop.svg';
-import SuggestDishMobileSVG from '@svg/illustrations/suggest-dish-mobile.svg';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import clsx from 'clsx';
 import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
+import {
+  SuggestDishIllustrationDesktop,
+  SuggestDishIllustrationMobile,
+} from 'public/assets/illustrations';
 import React, { useState } from 'react';
 import { Contained } from './Contained';
 
@@ -39,7 +41,7 @@ export function SuggestDish() {
               width: '22rem',
             }}
           >
-            <SuggestDishDesktopSVG
+            <SuggestDishIllustrationDesktop
               style={{
                 height: isSignedIn ? '16rem' : '20rem',
                 marginTop: isSignedIn ? '0' : '2.5rem',
@@ -121,7 +123,7 @@ export function SuggestDish() {
 
           {!isDesktop && (
             <div className="flex justify-center flex-grow mt-6">
-              <SuggestDishMobileSVG className="w-3/4 h-full md:w-full" />
+              <SuggestDishIllustrationMobile className="w-3/4 h-full md:w-full" />
             </div>
           )}
         </div>

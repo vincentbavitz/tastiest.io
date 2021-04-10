@@ -1,7 +1,7 @@
-import CharacterEatingSVG from '@svg/article/character-eating.svg';
 import { IPost } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import { useScreenSize } from 'hooks/useScreenSize';
+import { CharacterEating } from 'public/assets/article';
 import React from 'react';
 import { UI } from '../../../constants';
 import ArticleContained from '../ArticleContained';
@@ -68,7 +68,7 @@ const CharacterEatingDesktop = () => (
         }rem`,
       }}
     >
-      <CharacterEatingSVG
+      <CharacterEating
         style={{
           width: `${EATING_CHARACTER_SIZE_REM}rem`,
           height: `${EATING_CHARACTER_SIZE_REM}rem`,
@@ -85,7 +85,7 @@ const CharacterEatingMobile = () => (
       marginTop: '10.95rem',
     }}
   >
-    <CharacterEatingSVG
+    <CharacterEating
       style={{
         width: '15rem',
         height: '15rem',

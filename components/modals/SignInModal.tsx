@@ -1,7 +1,5 @@
-import TastiestLogo from '@svg/brand.svg';
-import EmailSVG from '@svg/icons/email.svg';
-import PasswordSVG from '@svg/icons/lock.svg';
 import { Button, Input } from '@tastiest-io/tastiest-components';
+import { EmailIcon, LockIcon, TastiestIcon } from '@tastiest-io/tastiest-icons';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -80,7 +78,7 @@ export function SignInModal() {
       size="large"
       type="outline"
       color="secondary"
-      prefix={<EmailSVG className="w-8 h-6" />}
+      prefix={<EmailIcon className="w-8 h-6" />}
       suffix={<div className="w-6"></div>}
       onClick={() => setStep(LoginFlowStep.SIGN_IN)}
     >
@@ -98,7 +96,7 @@ export function SignInModal() {
         type="email"
         className="py-2"
         placeholder="Email address"
-        prefix={<EmailSVG className="h-6" />}
+        prefix={<EmailIcon className="h-6" />}
         // suffix={<>!</>}
         value={signInEmail}
         maxLength={50}
@@ -110,7 +108,7 @@ export function SignInModal() {
         type="password"
         className="py-2"
         placeholder="Password"
-        prefix={<PasswordSVG className="h-8 ml-2 mr-2" />}
+        prefix={<LockIcon className="h-8 ml-2 mr-2" />}
         value={signInPassword}
         onValueChange={value => setSignInPassword(cleanupInputValue(value))}
         maxLength={50}
@@ -141,7 +139,7 @@ export function SignInModal() {
         type="email"
         className="py-2"
         placeholder="Email address"
-        prefix={<EmailSVG className="h-6" />}
+        prefix={<EmailIcon className="h-6" />}
         value={signUpEmail}
         onValueChange={value => setSignUpEmail(cleanupInputValue(value))}
       ></Input>
@@ -151,7 +149,7 @@ export function SignInModal() {
         type="password"
         className="py-2"
         placeholder="Create a password"
-        prefix={<PasswordSVG className="h-8 ml-2 mr-2" />}
+        prefix={<LockIcon className="h-8 ml-2 mr-2" />}
         value={signUpPassword}
         onValueChange={value => setSignUpPassword(cleanupInputValue(value))}
       ></Input>
@@ -181,7 +179,7 @@ export function SignInModal() {
         type="email"
         className="py-2"
         placeholder="Email address"
-        prefix={<EmailSVG className="h-6" />}
+        prefix={<EmailIcon className="h-6" />}
         value={signInEmail}
         onValueChange={value => setSignInEmail(cleanupInputValue(value))}
       ></Input>
@@ -322,7 +320,7 @@ export function SignInModal() {
         className="relative flex flex-col justify-between"
       >
         <div className="flex flex-col items-center flex-grow space-y-5">
-          <TastiestLogo className="h-8 fill-current text-primary" />
+          <TastiestIcon className="h-8 fill-current text-primary" />
           <div className="w-full text-center">
             <h1 className="text-4xl font-somatic">{title}</h1>
             {subtitle && (

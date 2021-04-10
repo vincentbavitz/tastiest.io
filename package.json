@@ -5,14 +5,15 @@
   "scripts": {
     "now": "npm run now",
     "dev": "NODE_ENV=development next dev",
-    "dev:https": "NODE_ENV=development node server.js",
-    "build": "next build",
+    "build": "npm run build-assets && next build",
     "start": "next start",
-    "staging": "func() { git add . && git commit -m \"$1\" && git push -u origin staging; }; func",
-    "firebase-deploy": "firebase deploy --only functions",
+    "functions-deploy": "firebase deploy --only functions",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "lint:fix": "npm run lint -- --fix",
-    "test": "clear && jest"
+    "test": "clear && jest",
+    "build-assets": "npm run convert-svg && npm run optimize-svg",
+    "optimize-svg": "svgo ./public/assets/*/*.svg -o ./public/out",
+    "convert-svg": "rm -r ./public/assets/*/*.tsx && svgr --typescript -d ./public/assets/ ./public/assets/"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
@@ -23,7 +24,9 @@
     "@segment/snippet": "^4.13.1",
     "@stripe/react-stripe-js": "^1.2.2",
     "@stripe/stripe-js": "^1.12.1",
+    "@svgr/cli": "^5.5.0",
     "@tastiest-io/tastiest-components": "^0.18.0",
+    "@tastiest-io/tastiest-icons": "^0.4.0",
     "@tastiest-io/tastiest-utils": "^0.11.0",
     "@types/analytics-node": "^3.1.4",
     "@zeit/next-css": "^1.0.1",
@@ -116,7 +119,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn "
     }
   }
 }

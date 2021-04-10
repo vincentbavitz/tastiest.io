@@ -1,4 +1,4 @@
-import HeartPrimarySVG from '@svg/icons/heart-primary.svg';
+import { HeartPrimaryIcon } from '@tastiest-io/tastiest-icons';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { useWindowSize } from 'react-use';
@@ -30,7 +30,7 @@ export function HeaderSavedPlaces() {
       onClick={handleClick}
       className="flex items-center px-4 cursor-pointer"
     >
-      <HeartPrimarySVG className="h-8 mr-1" />
+      <HeartPrimaryIcon className="h-8 mr-1" />
       {shouldDisplayText && (
         <Title level={4} margin={false} className="text-primary font-somatic">
           Saved Places

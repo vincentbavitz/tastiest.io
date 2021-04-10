@@ -1,7 +1,9 @@
-import HeartFilledPrimarySVG from '@svg/icons/heart-filled-primary.svg';
-import HeartPrimarySVG from '@svg/icons/heart-primary.svg';
-import ShareSVG from '@svg/icons/share.svg';
 import { Button } from '@tastiest-io/tastiest-components';
+import {
+  HeartFilledPrimaryIcon,
+  HeartPrimaryIcon,
+  ShareIcon,
+} from '@tastiest-io/tastiest-icons';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
@@ -130,9 +132,9 @@ export function ArticleSaveShareWidget(props: ArticleSaveShareProps) {
               className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 cursor-pointer hover:bg-white rounded-l-md"
             >
               {isArticleSaved ? (
-                <HeartFilledPrimarySVG className={isDesktop ? 'h-6' : 'h-8'} />
+                <HeartFilledPrimaryIcon className={isDesktop ? 'h-6' : 'h-8'} />
               ) : (
-                <HeartPrimarySVG className={isDesktop ? 'h-6' : 'h-8'} />
+                <HeartPrimaryIcon className={isDesktop ? 'h-6' : 'h-8'} />
               )}
               <span>Save</span>
             </div>
@@ -141,7 +143,7 @@ export function ArticleSaveShareWidget(props: ArticleSaveShareProps) {
               className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 cursor-pointer hover:bg-white rounded-r-md"
               onClick={() => setIsDropdownOpen(true)}
             >
-              <ShareSVG className={isDesktop ? 'h-5' : 'h-8'} />
+              <ShareIcon className={isDesktop ? 'h-5' : 'h-8'} />
               <span>Share</span>
             </div>
           </div>
@@ -164,7 +166,7 @@ interface ArticleSaveShareFixedProps extends ArticleSaveShareProps {
 }
 
 function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
-  const { dishName, isDesktop } = props;
+  const { slug, dishName } = props;
 
   const {
     articleUrl,
@@ -189,15 +191,18 @@ function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
 
         <div className="flex items-center mt-1 space-x-2">
           {isArticleSaved ? (
-            <HeartFilledPrimarySVG
-              onClick={toggleSaveArticle}
+            <HeartFilledPrimaryIcon
+              onClick={() => toggleSaveArticle(slug)}
               className="h-8"
             />
           ) : (
-            <HeartPrimarySVG onClick={toggleSaveArticle} className="h-10" />
+            <HeartPrimaryIcon
+              onClick={() => toggleSaveArticle(slug)}
+              className="h-10"
+            />
           )}
 
-          <ShareSVG
+          <ShareIcon
             onClick={() => setIsDropdownOpen(true)}
             className="h-10 -mt-1"
           />

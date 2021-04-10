@@ -1,5 +1,7 @@
-import SearchPrimarySVG from '@svg/icons/search-primary.svg';
-import SearchSecondarySVG from '@svg/icons/search-secondary.svg';
+import {
+  SearchPrimaryIcon,
+  SearchSecondaryIcon,
+} from '@tastiest-io/tastiest-icons';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, ReactNode, useEffect, useRef } from 'react';
@@ -176,10 +178,10 @@ export function SearchInput(props: Props) {
           }}
         >
           {searchIcon === 'primary' && (
-            <SearchPrimarySVG className="h-8 fill-current" />
+            <SearchPrimaryIcon className="h-8 fill-current" />
           )}
           {searchIcon === 'secondary' && (
-            <SearchSecondarySVG className="h-8 fill-current" />
+            <SearchSecondaryIcon className="h-8 fill-current" />
           )}
         </div>
       )}

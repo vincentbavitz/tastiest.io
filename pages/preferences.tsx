@@ -1,6 +1,5 @@
-import CheckSVG from '@svg/icons/check.svg';
-import PreferencesSVG from '@svg/page/preferences.svg';
 import { Button, Input } from '@tastiest-io/tastiest-components';
+import { CheckIcon } from '@tastiest-io/tastiest-icons';
 import {
   IDateObject,
   IUserDetails,
@@ -16,6 +15,7 @@ import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import { InferGetServerSidePropsType } from 'next';
+import { PreferencesHero } from 'public/assets/page';
 import React, { ReactNode, useState } from 'react';
 import { UserDataApi } from 'services/userData';
 import { dlog } from 'utils/development';
@@ -160,11 +160,11 @@ const Preferences = ({
         </h1>
 
         {isMobile ? (
-          <PreferencesSVG className="w-10/12" />
+          <PreferencesHero className="w-10/12" />
         ) : (
           <Contained maxWidth={UI.FORM_WIDTH_PX}>
             <div className="flex justify-center">
-              <PreferencesSVG className="w-full" />
+              <PreferencesHero className="w-full" />
             </div>
           </Contained>
         )}
@@ -261,7 +261,7 @@ const Preferences = ({
             onClick={submit}
             suffix={
               userHasSaved && !savable ? (
-                <CheckSVG className="h-6 text-white fill-current" />
+                <CheckIcon className="h-6 text-white fill-current" />
               ) : null
             }
           >

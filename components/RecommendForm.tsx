@@ -1,7 +1,7 @@
-import SuggestDishDesktopSVG from '@svg/illustrations/suggest-dish-desktop.svg';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import { useFeedback } from 'hooks/useFeedback';
 import { useScreenSize } from 'hooks/useScreenSize';
+import { SuggestDishIllustrationDesktop } from 'public/assets/illustrations';
 import React, { useState } from 'react';
 import { Contained } from './Contained';
 
@@ -24,14 +24,14 @@ export function RecommendForm(props: Props) {
           </div>
 
           <div className="w-4/12">
-            <SuggestDishDesktopSVG
+            <SuggestDishIllustrationDesktop
               style={{ height: '16rem', transform: 'rotateY(180deg)' }}
             />
           </div>
         </div>
       ) : (
         <div className="flex flex-col items-center mt-10 space-y-6">
-          <SuggestDishDesktopSVG style={{ maxHeight: '22rem' }} />
+          <SuggestDishIllustrationDesktop style={{ maxHeight: '22rem' }} />
 
           <div className="pb-8 pl-3">
             <RecommendFormContent {...props} />

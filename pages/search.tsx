@@ -1,10 +1,9 @@
-import SearchBackdropDesktopSVG from '@svg/page/search_desktop.svg';
-import SearchBackdropMobileSVG from '@svg/page/search_mobile.svg';
 import { CMS, CmsApi, IPost } from '@tastiest-io/tastiest-utils';
 import RecommendedPosts from 'components/sections/RecommendedPosts';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
+import { SearchHeroDesktop, SearchHeroMobile } from 'public/assets/page';
 import React from 'react';
 import ReactPaginate from 'react-paginate';
 import { dlog } from 'utils/development';
@@ -94,7 +93,7 @@ const Search = (
       <div className="relative w-full mt-6 mb-12">
         {!isDesktop ? (
           <>
-            <SearchBackdropMobileSVG
+            <SearchHeroMobile
               style={{
                 width: '150%',
                 transform: 'translateX(-18%)',
@@ -108,7 +107,7 @@ const Search = (
           </>
         ) : (
           <Contained>
-            <SearchBackdropDesktopSVG className="w-full" />
+            <SearchHeroDesktop className="w-full" />
             <div className="absolute inset-0 flex items-center justify-center">
               <h1 className="text-2xl font-somatic text-primary">
                 {posts.length > 0 ? 'Search Results' : 'Nothing Found'}

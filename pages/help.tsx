@@ -1,4 +1,3 @@
-import HelpSVG from '@svg/page/help.svg';
 import { Button, Input, Select } from '@tastiest-io/tastiest-components';
 import { SupportRequestType } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
@@ -7,6 +6,7 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import { useSupport } from 'hooks/useSupport';
 import { useUserData } from 'hooks/useUserData';
 import { InferGetServerSidePropsType } from 'next';
+import { HelpHero } from 'public/assets/page';
 import React, { useState } from 'react';
 import { dlog } from 'utils/development';
 import { UI } from '../constants';
@@ -100,7 +100,7 @@ const Help = (
     <div>
       <Contained>
         <div className="relative flex justify-center w-full mt-10">
-          <HelpSVG style={{ width: '20rem' }} className="" />
+          <HelpHero style={{ width: '20rem' }} className="" />
 
           <div
             style={{ marginLeft: '-15.5rem' }}

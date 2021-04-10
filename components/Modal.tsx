@@ -1,4 +1,4 @@
-import ExitSVG from '@svg/icons/exit.svg';
+import { ExitIcon } from '@tastiest-io/tastiest-icons';
 import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
@@ -87,7 +87,7 @@ export function Modal(props: Props) {
         )}
       >
         <div className="absolute top-0 right-0 z-0 flex justify-end pt-3 pr-3">
-          <ExitSVG
+          <ExitIcon
             onClick={close}
             className="h-8 cursor-pointer fill-current text-primary"
           />

@@ -1,5 +1,5 @@
-import LockSVG from '@svg/icons/lock.svg';
 import { Button, Input } from '@tastiest-io/tastiest-components';
+import { LockIcon } from '@tastiest-io/tastiest-icons';
 import {
   CmsApi,
   IDiscount,
@@ -140,7 +140,7 @@ export function CheckoutCardPayment(props: Props) {
 
 const SecureTransactionText = () => (
   <div className="absolute top-0 flex justify-center w-full -mt-6 text-gray-300">
-    <LockSVG className="h-4 mr-2 fill-current" />
+    <LockIcon className="h-4 mr-2 fill-current" />
     <span className="text-sm">Secure transaction</span>
   </div>
 );

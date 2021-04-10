@@ -1,5 +1,4 @@
-import ChevronLeftSVG from '@svg/icons/chevron-left.svg';
-import ChevronRightSVG from '@svg/icons/chevron-right.svg';
+import { ChevronLeftIcon, ChevronRightIcon } from '@tastiest-io/tastiest-icons';
 import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useEffect, useRef, useState } from 'react';
@@ -109,7 +108,7 @@ function HorizontalScrollableInner(props: Props) {
             x <= 1 && 'opacity-0 pointer-events-none',
           )}
         >
-          <ChevronLeftSVG
+          <ChevronLeftIcon
             onClick={handleLeftScroll}
             className={classNames('h-8 mt-1 cursor-pointer')}
           />
@@ -124,7 +123,7 @@ function HorizontalScrollableInner(props: Props) {
             rightScrollHidden && 'opacity-0 pointer-events-none',
           )}
         >
-          <ChevronRightSVG
+          <ChevronRightIcon
             onClick={handleRightScroll}
             className="h-8 mt-1 cursor-pointer"
           />

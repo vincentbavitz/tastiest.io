@@ -1,4 +1,4 @@
-import LogoSVG from '@svg/logo.svg';
+import { LogoIcon } from '@tastiest-io/tastiest-icons';
 import classNames from 'classnames';
 
 export interface AvatarProps {
@@ -29,12 +29,12 @@ export function Avatar(props: AvatarProps) {
           alt={'Author profile picture'}
         />
       ) : initial?.length ? (
-        <div className="flex justify-center items-center w-full h-full font-somatic text-white text-xl">
+        <div className="flex items-center justify-center w-full h-full text-xl text-white font-somatic">
           {initial[0]}
         </div>
       ) : (
         // Default Tastiest Avatar
-        <LogoSVG
+        <LogoIcon
           className="text-white fill-current"
           style={{ height: '55%', marginTop: '15%' }}
         />

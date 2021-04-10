@@ -1,0 +1,14 @@
+export { default as AmericaHero } from './AmericaHero';
+export { default as BritainHero } from './BritainHero';
+export { default as CaribbeanDesktopHero } from './CaribbeanDesktopHero';
+export { default as CaribbeanHero } from './CaribbeanHero';
+export { default as CaribbeanMobileHero } from './CaribbeanMobileHero';
+export { default as ChinaHero } from './ChinaHero';
+export { default as EnglishHero } from './EnglishHero';
+export { default as FranceHero } from './FranceHero';
+export { default as IndiaHero } from './IndiaHero';
+export { default as ItalyHero } from './ItalyHero';
+export { default as JapanHero } from './JapanHero';
+export { default as MediterraneanHero } from './MediterraneanHero';
+export { default as MexicoHero } from './MexicoHero';
+export { default as SpainHero } from './SpainHero';

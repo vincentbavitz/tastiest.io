@@ -1,5 +1,4 @@
-import TastiestLogo from '@svg/brand.svg';
-import SearchPrimarySVG from '@svg/icons/search-primary.svg';
+import { SearchPrimaryIcon, TastiestIcon } from '@tastiest-io/tastiest-icons';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
@@ -49,13 +48,13 @@ function MobileHeader() {
     >
       <div className="flex items-center justify-between w-full h-full">
         <div className="flex flex-shrink-0" onMouseDown={handleExpandSearch}>
-          <SearchPrimarySVG className="h-10 cursor-pointer" />
+          <SearchPrimaryIcon className="h-10 cursor-pointer" />
         </div>
 
         <div className="antialiased">
           <Link href="/">
             <a className="flex items-center flex-shrink-0">
-              <TastiestLogo className="h-8 fill-current text-primary" />
+              <TastiestIcon className="h-8 fill-current text-primary" />
             </a>
           </Link>
         </div>
@@ -112,7 +111,7 @@ function DesktopHeader() {
             <div className="flex flex-grow">
               <Link href="/">
                 <a className="flex items-center flex-shrink-0">
-                  <TastiestLogo className="h-8 fill-current text-primary" />
+                  <TastiestIcon className="h-8 fill-current text-primary" />
                 </a>
               </Link>
               <HeaderSearch
@@ -146,7 +145,7 @@ function CheckoutHeader({ isDesktop }: { isDesktop: boolean }) {
       )}
     >
       <div className="flex items-center flex-shrink-0 text-secondary">
-        <TastiestLogo className="h-8 fill-current text-primary" />
+        <TastiestIcon className="h-8 fill-current text-primary" />
       </div>
     </div>
   );

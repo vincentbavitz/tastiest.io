@@ -1,11 +1,13 @@
-import BrandSVG from '@svg/brand.svg';
-import HeartSVG from '@svg/icons/heart.svg';
-import YummySVG from '@svg/logo.svg';
-import FacebookSVG from '@svg/socials/facebook.svg';
-import InstagramSVG from '@svg/socials/instagram.svg';
-import TwitterSVG from '@svg/socials/twitter.svg';
-import YouTubeSVG from '@svg/socials/youtube.svg';
-import TastiestSVG from '@svg/tastiest.svg';
+import {
+  BrandIcon,
+  FacebookIcon,
+  HeartIcon,
+  InstagramIcon,
+  LogoIcon,
+  TastiestIcon,
+  TwitterIcon,
+  YoutubeIcon,
+} from '@tastiest-io/tastiest-icons';
 import { SupportRequestType } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
@@ -36,7 +38,7 @@ const MobileFooter = () => {
 
   return (
     <div className="flex flex-col pb-10 space-y-6">
-      <BrandSVG className="h-8 mt-6 fill-current" />
+      <BrandIcon className="h-8 mt-6 fill-current" />
 
       <div className="flex flex-col w-full pt-4 mt-6 space-x-0 space-y-4 mobile:space-y-0 mobile:flex-row mobile:space-x-6">
         <div className="flex-1">
@@ -96,7 +98,7 @@ const DesktopFooter = () => (
         </div>
       </div>
 
-      <BrandSVG className="h-8 mt-4 fill-current" />
+      <BrandIcon className="h-8 mt-4 fill-current" />
     </div>
   </Contained>
 );
@@ -122,7 +124,7 @@ const HugeFooter = () => (
         <div className="flex flex-col items-end justify-between h-full pr-4 mr-4 space-y-4 text-right border-r">
           <ImprovementPrompts />
 
-          <YummySVG className="h-8 mt-6 fill-current" />
+          <LogoIcon className="h-8 mt-6 fill-current" />
         </div>
 
         <ThanksForSupportMessage withLogo />
@@ -163,21 +165,21 @@ const ThanksForSupportMessage = ({ withLogo }: { withLogo?: boolean }) => (
       We are a small team with big plans. We really appreciate your patience as
       we roll out new restaurants, features, bug fixes, etc.—and would love to
       hear from you.{' '}
-      <HeartSVG className="hidden h-4 fill-current tablet:inline" />
+      <HeartIcon className="hidden h-4 fill-current tablet:inline" />
     </p>
 
-    <HeartSVG className="block h-6 fill-current tablet:hidden" />
+    <HeartIcon className="block h-6 fill-current tablet:hidden" />
 
-    {withLogo && <TastiestSVG className="h-8 fill-current" />}
+    {withLogo && <TastiestIcon className="h-8 fill-current" />}
   </div>
 );
 
 const SocialsBlock = () => (
   <>
-    <InstagramSVG className="w-10 h-10 cursor-pointer" />
-    <FacebookSVG className="w-10 h-10 cursor-pointer" />
-    <TwitterSVG className="w-10 h-10 cursor-pointer" />
-    <YouTubeSVG className="w-10 h-10 cursor-pointer" />
+    <InstagramIcon className="w-10 h-10 cursor-pointer" />
+    <FacebookIcon className="w-10 h-10 cursor-pointer" />
+    <TwitterIcon className="w-10 h-10 cursor-pointer" />
+    <YoutubeIcon className="w-10 h-10 cursor-pointer" />
   </>
 );
 

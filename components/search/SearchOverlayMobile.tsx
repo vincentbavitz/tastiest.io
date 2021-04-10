@@ -1,4 +1,4 @@
-import BackSVG from '@svg/icons/back.svg';
+import { BackIcon } from '@tastiest-io/tastiest-icons';
 import classNames from 'classnames';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,7 +25,7 @@ export function SearchOverlayMobile() {
   // Internal elements
   const searchInputPrefix = (
     <span onMouseDown={handleExit} className="text-secondary">
-      <BackSVG className={classNames('h-8 w-8 fill-current')} />
+      <BackIcon className={classNames('h-8 w-8 fill-current')} />
     </span>
   );
 
@@ -39,7 +39,7 @@ export function SearchOverlayMobile() {
         searchOverlayExpanded ? 'block' : 'hidden',
       )}
     >
-      <div className="flex flex-col h-full flex-grow overflow-y-auto">
+      <div className="flex flex-col flex-grow h-full overflow-y-auto">
         <Contained>
           <SearchInput
             autofocus

@@ -35,40 +35,40 @@ const analytics = new Analytics(functions.config().segment.write_key);
 //    heads: number;
 //    promoCode: string
 //    setupIntent: string
-export const pay = functions.https.onRequest(async (req, res) => {
-  req;
-  res;
-  // const { orderId, userId, heads, promoCode, setupIntent } = req.query;
-  // // Ensure setupIntent is valid with Stripe
-  // // Find order in Firestore with orderId
-  // // Find promo code in Contentful
-  // // Validate promo code exists, and is valid given the number of heads, date, etc
-  // // Get deal from Contentful
-  // // Ensure deal exists and is valid
-  // // Ensure number of heads is valid for deal
-  // const order = {
-  //   id: orderId,
-  //   deal,
-  //   userId,
-  //   heads,
-  //   fromSlug,
-  //   totalPrice: deal.pricePerHeadGBP * orderRequest.heads,
-  //   discount: null,
-  //   // TODO - paidAt should be updated with Firebase functions
-  //   paidAt: null,
-  //   orderedAt: Date.now(),
-  //   abandonedAt: null,
-  //   paymentDetails: null,
-  //   refund: null,
-  // };
-  // // Push the new message into Firestore using the Firebase Admin SDK.
-  // const writeResult = await admin
-  //   .firestore()
-  //   .collection(FirestoreCollection.ORDERS)
-  //   .add({ original: '' });
-  // // Send back a message that we've successfully written the message
-  // res.json({ result: `Message with ID: ${writeResult.id} added.` });
-});
+// export const pay = functions.https.onRequest(async (req, res) => {
+//   req;
+//   res;
+// const { orderId, userId, heads, promoCode, setupIntent } = req.query;
+// // Ensure setupIntent is valid with Stripe
+// // Find order in Firestore with orderId
+// // Find promo code in Contentful
+// // Validate promo code exists, and is valid given the number of heads, date, etc
+// // Get deal from Contentful
+// // Ensure deal exists and is valid
+// // Ensure number of heads is valid for deal
+// const order = {
+//   id: orderId,
+//   deal,
+//   userId,
+//   heads,
+//   fromSlug,
+//   totalPrice: deal.pricePerHeadGBP * orderRequest.heads,
+//   discount: null,
+//   // TODO - paidAt should be updated with Firebase functions
+//   paidAt: null,
+//   orderedAt: Date.now(),
+//   abandonedAt: null,
+//   paymentDetails: null,
+//   refund: null,
+// };
+// // Push the new message into Firestore using the Firebase Admin SDK.
+// const writeResult = await admin
+//   .firestore()
+//   .collection(FirestoreCollection.ORDERS)
+//   .add({ original: '' });
+// // Send back a message that we've successfully written the message
+// res.json({ result: `Message with ID: ${writeResult.id} added.` });
+// });
 
 // const getPriceFromPromo = (
 //   pricePerHeadGBP: number,

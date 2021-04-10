@@ -10,8 +10,8 @@ import {
   StripeCardNumberElementChangeEvent,
   StripeCardNumberElementOptions,
 } from '@stripe/stripe-js';
-import HelpSVG from '@svg/icons/help.svg';
 import { Input } from '@tastiest-io/tastiest-components';
+import { HelpIcon } from '@tastiest-io/tastiest-icons';
 import {
   CardBrand,
   IDateObject,
@@ -266,7 +266,7 @@ export function CheckoutStepPayment(props: Props) {
                 className="py-1"
                 externalSuffix={
                   <Tooltip content="This is the 3 digit code on the back of your card.">
-                    <HelpSVG className="h-6" />
+                    <HelpIcon className="h-6" />
                   </Tooltip>
                 }
               >

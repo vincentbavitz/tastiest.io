@@ -1,16 +1,18 @@
-import SpaghettiSVG from '@svg/cuisines/italian.svg';
-import SushiSVG from '@svg/cuisines/japanese.svg';
-import XiaoSVG from '@svg/cuisines/xiao.svg';
-import NewSVG from '@svg/icons/hot.svg';
-import NearbySVG from '@svg/icons/location.svg';
-import TrendingSVG from '@svg/icons/trending.svg';
 import { Button } from '@tastiest-io/tastiest-components';
+import {
+  HotIcon,
+  ItalianIcon,
+  JapaneseIcon,
+  LocationIcon,
+  TrendingIcon,
+  XiaoIcon,
+} from '@tastiest-io/tastiest-icons';
+import { SVG } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { SVG } from 'types/assets';
 import { dlog } from 'utils/development';
 import { CUISINES } from '../../constants';
 import { useSearch } from '../../hooks/useSearch';
@@ -25,19 +27,19 @@ interface IDynamicOptions {
 }
 
 const dynamicCategories: Array<IDynamicOptions> = [
-  { name: 'Nearby', href: '/search?key=nearby', svg: NearbySVG },
-  { name: 'Trending', href: '/search?key=trending', svg: TrendingSVG },
-  { name: 'New!', href: '/search?key=new', svg: NewSVG },
+  { name: 'Nearby', href: '/search?key=nearby', svg: LocationIcon },
+  { name: 'Trending', href: '/search?key=trending', svg: TrendingIcon },
+  { name: 'New!', href: '/search?key=new', svg: HotIcon },
 ];
 
 const popularDishes: Array<IDynamicOptions> = [
-  { name: 'Best Spaghetti', href: '/search?dish=spaghetti', svg: SpaghettiSVG },
+  { name: 'Best Spaghetti', href: '/search?dish=spaghetti', svg: ItalianIcon },
   {
     name: 'Best Xiao Long Bao',
     href: '/search?dish=xiao-long-bao',
-    svg: XiaoSVG,
+    svg: XiaoIcon,
   },
-  { name: 'Best Sushi', href: '/search/?dish=sushi', svg: SushiSVG },
+  { name: 'Best Sushi', href: '/search/?dish=sushi', svg: JapaneseIcon },
 ];
 
 export function SearchOverlayInner() {

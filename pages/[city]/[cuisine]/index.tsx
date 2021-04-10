@@ -1,4 +1,3 @@
-import LookingSVG from '@svg/illustrations/looking.svg';
 import {
   CmsApi,
   CuisineSymbol,
@@ -11,6 +10,7 @@ import { SuggestDish } from 'components/SuggestDish';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
+import { LookingIllustration } from 'public/assets/illustrations';
 import React from 'react';
 import { dlog } from 'utils/development';
 import { CardGrid } from '../../../components/cards/CardGrid';
@@ -186,7 +186,9 @@ const NoPostsForCuisine = ({
       </div>
 
       <div className="col-span-8">
-        <LookingSVG style={{ minWidth: isMobile ? 'unset' : '500px' }} />
+        <LookingIllustration
+          style={{ minWidth: isMobile ? 'unset' : '500px' }}
+        />
       </div>
     </div>
   </div>

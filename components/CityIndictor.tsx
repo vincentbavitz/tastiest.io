@@ -1,5 +1,6 @@
-import LocationSVG from '@svg/icons/location-brand.svg';
+import { LocationIcon } from '@tastiest-io/tastiest-icons';
 import classNames from 'classnames';
+import React from 'react';
 import { titleCase } from '../utils/text';
 
 interface Props {
@@ -13,7 +14,7 @@ export function CityIndictor(props: Props) {
   return (
     <div className="inline-flex items-center">
       <div className="icon">
-        <LocationSVG className="w-5 mr-2" />
+        <LocationIcon className="w-5 mr-2" />
       </div>
       <div
         className={classNames(

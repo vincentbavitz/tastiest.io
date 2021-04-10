@@ -1,5 +1,5 @@
-import PoundSVG from '@svg/icons/pound.svg';
 import { Button, Select } from '@tastiest-io/tastiest-components';
+import { PoundIcon } from '@tastiest-io/tastiest-icons';
 import { IDeal, valdHeads, ValidHead } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import { useOrderNow } from 'hooks/checkout/useOrderNow';
@@ -49,7 +49,7 @@ export function ArticleOrderNowDesktop(props: Props) {
 
               <div className="py-2 mb-3 text-center border-t-2 border-b-2 border-white border-dashed">
                 <p className="flex items-center text-base font-somatic text-primary">
-                  For <PoundSVG className="inline h-3 mx-1 fill-current" />
+                  For <PoundIcon className="inline h-3 mx-1 fill-current" />
                   {deal?.pricePerHeadGBP}, you'll get
                 </p>
               </div>
@@ -84,7 +84,7 @@ export function ArticleOrderNowDesktop(props: Props) {
             <div className="flex items-end justify-between text-xs">
               <span>Booking for {heads} people</span>
               <div className="flex items-center h-full">
-                <PoundSVG
+                <PoundIcon
                   style={{ height: '0.6rem' }}
                   className="inline mr-1"
                 />
@@ -97,7 +97,7 @@ export function ArticleOrderNowDesktop(props: Props) {
             <div className="flex justify-between font-medium">
               <span>Total</span>
               <span>
-                <PoundSVG className="inline h-3 mr-1 -mt-1" />
+                <PoundIcon className="inline h-3 mr-1 -mt-1" />
                 {totalPrice}
               </span>
             </div>
