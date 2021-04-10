@@ -25,7 +25,7 @@ export function SearchOverlayMobile() {
   // Internal elements
   const searchInputPrefix = (
     <span onMouseDown={handleExit} className="text-secondary">
-      <BackIcon className={classNames('h-8 w-8 fill-current')} />
+      <BackIcon className={classNames('h-8 w-8 fill-current cursor-pointer')} />
     </span>
   );
 

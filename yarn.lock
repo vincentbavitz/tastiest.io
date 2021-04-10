@@ -2456,10 +2456,10 @@
   resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.18.0/72ffe8dfbeaec49248fb60175ae91e47c99ef64f4f2b80b47623bda811173f68#977988f577b8afee8a37f588fffc172c484a8058"
   integrity sha512-ZxorQES0VnN3HuphLrCbuqke1YkrxX8fr6/j2QJTGA+VKh63quDZcCllTPoNAY96HSGQ0H6uLQ/bwvdutveRLw==
 
-"@tastiest-io/tastiest-icons@^0.4.0":
-  version "0.4.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.4.0/058fc7ec0292bd5a25afe67ea9f2c03b355bdb7b6e49d07a565aaac2419cb820#cd154cf09c5ecb6344e1f1c9fabe46095aa2774f"
-  integrity sha512-Z4uQZD5KaN7K6mhyPMGnBgSq5LBB+IMqfr7t0k7eGoRB5PFrZC7sfITB/LJQq1d/udkazrToeK1W/Z1CBtVeEQ==
+"@tastiest-io/tastiest-icons@^0.5.0":
+  version "0.5.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.5.0/c1f05ee8d2b75bf18476d3987827ffb609272121bad7111a716be12ca1f57a3c#f93de3dbf8a5abd82eac11aa434f2bc92093eadc"
+  integrity sha512-tBc/yWTeDvUI2dS7qXQxRcRrYts6pkQjNMMVr+atXajoV9cCXiqhVP9avslbffAf6Em43idD5A9Om8mQkXTDnQ==
 
 "@tastiest-io/tastiest-utils@^0.11.0":
   version "0.11.0"

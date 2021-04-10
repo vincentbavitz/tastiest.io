@@ -1,11 +1,11 @@
+import { SVG } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import Link from 'next/link';
 import React from 'react';
-import { SVG } from 'types/assets';
 import { generateURL } from '../../utils/routing';
 
 interface Props {
-  // Ensure that the accompanying SVG is in /assets/svgs/cuisines/name.svg
+  // Ensure that the accompanying SVG is in /assets/cuisines
   // where name is given in lowercase for the filename
   name: string;
   svg: SVG;

@@ -1,10 +1,9 @@
 import { Input } from '@tastiest-io/tastiest-components';
+import { IDateObject, USER } from '@tastiest-io/tastiest-utils';
 import React from 'react';
 import NumberFormat, { NumberFormatValues } from 'react-number-format';
-import { IDateObject } from 'types/various';
 import { dlog } from 'utils/development';
 import { dateFormat, dateToString, stringToDate } from 'utils/text';
-import { USER } from '../../../constants';
 
 interface Props {
   date: IDateObject;

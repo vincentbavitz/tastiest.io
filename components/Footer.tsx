@@ -9,6 +9,7 @@ import {
   YoutubeIcon,
 } from '@tastiest-io/tastiest-icons';
 import { SupportRequestType } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -38,7 +39,7 @@ const MobileFooter = () => {
 
   return (
     <div className="flex flex-col pb-10 space-y-6">
-      <BrandIcon className="h-8 mt-6 fill-current" />
+      {!isTablet && <BrandIcon className="h-8 mt-6 fill-current" />}
 
       <div className="flex flex-col w-full pt-4 mt-6 space-x-0 space-y-4 mobile:space-y-0 mobile:flex-row mobile:space-x-6">
         <div className="flex-1">
@@ -46,7 +47,7 @@ const MobileFooter = () => {
             Quick Links
           </p>
 
-          <div className="grid grid-cols-2 pb-4 gap-y-4 justify-items-stretch">
+          <div className="grid grid-cols-2 pb-4 text-sm leading-none place-items-center gap-y-4 justify-items-stretch">
             <QuickLinksBlock />
           </div>
         </div>
@@ -62,13 +63,31 @@ const MobileFooter = () => {
         </div>
       </div>
 
-      <div className="flex justify-center w-full pt-6">
-        <ThanksForSupportMessage withLogo={isTablet} />
-      </div>
+      {isTablet ? (
+        <>
+          <div className="flex justify-center w-full pt-6 pb-6 border-b border-white border-opacity-25">
+            <ThanksForSupportMessage wide />
+          </div>
 
-      <div className="flex flex-col space-y-2">
-        <ImprovementPrompts />
-      </div>
+          <div className="flex flex-col space-y-4 text-sm text-gray-100">
+            <ImprovementPrompts />
+          </div>
+
+          <div className="flex justify-center pt-2">
+            <BrandIcon className="h-8 text-white fill-current" />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="flex justify-center w-full pt-6">
+            <ThanksForSupportMessage />
+          </div>
+
+          <div className="flex flex-col space-y-2">
+            <ImprovementPrompts />
+          </div>
+        </>
+      )}
     </div>
   );
 };
@@ -153,11 +172,22 @@ const FooterColumn: FC<FooterColumnProps> = ({ title, children }) => (
   </div>
 );
 
-const ThanksForSupportMessage = ({ withLogo }: { withLogo?: boolean }) => (
-  <div className="flex flex-col items-center w-64 space-y-2 tablet:space-y-4 tablet:justify-between tablet:items-start tablet:pl-4 tablet:ml-4 tablet:border-l tablet:border-white">
+const ThanksForSupportMessage = ({
+  withLogo,
+  wide,
+}: {
+  withLogo?: boolean;
+  wide?: boolean;
+}) => (
+  <div
+    className={clsx(
+      'flex flex-col items-center space-y-2 tablet:space-y-4 tablet:justify-between tablet:items-start tablet:pl-4 tablet:ml-4 tablet:border-l tablet:border-white',
+      wide ? 'w-full' : 'w-64',
+    )}
+  >
     <p className="text-xl leading-tight tracking-wide text-center tablet:text-left">
       THANK YOU FOR
-      <br />
+      {!wide && <br />}
       YOUR SUPPORT!
     </p>
 
@@ -176,10 +206,22 @@ const ThanksForSupportMessage = ({ withLogo }: { withLogo?: boolean }) => (
 
 const SocialsBlock = () => (
   <>
-    <InstagramIcon className="w-10 h-10 cursor-pointer" />
-    <FacebookIcon className="w-10 h-10 cursor-pointer" />
-    <TwitterIcon className="w-10 h-10 cursor-pointer" />
-    <YoutubeIcon className="w-10 h-10 cursor-pointer" />
+    <a href="https://instagram.com/tastiestio" target="_blank" rel="noreferrer">
+      <InstagramIcon className="w-10 h-10 cursor-pointer" />
+    </a>
+    <a href="https://facebook.com/tastiestio" target="_blank" rel="noreferrer">
+      <FacebookIcon className="w-10 h-10 cursor-pointer" />
+    </a>
+    <a href="https://youtube.com/tastiestio" target="_blank" rel="noreferrer">
+      <TwitterIcon className="w-10 h-10 cursor-pointer" />
+    </a>
+    <a
+      href="https://www.youtube.com/channel/UCSK_WmrVPgwxRBrqKbNxLkg"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <YoutubeIcon className="w-10 h-10 cursor-pointer" />
+    </a>
   </>
 );
 
@@ -208,23 +250,23 @@ const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
 const ImprovementPrompts = () => (
   <>
     <div className="leading-tight whitespace-nowrap">
-      <p className="font-bold">Don't See Your Favourite Restaurant?</p>
+      <p className="">Don't See Your Favourite Restaurant?</p>
       <Link href={`/help?type=${SupportRequestType.GENERAL}`}>
-        <a className="text-sm underline">Help our sales team sign them</a>
+        <a className="text-xs underline">Help our sales team sign them</a>
       </Link>
     </div>
 
     <div className="leading-tight">
-      <p className="font-bold">Don't See A Key Feature?</p>
+      <p className="">Don't See A Key Feature?</p>
       <Link href={`/help?type=${SupportRequestType.FEATURE_REQUEST}`}>
-        <a className="text-sm underline">Help our product team add it</a>
+        <a className="text-xs underline">Help our product team add it</a>
       </Link>
     </div>
 
     <div className="leading-tight">
-      <p className="font-bold">Found a bug?</p>
+      <p className="">Found a bug?</p>
       <Link href={`/help?type=${SupportRequestType.BUG}`}>
-        <a className="text-sm underline">Help our engineering team fix it</a>
+        <a className="text-xs underline">Help our engineering team fix it</a>
       </Link>
     </div>
   </>
