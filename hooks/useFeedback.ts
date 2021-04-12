@@ -27,7 +27,7 @@ export function useFeedback() {
   ): Promise<{ success: boolean }> => {
     // Send recommendation to Firestore
     const recommendation: IRestaurantRecommendation = {
-      userId: user.uid,
+      userId: user?.uid ?? null,
       restaurantName,
       timestamp: Date.now(),
     };

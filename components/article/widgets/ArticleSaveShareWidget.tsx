@@ -8,6 +8,7 @@ import {
   HeartIcon,
   ShareIcon,
 } from '@tastiest-io/tastiest-icons';
+import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
@@ -134,9 +135,19 @@ export function ArticleSaveShareWidget(props: ArticleSaveShareProps) {
               className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 cursor-pointer hover:bg-white rounded-l-md"
             >
               {isArticleSaved ? (
-                <HeartFilledIcon className={isDesktop ? 'h-6' : 'h-8'} />
+                <HeartFilledIcon
+                  className={clsx(
+                    'text-primary fill-current',
+                    isDesktop ? 'h-6' : 'h-8',
+                  )}
+                />
               ) : (
-                <HeartIcon className={isDesktop ? 'h-6' : 'h-8'} />
+                <HeartIcon
+                  className={clsx(
+                    'text-primary fill-current',
+                    isDesktop ? 'h-6' : 'h-8',
+                  )}
+                />
               )}
               <span>Save</span>
             </div>

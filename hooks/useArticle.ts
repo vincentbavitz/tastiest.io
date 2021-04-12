@@ -1,5 +1,6 @@
 import { UserData } from '@tastiest-io/tastiest-utils';
-import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { openSignInModal } from 'state/navigation';
 import { useAuth } from './useAuth';
 import { useUserData } from './useUserData';
 
@@ -7,11 +8,11 @@ export function useArticle() {
   const { user } = useAuth();
   const { userData = {}, setUserData } = useUserData(user);
   const { isSignedIn } = useAuth();
-  const router = useRouter();
+  const dispatch = useDispatch();
 
   const toggleSaveArticle = (slug: string) => {
     if (!isSignedIn) {
-      router.push('/?login=1');
+      dispatch(openSignInModal());
     }
 
     const isArticleSaved =

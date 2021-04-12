@@ -1,4 +1,4 @@
-import { LocationIcon } from '@tastiest-io/tastiest-icons';
+import { LocationBrandIcon } from '@tastiest-io/tastiest-icons';
 import { titleCase } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import React from 'react';
@@ -14,7 +14,7 @@ export function CityIndictor(props: Props) {
   return (
     <div className="inline-flex items-center">
       <div className="icon">
-        <LocationIcon className="w-5 mr-2" />
+        <LocationBrandIcon className="w-5 mr-2" />
       </div>
       <div
         className={classNames(

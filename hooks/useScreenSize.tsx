@@ -7,7 +7,7 @@ export interface IScreen {
   isTablet: boolean;
   isDesktop: boolean;
   isHuge: boolean;
-  isLoaded: boolean;
+  isLoading: boolean;
 }
 
 export const ScreenContext = React.createContext(undefined);
@@ -20,7 +20,7 @@ export const ScreenProvider = ({ children }) => {
   const [isTablet, setIsTablet] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const [isHuge, setIsHuge] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const _isMobile = width <= UI.MOBILE_BREAKPOINT;
@@ -36,7 +36,7 @@ export const ScreenProvider = ({ children }) => {
 
     // Set loaded status
     if (width !== -1) {
-      setIsLoaded(true);
+      setIsLoading(false);
     }
   }, [width]);
 
@@ -45,7 +45,7 @@ export const ScreenProvider = ({ children }) => {
     isTablet,
     isDesktop,
     isHuge,
-    isLoaded,
+    isLoading,
     width,
   };
 
@@ -57,5 +57,14 @@ export const ScreenProvider = ({ children }) => {
 };
 
 export function useScreenSize() {
-  return useContext(ScreenContext);
+  return (
+    useContext(ScreenContext) ?? {
+      isMobile: true,
+      isTablet: false,
+      isDesktop: false,
+      isHuge: false,
+      width: -1,
+      isLoading: true,
+    }
+  );
 }
