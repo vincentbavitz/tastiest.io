@@ -1,3 +1,4 @@
+import { LeftOutlined } from '@ant-design/icons';
 import { Button, Input, Select } from '@tastiest-io/tastiest-components';
 import { dlog, SupportRequestType } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
@@ -6,7 +7,9 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import { useSupport } from 'hooks/useSupport';
 import { useUserData } from 'hooks/useUserData';
 import { InferGetServerSidePropsType } from 'next';
-import { HelpHero } from 'public/assets/page';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { HelpHero, HelpHeroSuccess } from 'public/assets/page';
 import React, { useState } from 'react';
 import { UI } from '../constants';
 
@@ -32,14 +35,19 @@ const Help = (
 ) => {
   const [sent, setHasSent] = useState(false);
 
-  return sent ? <HelpSuccess /> : <HelpForm setHasSent={setHasSent} />;
+  return sent ? (
+    <HelpSuccess setHasSent={setHasSent} />
+  ) : (
+    <HelpForm setHasSent={setHasSent} />
+  );
 };
 
-interface HelpFormProps {
+interface HelpSubProps {
   setHasSent: (value: boolean) => void;
 }
 
-const HelpForm = ({ setHasSent }: HelpFormProps) => {
+const HelpForm = ({ setHasSent }: HelpSubProps) => {
+  const router = useRouter();
   const { isMobile, isTablet } = useScreenSize();
 
   // Update user data
@@ -54,10 +62,14 @@ const HelpForm = ({ setHasSent }: HelpFormProps) => {
   const [name, setName] = useState<string>(_name ?? '');
   const [email, setEmail] = useState<string>(_email ?? '');
 
+  const initialSupportType =
+    SupportRequestType[String(router.query?.type)] ??
+    SupportRequestType.GENERAL;
+
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [supportType, setSupportType] = useState<SupportRequestType>(
-    SupportRequestType.GENERAL,
+    initialSupportType,
   );
 
   const { supportRequests, makeSupportRequest } = useSupport();
@@ -149,7 +161,7 @@ const HelpForm = ({ setHasSent }: HelpFormProps) => {
                   <option
                     key={option.key}
                     value={option.key}
-                    // selected={ === option.key}
+                    selected={supportType === option.key}
                   >
                     {option.label}
                   </option>
@@ -227,8 +239,67 @@ const HelpForm = ({ setHasSent }: HelpFormProps) => {
   );
 };
 
-const HelpSuccess = () => {
-  return <div className="w-full h-64 bg-red-300"></div>;
+const HelpSuccess = ({ setHasSent }: HelpSubProps) => {
+  const { isMobile, isTablet, isDesktop } = useScreenSize();
+
+  const heroTranslateX = isMobile ? '3rem' : isTablet ? '8rem' : '0';
+
+  return (
+    <div className="w-full pt-6 pb-10 mobile:pb-24 mobile:pt-16">
+      <Contained maxWidth={UI.FORM_WIDTH_PX}>
+        <div className="relative flex flex-col-reverse w-full mobile:flex-row mobile:justify-end">
+          <HelpHeroSuccess
+            style={{
+              width: isMobile ? '20rem' : '33rem',
+              transform: `translateX(${heroTranslateX})`,
+            }}
+          />
+
+          <div
+            // style={{ marginLeft: '-15.5rem' }}
+            className="flex flex-col items-center justify-center w-full mb-10 space-y-4 mobile:mb-10 mobile:absolute mobile:inset-0 mobile:w-7/12 tablet:w-5/12"
+          >
+            <h2 className="text-3xl text-center font-somatic text-primary">
+              Thank you for
+              <br /> your request...
+              <br />
+              we'll get back
+              <br /> to you shortly.
+            </h2>
+
+            <div>
+              <div className="flex items-center space-x-4">
+                <Link href="/">
+                  <a>
+                    <Button
+                      color="primary"
+                      className=""
+                      onClick={() => null}
+                      prefix={
+                        <LeftOutlined className="text-white fill-current" />
+                      }
+                    >
+                      Back
+                    </Button>
+                  </a>
+                </Link>
+
+                <Button
+                  color="secondary"
+                  className=""
+                  onClick={() => setHasSent(false)}
+                >
+                  New Request
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Contained>
+
+      <div className="relative flex flex-col items-center w-full mt-6 mb-12 space-y-4"></div>
+    </div>
+  );
 };
 
 export default Help;

@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-function SvgWellGetBack(props: React.SVGProps<SVGSVGElement>) {
+function SvgHelpHeroSuccess(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
-      id="well-get-back_svg__Layer_1"
+      id="help-hero-success_svg__Layer_1"
       data-name="Layer 1"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 623.11 431.19"
@@ -12,12 +12,12 @@ function SvgWellGetBack(props: React.SVGProps<SVGSVGElement>) {
       <defs>
         <style>
           {
-            '.well-get-back_svg__cls-1{fill:#ffd400}.well-get-back_svg__cls-3{fill:#97ca67}.well-get-back_svg__cls-4{fill:#fc6}.well-get-back_svg__cls-5{fill:#fd8f04}.well-get-back_svg__cls-6{fill:#5b3103}.well-get-back_svg__cls-7{fill:#193441}.well-get-back_svg__cls-8{fill:#faa747}.well-get-back_svg__cls-9{fill:#fc4c01}.well-get-back_svg__cls-11{fill:#ffe38d}.well-get-back_svg__cls-12{fill:#fff0ce}'
+            '.help-hero-success_svg__cls-1{fill:#ffd400}.help-hero-success_svg__cls-3{fill:#97ca67}.help-hero-success_svg__cls-4{fill:#fc6}.help-hero-success_svg__cls-5{fill:#fd8f04}.help-hero-success_svg__cls-6{fill:#5b3103}.help-hero-success_svg__cls-7{fill:#193441}.help-hero-success_svg__cls-8{fill:#faa747}.help-hero-success_svg__cls-9{fill:#fc4c01}.help-hero-success_svg__cls-11{fill:#ffe38d}.help-hero-success_svg__cls-12{fill:#fff0ce}'
           }
         </style>
       </defs>
       <path
-        className="well-get-back_svg__cls-1"
+        className="help-hero-success_svg__cls-1"
         d="M183.67 463.55H672a1.42 1.42 0 000-2.84H183.67a1.42 1.42 0 100 2.84M153.5 460.71H51.69a1.42 1.42 0 000 2.84H153.5a1.42 1.42 0 000-2.84"
         transform="translate(-50.28 -32.35)"
       />
@@ -28,7 +28,7 @@ function SvgWellGetBack(props: React.SVGProps<SVGSVGElement>) {
         opacity={0.6}
       />
       <rect
-        className="well-get-back_svg__cls-3"
+        className="help-hero-success_svg__cls-3"
         x={308.05}
         y={25.16}
         width={238.79}
@@ -36,7 +36,7 @@ function SvgWellGetBack(props: React.SVGProps<SVGSVGElement>) {
         rx={7.53}
       />
       <rect
-        className="well-get-back_svg__cls-3"
+        className="help-hero-success_svg__cls-3"
         x={308.05}
         y={413.33}
         width={238.79}
@@ -44,83 +44,83 @@ function SvgWellGetBack(props: React.SVGProps<SVGSVGElement>) {
         rx={7.53}
       />
       <path
-        className="well-get-back_svg__cls-4"
+        className="help-hero-success_svg__cls-4"
         d="M564.09 391.75a13.64 13.64 0 00-7.19-7.93c-7.7-3.15-18.22-4.5-26.81-1.17-12.79 4.94-50.08 10.77-85.24-.45a95 95 0 00-31.55-4.34c-7.7.21-14.64 5.82-18 14.57a162.87 162.87 0 00-5.78 18.28l-4.78 18.93c-.72 2.83.93 5.73 3.28 5.75 16.61.19 72.5 0 91.81-.11 18.82.08 72.36.28 90.46.13 3 0 5.15-3.75 4.23-7.39l-4.37-17.31a161.92 161.92 0 00-6.06-18.96zM523.82 145.81c-20.05 8.31-36.3 4.38-83.66-3.06-18.3-2.87-32-2-41.93.11 8.92 30.4 26.81 55.36 50 69.54l10.65 6.51c8.47 5.18 15.32 13.8 19.46 24.5a.72.72 0 001.4 0c4.13-10.72 11-19.37 19.48-24.56l10.62-6.49c22.63-13.83 40.21-37.92 49.34-67.32-9.37-2.29-23.41-4.18-35.36.77z"
         transform="translate(-50.28 -32.35)"
       />
       <path
-        className="well-get-back_svg__cls-5"
+        className="help-hero-success_svg__cls-5"
         transform="rotate(-83.9 333.031 184.858)"
         d="M364.85 155.28h22.59v35.59h-22.59z"
       />
       <path
-        className="well-get-back_svg__cls-5"
+        className="help-hero-success_svg__cls-5"
         d="M381.12 36.43l-1.51 6.87a4.57 4.57 0 002.89 5.37 4.44 4.44 0 005.72-3.26l2.54-11.53a2 2 0 011.89-1.53c1.66 0 3.33.1 5 .26a2 2 0 011.73 2.39l-2.66 12.1a4.59 4.59 0 002.89 5.37 4.46 4.46 0 005.73-3.26l2.7-12.3a2 2 0 012.57-1.42q2.38.84 4.65 1.87a2 2 0 011.07 2.18l-2.5 11.33a4.58 4.58 0 002.89 5.36 4.44 4.44 0 005.73-3.23l1.55-7.13a2 2 0 013.13-1.1 54.56 54.56 0 0118.64 53.88l-8.56 38.85a41.46 41.46 0 01-49.4 31.58l-25.61-5.64A41.47 41.47 0 01330.64 114l8.55-38.84a54.56 54.56 0 0139.55-41.08 2 2 0 012.38 2.35z"
         transform="translate(-50.28 -32.35)"
       />
       <path
-        className="well-get-back_svg__cls-6"
+        className="help-hero-success_svg__cls-6"
         d="M359.38 128.75a17.75 17.75 0 0032 6.95z"
         transform="translate(-50.28 -32.35)"
       />
       <path
-        className="well-get-back_svg__cls-7"
+        className="help-hero-success_svg__cls-7"
         d="M328.23 254.6h77.07v18.65A23.78 23.78 0 01381.53 297H352a23.78 23.78 0 01-23.78-23.78V254.6z"
         transform="rotate(6.1 645.07 -212.324)"
       />
       <path
-        className="well-get-back_svg__cls-8"
+        className="help-hero-success_svg__cls-8"
         d="M395.8 143a4.89 4.89 0 01-1.71-2.16 4.74 4.74 0 01-.22-2.8 4.66 4.66 0 011.37-2.44 4.82 4.82 0 012.43-1.25 1.87 1.87 0 00-.68-3.68 8.54 8.54 0 00-3.35 15.39 1.87 1.87 0 102.16-3.06zM353.48 136.5a8.66 8.66 0 004.36-2.21 8.51 8.51 0 002.47-4.37 8.52 8.52 0 00-3.41-8.8 1.87 1.87 0 10-2.16 3.06 4.79 4.79 0 01.52 7.39 4.82 4.82 0 01-2.45 1.24 1.88 1.88 0 00.67 3.69z"
         transform="translate(-50.28 -32.35)"
       />
       <path
-        className="well-get-back_svg__cls-9"
+        className="help-hero-success_svg__cls-9"
         d="M332.87 257.92l74.81 8.08 5.65-64.34a22.25 22.25 0 00-19.46-24.42l-29.7-3.24a23.59 23.59 0 00-25.83 21.51z"
         transform="translate(-50.28 -32.35)"
       />
       <path
-        className="well-get-back_svg__cls-5"
+        className="help-hero-success_svg__cls-5"
         d="M335.44 178.82l.52 4.05-.5-4.05.52 4.05-.5-4.05a83.19 83.19 0 01-12.11.37 66.64 66.64 0 01-10.71-1.26 36.47 36.47 0 01-9.71-3.33 18 18 0 01-5-3.8 13.31 13.31 0 01-2.87-5.12 25.21 25.21 0 01-1-7.3 39.77 39.77 0 012-11.9A68.35 68.35 0 01301 135a92.18 92.18 0 016.68-10.61c.94-1.29 1.72-2.29 2.26-3 .26-.33.47-.58.6-.73l.13-.17-2.37-2 2.36 2.05-2.37-2 2.36 2.05-13.44-11.67c-.13.15-1.71 2-4 5.07a110.1 110.1 0 00-8 12.67 80 80 0 00-7.7 20 53.94 53.94 0 00-1.36 11.77 43.17 43.17 0 001.8 12.43 31 31 0 006.64 11.85 36 36 0 009.85 7.62 54.15 54.15 0 0014.74 5.12 91.35 91.35 0 0019.5 1.63c5.23-.1 8.72-.54 9-.57l-2.28-17.65z"
         transform="translate(-50.28 -32.35)"
       />
       <path fill="#ff5800" d="M340.75 137.19l-10.14-2.23-.2.92 10.14 2.22" />
       <path
-        className="well-get-back_svg__cls-9"
+        className="help-hero-success_svg__cls-9"
         transform="rotate(-88.18 300.414 197.603)"
         d="M327.8 170.54h28.86v34.59H327.8z"
       />
       <path
-        className="well-get-back_svg__cls-11"
+        className="help-hero-success_svg__cls-11"
         d="M417.53 115.75c-1.89 8.61 3.86 17.19 12.84 19.16s17.8-3.41 19.69-12-3.86-17.19-12.85-19.16-17.79 3.39-19.68 12z"
         transform="translate(-50.28 -32.35)"
       />
       <path
-        className="well-get-back_svg__cls-12"
+        className="help-hero-success_svg__cls-12"
         d="M420.8 116.47a16 16 0 1019-12.17 16 16 0 00-19 12.17z"
         transform="translate(-50.28 -32.35)"
       />
       <path
-        className="well-get-back_svg__cls-5"
+        className="help-hero-success_svg__cls-5"
         transform="rotate(-84.55 333.749 381.184)"
         d="M367.27 333.34h18.8v72.73h-18.8z"
       />
       <path
-        className="well-get-back_svg__cls-7"
+        className="help-hero-success_svg__cls-7"
         d="M430.38 402.93l3.48-36.48a1.68 1.68 0 00-1.51-1.83l-13.26-1.26-2.53 26.55a13.32 13.32 0 0012 14.53 1.68 1.68 0 001.82-1.51z"
         transform="translate(-50.28 -32.35)"
       />
       <path
-        className="well-get-back_svg__cls-7"
+        className="help-hero-success_svg__cls-7"
         transform="rotate(-84.55 364.845 383.808)"
         d="M397.77 354.5h20v35.66h-20z"
       />
       <path
-        className="well-get-back_svg__cls-11"
+        className="help-hero-success_svg__cls-11"
         d="M427.81 118.39a9.33 9.33 0 1011.11-7.11 9.33 9.33 0 00-11.11 7.11z"
         transform="translate(-50.28 -32.35)"
       />
       <path
-        className="well-get-back_svg__cls-5"
+        className="help-hero-success_svg__cls-5"
         d="M301.67 408.16h18.79l14.35-102.58h-18.8l-14.34 102.58z"
       />
       <path
@@ -131,11 +131,11 @@ function SvgWellGetBack(props: React.SVGProps<SVGSVGElement>) {
         strokeWidth={21}
       />
       <path
-        className="well-get-back_svg__cls-7"
+        className="help-hero-success_svg__cls-7"
         d="M303.82 371.31h24.8l18.92-135.36h-24.8l-18.92 135.36z"
       />
       <path
-        className="well-get-back_svg__cls-12"
+        className="help-hero-success_svg__cls-12"
         d="M428.6 129l-15.75 15.34a16.64 16.64 0 01-15.17 4.33l-27.47-6-.61 2.75 27.48 6a19.42 19.42 0 0017.73-5.07L430.56 131l-2-2z"
         transform="translate(-50.28 -32.35)"
       />
@@ -155,22 +155,22 @@ function SvgWellGetBack(props: React.SVGProps<SVGSVGElement>) {
         fill="#e8e1d7"
       />
       <path
-        className="well-get-back_svg__cls-5"
+        className="help-hero-success_svg__cls-5"
         d="M402 223.9a51.85 51.85 0 01-2.47 5.17 62.13 62.13 0 01-4.63 7.34 41.22 41.22 0 01-10.66 10.41 25.16 25.16 0 01-6.53 3 22 22 0 01-7.48.8c-.43 0-.84-.06-1.26-.11a24.57 24.57 0 01-6.59-1.61 25.77 25.77 0 01-8.76-5.95 35.5 35.5 0 01-4.78-6.08 47.71 47.71 0 01-4.29-8.67 44.06 44.06 0 01-.92-2.73c-.09-.31-.15-.54-.19-.67v-.13l-3.73.92 3.74-.88-3.73.92 3.74-.88-17.32 4.09a49.6 49.6 0 001.84 5.79 65 65 0 004.11 8.86 53.11 53.11 0 0012.47 15.28 42 42 0 0022.56 9.49c.68.07 1.36.13 2.06.17a39.79 39.79 0 0012.43-1.17 41.4 41.4 0 009.36-3.69 51.58 51.58 0 0012.62-9.77 74.59 74.59 0 0011.3-15.59 66.82 66.82 0 003.78-7.9L402 223.9z"
         transform="translate(-50.28 -32.35)"
       />
       <path
-        className="well-get-back_svg__cls-5"
+        className="help-hero-success_svg__cls-5"
         d="M328.7 229.85l15.42 1.65.13-.12.64-5.92a12.41 12.41 0 00-11-13.65l-6.32-.67c-3.62-.39-6.9 2.62-7.34 6.72-.66 6.05 3.14 11.42 8.47 11.99z"
         transform="translate(-50.28 -32.35)"
       />
       <path
-        className="well-get-back_svg__cls-9"
+        className="help-hero-success_svg__cls-9"
         d="M391.76 200.71l-.44-6.18.21 6.19h.23l-.44-6.18.21 6.19v-.57.57-.57.57s.44 0 1.07.06a13.3 13.3 0 012.53.54 9.82 9.82 0 012 .9 8.46 8.46 0 012.68 2.42 14.38 14.38 0 012.34 5.63 3.3 3.3 0 01.06.62 11.26 11.26 0 01-.08 1.51 29.52 29.52 0 01-1.06 5 62.08 62.08 0 01-2.85 7.68c-.46 1-.86 1.88-1.14 2.44-.13.28-.24.49-.3.62l-.07.13.14.08-.14-.08.14.08-.14-.08 21 11.1c.13-.25 1.72-3.28 3.51-7.71.89-2.22 1.83-4.79 2.65-7.6a53.06 53.06 0 001.87-9.12 33.7 33.7 0 00.2-4.66 27.15 27.15 0 00-.59-5.07 39.16 39.16 0 00-5.35-13.29 33 33 0 00-6.24-7 33.45 33.45 0 00-10.2-5.84 36.46 36.46 0 00-8.39-1.92 29.5 29.5 0 00-5.06-.14l1.69 23.72z"
         transform="translate(-50.28 -32.35)"
       />
       <path
-        className="well-get-back_svg__cls-6"
+        className="help-hero-success_svg__cls-6"
         d="M361.61 98.7l-.81 3.69a3.08 3.08 0 006 1.32l.81-3.69a3.08 3.08 0 10-6-1.32M396.07 106.26l-.81 3.69a3.08 3.08 0 106 1.33l.81-3.7a3.08 3.08 0 10-6-1.32"
         transform="translate(-50.28 -32.35)"
       />
@@ -180,16 +180,16 @@ function SvgWellGetBack(props: React.SVGProps<SVGSVGElement>) {
         fill="#ffd978"
       />
       <path
-        className="well-get-back_svg__cls-7"
+        className="help-hero-success_svg__cls-7"
         d="M332.57 460.78h36.65a1.68 1.68 0 001.67-1.68v-13.32h-26.67a13.32 13.32 0 00-13.32 13.32 1.68 1.68 0 001.67 1.68z"
         transform="translate(-50.28 -32.35)"
       />
       <path
-        className="well-get-back_svg__cls-7"
+        className="help-hero-success_svg__cls-7"
         d="M319.63 420.83h-20l4.99-35.65h19.99l-4.98 35.65z"
       />
       <rect
-        className="well-get-back_svg__cls-5"
+        className="help-hero-success_svg__cls-5"
         x={285.56}
         y={96.8}
         width={22.91}
@@ -198,7 +198,7 @@ function SvgWellGetBack(props: React.SVGProps<SVGSVGElement>) {
         transform="rotate(-75.86 251.13 128.804)"
       />
       <rect
-        className="well-get-back_svg__cls-5"
+        className="help-hero-success_svg__cls-5"
         x={282.15}
         y={84.84}
         width={6.37}
@@ -210,4 +210,4 @@ function SvgWellGetBack(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export default SvgWellGetBack;
+export default SvgHelpHeroSuccess;
