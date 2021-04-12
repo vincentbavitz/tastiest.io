@@ -1,7 +1,8 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLockBodyScroll } from 'react-use';
 import { UI } from '../constants';
 
@@ -22,6 +23,18 @@ export default function PageLoader() {
     setLoading(true);
     setTimeout(() => setDisplayLoading(true), 500);
   });
+
+  // Hide the page until we have the screen width
+  const { isLoaded } = useScreenSize();
+  useEffect(() => {
+    if (isLoaded) {
+      setLoading(false);
+      setDisplayLoading(false);
+    } else {
+      setLoading(true);
+      setDisplayLoading(true);
+    }
+  }, [isLoaded]);
 
   // Lock scrolling on loading
   useLockBodyScroll(loading);
