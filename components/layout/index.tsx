@@ -13,7 +13,7 @@ interface Props {
 
 export default function Layout({ children }: Props) {
   // We sometimes render elements which stick to the footer,
-  // like <SuggestDish />
+  // like <SuggestRestaurant />
 
   return (
     <>

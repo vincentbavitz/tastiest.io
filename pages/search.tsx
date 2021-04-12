@@ -1,5 +1,6 @@
 import { CMS, CmsApi, dlog, IPost } from '@tastiest-io/tastiest-utils';
 import RecommendedPosts from 'components/sections/RecommendedPosts';
+import { SuggestRestaurant } from 'components/SuggestRestaurant';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
@@ -8,7 +9,6 @@ import React from 'react';
 import ReactPaginate from 'react-paginate';
 import { ArticleCardRow } from '../components/cards/ArticleCardRow';
 import { Contained } from '../components/Contained';
-import { SuggestDish } from '../components/SuggestDish';
 import { METADATA, SEARCH } from '../constants';
 
 interface Props {
@@ -150,7 +150,7 @@ const Search = (
         ></RecommendedPosts>
       </div>
 
-      <SuggestDish />
+      <SuggestRestaurant />
     </div>
   );
 };

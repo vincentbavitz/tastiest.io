@@ -5,6 +5,7 @@ import {
 } from '@tastiest-io/tastiest-icons';
 import { IPost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
+import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import router from 'next/dist/client/router';
 import Link from 'next/link';
@@ -31,7 +32,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
   const { isTablet, isDesktop, isHuge } = useScreenSize();
 
   const [ref, { width }] = useMeasure();
-  const isSmall = width < 130;
+  const isSmall = width < 180;
 
   const { href, as } = generateURL({ city, slug, cuisine });
   const handleClick = (e: SyntheticEvent) => {
@@ -73,7 +74,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
             paddingBottom: '2.1em',
           }}
           className={classNames(
-            !isDesktop ? 'text-base' : isSmall ? 'text-lg' : 'text-xl',
+            isSmall ? 'text-lg' : 'text-xl',
             'font-somatic text-primary hover:underline overflow-hidden cursor-pointer',
           )}
         >
@@ -85,12 +86,20 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
         <div className="flex justify-between pr-2 mt-2 text-primary">
           <div
             onClick={onToggleFavourite}
-            className="flex items-center text-sm cursor-pointer"
+            className={clsx(
+              'flex items-center cursor-pointer',
+              isSmall ? 'text-sm' : 'text-base',
+            )}
           >
             {isFavourite ? (
               <HeartFilledIcon className={!isDesktop ? 'h-8' : 'h-8'} />
             ) : (
-              <HeartIcon className={!isDesktop ? 'h-8' : 'h-8'} />
+              <HeartIcon
+                className={clsx(
+                  'text-primary fill-current',
+                  !isDesktop ? 'h-8' : 'h-8',
+                )}
+              />
             )}
             {!!isDesktop && isFavourite ? 'Unsave' : 'Save'}
           </div>

@@ -131,7 +131,9 @@ const SavedPlacesBackdrop = ({ isDesktop }: IScreen) => {
         </Contained>
       ) : (
         <>
-          <FavouritesHero className="w-10/12" />
+          <div className="relative flex justify-center w-full">
+            <FavouritesHero style={{ width: '150%' }} />
+          </div>
 
           <div className="absolute inset-0 flex items-center justify-center">
             <h1

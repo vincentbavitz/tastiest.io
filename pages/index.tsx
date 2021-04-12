@@ -1,4 +1,5 @@
 import { CmsApi, dlog, IPost } from '@tastiest-io/tastiest-utils';
+import { SuggestRestaurant } from 'components/SuggestRestaurant';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
@@ -8,7 +9,6 @@ import { HomeFavouritesSection } from '../components/home/HomeFavouritesSection'
 import { HomeMapSection } from '../components/home/HomeMapSection';
 import { HomeRecentSearchesSection } from '../components/home/HomeRecentSearchesSection';
 import { HomeSearchSection } from '../components/home/HomeSearchSection';
-import { SuggestDish } from '../components/SuggestDish';
 import { METADATA } from '../constants';
 import { useAuth } from '../hooks/useAuth';
 import { useUserData } from '../hooks/useUserData';
@@ -71,7 +71,7 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
 
         <HomeFavouritesSection cards={cards} />
 
-        <SuggestDish />
+        <SuggestRestaurant />
       </div>
     </>
   );

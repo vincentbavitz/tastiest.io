@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-function SvgSuggestDishIllustrationMobile(
+function SvgSuggestRestaurantArticleIllustrationMobile(
   props: React.SVGProps<SVGSVGElement>,
 ) {
   return (
     <svg
-      id="suggest-dish-illustration-mobile_svg__Layer_1"
+      id="suggest-restaurant-article-illustration-mobile_svg__Layer_1"
       data-name="Layer 1"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 483.18 365.4"
@@ -231,4 +231,4 @@ function SvgSuggestDishIllustrationMobile(
   );
 }
 
-export default SvgSuggestDishIllustrationMobile;
+export default SvgSuggestRestaurantArticleIllustrationMobile;

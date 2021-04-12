@@ -1,9 +1,9 @@
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import { useFeedback } from 'hooks/useFeedback';
 import { useScreenSize } from 'hooks/useScreenSize';
-import { SuggestDishIllustrationDesktop } from 'public/assets/illustrations';
+import { SuggestRestaurantArticleIllustrationDesktop } from 'public/assets/illustrations';
 import React, { useState } from 'react';
-import { Contained } from './Contained';
+import { Contained } from '../Contained';
 
 interface Props {
   dish: string;
@@ -12,7 +12,7 @@ interface Props {
 
 // Use klaviyo for emails
 
-export function RecommendForm(props: Props) {
+export function ArticleSuggestRestaurant(props: Props) {
   const { isDesktop } = useScreenSize();
 
   return (
@@ -20,21 +20,23 @@ export function RecommendForm(props: Props) {
       {isDesktop ? (
         <div className="flex items-center justify-start mt-10 space-x-6">
           <div className="flex-1 w-7/12">
-            <RecommendFormContent {...props} />
+            <ArticleSuggestRestaurantContent {...props} />
           </div>
 
           <div className="w-4/12">
-            <SuggestDishIllustrationDesktop
+            <SuggestRestaurantArticleIllustrationDesktop
               style={{ height: '16rem', transform: 'rotateY(180deg)' }}
             />
           </div>
         </div>
       ) : (
         <div className="flex flex-col items-center mt-10 space-y-6">
-          <SuggestDishIllustrationDesktop style={{ maxHeight: '22rem' }} />
+          <SuggestRestaurantArticleIllustrationDesktop
+            style={{ maxHeight: '22rem' }}
+          />
 
           <div className="pb-8 pl-3">
-            <RecommendFormContent {...props} />
+            <ArticleSuggestRestaurantContent {...props} />
           </div>
         </div>
       )}
@@ -42,7 +44,7 @@ export function RecommendForm(props: Props) {
   );
 }
 
-const RecommendFormContent = ({ dish, city }: Props) => {
+const ArticleSuggestRestaurantContent = ({ dish, city }: Props) => {
   const { suggestRestaurant } = useFeedback();
 
   const { isDesktop } = useScreenSize();

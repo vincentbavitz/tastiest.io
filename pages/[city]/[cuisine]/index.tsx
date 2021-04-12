@@ -8,7 +8,7 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { ArticleCard } from 'components/cards/ArticleCard';
-import { SuggestDish } from 'components/SuggestDish';
+import { SuggestRestaurant } from 'components/SuggestRestaurant';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
@@ -107,12 +107,14 @@ export default function Cuisine(
         </Head>
 
         <div className="flex flex-col w-full space-y-10">
-          <div className="relative mt-0 tablet:mt-6">
+          <div className="relative mt-6 tablet:mt-6">
             <CuisineHero cuisine={cuisine} />
 
             <div className="absolute inset-0">
               <div
-                style={{ marginTop: '3vw' }}
+                style={{
+                  marginTop: isDesktop ? '2rem' : isTablet ? '1rem' : '0.5rem',
+                }}
                 className="flex justify-center w-full"
               >
                 <span className="text-4xl font-somatic text-primary">
@@ -123,7 +125,7 @@ export default function Cuisine(
           </div>
 
           {cards.length ? (
-            <div className="pt-10 pb-20 ">
+            <div className="pt-10 pb-20">
               <CardGrid horizontalScroll rowLimit={2}>
                 {[
                   ...cards,
@@ -151,7 +153,7 @@ export default function Cuisine(
       </div>
 
       <div className="pt-16">
-        <SuggestDish />
+        <SuggestRestaurant />
       </div>
     </>
   );
@@ -166,7 +168,7 @@ const NoPostsForCuisine = ({
   isMobile,
   cuisineName,
 }: NoPostsForCuisineProps) => (
-  <div className="mt-6 tablet:flex tablet:justify-center tablet:w-full">
+  <div className="pt-10 tablet:pt-16 tablet:flex tablet:justify-center tablet:w-full">
     <div
       style={{ minWidth: isMobile ? 'unset' : '600px', maxWidth: '1100px' }}
       className={clsx(
@@ -180,7 +182,7 @@ const NoPostsForCuisine = ({
           Sorry! There are no articles {!isMobile && <br />} for {cuisineName}{' '}
           yet.
         </h4>
-        <h2 className="text-3xl leading-tight text-center mobile:text-left font-somatic text-primary mobile:whitespace-nowrap">
+        <h2 className="text-3xl leading-tight text-center mobile:text-left font-somatic text-primary">
           We are still {!isMobile && <br />}
           on the lookout {!isMobile && <br />} for the best dishes
           {!isMobile && <br />} near you!

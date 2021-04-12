@@ -1,6 +1,6 @@
 // [slug].js
 import { CmsApi, dlog, IPost } from '@tastiest-io/tastiest-utils';
-import { RecommendForm } from 'components/RecommendForm';
+import { ArticleSuggestRestaurant } from 'components/article/ArticleSuggestRestaurant';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
@@ -82,7 +82,7 @@ function Post(post: IPost) {
 
       <Article {...post} />
 
-      <RecommendForm dish={post?.dishName} city={post?.city} />
+      <ArticleSuggestRestaurant dish={post?.dishName} city={post?.city} />
     </>
   );
 }
