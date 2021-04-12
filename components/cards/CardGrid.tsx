@@ -36,9 +36,12 @@ export function CardGrid(props: Props) {
     isTablet ? size === 'small' ? 3 : 2 :
     1;
 
+  // Rows will be as little as possible, but never going over rowLimit
+  const rows = Math.min(rowLimit, Math.ceil(children.length / cols));
+
   // Pagination
   const cards = rowLimit
-    ? children.slice(0, isMobile && !horizontalScroll ? 4 : cols * rowLimit)
+    ? children.slice(0, isMobile && !horizontalScroll ? 4 : cols * rows)
     : children;
 
   return (
@@ -65,7 +68,7 @@ export function CardGrid(props: Props) {
         <Contained>
           <div
             className={classNames(
-              `grid grid-rows-${Math.ceil(rowLimit)}`,
+              `grid grid-rows-${rows}`,
               `grid-cols-${cols}`,
               isDesktop && (size === 'small' ? 'gap-6' : 'gap-8'),
               isTablet && (size === 'small' ? 'gap-4' : 'gap-6'),
