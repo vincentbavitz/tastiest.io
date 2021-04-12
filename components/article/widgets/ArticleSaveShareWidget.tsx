@@ -44,7 +44,7 @@ const useSaveShare = ({ id, title, slug }: ArticleSaveShareProps) => {
 
   const router = useRouter();
   const articleUrl = `tastiest.io${router.asPath}`;
-  const isArticleSaved = userData?.savedArticles?.find(saved => id === saved);
+  const isArticleSaved = userData?.savedArticles?.find(saved => slug === saved);
 
   const dropdownItems: Array<IShareDropdownItems> = [
     {
@@ -131,7 +131,7 @@ export function ArticleSaveShareWidget(props: ArticleSaveShareProps) {
             className="flex my-4 rounded-md cursor-pointer bg-soft text-primary"
           >
             <div
-              onClick={() => toggleSaveArticle(props.id)}
+              onClick={() => toggleSaveArticle(props.slug)}
               className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 cursor-pointer hover:bg-white rounded-l-md"
             >
               {isArticleSaved ? (
