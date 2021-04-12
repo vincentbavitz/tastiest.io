@@ -1,11 +1,11 @@
 import {
   CmsApi,
+  dlog,
   IPost,
   IRecentSearch,
   UserData,
 } from '@tastiest-io/tastiest-utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { dlog } from 'utils/development';
 import { IState } from '../state/reducers';
 import { setSearchResultItems } from '../state/search';
 import { useAuth } from './useAuth';

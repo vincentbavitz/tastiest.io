@@ -62,7 +62,7 @@ export function useFeedback() {
   //       seen: false,
   //       resolved: false,
   //       priority: 'normal',
-  //       openedAt: Date.now(),
+  //       createdAt: Date.now(),
   //       updatedAt: null,
   //     };
 

@@ -1,6 +1,7 @@
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import { CheckIcon } from '@tastiest-io/tastiest-icons';
 import {
+  dlog,
   IDateObject,
   IUserDetails,
   IUserPreferences,
@@ -18,7 +19,6 @@ import { InferGetServerSidePropsType } from 'next';
 import { PreferencesHero } from 'public/assets/page';
 import React, { ReactNode, useState } from 'react';
 import { UserDataApi } from 'services/userData';
-import { dlog } from 'utils/development';
 import { UI } from '../constants';
 
 export const getServerSideProps = async context => {
@@ -254,7 +254,6 @@ const Preferences = ({
 
         <div className="flex justify-center w-full pb-16 mt-6 tablet:mt-10">
           <Button
-            color="primary"
             className="w-32 font-somatic tablet:w-auto"
             size={isMobile || isTablet ? 'large' : 'medium'}
             off={!savable}

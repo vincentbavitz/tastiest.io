@@ -24,7 +24,7 @@ export function SuggestDish() {
   // prettier-ignore
   const svgDesktopMarginLeft = isHuge ?
     isSignedIn ? '0rem' : '-4rem' :
-    isSignedIn ? '2rem' : '1rem';
+    isSignedIn ? '2rem' : '-2rem';
 
   return (
     <Contained>

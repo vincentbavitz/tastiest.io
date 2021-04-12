@@ -1,7 +1,8 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
+
 // import Stripe from 'stripe';
-import Analytics = require('analytics-node');
+const Analytics = require('analytics-node');
 
 admin.initializeApp();
 
@@ -16,13 +17,39 @@ admin.initializeApp();
 
 const analytics = new Analytics(functions.config().segment.write_key);
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+// Syncs Contentful restaurant to Firestore on publish
+export const syncContentfulRestaurant = functions.https.onRequest(
+  async (request, response) => {
+    // const cmsApi = new CmsApi(
+    //   functions.config().contentful.space_id,
+    //   functions.config().contentful.access_token,
+    // );
+
+    const rawRestaurant = request.body;
+
+    // const id = rawRestaurant?.sys?.id;
+    // const name = rawRestaurant?.fields?.name;
+    // const website = rawRestaurant?.fields?.website;
+    // const businessType = rawRestaurant?.fields?.businessType;
+
+    console.log('dasd', rawRestaurant?.fields?.name?.['en-US']);
+    response.send('ok');
+    // try {
+    //   const restaurantDetails = await cmsApi.convertRestaurant(request?.body);
+
+    //   if (restaurantDetails) {
+    //     console.log('1');
+    //     response.send(restaurantDetails);
+    //   } else {
+    //     response.send(
+    //       JSON.stringify({ sucess: false, error: 'No restaurant details' }),
+    //     );
+    //   }
+    // } catch (e) {
+    //   response.send(JSON.stringify({ sucess: false, error: 'Unknown error' }));
+    // }
+  },
+);
 
 // enum EmailTemplate {
 //   WELCOME = 'SKFpWy',

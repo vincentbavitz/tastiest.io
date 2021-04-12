@@ -1,6 +1,6 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { CheckoutStep, IOrder } from '@tastiest-io/tastiest-utils';
+import { dlog, IOrder } from '@tastiest-io/tastiest-utils';
 import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetServerSideProps } from 'next';
@@ -9,9 +9,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CheckoutApi } from 'services/checkout';
 import { UserDataApi } from 'services/userData';
-import { setCheckoutStep } from 'state/checkout';
+import { CheckoutStep, setCheckoutStep } from 'state/checkout';
 import { IState } from 'state/reducers';
-import { dlog } from 'utils/development';
 import { CheckoutStepIndicator } from '../components/checkout/CheckoutStepIndicator';
 import { CheckoutStepAuth } from '../components/checkout/steps/CheckoutStepAuth';
 import { CheckoutStepPayment } from '../components/checkout/steps/CheckoutStepPayment';

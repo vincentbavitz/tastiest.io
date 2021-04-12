@@ -1,10 +1,10 @@
 import { ExitIcon } from '@tastiest-io/tastiest-icons';
+import { dlog } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useClickAway, useKey, useLockBodyScroll } from 'react-use';
-import { dlog } from 'utils/development';
+import { useClickAway, useKey } from 'react-use';
 import { UI } from '../constants';
 import { closeSignInModal, collapseSearchOverlay } from '../state/navigation';
 import { IState } from '../state/reducers';
@@ -41,7 +41,7 @@ export function Modal(props: Props) {
   const boxRef = useRef(null);
   useKey('Escape', () => dispatch(closeSignInModal()));
   useClickAway(boxRef, () => dispatch(closeSignInModal()));
-  useLockBodyScroll(isOpen);
+  // useLockBodyScroll(isOpen);
 
   useEffect(() => {
     // If modal is open, close search overlay

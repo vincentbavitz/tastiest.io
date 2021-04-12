@@ -1,13 +1,12 @@
+import { Dropdown, DropdownItem } from '@tastiest-io/tastiest-components';
+import { titleCase } from '@tastiest-io/tastiest-utils';
 import { useUserData } from 'hooks/useUserData';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { titleCase } from 'utils/text';
 import { useAuth } from '../../hooks/useAuth';
 import { openSignInModal } from '../../state/navigation';
 import { UserAvatar } from '../avatar/UserAvatar';
-import { Dropdown } from '../Dropdown';
-import { DropdownItem } from '../DropdownItem';
 
 interface IProfileDropdownItems {
   id: string;
@@ -50,10 +49,6 @@ export function HeaderAvatar() {
       },
     },
   ];
-
-  // const dropdownItems = isSignedIn
-  //   ? signedInDropdownItems
-  //   : signedOutDropdownItems;
 
   const dropdownItems = signedInDropdownItems;
 

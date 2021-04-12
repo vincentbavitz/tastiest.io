@@ -1,9 +1,9 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@tastiest-io/tastiest-icons';
+import { convertRemToPixels } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useEffect, useRef, useState } from 'react';
 import { useScroll, useWindowSize } from 'react-use';
-import { convertRemToPixels } from 'utils/text';
 import { UI } from '../constants';
 import { useDevice } from '../hooks/useDevice';
 import { Contained } from './Contained';
@@ -110,7 +110,9 @@ function HorizontalScrollableInner(props: Props) {
         >
           <ChevronLeftIcon
             onClick={handleLeftScroll}
-            className={classNames('h-8 mt-1 cursor-pointer')}
+            className={classNames(
+              'h-8 mt-1 text-secondary fill-current cursor-pointer',
+            )}
           />
         </div>
 
@@ -125,7 +127,7 @@ function HorizontalScrollableInner(props: Props) {
         >
           <ChevronRightIcon
             onClick={handleRightScroll}
-            className="h-8 mt-1 cursor-pointer"
+            className="h-8 mt-1 cursor-pointer fill-current text-secondary"
           />
         </div>
       </div>

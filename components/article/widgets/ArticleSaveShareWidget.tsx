@@ -1,7 +1,11 @@
-import { Button } from '@tastiest-io/tastiest-components';
 import {
-  HeartFilledPrimaryIcon,
-  HeartPrimaryIcon,
+  Button,
+  Dropdown,
+  DropdownItem,
+} from '@tastiest-io/tastiest-components';
+import {
+  HeartFilledIcon,
+  HeartIcon,
   ShareIcon,
 } from '@tastiest-io/tastiest-icons';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -18,8 +22,6 @@ import {
   shareToTwitter,
   shareToWhatsApp,
 } from '../../../utils/share';
-import { Dropdown } from '../../Dropdown';
-import { DropdownItem } from '../../DropdownItem';
 import { InputGroup } from '../../inputs/InputGroup';
 
 export interface IShareDropdownItems {
@@ -132,9 +134,9 @@ export function ArticleSaveShareWidget(props: ArticleSaveShareProps) {
               className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 cursor-pointer hover:bg-white rounded-l-md"
             >
               {isArticleSaved ? (
-                <HeartFilledPrimaryIcon className={isDesktop ? 'h-6' : 'h-8'} />
+                <HeartFilledIcon className={isDesktop ? 'h-6' : 'h-8'} />
               ) : (
-                <HeartPrimaryIcon className={isDesktop ? 'h-6' : 'h-8'} />
+                <HeartIcon className={isDesktop ? 'h-6' : 'h-8'} />
               )}
               <span>Save</span>
             </div>
@@ -191,12 +193,12 @@ function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
 
         <div className="flex items-center mt-1 space-x-2">
           {isArticleSaved ? (
-            <HeartFilledPrimaryIcon
+            <HeartFilledIcon
               onClick={() => toggleSaveArticle(slug)}
               className="h-8"
             />
           ) : (
-            <HeartPrimaryIcon
+            <HeartIcon
               onClick={() => toggleSaveArticle(slug)}
               className="h-10"
             />

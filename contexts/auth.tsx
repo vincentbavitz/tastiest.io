@@ -1,6 +1,6 @@
+import { dlog } from '@tastiest-io/tastiest-utils';
 import nookies from 'nookies';
 import React, { createContext, useEffect, useState } from 'react';
-import { dlog } from 'utils/development';
 import { firebaseClient } from '../utils/firebaseClient';
 
 // Example taken from  https://github1s.com/colinhacks/next-firebase-ssr/blob/HEAD/auth.tsx

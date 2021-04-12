@@ -1,10 +1,9 @@
 // [slug].js
-import { CmsApi, IPost } from '@tastiest-io/tastiest-utils';
+import { CmsApi, dlog, IPost } from '@tastiest-io/tastiest-utils';
 import { RecommendForm } from 'components/RecommendForm';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
-import { dlog } from 'utils/development';
 import { Article } from '../../../components/article/Article';
 import { generateTitle } from '../../../utils/metadata';
 

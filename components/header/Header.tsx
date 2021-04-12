@@ -1,4 +1,4 @@
-import { SearchPrimaryIcon, TastiestIcon } from '@tastiest-io/tastiest-icons';
+import { SearchIcon, TastiestIcon } from '@tastiest-io/tastiest-icons';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
@@ -48,7 +48,7 @@ function MobileHeader() {
     >
       <div className="flex items-center justify-between w-full h-full">
         <div className="flex flex-shrink-0" onMouseDown={handleExpandSearch}>
-          <SearchPrimaryIcon className="h-10 cursor-pointer" />
+          <SearchIcon className="h-10 cursor-pointer" />
         </div>
 
         <div className="antialiased">

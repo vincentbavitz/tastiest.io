@@ -1,4 +1,4 @@
-import { IOrder, SVG, UserData } from '@tastiest-io/tastiest-utils';
+import { dlog, IOrder, SVG, UserData } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetServerSidePropsType } from 'next';
 import {
@@ -11,7 +11,6 @@ import {
 import React from 'react';
 import { CheckoutApi } from 'services/checkout';
 import { UserDataApi } from 'services/userData';
-import { dlog } from 'utils/development';
 import { Contained } from '../components/Contained';
 
 export const getServerSideProps = async context => {

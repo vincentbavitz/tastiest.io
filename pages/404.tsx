@@ -5,7 +5,7 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Page404 } from 'public/assets/page';
+import { Page404Hero } from 'public/assets/page';
 import React, { useState } from 'react';
 import { UI } from '../constants';
 import { generateTitle } from '../utils/metadata';
@@ -64,7 +64,7 @@ function Tastiest404() {
   return (
     <div>
       <Head>
-        <title>{generateTitle('404')}</title>
+        <title>{generateTitle('Nothing Found')}</title>
       </Head>
 
       <div style={wrapperStyles} className="flex items-center">
@@ -75,7 +75,7 @@ function Tastiest404() {
           )}
         >
           <div style={absoluteBoxStyles} className="relative flex w-full">
-            <Page404 style={svgStyles} className="absolute top-0 z-0" />
+            <Page404Hero style={svgStyles} className="absolute top-0 z-0" />
             <div style={_404SectionStyles} className="absolute left-0 z-50">
               <h1
                 style={_404TitleStyles}

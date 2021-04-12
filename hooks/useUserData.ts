@@ -1,5 +1,6 @@
 import {
   FirestoreCollection,
+  IGenericAsyncReturnType,
   IUserData,
   TUserData,
   UserData,
@@ -9,17 +10,12 @@ import { useSelector } from 'react-redux';
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
 import { IState } from '../state/reducers';
 
-export interface IGenericReturnSuccess {
-  success: boolean;
-  error: Error | null;
-}
-
 export function useUserData(user: firebase.User) {
   const firestore = useFirestore();
 
   useFirestoreConnect([
     {
-      collection: 'users',
+      collection: FirestoreCollection.USERS,
       doc: user?.uid,
     },
   ]);
@@ -28,11 +24,11 @@ export function useUserData(user: firebase.User) {
     ({ firestore: { data } }: IState) => data.users && data.users[user?.uid],
   );
 
-  const setUserData = <T extends UserData>(
+  const setUserData = async <T extends UserData>(
     field: T,
     value: TUserData<T>,
     onInvalidUser?: () => void,
-  ) => {
+  ): Promise<IGenericAsyncReturnType> => {
     if (!user?.uid) {
       // No user signed in
       if (onInvalidUser) {
@@ -46,7 +42,7 @@ export function useUserData(user: firebase.User) {
     }
 
     try {
-      firestore
+      await firestore
         .collection(FirestoreCollection.USERS)
         .doc(user.uid)
         .set(

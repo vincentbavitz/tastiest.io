@@ -1,8 +1,7 @@
 import { LocationBrandIcon } from '@tastiest-io/tastiest-icons';
-import { IRestaurant } from '@tastiest-io/tastiest-utils';
+import { dlog, IRestaurant } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
-import { dlog } from 'utils/development';
 import { getMapBoxStaticSource } from 'utils/location';
 import { CityIndictor } from '../../CityIndictor';
 import { Title } from '../../Title';

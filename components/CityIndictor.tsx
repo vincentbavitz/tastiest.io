@@ -1,7 +1,7 @@
 import { LocationIcon } from '@tastiest-io/tastiest-icons';
+import { titleCase } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import React from 'react';
-import { titleCase } from '../utils/text';
 
 interface Props {
   city: string;

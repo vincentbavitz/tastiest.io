@@ -1,8 +1,10 @@
 import {
   CmsApi,
   CuisineSymbol,
+  dlog,
   ICuisine,
   IPost,
+  titleCase,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { ArticleCard } from 'components/cards/ArticleCard';
@@ -12,12 +14,10 @@ import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { LookingIllustration } from 'public/assets/illustrations';
 import React from 'react';
-import { dlog } from 'utils/development';
 import { CardGrid } from '../../../components/cards/CardGrid';
 import { Contained } from '../../../components/Contained';
 import { CUISINES } from '../../../constants';
 import { generateTitle } from '../../../utils/metadata';
-import { titleCase } from '../../../utils/text';
 
 interface IPath {
   params: { city: string; cuisine: string };
@@ -150,7 +150,9 @@ export default function Cuisine(
         </div>
       </div>
 
-      <SuggestDish />
+      <div className="pt-16">
+        <SuggestDish />
+      </div>
     </>
   );
 }

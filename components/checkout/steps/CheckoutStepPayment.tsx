@@ -14,6 +14,7 @@ import { Input } from '@tastiest-io/tastiest-components';
 import { HelpIcon } from '@tastiest-io/tastiest-icons';
 import {
   CardBrand,
+  dlog,
   IDateObject,
   IOrder,
   IPaymentDetails,
@@ -27,7 +28,6 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { dlog } from 'utils/development';
 import { UI } from '../../../constants';
 import { InputCardNumberWrapper } from '../../inputs/card/InputCardNumberWrapper';
 import { InputContactFirstName } from '../../inputs/contact/InputContactFirstName';

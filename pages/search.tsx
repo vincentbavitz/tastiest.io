@@ -1,4 +1,4 @@
-import { CMS, CmsApi, IPost } from '@tastiest-io/tastiest-utils';
+import { CMS, CmsApi, dlog, IPost } from '@tastiest-io/tastiest-utils';
 import RecommendedPosts from 'components/sections/RecommendedPosts';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetServerSidePropsType } from 'next';
@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import { SearchHeroDesktop, SearchHeroMobile } from 'public/assets/page';
 import React from 'react';
 import ReactPaginate from 'react-paginate';
-import { dlog } from 'utils/development';
 import { ArticleCardRow } from '../components/cards/ArticleCardRow';
 import { Contained } from '../components/Contained';
 import { SuggestDish } from '../components/SuggestDish';

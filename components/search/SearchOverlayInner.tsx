@@ -7,13 +7,12 @@ import {
   TrendingIcon,
   XiaoIcon,
 } from '@tastiest-io/tastiest-icons';
-import { SVG } from '@tastiest-io/tastiest-utils';
+import { dlog, SVG } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { dlog } from 'utils/development';
 import { CUISINES } from '../../constants';
 import { useSearch } from '../../hooks/useSearch';
 import { IState } from '../../state/reducers';

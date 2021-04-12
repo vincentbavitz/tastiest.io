@@ -1,7 +1,6 @@
-import { IDeal, ValidHead } from '@tastiest-io/tastiest-utils';
+import { dlog, IDeal, ValidHead } from '@tastiest-io/tastiest-utils';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { dlog } from 'utils/development';
 import { useCheckout } from './useCheckout';
 
 export const useOrderNow = (deal: IDeal, fromSlug: string) => {

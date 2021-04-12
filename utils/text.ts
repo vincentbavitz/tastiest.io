@@ -1,17 +1,5 @@
 import { IDateObject, TDay, TMonth, TYear } from '@tastiest-io/tastiest-utils';
 
-export function titleCase(str: string) {
-  return str?.length
-    ? str
-        .toLowerCase()
-        .split(' ')
-        .map(function (word) {
-          return word.replace(word[0], word[0].toUpperCase());
-        })
-        .join(' ')
-    : '';
-}
-
 function limit(val: string, max: string) {
   if (val.length === 1 && val[0] > max[0]) {
     val = '0' + val;
@@ -77,8 +65,4 @@ export function dateFormat(value: string, minYear?: string, maxYear?: string) {
   return (
     day + (month.length ? '/' + month : '') + (year.length ? '/' + year : '')
   );
-}
-
-export function convertRemToPixels(rem) {
-  return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
 }

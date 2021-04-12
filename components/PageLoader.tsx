@@ -32,11 +32,11 @@ export default function PageLoader() {
         zIndex: UI.Z_INDEX_PAGE_LOADER,
       }}
       className={clsx(
-        'fixed inset-0 duration-150 flex items-center justify-center bg-black bg-opacity-50',
+        'fixed inset-0 duration-150 flex items-center justify-center bg-white bg-opacity-50',
         displayLoading ? 'opacity-100' : 'opacity-0',
       )}
     >
-      <LoadingOutlined className="text-6xl text-white fill-current" />
+      <LoadingOutlined className="text-6xl fill-current text-primary" />
     </div>
   ) : null;
 }

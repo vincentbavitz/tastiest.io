@@ -1,9 +1,8 @@
-import { CmsApi, IPost } from '@tastiest-io/tastiest-utils';
+import { CmsApi, dlog, IPost } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import React from 'react';
-import { dlog } from 'utils/development';
 import { Contained } from '../components/Contained';
 import { HomeFavouritesSection } from '../components/home/HomeFavouritesSection';
 import { HomeMapSection } from '../components/home/HomeMapSection';
@@ -21,6 +20,8 @@ interface Props {
 export const getStaticProps: GetStaticProps = async () => {
   const cms = new CmsApi();
   const { posts = [] } = await cms.getPosts(12);
+
+  dlog('index ➡️ posts:', posts);
 
   return {
     props: {

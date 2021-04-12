@@ -3,6 +3,7 @@ import {
   ISupportMessage,
   IUserQuery,
   IUserSupportRequest,
+  SupportMessageDirection,
   SupportRequestType,
   UserQueryType,
 } from '@tastiest-io/tastiest-utils';
@@ -24,12 +25,13 @@ export function useSupport() {
 
   useFirestoreConnect([
     {
-      collection: 'support-users',
+      collection: FirestoreCollection.SUPPORT_USERS,
     },
   ]);
 
   const supportRequests: Partial<IUserSupportRequest> = useSelector(
-    ({ firestore: { data } }: IState) => data?.['support-users'],
+    ({ firestore: { data } }: IState) =>
+      data?.[FirestoreCollection.SUPPORT_USERS],
   );
 
   const makeSupportRequest = async (
@@ -54,7 +56,9 @@ export function useSupport() {
       name,
       message,
       timestamp: Date.now(),
-      role: 'user',
+      direction: SupportMessageDirection.USER_TO_SUPPORT,
+      hasOpened: false,
+      recipientHasOpened: false,
     };
 
     const supportRequest: IUserSupportRequest = {
@@ -69,7 +73,7 @@ export function useSupport() {
       seen: false,
       resolved: false,
       priority: 'normal',
-      openedAt: Date.now(),
+      createdAt: Date.now(),
       updatedAt: null,
     };
 
@@ -95,6 +99,7 @@ export function useSupport() {
   // Queries are unlike support requests in that they don't
   // require a conversation or priority.
   const makeGeneralQuery = async (
+    name: string,
     email: string,
     message: string,
     type: UserQueryType,
@@ -112,10 +117,11 @@ export function useSupport() {
       email,
       message,
       type,
+      name: name ?? null,
       userId: userId ?? null,
       seen: false,
       resolved: false,
-      openedAt: Date.now(),
+      createdAt: Date.now(),
     };
 
     try {
@@ -133,5 +139,5 @@ export function useSupport() {
     }
   };
 
-  return { supportRequests, makeSupportRequest };
+  return { supportRequests, makeSupportRequest, makeGeneralQuery };
 }

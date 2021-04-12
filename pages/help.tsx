@@ -1,5 +1,5 @@
 import { Button, Input, Select } from '@tastiest-io/tastiest-components';
-import { SupportRequestType } from '@tastiest-io/tastiest-utils';
+import { dlog, SupportRequestType } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -8,7 +8,6 @@ import { useUserData } from 'hooks/useUserData';
 import { InferGetServerSidePropsType } from 'next';
 import { HelpHero } from 'public/assets/page';
 import React, { useState } from 'react';
-import { dlog } from 'utils/development';
 import { UI } from '../constants';
 
 export const getServerSideProps = async context => {
@@ -31,6 +30,16 @@ const helpOptions: IHelpOption[] = [
 const Help = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
+  const [sent, setHasSent] = useState(false);
+
+  return sent ? <HelpSuccess /> : <HelpForm setHasSent={setHasSent} />;
+};
+
+interface HelpFormProps {
+  setHasSent: (value: boolean) => void;
+}
+
+const HelpForm = ({ setHasSent }: HelpFormProps) => {
   const { isMobile, isTablet } = useScreenSize();
 
   // Update user data
@@ -51,21 +60,12 @@ const Help = (
     SupportRequestType.GENERAL,
   );
 
-  const [sent, setSent] = useState(false);
-
   const { supportRequests, makeSupportRequest } = useSupport();
 
   const handleOnSelect = (value: SupportRequestType) => {
     setSubject('');
     setSupportType(value);
-
-    dlog('help ➡️     value:', value);
   };
-
-  dlog('help ➡️ supportRequests:', supportRequests);
-
-  dlog('help ➡️ name;:', name);
-  dlog('help ➡️ email:', email);
 
   const submit = async () => {
     const { success, errors } = await makeSupportRequest(
@@ -80,7 +80,7 @@ const Help = (
     if (success) {
       setSubject('');
       setMessage('');
-      setSent(true);
+      setHasSent(true);
     }
 
     dlog('help ➡️ success:', success);
@@ -208,7 +208,6 @@ const Help = (
             placeholder={textareaPlaceholder}
             maxLength={500}
             value={message}
-            disabled={sent}
             onChange={e => setMessage(e.target.value)}
           />
 
@@ -219,17 +218,17 @@ const Help = (
               wide={isMobile || isTablet}
               onClick={submit}
             >
-              {sent ? 'Sent!' : 'Send'}
+              Send
             </Button>
-
-            {sent && (
-              <p className="cursor-pointer hover:underline">Another request</p>
-            )}
           </div>
         </div>
       </Contained>
     </div>
   );
+};
+
+const HelpSuccess = () => {
+  return <div className="w-full h-64 bg-red-300"></div>;
 };
 
 export default Help;

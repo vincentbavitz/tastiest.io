@@ -1,4 +1,4 @@
-import { HeartPrimaryIcon } from '@tastiest-io/tastiest-icons';
+import { HeartIcon } from '@tastiest-io/tastiest-icons';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { useWindowSize } from 'react-use';
@@ -28,11 +28,11 @@ export function HeaderSavedPlaces() {
   return (
     <div
       onClick={handleClick}
-      className="flex items-center px-4 cursor-pointer"
+      className="flex items-center px-4 cursor-pointer text-primary"
     >
-      <HeartPrimaryIcon className="h-8 mr-1" />
+      <HeartIcon className="h-8 mr-1 fill-current" />
       {shouldDisplayText && (
-        <Title level={4} margin={false} className="text-primary font-somatic">
+        <Title level={4} margin={false} className="font-somatic">
           Saved Places
         </Title>
       )}

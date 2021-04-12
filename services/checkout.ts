@@ -1,5 +1,6 @@
 import {
   CmsApi,
+  dlog,
   FirestoreCollection,
   IOrder,
   IOrderRequest,
@@ -9,7 +10,6 @@ import { GetServerSidePropsContext } from 'next';
 import { parseCookies, setCookie } from 'nookies';
 import { ParsedUrlQuery } from 'querystring';
 import Stripe from 'stripe';
-import { dlog } from 'utils/development';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { v4 as uuid } from 'uuid';
 import { FIREBASE } from '../constants';

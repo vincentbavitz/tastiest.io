@@ -61,9 +61,9 @@ export function ArticleCard(props: Props): JSX.Element {
         <div className={isSmall ? 'py-2' : 'py-3'}>
           <div
             style={{
-              lineHeight: '1em',
-              height: '2em',
-              paddingBottom: '2.1em',
+              lineHeight: '1.1em',
+              height: '0',
+              paddingBottom: '2.25em',
             }}
             className={classNames(
               isSmall ? 'text-base' : 'text-lg',

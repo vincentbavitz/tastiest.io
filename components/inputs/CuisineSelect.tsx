@@ -1,9 +1,12 @@
 import { Input, Select } from '@tastiest-io/tastiest-components';
-import { CuisineSymbol, TFavouriteCuisine } from '@tastiest-io/tastiest-utils';
+import {
+  CuisineSymbol,
+  dlog,
+  TFavouriteCuisine,
+  titleCase,
+} from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
-import { dlog } from 'utils/development';
-import { titleCase } from 'utils/text';
 
 type CuisineKey = CuisineSymbol | 'ALL_FOOD' | 'OTHER';
 interface ICuisineOption {

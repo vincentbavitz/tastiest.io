@@ -1,6 +1,6 @@
 import {
-  HeartFilledPrimaryIcon,
-  HeartPrimaryIcon,
+  HeartFilledIcon,
+  HeartIcon,
   ShareIcon,
 } from '@tastiest-io/tastiest-icons';
 import { IPost } from '@tastiest-io/tastiest-utils';
@@ -88,9 +88,9 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
             className="flex items-center text-sm cursor-pointer"
           >
             {isFavourite ? (
-              <HeartFilledPrimaryIcon className={!isDesktop ? 'h-8' : 'h-8'} />
+              <HeartFilledIcon className={!isDesktop ? 'h-8' : 'h-8'} />
             ) : (
-              <HeartPrimaryIcon className={!isDesktop ? 'h-8' : 'h-8'} />
+              <HeartIcon className={!isDesktop ? 'h-8' : 'h-8'} />
             )}
             {!!isDesktop && isFavourite ? 'Unsave' : 'Save'}
           </div>

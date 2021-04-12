@@ -1,5 +1,5 @@
+import { dlog } from '@tastiest-io/tastiest-utils';
 import * as firebaseAdmin from 'firebase-admin';
-import { dlog } from './development';
 
 const cert = {
   privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),

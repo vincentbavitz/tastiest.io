@@ -1,8 +1,6 @@
-import {
-  SearchPrimaryIcon,
-  SearchSecondaryIcon,
-} from '@tastiest-io/tastiest-icons';
+import { SearchIcon } from '@tastiest-io/tastiest-icons';
 import classNames from 'classnames';
+import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, ReactNode, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -177,12 +175,13 @@ export function SearchInput(props: Props) {
             }
           }}
         >
-          {searchIcon === 'primary' && (
-            <SearchPrimaryIcon className="h-8 fill-current" />
-          )}
-          {searchIcon === 'secondary' && (
-            <SearchSecondaryIcon className="h-8 fill-current" />
-          )}
+          <SearchIcon
+            className={clsx(
+              'h-8 fill-current',
+              searchIcon === 'primary' && 'text-primary',
+              searchIcon === 'secondary' && 'text-secondary',
+            )}
+          />
         </div>
       )}
     </div>
