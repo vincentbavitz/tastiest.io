@@ -104,7 +104,7 @@ function SearchOverlayInnerDefault() {
 
       {/* CUISINES */}
       <div className="flex flex-col mt-6">
-        <span className="ml-1 text-sm font-semibold tracking-wide text-black">
+        <span className="ml-1 font-medium tracking-wide text-black tablet:text-sm">
           Find your next favourite dish!
         </span>
 
