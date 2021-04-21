@@ -1,5 +1,6 @@
 import {
   CmsApi,
+  dlog,
   FIREBASE,
   FirestoreCollection,
   FunctionsResponse,
@@ -36,7 +37,14 @@ export default async function createNewOrder(
     return;
   }
 
-  const body = JSON.parse(request.body);
+  // Get body in JSON or raw.
+  let body;
+  try {
+    body = JSON.parse(request.body);
+  } catch {
+    body = request.body;
+  }
+
   const { dealId, heads: _heads, fromSlug, promoCode, userId } = body;
   const heads = Math.floor(_heads);
 
@@ -154,9 +162,8 @@ const buildOrder = async (orderRequest: IOrderRequest) => {
     // Out of date
   }
 
-  const price = deal.pricePerHeadGBP;
-
-  //
+  // Gross price
+  const gross = deal.pricePerHeadGBP * heads;
 
   const orderId = uuid();
   const order: IOrder = {
@@ -166,8 +173,8 @@ const buildOrder = async (orderRequest: IOrderRequest) => {
     heads: orderRequest.heads,
     fromSlug: orderRequest.fromSlug,
     price: {
-      gross: deal.pricePerHeadGBP * heads,
-      final: calculatePromoPrice(price, promo),
+      gross,
+      final: calculatePromoPrice(gross, promo),
     },
     paymentDetails: null,
     promoCode: promo.code,
@@ -187,7 +194,14 @@ const buildOrder = async (orderRequest: IOrderRequest) => {
  * Calculate price after applying promocode.
  */
 const calculatePromoPrice = (price: number, promo: IPromo): number => {
-  return promo?.discount.unit === '%'
-    ? price * (1 - promo.discount.value)
-    : Math.max(price - promo.discount.value, 0);
+  const isPercentage = promo?.discount?.unit === '%';
+
+  if (isPercentage) {
+    const discountGbp = price * (1 - Math.min(promo.discount.value, 100) / 100);
+    dlog('createNewOrder ➡️ price:', price);
+    dlog('createNewOrder ➡️ discountGbp:', discountGbp);
+    return price - discountGbp;
+  }
+
+  return Math.max(0, price - promo?.discount?.value ?? 0);
 };

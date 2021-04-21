@@ -9,7 +9,7 @@ import {
 } from '@stripe/stripe-js';
 import { Input } from '@tastiest-io/tastiest-components';
 import { HelpIcon } from '@tastiest-io/tastiest-icons';
-import { IDateObject } from '@tastiest-io/tastiest-utils';
+import { IDateObject, IOrder } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { InputContactBirthday } from 'components/inputs/contact/InputContactBirthday';
 import { useCheckout } from 'hooks/checkout/useCheckout';
@@ -35,11 +35,11 @@ const CARD_ELEMENT_OPTIONS: StripeCardNumberElementOptions = {
 
 interface Props {
   userId: string;
-  orderToken: string;
+  order: IOrder;
 }
 
 export function CheckoutStepPayment(props: Props) {
-  const { orderToken, userId } = props;
+  const { order, userId } = props;
 
   const { user } = useAuth();
   const { userData, setUserData } = useUserData(user);
@@ -269,7 +269,7 @@ export function CheckoutStepPayment(props: Props) {
           isDesktop && 'pl-10',
         )}
       >
-        <CheckoutPaymentPanel order={order.details} onSubmit={() => null} />
+        <CheckoutPaymentPanel order={order} onSubmit={() => null} />
       </div>
     </div>
   );

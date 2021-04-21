@@ -15,8 +15,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CheckoutStep, setCheckoutStep } from 'state/checkout';
 import { IState } from 'state/reducers';
-import { LocalEndpoint } from 'types/api';
-import { LocalApi } from 'utils/api';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { CheckoutStepIndicator } from '../components/checkout/CheckoutStepIndicator';
 import { CheckoutStepAuth } from '../components/checkout/steps/CheckoutStepAuth';
@@ -56,17 +54,20 @@ export const getServerSideProps: GetServerSideProps = async context => {
       },
     };
   }
-  // Get order request, given our order ID.
-  // If the order request exists, /api/payments has already
-  // verified that it's valid.
-  const {
-    data: { orderRequest },
-  } = await LocalApi.get(LocalEndpoint.GET_ORDER_REQUEST, {
-    orderId,
-  });
+
+  // Get order, given our order ID.
+  // If the order exists, /api/payments/createNewOrder
+  // has already verified that it's valid.
+  const doc = await firebaseAdmin
+    .firestore()
+    .collection(FirestoreCollection.ORDERS)
+    .doc(orderId)
+    .get();
+
+  const order = doc.data() as IOrder;
 
   // Redirect if user somehow got to this state of no order request.
-  if (!orderRequest) {
+  if (!order) {
     return {
       redirect: {
         destination: '/',
@@ -74,34 +75,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
       },
     };
   }
-
-  // // Order request found. Initiate new order.
-  // // Create a new order in Firestore that we can only modify if
-  // // we have the order token
-  // id: string;
-  // deal: IDeal;
-  // userId: string;
-  // heads: number;
-  // fromSlug: string;
-  // totalPrice: number;
-  // paymentDetails: null | IPaymentDetails;
-
-  // discount: null | IPromo;
-
-  // // Timestamps
-  // // Null denotes not paid yet; not done yet.
-  // paidAt: null | number;
-  // orderedAt: null | number;
-  // abandonedAt: null | number;
-
-  // refund: null | {
-  //   amountGBP: number;
-  //   timestamp: number;
-  // };
-
-  const order: IOrder = {};
-
-  firebaseAdmin.firestore().collection(FirestoreCollection.ORDERS).add({});
 
   return {
     props: { userId, order },
@@ -170,17 +143,13 @@ function CheckoutDesktop(props: Props) {
   const { userId, order } = props;
   const { stepIsAuth, stepIsPayment } = useCheckoutStep();
 
-  const orderToken = '0aa4b9ec-6b80-4a53-a009-bb51a68a1080';
-
   return (
     <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
       <div className="relative flex flex-col w-full mt-12 space-y-10">
         <CheckoutStepIndicator />
 
         {stepIsAuth && <CheckoutStepAuth order={order} />}
-        {stepIsPayment && (
-          <CheckoutStepPayment userId={userId} orderToken={orderToken} />
-        )}
+        {stepIsPayment && <CheckoutStepPayment userId={userId} order={order} />}
       </div>
     </Contained>
   );
@@ -196,9 +165,7 @@ function CheckoutMobile(props: Props) {
         <CheckoutStepIndicator />
 
         {stepIsAuth && <CheckoutStepAuth order={order} />}
-        {stepIsPayment && (
-          <CheckoutStepPayment userId={userId} orderToken={orderToken} />
-        )}
+        {stepIsPayment && <CheckoutStepPayment userId={userId} order={order} />}
       </div>
     </Contained>
   );
