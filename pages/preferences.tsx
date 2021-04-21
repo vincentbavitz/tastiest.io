@@ -8,6 +8,7 @@ import {
   TFavouriteCuisine,
   USER,
   UserData,
+  UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import CuisineSelect from 'components/inputs/CuisineSelect';
@@ -16,15 +17,16 @@ import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import { InferGetServerSidePropsType } from 'next';
+import nookies from 'nookies';
 import { PreferencesHero } from 'public/assets/page';
 import React, { ReactNode, useState } from 'react';
-import { UserDataApi } from 'services/userData';
 import { UI } from '../constants';
 
 export const getServerSideProps = async context => {
   // Get user ID from cookie.
-  const userDataApi = new UserDataApi();
-  const { userId } = await userDataApi.init(context);
+  const cookieToken = nookies.get(context)?.token;
+  const userDataApi = new UserDataApi(cookieToken);
+  const { userId } = await userDataApi.initFromCookieToken(cookieToken);
 
   dlog('preferences ➡️ userId:', userId);
 

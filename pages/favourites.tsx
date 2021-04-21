@@ -5,6 +5,7 @@ import {
   dlog,
   IPost,
   UserData,
+  UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import { ArticleCardFavourite } from 'components/cards/ArticleCardFavourite';
 import { CardGrid } from 'components/cards/CardGrid';
@@ -14,17 +15,18 @@ import { useArticle } from 'hooks/useArticle';
 import { IScreen, useScreenSize } from 'hooks/useScreenSize';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
+import nookies from 'nookies';
 import { NothingFoundIllustration } from 'public/assets/illustrations';
 import { FavouritesHero } from 'public/assets/page';
 import React from 'react';
-import { UserDataApi } from 'services/userData';
 import { useAuth } from '../hooks/useAuth';
 import { useUserData } from '../hooks/useUserData';
 
 export const getServerSideProps: GetServerSideProps = async context => {
   // Get user ID from cookie.
-  const userDataApi = new UserDataApi();
-  const { userId } = await userDataApi.init(context);
+  const cookieToken = nookies.get(context)?.token;
+  const userDataApi = new UserDataApi(cookieToken);
+  const { userId } = await userDataApi.initFromCookieToken(cookieToken);
 
   // If no user, redirect to home
   if (!userId) {

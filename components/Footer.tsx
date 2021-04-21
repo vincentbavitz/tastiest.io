@@ -93,63 +93,59 @@ const MobileFooter = () => {
 };
 
 const DesktopFooter = () => (
-  <Contained>
-    <div className="flex flex-col my-6 space-y-10">
-      <div className="flex justify-between w-full">
-        <FooterColumn title="Quick Links">
-          <div className="grid grid-cols-2 text-sm font-normal leading-tight children:pr-4 children:pb-2">
-            <QuickLinksBlock flat />
-          </div>
-        </FooterColumn>
-
-        <FooterColumn title="Follow Us">
-          <div className="flex space-x-4">
-            <SocialsBlock />
-          </div>
-        </FooterColumn>
-      </div>
-
-      <div className="flex items-center justify-between flex-grow pt-10 space-x-10 border-t border-white border-opacity-25">
-        <ThanksForSupportMessage />
-
-        <div className="flex flex-col items-end justify-between h-full space-y-4 text-right">
-          <ImprovementPrompts />
+  <div className="flex flex-col my-6 space-y-10">
+    <div className="flex justify-between w-full">
+      <FooterColumn title="Quick Links">
+        <div className="grid grid-cols-2 text-sm font-normal leading-tight children:pr-4 children:pb-2">
+          <QuickLinksBlock flat />
         </div>
-      </div>
+      </FooterColumn>
 
-      <BrandIcon className="h-8 mt-4 fill-current" />
+      <FooterColumn title="Follow Us">
+        <div className="flex space-x-4">
+          <SocialsBlock />
+        </div>
+      </FooterColumn>
     </div>
-  </Contained>
+
+    <div className="flex items-center justify-between flex-grow pt-10 space-x-10 border-t border-white border-opacity-25">
+      <ThanksForSupportMessage />
+
+      <div className="flex flex-col items-end justify-between h-full space-y-4 text-right">
+        <ImprovementPrompts />
+      </div>
+    </div>
+
+    <BrandIcon className="h-8 mt-4 fill-current" />
+  </div>
 );
 
 const HugeFooter = () => (
-  <Contained>
-    <div className="flex justify-between mt-6">
-      <div className="flex justify-start pr-20 space-x-12">
-        <FooterColumn title="Quick Links">
-          <div className="space-y-4 text-sm font-normal leading-tight">
-            <QuickLinksBlock />
-          </div>
-        </FooterColumn>
-
-        <FooterColumn title="Follow Us">
-          <div className="grid grid-cols-2 grid-rows-2 gap-y-2 justify-items-center">
-            <SocialsBlock />
-          </div>
-        </FooterColumn>
-      </div>
-
-      <div className="flex justify-end flex-grow">
-        <div className="flex flex-col items-end justify-between h-full pr-4 mr-4 space-y-4 text-right border-r">
-          <ImprovementPrompts />
-
-          <LogoIcon className="h-8 mt-6 fill-current" />
+  <div className="flex justify-between mt-6">
+    <div className="flex justify-start pr-20 space-x-12">
+      <FooterColumn title="Quick Links">
+        <div className="space-y-4 text-sm font-normal leading-tight">
+          <QuickLinksBlock />
         </div>
+      </FooterColumn>
 
-        <ThanksForSupportMessage withLogo />
-      </div>
+      <FooterColumn title="Follow Us">
+        <div className="grid grid-cols-2 grid-rows-2 gap-y-2 justify-items-center">
+          <SocialsBlock />
+        </div>
+      </FooterColumn>
     </div>
-  </Contained>
+
+    <div className="flex justify-end flex-grow">
+      <div className="flex flex-col items-end justify-between h-full pr-4 mr-4 space-y-4 text-right border-r">
+        <ImprovementPrompts />
+
+        <LogoIcon className="h-8 mt-6 fill-current" />
+      </div>
+
+      <ThanksForSupportMessage withLogo />
+    </div>
+  </div>
 );
 
 const CheckoutFooter = () => (

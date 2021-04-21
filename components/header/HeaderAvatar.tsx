@@ -1,5 +1,5 @@
 import { Dropdown, DropdownItem } from '@tastiest-io/tastiest-components';
-import { titleCase } from '@tastiest-io/tastiest-utils';
+import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
 import { useUserData } from 'hooks/useUserData';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -22,10 +22,12 @@ export function HeaderAvatar() {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  dlog('HeaderAvatar ➡️ userData:', userData);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const displayName = titleCase(
-    userData?.details?.firstName ?? user?.email.replace(/@.*$/, ''),
+    userData?.details?.firstName ?? user?.email?.replace(/@.*$/, ''),
   );
 
   // Close dropdown on route change

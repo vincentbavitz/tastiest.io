@@ -1,11 +1,6 @@
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import { LockIcon } from '@tastiest-io/tastiest-icons';
-import {
-  CmsApi,
-  IDiscount,
-  IOrder,
-  PAYMENTS,
-} from '@tastiest-io/tastiest-utils';
+import { CmsApi, IOrder, IPromo, PAYMENTS } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -20,7 +15,7 @@ interface Props {
 
 const usePromoCode = (order: IOrder) => {
   // const [discount, setDiscount] = useState(null);
-  const [discount, setDiscount] = useState<IDiscount>(null);
+  const [discount, setDiscount] = useState<IPromo>(null);
 
   const applyPromoCode = async (_code: string) => {
     if (_code.length === 0) {
@@ -44,7 +39,7 @@ const usePromoCode = (order: IOrder) => {
   return { discount, applyPromoCode };
 };
 
-export function CheckoutCardPayment(props: Props) {
+export function CheckoutPaymentPanel(props: Props) {
   const { order, onSubmit } = props;
   const { isDesktop } = useScreenSize();
 

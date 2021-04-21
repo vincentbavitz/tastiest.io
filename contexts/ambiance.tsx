@@ -10,7 +10,7 @@ import { createFirestoreInstance } from 'redux-firestore';
 import { setOnCheckoutPage } from 'state/checkout';
 import { openSignInModal } from 'state/navigation';
 import { rootReducer } from 'state/reducers';
-import { FIREBASE, METADATA } from '../constants';
+import { METADATA } from '../constants';
 import { firebaseClient } from '../utils/firebaseClient';
 import TrackingProvider from './tracking';
 
@@ -22,7 +22,7 @@ export const AmbianceContext = React.createContext(undefined);
 const store = createStore(rootReducer);
 const rrfProps: ReactReduxFirebaseProviderProps = {
   firebase: firebaseClient,
-  config: FIREBASE.RRF_CONFIG,
+  config: {},
   dispatch: store.dispatch,
   createFirestoreInstance,
 };

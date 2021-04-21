@@ -1,11 +1,12 @@
-import { dlog, FirebaseAuthError, UserData } from '@tastiest-io/tastiest-utils';
+import { dlog, FIREBASE, FirebaseAuthError } from '@tastiest-io/tastiest-utils';
 import DebouncePromise from 'awesome-debounce-promise';
 import { LocalStorageItem } from 'contexts/tracking';
 import firebaseApp from 'firebase/app';
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import { useFirebase } from 'react-redux-firebase';
-import { FIREBASE } from '../constants';
+import { LocalEndpoint } from 'types/api';
+import { LocalApi } from 'utils/api';
 import { AuthContext } from '../contexts/auth';
 import { useUserData } from './useUserData';
 
@@ -77,42 +78,34 @@ export const useAuth = () => {
     return false;
   };
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (
+    email: string,
+    password: string,
+    firstName?: string,
+  ) => {
     _setError(null);
 
     try {
-      const { user } = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
+      const { data: { user = null, token = null } = {} } = await LocalApi.post(
+        LocalEndpoint.REGISTER,
+        {
+          email,
+          password,
+          firstName: firstName ?? null,
+          userAgent: navigator?.userAgent ?? null,
+        },
+      );
 
-      if (!user) {
-        dlog('Sign Up: No user!!!');
+      if (!user || !token) {
         return false;
       }
-
-      // User data
-      setUserData(UserData.DETAILS, { email });
-      dlog('Sign Up: Set display name');
 
       // User has accepted cookies implicitly
       localStorage.setItem(LocalStorageItem.HAS_ACCEPTED_COOKIES, '1');
 
-      // Track user sign up
-      // Sends a confirmation email with Klaviyo flow
-      window.analytics.identify(user?.uid, {
-        traits: {
-          email: user.email,
-        },
-        context: {
-          userAgent: navigator?.userAgent,
-        },
-      });
+      // Sign user in.
+      firebase.auth().signInWithCustomToken(token);
 
-      // Reload page
-      dlog('reloading');
-      router.reload();
-
-      dlog('FINISHED DOING STUFF');
       return true;
     } catch (error) {
       setError(error);

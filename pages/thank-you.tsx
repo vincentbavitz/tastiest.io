@@ -1,6 +1,7 @@
-import { dlog, IOrder, SVG, UserData } from '@tastiest-io/tastiest-utils';
+import { dlog, SVG, UserDataApi } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetServerSidePropsType } from 'next';
+import nookies from 'nookies';
 import {
   ThankYouHero,
   ThankYouOnline,
@@ -9,14 +10,12 @@ import {
   ThankYouPhoneButton,
 } from 'public/assets/page';
 import React from 'react';
-import { CheckoutApi } from 'services/checkout';
-import { UserDataApi } from 'services/userData';
 import { Contained } from '../components/Contained';
 
 export const getServerSideProps = async context => {
-  // Get user ID from cookie.
-  const userDataApi = new UserDataApi();
-  const { userId } = await userDataApi.init(context);
+  const cookieToken = nookies.get(context)?.token;
+  const userDataApi = new UserDataApi(cookieToken);
+  const { userId } = await userDataApi.initFromCookieToken(cookieToken);
 
   // Verify order is legit; else redirect and wipe order data.
   const orderId = String(context.query.orderId ?? '') ?? null;
@@ -33,42 +32,42 @@ export const getServerSideProps = async context => {
     };
   }
 
-  // Verify order exists with Firebase
-  const checkoutApi = new CheckoutApi(context);
-  const order: IOrder = await checkoutApi.getOrderFromOrderRequest(orderId);
+  // // Verify order exists with Firebase
+  // const checkoutApi = new CheckoutApi(context);
+  // const order: IOrder = await checkoutApi.getOrderFromOrderRequest(orderId);
 
-  dlog('thank-you ➡️ order:', order);
+  // dlog('thank-you ➡️ order:', order);
 
-  // If no order exists in Firebase, redirect to home
-  if (!order) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
+  // // If no order exists in Firebase, redirect to home
+  // if (!order) {
+  //   return {
+  //     redirect: {
+  //       destination: '/',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
-  // Ensure payment succeeded. Return to checkout if it failed.
-  const paymentIntent = await checkoutApi.getOrCreatePaymentIntent(order);
+  // // Ensure payment succeeded. Return to checkout if it failed.
+  // const paymentIntent = await checkoutApi.getOrCreatePaymentIntent(order);
 
-  dlog('thank-you ➡️ paymentIntent:', paymentIntent);
+  // dlog('thank-you ➡️ paymentIntent:', paymentIntent);
 
-  if (paymentIntent.status !== 'succeeded') {
-    return {
-      redirect: {
-        destination: '/checkout',
-        permanent: false,
-      },
-    };
-  }
+  // if (paymentIntent.status !== 'succeeded') {
+  //   return {
+  //     redirect: {
+  //       destination: '/checkout',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
-  const { firstName } = await userDataApi.getUserData(UserData.DETAILS);
+  // const { firstName } = await userDataApi.getUserData(UserData.DETAILS);
 
-  dlog('thank-you ➡️ firstName:', firstName);
-  return {
-    props: { firstName, order },
-  };
+  // dlog('thank-you ➡️ firstName:', firstName);
+  // return {
+  //   props: { firstName, order },
+  // };
 };
 
 function ThankYou(

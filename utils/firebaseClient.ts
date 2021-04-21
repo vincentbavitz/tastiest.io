@@ -1,3 +1,4 @@
+import { FIREBASE } from '@tastiest-io/tastiest-utils';
 import firebaseClient from 'firebase/app';
 import 'firebase/auth';
 
@@ -23,5 +24,8 @@ if (!firebaseClient.apps.length) {
     (window as any).firebase = firebaseClient;
   }
 }
+
+export const getFunctionsEndpoint = (region = FIREBASE.DEFAULT_REGION) =>
+  `https://${region}-tastiest-dishes.cloudfunctions.net`;
 
 export { firebaseClient };

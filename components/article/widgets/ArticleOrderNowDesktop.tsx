@@ -14,7 +14,7 @@ interface Props {
 
 export function ArticleOrderNowDesktop(props: Props) {
   const { deal, slug: fromSlug } = props;
-  const { totalPrice, heads, setHeads, submit } = useOrderNow(deal, fromSlug);
+  const { price, heads, setHeads, submit } = useOrderNow(deal, fromSlug);
 
   const { isDesktop } = useScreenSize();
 
@@ -88,7 +88,7 @@ export function ArticleOrderNowDesktop(props: Props) {
                   style={{ height: '0.6rem' }}
                   className="inline mr-1"
                 />
-                <p>{totalPrice}</p>
+                <p>{price.gross}</p>
               </div>
             </div>
 
@@ -98,7 +98,7 @@ export function ArticleOrderNowDesktop(props: Props) {
               <span>Total</span>
               <span>
                 <PoundIcon className="inline h-3 mr-1 -mt-1" />
-                {totalPrice}
+                {price.final}
               </span>
             </div>
 

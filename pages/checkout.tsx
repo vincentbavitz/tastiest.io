@@ -1,16 +1,23 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { dlog, IOrder } from '@tastiest-io/tastiest-utils';
+import {
+  dlog,
+  FirestoreCollection,
+  IOrder,
+  UserDataApi,
+} from '@tastiest-io/tastiest-utils';
 import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import nookies from 'nookies';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CheckoutApi } from 'services/checkout';
-import { UserDataApi } from 'services/userData';
 import { CheckoutStep, setCheckoutStep } from 'state/checkout';
 import { IState } from 'state/reducers';
+import { LocalEndpoint } from 'types/api';
+import { LocalApi } from 'utils/api';
+import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { CheckoutStepIndicator } from '../components/checkout/CheckoutStepIndicator';
 import { CheckoutStepAuth } from '../components/checkout/steps/CheckoutStepAuth';
 import { CheckoutStepPayment } from '../components/checkout/steps/CheckoutStepPayment';
@@ -31,8 +38,9 @@ interface Props {
 
 export const getServerSideProps: GetServerSideProps = async context => {
   // Get user ID from cookie.
-  const userDataApi = new UserDataApi();
-  const { userId } = await userDataApi.init(context);
+  const cookieToken = nookies.get(context)?.token;
+  const userDataApi = new UserDataApi(cookieToken);
+  const { userId } = await userDataApi.initFromCookieToken(cookieToken);
 
   // Verify order is legit; else redirect and wipe order data.
   const orderId = String(context.query.orderId ?? '') ?? null;
@@ -48,17 +56,17 @@ export const getServerSideProps: GetServerSideProps = async context => {
       },
     };
   }
+  // Get order request, given our order ID.
+  // If the order request exists, /api/payments has already
+  // verified that it's valid.
+  const {
+    data: { orderRequest },
+  } = await LocalApi.get(LocalEndpoint.GET_ORDER_REQUEST, {
+    orderId,
+  });
 
-  // Verify order exists with Firebase
-  const checkoutApi = new CheckoutApi(context);
-  const order: IOrder = await checkoutApi.getOrderFromOrderRequest(orderId);
-
-  dlog('checkout ➡️ order:', order);
-
-  // If no order exists in Firebase, redirect to home
-  if (!order) {
-    dlog('no actual order ');
-
+  // Redirect if user somehow got to this state of no order request.
+  if (!orderRequest) {
     return {
       redirect: {
         destination: '/',
@@ -67,12 +75,36 @@ export const getServerSideProps: GetServerSideProps = async context => {
     };
   }
 
-  // Get or create payment intent
-  const paymentIntent = await checkoutApi.getOrCreatePaymentIntent(order);
-  const stripeClientSecret = paymentIntent.client_secret;
+  // // Order request found. Initiate new order.
+  // // Create a new order in Firestore that we can only modify if
+  // // we have the order token
+  // id: string;
+  // deal: IDeal;
+  // userId: string;
+  // heads: number;
+  // fromSlug: string;
+  // totalPrice: number;
+  // paymentDetails: null | IPaymentDetails;
+
+  // discount: null | IPromo;
+
+  // // Timestamps
+  // // Null denotes not paid yet; not done yet.
+  // paidAt: null | number;
+  // orderedAt: null | number;
+  // abandonedAt: null | number;
+
+  // refund: null | {
+  //   amountGBP: number;
+  //   timestamp: number;
+  // };
+
+  const order: IOrder = {};
+
+  firebaseAdmin.firestore().collection(FirestoreCollection.ORDERS).add({});
 
   return {
-    props: { stripeClientSecret, userId, order },
+    props: { userId, order },
   };
 };
 
@@ -135,8 +167,10 @@ function Checkout(props: Props) {
 }
 
 function CheckoutDesktop(props: Props) {
-  const { stripeClientSecret, userId, order } = props;
+  const { userId, order } = props;
   const { stepIsAuth, stepIsPayment } = useCheckoutStep();
+
+  const orderToken = '0aa4b9ec-6b80-4a53-a009-bb51a68a1080';
 
   return (
     <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
@@ -145,11 +179,7 @@ function CheckoutDesktop(props: Props) {
 
         {stepIsAuth && <CheckoutStepAuth order={order} />}
         {stepIsPayment && (
-          <CheckoutStepPayment
-            userId={userId}
-            stripeClientSecret={stripeClientSecret}
-            order={order}
-          />
+          <CheckoutStepPayment userId={userId} orderToken={orderToken} />
         )}
       </div>
     </Contained>
@@ -167,11 +197,7 @@ function CheckoutMobile(props: Props) {
 
         {stepIsAuth && <CheckoutStepAuth order={order} />}
         {stepIsPayment && (
-          <CheckoutStepPayment
-            userId={userId}
-            stripeClientSecret={stripeClientSecret}
-            order={order}
-          />
+          <CheckoutStepPayment userId={userId} orderToken={orderToken} />
         )}
       </div>
     </Contained>

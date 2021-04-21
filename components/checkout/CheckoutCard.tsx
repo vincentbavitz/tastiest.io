@@ -33,7 +33,7 @@ export function CheckoutCard(props: Props) {
           <div className="relative w-40 p-3 bg-opacity-75 tablet:w-auto tablet:aspect-w-16 tablet:aspect-h-9 tablet:p-0">
             <img
               className="object-cover w-full h-full"
-              src={`${order?.deal.image?.imageUrl}?w=400`}
+              src={`${order?.deal?.image?.imageUrl}?w=400`}
             />
           </div>
 

@@ -1,23 +1,40 @@
-import { dlog, IDeal, ValidHead } from '@tastiest-io/tastiest-utils';
+import { IDeal, IOrderRequest, ValidHead } from '@tastiest-io/tastiest-utils';
+import { useAuth } from 'hooks/useAuth';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useCheckout } from './useCheckout';
+import { LocalEndpoint } from 'types/api';
+import { LocalApi } from 'utils/api';
 
 export const useOrderNow = (deal: IDeal, fromSlug: string) => {
+  const { user } = useAuth();
   const router = useRouter();
-  const { initOrderRequest } = useCheckout();
 
   const [heads, setHeads] = useState<ValidHead>(1);
+  const [promoCode, setPromoCode] = useState<string | null>(null);
+
   const totalPrice = (Number(heads) * deal?.pricePerHeadGBP).toFixed(2);
 
   const submit = async () => {
-    const orderId = await initOrderRequest(deal.id, heads, fromSlug);
-    dlog('useOrderNow ➡️ orderId:', orderId);
+    const orderRequest: IOrderRequest = {
+      userId: user?.uid ?? null,
+      dealId: deal.id,
+      heads,
+      fromSlug,
+      promoCode,
+      timestamp: Date.now(),
+    };
+
+    const {
+      data: { orderId },
+    } = await LocalApi.post(LocalEndpoint.GENERATE_ORDER_REQUEST, orderRequest);
 
     if (orderId) {
       router.push(`/checkout/?orderId=${orderId}`);
+      return;
     }
+
+    return;
   };
 
-  return { totalPrice, heads, setHeads, submit };
+  return { totalPrice, heads, setHeads, promoCode, setPromoCode, submit };
 };

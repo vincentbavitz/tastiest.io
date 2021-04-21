@@ -1,4 +1,4 @@
-import { CmsApi, dlog, IPost } from '@tastiest-io/tastiest-utils';
+import { CmsApi, IPost } from '@tastiest-io/tastiest-utils';
 import { SuggestRestaurant } from 'components/SuggestRestaurant';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticProps, NextPage } from 'next';
@@ -21,8 +21,6 @@ export const getStaticProps: GetStaticProps = async () => {
   const cms = new CmsApi();
   const { posts = [] } = await cms.getPosts(12);
 
-  dlog('index ➡️ posts:', posts);
-
   return {
     props: {
       posts,
@@ -38,8 +36,6 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
 
   const { user } = useAuth();
   const { userData } = useUserData(user);
-
-  dlog('index ➡️ user:', user);
 
   return (
     <>
