@@ -179,7 +179,7 @@ const buildOrder = async (orderRequest: IOrderRequest) => {
       gross,
       final: calculatePromoPrice(gross, promo),
     },
-    paymentDetails: null,
+    paymentMethod: null,
     promoCode: promo?.code ?? null,
     createdAt: Date.now(),
 

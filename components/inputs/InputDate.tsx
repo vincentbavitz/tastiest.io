@@ -22,8 +22,6 @@ const InputCustom = (props: Props) => (
 );
 
 export function InputDate(props: Props) {
-  dlog('InputDate ➡️ props:', props);
-
   const handleOnChange = ({ value }: NumberFormatValues) => {
     dlog('value', value);
 

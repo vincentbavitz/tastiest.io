@@ -1,10 +1,11 @@
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import { LockIcon } from '@tastiest-io/tastiest-icons';
-import { IOrder, PAYMENTS } from '@tastiest-io/tastiest-utils';
+import { dlog, IOrder, PAYMENTS } from '@tastiest-io/tastiest-utils';
 import { useOrder } from 'hooks/checkout/useOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { UI } from '../../constants';
 import { IState } from '../../state/reducers';
@@ -18,14 +19,24 @@ interface Props {
 export function CheckoutPaymentPanel(props: Props) {
   const { submit } = props;
 
-  const { order, pay } = useOrder(props.order?.token, props.order);
+  const router = useRouter();
+  const { order } = useOrder(props.order?.token, props.order);
   const { isDesktop } = useScreenSize();
 
   const {
     flow: { step },
+    isPaymentProcessing,
   } = useSelector((state: IState) => state.checkout);
 
-  if (!order) return null;
+  useEffect(() => {
+    dlog('CheckoutPaymentPanel ➡️ isPaymentProcessing:', isPaymentProcessing);
+  }, [isPaymentProcessing]);
+
+  if (!props.order) {
+    // Return home if order is somehow invalid
+    router.push('/');
+    return null;
+  }
 
   return (
     <div
@@ -65,8 +76,17 @@ export function CheckoutPaymentPanel(props: Props) {
               <p>£{order.price.final}</p>
             </div>
 
-            <Button wide type="solid" onClick={() => submit()}>
-              Place Order
+            <Button
+              wide
+              type="solid"
+              onClick={() => submit()}
+              disabled={isPaymentProcessing}
+            >
+              {isPaymentProcessing ? (
+                <LoadingOutlined className="text-2xl" />
+              ) : (
+                'Place Order'
+              )}
             </Button>
 
             <TermsAndConditions />
@@ -86,8 +106,18 @@ export function CheckoutPaymentPanel(props: Props) {
         >
           <TermsAndConditions />
 
-          <Button wide type="solid" size="large" onClick={() => submit()}>
-            Place Order
+          <Button
+            wide
+            type="solid"
+            size="large"
+            onClick={() => submit()}
+            disabled={isPaymentProcessing}
+          >
+            {isPaymentProcessing ? (
+              <LoadingOutlined className="text-2xl" />
+            ) : (
+              'Place Order'
+            )}
           </Button>
         </div>
       )}

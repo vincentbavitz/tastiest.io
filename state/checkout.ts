@@ -1,16 +1,12 @@
-import { IOrder } from '@tastiest-io/tastiest-utils';
 export interface ICheckoutFlow {
   step: CheckoutStep;
   signInTabSelected: CheckoutSignInTabSelected;
 }
 
 export interface ICheckout {
-  order?: IOrder;
-  coupon?: string;
-  createdAt?: number;
-  priceGBP?: number;
   flow?: ICheckoutFlow;
   onCheckoutPage: boolean;
+  isPaymentProcessing: boolean;
 }
 
 export enum CheckoutStep {
@@ -31,12 +27,14 @@ export const initialCheckoutState: ICheckout = {
     signInTabSelected: CheckoutSignInTabSelected.NONE,
   },
   onCheckoutPage: false,
+  isPaymentProcessing: false,
 };
 
 export enum CheckoutActions {
   SET_CHECKOUT_STEP = 'SET_CHECKOUT_STEP',
   SET_SIGN_IN_TAB_SELECTED = 'SET_SIGN_IN_TAB_SELECTED',
   SET_ON_CHECKOUT_PAGE = 'SET_ON_CHECKOUT_PAGE',
+  SET_IS_PAYMENT_PROCESSING = 'SET_IS_PAYMENT_PROCESSING',
 }
 
 // ////////////////////////////// //
@@ -57,4 +55,9 @@ export const setSignInTabSelected = (selected: CheckoutSignInTabSelected) => ({
 export const setOnCheckoutPage = (value: boolean) => ({
   type: CheckoutActions.SET_ON_CHECKOUT_PAGE,
   payload: value,
+});
+
+export const setIsPaymentProcessing = (processing: boolean) => ({
+  type: CheckoutActions.SET_IS_PAYMENT_PROCESSING,
+  payload: processing,
 });

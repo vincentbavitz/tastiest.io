@@ -22,6 +22,9 @@ export const checkoutReducer = (
     case CheckoutActions.SET_ON_CHECKOUT_PAGE: {
       return { ...state, onCheckoutPage: action.payload };
     }
+    case CheckoutActions.SET_IS_PAYMENT_PROCESSING: {
+      return { ...state, isPaymentProcessing: action.payload };
+    }
     default:
       return state;
   }

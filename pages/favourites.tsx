@@ -19,13 +19,14 @@ import nookies from 'nookies';
 import { NothingFoundIllustration } from 'public/assets/illustrations';
 import { FavouritesHero } from 'public/assets/page';
 import React from 'react';
+import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { useAuth } from '../hooks/useAuth';
 import { useUserData } from '../hooks/useUserData';
 
 export const getServerSideProps: GetServerSideProps = async context => {
   // Get user ID from cookie.
   const cookieToken = nookies.get(context)?.token;
-  const userDataApi = new UserDataApi(cookieToken);
+  const userDataApi = new UserDataApi(firebaseAdmin);
   const { userId } = await userDataApi.initFromCookieToken(cookieToken);
 
   // If no user, redirect to home

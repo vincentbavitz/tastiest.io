@@ -4,6 +4,7 @@ import {
   dlog,
   FirestoreCollection,
   IOrder,
+  PAYMENTS,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import { useAuth } from 'hooks/useAuth';
@@ -36,7 +37,7 @@ interface Props {
 export const getServerSideProps: GetServerSideProps = async context => {
   // Get user ID from cookie.
   const cookieToken = nookies.get(context)?.token;
-  const userDataApi = new UserDataApi(cookieToken);
+  const userDataApi = new UserDataApi(firebaseAdmin);
   const { userId } = await userDataApi.initFromCookieToken(cookieToken);
 
   // Verify order is legit; else redirect and wipe order data.
@@ -71,7 +72,20 @@ export const getServerSideProps: GetServerSideProps = async context => {
   if (!order) {
     return {
       redirect: {
+        // TODO -> Destination should be /city/cuisine/slug
         destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  // Order already paid, or order expired?
+  const isExpired = order.createdAt + PAYMENTS.ORDER_EXPIRY_MS < Date.now();
+  if (order.paidAt !== null || isExpired) {
+    return {
+      redirect: {
+        // TODO -> Destination should be /city/cuisine/slug
+        destination: '',
         permanent: false,
       },
     };

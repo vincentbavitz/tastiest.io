@@ -1,7 +1,7 @@
 import {
-  dlog,
   FirestoreCollection,
   FunctionsResponse,
+  IBooking,
   IOrder,
   PAYMENTS,
   UserData,
@@ -10,6 +10,7 @@ import {
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { generateConfirmationCode, transformPriceForStripe } from 'utils/order';
 
 export type PayReturn = FunctionsResponse<{
   order: IOrder | null;
@@ -36,6 +37,8 @@ export default async function pay(
     response.status(405).end();
     return;
   }
+
+  console.log('41');
 
   // Get body as JSON or raw
   let body;
@@ -101,11 +104,11 @@ export default async function pay(
       return;
     }
 
-    const userDataApi = new UserDataApi(order?.userId);
-
+    const userDataApi = new UserDataApi(firebaseAdmin, order?.userId);
     const paymentDetails = await userDataApi.getUserData(
       UserData.PAYMENT_DETAILS,
     );
+
     const customerId = paymentDetails?.stripeCustomerId;
 
     if (!customerId) {
@@ -121,8 +124,9 @@ export default async function pay(
       apiVersion: '2020-08-27',
     });
 
+    // The `confirm` parameter attempts to pay immediately & automatically
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: order.price.final,
+      amount: transformPriceForStripe(order.price.final),
       currency: 'gbp',
       customer: customerId,
       payment_method: order.paymentMethod,
@@ -130,59 +134,52 @@ export default async function pay(
       confirm: true,
     });
 
-    try {
-      const newPaymentIntent = await stripe.paymentIntents.confirm(
-        paymentIntent.id,
-      );
-
-      const { status } = newPaymentIntent;
-    } catch (error) {
-      dlog('pay ➡️ newPaymentIntent:', error);
-    }
-
     // Payment success
-    // if (status === 'succeeded') {
-    //   // Update order
-    //   firebaseAdmin
-    //     .firestore()
-    //     .collection(FirestoreCollection.ORDERS)
-    //     .doc(order.id)
-    //     .set(
-    //       {
-    //         paidAt: Date.now(),
-    //       },
-    //       { merge: true },
-    //     );
+    if (paymentIntent.status === 'succeeded') {
+      // Update order
+      firebaseAdmin
+        .firestore()
+        .collection(FirestoreCollection.ORDERS)
+        .doc(order.id)
+        .set(
+          {
+            paidAt: Date.now(),
+          },
+          { merge: true },
+        );
 
-    //   const details = await userDataApi.getUserData(UserData.DETAILS);
-    //   const eaterName = `${details.firstName} ${details.lastName}`;
+      const details = await userDataApi.getUserData(UserData.DETAILS);
+      const eaterName = `${details.firstName} ${details.lastName}`;
 
-    //   // Add to bookings
-    //   const booking: IBooking = {
-    //     orderId: order.id,
-    //     restaurantId: order.deal.restaurant.id,
-    //     eaterName,
-    //     dealName: order.deal.name,
-    //     heads: order.heads,
-    //     price: order.price,
-    //     paidAt: Date.now(),
-    //     bookingDate: null,
-    //     hasBooked: false,
-    //     hasEaten: false,
-    //   };
+      // Add to bookings
+      const booking: IBooking = {
+        orderId: order.id,
+        restaurantId: order.deal.restaurant.id,
+        eaterName,
+        dealName: order.deal.name,
+        heads: order.heads,
+        price: order.price,
+        paidAt: Date.now(),
+        bookingDate: null,
+        hasBooked: false,
+        hasEaten: false,
+        confirmationCode: generateConfirmationCode(),
+        isConfirmationCodeVerified: false,
+      };
 
-    //   firebaseAdmin
-    //     .firestore()
-    //     .collection(FirestoreCollection.BOOKINGS)
-    //     .doc(order.id)
-    //     .set(booking);
+      firebaseAdmin
+        .firestore()
+        .collection(FirestoreCollection.BOOKINGS)
+        .doc(order.id)
+        .set(booking);
 
-    //   response.json({
-    //     success: true,
-    //     data: { order },
-    //     error: null,
-    //   });
-    // }
+      response.json({
+        success: true,
+        data: { order },
+        error: null,
+      });
+      return;
+    }
 
     response.json({
       success: false,

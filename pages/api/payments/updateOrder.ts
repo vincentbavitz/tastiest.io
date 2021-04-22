@@ -24,7 +24,7 @@ export type UpdateOrderReturn = FunctionsResponse<{
  *    userId: string;
  *    heads: number;
  *    promoCode: string;
- *    paymentMethod: string;
+ *    paymentMethodId: string;
  *  ```
  *
  * Returns updated order object on success
@@ -138,7 +138,10 @@ export default async function updateOrder(
     }
 
     // Validate payment method and add if valid
+    console.log('adfasfd');
     if (paymentMethodId && paymentMethodId?.length) {
+      dlog('updateOrder ➡️ paymentMethodId:', paymentMethodId);
+
       const errorResponse = {
         success: false,
         data: { order: null },
@@ -155,11 +158,13 @@ export default async function updateOrder(
         );
 
         if (!paymentMethod) {
+          dlog('updateOrder ➡️ errorResponse:', errorResponse);
           response.json(errorResponse);
         }
 
         updatedOrder.paymentMethod = paymentMethodId as string;
       } catch {
+        console.log('caught');
         response.json(errorResponse);
         return;
       }

@@ -10,11 +10,12 @@ import {
   ThankYouPhoneButton,
 } from 'public/assets/page';
 import React from 'react';
+import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { Contained } from '../components/Contained';
 
 export const getServerSideProps = async context => {
   const cookieToken = nookies.get(context)?.token;
-  const userDataApi = new UserDataApi(cookieToken);
+  const userDataApi = new UserDataApi(firebaseAdmin);
   const { userId } = await userDataApi.initFromCookieToken(cookieToken);
 
   // Verify order is legit; else redirect and wipe order data.

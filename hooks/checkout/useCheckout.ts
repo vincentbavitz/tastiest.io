@@ -29,8 +29,10 @@ export function useCheckout() {
 
   const addCard = async (_cardHolderName: string, postalCode: string) => {
     if (!_cardHolderName?.length) {
-      console.log('useCheckout ➡️ asdf;:');
-      return;
+      return {
+        paymentMethod: null,
+        error: 'Cardholder name must not be empty',
+      };
     }
 
     const {

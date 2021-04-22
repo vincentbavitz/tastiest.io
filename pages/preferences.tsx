@@ -20,12 +20,13 @@ import { InferGetServerSidePropsType } from 'next';
 import nookies from 'nookies';
 import { PreferencesHero } from 'public/assets/page';
 import React, { ReactNode, useState } from 'react';
+import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { UI } from '../constants';
 
 export const getServerSideProps = async context => {
   // Get user ID from cookie.
   const cookieToken = nookies.get(context)?.token;
-  const userDataApi = new UserDataApi(cookieToken);
+  const userDataApi = new UserDataApi(firebaseAdmin);
   const { userId } = await userDataApi.initFromCookieToken(cookieToken);
 
   dlog('preferences ➡️ userId:', userId);
