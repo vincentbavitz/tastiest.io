@@ -1,6 +1,10 @@
-import { CardNumberElement, useStripe } from '@stripe/react-stripe-js';
+import {
+  CardNumberElement,
+  useElements,
+  useStripe,
+} from '@stripe/react-stripe-js';
 import { StripeCardNumberElementChangeEvent } from '@stripe/stripe-js';
-import { CardBrand } from '@tastiest-io/tastiest-utils';
+import { CardBrand, UserData } from '@tastiest-io/tastiest-utils';
 import 'firebase/firestore'; // REMEMBER to include this for all useFirestore things
 import { useState } from 'react';
 import { useFirestore } from 'react-redux-firebase';
@@ -15,7 +19,7 @@ export function useCheckout() {
   const { setUserData, userData } = useUserData(user);
 
   const stripe = useStripe();
-  const elements = stripe.elements();
+  const elements = useElements();
   const firestore = useFirestore();
 
   // Payment input values
@@ -23,73 +27,64 @@ export function useCheckout() {
   const [cardPostcode, setCardPostcode] = useState('');
   const [cardBrand, setCardBrand] = useState<CardBrand | undefined>(undefined);
 
-  const addCard = async (cardholderName: string) => {
-    const { setupIntent, error } = await stripe.confirmCardSetup(
-      userData?.paymentDetails?.stripeSetupSecret,
-      {
-        payment_method: {
-          card: elements.getElement(CardNumberElement),
-          billing_details: {
-            name: cardholderName,
-            email: userData?.details.email,
-          },
+  const addCard = async (_cardHolderName: string, postalCode: string) => {
+    if (!_cardHolderName?.length) {
+      console.log('useCheckout ➡️ asdf;:');
+      return;
+    }
+
+    const {
+      paymentMethod,
+      error: paymentMethodError,
+    } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: elements.getElement(CardNumberElement),
+      billing_details: {
+        name: _cardHolderName,
+        email: userData?.details.email,
+        address: {
+          country: 'GB',
+          city: 'London',
+          postal_code: postalCode,
         },
       },
+    });
+
+    if (paymentMethodError) {
+      return {
+        paymentMethod,
+        error: paymentMethodError,
+      };
+    }
+
+    const { setupIntent: savedSetupIntent } = await stripe.retrieveSetupIntent(
+      userData?.paymentDetails?.stripeSetupSecret,
     );
+
+    // Customer only has one card each at the moment
+    if (savedSetupIntent?.status !== 'succeeded') {
+      const { setupIntent, error } = await stripe.confirmCardSetup(
+        userData?.paymentDetails?.stripeSetupSecret,
+        {
+          payment_method: paymentMethod?.id,
+        },
+      );
+
+      if (error && !setupIntent) {
+        return { paymentMethod, error };
+      }
+
+      setUserData(UserData.PAYMENT_METHODS, {
+        pm_1IiqgGHZaOt3USRGunMzIEs5: paymentMethod,
+      });
+
+      if (error && setupIntent) {
+        return { paymentMethod, error: 'Card already saved' };
+      }
+    }
+
+    return { paymentMethod, error: null };
   };
-
-  // const updateOrder = async (
-  //   orderId: string,
-  //   orderPartial: Partial<IOrder>,
-  // ) => {
-  //   try {
-  //     firestore
-  //       .collection(FirestoreCollection.ORDERS)
-  //       .doc(orderId)
-  //       .set(orderPartial, { merge: true });
-
-  //     return true;
-  //   } catch (e) {
-  //     return false;
-  //   }
-  // };
-
-  // const markOrderSuccess = async (
-  //   order: IOrder,
-  //   userDetails: IUserDetails,
-  //   paymentDetails: IPaymentDetails,
-  // ) => {
-  //   const updatedOrder = updateOrder(order.id, {
-  //     paymentDetails,
-  //     paidAt: Date.now(),
-  //   });
-
-  //   if (!updatedOrder) {
-  //     return { success: false, error: 'Failed to update order' };
-  //   }
-
-  //   // Update user details if changed
-  //   setUserData(UserData.DETAILS, userDetails);
-  //   setUserData(UserData.PAYMENT_DETAILS, paymentDetails);
-
-  //   // Segment: Payment success event
-  //   window.analytics.track('Payment Success', {
-  //     ...userDetails,
-  //     ...paymentDetails,
-  //   });
-
-  //   // Delete order request
-  //   try {
-  //     firestore
-  //       .collection(FirestoreCollection.ORDER_REQUESTS)
-  //       .doc(order.id)
-  //       .delete();
-  //   } catch (error) {
-  //     return { success: false, error: error?.message };
-  //   }
-
-  //   return { success: true, error: null };
-  // };
 
   const onCardNumberChange = (event: StripeCardNumberElementChangeEvent) => {
     // prettier-ignore

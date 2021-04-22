@@ -3,7 +3,7 @@ import { ExitIcon, RightIcon } from '@tastiest-io/tastiest-icons';
 import { IDeal, valdHeads, ValidHead } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import { Contained } from 'components/Contained';
-import { useOrderNow } from 'hooks/checkout/useOrderNow';
+import { useArticleOrder } from 'hooks/checkout/useArticleOrder';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useLockBodyScroll } from 'react-use';
@@ -68,7 +68,7 @@ interface OrderNowOverlayProps extends Props {
 }
 
 const OrderNowOverlay = ({ deal, slug, onClose }: OrderNowOverlayProps) => {
-  const { totalPrice, heads, setHeads, submit } = useOrderNow(deal, slug);
+  const { totalPrice, heads, setHeads, submit } = useArticleOrder(deal, slug);
 
   return (
     <div

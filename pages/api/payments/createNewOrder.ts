@@ -1,6 +1,5 @@
 import {
   CmsApi,
-  dlog,
   FIREBASE,
   FirestoreCollection,
   FunctionsResponse,
@@ -11,10 +10,11 @@ import {
 import * as Analytics from 'analytics-node';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { calculatePromoPrice, validatePromo } from 'utils/order';
 import { v4 as uuid } from 'uuid';
 
 export type CreateNewOrderReturn = FunctionsResponse<{
-  orderId: string;
+  token: string;
 }>;
 
 /**
@@ -62,7 +62,7 @@ export default async function createNewOrder(
   if (!success) {
     response.json({
       success: false,
-      data: { orderId: null },
+      data: { token: null },
       error,
     });
     return;
@@ -92,7 +92,7 @@ export default async function createNewOrder(
 
   response.json({
     success: true,
-    data: { orderId: order.id },
+    data: { token: order.token },
     error: null,
   });
 }
@@ -157,17 +157,20 @@ const buildOrder = async (orderRequest: IOrderRequest) => {
   // Is userId valid and is user online?
   // Is promoCode valid? If so, calculate IPromo and final price
   const promo: IPromo = await cms.getPromo(orderRequest.promoCode);
-  const promoIsValid = true;
-  if (promo.validTo < Date.now()) {
+  const promoIsValid = validatePromo(deal, orderRequest.userId, promo);
+  if (promo?.validTo < Date.now()) {
     // Out of date
   }
 
   // Gross price
   const gross = deal.pricePerHeadGBP * heads;
 
+  // New order
   const orderId = uuid();
+  const orderToken = uuid();
   const order: IOrder = {
     id: orderId,
+    token: orderToken,
     deal,
     userId: null,
     heads: orderRequest.heads,
@@ -177,31 +180,15 @@ const buildOrder = async (orderRequest: IOrderRequest) => {
       final: calculatePromoPrice(gross, promo),
     },
     paymentDetails: null,
-    promoCode: promo.code,
+    promoCode: promo?.code ?? null,
+    createdAt: Date.now(),
 
     // Timestamps
     // Null denotes not paid yet; not done yet.
     paidAt: null,
-    orderedAt: null,
     abandonedAt: null,
     refund: null,
   };
 
   return order;
-};
-
-/**
- * Calculate price after applying promocode.
- */
-const calculatePromoPrice = (price: number, promo: IPromo): number => {
-  const isPercentage = promo?.discount?.unit === '%';
-
-  if (isPercentage) {
-    const discountGbp = price * (1 - Math.min(promo.discount.value, 100) / 100);
-    dlog('createNewOrder ➡️ price:', price);
-    dlog('createNewOrder ➡️ discountGbp:', discountGbp);
-    return price - discountGbp;
-  }
-
-  return Math.max(0, price - promo?.discount?.value ?? 0);
 };

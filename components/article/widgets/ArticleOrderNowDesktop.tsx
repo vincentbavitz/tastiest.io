@@ -2,7 +2,7 @@ import { Button, Select } from '@tastiest-io/tastiest-components';
 import { PoundIcon } from '@tastiest-io/tastiest-icons';
 import { IDeal, valdHeads, ValidHead } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
-import { useOrderNow } from 'hooks/checkout/useOrderNow';
+import { useArticleOrder } from 'hooks/checkout/useArticleOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
 import { UI } from '../../../constants';
@@ -14,7 +14,10 @@ interface Props {
 
 export function ArticleOrderNowDesktop(props: Props) {
   const { deal, slug: fromSlug } = props;
-  const { price, heads, setHeads, submit } = useOrderNow(deal, fromSlug);
+  const { totalPrice, heads, setHeads, submit } = useArticleOrder(
+    deal,
+    fromSlug,
+  );
 
   const { isDesktop } = useScreenSize();
 
@@ -88,7 +91,7 @@ export function ArticleOrderNowDesktop(props: Props) {
                   style={{ height: '0.6rem' }}
                   className="inline mr-1"
                 />
-                <p>{price.gross}</p>
+                <p>{totalPrice}</p>
               </div>
             </div>
 
@@ -98,7 +101,7 @@ export function ArticleOrderNowDesktop(props: Props) {
               <span>Total</span>
               <span>
                 <PoundIcon className="inline h-3 mr-1 -mt-1" />
-                {price.final}
+                {totalPrice}
               </span>
             </div>
 

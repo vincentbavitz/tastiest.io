@@ -1,38 +1,37 @@
-import { IOrder } from '@tastiest-io/tastiest-utils';
-import { LocalEndpoint } from 'types/api';
-import { LocalApi } from './api';
+import { dlog, IDeal, IPromo } from '@tastiest-io/tastiest-utils';
 
-export default class Order {
-  private token: string;
-  public details: Partial<IOrder>;
-
-  constructor(orderToken) {
-    this.token = orderToken;
+/**
+ * Calculate price after applying promocode.
+ */
+export const calculatePromoPrice = (price: number, promo: IPromo): number => {
+  if (!promo || !promo.discount?.value) {
+    return price;
   }
 
-  public async setHeads(heads: number) {
-    // Set heads on DB
-    const { success, error } = await LocalApi.post(LocalEndpoint.UPDATE_ORDER, {
-      heads,
-    });
+  const isPercentage = promo?.discount?.unit === '%';
 
-    // Set heads on local object
-    if (success) {
-      this.details.heads = heads;
-    }
-
-    return { success, error };
+  if (isPercentage) {
+    const discountGbp = price * (1 - Math.min(promo.discount.value, 100) / 100);
+    dlog('createNewOrder ➡️ price:', price);
+    dlog('createNewOrder ➡️ discountGbp:', discountGbp);
+    return price - discountGbp;
   }
 
-  public async setPromoCode(code: string) {
-    null;
-  }
+  return Math.max(0, price - promo?.discount?.value ?? 0);
+};
 
-  public async clearPromoCode() {
-    null;
-  }
-
-  public async pay(paymentMethod: string) {
-    null;
-  }
-}
+/**
+ * Validate promo after you've pulled it from CMS
+ */
+export const validatePromo = async (
+  deal: IDeal,
+  userId: string,
+  promo: IPromo,
+) => {
+  // Validate user is allowed to use this.
+  // Validate maxiumum uses etc
+  deal;
+  userId;
+  promo;
+  return true;
+};

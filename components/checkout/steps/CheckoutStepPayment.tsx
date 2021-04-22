@@ -9,15 +9,17 @@ import {
 } from '@stripe/stripe-js';
 import { Input } from '@tastiest-io/tastiest-components';
 import { HelpIcon } from '@tastiest-io/tastiest-icons';
-import { IDateObject, IOrder } from '@tastiest-io/tastiest-utils';
+import { dlog, IDateObject, IOrder } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { InputContactBirthday } from 'components/inputs/contact/InputContactBirthday';
 import { useCheckout } from 'hooks/checkout/useCheckout';
+import { useOrder } from 'hooks/checkout/useOrder';
 import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { CheckoutStep, setCheckoutStep } from 'state/checkout';
 import { UI } from '../../../constants';
 import { InputCardNumberWrapper } from '../../inputs/card/InputCardNumberWrapper';
 import { InputContactFirstName } from '../../inputs/contact/InputContactFirstName';
@@ -39,11 +41,13 @@ interface Props {
 }
 
 export function CheckoutStepPayment(props: Props) {
-  const { order, userId } = props;
+  const { order: initialOrder, userId } = props;
 
-  const { user } = useAuth();
+  const { user, isSignedIn } = useAuth();
   const { userData, setUserData } = useUserData(user);
   const dispatch = useDispatch();
+
+  const { isMobile, isTablet, isDesktop } = useScreenSize();
 
   // Contact
   const [firstName, setFirstName] = useState<string>(
@@ -66,114 +70,45 @@ export function CheckoutStepPayment(props: Props) {
     onCardNumberChange,
   } = useCheckout();
 
-  const { isMobile, isTablet, isDesktop } = useScreenSize();
+  const { order, updateOrder, pay } = useOrder(
+    initialOrder.token,
+    initialOrder,
+  );
 
-  // Now that we're logged in, update order with user ID
-  // useEffect(() => {
-  //   updateOrder(order.id, { userId });
-  // }, []);
-
-  // if (!userId) {
-  //   dispatch(setCheckoutStep(CheckoutStep.SIGN_IN));
-  //   return null;
-  // }
-
-  // const pay = async (stripeClientSecret: string) => {
-  //   if (!stripe || !elements) {
-  //     return { success: null, error: null };
-  //   }
-
-  //   try {
-  //     const { paymentMethod } = await stripe.createPaymentMethod({
-  //       type: 'card',
-  //       card: elements.getElement(CardNumberElement),
-  //     });
-
-  //     const { error, paymentIntent } = await stripe.confirmCardPayment(
-  //       stripeClientSecret,
-  //       {
-  //         payment_method: paymentMethod.id,
-  //       },
-  //     );
-
-  //     if (error) {
-  //       return { success: false, error: error?.message };
-  //     }
-
-  //     // Payment success
-  //     if (paymentIntent.status === 'succeeded') {
-  //       return { success: true, error: null };
-  //     }
-  //   } catch (error) {
-  //     return { success: false, error: error?.messsage };
-  //   }
-
-  //   // Segment: Payment failure event
-  //   return { success: false, error: 'Unknown error' };
-  // };
-
-  // const handleSubmit = async () => {
-  //   // Ensure all inputs are valid
-  //   // DO THIS BY FIXING onBlurRegex for all inputs
-  //   if (
-  //     firstName.length < 2 ||
-  //     lastName.length < 2 ||
-  //     !birthday.day ||
-  //     !birthday.month ||
-  //     !birthday.year
-  //   ) {
-  //     alert('Please fill out contact details');
-  //   }
-
-  //   // const { success, error } = await pay(stripeClientSecret);
-
-  //   const userDetails: IUserDetails = {
-  //     firstName,
-  //     lastName,
-  //     birthday,
-  //     address: {
-  //       address: '',
-  //       postalCode: cardPostcode,
-  //       lat: null,
-  //       lon: null,
-  //     },
-  //     email: userData?.details?.email ?? null,
-  //     mobile: null,
-  //   };
-
-  //   // const paymentDetails: IPaymentDetails = {
-  //   //   cardHolderName,
-  //   //   cardPostcode,
-  //   //   cardLastFour: '',
-  //   // };
-
-  //   if (success) {
-  //     // const { success: orderMarkedSuccess } = await markOrderSuccess(
-  //     //   order,
-  //     //   userDetails,
-  //     //   paymentDetails,
-  //     // );
-
-  //     // if (orderMarkedSuccess) {
-  //     //   router.push(`/thank-you?orderId=${order.id}`);
-  //     //   return;
-  //     // }
-
-  //     // Major error; assign error to order in Firebase
-  //     // and redirect to home.
-  //     router.push('/');
-  //     return;
-  //   }
-
-  //   if (error) {
-  //     // Segment: Payment failure event
-  //   }
-
-  //   dlog('CheckoutOrderSummary ➡️ error:', error);
-  // };
+  // Redirect if user is logged out
+  useEffect(() => {
+    if (isSignedIn === false) {
+      dispatch(setCheckoutStep(CheckoutStep.SIGN_IN));
+      return null;
+    }
+  }, [isSignedIn]);
 
   const onCardExpiryChange = (event: StripeCardExpiryElementChangeEvent) => {
     event;
+  };
+
+  const makePayment = async () => {
+    const { paymentMethod, error: paymentMethodError } = await addCard(
+      cardHolderName,
+      cardPostcode,
+    );
+
+    if (paymentMethodError) {
+      return { success: false, error: paymentMethodError };
+    }
+
+    const { error: updateOrderError } = await updateOrder({
+      paymentMethodId: paymentMethod.id,
+    });
+
+    if (updateOrderError) {
+      return { success: false, error: updateOrderError };
+    }
+
+    const { success, error } = await pay();
+    dlog('CheckoutStepPayment ➡️ success:', success);
+    dlog('CheckoutStepPayment ➡️ error:', error);
+    //
   };
 
   return (
@@ -269,7 +204,7 @@ export function CheckoutStepPayment(props: Props) {
           isDesktop && 'pl-10',
         )}
       >
-        <CheckoutPaymentPanel order={order} onSubmit={() => null} />
+        <CheckoutPaymentPanel order={order} submit={makePayment} />
       </div>
     </div>
   );

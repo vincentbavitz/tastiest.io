@@ -3,15 +3,13 @@ import { useAuth } from 'hooks/useAuth';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { LocalEndpoint } from 'types/api';
-import { LocalApi } from 'utils/api';
+import { LocalApiPost } from 'utils/api';
 
-export const useOrderNow = (deal: IDeal, fromSlug: string) => {
+export const useArticleOrder = (deal: IDeal, fromSlug: string) => {
   const { user } = useAuth();
   const router = useRouter();
 
   const [heads, setHeads] = useState<ValidHead>(1);
-  const [promoCode, setPromoCode] = useState<string | null>(null);
-
   const totalPrice = (Number(heads) * deal?.pricePerHeadGBP).toFixed(2);
 
   const submit = async () => {
@@ -20,21 +18,21 @@ export const useOrderNow = (deal: IDeal, fromSlug: string) => {
       dealId: deal.id,
       heads,
       fromSlug,
-      promoCode,
+      promoCode: null,
       timestamp: Date.now(),
     };
 
     const {
-      data: { orderId },
-    } = await LocalApi.post(LocalEndpoint.GENERATE_ORDER_REQUEST, orderRequest);
+      data: { token },
+    } = await LocalApiPost.post(LocalEndpoint.CREATE_NEW_ORDER, orderRequest);
 
-    if (orderId) {
-      router.push(`/checkout/?orderId=${orderId}`);
+    if (token) {
+      router.push(`/checkout/?token=${token}`);
       return;
     }
 
     return;
   };
 
-  return { totalPrice, heads, setHeads, promoCode, setPromoCode, submit };
+  return { totalPrice, heads, setHeads, submit };
 };

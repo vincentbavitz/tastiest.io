@@ -31,7 +31,6 @@ const stripePromise = loadStripe(
 interface Props {
   userId: string;
   order: IOrder;
-  stripeClientSecret: string;
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {
@@ -41,11 +40,11 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const { userId } = await userDataApi.initFromCookieToken(cookieToken);
 
   // Verify order is legit; else redirect and wipe order data.
-  const orderId = String(context.query.orderId ?? '') ?? null;
+  const token = String(context.query.token ?? '') ?? null;
 
   // If no order exists in URI, redirect to home
-  if (!orderId) {
-    dlog('no order id');
+  if (!token) {
+    dlog('no order token');
 
     return {
       redirect: {
@@ -58,13 +57,15 @@ export const getServerSideProps: GetServerSideProps = async context => {
   // Get order, given our order ID.
   // If the order exists, /api/payments/createNewOrder
   // has already verified that it's valid.
-  const doc = await firebaseAdmin
+  const snapshot = await firebaseAdmin
     .firestore()
     .collection(FirestoreCollection.ORDERS)
-    .doc(orderId)
+    .where('token', '==', token)
+    .limit(1)
     .get();
 
-  const order = doc.data() as IOrder;
+  let order: IOrder;
+  snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
 
   // Redirect if user somehow got to this state of no order request.
   if (!order) {
@@ -156,7 +157,7 @@ function CheckoutDesktop(props: Props) {
 }
 
 function CheckoutMobile(props: Props) {
-  const { stripeClientSecret, userId, order } = props;
+  const { userId, order } = props;
   const { stepIsAuth, stepIsPayment } = useCheckoutStep();
 
   return (

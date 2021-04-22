@@ -1332,6 +1332,11 @@
   resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-1.12.1.tgz"
   integrity sha512-CE602Mzx6DnUHGrL+S9Kk7UK6674BCYlklh9F2NWU6ue0xdVzRTfFCuL5LHvs7Plicw5rsjuDhJ9sIdwFBVCIQ==
 
+"@stripe/stripe-js@^1.13.2":
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-1.13.2.tgz#bb2f561085b5dd091355df871d432b8e1fd467f6"
+  integrity sha512-fycUk7ECukNc31lD5apcrUgdRC1BfiIacs+CpacoCjOgo3ablolnWCvDQWMmVWtODYa8bBv2dlBla+Edc5OvZg==
+
 "@svgr/babel-plugin-add-jsx-attribute@^5.4.0":
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-5.4.0.tgz#81ef61947bb268eb9d50523446f9c638fb355906"
@@ -1476,12 +1481,13 @@
   resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.8.0/96ffaf8802772f77f3a6a2f70b4bdb3fad3429d873ccba655124d6f5ee3f09cd#f0e5ee6cfba60e84181469eb88fa175356efe87f"
   integrity sha512-HYikUYdQOtNJZOdUJAyyxzXcaEZs75d8YZ7EHkyzGBtHb7tjbbT6OnVIkUo02VUDYk0QO3wzH5eeALKLhIiBcw==
 
-"@tastiest-io/tastiest-utils@^0.74.0":
-  version "0.74.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.74.0/7a706636d6b5d9ec9c875bb0f0b73ff2e3d427fbbc71ed158b8f62608a39fc02#75a7a73e84ed556efbf8358fea2ea529b9274292"
-  integrity sha512-f8nMMWO75mw5TKAlaHaCm192qEJLlG/IvtHYPIutBj5jpPj9rjzFz69GsMUjy/7hKclPdGhakeQO7ZwqiUCi5w==
+"@tastiest-io/tastiest-utils@^0.86.0":
+  version "0.86.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.86.0/34acdcc316a5387791dd2bc8e67022078f020f92196fd89c034c4e65712aa36c#6a547a832b3872e15c5d44b9a67a5e2a9e5bd853"
+  integrity sha512-jqJQkHSIqlnLwG9qc6u+ZYQr2CdhXJCGIfQucgnU+74ksecDqrbt+WWQ3Newhx/1Uad589ScS5yAwrMs2yRJkA==
   dependencies:
     "@contentful/rich-text-types" "^14.1.2"
+    "@stripe/stripe-js" "^1.13.2"
     "@types/react" "^17.0.3"
     contentful "^8.2.1"
     firebase-admin "^9.6.0"

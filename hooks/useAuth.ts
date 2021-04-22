@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import { useFirebase } from 'react-redux-firebase';
 import { LocalEndpoint } from 'types/api';
-import { LocalApi } from 'utils/api';
+import { LocalApiPost } from 'utils/api';
 import { AuthContext } from '../contexts/auth';
 import { useUserData } from './useUserData';
 
@@ -86,15 +86,14 @@ export const useAuth = () => {
     _setError(null);
 
     try {
-      const { data: { user = null, token = null } = {} } = await LocalApi.post(
-        LocalEndpoint.REGISTER,
-        {
-          email,
-          password,
-          firstName: firstName ?? null,
-          userAgent: navigator?.userAgent ?? null,
-        },
-      );
+      const {
+        data: { user = null, token = null } = {},
+      } = await LocalApiPost.post(LocalEndpoint.REGISTER, {
+        email,
+        password,
+        firstName: firstName ?? null,
+        userAgent: navigator?.userAgent ?? null,
+      });
 
       if (!user || !token) {
         return false;

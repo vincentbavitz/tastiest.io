@@ -1,23 +1,31 @@
 import {
   CmsApi,
-  FIREBASE,
+  dlog,
   FirestoreCollection,
   FunctionsResponse,
   IOrder,
-  IOrderRequest,
+  PAYMENTS,
 } from '@tastiest-io/tastiest-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
+import Stripe from 'stripe';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { calculatePromoPrice, validatePromo } from 'utils/order';
 
 export type UpdateOrderReturn = FunctionsResponse<{
   order: IOrder | null;
 }>;
 
 /**
- * Requires `orderToken` as a parameter.
+ * Requires `token` as a parameter.
+ * This can only be obtained client side on article page.
+ *
  * Optionally takes one or more of these parameters...
- *  ```heads: number;
- * promoCode: string;```
+ *  ```
+ *    userId: string;
+ *    heads: number;
+ *    promoCode: string;
+ *    paymentMethod: string;
+ *  ```
  *
  * Returns updated order object on success
  */
@@ -31,98 +39,150 @@ export default async function updateOrder(
     return;
   }
 
+  // Get body as JSON or raw
+  let body;
   try {
-    const body = JSON.parse(request.body);
-    const { orderToken = null, heads = null, promoCode = null } = body;
+    body = JSON.parse(request.body);
+  } catch (e) {
+    body = request.body;
+  }
 
-    // Order token is required
-    if (!orderToken || !orderToken.length) {
+  const {
+    token = null,
+    userId = null,
+    heads = null,
+    promoCode = null,
+    paymentMethodId = null,
+  } = body;
+
+  // Order token is required
+  if (!token || !token.length) {
+    response.json({
+      success: false,
+      data: { order: null },
+      error: 'No order token provided',
+    });
+    return;
+  }
+
+  try {
+    // Fetch the order from Firestore using orderToken
+    const snapshot = await firebaseAdmin
+      .firestore()
+      .collection(FirestoreCollection.ORDERS)
+      .where('token', '==', token)
+      .limit(1)
+      .get();
+
+    let order: IOrder;
+    snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
+
+    // Does the order belong to this user?
+    if (order?.userId && order?.userId !== userId) {
+      dlog('updateOrder ➡️ userId:', userId);
+      dlog('updateOrder ➡️ order?.userId:', order?.userId);
       response.json({
         success: false,
         data: { order: null },
-        error: 'No order token provided',
+        error: 'Order does not belong to this user',
       });
       return;
     }
 
-    // Either heads or promo code must be given
-    if (!heads || !heads.length || !promoCode || !promoCode.length) {
+    // Is the order already paid or expired?
+    const isOrderExpired =
+      order?.createdAt + PAYMENTS.ORDER_EXPIRY_MS < Date.now();
+    if (order.paidAt || isOrderExpired) {
       response.json({
         success: false,
         data: { order: null },
-        error:
-          'You must provide a `heads` or `promoCode` paramter in your request',
+        error: 'Order already paid or is expired',
       });
+      return;
     }
 
-    // Fetch the order from Firestore
-
-    // Validate heads
-
-    // Validate discount if required.
-
+    // Start updating
     const updatedOrder: IOrder = {
       ...order,
     };
 
-    // Create order request in Firebase
-    const { id: orderId } = await firebaseAdmin
+    // Adding userId to order
+    if (!order?.userId && userId && userId.length) {
+      updatedOrder.userId = userId;
+    }
+
+    // Validate heads
+    if (heads && heads > 0) {
+      updatedOrder.heads = heads;
+    }
+
+    // Validate discount if required
+    if (promoCode && promoCode.length > 0) {
+      const cms = new CmsApi();
+      const promo = await cms.getPromo(promoCode);
+
+      if (promo && validatePromo(order.deal, order.userId, promo)) {
+        updatedOrder.promoCode = promoCode;
+        updatedOrder.price.final = calculatePromoPrice(
+          order.price.gross,
+          promo,
+        );
+      } else {
+        response.json({
+          success: false,
+          data: { order: null },
+          error: "Promo code doesn't exist",
+        });
+        return;
+      }
+    }
+
+    // Validate payment method and add if valid
+    if (paymentMethodId && paymentMethodId?.length) {
+      const errorResponse = {
+        success: false,
+        data: { order: null },
+        error: 'Invalid payment method ID',
+      };
+
+      const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY, {
+        apiVersion: '2020-08-27',
+      });
+
+      try {
+        const paymentMethod = await stripe.paymentMethods.retrieve(
+          paymentMethodId,
+        );
+
+        if (!paymentMethod) {
+          response.json(errorResponse);
+        }
+
+        updatedOrder.paymentMethod = paymentMethodId as string;
+      } catch {
+        response.json(errorResponse);
+        return;
+      }
+    }
+
+    // Sync with Firestore
+    await firebaseAdmin
       .firestore()
       .collection(FirestoreCollection.ORDERS)
-      .add(orderRequest);
+      .doc(order.id)
+      .set(updatedOrder, { merge: true });
 
     response.json({
       success: true,
-      data: { orderId },
+      data: { order: updatedOrder },
       error: null,
     });
   } catch (error) {
+    response.json({
+      success: false,
+      data: { order: null },
+      error,
+    });
     return;
   }
 }
-
-/**
- * Ensure all the types and values from Firebase are valid in the order request
- */
-const validateOrderRequest = async (orderRequest: IOrderRequest) => {
-  // Expired order request
-  if (
-    Date.now() >
-    orderRequest?.timestamp + FIREBASE.ORDER_REQUEST_MAX_AGE_MS
-  ) {
-    return {
-      success: false,
-      error: 'validateOrderRequest: Order request has expired',
-    };
-  }
-
-  // Valid number of heads?
-  if (
-    orderRequest?.heads < 1 ||
-    orderRequest.heads > FIREBASE.ORDER_REQUEST_MAX_HEADS
-  ) {
-    return {
-      success: false,
-      error: 'validateOrderRequest: Invalid number of heads',
-    };
-  }
-
-  // Get deal and restaurant from Contentful
-  // If deal does not exist on Contentful, there was a clientside mismatch.
-  // This could be an innocent error, or the user is sending nefarious requests.
-  const cms = new CmsApi();
-  const deal = await cms.getDeal(orderRequest.dealId ?? '');
-
-  if (!deal) {
-    return { success: false, error: 'Deal does not exist with this ID' };
-  }
-
-  // Validate promotion code
-  orderRequest.promoCode;
-
-  // Validate user ID (required?)
-  null;
-
-  // Passed all tests 🎉
-  return { success: true, error: null };
-};

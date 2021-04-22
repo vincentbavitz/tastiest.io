@@ -1,6 +1,8 @@
+import { CloseOutlined } from '@ant-design/icons';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import { LockIcon } from '@tastiest-io/tastiest-icons';
-import { CmsApi, IOrder, IPromo, PAYMENTS } from '@tastiest-io/tastiest-utils';
+import { IOrder, PAYMENTS } from '@tastiest-io/tastiest-utils';
+import { useOrder } from 'hooks/checkout/useOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -10,44 +12,18 @@ import { CheckoutCard } from './CheckoutCard';
 
 interface Props {
   order: IOrder;
-  onSubmit: (promoCode: string | null) => void;
+  submit: () => void;
 }
 
-const usePromoCode = (order: IOrder) => {
-  // const [discount, setDiscount] = useState(null);
-  const [discount, setDiscount] = useState<IPromo>(null);
-
-  const applyPromoCode = async (_code: string) => {
-    if (_code.length === 0) {
-      return;
-    }
-
-    const code = _code.toLowerCase();
-
-    // Lookup discount on Contentful
-    const cmsApi = new CmsApi();
-    const promo = await cmsApi.getPromo(code);
-
-    // If discount is valid for this order, apply client side.
-    if (order) {
-      setDiscount(null);
-    }
-
-    setDiscount(discount);
-  };
-
-  return { discount, applyPromoCode };
-};
-
 export function CheckoutPaymentPanel(props: Props) {
-  const { order, onSubmit } = props;
+  const { submit } = props;
+
+  const { order, pay } = useOrder(props.order?.token, props.order);
   const { isDesktop } = useScreenSize();
 
   const {
     flow: { step },
   } = useSelector((state: IState) => state.checkout);
-
-  const { discount, applyPromoCode } = usePromoCode(order);
 
   if (!order) return null;
 
@@ -69,7 +45,7 @@ export function CheckoutPaymentPanel(props: Props) {
           <p className="text-sm">{order?.deal?.tagline}</p>
         </div>
 
-        <div className="flex items-center justify-between text-xs">
+        <div className="flex items-center justify-between text-sm">
           <p>
             Booking for {order.heads} {order.heads === 1 ? 'person' : 'people'}
           </p>
@@ -80,20 +56,16 @@ export function CheckoutPaymentPanel(props: Props) {
 
         {isDesktop && (
           <>
-            <PromoCodeInput applyPromoCode={applyPromoCode} />
+            <PromoCodeInput initialOrder={order} />
 
             <hr className="bg-primary border-primary text-primary" />
 
             <div className="flex items-center justify-between mb-1 space-x-2 font-medium">
               <p>Total</p>
-              <p>£{Math.floor(order.heads) * order.deal.pricePerHeadGBP}</p>
+              <p>£{order.price.final}</p>
             </div>
 
-            <Button
-              wide
-              type="solid"
-              onClick={() => onSubmit(discount.promoCode ?? null)}
-            >
+            <Button wide type="solid" onClick={() => submit()}>
               Place Order
             </Button>
 
@@ -102,12 +74,7 @@ export function CheckoutPaymentPanel(props: Props) {
         )}
       </CheckoutCard>
 
-      {!isDesktop && (
-        <PromoCodeInput
-          disabled={Boolean(discount)}
-          applyPromoCode={applyPromoCode}
-        />
-      )}
+      {!isDesktop && <PromoCodeInput initialOrder={order} />}
 
       {!isDesktop && (
         <div
@@ -119,12 +86,7 @@ export function CheckoutPaymentPanel(props: Props) {
         >
           <TermsAndConditions />
 
-          <Button
-            wide
-            type="solid"
-            size="large"
-            onClick={() => onSubmit(discount.promoCode ?? null)}
-          >
+          <Button wide type="solid" size="large" onClick={() => submit()}>
             Place Order
           </Button>
         </div>
@@ -158,31 +120,62 @@ const TermsAndConditions = () => (
 );
 
 interface PromoCodeInputProps {
-  disabled?: boolean;
-  applyPromoCode: (promoCode: string) => void;
+  initialOrder: IOrder;
 }
 
-const PromoCodeInput = ({ disabled, applyPromoCode }: PromoCodeInputProps) => {
+const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
+  const { order, updateOrder } = useOrder(initialOrder?.token, initialOrder);
   const [promoCode, setPromoCode] = useState('');
+  const [error, setError] = useState('');
+
+  // Disabled if we already added a discount code
+  const disabled = Boolean(order?.promoCode);
+
+  const applyPromoCode = async () => {
+    const { success } = await updateOrder({ promoCode });
+    setError(success ? null : 'Promo code is invalid or expired.');
+  };
 
   return (
-    <div className="flex items-center justify-between space-x-2 text-xs">
-      <Input
-        disabled={disabled}
-        placeholder="Promo Code"
-        value={promoCode}
-        onValueChange={setPromoCode}
-        regex={PAYMENTS.PROMO_CODE_REGEX}
-        formatter={value => value.toLowerCase()}
-      />
-      <Button
-        disabled={disabled}
-        type="solid"
-        className="h-10"
-        onClick={() => applyPromoCode(promoCode)}
-      >
-        Apply
-      </Button>
+    <div className="">
+      {order?.promoCode ? (
+        <div className="flex items-center justify-between text-sm">
+          <p>
+            Promo code:{' '}
+            <span className="font-medium text-primary">{order.promoCode}</span>
+          </p>
+
+          <p className="font-medium">
+            — £{order.price.gross - order.price.final}
+          </p>
+        </div>
+      ) : (
+        <div className="flex items-center justify-between space-x-2 text-xs">
+          <Input
+            disabled={disabled}
+            placeholder="Promo Code"
+            value={promoCode}
+            onValueChange={setPromoCode}
+            regex={PAYMENTS.PROMO_CODE_REGEX}
+            formatter={value => value.toUpperCase()}
+          />
+          <Button
+            disabled={disabled}
+            type="solid"
+            className="h-10"
+            onClick={applyPromoCode}
+          >
+            Apply
+          </Button>
+        </div>
+      )}
+
+      {error && (
+        <div className="flex items-center mt-2 space-x-1 text-xs text-danger">
+          <CloseOutlined />
+          <p>{error}</p>
+        </div>
+      )}
     </div>
   );
 };
