@@ -1,5 +1,6 @@
 import {
   CmsApi,
+  dlog,
   FIREBASE,
   FirestoreCollection,
   FunctionsResponse,
@@ -13,9 +14,10 @@ import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { calculatePromoPrice, validatePromo } from 'utils/order';
 import { v4 as uuid } from 'uuid';
 
-export type CreateNewOrderReturn = FunctionsResponse<{
+export type CreateNewOrderParams = IOrderRequest;
+export type CreateNewOrderReturn = {
   token: string;
-}>;
+};
 
 /**
  * Requires the query parameters...
@@ -27,12 +29,16 @@ export type CreateNewOrderReturn = FunctionsResponse<{
  *
  * Response is of the shape `{ orderId: string | null, error: Error | string | null }`
  */
+
 export default async function createNewOrder(
   request: NextApiRequest,
-  response: NextApiResponse<CreateNewOrderReturn>,
+  response: NextApiResponse<FunctionsResponse<CreateNewOrderReturn>>,
 ) {
+  dlog('createNewOrder ➡️ request:', request);
+
   // Only allow POST
-  if (request.method !== 'POST') {
+  if (request?.method !== 'POST') {
+    dlog('Failed to create new order');
     response.status(405).end();
     return;
   }
@@ -81,6 +87,7 @@ export default async function createNewOrder(
   const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
   analytics.track({
     userId: userId ?? null,
+    anonymousId: userId ? null : uuid(),
     event: 'New unpaid order created',
     properties: {
       traits: {
@@ -157,7 +164,7 @@ const buildOrder = async (orderRequest: IOrderRequest) => {
   // Is userId valid and is user online?
   // Is promoCode valid? If so, calculate IPromo and final price
   const promo: IPromo = await cms.getPromo(orderRequest.promoCode);
-  const promoIsValid = validatePromo(deal, orderRequest.userId, promo);
+  const promoIsValid = validatePromo(deal, orderRequest?.userId, promo);
   if (promo?.validTo < Date.now()) {
     // Out of date
   }

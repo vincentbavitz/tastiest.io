@@ -1,5 +1,11 @@
 import { Button, Input } from '@tastiest-io/tastiest-components';
-import { EmailIcon, LockIcon, TastiestIcon } from '@tastiest-io/tastiest-icons';
+import {
+  EmailIcon,
+  LockIcon,
+  TastiestIcon,
+  UserIcon,
+} from '@tastiest-io/tastiest-icons';
+import { titleCase } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -29,6 +35,7 @@ export function SignInModal() {
   const dispatch = useDispatch();
 
   const router = useRouter();
+  const [signUpName, setSignUpName] = useState('');
   const [signInEmail, setSignInEmail] = useState('');
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
@@ -60,7 +67,11 @@ export function SignInModal() {
   }, [step]);
 
   const onClickSignUp = async () => {
-    const signUpSuccessful = await signUp(signUpEmail, signUpPassword);
+    const signUpSuccessful = await signUp(
+      signUpEmail,
+      signUpPassword,
+      signUpName,
+    );
 
     if (signUpSuccessful) {
       dispatch(closeSignInModal());
@@ -134,6 +145,16 @@ export function SignInModal() {
 
   const signUpContent = (
     <>
+      <Input
+        size="large"
+        type="text"
+        className="py-2"
+        placeholder="First Name"
+        prefix={<UserIcon className="w-8" />}
+        value={signUpName}
+        onValueChange={value => setSignUpName(titleCase(value.trim()))}
+      ></Input>
+
       <Input
         size="large"
         type="email"

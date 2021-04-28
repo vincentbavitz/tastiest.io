@@ -1,12 +1,17 @@
-import { dlog, FIREBASE, FirebaseAuthError } from '@tastiest-io/tastiest-utils';
+import {
+  dlog,
+  FIREBASE,
+  FirebaseAuthError,
+  postFetch,
+} from '@tastiest-io/tastiest-utils';
 import DebouncePromise from 'awesome-debounce-promise';
 import { LocalStorageItem } from 'contexts/tracking';
 import firebaseApp from 'firebase/app';
 import { useRouter } from 'next/router';
+import { RegisterParams, RegisterReturn } from 'pages/api/register';
 import { useContext, useState } from 'react';
 import { useFirebase } from 'react-redux-firebase';
 import { LocalEndpoint } from 'types/api';
-import { LocalApiPost } from 'utils/api';
 import { AuthContext } from '../contexts/auth';
 import { useUserData } from './useUserData';
 
@@ -85,10 +90,15 @@ export const useAuth = () => {
   ) => {
     _setError(null);
 
+    dlog('useAuth ➡️ firstName:', firstName);
+    dlog('useAuth ➡️ password:', password);
+    dlog('useAuth ➡️ firstName:', firstName);
+
     try {
-      const {
-        data: { user = null, token = null } = {},
-      } = await LocalApiPost.post(LocalEndpoint.REGISTER, {
+      const { data: { user = null, token = null } = {} } = await postFetch<
+        RegisterParams,
+        RegisterReturn
+      >(LocalEndpoint.REGISTER, {
         email,
         password,
         firstName: firstName ?? null,

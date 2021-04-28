@@ -12,9 +12,13 @@ import Stripe from 'stripe';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { generateConfirmationCode, transformPriceForStripe } from 'utils/order';
 
-export type PayReturn = FunctionsResponse<{
+export type PayParams = {
+  token: string;
+};
+
+export type PayReturn = {
   order: IOrder | null;
-}>;
+};
 
 /**
  * Requires `token` as a parameter.
@@ -30,7 +34,7 @@ export type PayReturn = FunctionsResponse<{
  */
 export default async function pay(
   request: NextApiRequest,
-  response: NextApiResponse<PayReturn>,
+  response: NextApiResponse<FunctionsResponse<PayReturn>>,
 ) {
   // Only allow POST
   if (request.method !== 'POST') {
@@ -162,7 +166,9 @@ export default async function pay(
         paidAt: Date.now(),
         bookingDate: null,
         hasBooked: false,
-        hasEaten: false,
+        hasArrived: false,
+        hasCancelled: false,
+        cancelledAt: null,
         confirmationCode: generateConfirmationCode(),
         isConfirmationCodeVerified: false,
       };

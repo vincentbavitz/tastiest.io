@@ -11,9 +11,17 @@ import Stripe from 'stripe';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { calculatePromoPrice, validatePromo } from 'utils/order';
 
-export type UpdateOrderReturn = FunctionsResponse<{
+export interface UpdateOrderParams {
+  token: string;
+  userId?: string;
+  promoCode?: string;
+  heads?: number;
+  paymentMethodId?: string;
+}
+
+export type UpdateOrderReturn = {
   order: IOrder | null;
-}>;
+};
 
 /**
  * Requires `token` as a parameter.
@@ -31,7 +39,7 @@ export type UpdateOrderReturn = FunctionsResponse<{
  */
 export default async function updateOrder(
   request: NextApiRequest,
-  response: NextApiResponse<UpdateOrderReturn>,
+  response: NextApiResponse<FunctionsResponse<UpdateOrderReturn>>,
 ) {
   // Only allow POST
   if (request.method !== 'POST') {

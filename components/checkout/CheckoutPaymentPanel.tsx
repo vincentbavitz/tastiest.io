@@ -94,7 +94,16 @@ export function CheckoutPaymentPanel(props: Props) {
         )}
       </CheckoutCard>
 
-      {!isDesktop && <PromoCodeInput initialOrder={order} />}
+      {!isDesktop && (
+        <div className="flex flex-col pt-4 mb-10 space-y-3">
+          <PromoCodeInput initialOrder={order} />
+          <div className="w-full h-px border-b border-gray-300"></div>
+          <div className="flex justify-between text-xl font-medium">
+            <p>Total</p>
+            <p>£{order.price.final.toFixed(2)}</p>
+          </div>
+        </div>
+      )}
 
       {!isDesktop && (
         <div
@@ -169,7 +178,7 @@ const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
   return (
     <div className="">
       {order?.promoCode ? (
-        <div className="flex items-center justify-between text-sm">
+        <div className="flex items-center justify-between text-lg tablet:text-sm">
           <p>
             Promo code:{' '}
             <span className="font-medium text-primary">{order.promoCode}</span>

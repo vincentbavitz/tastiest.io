@@ -1,17 +1,14 @@
-import { IOrder } from '@tastiest-io/tastiest-utils';
+import { IOrder, postFetch } from '@tastiest-io/tastiest-utils';
 import { useAuth } from 'hooks/useAuth';
 import { useRouter } from 'next/router';
+import { PayParams, PayReturn } from 'pages/api/payments/pay';
+import {
+  UpdateOrderParams,
+  UpdateOrderReturn,
+} from 'pages/api/payments/updateOrder';
 import { useEffect } from 'react';
 import useSWR from 'swr';
 import { LocalEndpoint } from 'types/api';
-import { LocalApiPost } from 'utils/api';
-
-interface UpdateOrderParams {
-  userId?: string;
-  promoCode?: string;
-  heads?: number;
-  paymentMethodId?: string;
-}
 
 export function useOrder(token: string, initialOrder?: IOrder) {
   const { user } = useAuth();
@@ -36,17 +33,17 @@ export function useOrder(token: string, initialOrder?: IOrder) {
     heads = null,
     promoCode = null,
     paymentMethodId = null,
-  }: UpdateOrderParams) => {
-    const { success, error } = await LocalApiPost.post(
-      LocalEndpoint.UPDATE_ORDER,
-      {
-        token,
-        userId: user?.uid ?? null,
-        promoCode,
-        heads,
-        paymentMethodId,
-      },
-    );
+  }: Omit<UpdateOrderParams, 'token'>) => {
+    const { success, error } = await postFetch<
+      UpdateOrderParams,
+      UpdateOrderReturn
+    >(LocalEndpoint.UPDATE_ORDER, {
+      token,
+      userId: user?.uid ?? null,
+      promoCode,
+      heads,
+      paymentMethodId,
+    });
 
     if (success) {
       // Set order mutation to make changes appear instant
@@ -66,7 +63,7 @@ export function useOrder(token: string, initialOrder?: IOrder) {
       data: { order: _order },
       success,
       error,
-    } = await LocalApiPost.post(LocalEndpoint.PAY, {
+    } = await postFetch<PayParams, PayReturn>(LocalEndpoint.PAY, {
       token,
     });
 

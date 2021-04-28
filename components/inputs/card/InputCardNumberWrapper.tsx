@@ -11,6 +11,7 @@ import { InputWrapper } from '../InputWrapper';
 interface Props {
   brand?: CardBrand;
   children: ReactNode;
+  disabled?: boolean;
 }
 
 const CardRow = ({ brand }: { brand: CardBrand }) => {
@@ -41,7 +42,7 @@ const CardRow = ({ brand }: { brand: CardBrand }) => {
   );
 };
 
-export function InputCardNumberWrapper({ children, brand }: Props) {
+export function InputCardNumberWrapper({ children, brand, disabled }: Props) {
   return (
     <div className="flex w-full space-x-3">
       <InputWrapper
@@ -49,6 +50,7 @@ export function InputCardNumberWrapper({ children, brand }: Props) {
         label="Card Number"
         className="py-1 font-mono"
         externalSuffix={<CardRow brand={brand} />}
+        disabled={disabled}
       >
         {children}
       </InputWrapper>

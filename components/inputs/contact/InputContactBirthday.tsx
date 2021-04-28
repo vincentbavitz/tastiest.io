@@ -7,6 +7,7 @@ import { dateFormat, dateToString, stringToDate } from 'utils/text';
 interface Props {
   date: IDateObject;
   onDateChange: (date: IDateObject) => void;
+  disabled?: boolean;
 }
 
 const InputCustom = (props: Props) => (

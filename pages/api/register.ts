@@ -9,14 +9,21 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 
-export type RegisterReturn = FunctionsResponse<{
+export interface RegisterParams {
+  email: string;
+  password: string;
+  firstName: string | null;
+  userAgent: string | null;
+}
+
+export type RegisterReturn = {
   user: firebaseAdmin.auth.UserRecord;
   token: string;
-}>;
+};
 
 export default async function register(
   request: NextApiRequest,
-  response: NextApiResponse<RegisterReturn>,
+  response: NextApiResponse<FunctionsResponse<RegisterReturn>>,
 ) {
   // Only allow POST
   if (request.method !== 'POST') {
@@ -38,7 +45,7 @@ export default async function register(
     body = request.body;
   }
 
-  const { email, password, userAgent } = body;
+  const { email, password, firstName, userAgent } = body;
 
   if (!email?.length || !password?.length) {
     response.json({
@@ -60,11 +67,15 @@ export default async function register(
     const userDataApi = new UserDataApi(firebaseAdmin, userRecord.uid);
 
     const setDetails = () => {
-      userDataApi.setUserData(UserData.ROLE, role);
+      // Set custom user claim (user role) to `eater`
+      // (as apposed to `restaurant`, `admin`).
+      // This is used in authentication etc.
+      firebaseAdmin.auth().setCustomUserClaims(userRecord?.uid, {
+        [UserRole.EATER]: true,
+      });
 
       // Set firstName if it was given
-      const firstName = request.body?.firstName?.split(' ')[0];
-      userDataApi.setUserData(UserData.DETAILS, {
+      return userDataApi.setUserData(UserData.DETAILS, {
         firstName: firstName ?? null,
         email,
       });
@@ -110,8 +121,7 @@ export default async function register(
 
     // Split into separate sub-functions to run in parallel
     // avoiding awaits.
-    Promise.all([trackPromise(), createStripeCustomerPromise()]);
-    setDetails();
+    Promise.all([trackPromise(), createStripeCustomerPromise(), setDetails()]);
 
     // Custom token used for signing in.
     // We can then sign in with signInWithCustomToken in useAuth

@@ -9,7 +9,12 @@ import {
 } from '@stripe/stripe-js';
 import { Input } from '@tastiest-io/tastiest-components';
 import { HelpIcon } from '@tastiest-io/tastiest-icons';
-import { dlog, IDateObject, IOrder } from '@tastiest-io/tastiest-utils';
+import {
+  dlog,
+  IDateObject,
+  IOrder,
+  UserData,
+} from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { InputContactBirthday } from 'components/inputs/contact/InputContactBirthday';
 import { useCheckout } from 'hooks/checkout/useCheckout';
@@ -18,6 +23,7 @@ import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   CheckoutStep,
@@ -27,8 +33,6 @@ import {
 import { IState } from 'state/reducers';
 import { UI } from '../../../constants';
 import { InputCardNumberWrapper } from '../../inputs/card/InputCardNumberWrapper';
-import { InputContactFirstName } from '../../inputs/contact/InputContactFirstName';
-import { InputContactLastName } from '../../inputs/contact/InputContactLastName';
 import { InputWrapper } from '../../inputs/InputWrapper';
 import { Tooltip } from '../../Tooltip';
 import { CheckoutPaymentPanel } from '../CheckoutPaymentPanel';
@@ -68,6 +72,7 @@ export function CheckoutStepPayment(props: Props) {
   const [birthday, setBirthday] = useState<IDateObject>(
     userData?.details?.birthday ?? null,
   );
+  const [mobile, setMobile] = useState<string>();
 
   const {
     addCard,
@@ -124,6 +129,12 @@ export function CheckoutStepPayment(props: Props) {
       return { success: false, error: updateOrderError };
     }
 
+    // Set name if it doesn't exist already
+    await setUserData(UserData.DETAILS, {
+      firstName,
+      lastName,
+    });
+
     const { success, error } = await pay();
     dispatch(setIsPaymentProcessing(false));
   };
@@ -132,26 +143,50 @@ export function CheckoutStepPayment(props: Props) {
     dlog('CheckoutStepPayment ➡️ order:', order);
   }, [order]);
 
+  type FormData = {
+    mobile: string;
+  };
+
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormData>();
+
   return (
-    <div className="flex flex-col-reverse w-full tablet:flex-row tablet:justify-between">
+    <div className="flex flex-col-reverse w-full pb-24 tablet:pb-0 tablet:flex-row tablet:justify-between">
       <div
         style={{
           minWidth:
             isMobile || isTablet ? 'unset' : `${UI.CHECKOUT_SPLIT_WIDTH_PX}px`,
         }}
-        className="flex flex-col w-full pb-24 space-y-16 tablet:w-7/12"
+        className="flex flex-col w-full pb-20 space-y-16 tablet:pb-0 tablet:w-7/12"
       >
-        <div className="">
-          <CheckoutTabs tabs={[{ label: 'Contact Details' }]} />
+        <div>
+          {isDesktop ? (
+            <CheckoutTabs tabs={[{ label: 'Contact Details' }]} />
+          ) : (
+            <div className="pt-4 mb-4 text-lg font-medium text-gray-600 border-b border-gray-400">
+              Contact details
+            </div>
+          )}
 
           <div className="flex flex-col space-y-4">
-            <InputContactFirstName
+            <Input
+              size="large"
+              label="First Name"
+              inputClassName="w-full"
               value={firstName}
-              onValueChange={value => setFirstName(value)}
+              onValueChange={setFirstName}
               disabled={isPaymentProcessing}
             />
 
-            <InputContactLastName
+            <Input
+              size="large"
+              label="Last Name"
+              inputClassName="w-full"
               value={lastName}
               onValueChange={setLastName}
               disabled={isPaymentProcessing}
@@ -162,11 +197,45 @@ export function CheckoutStepPayment(props: Props) {
               onDateChange={value => setBirthday(value)}
               disabled={isPaymentProcessing}
             />
+
+            <Controller
+              name="mobile"
+              control={control}
+              defaultValue={23}
+              rules={{
+                required: true,
+                pattern: /^[A-Za-z]+$/i,
+              }}
+              render={({ field }) => {
+                console.log('field', field);
+                dlog('CheckoutStepPayment ➡️ errors:', errors);
+                return (
+                  <>
+                    <Input
+                      size="large"
+                      type="tel"
+                      label="Mobile"
+                      inputClassName="w-full"
+                      disabled={isPaymentProcessing}
+                      // error={errors.mobile}
+                      {...field}
+                    />
+                    {errors && errors.mobile}
+                  </>
+                );
+              }}
+            />
           </div>
         </div>
 
         <div>
-          <CheckoutTabs tabs={[{ label: 'Payment' }]} />
+          {isDesktop ? (
+            <CheckoutTabs tabs={[{ label: 'Payment' }]} />
+          ) : (
+            <div className="pt-4 mb-4 text-lg font-medium text-gray-600 border-b border-gray-400">
+              Payment details
+            </div>
+          )}
 
           <div className="flex flex-col space-y-4">
             <Input

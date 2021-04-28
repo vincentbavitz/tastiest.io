@@ -89,7 +89,7 @@ export function Modal(props: Props) {
         <div className="absolute top-0 right-0 z-0 flex justify-end pt-3 pr-3">
           <ExitIcon
             onClick={close}
-            className="h-8 cursor-pointer fill-current text-primary"
+            className="h-6 cursor-pointer fill-current text-primary"
           />
         </div>
         {children}

@@ -1,4 +1,10 @@
-import { dlog, SVG, UserDataApi } from '@tastiest-io/tastiest-utils';
+import {
+  FirestoreCollection,
+  IOrder,
+  SVG,
+  UserData,
+  UserDataApi,
+} from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetServerSidePropsType } from 'next';
 import nookies from 'nookies';
@@ -19,12 +25,10 @@ export const getServerSideProps = async context => {
   const { userId } = await userDataApi.initFromCookieToken(cookieToken);
 
   // Verify order is legit; else redirect and wipe order data.
-  const orderId = String(context.query.orderId ?? '') ?? null;
-
-  dlog('thank-you ➡️ orderId:', orderId);
+  const token = String(context.query.token ?? '') ?? null;
 
   // If no order exists in URI, redirect to home
-  if (!orderId) {
+  if (!token) {
     return {
       redirect: {
         destination: '/',
@@ -33,49 +37,41 @@ export const getServerSideProps = async context => {
     };
   }
 
-  // // Verify order exists with Firebase
-  // const checkoutApi = new CheckoutApi(context);
-  // const order: IOrder = await checkoutApi.getOrderFromOrderRequest(orderId);
+  // Get order, given our order ID.
+  // If the order exists, /api/payments/createNewOrder
+  // has already verified that it's valid.
+  const snapshot = await firebaseAdmin
+    .firestore()
+    .collection(FirestoreCollection.ORDERS)
+    .where('token', '==', token)
+    .limit(1)
+    .get();
 
-  // dlog('thank-you ➡️ order:', order);
+  let order: IOrder;
+  snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
 
-  // // If no order exists in Firebase, redirect to home
-  // if (!order) {
-  //   return {
-  //     redirect: {
-  //       destination: '/',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  // Redirect if user somehow got to this state of no order request.
+  if (!order || !order.paidAt) {
+    return {
+      redirect: {
+        // TODO -> Destination should be /city/cuisine/slug
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 
-  // // Ensure payment succeeded. Return to checkout if it failed.
-  // const paymentIntent = await checkoutApi.getOrCreatePaymentIntent(order);
+  const { firstName } = await userDataApi.getUserData(UserData.DETAILS);
 
-  // dlog('thank-you ➡️ paymentIntent:', paymentIntent);
-
-  // if (paymentIntent.status !== 'succeeded') {
-  //   return {
-  //     redirect: {
-  //       destination: '/checkout',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
-
-  // const { firstName } = await userDataApi.getUserData(UserData.DETAILS);
-
-  // dlog('thank-you ➡️ firstName:', firstName);
-  // return {
-  //   props: { firstName, order },
-  // };
+  return {
+    props: { firstName, order },
+  };
 };
 
 function ThankYou(
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) {
   const { firstName, order } = props;
-
   const { isDesktop } = useScreenSize();
 
   return (

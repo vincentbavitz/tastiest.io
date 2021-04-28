@@ -87,7 +87,7 @@ const OrderNowOverlay = ({ deal, slug, onClose }: OrderNowOverlayProps) => {
           </h3>
           <ExitIcon
             onClick={onClose}
-            className="w-10 fill-current text-primary"
+            className="w-8 fill-current text-primary"
           />
         </div>
 

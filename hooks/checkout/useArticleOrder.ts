@@ -1,9 +1,18 @@
-import { IDeal, IOrderRequest, ValidHead } from '@tastiest-io/tastiest-utils';
+import {
+  dlog,
+  IDeal,
+  IOrderRequest,
+  postFetch,
+  ValidHead,
+} from '@tastiest-io/tastiest-utils';
 import { useAuth } from 'hooks/useAuth';
 import { useRouter } from 'next/router';
+import {
+  CreateNewOrderParams,
+  CreateNewOrderReturn,
+} from 'pages/api/payments/createNewOrder';
 import { useState } from 'react';
 import { LocalEndpoint } from 'types/api';
-import { LocalApiPost } from 'utils/api';
 
 export const useArticleOrder = (deal: IDeal, fromSlug: string) => {
   const { user } = useAuth();
@@ -22,9 +31,16 @@ export const useArticleOrder = (deal: IDeal, fromSlug: string) => {
       timestamp: Date.now(),
     };
 
+    dlog('useArticleOrder ➡️ orderRequest:', orderRequest);
+
     const {
       data: { token },
-    } = await LocalApiPost.post(LocalEndpoint.CREATE_NEW_ORDER, orderRequest);
+    } = await postFetch<CreateNewOrderParams, CreateNewOrderReturn>(
+      LocalEndpoint.CREATE_NEW_ORDER,
+      orderRequest,
+    );
+
+    dlog('useArticleOrder ➡️ token:', token);
 
     if (token) {
       router.push(`/checkout/?token=${token}`);
