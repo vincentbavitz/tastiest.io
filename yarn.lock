@@ -1627,15 +1627,15 @@
     react-use "^17.2.3"
     styled-components "^5.2.3"
 
-"@tastiest-io/tastiest-icons@^0.15.0":
-  version "0.15.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.15.0/1889308e0f4087796c211d1071ff5c2796fb5fa6ef150ea67ebb1e8fea4c0b04#b144104d5231588f7644b8900e0b3790d75b45ee"
-  integrity sha512-urSvjvvu4i7m/JkTqYpe02ST6TQEk5YciOPF8yy17cW0BCNgidUh5YvyiGTlB2VmanayaeY1O/+i3lzkco8WMg==
+"@tastiest-io/tastiest-icons@^0.17.0":
+  version "0.17.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.17.0/8bbbc79ac3a8fdc6d08eadac0d57716c12fff3887d58e1b6944d491efdbc4473#f7d04325606e1b5b1c906ea334102443dc08813b"
+  integrity sha512-EUXl4XcLF45nXvCmOtlEQh7hJg39IHBBGKSReLozytRFtGrF8ISZoqQnrgJ1ZFWGltuyHGVTehpbekHlTqGx4g==
 
-"@tastiest-io/tastiest-utils@^0.93.0":
-  version "0.93.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.93.0/96420a4322d8c09eb0e331fc6a4633532e7d486d99419094fb47c4bc45f27f22#0f377417834895dc7a45a51a796daf4381c2c9c5"
-  integrity sha512-ndeTafoYLJqlDXiih1LjVafsTMjY3ezJ2oibAeLB8PDhuY/fFSbmbLQkISlBNd4Up/WV6+c9C6c6ZcMmagW0vw==
+"@tastiest-io/tastiest-utils@^0.95.0":
+  version "0.95.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.95.0/f15dc3616ad0a0ea3f43aa92b341b0684752d5a20bf56bba2c9abdf4f5a9c07d#6ee1d14b2a2567f3a2625ac14410e7dbe61d6627"
+  integrity sha512-DLuuAJFCmHcYZXWdNv3VsGLK03IUHxxZAClgsO6z1fJr+txWDWBFKjGmBuYB3YrelcU99cKdK+5EP786lWKoEw==
   dependencies:
     "@contentful/rich-text-types" "^14.1.2"
     "@stripe/stripe-js" "^1.13.2"
