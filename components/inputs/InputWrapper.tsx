@@ -54,7 +54,6 @@ export function InputWrapper(props: Props) {
             'items-center',
             'appearance-none',
             'w-full',
-            // 'bg-white',
             'text-gray-700',
             'leading-tight',
             'duration-300',
@@ -65,7 +64,7 @@ export function InputWrapper(props: Props) {
               ? `border-primary`
               : 'border-secondary',
             size === 'small' ? 'px-2' : 'px-4',
-            size === 'large' ? 'rounded-xl' : 'rounded-lg',
+            size === 'large' ? 'rounded-xl h-12' : 'rounded-lg',
             className,
           )}
         >

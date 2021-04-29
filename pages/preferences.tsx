@@ -61,7 +61,7 @@ const Preferences = ({
     details?.address?.address ?? null,
   );
   const [postalCode, setPostalCode] = useState<string>(
-    details?.address?.postalCode ?? null,
+    details?.postalCode ?? null,
   );
   const [birthday, setBirthday] = useState<IDateObject>(
     details?.birthday ?? null,
@@ -88,7 +88,7 @@ const Preferences = ({
   const compareModifiedValues = () => {
     const valuesModified =
       userData?.details?.address?.address !== streetAddress ||
-      userData?.details?.address?.postalCode !== postalCode ||
+      userData?.details?.postalCode !== postalCode ||
       userData?.details?.birthday !== birthday ||
       userData?.preferences?.favouriteCuisines?.[0] !== cuisine_1 ||
       userData?.preferences?.favouriteCuisines?.[1] !== cuisine_2 ||
@@ -119,8 +119,8 @@ const Preferences = ({
         lat: 0,
         lon: 0,
         address: streetAddress?.trim() ?? null,
-        postalCode: postalCode?.trim() ?? null,
       },
+      postalCode: postalCode?.trim() ?? null,
       birthday,
     };
 

@@ -7,20 +7,32 @@ import {
   StripeCardExpiryElementChangeEvent,
   StripeCardNumberElementOptions,
 } from '@stripe/stripe-js';
-import { Input, Tooltip } from '@tastiest-io/tastiest-components';
+import { Tooltip } from '@tastiest-io/tastiest-components';
 import { HelpIcon } from '@tastiest-io/tastiest-icons';
-import { dlog, IDateObject, IOrder } from '@tastiest-io/tastiest-utils';
+import {
+  dlog,
+  IDateObject,
+  IOrder,
+  UserData,
+} from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { InputContactBirthday } from 'components/inputs/contact/InputContactBirthday';
+import { InputMobile } from 'components/inputs/contact/InputMobile';
+import { InputName } from 'components/inputs/contact/InputName';
+import InputPostcode from 'components/inputs/contact/InputPostcode';
 import { useCheckout } from 'hooks/checkout/useCheckout';
 import { useOrder } from 'hooks/checkout/useOrder';
 import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import React, { useEffect, useState } from 'react';
-import { useController, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { CheckoutStep, setCheckoutStep } from 'state/checkout';
+import {
+  CheckoutStep,
+  setCheckoutStep,
+  setIsPaymentProcessing,
+} from 'state/checkout';
 import { IState } from 'state/reducers';
 import { UI } from '../../../constants';
 import { InputCardNumberWrapper } from '../../inputs/card/InputCardNumberWrapper';
@@ -39,6 +51,14 @@ interface Props {
   order: IOrder;
 }
 
+type FormData = {
+  firstName: string;
+  lastName: string;
+  mobile: string;
+  cardPostcode: string;
+  cardHolderName: string;
+};
+
 export function CheckoutStepPayment(props: Props) {
   const { order: initialOrder, userId } = props;
 
@@ -53,28 +73,13 @@ export function CheckoutStepPayment(props: Props) {
   const { isMobile, isTablet, isDesktop } = useScreenSize();
 
   // Contact
-  const [firstName, setFirstName] = useState<string>(
-    userData?.details?.firstName ?? '',
-  );
-  const [lastName, setLastName] = useState<string>(
-    userData?.details?.lastName ?? '',
-  );
   const [birthday, setBirthday] = useState<IDateObject>(
     userData?.details?.birthday ?? null,
   );
-  const [mobile, setMobile] = useState<string>();
 
-  const {
-    addCard,
-    cardHolderName,
-    setCardholderName,
-    cardPostcode,
-    setCardPostcode,
-    cardBrand,
-    onCardNumberChange,
-  } = useCheckout();
-
-  const { order, updateOrder, pay } = useOrder(
+  // Checkout and order hooks
+  const { cardBrand, addCard, onCardNumberChange } = useCheckout();
+  const { order, pay, updateOrder } = useOrder(
     initialOrder?.token,
     initialOrder,
   );
@@ -95,69 +100,80 @@ export function CheckoutStepPayment(props: Props) {
     event;
   };
 
-  const makePayment = async data => {
-    dlog('CheckoutStepPayment ➡️ data:', data);
+  const makePayment = async ({
+    firstName,
+    lastName,
+    mobile,
+    cardPostcode,
+    cardHolderName,
+  }: FormData) => {
+    // Validate birthday (input itself already does user facing error message)
+    if (
+      birthday.day.length !== 2 ||
+      birthday.month.length !== 2 ||
+      birthday.year.length !== 4
+    ) {
+      return;
+    }
 
-    return;
-    // dispatch(setIsPaymentProcessing(true));
+    // Start isLoading
+    dispatch(setIsPaymentProcessing(true));
 
-    // const { paymentMethod, error: paymentMethodError } = await addCard(
-    //   cardHolderName,
-    //   cardPostcode,
-    // );
+    // Set new user data
+    setUserData(UserData.DETAILS, {
+      firstName,
+      lastName,
+      mobile,
+      postalCode: cardPostcode,
+    });
 
-    // if (paymentMethodError) {
-    //   dlog('CheckoutStepPayment ➡️ paymentMethodError:', paymentMethodError);
-    //   dispatch(setIsPaymentProcessing(false));
-    //   return { success: false, error: paymentMethodError };
-    // }
+    const { paymentMethod, error: paymentMethodError } = await addCard(
+      cardHolderName,
+      cardPostcode,
+    );
 
-    // const { error: updateOrderError } = await updateOrder({
-    //   paymentMethodId: paymentMethod.id,
-    // });
+    if (paymentMethodError) {
+      dlog('CheckoutStepPayment ➡️ paymentMethodError:', paymentMethodError);
+      dispatch(setIsPaymentProcessing(false));
+      return { success: false, error: paymentMethodError };
+    }
 
-    // if (updateOrderError) {
-    //   dlog('CheckoutStepPayment ➡️ updateOrderError:', updateOrderError);
-    //   dispatch(setIsPaymentProcessing(false));
-    //   return { success: false, error: updateOrderError };
-    // }
+    const { error: updateOrderError } = await updateOrder({
+      paymentMethodId: paymentMethod.id,
+    });
 
-    // // Set name if it doesn't exist already
-    // await setUserData(UserData.DETAILS, {
-    //   firstName,
-    //   lastName,
-    // });
+    if (updateOrderError) {
+      dlog('CheckoutStepPayment ➡️ updateOrderError:', updateOrderError);
+      dispatch(setIsPaymentProcessing(false));
+      return { success: false, error: updateOrderError };
+    }
 
-    // const { success, error } = await pay();
-    // dispatch(setIsPaymentProcessing(false));
+    // Set name if it doesn't exist already
+    await setUserData(UserData.DETAILS, {
+      firstName,
+      lastName,
+    });
+
+    const { success, error } = await pay();
+    dispatch(setIsPaymentProcessing(false));
   };
 
   useEffect(() => {
     dlog('CheckoutStepPayment ➡️ order:', order);
   }, [order]);
 
-  type FormData = {
-    mobile: string;
-  };
-
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<FormData>();
-
-  const {
-    field: { ref: mobileFieldRef, ...mobileField },
-    fieldState: { error: mobileFieldError },
-  } = useController({
-    name: 'mobile',
-    defaultValue: '',
-    control,
-    rules: {
-      required: true,
-      pattern: /^[A-Za-z]$/i,
-    },
+  } = useForm<FormData>({
+    mode: 'onBlur',
+    reValidateMode: 'onBlur',
+    criteriaMode: 'firstError',
+    shouldFocusError: true,
   });
+
+  dlog('CheckoutStepPayment ➡️ errors:', errors);
 
   return (
     <div className="flex flex-col-reverse w-full pb-24 tablet:pb-0 tablet:flex-row tablet:justify-between">
@@ -178,39 +194,35 @@ export function CheckoutStepPayment(props: Props) {
           )}
 
           <div className="flex flex-col space-y-4">
-            <Input
+            <InputName
+              name="firstName"
               size="large"
               label="First Name"
-              inputClassName="w-full"
-              value={firstName}
-              onValueChange={setFirstName}
+              defaultValue={userData?.details?.firstName}
+              control={control}
               disabled={isPaymentProcessing}
             />
 
-            <Input
+            <InputName
+              name="lastName"
               size="large"
               label="Last Name"
-              inputClassName="w-full"
-              value={lastName}
-              onValueChange={setLastName}
+              defaultValue={userData?.details?.lastName}
+              control={control}
               disabled={isPaymentProcessing}
             />
 
             <InputContactBirthday
               date={birthday}
-              onDateChange={value => setBirthday(value)}
               disabled={isPaymentProcessing}
+              onDateChange={value => setBirthday(value)}
             />
 
-            <Input
-              ref={mobileFieldRef}
+            <InputMobile
+              name="mobile"
               size="large"
-              type="tel"
-              label="Mobile"
-              inputClassName="w-full"
-              error={mobileFieldError?.message}
+              control={control}
               disabled={isPaymentProcessing}
-              {...mobileField}
             />
           </div>
         </div>
@@ -225,13 +237,12 @@ export function CheckoutStepPayment(props: Props) {
           )}
 
           <div className="flex flex-col space-y-4">
-            <Input
-              type="text"
-              className="py-1 rounded-xl"
+            <InputName
+              size="large"
+              name="cardHolderName"
               label="Cardholder's Full Name"
-              regex={/^([a-zA-z]{0,15}[ ]?){1,4}$/}
-              value={cardHolderName}
-              onValueChange={setCardholderName}
+              requiredText="Please enter the cardholder's name"
+              control={control}
               disabled={isPaymentProcessing}
             />
 
@@ -273,13 +284,13 @@ export function CheckoutStepPayment(props: Props) {
               </InputWrapper>
             </div>
 
-            <Input
+            <InputPostcode
+              size="large"
               label="Postcode"
-              className="py-1 rounded-xl"
-              regex={/^([a-zA-Z0-8]){1,10}$/}
+              name="cardPostcode"
+              placeholder="WC2H 7LT"
+              control={control}
               disabled={isPaymentProcessing}
-              value={cardPostcode}
-              onValueChange={setCardPostcode}
             />
           </div>
         </div>

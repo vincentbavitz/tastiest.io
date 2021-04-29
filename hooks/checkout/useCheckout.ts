@@ -7,7 +7,6 @@ import { StripeCardNumberElementChangeEvent } from '@stripe/stripe-js';
 import { CardBrand, UserData } from '@tastiest-io/tastiest-utils';
 import 'firebase/firestore'; // REMEMBER to include this for all useFirestore things
 import { useState } from 'react';
-import { useFirestore } from 'react-redux-firebase';
 import { useAuth } from '../useAuth';
 import { useUserData } from '../useUserData';
 
@@ -20,11 +19,8 @@ export function useCheckout() {
 
   const stripe = useStripe();
   const elements = useElements();
-  const firestore = useFirestore();
 
   // Payment input values
-  const [cardHolderName, setCardholderName] = useState('');
-  const [cardPostcode, setCardPostcode] = useState('');
   const [cardBrand, setCardBrand] = useState<CardBrand | undefined>(undefined);
 
   const addCard = async (_cardHolderName: string, postalCode: string) => {
@@ -100,10 +96,6 @@ export function useCheckout() {
 
   return {
     addCard,
-    cardHolderName,
-    setCardholderName,
-    cardPostcode,
-    setCardPostcode,
     cardBrand,
     setCardBrand,
     onCardNumberChange,
