@@ -1619,18 +1619,24 @@
   dependencies:
     mini-svg-data-uri "^1.2.3"
 
-"@tastiest-io/tastiest-components@^0.29.0":
-  version "0.29.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.29.0/1c838084248fe1cad30a4a8378fae034dcf94b51ab3c9106354bc74ba69c4021#ac3ac3f65704bd9dbd76b9a8fbe2281c2d5a20f6"
-  integrity sha512-Ayx/r7Aob4lTQWK2OeyB5suud6suXgXL2kc4h8TwBTNmqRoplWEZzC9jvfCQA15CR0A4YEJnPzUMXYCVYRQwXQ==
+"@tastiest-io/tastiest-components@^0.31.0":
+  version "0.31.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.31.0/1ce545cd80bb25864f8f9d7cf846a8f6c38ec524d9142a21165763629d34e4d0#84548eafe03df3d0c35b8f48bc2aa7087003964b"
+  integrity sha512-08FNJcp7cUiOtSA3600agze/ihutH4FBuqprB8LknVy1MGokJ4tqjniINsSadtiFTgw1A3yq3UqdWx7hqdiRJg==
   dependencies:
+    "@tastiest-io/tastiest-icons" "^0.19.0"
     react-use "^17.2.3"
     styled-components "^5.2.3"
 
-"@tastiest-io/tastiest-icons@^0.17.0":
-  version "0.17.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.17.0/8bbbc79ac3a8fdc6d08eadac0d57716c12fff3887d58e1b6944d491efdbc4473#f7d04325606e1b5b1c906ea334102443dc08813b"
-  integrity sha512-EUXl4XcLF45nXvCmOtlEQh7hJg39IHBBGKSReLozytRFtGrF8ISZoqQnrgJ1ZFWGltuyHGVTehpbekHlTqGx4g==
+"@tastiest-io/tastiest-icons@^0.18.0":
+  version "0.18.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.18.0/1838d812ae88a45faa49224e03823a6a35caa297ed99a2453130363812c92732#3feaf14ccfba3105ea2cb18a9e8d5eca623c8b3d"
+  integrity sha512-TCG4DR1aLrj/hZb3/e0QyzyNtqy2flUmyraznG7ugeCSNVkK5WKfMPHnXxLeeUhQaKANEvGrTEUeaNYpC1cCLQ==
+
+"@tastiest-io/tastiest-icons@^0.19.0":
+  version "0.19.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.19.0/842923a642eb90d51bc28b9b60813561808b9748faec74c0e4e82d9ce86c86d5#6b1ded510718ae36e1f0749b8462de839873f980"
+  integrity sha512-AhxdIyYpZbBdjxtto6YHicZk+WMtlO63yeSZiDVPZSA75Y3SdDGa2q+ACW3lQ+XmiE2dun/4A0Hr0EuXdebxlg==
 
 "@tastiest-io/tastiest-utils@^0.95.0":
   version "0.95.0"

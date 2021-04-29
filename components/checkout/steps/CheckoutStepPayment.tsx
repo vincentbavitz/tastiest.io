@@ -9,12 +9,7 @@ import {
 } from '@stripe/stripe-js';
 import { Input, Tooltip } from '@tastiest-io/tastiest-components';
 import { HelpIcon } from '@tastiest-io/tastiest-icons';
-import {
-  dlog,
-  IDateObject,
-  IOrder,
-  UserData,
-} from '@tastiest-io/tastiest-utils';
+import { dlog, IDateObject, IOrder } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { InputContactBirthday } from 'components/inputs/contact/InputContactBirthday';
 import { useCheckout } from 'hooks/checkout/useCheckout';
@@ -23,13 +18,9 @@ import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import React, { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useController, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  CheckoutStep,
-  setCheckoutStep,
-  setIsPaymentProcessing,
-} from 'state/checkout';
+import { CheckoutStep, setCheckoutStep } from 'state/checkout';
 import { IState } from 'state/reducers';
 import { UI } from '../../../constants';
 import { InputCardNumberWrapper } from '../../inputs/card/InputCardNumberWrapper';
@@ -104,38 +95,41 @@ export function CheckoutStepPayment(props: Props) {
     event;
   };
 
-  const makePayment = async () => {
-    dispatch(setIsPaymentProcessing(true));
+  const makePayment = async data => {
+    dlog('CheckoutStepPayment ➡️ data:', data);
 
-    const { paymentMethod, error: paymentMethodError } = await addCard(
-      cardHolderName,
-      cardPostcode,
-    );
+    return;
+    // dispatch(setIsPaymentProcessing(true));
 
-    if (paymentMethodError) {
-      dlog('CheckoutStepPayment ➡️ paymentMethodError:', paymentMethodError);
-      dispatch(setIsPaymentProcessing(false));
-      return { success: false, error: paymentMethodError };
-    }
+    // const { paymentMethod, error: paymentMethodError } = await addCard(
+    //   cardHolderName,
+    //   cardPostcode,
+    // );
 
-    const { error: updateOrderError } = await updateOrder({
-      paymentMethodId: paymentMethod.id,
-    });
+    // if (paymentMethodError) {
+    //   dlog('CheckoutStepPayment ➡️ paymentMethodError:', paymentMethodError);
+    //   dispatch(setIsPaymentProcessing(false));
+    //   return { success: false, error: paymentMethodError };
+    // }
 
-    if (updateOrderError) {
-      dlog('CheckoutStepPayment ➡️ updateOrderError:', updateOrderError);
-      dispatch(setIsPaymentProcessing(false));
-      return { success: false, error: updateOrderError };
-    }
+    // const { error: updateOrderError } = await updateOrder({
+    //   paymentMethodId: paymentMethod.id,
+    // });
 
-    // Set name if it doesn't exist already
-    await setUserData(UserData.DETAILS, {
-      firstName,
-      lastName,
-    });
+    // if (updateOrderError) {
+    //   dlog('CheckoutStepPayment ➡️ updateOrderError:', updateOrderError);
+    //   dispatch(setIsPaymentProcessing(false));
+    //   return { success: false, error: updateOrderError };
+    // }
 
-    const { success, error } = await pay();
-    dispatch(setIsPaymentProcessing(false));
+    // // Set name if it doesn't exist already
+    // await setUserData(UserData.DETAILS, {
+    //   firstName,
+    //   lastName,
+    // });
+
+    // const { success, error } = await pay();
+    // dispatch(setIsPaymentProcessing(false));
   };
 
   useEffect(() => {
@@ -147,12 +141,23 @@ export function CheckoutStepPayment(props: Props) {
   };
 
   const {
-    register,
-    setValue,
     handleSubmit,
     control,
     formState: { errors },
   } = useForm<FormData>();
+
+  const {
+    field: { ref: mobileFieldRef, ...mobileField },
+    fieldState: { error: mobileFieldError },
+  } = useController({
+    name: 'mobile',
+    defaultValue: '',
+    control,
+    rules: {
+      required: true,
+      pattern: /^[A-Za-z]$/i,
+    },
+  });
 
   return (
     <div className="flex flex-col-reverse w-full pb-24 tablet:pb-0 tablet:flex-row tablet:justify-between">
@@ -197,32 +202,15 @@ export function CheckoutStepPayment(props: Props) {
               disabled={isPaymentProcessing}
             />
 
-            <Controller
-              name="mobile"
-              control={control}
-              defaultValue={23}
-              rules={{
-                required: true,
-                pattern: /^[A-Za-z]+$/i,
-              }}
-              render={({ field }) => {
-                console.log('field', field);
-                dlog('CheckoutStepPayment ➡️ errors:', errors);
-                return (
-                  <>
-                    <Input
-                      size="large"
-                      type="tel"
-                      label="Mobile"
-                      inputClassName="w-full"
-                      disabled={isPaymentProcessing}
-                      // error={errors.mobile}
-                      {...field}
-                    />
-                    {errors && errors.mobile}
-                  </>
-                );
-              }}
+            <Input
+              ref={mobileFieldRef}
+              size="large"
+              type="tel"
+              label="Mobile"
+              inputClassName="w-full"
+              error={mobileFieldError?.message}
+              disabled={isPaymentProcessing}
+              {...mobileField}
             />
           </div>
         </div>
@@ -303,7 +291,10 @@ export function CheckoutStepPayment(props: Props) {
           isDesktop && 'pl-10',
         )}
       >
-        <CheckoutPaymentPanel order={order} submit={makePayment} />
+        <CheckoutPaymentPanel
+          order={order}
+          submit={handleSubmit(makePayment)}
+        />
       </div>
     </div>
   );
