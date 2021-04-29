@@ -7,7 +7,7 @@ import {
   StripeCardExpiryElementChangeEvent,
   StripeCardNumberElementOptions,
 } from '@stripe/stripe-js';
-import { Input } from '@tastiest-io/tastiest-components';
+import { Input, Tooltip } from '@tastiest-io/tastiest-components';
 import { HelpIcon } from '@tastiest-io/tastiest-icons';
 import {
   dlog,
@@ -34,7 +34,6 @@ import { IState } from 'state/reducers';
 import { UI } from '../../../constants';
 import { InputCardNumberWrapper } from '../../inputs/card/InputCardNumberWrapper';
 import { InputWrapper } from '../../inputs/InputWrapper';
-import { Tooltip } from '../../Tooltip';
 import { CheckoutPaymentPanel } from '../CheckoutPaymentPanel';
 import { CheckoutTabs } from '../CheckoutTabs';
 

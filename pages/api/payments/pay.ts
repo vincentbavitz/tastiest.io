@@ -7,6 +7,7 @@ import {
   UserData,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
+import * as Analytics from 'analytics-node';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
@@ -19,6 +20,8 @@ export type PayParams = {
 export type PayReturn = {
   order: IOrder | null;
 };
+
+const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
 
 /**
  * Requires `token` as a parameter.
@@ -178,6 +181,16 @@ export default async function pay(
         .collection(FirestoreCollection.BOOKINGS)
         .doc(order.id)
         .set(booking);
+
+      analytics.track({
+        userId: order?.userId ?? null,
+        event: 'Payment Success',
+        properties: {
+          traits: {
+            ...booking,
+          },
+        },
+      });
 
       response.json({
         success: true,

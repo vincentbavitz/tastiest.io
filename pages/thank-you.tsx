@@ -32,14 +32,14 @@ export const getServerSideProps = async context => {
   const token = String(context.query.token ?? '') ?? null;
 
   // If no order or user exists in URI, redirect to home
-  // if (!token || !userId) {
-  //   return {
-  //     redirect: {
-  //       destination: '/',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (!token || !userId) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 
   // Get order, given our order ID.s
   // If the order exists, /api/payments/createNewOrder

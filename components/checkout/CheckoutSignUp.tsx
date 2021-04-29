@@ -1,5 +1,7 @@
-import { Button } from '@tastiest-io/tastiest-components';
-import { dlog } from '@tastiest-io/tastiest-utils';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Button, Input } from '@tastiest-io/tastiest-components';
+import { UserIcon } from '@tastiest-io/tastiest-icons';
+import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -23,10 +25,13 @@ export function CheckoutSignUp() {
   const { isDesktop } = useScreenSize();
   const dispatch = useDispatch();
 
+  const [signUpName, setSignUpName] = useState('');
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPassword0, setSignUpPassword0] = useState('');
   const [signUpPassword1, setSignUpPassword1] = useState('');
   const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState(false);
+
   const cleanupInputValue = (value: string | number) =>
     String(value).toLowerCase().trim();
 
@@ -39,16 +44,30 @@ export function CheckoutSignUp() {
       return;
     }
 
+    if (!signUpName?.length) {
+      setError('Please enter your name');
+    }
+
     if (!signUpEmail.length) {
       setError('Please enter your email');
       return;
     }
 
     setError('');
-    const signUpSuccessful = await signUp(signUpEmail, signUpPassword0);
+    setLoading(true);
+    const { user } = await signUp(signUpEmail, signUpPassword0, signUpName);
+    if (!user?.uid) {
+      setLoading(false);
+    }
+
     dlog('error', firebaseAuthError);
 
-    if (signUpSuccessful) {
+    if (user?.uid) {
+      // Track sign up from checkout
+      window.analytics.track('User Sign-up From Checkout', {
+        userId: user.uid,
+      });
+
       return;
     }
   };
@@ -58,6 +77,15 @@ export function CheckoutSignUp() {
 
   return (
     <>
+      <Input
+        size="large"
+        type="text"
+        placeholder="First Name"
+        prefix={<UserIcon className="w-8 h-5" />}
+        maxLength={20}
+        value={signUpName}
+        onValueChange={value => setSignUpName(titleCase(value.trim()))}
+      />
       <InputEmail
         value={signUpEmail}
         onValueChange={value => setSignUpEmail(cleanupInputValue(value))}
@@ -77,8 +105,8 @@ export function CheckoutSignUp() {
       />
 
       {(firebaseAuthError?.length || error?.length > 1) && (
-        <div className="mb-1 -mt-1 text-sm text-center text-red-700">
-          {error ?? firebaseAuthError}
+        <div className="mb-1 -mt-1 text-sm text-center text-danger">
+          {error || firebaseAuthError}
         </div>
       )}
 
@@ -109,7 +137,11 @@ export function CheckoutSignUp() {
       </div>
 
       <Button wide size="large" type="solid" color="primary" onClick={submit}>
-        Sign up to Proceed to Checkout
+        {loading ? (
+          <LoadingOutlined className="text-2xl" />
+        ) : (
+          'Sign up to Proceed to Checkout'
+        )}
       </Button>
     </>
   );

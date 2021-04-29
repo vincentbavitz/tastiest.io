@@ -1619,10 +1619,10 @@
   dependencies:
     mini-svg-data-uri "^1.2.3"
 
-"@tastiest-io/tastiest-components@^0.26.0":
-  version "0.26.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.26.0/646e177be27bb2b07d97f617693beb9748839efe8986fef4fb353d42e91f15bd#65dc4a991600cf2887e451b09666e70e311ecd1f"
-  integrity sha512-AzqKWPS2/w8TjJS/aG8AUYLPI/VsohwoqWy/AQiR4m3FAy1pQBk3ZPoFcHLaapLCSNtmoP+HJB5BmRTzJa7qMQ==
+"@tastiest-io/tastiest-components@^0.29.0":
+  version "0.29.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.29.0/1c838084248fe1cad30a4a8378fae034dcf94b51ab3c9106354bc74ba69c4021#ac3ac3f65704bd9dbd76b9a8fbe2281c2d5a20f6"
+  integrity sha512-Ayx/r7Aob4lTQWK2OeyB5suud6suXgXL2kc4h8TwBTNmqRoplWEZzC9jvfCQA15CR0A4YEJnPzUMXYCVYRQwXQ==
   dependencies:
     react-use "^17.2.3"
     styled-components "^5.2.3"

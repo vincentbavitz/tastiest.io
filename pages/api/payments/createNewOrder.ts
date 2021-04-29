@@ -88,7 +88,7 @@ export default async function createNewOrder(
   analytics.track({
     userId: userId ?? null,
     anonymousId: userId ? null : uuid(),
-    event: 'New unpaid order created',
+    event: 'New Unpaid Order',
     properties: {
       traits: {
         orderId: order.id,

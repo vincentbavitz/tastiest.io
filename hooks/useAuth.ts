@@ -90,7 +90,7 @@ export const useAuth = () => {
   ) => {
     _setError(null);
 
-    dlog('useAuth ➡️ firstName:', firstName);
+    dlog('useAuth ➡️ email:', email);
     dlog('useAuth ➡️ password:', password);
     dlog('useAuth ➡️ firstName:', firstName);
 
@@ -106,7 +106,7 @@ export const useAuth = () => {
       });
 
       if (!user || !token) {
-        return false;
+        return { user: null };
       }
 
       // User has accepted cookies implicitly
@@ -115,10 +115,10 @@ export const useAuth = () => {
       // Sign user in.
       firebase.auth().signInWithCustomToken(token);
 
-      return true;
+      return { user };
     } catch (error) {
       setError(error);
-      return false;
+      return { user: null };
     }
   };
 
