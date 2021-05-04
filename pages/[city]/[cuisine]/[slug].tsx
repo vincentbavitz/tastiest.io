@@ -82,7 +82,7 @@ function Post(post: IPost) {
 
       <Article {...post} />
 
-      <ArticleSuggestRestaurant dish={post?.dishName} city={post?.city} />
+      <ArticleSuggestRestaurant {...post} />
     </>
   );
 }

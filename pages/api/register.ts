@@ -4,7 +4,7 @@ import {
   UserDataApi,
   UserRole,
 } from '@tastiest-io/tastiest-utils';
-import * as Analytics from 'analytics-node';
+import Analytics from 'analytics-node';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
@@ -96,10 +96,8 @@ export default async function register(
         userId: userRecord?.uid,
         event: 'User Signed Up',
         properties: {
-          traits: {
-            role,
-            email: userRecord.email,
-          },
+          role,
+          email: userRecord.email,
         },
       });
     };

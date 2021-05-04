@@ -1,11 +1,19 @@
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import clsx from 'clsx';
 import { useAuth } from 'hooks/useAuth';
+import { useFeedback } from 'hooks/useFeedback';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import { SuggestRestaurantIllustration } from 'public/assets/illustrations';
 import React, { useState } from 'react';
+import { useController, useForm } from 'react-hook-form';
 import { Contained } from './Contained';
+
+type FormData = {
+  userGivenRestaurantName: string;
+  userGivenCuisine: string;
+  userGivenDish: string;
+};
 
 export function SuggestRestaurant() {
   const { user, isSignedIn } = useAuth();
@@ -14,14 +22,85 @@ export function SuggestRestaurant() {
 
   // Form values
   const [email, setEmail] = useState(userData?.details?.email ?? '');
-  const [restaurantLocation, setRestaurantLocation] = useState('');
   const [dishName, setDishName] = useState('');
   const [cuisine, setCuisine] = useState('');
+  const [restaurantLocation, setRestaurantLocation] = useState('');
+  const [requestRecieved, setRequestRecieved] = useState(false);
+
+  const { suggestRestaurant, isSubmitting } = useFeedback();
 
   // prettier-ignore
   const svgDesktopMarginLeft = isHuge ?
     isSignedIn ? '0rem' : '-4rem' :
     isSignedIn ? '2rem' : '-2rem';
+
+  const submit = async () => {
+    if (requestRecieved) return;
+
+    const { success } = await suggestRestaurant(true, {
+      dish: dishName,
+      cuisine,
+    });
+
+    setRequestRecieved(success);
+  };
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormData>({
+    mode: 'onBlur',
+    reValidateMode: 'onBlur',
+    criteriaMode: 'firstError',
+    shouldFocusError: true,
+  });
+
+  const {
+    field: { ref: restaurantNameRef, ...restaurantNameFieldProps },
+  } = useController({
+    name: 'userGivenRestaurantName',
+    defaultValue: '',
+    control,
+    rules: {
+      required: {
+        value: true,
+        message: "Please enter the restaurant's name",
+      },
+      minLength: {
+        value: 6,
+        message: 'Must be greater than six characters',
+      },
+      maxLength: { value: 60, message: 'Name too long' },
+      pattern: {
+        value: /^([a-zA-Z-\s]{0,15}[ ]?){1,4}$/,
+        message: 'Must be alphabetic only',
+      },
+    },
+  });
+
+  const {
+    field: { ref: cuisineRef, ...cuisineFieldProps },
+  } = useController({
+    name: 'userGivenCuisine',
+    defaultValue: '',
+    control,
+    rules: {
+      required: {
+        value: true,
+        message: 'Please enter the cuisine',
+      },
+      minLength: {
+        value: 6,
+        message: 'Must be greater than six characters',
+      },
+      maxLength: { value: 30, message: 'Cuisine too long' },
+      pattern: {
+        value: /^([a-zA-Z-\s]{0,15}[ ]?){1,4}$/,
+        message: 'Must be alphabetic only',
+      },
+    },
+  });
 
   return (
     <Contained>
@@ -49,27 +128,27 @@ export function SuggestRestaurant() {
           }}
           className={clsx('relative flex-1 tablet:mb-1')}
         >
-          <h3 className="mb-2 text-3xl text-center text-primary tablet:text-left font-somatic">
+          <h3 className="pb-4 text-3xl text-center text-primary tablet:text-left font-somatic">
             Suggest a restaurant
           </h3>
 
           <div className="flex flex-col mt-0 space-y-4 tablet:mt-6">
             <Input
-              value={restaurantLocation}
-              onValueChange={setRestaurantLocation}
-              label="Location of restaurant"
+              ref={restaurantNameRef}
+              {...restaurantNameFieldProps}
+              error={errors?.userGivenRestaurantName?.message}
+              label="Name of Restaurant"
               labelTheme="primary"
-              maxLength={120}
             />
 
             <div className="flex space-x-4">
               <div className="flex-1">
                 <Input
-                  value={cuisine}
-                  onValueChange={setCuisine}
+                  ref={cuisineRef}
+                  {...cuisineFieldProps}
+                  error={errors?.userGivenCuisine?.message}
                   label="Cuisine"
                   labelTheme="primary"
-                  maxLength={20}
                 />
               </div>
 
@@ -79,7 +158,6 @@ export function SuggestRestaurant() {
                   onValueChange={setDishName}
                   label="Your Favourite Dish"
                   labelTheme="primary"
-                  maxLength={50}
                 />
               </div>
             </div>

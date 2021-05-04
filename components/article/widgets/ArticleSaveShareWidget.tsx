@@ -12,7 +12,7 @@ import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
-import { useIntersection } from 'react-use';
+import { useIntersection, useWindowScroll } from 'react-use';
 import { UI } from '../../../constants';
 import { useArticle } from '../../../hooks/useArticle';
 import { useAuth } from '../../../hooks/useAuth';
@@ -79,6 +79,7 @@ const useSaveShare = ({ id, title, slug }: ArticleSaveShareProps) => {
 
 const useSaveShareGeometry = () => {
   const { isDesktop } = useScreenSize();
+  const { y: scrollY } = useWindowScroll();
 
   // Mobile - Manage scrolling behaviour
   const ref = useRef(null);
@@ -88,7 +89,8 @@ const useSaveShareGeometry = () => {
     threshold: 1,
   });
 
-  const isFixedToTop = !isDesktop && intersection?.intersectionRatio < 1;
+  const isFixedToTop =
+    !isDesktop && intersection?.intersectionRatio < 1 && scrollY > 150;
 
   return {
     ref,
@@ -144,7 +146,7 @@ export function ArticleSaveShareWidget(props: ArticleSaveShareProps) {
               ) : (
                 <HeartIcon
                   className={clsx(
-                    'text-primary fill-current',
+                    'text-primary stroke-current fill-current',
                     isDesktop ? 'h-6' : 'h-8',
                   )}
                 />
@@ -211,7 +213,7 @@ function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
           ) : (
             <HeartIcon
               onClick={() => toggleSaveArticle(slug)}
-              className="h-10"
+              className="h-10 fill-current text-primary"
             />
           )}
 

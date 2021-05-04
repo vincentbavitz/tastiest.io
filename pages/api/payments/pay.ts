@@ -7,7 +7,8 @@ import {
   UserData,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
-import * as Analytics from 'analytics-node';
+import Analytics from 'analytics-node';
+import moment from 'moment';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
@@ -30,7 +31,6 @@ const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
  * Optionally takes one or more of these parameters...
  *  ```
  *    token: string
- *
  *  ```
  *
  * Returns updated order object on success
@@ -182,13 +182,22 @@ export default async function pay(
         .doc(order.id)
         .set(booking);
 
+      // Track payment success
       analytics.track({
-        userId: order?.userId ?? null,
         event: 'Payment Success',
+        userId: order.userId,
         properties: {
-          traits: {
-            ...booking,
-          },
+          token,
+          paidAtDate: moment(booking.paidAt).format('Do MMMM YYYY'),
+          ...booking,
+        },
+      });
+
+      // Update identify with new payment and user-data
+      analytics.identify({
+        userId: order.userId,
+        traits: {
+          ...details,
         },
       });
 

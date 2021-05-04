@@ -8,7 +8,7 @@ import {
   IOrderRequest,
   IPromo,
 } from '@tastiest-io/tastiest-utils';
-import * as Analytics from 'analytics-node';
+import Analytics from 'analytics-node';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { calculatePromoPrice, validatePromo } from 'utils/order';
@@ -90,10 +90,8 @@ export default async function createNewOrder(
     anonymousId: userId ? null : uuid(),
     event: 'New Unpaid Order',
     properties: {
-      traits: {
-        orderId: order.id,
-        ...orderRequest,
-      },
+      orderId: order.id,
+      ...orderRequest,
     },
   });
 

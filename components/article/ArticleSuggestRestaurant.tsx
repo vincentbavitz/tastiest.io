@@ -1,18 +1,15 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input } from '@tastiest-io/tastiest-components';
+import { IPost } from '@tastiest-io/tastiest-utils';
 import { useFeedback } from 'hooks/useFeedback';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { SuggestRestaurantArticleIllustrationDesktop } from 'public/assets/illustrations';
 import React, { useState } from 'react';
 import { Contained } from '../Contained';
 
-interface Props {
-  dish: string;
-  city: string;
-}
-
 // Use klaviyo for emails
 
-export function ArticleSuggestRestaurant(props: Props) {
+export function ArticleSuggestRestaurant(props: IPost) {
   const { isDesktop } = useScreenSize();
 
   return (
@@ -44,8 +41,13 @@ export function ArticleSuggestRestaurant(props: Props) {
   );
 }
 
-const ArticleSuggestRestaurantContent = ({ dish, city }: Props) => {
-  const { suggestRestaurant } = useFeedback();
+const ArticleSuggestRestaurantContent = ({
+  dishName,
+  cuisine,
+  restaurant,
+  city,
+}: IPost) => {
+  const { suggestRestaurant, isSubmitting } = useFeedback();
 
   const { isDesktop } = useScreenSize();
   const [recommendedName, setRecommendedName] = useState('');
@@ -54,7 +56,13 @@ const ArticleSuggestRestaurantContent = ({ dish, city }: Props) => {
   const submit = async () => {
     if (requestRecieved) return;
 
-    const { success } = await suggestRestaurant(recommendedName);
+    const { success } = await suggestRestaurant(true, {
+      dish: dishName,
+      cuisine,
+      location: restaurant.location,
+      restaurantName: restaurant.name,
+    });
+
     setRequestRecieved(success);
   };
 
@@ -62,7 +70,7 @@ const ArticleSuggestRestaurantContent = ({ dish, city }: Props) => {
     <>
       <div className="mb-4 desktop:w-9/12">
         <span className="text-3xl leading-tight font-somatic text-primary">
-          Do you know a better {dish} in {city}?
+          Do you know a better {dishName} in {city}?
         </span>
       </div>
       <Input
@@ -79,7 +87,14 @@ const ArticleSuggestRestaurantContent = ({ dish, city }: Props) => {
         className="w-32 mt-6 text-xl font-somatic"
         onClick={submit}
       >
-        {requestRecieved ? 'Thanks!' : 'Recommend'}
+        {isSubmitting ? (
+          <LoadingOutlined className="px-10 text-3xl" />
+        ) : requestRecieved ? (
+          'Thanks!'
+        ) : (
+          'Recommend'
+        )}
+        {}
       </Button>
     </>
   );

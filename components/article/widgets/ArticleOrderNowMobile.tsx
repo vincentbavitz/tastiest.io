@@ -35,6 +35,7 @@ export default function ArticleOrderNowMobile({ deal, slug }: Props) {
             style={{
               filter: 'drop-shadow(2px 0px 6px rgba(255,255,255,0.33))',
             }}
+            className="overflow-y-auto"
           >
             <Button
               wide
