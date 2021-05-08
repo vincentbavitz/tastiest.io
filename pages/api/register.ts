@@ -86,6 +86,7 @@ export default async function register(
       await analytics.identify({
         userId: userRecord?.uid,
         traits: {
+          firstName,
           email,
           context: { userAgent },
         },
@@ -97,6 +98,7 @@ export default async function register(
         event: 'User Signed Up',
         properties: {
           role,
+          name: firstName,
           email: userRecord.email,
         },
       });

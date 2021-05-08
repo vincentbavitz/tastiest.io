@@ -1,9 +1,10 @@
 // [slug].js
 import { CmsApi, dlog, IPost } from '@tastiest-io/tastiest-utils';
 import { ArticleSuggestRestaurant } from 'components/article/ArticleSuggestRestaurant';
+import RecommendedPosts from 'components/sections/RecommendedPosts';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Article } from '../../../components/article/Article';
 import { generateTitle } from '../../../utils/metadata';
 
@@ -63,6 +64,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   };
 };
 
+const cms = new CmsApi();
+
 function Post(post: IPost) {
   const { title } = post;
 
@@ -74,6 +77,13 @@ function Post(post: IPost) {
     }
   }, []);
 
+  // Get recommended posts
+  const [recommendedPosts, setRecommendedPosts] = useState([]);
+  useEffect(() => {
+    dlog('[slug] ➡️ recommendedPosts:', recommendedPosts);
+    cms.getTopPosts(8).then(result => setRecommendedPosts(result?.posts));
+  });
+
   return (
     <>
       <Head>
@@ -81,8 +91,15 @@ function Post(post: IPost) {
       </Head>
 
       <Article {...post} />
-
       <ArticleSuggestRestaurant {...post} />
+
+      <div className="pb-20">
+        <RecommendedPosts
+          label="You might also like"
+          posts={recommendedPosts}
+          rowLimit={1}
+        />
+      </div>
     </>
   );
 }

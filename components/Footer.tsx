@@ -208,7 +208,7 @@ const SocialsBlock = () => (
     <a href="https://facebook.com/tastiestio" target="_blank" rel="noreferrer">
       <FacebookIcon className="w-10 h-10 cursor-pointer" />
     </a>
-    <a href="https://youtube.com/tastiestio" target="_blank" rel="noreferrer">
+    <a href="https://twitter.com/tastiestio" target="_blank" rel="noreferrer">
       <TwitterIcon className="w-10 h-10 cursor-pointer" />
     </a>
     <a

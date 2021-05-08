@@ -1,6 +1,7 @@
 import {
   FirestoreCollection,
   FunctionsResponse,
+  generateUserFacingId,
   IBooking,
   IOrder,
   PAYMENTS,
@@ -161,6 +162,7 @@ export default async function pay(
       // Add to bookings
       const booking: IBooking = {
         orderId: order.id,
+        userFacingBookingId: generateUserFacingId(),
         restaurantId: order.deal.restaurant.id,
         eaterName,
         dealName: order.deal.name,
@@ -189,6 +191,7 @@ export default async function pay(
         properties: {
           token,
           paidAtDate: moment(booking.paidAt).format('Do MMMM YYYY'),
+          ...order,
           ...booking,
         },
       });

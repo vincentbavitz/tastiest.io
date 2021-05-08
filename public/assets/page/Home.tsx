@@ -11,7 +11,7 @@ function SvgHome(props: React.SVGProps<SVGSVGElement>) {
     >
       <style>
         {
-          '@keyframes sdiamondOpacity{0%,30%{opacity:0;transform:translateY(10px)}31%{opacity:1;transform:translateX(0)}}@keyframes ch{0%{transform:translateX(0)}30%{transform:translateX(50px)}70%{transform:translateX(50px) rotateZ(15deg)}}@keyframes h{0%{transform:rotateZ(0deg)}50%{transform:rotateZ(-5deg)}}@keyframes hd{0%{transform:rotateZ(55deg)}50%{transform:rotateZ(-5deg)}}@keyframes td{0%{transform:rotateZ(55deg)}50%{transform:rotateZ(-5deg)}}@keyframes h2{0%{transform:rotateZ(0deg)}50%{transform:rotateZ(-3deg)}}'
+          '@keyframes sdiamondOpacity{0%,30%{opacity:0;transform:translateY(10px)}31%{opacity:1;transform:translateX(0)}}@keyframes ch{0%{transform:translateX(0)}50%{transform:translateX(50px)}to{transform:translateX(50px) rotateZ(15deg)}}@keyframes h{0%{transform:rotateZ(0deg)}50%{transform:rotateZ(-5deg)}}@keyframes hd{0%{transform:rotateZ(55deg)}50%{transform:rotateZ(-5deg)}}@keyframes td{0%{transform:rotateZ(55deg)}50%{transform:rotateZ(-5deg)}}@keyframes h2{0%{transform:rotateZ(0deg)}50%{transform:rotateZ(-3deg)}}'
         }
       </style>
       <defs>
@@ -48,7 +48,7 @@ function SvgHome(props: React.SVGProps<SVGSVGElement>) {
       />
       <g
         style={{
-          animation: 'ch .6s linear forwards',
+          animation: 'ch .75s linear 1s forwards 1',
           transformOrigin: 'bottom',
           transformBox: 'fill-box',
         }}
@@ -73,7 +73,7 @@ function SvgHome(props: React.SVGProps<SVGSVGElement>) {
           />
           <g
             style={{
-              animation: 'h 1.5s ease-in-out forwards',
+              animation: 'h 1.5s ease-in-out 1s forwards',
               transformOrigin: 'bottom',
               transformBox: 'fill-box',
             }}
@@ -333,7 +333,7 @@ function SvgHome(props: React.SVGProps<SVGSVGElement>) {
       />
       <g
         style={{
-          animation: 'hd 1s linear forwards',
+          animation: 'hd 1s linear 1s forwards',
           transformOrigin: '2% 82%',
           transformBox: 'fill-box',
         }}
@@ -397,7 +397,7 @@ function SvgHome(props: React.SVGProps<SVGSVGElement>) {
       />
       <g
         style={{
-          animation: 'h2 1.5s ease-in-out forwards',
+          animation: 'h2 1.5s ease-in-out 1s forwards',
           transformOrigin: 'bottom',
           transformBox: 'fill-box',
         }}
