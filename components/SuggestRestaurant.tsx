@@ -1,15 +1,20 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import clsx from 'clsx';
 import { useAuth } from 'hooks/useAuth';
 import { useFeedback } from 'hooks/useFeedback';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
-import { SuggestRestaurantIllustration } from 'public/assets/illustrations';
+import {
+  SuggestRestaurantIllustration,
+  ThumbsUpIllustration,
+} from 'public/assets/illustrations';
 import React, { useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { Contained } from './Contained';
 
 type FormData = {
+  email: string;
   userGivenRestaurantName: string;
   userGivenCuisine: string;
   userGivenDish: string;
@@ -21,10 +26,6 @@ export function SuggestRestaurant() {
   const { isMobile, isDesktop, isHuge } = useScreenSize();
 
   // Form values
-  const [email, setEmail] = useState(userData?.details?.email ?? '');
-  const [dishName, setDishName] = useState('');
-  const [cuisine, setCuisine] = useState('');
-  const [restaurantLocation, setRestaurantLocation] = useState('');
   const [requestRecieved, setRequestRecieved] = useState(false);
 
   const { suggestRestaurant, isSubmitting } = useFeedback();
@@ -34,13 +35,25 @@ export function SuggestRestaurant() {
     isSignedIn ? '0rem' : '-4rem' :
     isSignedIn ? '2rem' : '-2rem';
 
-  const submit = async () => {
-    if (requestRecieved) return;
+  const submit = async ({
+    email,
+    userGivenDish,
+    userGivenCuisine,
+    userGivenRestaurantName,
+  }: FormData) => {
+    if (requestRecieved) {
+      return;
+    }
 
-    const { success } = await suggestRestaurant(true, {
-      dish: dishName,
-      cuisine,
-    });
+    const { success } = await suggestRestaurant(
+      false,
+      {
+        userGivenDish,
+        userGivenCuisine,
+        userGivenRestaurantName,
+      },
+      email,
+    );
 
     setRequestRecieved(success);
   };
@@ -57,23 +70,41 @@ export function SuggestRestaurant() {
   });
 
   const {
-    field: { ref: restaurantNameRef, ...restaurantNameFieldProps },
+    field: { ref: emailRef, ...emailFieldProps },
   } = useController({
-    name: 'userGivenRestaurantName',
+    name: 'email',
+    defaultValue: userData?.details?.email ?? '',
+    control,
+    rules: {
+      required: {
+        value: Boolean(userData?.details?.email),
+        message: 'Please enter your email',
+      },
+      pattern: {
+        value: /^[\w]{1,30}@[\w\-_]{1,30}\.[a-zA-Z]{2,10}(\.[a-zA-Z]{2,10})?$/,
+        message: 'Please enter a valid email',
+      },
+    },
+  });
+
+  const {
+    field: { ref: dishRef, ...dishFieldProps },
+  } = useController({
+    name: 'userGivenDish',
     defaultValue: '',
     control,
     rules: {
       required: {
         value: true,
-        message: "Please enter the restaurant's name",
+        message: 'Enter your favourite dish',
       },
       minLength: {
-        value: 6,
-        message: 'Must be greater than six characters',
+        value: 3,
+        message: 'Must be greater than three characters',
       },
-      maxLength: { value: 60, message: 'Name too long' },
+      maxLength: { value: 60, message: 'Dish name too long' },
       pattern: {
-        value: /^([a-zA-Z-\s]{0,15}[ ]?){1,4}$/,
+        value: /^([a-zA-Z'"-\s]{0,15}[ ]?){1,4}$/,
         message: 'Must be alphabetic only',
       },
     },
@@ -96,7 +127,30 @@ export function SuggestRestaurant() {
       },
       maxLength: { value: 30, message: 'Cuisine too long' },
       pattern: {
-        value: /^([a-zA-Z-\s]{0,15}[ ]?){1,4}$/,
+        value: /^([a-zA-Z'"-\s]{0,15}[ ]?){1,4}$/,
+        message: 'Must be alphabetic only',
+      },
+    },
+  });
+
+  const {
+    field: { ref: restaurantNameRef, ...restaurantNameFieldProps },
+  } = useController({
+    name: 'userGivenRestaurantName',
+    defaultValue: '',
+    control,
+    rules: {
+      required: {
+        value: true,
+        message: "Please enter the restaurant's name",
+      },
+      minLength: {
+        value: 6,
+        message: 'Must be greater than six characters',
+      },
+      maxLength: { value: 60, message: 'Name too long' },
+      pattern: {
+        value: /^([a-zA-Z-'"\s]{0,15}[ ]?){1,4}$/,
         message: 'Must be alphabetic only',
       },
     },
@@ -111,14 +165,25 @@ export function SuggestRestaurant() {
           isDesktop && 'space-x-10',
         )}
       >
-        <SuggestRestaurantIllustration
-          style={{
-            height: isSignedIn ? '16rem' : '20rem',
-            minWidth: '12rem',
-            marginTop: isDesktop ? (isSignedIn ? '0' : '2.5rem') : '3rem',
-            marginLeft: svgDesktopMarginLeft,
-          }}
-        />
+        {requestRecieved ? (
+          <ThumbsUpIllustration
+            style={{
+              height: isSignedIn ? '16rem' : '20rem',
+              minWidth: '12rem',
+              marginTop: isDesktop ? (isSignedIn ? '0' : '2.5rem') : '3rem',
+              marginLeft: svgDesktopMarginLeft,
+            }}
+          />
+        ) : (
+          <SuggestRestaurantIllustration
+            style={{
+              height: isSignedIn ? '16rem' : '20rem',
+              minWidth: '12rem',
+              marginTop: isDesktop ? (isSignedIn ? '0' : '2.5rem') : '3rem',
+              marginLeft: svgDesktopMarginLeft,
+            }}
+          />
+        )}
 
         <div
           style={{
@@ -126,56 +191,79 @@ export function SuggestRestaurant() {
             maxWidth: isDesktop ? '30rem' : 'unset',
             marginTop: isSignedIn ? '0' : '1rem',
           }}
-          className={clsx('relative flex-1 tablet:mb-1')}
+          className={clsx(
+            'relative flex-1 tablet:mb-1 flex flex-col justify-center',
+          )}
         >
           <h3 className="pb-4 text-3xl text-center text-primary tablet:text-left font-somatic">
             Suggest a restaurant
           </h3>
 
-          <div className="flex flex-col mt-0 space-y-4 tablet:mt-6">
-            <Input
-              ref={restaurantNameRef}
-              {...restaurantNameFieldProps}
-              error={errors?.userGivenRestaurantName?.message}
-              label="Name of Restaurant"
-              labelTheme="primary"
-            />
+          {requestRecieved ? (
+            <div className="">
+              <p className="text-lg font-bold">Thanks for your suggestion!</p>
+              <p>
+                We really value your input and will check out <br />
+                your suggestion shortly.
+              </p>
+            </div>
+          ) : (
+            <div className="flex flex-col mt-0 space-y-4 tablet:mt-6">
+              <Input
+                ref={restaurantNameRef}
+                {...restaurantNameFieldProps}
+                error={errors?.userGivenRestaurantName?.message}
+                label="Name of Restaurant"
+                labelTheme="primary"
+              />
 
-            <div className="flex space-x-4">
-              <div className="flex-1">
-                <Input
-                  ref={cuisineRef}
-                  {...cuisineFieldProps}
-                  error={errors?.userGivenCuisine?.message}
-                  label="Cuisine"
-                  labelTheme="primary"
-                />
+              <div className="flex space-x-4">
+                <div className="flex-1">
+                  <Input
+                    ref={cuisineRef}
+                    {...cuisineFieldProps}
+                    error={errors?.userGivenCuisine?.message}
+                    label="Cuisine"
+                    labelTheme="primary"
+                  />
+                </div>
+
+                <div className="flex-1">
+                  <Input
+                    ref={dishRef}
+                    {...dishFieldProps}
+                    error={errors?.userGivenDish?.message}
+                    label="Your Favourite Dish"
+                    labelTheme="primary"
+                  />
+                </div>
               </div>
 
-              <div className="flex-1">
+              {!isSignedIn && (
                 <Input
-                  value={dishName}
-                  onValueChange={setDishName}
-                  label="Your Favourite Dish"
+                  ref={emailRef}
+                  {...emailFieldProps}
+                  error={errors?.email?.message}
+                  label="Your Email Address"
                   labelTheme="primary"
                 />
+              )}
+
+              <div className="w-full tablet:w-24">
+                <Button
+                  wide
+                  className="tracking-widest "
+                  onClick={handleSubmit(submit)}
+                >
+                  {isSubmitting ? (
+                    <LoadingOutlined className="text-2xl" />
+                  ) : (
+                    'Send'
+                  )}
+                </Button>
               </div>
             </div>
-
-            {!isSignedIn && (
-              <Input
-                value={email}
-                onValueChange={setEmail}
-                label="Your Email Address"
-                labelTheme="primary"
-                maxLength={50}
-              />
-            )}
-
-            <Button wide={isMobile} className="tracking-widest">
-              Send
-            </Button>
-          </div>
+          )}
         </div>
       </div>
     </Contained>

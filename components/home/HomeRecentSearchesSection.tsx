@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
 import { useAuth } from '../../hooks/useAuth';
@@ -13,8 +12,6 @@ export function HomeRecentSearchesSection() {
   const { userData } = useUserData(user);
   const { recentSearches = [] } = userData ?? {};
 
-  const router = useRouter();
-
   return (
     <>
       {recentSearches.length ? (
@@ -22,10 +19,7 @@ export function HomeRecentSearchesSection() {
           <SectionTitle>Your recent searches</SectionTitle>
           <HorizontalScrollable>
             {recentSearches.slice(0, 10).map(item => (
-              <OutlineBlock
-                key={uuid()}
-                onClick={() => router.push(`/search?s=${item.query}`)}
-              >
+              <OutlineBlock key={uuid()} href={`/search?s=${item.query}`}>
                 {item?.query.slice(0, 15)}
               </OutlineBlock>
             ))}

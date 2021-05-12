@@ -1,7 +1,6 @@
-import { IPost } from '@tastiest-io/tastiest-utils';
+import { dlog, IFigureImage, IPost } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import { useScreenSize } from 'hooks/useScreenSize';
-import { CharacterEating } from 'public/assets/article';
 import React from 'react';
 import { UI } from '../../../constants';
 import ArticleContained from '../ArticleContained';
@@ -12,12 +11,18 @@ import { ArticleSaveShareWidget } from '../widgets/ArticleSaveShareWidget';
 const EATING_CHARACTER_SIZE_REM = 22;
 
 export function ArticleSectionAbstract(props: IPost) {
-  const { id, title, slug, video, deal, abstractDivider } = props;
+  const { id, title, slug, video, deal, abstractDivider, titleDivider } = props;
   const { isDesktop } = useScreenSize();
+
+  dlog('ArticleSectionAbstract ➡️ titleDivider:', titleDivider);
 
   return (
     <div className="relative w-full bg-secondary-1">
-      {!isDesktop ? <CharacterEatingMobile /> : <CharacterEatingDesktop />}
+      {!isDesktop ? (
+        <CharacterEatingMobile titleDivider={titleDivider} />
+      ) : (
+        <CharacterEatingDesktop titleDivider={titleDivider} />
+      )}
 
       <ArticleSaveShareWidget id={id} title={title} slug={slug} />
 
@@ -54,7 +59,11 @@ export function ArticleSectionAbstract(props: IPost) {
   );
 }
 
-const CharacterEatingDesktop = () => (
+interface ITitleDividerProps {
+  titleDivider: IFigureImage;
+}
+
+const CharacterEatingDesktop = ({ titleDivider }: ITitleDividerProps) => (
   <div
     className="absolute inset-0 flex justify-center pointer-events-none"
     style={{ height: 'fit-content', transform: 'translateY(-73%)' }}
@@ -68,7 +77,8 @@ const CharacterEatingDesktop = () => (
         }rem`,
       }}
     >
-      <CharacterEating
+      <img
+        src={titleDivider?.imageUrl}
         style={{
           width: `${EATING_CHARACTER_SIZE_REM}rem`,
           height: `${EATING_CHARACTER_SIZE_REM}rem`,
@@ -78,14 +88,15 @@ const CharacterEatingDesktop = () => (
   </div>
 );
 
-const CharacterEatingMobile = () => (
+const CharacterEatingMobile = ({ titleDivider }: ITitleDividerProps) => (
   <div
     className="z-0 flex justify-center h-0 mb-16"
     style={{
       marginTop: '10.95rem',
     }}
   >
-    <CharacterEating
+    <img
+      src={titleDivider?.imageUrl}
       style={{
         width: '15rem',
         height: '15rem',

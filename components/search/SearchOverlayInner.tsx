@@ -96,8 +96,8 @@ function SearchOverlayInnerDefault() {
             onClick={() => router.push(category.href)}
             className="flex items-center text-lg font-medium rounded-lg cursor-pointer text-primary font-roboto hover:bg-primary hover:bg-opacity-10"
           >
-            <category.svg className="h-8 mr-2" />
-            {category.name}
+            <category.svg className="w-8 h-8 mr-2 tablet:h-5 tablet:w-5" />
+            <p className="text-xl mobile:text-base">{category.name}</p>
           </div>
         ))}
       </div>
@@ -116,9 +116,7 @@ function SearchOverlayInnerDefault() {
             .map(cuisine => (
               <div key={cuisine.name.toLowerCase()} className="mt-2 mr-2">
                 <OutlineBlock
-                  onClick={() =>
-                    router.push(`/search/?cuisine=${cuisine.href}`)
-                  }
+                  href={cuisine.href}
                   size={
                     !!isDesktop && searchBarPinnedToHeader ? 'tiny' : 'small'
                   }

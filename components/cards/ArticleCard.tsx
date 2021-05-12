@@ -27,10 +27,6 @@ export function ArticleCard(props: Props): JSX.Element {
   const isSmall = width < 170;
 
   const { href, as } = generateURL({ city, slug, cuisine });
-  // const handleClick = (e: SyntheticEvent) => {
-  //   e.preventDefault();
-  //   router.push(href, as);
-  // };
 
   return (
     <div
@@ -63,7 +59,7 @@ export function ArticleCard(props: Props): JSX.Element {
             style={{
               lineHeight: '1.1em',
               height: '0',
-              paddingBottom: '2.25em',
+              paddingBottom: '2.2em',
             }}
             className={classNames(
               isSmall ? 'text-base' : 'text-lg',

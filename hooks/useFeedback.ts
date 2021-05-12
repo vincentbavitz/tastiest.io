@@ -25,7 +25,9 @@ interface IRecommendationDetails {
 }
 
 interface IRestaurantRecommendation extends IRecommendationDetails {
+  email: string | null;
   userId: string | null;
+  anonymousEmail: string | null;
   timestamp: number;
   fromPage: string;
   fromArticlePage: boolean;
@@ -58,10 +60,13 @@ export function useFeedback() {
       userGivenLocation,
       userGivenRestaurantName,
     }: Partial<IRecommendationDetails>,
+    anonymousEmail?: string,
   ): Promise<{ success: boolean }> => {
     // Send recommendation to Firestore
     const recommendation: IRestaurantRecommendation = {
+      email: user?.email ?? null,
       userId: user?.uid ?? null,
+      anonymousEmail: user?.email ? null : anonymousEmail ?? null,
       timestamp: Date.now(),
       fromPage: router.asPath,
       fromArticlePage,

@@ -46,18 +46,16 @@ function MobileHeader() {
       }}
       className="absolute top-0 left-0 right-0 w-full bg-white"
     >
-      <div className="flex items-center justify-between w-full h-full">
+      <div className="relative flex items-center justify-between w-full h-full">
         <div className="flex flex-shrink-0" onMouseDown={handleExpandSearch}>
           <SearchIcon className="h-10 cursor-pointer" />
         </div>
 
-        <div className="antialiased">
-          <Link href="/">
-            <a className="flex items-center flex-shrink-0">
-              <TastiestIcon className="h-8 fill-current text-primary" />
-            </a>
-          </Link>
-        </div>
+        <Link href="/">
+          <a className="flex items-center flex-shrink-0">
+            <TastiestIcon className="h-8 fill-current text-primary" />
+          </a>
+        </Link>
 
         <HeaderAvatar />
       </div>

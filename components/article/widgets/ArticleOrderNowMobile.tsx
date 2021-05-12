@@ -82,13 +82,13 @@ const OrderNowOverlay = ({ deal, slug, onClose }: OrderNowOverlayProps) => {
     >
       <Contained>
         <div className="flex items-center justify-between py-2">
-          <div className="w-10"></div>
+          <div className="w-6"></div>
           <h3 className="text-3xl text-center font-somatic text-primary">
             Get the offer!
           </h3>
           <ExitIcon
             onClick={onClose}
-            className="w-8 fill-current text-primary"
+            className="w-6 text-gray-300 fill-current"
           />
         </div>
 
