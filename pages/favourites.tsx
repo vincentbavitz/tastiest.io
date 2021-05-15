@@ -11,7 +11,7 @@ import { ArticleCardFavourite } from 'components/cards/ArticleCardFavourite';
 import { CardGrid } from 'components/cards/CardGrid';
 import { Contained } from 'components/Contained';
 import RecommendedPosts from 'components/sections/RecommendedPosts';
-import { useArticle } from 'hooks/useArticle';
+import { useFavouriteArticle } from 'hooks/article/useFavouriteArticle';
 import { IScreen, useScreenSize } from 'hooks/useScreenSize';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
@@ -66,7 +66,8 @@ function Favourites(props: Props) {
   const { savedPosts, recommendedPosts } = props;
   const screen = useScreenSize();
   const { user } = useAuth();
-  const { toggleSaveArticle } = useArticle();
+
+  const { toggleSaveArticle } = useFavouriteArticle();
   const { userData = {} } = useUserData(user);
 
   // Initialize favourites with props, then allow firebase to manage in real time.

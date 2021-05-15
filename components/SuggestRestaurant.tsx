@@ -73,11 +73,11 @@ export function SuggestRestaurant() {
     field: { ref: emailRef, ...emailFieldProps },
   } = useController({
     name: 'email',
-    defaultValue: userData?.details?.email ?? '',
+    defaultValue: user?.email ?? '',
     control,
     rules: {
       required: {
-        value: Boolean(userData?.details?.email),
+        value: Boolean(user?.email),
         message: 'Please enter your email',
       },
       pattern: {

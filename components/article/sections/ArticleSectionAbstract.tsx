@@ -24,7 +24,7 @@ export function ArticleSectionAbstract(props: IPost) {
         <CharacterEatingDesktop titleDivider={titleDivider} />
       )}
 
-      <ArticleSaveShareWidget id={id} title={title} slug={slug} />
+      <ArticleSaveShareWidget {...props} />
 
       {isDesktop ? (
         <ArticleContained>

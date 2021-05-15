@@ -1,14 +1,22 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input, TextArea } from '@tastiest-io/tastiest-components';
+import { UserQueryType } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
-import { useUserData } from 'hooks/useUserData';
+import { useSupport } from 'hooks/useSupport';
 import Head from 'next/head';
 import Link from 'next/link';
 import { Page404Hero } from 'public/assets/page';
 import React, { useState } from 'react';
+import { useController, useForm } from 'react-hook-form';
 import { UI } from '../constants';
 import { generateTitle } from '../utils/metadata';
+
+type FormData = {
+  email: string;
+  lookingForMessage: string;
+};
 
 function Tastiest404() {
   const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
@@ -47,19 +55,74 @@ function Tastiest404() {
     minHeight: isTablet ? '330px' : '450px',
   };
 
-  const goBackHomeStyles = {
-    width: '9rem',
-  };
-
   const { user, isSignedIn } = useAuth();
-  const { userData } = useUserData(user);
+  const [requestRecieved, setRequestRecieved] = useState(false);
+  const { makeGeneralQuery, isSubmitting } = useSupport();
 
-  const [email, setEmail] = useState(userData?.details?.email ?? '');
-  const [lookingForText, setLookingForText] = useState('');
+  const submit = async ({
+    email = user?.email ?? '',
+    lookingForMessage,
+  }: FormData) => {
+    if (requestRecieved) {
+      return;
+    }
 
-  const submit = () => {
-    null;
+    const { success } = await makeGeneralQuery(
+      email,
+      lookingForMessage,
+      UserQueryType._404_PAGE,
+    );
+
+    setRequestRecieved(success);
   };
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormData>({
+    mode: 'onBlur',
+    reValidateMode: 'onBlur',
+    criteriaMode: 'firstError',
+    shouldFocusError: true,
+  });
+
+  const {
+    field: { ref: emailRef, ...emailFieldProps },
+  } = useController({
+    name: 'email',
+    defaultValue: user?.email ?? '',
+    control,
+    rules: {
+      required: {
+        value: Boolean(user?.email),
+        message: 'Please enter your email',
+      },
+      pattern: {
+        value: /^[\w]{1,30}@[\w\-_]{1,30}\.[a-zA-Z]{2,10}(\.[a-zA-Z]{2,10})?$/,
+        message: 'Please enter a valid email',
+      },
+    },
+  });
+
+  const {
+    field: { ref: lookingForRef, ...lookingForFieldProps },
+  } = useController({
+    name: 'lookingForMessage',
+    defaultValue: '',
+    control,
+    rules: {
+      required: {
+        value: true,
+        message: 'What were you looking for?',
+      },
+      minLength: {
+        value: 10,
+        message: 'Must be greater than ten characters',
+      },
+      maxLength: { value: 1000, message: 'Message too long' },
+    },
+  });
 
   return (
     <div>
@@ -67,7 +130,7 @@ function Tastiest404() {
         <title>{generateTitle('Nothing Found')}</title>
       </Head>
 
-      <div style={wrapperStyles} className="flex items-center">
+      <div style={wrapperStyles} className="flex items-center pb-20">
         <div
           className={classNames(
             'flex w-full justify-between',
@@ -94,40 +157,29 @@ function Tastiest404() {
                 <span className="text-secondary">eggstinct!</span>
               </p>
 
-              <Link href="/">
-                <div
-                  role="button"
-                  style={goBackHomeStyles}
-                  className={classNames(
-                    'bg-secondary',
-                    'cursor-pointer',
-                    'mt-3',
-                    'text-white',
-                    'font-somatic',
-                    'px-3',
-                    'py-1',
-                    'w-32',
-                    'select-none',
-                    'rounded-lg',
-                    'text-center',
-                    'tracking-tight',
-                    !isDesktop ? 'text-lg' : 'text-sm',
-                  )}
-                >
-                  Discover food
-                </div>
+              <Link href="/search">
+                <a>
+                  <div className="w-full pt-3">
+                    <Button wide color="secondary">
+                      Discover Food
+                    </Button>
+                  </div>
+                </a>
               </Link>
             </div>
           </div>
 
           <div
-            style={{ minWidth: '250px' }}
+            style={{
+              minWidth: '250px',
+              maxWidth: isDesktop ? '280px' : 'unset',
+            }}
             className={classNames(
-              'z-10 flex items-start',
+              'z-10 flex items-start w-full',
               !isDesktop ? '-mt-10' : 'mt-0',
             )}
           >
-            <div className="z-50 flex-col flex-grow my-4">
+            <div className="z-50 flex-col flex-grow pt-12 my-4 tablet:pt-0">
               <h2
                 className={classNames(
                   'text-primary leading-tight ml-1 mb-4 font-somatic mt-6 text-2xl whitespace-no-wrap',
@@ -136,25 +188,44 @@ function Tastiest404() {
                 Something went wrong?
               </h2>
 
-              <div className="flex flex-col space-y-3">
-                <TextArea
-                  value={lookingForText}
-                  onValueChange={setLookingForText}
-                  rows={5}
-                  maxLength={UI.USER_QUERY_404_MAX_LEN}
-                  placeholder="Let us know what you were looking for and we'll get back to you soon."
-                />
-
-                {!isSignedIn && (
-                  <Input
-                    value={email}
-                    onValueChange={setEmail}
-                    placeholder="Email Address"
+              {requestRecieved ? (
+                <div className="flex flex-col text-justify">
+                  <p className="text-xl font-bold">Thanks for your feedback!</p>
+                  <p className="pt-0 pl-0 tablet:pt-20 tablet:pl-10">
+                    We use your feedback to help make Tastiest easier to use, so
+                    you can get back to finding great food.
+                  </p>
+                </div>
+              ) : (
+                <div className="flex flex-col space-y-3">
+                  <TextArea
+                    ref={lookingForRef}
+                    {...lookingForFieldProps}
+                    rows={5}
+                    maxLength={UI.USER_QUERY_404_MAX_LEN}
+                    placeholder="Let us know what you were looking for and we'll get back to you soon."
                   />
-                )}
 
-                <Button onClick={submit}>Send</Button>
-              </div>
+                  {!isSignedIn && (
+                    <Input
+                      ref={emailRef}
+                      {...emailFieldProps}
+                      error={errors?.email?.message}
+                      placeholder="Your email address"
+                    />
+                  )}
+
+                  <div className="w-20">
+                    <Button wide onClick={handleSubmit(submit)}>
+                      {isSubmitting ? (
+                        <LoadingOutlined className="text-2xl" />
+                      ) : (
+                        'Send'
+                      )}
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

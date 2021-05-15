@@ -46,8 +46,6 @@ export default async function pay(
     return;
   }
 
-  console.log('41');
-
   // Get body as JSON or raw
   let body;
   try {
@@ -156,6 +154,7 @@ export default async function pay(
           { merge: true },
         );
 
+      // Update user data
       const details = await userDataApi.getUserData(UserData.DETAILS);
       const eaterName = `${details.firstName} ${details.lastName}`;
 
@@ -185,12 +184,18 @@ export default async function pay(
         .set(booking);
 
       // Track payment success
+      const paymentMethod = await stripe.paymentMethods.retrieve(
+        order.paymentMethod,
+      );
+
       analytics.track({
         event: 'Payment Success',
         userId: order.userId,
         properties: {
           token,
+          firstName: details.firstName,
           paidAtDate: moment(booking.paidAt).format('Do MMMM YYYY'),
+          paymentCard: paymentMethod.card,
           ...order,
           ...booking,
         },

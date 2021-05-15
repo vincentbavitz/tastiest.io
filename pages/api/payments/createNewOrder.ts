@@ -4,6 +4,7 @@ import {
   FIREBASE,
   FirestoreCollection,
   FunctionsResponse,
+  generateUserFacingId,
   IOrder,
   IOrderRequest,
   IPromo,
@@ -175,6 +176,7 @@ const buildOrder = async (orderRequest: IOrderRequest) => {
   const orderToken = uuid();
   const order: IOrder = {
     id: orderId,
+    userFacingOrderId: generateUserFacingId(),
     token: orderToken,
     deal,
     userId: null,
@@ -183,6 +185,7 @@ const buildOrder = async (orderRequest: IOrderRequest) => {
     price: {
       gross,
       final: calculatePromoPrice(gross, promo),
+      currency: 'GBP',
     },
     paymentMethod: null,
     promoCode: promo?.code ?? null,

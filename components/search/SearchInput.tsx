@@ -177,7 +177,7 @@ export function SearchInput(props: Props) {
         >
           <SearchIcon
             className={clsx(
-              'h-8 fill-current',
+              'h-6 fill-current',
               searchIcon === 'primary' && 'text-primary',
               searchIcon === 'secondary' && 'text-secondary',
             )}

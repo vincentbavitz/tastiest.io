@@ -1,10 +1,10 @@
 import { UserData } from '@tastiest-io/tastiest-utils';
 import { useDispatch } from 'react-redux';
 import { openSignInModal } from 'state/navigation';
-import { useAuth } from './useAuth';
-import { useUserData } from './useUserData';
+import { useAuth } from '../useAuth';
+import { useUserData } from '../useUserData';
 
-export function useArticle() {
+export function useFavouriteArticle() {
   const { user } = useAuth();
   const { userData = {}, setUserData } = useUserData(user);
   const { isSignedIn } = useAuth();
@@ -56,5 +56,7 @@ export function useArticle() {
     });
   };
 
-  return { toggleSaveArticle };
+  const savedArticles = userData?.savedArticles ?? [];
+
+  return { toggleSaveArticle, saveArticle, unsaveArticle, savedArticles };
 }

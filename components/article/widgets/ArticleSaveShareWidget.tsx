@@ -1,81 +1,16 @@
 import {
-  Button,
-  Dropdown,
-  DropdownItem,
-} from '@tastiest-io/tastiest-components';
-import {
   HeartFilledIcon,
   HeartIcon,
   ShareIcon,
 } from '@tastiest-io/tastiest-icons';
+import { IPost } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
+import { ShareDropdown } from 'components/ShareDropdown';
+import { useFavouriteArticle } from 'hooks/article/useFavouriteArticle';
 import { useScreenSize } from 'hooks/useScreenSize';
-import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import { useIntersection, useWindowScroll } from 'react-use';
 import { UI } from '../../../constants';
-import { useArticle } from '../../../hooks/useArticle';
-import { useAuth } from '../../../hooks/useAuth';
-import { useUserData } from '../../../hooks/useUserData';
-import {
-  shareToFacebook,
-  shareToReddit,
-  shareToTwitter,
-  shareToWhatsApp,
-} from '../../../utils/share';
-import { InputGroup } from '../../inputs/InputGroup';
-
-export interface IShareDropdownItems {
-  id: string;
-  name: string;
-  onClick: () => void;
-}
-
-export interface ArticleSaveShareProps {
-  id: string;
-  title: string;
-  slug: string;
-}
-
-const useSaveShare = ({ id, title, slug }: ArticleSaveShareProps) => {
-  const { toggleSaveArticle } = useArticle();
-  const { user } = useAuth();
-  const { userData = {} } = useUserData(user);
-
-  const router = useRouter();
-  const articleUrl = `tastiest.io${router.asPath}`;
-  const isArticleSaved = userData?.savedArticles?.find(saved => slug === saved);
-
-  const dropdownItems: Array<IShareDropdownItems> = [
-    {
-      id: 'share-to-facebook',
-      name: 'Facebook',
-      onClick: () => shareToFacebook(title, slug),
-    },
-    {
-      id: 'share-to-twitter',
-      name: 'Twitter',
-      onClick: () => shareToTwitter(title, slug),
-    },
-    {
-      id: 'share-to-whatsapp',
-      name: 'WhatsApp',
-      onClick: () => shareToWhatsApp(title, slug),
-    },
-    {
-      id: 'share-to-reddit',
-      name: 'Reddit',
-      onClick: () => shareToReddit(title, slug),
-    },
-  ];
-
-  return {
-    articleUrl,
-    isArticleSaved,
-    dropdownItems,
-    toggleSaveArticle,
-  };
-};
 
 const useSaveShareGeometry = () => {
   const { isDesktop } = useScreenSize();
@@ -98,16 +33,12 @@ const useSaveShareGeometry = () => {
   };
 };
 
-export function ArticleSaveShareWidget(props: ArticleSaveShareProps) {
+export function ArticleSaveShareWidget(props: IPost) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { isDesktop } = useScreenSize();
 
-  const {
-    articleUrl,
-    isArticleSaved,
-    dropdownItems,
-    toggleSaveArticle,
-  } = useSaveShare(props);
+  const { savedArticles, toggleSaveArticle } = useFavouriteArticle();
+  const isArticleSaved = savedArticles.some(slug => slug === props.slug);
 
   const { ref, isFixedToTop } = useSaveShareGeometry();
 
@@ -120,9 +51,10 @@ export function ArticleSaveShareWidget(props: ArticleSaveShareProps) {
     <>
       {isFixedToTop && (
         <ArticleSaveShareFixed
-          {...props}
-          dishName={'The Best Xiao Long Bao'}
           isDesktop={isDesktop}
+          isArticleSaved={isArticleSaved}
+          toggleSaveArticle={toggleSaveArticle}
+          {...props}
         />
       )}
 
@@ -140,14 +72,14 @@ export function ArticleSaveShareWidget(props: ArticleSaveShareProps) {
                 <HeartFilledIcon
                   className={clsx(
                     'text-primary fill-current',
-                    isDesktop ? 'h-6' : 'h-8',
+                    isDesktop ? 'h-5' : 'h-5',
                   )}
                 />
               ) : (
                 <HeartIcon
                   className={clsx(
                     'text-primary stroke-current fill-current',
-                    isDesktop ? 'h-6' : 'h-8',
+                    isDesktop ? 'h-5' : 'h-5',
                   )}
                 />
               )}
@@ -158,15 +90,17 @@ export function ArticleSaveShareWidget(props: ArticleSaveShareProps) {
               className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 cursor-pointer hover:bg-white rounded-r-md"
               onClick={() => setIsDropdownOpen(true)}
             >
-              <ShareIcon className={isDesktop ? 'h-5' : 'h-8'} />
+              <ShareIcon className={isDesktop ? 'h-5' : 'h-5'} />
               <span>Share</span>
             </div>
           </div>
         </div>
 
         <ShareDropdown
-          url={articleUrl}
-          items={dropdownItems}
+          title={props.title}
+          city={props.city}
+          cuisine={props.cuisine}
+          slug={props.slug}
           isOpen={isDropdownOpen}
           setIsOpen={setIsDropdownOpen}
         />
@@ -175,20 +109,22 @@ export function ArticleSaveShareWidget(props: ArticleSaveShareProps) {
   );
 }
 
-interface ArticleSaveShareFixedProps extends ArticleSaveShareProps {
-  dishName: string;
+interface ArticleSaveShareFixedProps extends IPost {
+  isArticleSaved: boolean;
   isDesktop: boolean;
+  toggleSaveArticle: (slug: string) => void;
 }
 
 function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
-  const { slug, dishName } = props;
-
   const {
-    articleUrl,
-    isArticleSaved,
-    dropdownItems,
+    title,
+    city,
+    cuisine,
+    slug,
+    dishName,
     toggleSaveArticle,
-  } = useSaveShare(props);
+    isArticleSaved,
+  } = props;
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -226,8 +162,10 @@ function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
 
       <div className="flex justify-center w-full">
         <ShareDropdown
-          url={articleUrl}
-          items={dropdownItems}
+          title={title}
+          city={city}
+          cuisine={cuisine}
+          slug={slug}
           isOpen={isDropdownOpen}
           setIsOpen={setIsDropdownOpen}
           offsetY={15}
@@ -236,52 +174,3 @@ function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
     </div>
   );
 }
-
-interface ShareDropdownProps {
-  url: string;
-  items: IShareDropdownItems[];
-  isOpen: boolean;
-  setIsOpen: (value: boolean) => void;
-  offsetY?: number;
-}
-
-const ShareDropdown = (props: ShareDropdownProps) => {
-  const { url, items, isOpen, setIsOpen, offsetY = -5 } = props;
-
-  return (
-    <div className="relative flex justify-center w-px">
-      <Dropdown
-        pull="center"
-        isOpen={isOpen}
-        onClickAway={() => setIsOpen(false)}
-        style="outline"
-        offsetY={offsetY}
-      >
-        <>
-          <div className="px-3 pt-1 pb-2">
-            <InputGroup className="w-full border rounded-md bg-soft border-soft">
-              <div>
-                <input
-                  className="pl-3 text-sm border-l outline-none bg-soft border-soft rounded-l-md"
-                  style={{ minWidth: '9rem' }}
-                  readOnly
-                  value={url}
-                />
-              </div>
-
-              <Button type="text" size="small" color="primary">
-                COPY
-              </Button>
-            </InputGroup>
-          </div>
-
-          {items.map(item => (
-            <DropdownItem key={item.id} id={item.id} onSelect={item.onClick}>
-              <div className="w-full text-center">{item.name}</div>
-            </DropdownItem>
-          ))}
-        </>
-      </Dropdown>
-    </div>
-  );
-};

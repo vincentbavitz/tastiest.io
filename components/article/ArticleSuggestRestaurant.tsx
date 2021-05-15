@@ -67,9 +67,9 @@ const ArticleSuggestRestaurantContent = ({
   };
 
   return (
-    <>
+    <div>
       <div className="mb-4 desktop:w-9/12">
-        <span className="text-3xl leading-tight font-somatic text-primary">
+        <span className="text-xl leading-tight font-somatic text-primary">
           Do you know a better {dishName} in {city}?
         </span>
       </div>
@@ -82,20 +82,17 @@ const ArticleSuggestRestaurantContent = ({
         placeholder="Name of Restaurant"
       />
 
-      <Button
-        size={isDesktop ? 'small' : 'medium'}
-        className="w-32 mt-6 text-xl font-somatic"
-        onClick={submit}
-      >
-        {isSubmitting ? (
-          <LoadingOutlined className="px-10 text-3xl" />
-        ) : requestRecieved ? (
-          'Thanks!'
-        ) : (
-          'Recommend'
-        )}
-        {}
-      </Button>
-    </>
+      <div className="w-32 mt-3">
+        <Button wide onClick={submit}>
+          {isSubmitting ? (
+            <LoadingOutlined className="px-10 text-2xl" />
+          ) : requestRecieved ? (
+            'Thanks!'
+          ) : (
+            'Recommend'
+          )}
+        </Button>
+      </div>
+    </div>
   );
 };

@@ -1,6 +1,7 @@
 import { Dropdown, DropdownItem } from '@tastiest-io/tastiest-components';
 import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
 import { useUserData } from 'hooks/useUserData';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -8,11 +9,16 @@ import { useAuth } from '../../hooks/useAuth';
 import { openSignInModal } from '../../state/navigation';
 import { UserAvatar } from '../avatar/UserAvatar';
 
+type SVGIcon = (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
+
 interface IProfileDropdownItems {
   id: string;
   name: string;
+  hide?: boolean;
+  icon?: SVGIcon;
   isSelected?: boolean;
-  onClick: () => void;
+  href?: string;
+  onClick?: () => void;
 }
 
 export function HeaderAvatar() {
@@ -39,8 +45,16 @@ export function HeaderAvatar() {
     {
       id: 'preferences',
       name: 'Preferences',
-      onClick: () => router.push('/preferences'),
+      href: '/preferences',
       isSelected: false,
+      // icon: UserIcon,
+    },
+    {
+      id: 'saved-places',
+      name: 'Favourites',
+      href: '/favourites',
+      isSelected: false,
+      // icon: HeartIcon,
     },
     {
       id: 'sign-out',
@@ -49,6 +63,7 @@ export function HeaderAvatar() {
         signOut();
         setIsDropdownOpen(false);
       },
+      // icon: RightIcon,
     },
   ];
 
@@ -77,17 +92,36 @@ export function HeaderAvatar() {
         <p className="pb-1 pl-4 pr-6 mb-1 text-sm text-gray-900 border-b border-gray-200">
           Eat well, {displayName}
         </p>
-        {dropdownItems.map(item => (
-          <DropdownItem
-            style="outline"
-            key={item.id}
-            id={item.id}
-            onSelect={item.onClick}
-            selected={item.isSelected}
-          >
-            {item.name}
-          </DropdownItem>
-        ))}
+        {dropdownItems.map(item => {
+          const DropdownItemInner = () => (
+            <div className="flex space-x-2">
+              {item.icon && (
+                <item.icon className="h-4 text-black fill-current" />
+              )}
+              <p>{item.name}</p>
+            </div>
+          );
+
+          return (
+            <DropdownItem
+              id={item.id}
+              key={item.id}
+              style="outline"
+              selected={item.isSelected}
+              onSelect={item?.onClick}
+            >
+              {item.href ? (
+                <Link href={item.href}>
+                  <a>
+                    <DropdownItemInner />
+                  </a>
+                </Link>
+              ) : (
+                <DropdownItemInner />
+              )}
+            </DropdownItem>
+          );
+        })}
       </Dropdown>
     </div>
   );

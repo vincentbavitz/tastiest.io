@@ -30,7 +30,7 @@ export function HeaderSavedPlaces() {
       onClick={handleClick}
       className="flex items-center px-4 cursor-pointer text-primary"
     >
-      <HeartIcon className="h-8 mr-1 fill-current" />
+      <HeartIcon className="h-6 mr-1 fill-current" />
       {shouldDisplayText && (
         <Title level={4} margin={false} className="font-somatic">
           Saved Places

@@ -7,10 +7,13 @@ import {
   SupportRequestType,
   UserQueryType,
 } from '@tastiest-io/tastiest-utils';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
 import { v4 as uuid } from 'uuid';
 import { IState } from '../state/reducers';
+import { useAuth } from './useAuth';
+import { useUserData } from './useUserData';
 
 export enum SupportRequestGenerationError {
   NO_NAME = 'NO_NAME',
@@ -21,7 +24,11 @@ export enum SupportRequestGenerationError {
 }
 
 export function useSupport() {
+  const { user } = useAuth();
+  const { userData } = useUserData(user);
+
   const firestore = useFirestore();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useFirestoreConnect([
     {
@@ -78,11 +85,13 @@ export function useSupport() {
     };
 
     try {
+      setIsSubmitting(true);
       await firestore
         .collection(FirestoreCollection.SUPPORT_USERS)
         .doc(userId ?? uuid())
         .set(supportRequest);
 
+      setIsSubmitting(false);
       return { success: true, errors: [] };
     } catch (_) {
       return {
@@ -99,11 +108,9 @@ export function useSupport() {
   // Queries are unlike support requests in that they don't
   // require a conversation or priority.
   const makeGeneralQuery = async (
-    name: string,
     email: string,
     message: string,
     type: UserQueryType,
-    userId?: string,
   ): Promise<{ success: boolean; errors: SupportRequestGenerationError[] }> => {
     const errors: SupportRequestGenerationError[] = [];
     if (!email?.length) errors.push(SupportRequestGenerationError.NO_EMAIL);
@@ -114,22 +121,24 @@ export function useSupport() {
     }
 
     const query: IUserQuery = {
-      email,
+      email: user?.email ?? email,
+      userId: user?.uid ?? null,
       message,
       type,
-      name: name ?? null,
-      userId: userId ?? null,
+      name: userData?.details?.firstName ?? null,
       seen: false,
       resolved: false,
       createdAt: Date.now(),
     };
 
     try {
+      setIsSubmitting(true);
       await firestore
         .collection(FirestoreCollection.USER_QUERIES)
-        .doc(userId ?? uuid())
+        .doc(uuid())
         .set(query);
 
+      setIsSubmitting(false);
       return { success: true, errors: [] };
     } catch (_) {
       return {
@@ -139,5 +148,10 @@ export function useSupport() {
     }
   };
 
-  return { supportRequests, makeSupportRequest, makeGeneralQuery };
+  return {
+    supportRequests,
+    makeSupportRequest,
+    makeGeneralQuery,
+    isSubmitting,
+  };
 }

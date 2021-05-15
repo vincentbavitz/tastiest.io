@@ -6,10 +6,11 @@ import {
 import { IPost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import clsx from 'clsx';
+import { ShareDropdown } from 'components/ShareDropdown';
 import { useScreenSize } from 'hooks/useScreenSize';
 import router from 'next/dist/client/router';
 import Link from 'next/link';
-import React, { SyntheticEvent } from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import { useMeasure } from 'react-use';
 import { generateURL } from '../../utils/routing';
 
@@ -34,7 +35,10 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
   const [ref, { width }] = useMeasure();
   const isSmall = width < 180;
 
+  const [isShareDropdownOpen, setIsShareDropdownOpen] = useState(false);
+
   const { href, as } = generateURL({ city, slug, cuisine });
+
   const handleClick = (e: SyntheticEvent) => {
     e.preventDefault();
     router.push(href, as);
@@ -43,10 +47,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
   return (
     <div
       ref={ref}
-      className={classNames(
-        'overflow-hidden w-full bg-opacity-75',
-        isSmall ? 'pb-3' : 'pb-1',
-      )}
+      className={classNames('w-full bg-opacity-75', isSmall ? 'pb-3' : 'pb-1')}
     >
       <div
         style={{ paddingBottom: '80%' }}
@@ -92,21 +93,33 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
             )}
           >
             {isFavourite ? (
-              <HeartFilledIcon className={!isDesktop ? 'h-8' : 'h-8'} />
+              <HeartFilledIcon className={!isDesktop ? 'h-5' : 'h-5'} />
             ) : (
               <HeartIcon
                 className={clsx(
                   'text-primary fill-current',
-                  !isDesktop ? 'h-8' : 'h-8',
+                  !isDesktop ? 'h-5' : 'h-5',
                 )}
               />
             )}
-            {!!isDesktop && isFavourite ? 'Unsave' : 'Save'}
+            {isDesktop && (isFavourite ? 'Unsave' : 'Save')}
           </div>
 
           <div className="flex items-center text-sm cursor-pointer">
-            <ShareIcon className={!isDesktop ? 'h-8' : 'h-8'} />
-            {!!isDesktop && 'Share'}
+            <ShareIcon
+              onClick={() => setIsShareDropdownOpen(!isShareDropdownOpen)}
+              className={!isDesktop ? 'h-5' : 'h-5'}
+            />
+            <ShareDropdown
+              title={props.title}
+              city={props.city}
+              cuisine={props.cuisine}
+              slug={props.slug}
+              // isOpen={isShareDropdownOpen}
+              isOpen={true}
+              setIsOpen={setIsShareDropdownOpen}
+            />
+            {isDesktop && 'Share'}
           </div>
         </div>
       </div>
