@@ -13,6 +13,7 @@ import {
   dlog,
   IDateObject,
   IOrder,
+  TastiestPaymentError,
   UserData,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
@@ -28,11 +29,7 @@ import { useUserData } from 'hooks/useUserData';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  CheckoutStep,
-  setCheckoutStep,
-  setIsPaymentProcessing,
-} from 'state/checkout';
+import { setIsPaymentProcessing } from 'state/checkout';
 import { IState } from 'state/reducers';
 import { UI } from '../../../constants';
 import { InputCardNumberWrapper } from '../../inputs/card/InputCardNumberWrapper';
@@ -41,9 +38,12 @@ import { CheckoutPaymentPanel } from '../CheckoutPaymentPanel';
 import { CheckoutTabs } from '../CheckoutTabs';
 
 const CARD_ELEMENT_OPTIONS: StripeCardNumberElementOptions = {
+  classes: {
+    base: 'py-2 w-full',
+  },
   style: {
     base: {
-      fontSize: '0.5rem',
+      fontSize: '16px',
     },
   },
 };
@@ -87,19 +87,11 @@ export function CheckoutStepPayment(props: Props) {
   );
 
   // For when cards are declined, etc
-  const [hasPaymentError, setHasPaymentError] = useState(false);
+  const [error, setError] = useState<TastiestPaymentError | null>(null);
 
   useEffect(() => {
     dlog('CheckoutStepPayment ➡️ isPaymentProcessing:', isPaymentProcessing);
   }, [isPaymentProcessing]);
-
-  // Redirect if user is logged out
-  useEffect(() => {
-    if (isSignedIn === false) {
-      dispatch(setCheckoutStep(CheckoutStep.SIGN_IN));
-      return null;
-    }
-  }, [isSignedIn]);
 
   const onCardExpiryChange = (event: StripeCardExpiryElementChangeEvent) => {
     event;
@@ -121,28 +113,44 @@ export function CheckoutStepPayment(props: Props) {
       return;
     }
 
+    // Set user data, only if it differs from current data
+    if (
+      firstName?.length > 0 ||
+      lastName?.length > 0 ||
+      mobile?.length > 0 ||
+      cardPostcode?.length > 0 ||
+      JSON.stringify(birthday) !== JSON.stringify(userData.details?.birthday)
+    ) {
+      alert('setting user data');
+      setUserData(UserData.DETAILS, {
+        firstName,
+        lastName,
+        birthday,
+        mobile,
+        postalCode: cardPostcode,
+      });
+    }
+
     // Start isLoading
     dispatch(setIsPaymentProcessing(true));
-    setHasPaymentError(false);
-
-    // Set new user data
-    setUserData(UserData.DETAILS, {
-      firstName,
-      lastName,
-      birthday,
-      mobile,
-      postalCode: cardPostcode,
-    });
+    setError(null);
 
     const { paymentMethod, error: paymentMethodError } = await addCard(
       cardHolderName,
       cardPostcode,
     );
 
+    // Error adding card. Either card already exists or validation error
     if (paymentMethodError) {
       dlog('CheckoutStepPayment ➡️ paymentMethodError:', paymentMethodError);
+
       dispatch(setIsPaymentProcessing(false));
-      return { success: false, error: paymentMethodError };
+      setError({
+        code: 'card_error',
+        type: 'tastiest-payment-error',
+        message: 'This card is already in use. Please contact support.',
+      });
+      return;
     }
 
     const { error: updateOrderError } = await updateOrder({
@@ -152,12 +160,26 @@ export function CheckoutStepPayment(props: Props) {
     if (updateOrderError) {
       dlog('CheckoutStepPayment ➡️ updateOrderError:', updateOrderError);
       dispatch(setIsPaymentProcessing(false));
+      setError({
+        code: 'update_order_error',
+        type: 'api_error',
+        message: 'There was an error updating your order.',
+      });
+
       return { success: false, error: updateOrderError };
     }
 
-    const { error } = await pay();
+    const { success, error } = await pay();
+
+    // Uh-oh - a general payment error!
+    // This usually means the card declined.
     if (error) {
-      setHasPaymentError(false);
+      setError({
+        code: 'general_payment_error',
+        type: 'card_error',
+        message:
+          'There was an error processing your payment. Please try using another card.',
+      });
     }
 
     dispatch(setIsPaymentProcessing(false));
@@ -311,7 +333,7 @@ export function CheckoutStepPayment(props: Props) {
         <CheckoutPaymentPanel
           order={order}
           submit={handleSubmit(makePayment)}
-          hasPaymentError={hasPaymentError}
+          error={error}
         />
       </div>
     </div>

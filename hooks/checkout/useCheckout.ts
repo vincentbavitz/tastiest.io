@@ -3,8 +3,15 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js';
-import { StripeCardNumberElementChangeEvent } from '@stripe/stripe-js';
-import { CardBrand, UserData } from '@tastiest-io/tastiest-utils';
+import {
+  PaymentMethod,
+  StripeCardNumberElementChangeEvent,
+} from '@stripe/stripe-js';
+import {
+  CardBrand,
+  TastiestPaymentError,
+  TastiestPaymentErrorCode,
+} from '@tastiest-io/tastiest-utils';
 import 'firebase/firestore'; // REMEMBER to include this for all useFirestore things
 import { useState } from 'react';
 import { useAuth } from '../useAuth';
@@ -23,11 +30,21 @@ export function useCheckout() {
   // Payment input values
   const [cardBrand, setCardBrand] = useState<CardBrand | undefined>(undefined);
 
-  const addCard = async (_cardHolderName: string, postalCode: string) => {
+  const addCard = async (
+    _cardHolderName: string,
+    postalCode: string,
+  ): Promise<{
+    paymentMethod: PaymentMethod | null;
+    error: TastiestPaymentError | null;
+  }> => {
     if (!_cardHolderName?.length) {
       return {
         paymentMethod: null,
-        error: 'Cardholder name must not be empty',
+        error: {
+          code: 'incomplete_cardholder_name',
+          type: 'validation_error',
+          message: 'Cardholder name must not be empty',
+        },
       };
     }
 
@@ -51,7 +68,11 @@ export function useCheckout() {
     if (paymentMethodError) {
       return {
         paymentMethod,
-        error: paymentMethodError,
+        error: {
+          code: paymentMethodError.code as TastiestPaymentErrorCode,
+          type: paymentMethodError.type,
+          message: paymentMethodError.message,
+        },
       };
     }
 
@@ -69,15 +90,14 @@ export function useCheckout() {
       );
 
       if (error && !setupIntent) {
-        return { paymentMethod, error };
-      }
-
-      setUserData(UserData.PAYMENT_METHODS, {
-        pm_1IiqgGHZaOt3USRGunMzIEs5: paymentMethod,
-      });
-
-      if (error && setupIntent) {
-        return { paymentMethod, error: 'Card already saved' };
+        return {
+          paymentMethod,
+          error: {
+            code: error.code as TastiestPaymentErrorCode,
+            type: error.type,
+            message: error.message,
+          },
+        };
       }
     }
 

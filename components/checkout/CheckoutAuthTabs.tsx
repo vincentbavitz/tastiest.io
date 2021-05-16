@@ -10,9 +10,9 @@ import { IState } from '../../state/reducers';
 import { CheckoutTabs, ITab } from './CheckoutTabs';
 
 export function CheckoutAuthTabs() {
-  const {
-    flow: { signInTabSelected: tab },
-  } = useSelector((state: IState) => state.checkout);
+  const { signInTabSelected: tab } = useSelector(
+    (state: IState) => state.checkout,
+  );
 
   const { isDesktop } = useScreenSize();
   const dispatch = useDispatch();

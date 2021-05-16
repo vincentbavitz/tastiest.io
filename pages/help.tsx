@@ -14,7 +14,20 @@ import React, { useState } from 'react';
 import { UI } from '../constants';
 
 export const getServerSideProps = async context => {
-  return { props: {} };
+  // Setting a default subject from query parameters
+  const initialSubject =
+    context?.query?.type ===
+    (SupportRequestType.ORDER && context?.query?.userFacingOrderId)
+      ? `Order Issue (Order #${String(
+          context?.query?.userFacingOrderId ?? '',
+        )})`
+      : '';
+
+  return {
+    props: {
+      initialSubject,
+    },
+  };
 };
 
 interface IHelpOption {
@@ -30,25 +43,28 @@ const helpOptions: IHelpOption[] = [
   { key: SupportRequestType.OTHER, label: 'Something else' },
 ];
 
-const Help = (
-  props: InferGetServerSidePropsType<typeof getServerSideProps>,
-) => {
+const Help = ({
+  initialSubject,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [sent, setHasSent] = useState(false);
 
   return sent ? (
     <HelpSuccess setHasSent={setHasSent} />
   ) : (
-    <HelpForm setHasSent={setHasSent} />
+    <HelpForm initialSubject={initialSubject} setHasSent={setHasSent} />
   );
 };
 
 interface HelpSubProps {
   setHasSent: (value: boolean) => void;
+  initialSubject?: string;
 }
 
-const HelpForm = ({ setHasSent }: HelpSubProps) => {
+const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
   const router = useRouter();
   const { isMobile, isTablet } = useScreenSize();
+
+  dlog('help ➡️ initialSubject:', initialSubject);
 
   // Update user data
   const { user } = useAuth();
@@ -66,7 +82,7 @@ const HelpForm = ({ setHasSent }: HelpSubProps) => {
     SupportRequestType[String(router.query?.type)] ??
     SupportRequestType.GENERAL;
 
-  const [subject, setSubject] = useState('');
+  const [subject, setSubject] = useState(initialSubject);
   const [message, setMessage] = useState('');
   const [supportType, setSupportType] = useState<SupportRequestType>(
     initialSupportType,

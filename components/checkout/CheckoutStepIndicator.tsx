@@ -1,21 +1,16 @@
 import { CheckCircleIcon } from '@tastiest-io/tastiest-icons';
 import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';
-import { useSelector } from 'react-redux';
 import { CheckoutStep } from 'state/checkout';
 import { UI } from '../../constants';
-import { IState } from '../../state/reducers';
 
 interface Props {
   step: CheckoutStep;
 }
 
-export function CheckoutStepIndicator() {
-  const {
-    flow: { step },
-  } = useSelector((state: IState) => state.checkout);
-
+export function CheckoutStepIndicator({ step }: Props) {
   const { isDesktop } = useScreenSize();
+
   return (
     <div
       className="w-full tablet:w-7/12"

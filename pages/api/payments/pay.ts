@@ -225,6 +225,18 @@ export default async function pay(
       data: { order: null },
       error: 'There was an issue with your payment card.',
     });
+
+    analytics.track({
+      event: 'Payment Failure',
+      userId: order.userId,
+      properties: {
+        token,
+        message:
+          'Payment failed due to either insufficient funds or Stripe side security check failed.',
+        stripePaymentError: paymentIntent.last_payment_error,
+        ...order,
+      },
+    });
   } catch (error) {
     response.json({
       success: false,

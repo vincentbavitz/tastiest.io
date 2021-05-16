@@ -28,9 +28,9 @@ export function CheckoutStepAuth(props: Props) {
 }
 
 const CheckoutStepAuthDesktop = ({ order }: Props) => {
-  const {
-    flow: { signInTabSelected: tab },
-  } = useSelector((state: IState) => state.checkout);
+  const { signInTabSelected: tab } = useSelector(
+    (state: IState) => state.checkout,
+  );
 
   const totalPrice = (order?.heads ?? 1) * order?.deal?.pricePerHeadGBP;
 
@@ -75,9 +75,9 @@ const CheckoutStepAuthDesktop = ({ order }: Props) => {
 };
 
 const CheckoutStepAuthMobile = ({ order }: Props) => {
-  const {
-    flow: { signInTabSelected: tab },
-  } = useSelector((state: IState) => state.checkout);
+  const { signInTabSelected: tab } = useSelector(
+    (state: IState) => state.checkout,
+  );
 
   const totalPrice = (order?.heads ?? 1) * order?.deal?.pricePerHeadGBP;
 

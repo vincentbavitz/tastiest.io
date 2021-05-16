@@ -10,13 +10,10 @@ export const checkoutReducer = (
   action: CheckoutAction,
 ): ICheckout => {
   switch (action.type) {
-    case CheckoutActions.SET_CHECKOUT_STEP: {
-      return { ...state, flow: { ...state.flow, step: action.payload } };
-    }
     case CheckoutActions.SET_SIGN_IN_TAB_SELECTED: {
       return {
         ...state,
-        flow: { ...state.flow, signInTabSelected: action.payload },
+        signInTabSelected: action.payload,
       };
     }
     case CheckoutActions.SET_ON_CHECKOUT_PAGE: {

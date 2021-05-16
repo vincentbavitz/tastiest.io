@@ -1,9 +1,15 @@
 import { CloseOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Button, Input } from '@tastiest-io/tastiest-components';
-import { LockIcon } from '@tastiest-io/tastiest-icons';
-import { dlog, IOrder, PAYMENTS } from '@tastiest-io/tastiest-utils';
+import { LockIcon, SupportIcon } from '@tastiest-io/tastiest-icons';
+import {
+  dlog,
+  IOrder,
+  PAYMENTS,
+  TastiestPaymentError,
+} from '@tastiest-io/tastiest-utils';
 import { useOrder } from 'hooks/checkout/useOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -14,20 +20,19 @@ import { CheckoutCard } from './CheckoutCard';
 interface Props {
   order: IOrder;
   submit: () => void;
-  hasPaymentError: boolean;
+  error: TastiestPaymentError | null;
 }
 
 export function CheckoutPaymentPanel(props: Props) {
-  const { submit, hasPaymentError } = props;
+  const { submit, error } = props;
 
   const router = useRouter();
   const { order } = useOrder(props.order?.token, props.order);
   const { isDesktop } = useScreenSize();
 
-  const {
-    flow: { step },
-    isPaymentProcessing,
-  } = useSelector((state: IState) => state.checkout);
+  const { isPaymentProcessing } = useSelector(
+    (state: IState) => state.checkout,
+  );
 
   useEffect(() => {
     dlog('CheckoutPaymentPanel ➡️ isPaymentProcessing:', isPaymentProcessing);
@@ -96,10 +101,27 @@ export function CheckoutPaymentPanel(props: Props) {
       </CheckoutCard>
 
       {/* Payment error display */}
-      {isDesktop && hasPaymentError && (
-        <div className="bg-opacity-50 bg-danger">
-          There was an error processing your payment. Please try using another
-          card.
+      {isDesktop && error?.code === 'general_payment_error' && (
+        <div className="px-4 py-3 mt-4 text-sm border-2 bg-opacity-5 bg-danger border-danger rounded-xl">
+          <h4 className="mb-1 text-lg">Payment Failed</h4>
+          <p>
+            We're havong trouble processing your payment. Please try using
+            another card.
+          </p>
+
+          <div className="flex flex-wrap items-center pt-3 space-x-1">
+            <SupportIcon className="h-5 fill-current stroke-current text-danger" />
+
+            <p>
+              Still having trouble?{' '}
+              <Link
+                href={`/help?type=ORDER&userFacingOrderId=${order.userFacingOrderId}`}
+              >
+                <a className="font-medium hover:underline">Contact support</a>
+              </Link>
+              .
+            </p>
+          </div>
         </div>
       )}
 
