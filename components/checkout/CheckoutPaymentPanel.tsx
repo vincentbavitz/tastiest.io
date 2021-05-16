@@ -14,10 +14,11 @@ import { CheckoutCard } from './CheckoutCard';
 interface Props {
   order: IOrder;
   submit: () => void;
+  hasPaymentError: boolean;
 }
 
 export function CheckoutPaymentPanel(props: Props) {
-  const { submit } = props;
+  const { submit, hasPaymentError } = props;
 
   const router = useRouter();
   const { order } = useOrder(props.order?.token, props.order);
@@ -93,6 +94,14 @@ export function CheckoutPaymentPanel(props: Props) {
           </>
         )}
       </CheckoutCard>
+
+      {/* Payment error display */}
+      {isDesktop && hasPaymentError && (
+        <div className="bg-opacity-50 bg-danger">
+          There was an error processing your payment. Please try using another
+          card.
+        </div>
+      )}
 
       {!isDesktop && (
         <div className="flex flex-col pt-4 mb-10 space-y-3">

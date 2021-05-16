@@ -140,22 +140,22 @@ function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
           {dishName}
         </p>
 
-        <div className="flex items-center mt-1 space-x-2">
+        <div className="flex items-center mt-1 space-x-4">
           {isArticleSaved ? (
             <HeartFilledIcon
               onClick={() => toggleSaveArticle(slug)}
-              className="h-8"
+              className="h-6"
             />
           ) : (
             <HeartIcon
               onClick={() => toggleSaveArticle(slug)}
-              className="h-10 fill-current text-primary"
+              className="h-6 fill-current text-primary"
             />
           )}
 
           <ShareIcon
             onClick={() => setIsDropdownOpen(true)}
-            className="h-10 -mt-1"
+            className="h-6 -mt-1"
           />
         </div>
       </div>

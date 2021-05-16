@@ -6,9 +6,9 @@ interface Props {
   name: string;
   size?: 'small' | 'medium' | 'large';
   label?: string;
-
   control: Control<any>;
   disabled?: boolean;
+  defaultValue?: string;
 }
 
 export function InputMobile(props: Props) {
@@ -18,6 +18,7 @@ export function InputMobile(props: Props) {
     label = 'Mobile',
     control,
     disabled,
+    defaultValue = '',
   } = props;
 
   const {
@@ -25,7 +26,7 @@ export function InputMobile(props: Props) {
     fieldState: { error },
   } = useController({
     name,
-    defaultValue: '',
+    defaultValue,
     control,
     rules: {
       required: { value: true, message: 'Please enter your mobile number' },

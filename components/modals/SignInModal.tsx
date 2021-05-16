@@ -150,7 +150,7 @@ export function SignInModal() {
         type="text"
         className="py-2"
         placeholder="First Name"
-        prefix={<UserIcon className="w-8" />}
+        prefix={<UserIcon className="w-8 fill-current text-primary" />}
         value={signUpName}
         onValueChange={value => setSignUpName(titleCase(value.trim()))}
       ></Input>

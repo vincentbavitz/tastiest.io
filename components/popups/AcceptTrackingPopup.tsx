@@ -26,9 +26,9 @@ export function AcceptTrackingPopup() {
           style={{
             zIndex: UI.Z_INDEX_GDPR_POPUP,
           }}
-          className="fixed bottom-0 flex justify-center w-full"
+          className="fixed bottom-0 flex justify-center w-full pointer-events-none"
         >
-          <div className="flex items-center px-3 py-2 mb-2 text-black bg-white rounded-md shadow-md">
+          <div className="flex items-center px-3 py-2 mb-2 text-black bg-white rounded-md shadow-md pointer-events-auto">
             <p className={clsx('pl-1 pr-1', isMobile && 'text-xs')}>
               By using Tastiest, you agree to our{' '}
               <a href="#" className="underline">

@@ -41,8 +41,10 @@ import { CheckoutPaymentPanel } from '../CheckoutPaymentPanel';
 import { CheckoutTabs } from '../CheckoutTabs';
 
 const CARD_ELEMENT_OPTIONS: StripeCardNumberElementOptions = {
-  classes: {
-    base: 'py-2 w-full',
+  style: {
+    base: {
+      fontSize: '0.5rem',
+    },
   },
 };
 
@@ -84,6 +86,9 @@ export function CheckoutStepPayment(props: Props) {
     initialOrder,
   );
 
+  // For when cards are declined, etc
+  const [hasPaymentError, setHasPaymentError] = useState(false);
+
   useEffect(() => {
     dlog('CheckoutStepPayment ➡️ isPaymentProcessing:', isPaymentProcessing);
   }, [isPaymentProcessing]);
@@ -109,20 +114,22 @@ export function CheckoutStepPayment(props: Props) {
   }: FormData) => {
     // Validate birthday (input itself already does user facing error message)
     if (
-      birthday.day.length !== 2 ||
-      birthday.month.length !== 2 ||
-      birthday.year.length !== 4
+      birthday?.day.length !== 2 ||
+      birthday?.month.length !== 2 ||
+      birthday?.year.length !== 4
     ) {
       return;
     }
 
     // Start isLoading
     dispatch(setIsPaymentProcessing(true));
+    setHasPaymentError(false);
 
     // Set new user data
     setUserData(UserData.DETAILS, {
       firstName,
       lastName,
+      birthday,
       mobile,
       postalCode: cardPostcode,
     });
@@ -148,13 +155,11 @@ export function CheckoutStepPayment(props: Props) {
       return { success: false, error: updateOrderError };
     }
 
-    // Set name if it doesn't exist already
-    await setUserData(UserData.DETAILS, {
-      firstName,
-      lastName,
-    });
+    const { error } = await pay();
+    if (error) {
+      setHasPaymentError(false);
+    }
 
-    const { success, error } = await pay();
     dispatch(setIsPaymentProcessing(false));
   };
 
@@ -223,6 +228,7 @@ export function CheckoutStepPayment(props: Props) {
               size="large"
               control={control}
               disabled={isPaymentProcessing}
+              defaultValue={userData?.details?.mobile}
             />
           </div>
         </div>
@@ -305,6 +311,7 @@ export function CheckoutStepPayment(props: Props) {
         <CheckoutPaymentPanel
           order={order}
           submit={handleSubmit(makePayment)}
+          hasPaymentError={hasPaymentError}
         />
       </div>
     </div>

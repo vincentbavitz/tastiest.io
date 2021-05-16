@@ -1,4 +1,5 @@
 import {
+  dlog,
   FirestoreCollection,
   FunctionsResponse,
   generateUserFacingId,
@@ -217,10 +218,12 @@ export default async function pay(
       return;
     }
 
+    dlog('pay ➡️ paymentIntent:', paymentIntent);
+
     response.json({
       success: false,
       data: { order: null },
-      error: 'Unknown payment error',
+      error: 'There was an issue with your payment card.',
     });
   } catch (error) {
     response.json({

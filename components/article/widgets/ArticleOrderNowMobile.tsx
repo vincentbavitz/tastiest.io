@@ -180,7 +180,7 @@ const OverlayInnerCard = ({ deal }: OverlayInnerCardProps) => {
       >
         <div className="aspect-w-16 aspect-h-9">
           <img
-            src={`${deal?.image?.imageUrl}?w=600`}
+            src={`${deal?.image?.imageUrl}?w=300`}
             className="object-cover"
           />
         </div>
