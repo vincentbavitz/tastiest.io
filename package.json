@@ -47,6 +47,7 @@
     "groq": "^1.149.16",
     "moment": "^2.27.0",
     "next": "^10.0.7",
+    "next-auth": "^3.23.0",
     "next-compose-plugins": "^2.2.0",
     "next-fonts": "^1.4.0",
     "next-images": "^1.4.0",
