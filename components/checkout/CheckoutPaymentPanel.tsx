@@ -110,9 +110,8 @@ export function CheckoutPaymentPanel(props: Props) {
           </p>
 
           <div className="flex flex-wrap items-center pt-3 space-x-1">
-            <SupportIcon className="h-5 fill-current stroke-current text-danger" />
-
             <p>
+              <SupportIcon className="inline h-5 pr-1 fill-current stroke-current text-danger" />
               Still having trouble?{' '}
               <Link
                 href={`/help?type=ORDER&userFacingOrderId=${order.userFacingOrderId}`}

@@ -13,6 +13,14 @@ import { useIntersection, useWindowScroll } from 'react-use';
 import { UI } from '../../../constants';
 
 const useSaveShareGeometry = () => {
+  // Load intersection observer for iOS and IE11
+  if (
+    typeof window !== 'undefined' &&
+    typeof window.IntersectionObserver === 'undefined'
+  ) {
+    import('intersection-observer');
+  }
+
   const { isDesktop } = useScreenSize();
   const { y: scrollY } = useWindowScroll();
 

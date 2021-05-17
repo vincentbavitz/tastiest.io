@@ -45,6 +45,7 @@
     "firestore-pagination-hook": "^1.0.0",
     "global": "^4.4.0",
     "groq": "^1.149.16",
+    "intersection-observer": "^0.12.0",
     "moment": "^2.27.0",
     "next": "^10.0.7",
     "next-auth": "^3.23.0",
