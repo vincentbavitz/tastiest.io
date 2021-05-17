@@ -8,6 +8,12 @@ interface Props {
 }
 
 export function TagRow({ tags, limit, size }: Props) {
+  // Get the smallest tags so that we can fit as any as possible in
+  const smallestTags = tags
+    .sort((a, b) => a.length - b.length)
+    .filter(tag => Boolean(tag))
+    .slice(0, limit ?? 10);
+
   return (
     <div
       style={{
@@ -17,15 +23,11 @@ export function TagRow({ tags, limit, size }: Props) {
       }}
       className="flex flex-wrap space-x-2 overflow-hidden"
     >
-      {tags
-        ?.filter(tag => Boolean(tag))
-        // Maximum of three tags
-        .slice(0, limit ?? 10)
-        .map(tag => (
-          <div key={tag} className="mb-2">
-            <TagBlock tag={tag} size={size} />
-          </div>
-        ))}
+      {smallestTags.map(tag => (
+        <div key={tag} className="mb-2">
+          <TagBlock tag={tag} size={size} />
+        </div>
+      ))}
     </div>
   );
 }

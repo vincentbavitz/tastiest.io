@@ -7,6 +7,7 @@ import useShareArticle, {
   IUseShareArticle,
 } from 'hooks/article/useShareArticle';
 import React from 'react';
+import { useCopyToClipboard } from 'react-use';
 import { InputGroup } from './inputs/InputGroup';
 
 interface IShareDropdownProps extends IUseShareArticle {
@@ -31,6 +32,8 @@ export const ShareDropdown = (props: IShareDropdownProps) => {
     shareToReddit,
     shareToWhatsApp,
   } = useShareArticle({ ...props });
+
+  const [_, copyToClipboard] = useCopyToClipboard();
 
   const items: Array<IShareDropdownItems> = [
     {
@@ -76,7 +79,11 @@ export const ShareDropdown = (props: IShareDropdownProps) => {
                 />
               </div>
 
-              <Button type="text" size="small" color="primary">
+              <Button
+                onClick={() => copyToClipboard(tastiestUrl)}
+                size="small"
+                color="primary"
+              >
                 COPY
               </Button>
             </InputGroup>

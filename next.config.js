@@ -1,5 +1,4 @@
-const withPlugins = require('next-compose-plugins');
-const withFonts = require('next-fonts');
+// const withPlugins = require('next-compose-plugins');
 
 const nextConfig = {
   webpack(config, _options) {
@@ -11,14 +10,18 @@ const nextConfig = {
         ...config.module,
         rules: [...config.module.rules, ...rules],
       },
-      node: {
-        fs: 'empty',
-      },
     };
   },
   experimental: {
     jsconfigPaths: true,
   },
+  future: {
+    webpack5: true,
+  },
+  fallback: {
+    fs: false,
+  },
 };
 
-module.exports = withPlugins([withFonts], nextConfig);
+// module.exports = withPlugins(nextConfig);
+module.exports = nextConfig;

@@ -7,7 +7,7 @@ export function UserAvatar(props: Omit<AvatarProps, 'imageSrc'>) {
   const { user } = useAuth();
   const { userData } = useUserData(user);
 
-  const firstWord = userData?.details?.firstName ?? user?.email;
+  const firstWord = userData?.details?.firstName;
   const initial = firstWord?.[0]?.toUpperCase();
 
   return <Avatar {...props} initial={initial}></Avatar>;

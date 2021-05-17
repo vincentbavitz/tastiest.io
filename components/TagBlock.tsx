@@ -16,7 +16,7 @@ export function TagBlock(props: Props) {
       style={{ width: 'min-content' }}
       className={classNames(
         'flex items-center cursor-pointer rounded whitespace-nowrap border border-white bg-opacity-25 text-primary tracking-wider',
-        size === 'small' && 'h-5 text-xs',
+        size === 'small' && 'h-5 text-xs font-medium',
         size === 'medium' && 'h-5 text-sm',
         size === 'medium' && 'h-6 text-base',
         'hover:bg-white duration-150',

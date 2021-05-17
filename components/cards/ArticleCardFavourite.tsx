@@ -93,11 +93,13 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
             )}
           >
             {isFavourite ? (
-              <HeartFilledIcon className={!isDesktop ? 'h-5' : 'h-5'} />
+              <HeartFilledIcon
+                className={clsx('pr-1', !isDesktop ? 'h-5' : 'h-5')}
+              />
             ) : (
               <HeartIcon
                 className={clsx(
-                  'text-primary fill-current',
+                  'text-primary fill-current pr-1',
                   !isDesktop ? 'h-5' : 'h-5',
                 )}
               />
@@ -105,21 +107,23 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
             {isDesktop && (isFavourite ? 'Unsave' : 'Save')}
           </div>
 
-          <div className="flex items-center text-sm cursor-pointer">
-            <ShareIcon
-              onClick={() => setIsShareDropdownOpen(!isShareDropdownOpen)}
-              className={!isDesktop ? 'h-5' : 'h-5'}
-            />
+          <div
+            onClick={() => setIsShareDropdownOpen(!isShareDropdownOpen)}
+            className="flex items-center text-sm cursor-pointer"
+          >
+            <ShareIcon className={clsx('pr-1', !isDesktop ? 'h-5' : 'h-5')} />
+
+            {isDesktop && 'Share'}
+
             <ShareDropdown
               title={props.title}
               city={props.city}
               cuisine={props.cuisine}
               slug={props.slug}
-              // isOpen={isShareDropdownOpen}
-              isOpen={true}
+              isOpen={isShareDropdownOpen}
               setIsOpen={setIsShareDropdownOpen}
+              offsetY={20}
             />
-            {isDesktop && 'Share'}
           </div>
         </div>
       </div>

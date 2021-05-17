@@ -103,7 +103,7 @@ export default function Cuisine(
     <>
       <div>
         <Head>
-          <title>{generateTitle(cuisineName + ' Cuisine')}</title>
+          <title>{generateTitle(cuisineName)}</title>
         </Head>
 
         <div className="flex flex-col w-full space-y-10">
@@ -203,31 +203,29 @@ const CuisineHero = ({ cuisine }: { cuisine: ICuisine }) => {
   const isLargeDesktop = isHuge;
   const isRegularDesktop = isDesktop && !isHuge;
 
-  if (!cuisine?.pageSvgDesktop || !cuisine?.pageSvgMobile) {
-    return null;
-  }
+  const desktopIllustrationLocation = `/assets/cuisine-pages/${cuisine.name
+    .replace(' ', '-')
+    .toLowerCase()}-hero-desktop.svg`;
+
+  const mobileIllustrationLocation = `/assets/cuisine-pages/${cuisine.name
+    .replace(' ', '-')
+    .toLowerCase()}-hero-mobile.svg`;
 
   return (
     <div>
       {isLargeDesktop && (
         <Contained maxWidth={933}>
-          <cuisine.pageSvgDesktop className="w-full pt-6" />
+          <img src={desktopIllustrationLocation} className="w-full pt-6" />
         </Contained>
       )}
 
       {isRegularDesktop && (
-        <cuisine.pageSvgDesktop
-          style={{
-            width: isDesktop ? '100%' : isTablet ? '150%' : '150%',
-            transform: `translateX(${
-              isDesktop ? '0' : isTablet ? '-15%' : '-25%'
-            })`,
-          }}
-        />
+        <img src={desktopIllustrationLocation} className="w-full" />
       )}
 
       {isTablet && (
-        <cuisine.pageSvgDesktop
+        <img
+          src={desktopIllustrationLocation}
           style={{
             width: '150%',
             transform: `translateX(-15%)`,
@@ -236,12 +234,15 @@ const CuisineHero = ({ cuisine }: { cuisine: ICuisine }) => {
       )}
 
       {isMobile && (
-        <cuisine.pageSvgMobile
+        <div
           style={{
-            width: '150%',
+            width: '133%',
             transform: `translateX(-15%)`,
           }}
-        />
+          className="relative mt-10"
+        >
+          <img src={mobileIllustrationLocation} className="w-full" />
+        </div>
       )}
     </div>
   );
