@@ -6,7 +6,6 @@ import { UI } from '../../../constants';
 import ArticleContained from '../ArticleContained';
 import { ArticleFeatureVideoWidget } from '../widgets/ArticleFeatureVideoWidget';
 import ArticleOrderNowMobile from '../widgets/ArticleOrderNowMobile';
-import { ArticleSaveShareWidget } from '../widgets/ArticleSaveShareWidget';
 
 const EATING_CHARACTER_SIZE_REM = 22;
 
@@ -24,7 +23,7 @@ export function ArticleSectionAbstract(props: IPost) {
         <CharacterEatingDesktop titleDivider={titleDivider} />
       )}
 
-      <ArticleSaveShareWidget {...props} />
+      {/* <ArticleSaveShareWidget {...props} /> */}
 
       {isDesktop ? (
         <ArticleContained>
