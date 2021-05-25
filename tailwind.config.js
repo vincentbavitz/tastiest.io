@@ -1,4 +1,5 @@
 module.exports = {
+  mode: 'jit',
   theme: {
     screens: {
       // Constants taken from UI constants.

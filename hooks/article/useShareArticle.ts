@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { generateURL } from 'utils/routing';
+import { generateSlugURL } from 'utils/routing';
 import { METADATA } from '../../constants';
 
 export interface IUseShareArticle {
@@ -7,10 +7,20 @@ export interface IUseShareArticle {
   city: string;
   slug: string;
   cuisine: string;
+  restaurant: string;
 }
 
-const useShareArticle = ({ title, city, slug, cuisine }: IUseShareArticle) => {
-  const { as: path } = useMemo(() => generateURL({ city, slug, cuisine }), []);
+const useShareArticle = ({
+  title,
+  city,
+  slug,
+  cuisine,
+  restaurant,
+}: IUseShareArticle) => {
+  const { as: path } = useMemo(
+    () => generateSlugURL({ city, slug, cuisine, restaurant }),
+    [],
+  );
 
   // Expand to the format: https://tastiest.io/path/to/format
   const tastiestUrl =

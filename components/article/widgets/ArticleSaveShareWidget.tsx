@@ -108,6 +108,7 @@ export function ArticleSaveShareWidget(props: IPost) {
           title={props.title}
           city={props.city}
           cuisine={props.cuisine}
+          restaurant={props.restaurant.uriName}
           slug={props.slug}
           isOpen={isDropdownOpen}
           setIsOpen={setIsDropdownOpen}
@@ -173,6 +174,7 @@ function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
           title={title}
           city={city}
           cuisine={cuisine}
+          restaurant={props.restaurant.uriName}
           slug={slug}
           isOpen={isDropdownOpen}
           setIsOpen={setIsDropdownOpen}

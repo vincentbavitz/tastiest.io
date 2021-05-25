@@ -12,7 +12,7 @@ import router from 'next/dist/client/router';
 import Link from 'next/link';
 import React, { SyntheticEvent, useState } from 'react';
 import { useMeasure } from 'react-use';
-import { generateURL } from '../../utils/routing';
+import { generateSlugURL } from 'utils/routing';
 
 interface Props extends Partial<IPost> {
   isFavourite: boolean;
@@ -28,6 +28,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
     slug,
     cuisine,
     isFavourite,
+    restaurant,
     onToggleFavourite,
   } = props;
   const { isTablet, isDesktop, isHuge } = useScreenSize();
@@ -37,7 +38,12 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
 
   const [isShareDropdownOpen, setIsShareDropdownOpen] = useState(false);
 
-  const { href, as } = generateURL({ city, slug, cuisine });
+  const { href, as } = generateSlugURL({
+    city,
+    slug,
+    cuisine,
+    restaurant: restaurant.uriName,
+  });
 
   const handleClick = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -119,6 +125,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
               title={props.title}
               city={props.city}
               cuisine={props.cuisine}
+              restaurant={props.restaurant.uriName}
               slug={props.slug}
               isOpen={isShareDropdownOpen}
               setIsOpen={setIsShareDropdownOpen}

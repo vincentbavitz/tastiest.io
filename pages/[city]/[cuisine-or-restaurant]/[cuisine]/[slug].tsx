@@ -5,11 +5,16 @@ import RecommendedPosts from 'components/sections/RecommendedPosts';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
-import { Article } from '../../../components/article/Article';
-import { generateTitle } from '../../../utils/metadata';
+import { Article } from '../../../../components/article/Article';
+import { generateTitle } from '../../../../utils/metadata';
 
 interface IPath {
-  params: { slug: string; city: string; cuisine: string };
+  params: {
+    slug: string;
+    city: string;
+    cuisine: string;
+    ['cuisine-or-restaurant']: string;
+  };
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -31,13 +36,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
     page++;
   }
 
-  dlog('[slug] ➡️ item:', posts?.[0]);
-
   const paths: IPath[] = posts.map(item => ({
     params: {
+      slug: item.slug,
       city: item.city.toLowerCase(),
       cuisine: item.cuisine.toLowerCase(),
-      slug: item.slug,
+      'cuisine-or-restaurant': item.restaurant.uriName.toLowerCase(),
     },
   }));
 

@@ -5,6 +5,7 @@ import {
   IRecentSearch,
   UserData,
 } from '@tastiest-io/tastiest-utils';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IState } from '../state/reducers';
 import { setSearchResultItems } from '../state/search';
@@ -19,10 +20,10 @@ export function useSearch() {
   const query = searchState.searchQuery ?? '';
   const dispatch = useDispatch();
 
-  const cms = new CmsApi();
+  const cms = React.useMemo(() => new CmsApi(), [process]);
 
   const search = async (query: string): Promise<IPost[]> => {
-    const { posts } = await cms.searchPosts(query);
+    const { posts } = await cms.searchPosts(query.trim());
 
     const results = posts?.filter(post =>
       // Ensure all values are present in each post

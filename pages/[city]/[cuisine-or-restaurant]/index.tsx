@@ -1,16 +1,16 @@
 import {
   CmsApi,
   CuisineSymbol,
-  dlog,
   ICuisine,
   IPost,
+  IRestaurant,
   titleCase,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { ArticleCard } from 'components/cards/ArticleCard';
 import { SuggestRestaurant } from 'components/SuggestRestaurant';
 import { useScreenSize } from 'hooks/useScreenSize';
-import { GetStaticPaths, InferGetStaticPropsType } from 'next';
+import { GetStaticPaths } from 'next';
 import Head from 'next/head';
 import { LookingIllustration } from 'public/assets/illustrations';
 import React from 'react';
@@ -20,76 +20,184 @@ import { CUISINES } from '../../../constants';
 import { generateTitle } from '../../../utils/metadata';
 
 interface IPath {
-  params: { city: string; cuisine: string };
+  params: { city: string; ['cuisine-or-restaurant']: string };
 }
 
+interface RestaurautPageProps {
+  restaurant: IRestaurant;
+  posts: IPost[];
+}
+
+interface CuisinePageProps {
+  cuisineSymbol: CuisineSymbol;
+  posts: IPost[];
+}
+
+interface Props {
+  restaurantPage?: RestaurautPageProps;
+  cuisinePage?: CuisinePageProps;
+}
+
+const getPageTypeFromContext = (context): 'cuisinePage' | 'restaurantPage' => {
+  const param = context.params?.['cuisine-or-restaurant'];
+
+  // Is it a valid cuisine?
+  if (
+    Object.values(CUISINES).some(
+      cuisine => cuisine.name.toLowerCase() === param,
+    )
+  ) {
+    return 'cuisinePage';
+  }
+
+  return 'restaurantPage';
+};
+
+/**
+ * Cuisine Pages     /london/cuisine
+ * Restaurant Pages  /london/restaurant
+ * Offer Pages       /london/restaurant/cuisine/slug
+ * Redirects         /london/restaurant/cuisine  -->  /london/restaurant
+ */
 export const getStaticPaths: GetStaticPaths = async () => {
   const cms = new CmsApi();
-  let posts: IPost[] = [];
-  let page = 1;
-  let foundAllPosts = false;
 
-  // Contentful only allows 100 at a time
-  while (!foundAllPosts) {
-    const { posts: _posts } = await cms.getPosts(100, page);
+  let restaurants: IRestaurant[] = [];
+  let foundAllRestaurants = false;
+  let restaurantsPage = 1;
 
-    if (_posts.length === 0) {
-      foundAllPosts = true;
+  // Get all restaurants
+  while (!foundAllRestaurants) {
+    const { restaurants: _restaurants } = await cms.getRestaurants(
+      100,
+      restaurantsPage,
+    );
+
+    if (_restaurants.length === 0) {
+      foundAllRestaurants = true;
       continue;
     }
 
-    posts = [...posts, ..._posts];
-    page++;
+    restaurants = [...restaurants, ..._restaurants];
+    restaurantsPage++;
   }
 
-  const paths: IPath[] = posts.map(item => ({
+  const cuisinePaths: IPath[] = Object.values(CUISINES).map(item => ({
     params: {
-      city: item.city.toLowerCase(),
-      cuisine: item.cuisine.toLowerCase(),
+      // TODO -> RMEOVE HARDCODED CITY
+      city: 'london',
+      'cuisine-or-restaurant': item.name.replace(' ', '-').toLowerCase(),
     },
   }));
 
-  dlog('index ➡️ paths:', paths);
+  const restaurantPaths: IPath[] = restaurants.map(restaurant => ({
+    params: {
+      city: restaurant.city?.toLowerCase() ?? 'london',
+      ['cuisine-or-restaurant']: restaurant.uriName,
+    },
+  }));
 
-  return { paths, fallback: 'blocking' };
+  return {
+    paths: [...cuisinePaths, ...restaurantPaths],
+    fallback: 'blocking',
+  };
 };
 
-export const getStaticProps = async ({ params }) => {
-  const cuisineSymbol = String(params?.cuisine).toUpperCase() as CuisineSymbol;
+const getStaticCuisineProps = async ({ params }) => {
+  const cuisineSymbol = String(
+    params?.['cuisine-or-restaurant'],
+  ).toUpperCase() as CuisineSymbol;
   const cuisineExists = Boolean(CUISINES[cuisineSymbol]);
 
   // Redirect to 404 for nonexistent page
   if (!cuisineExists) {
     return {
-      props: { cuisineSymbol, posts: [] as IPost[] },
       notFound: true,
     };
   }
 
-  const cms = new CmsApi();
-  const { posts } = await cms.getPostsOfCuisine(cuisineSymbol);
-
-  dlog(`Building cuisine page: %c${params.cuisine}`, 'color: purple;');
-
-  if (posts?.length > 0) {
-    return {
-      props: {
-        posts,
-        cuisineSymbol,
-      },
-      revalidate: 360,
-    };
-  }
+  const cmsApi = new CmsApi();
+  const { posts = [] } = await cmsApi.getPostsOfCuisine(cuisineSymbol);
 
   return {
-    props: { cuisineSymbol, posts: [] as IPost[] },
-    notFound: false,
+    props: {
+      cuisinePage: {
+        cuisineSymbol,
+        posts,
+      },
+    },
   };
 };
 
-export default function Cuisine(
-  props: InferGetStaticPropsType<typeof getStaticProps>,
-) {
+const getStaticRestaurantProps = async ({ params }) => {
+  const cmsApi = new CmsApi();
+  const restaurant = await cmsApi.getRestaurantFromUriName(
+    params.city,
+    params?.['cuisine-or-restaurant'],
+  );
+
+  // Verify that the param is a restaurant
+  if (!restaurant) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const { posts = [] } = await cmsApi.getPostsOfRestaurant(restaurant.uriName);
+
+  return {
+    props: {
+      restaurantPage: {
+        restaurant,
+        posts,
+      },
+    },
+  };
+};
+
+export const getStaticProps = async ({ params }) => {
+  const cuisineSymbol = String(
+    params?.['cuisine-or-restaurant'],
+  ).toUpperCase() as CuisineSymbol;
+  const isCuisine = Boolean(CUISINES[cuisineSymbol]);
+
+  if (isCuisine) {
+    return getStaticCuisineProps({ params });
+  }
+
+  // Attempt to find props for the Restaurant page instead
+  return getStaticRestaurantProps({ params });
+};
+
+export default function PageWrapper(props: Props) {
+  return props.cuisinePage ? (
+    <CuisinePage {...props.cuisinePage} />
+  ) : (
+    <RestaurantPage {...props.restaurantPage} />
+  );
+}
+
+function RestaurantPage(props: RestaurautPageProps) {
+  const { posts } = props;
+
+  const cards = posts.map(post => (
+    <ArticleCard key={post.id} compact {...post} />
+  ));
+
+  return (
+    <div>
+      {cards.length && (
+        <div className="pt-10 pb-20">
+          <CardGrid horizontalScroll rowLimit={2}>
+            {cards}
+          </CardGrid>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CuisinePage(props: CuisinePageProps) {
   const { posts = [], cuisineSymbol } = props;
   const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
   const cuisine = CUISINES[cuisineSymbol];
@@ -127,18 +235,7 @@ export default function Cuisine(
           {cards.length ? (
             <div className="pt-10 pb-20">
               <CardGrid horizontalScroll rowLimit={2}>
-                {[
-                  ...cards,
-                  ...cards,
-                  ...cards,
-                  ...cards,
-                  ...cards,
-                  ...cards,
-                  ...cards,
-                  ...cards,
-                  ...cards,
-                  ...cards,
-                ]}
+                {cards}
               </CardGrid>
             </div>
           ) : (

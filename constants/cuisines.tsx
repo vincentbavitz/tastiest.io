@@ -38,6 +38,12 @@ const CUISINES = {
     svg: ChineseIcon,
     popularity: 3333,
   },
+  [CuisineSymbol.BRAZILIAN]: {
+    name: 'Brazilian',
+    href: '/brazilian',
+    svg: IndianIcon,
+    popularity: 33,
+  },
   [CuisineSymbol.INDIAN]: {
     name: 'Indian',
     href: '/indian',
