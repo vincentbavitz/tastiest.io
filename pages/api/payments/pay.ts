@@ -2,6 +2,7 @@ import {
   dlog,
   FirestoreCollection,
   FunctionsResponse,
+  generateConfirmationCode,
   generateUserFacingId,
   IBooking,
   IOrder,
@@ -14,7 +15,7 @@ import moment from 'moment';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
-import { generateConfirmationCode, transformPriceForStripe } from 'utils/order';
+import { transformPriceForStripe } from 'utils/order';
 
 export type PayParams = {
   token: string;

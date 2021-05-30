@@ -157,7 +157,9 @@ const OverlayInner = (props: OverlayInnerProps) => {
         </div>
 
         <div className="flex items-end justify-between text-sm">
-          <span>Booking for {heads} people</span>
+          <span>
+            Booking for {heads} {heads === 1 ? 'person' : 'people'}
+          </span>
           <div className="flex items-center h-full tracking-wide">
             £<p>{totalPrice}</p>
           </div>

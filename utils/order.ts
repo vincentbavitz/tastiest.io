@@ -37,16 +37,3 @@ export const validatePromo = async (
 };
 
 export const transformPriceForStripe = (price: number) => price * 100;
-
-/**
- * Confirmation code required for user to show restaurant
- */
-export const generateConfirmationCode = () => {
-  // Random number between 1 and 9
-  const randomDigit = () => Math.floor(Math.random() * 10);
-
-  return Array(4)
-    .fill(null)
-    .map(_ => String(randomDigit()))
-    .join('');
-};
