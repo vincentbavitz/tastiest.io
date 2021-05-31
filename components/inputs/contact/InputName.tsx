@@ -58,6 +58,7 @@ export function InputName(props: Props) {
       error={error?.message}
       disabled={disabled}
       placeholder={placeholder}
+      color="secondary"
       {...fieldProps}
     />
   );

@@ -101,7 +101,7 @@ const CheckoutStepAuthMobile = ({ order }: Props) => {
           <div>
             <div className="flex items-center justify-between">
               <p>
-                <span className="font-medium">Qty:</span> {order.heads}
+                <span className="font-medium">Qty:</span> {order?.heads}
               </p>
 
               <p className="pl-4 text-xl font-medium">£{totalPrice}</p>

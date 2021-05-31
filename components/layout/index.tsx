@@ -1,6 +1,5 @@
 import PageLoader from 'components/PageLoader';
 import React, { ReactNode } from 'react';
-import { Footer } from '../Footer';
 import { Header } from '../header/Header';
 
 interface Props {
@@ -32,9 +31,7 @@ export default function Layout({ children }: Props) {
           </div>
         </div>
 
-        <div>
-          <Footer />
-        </div>
+        <div>{/* <Footer /> */}</div>
       </div>
 
       {/* <AcceptTrackingPopup /> */}

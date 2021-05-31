@@ -18,11 +18,7 @@ export function Header() {
 
   return (
     <div className="flex flex-col w-full">
-      {onCheckoutPage ? (
-        <CheckoutHeader isDesktop={isDesktop} />
-      ) : (
-        <div>{!isDesktop ? <MobileHeader /> : <DesktopHeader />}</div>
-      )}
+      <CheckoutHeader isDesktop={isDesktop} />
     </div>
   );
 }

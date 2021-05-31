@@ -20,7 +20,15 @@ export function useSearch() {
   const query = searchState.searchQuery ?? '';
   const dispatch = useDispatch();
 
-  const cms = React.useMemo(() => new CmsApi(), [process]);
+  const cms = React.useMemo(
+    () =>
+      new CmsApi(
+        process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID,
+        process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN,
+        'production',
+      ),
+    [process],
+  );
 
   const search = async (query: string): Promise<IPost[]> => {
     const { posts } = await cms.searchPosts(query.trim());

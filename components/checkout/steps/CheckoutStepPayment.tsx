@@ -121,7 +121,6 @@ export function CheckoutStepPayment(props: Props) {
       cardPostcode?.length > 0 ||
       JSON.stringify(birthday) !== JSON.stringify(userData.details?.birthday)
     ) {
-      alert('setting user data');
       setUserData(UserData.DETAILS, {
         firstName,
         lastName,
@@ -150,6 +149,7 @@ export function CheckoutStepPayment(props: Props) {
         type: 'tastiest-payment-error',
         message: 'This card is already in use. Please contact support.',
       });
+
       return;
     }
 
@@ -166,6 +166,7 @@ export function CheckoutStepPayment(props: Props) {
         message: 'There was an error updating your order.',
       });
 
+      dlog('CheckoutStepPayment ➡️ updateOrderError:', updateOrderError);
       return { success: false, error: updateOrderError };
     }
 
@@ -181,6 +182,8 @@ export function CheckoutStepPayment(props: Props) {
           'There was an error processing your payment. Please try using another card.',
       });
     }
+
+    dlog('CheckoutStepPayment ➡️ error:', error);
 
     dispatch(setIsPaymentProcessing(false));
   };

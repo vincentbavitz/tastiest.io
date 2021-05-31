@@ -29,8 +29,8 @@ export function CheckoutCard(props: Props) {
           {title}
         </div>
 
-        <div className="flex flex-row border-2 rounded-b-xl tablet:flex-col border-secondary">
-          <div className="relative w-40 p-3 bg-opacity-75 tablet:w-auto tablet:aspect-w-16 tablet:aspect-h-9 tablet:p-0">
+        <div className="flex flex-row overflow-hidden border-2 rounded-b-xl tablet:flex-col border-secondary">
+          <div className="relative w-64 h-40 bg-opacity-75 sm:border-l-2 sm:border-r-2 sm:w-full border-secondary">
             <img
               className="object-cover w-full h-full"
               src={`${order?.deal?.image?.imageUrl}?w=300`}

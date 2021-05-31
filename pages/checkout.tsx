@@ -5,22 +5,26 @@ import {
   FirestoreCollection,
   IOrder,
   PAYMENTS,
-  UserDataApi,
+  postFetch,
 } from '@tastiest-io/tastiest-utils';
 import { useOrder } from 'hooks/checkout/useOrder';
 import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import nookies from 'nookies';
 import React, { useEffect, useState } from 'react';
 import { CheckoutStep } from 'state/checkout';
+import { LocalEndpoint } from 'types/api';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { CheckoutStepIndicator } from '../components/checkout/CheckoutStepIndicator';
 import { CheckoutStepAuth } from '../components/checkout/steps/CheckoutStepAuth';
 import { CheckoutStepPayment } from '../components/checkout/steps/CheckoutStepPayment';
 import { Contained } from '../components/Contained';
 import { UI } from '../constants';
+import {
+  CreateNewOrderParams,
+  CreateNewOrderReturn,
+} from './api/payments/createNewOrder';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -36,12 +40,49 @@ interface Props {
 
 export const getServerSideProps: GetServerSideProps = async context => {
   // Get user ID from cookie.
-  const cookieToken = nookies.get(context)?.token;
-  const userDataApi = new UserDataApi(firebaseAdmin);
-  const { userId } = await userDataApi.initFromCookieToken(cookieToken);
+  // const cookieToken = nookies.get(context)?.token;
+  // const userDataApi = new UserDataApi(firebaseAdmin);
+  // const { userId } = await userDataApi.initFromCookieToken(cookieToken);
 
-  // Verify order is legit; else redirect and wipe order data.
-  const token = String(context.query.token ?? '') ?? null;
+  const heads = parseInt(String(context.query.heads));
+  const dealId = String(context.query.sku);
+  const fromSlug = decodeURI(String(context.query.fromSlug));
+
+  dlog('checkout ➡️ fromSlug:', fromSlug);
+  dlog('checkout ➡️ fromSlug:', fromSlug);
+  dlog('checkout ➡️ dealId:', dealId);
+
+  if (isNaN(heads) || heads < 1 || !dealId?.length) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  // Construct the order from Shopify query parameters...
+  const urlPrefix =
+    process.env.NODE_ENV === 'production'
+      ? 'https://tastiest.io'
+      : 'http://localhost:3000';
+
+  const {
+    data: { token },
+    error,
+  } = await postFetch<CreateNewOrderParams, CreateNewOrderReturn>(
+    urlPrefix + LocalEndpoint.CREATE_NEW_ORDER,
+    {
+      userId: null,
+      dealId,
+      heads,
+      fromSlug,
+      promoCode: null,
+      timestamp: Date.now(),
+    },
+  );
+
+  dlog('checkout ➡️ error:', error);
 
   // If no order exists in URI, redirect to home
   if (!token) {
@@ -85,7 +126,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
     return {
       redirect: {
         // TODO -> Destination should be /city/cuisine/slug
-        destination: '',
+        destination: '/',
         permanent: false,
       },
     };
@@ -102,7 +143,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
 
   return {
-    props: { userId, order },
+    props: { userId: null, order },
   };
 };
 
@@ -111,13 +152,13 @@ export const getServerSideProps: GetServerSideProps = async context => {
  */
 function Checkout(props: Props) {
   const { isDesktop } = useScreenSize();
-  const { order } = useOrder(props.order.token, props.order);
+  const { order } = useOrder(props.order?.token, props.order);
+
+  dlog('checkout ➡️ order:', order);
 
   // User sign in management needs to be very explicit here
   const { user, isSignedIn } = useAuth();
   const [userId, setUserId] = useState<string | null>(props.userId);
-
-  dlog('checkout ➡️ user:', user);
 
   // Manage user signed-in-status very carefully such that
   // a logged out user never sees the payment step for even a millisecond.
@@ -139,7 +180,7 @@ function Checkout(props: Props) {
     : CheckoutStep.SIGN_IN;
 
   return (
-    <div>
+    <div className="pb-20">
       <Head>
         <title>Checkout - Tastiest</title>
       </Head>

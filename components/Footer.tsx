@@ -223,7 +223,7 @@ const SocialsBlock = () => (
 
 const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
   <>
-    <p>
+    {/* <p>
       <a className="cursor-pointer hover:underline">How It Works</a>
     </p>
     <p>
@@ -231,7 +231,7 @@ const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
     </p>
     <p>
       <a className="cursor-pointer hover:underline">Press Kit</a>
-    </p>
+    </p> */}
     <p>
       <a
         href="restaurants.tastiest.io"
@@ -247,21 +247,27 @@ const ImprovementPrompts = () => (
   <>
     <div className="leading-tight whitespace-nowrap">
       <p className="">Don't See Your Favourite Restaurant?</p>
-      <Link href={`/help?type=${SupportRequestType.GENERAL}`}>
+      <Link
+        href={`https://offers.tastiest.io/help?type=${SupportRequestType.GENERAL}`}
+      >
         <a className="text-xs underline">Help our sales team sign them</a>
       </Link>
     </div>
 
     <div className="leading-tight">
       <p className="">Don't See A Key Feature?</p>
-      <Link href={`/help?type=${SupportRequestType.FEATURE_REQUEST}`}>
+      <Link
+        href={`https://offers.tastiest.io/help?type=${SupportRequestType.FEATURE_REQUEST}`}
+      >
         <a className="text-xs underline">Help our product team add it</a>
       </Link>
     </div>
 
     <div className="leading-tight">
       <p className="">Found a bug?</p>
-      <Link href={`/help?type=${SupportRequestType.BUG}`}>
+      <Link
+        href={`https://offers.tastiest.io/help?type=${SupportRequestType.BUG}`}
+      >
         <a className="text-xs underline">Help our engineering team fix it</a>
       </Link>
     </div>

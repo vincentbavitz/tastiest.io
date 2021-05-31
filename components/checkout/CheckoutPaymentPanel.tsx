@@ -7,6 +7,8 @@ import {
   PAYMENTS,
   TastiestPaymentError,
 } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
+import { Modal } from 'components/Modal';
 import { useOrder } from 'hooks/checkout/useOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
@@ -43,6 +45,8 @@ export function CheckoutPaymentPanel(props: Props) {
     router.push('/');
     return null;
   }
+
+  dlog('CheckoutPaymentPanel ➡️ error:', error);
 
   return (
     <div
@@ -101,27 +105,8 @@ export function CheckoutPaymentPanel(props: Props) {
       </CheckoutCard>
 
       {/* Payment error display */}
-      {isDesktop && error?.code === 'general_payment_error' && (
-        <div className="px-4 py-3 mt-4 text-sm border-2 bg-opacity-5 bg-danger border-danger rounded-xl">
-          <h4 className="mb-1 text-lg">Payment Failed</h4>
-          <p>
-            We're havong trouble processing your payment. Please try using
-            another card.
-          </p>
-
-          <div className="flex flex-wrap items-center pt-3 space-x-1">
-            <p>
-              <SupportIcon className="inline h-5 pr-1 fill-current stroke-current text-danger" />
-              Still having trouble?{' '}
-              <Link
-                href={`/help?type=ORDER&userFacingOrderId=${order.userFacingOrderId}`}
-              >
-                <a className="font-medium hover:underline">Contact support</a>
-              </Link>
-              .
-            </p>
-          </div>
-        </div>
+      {error?.code === 'general_payment_error' && (
+        <PaymentErrorMessage order={order} />
       )}
 
       {!isDesktop && (
@@ -246,5 +231,67 @@ const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
         </div>
       )}
     </div>
+  );
+};
+
+interface PaymentErrorMessageProps {
+  order: IOrder;
+}
+
+const PaymentErrorMessage = ({ order }: PaymentErrorMessageProps) => {
+  const { isDesktop } = useScreenSize();
+  const [isModalOpen, setIsModalOpen] = useState(true);
+
+  const StillHavingTrouble = ({ center }: { center?: boolean }) => (
+    <div
+      className={clsx(
+        'flex flex-wrap items-center pt-3 space-x-1',
+        center && 'justify-center',
+      )}
+    >
+      <p>
+        <SupportIcon className="inline h-5 pr-1 fill-current stroke-current text-danger" />
+        Still having trouble?{' '}
+        <Link
+          href={`https://offers.tastiest.io/help?type=ORDER&userFacingOrderId=${order.userFacingOrderId}`}
+        >
+          <a className="font-medium hover:underline">Contact support</a>
+        </Link>
+        .
+      </p>
+    </div>
+  );
+
+  const errorTitle = 'Payment Failed';
+  const errorMessage =
+    "We're havong trouble processing your payment. Please try using another card.";
+
+  return isDesktop ? (
+    <div
+      className={clsx(
+        'px-4 py-3 mt-4 text-sm bg-opacity-5 bg-danger',
+        'border-danger rounded-xl border-2',
+      )}
+    >
+      <h4 className="mb-1 text-lg">{errorTitle}</h4>
+      <p>{errorMessage}</p>
+
+      <StillHavingTrouble />
+    </div>
+  ) : (
+    <Modal modalId="" isOpen={isModalOpen} close={() => setIsModalOpen(false)}>
+      <div className="relative flex flex-col items-center text-center">
+        <h4 className="mb-1 -mt-8 text-xl font-medium text-danger">
+          {errorTitle}
+        </h4>
+
+        <div className="w-8/12 py-3">
+          <p className="">{errorMessage}</p>
+
+          <div className="w-full h-0 px-6 pt-6 border-b border-secondary"></div>
+          <StillHavingTrouble center />
+        </div>
+      </div>
+    </Modal>
   );
 };

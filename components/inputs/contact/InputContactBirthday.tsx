@@ -30,6 +30,7 @@ const InputCustom = (props: Props) => {
       size="large"
       label="Birthday"
       inputMode="decimal"
+      color="primary"
       inputClassName="font-mono w-full"
       {...props}
       onBlur={validate}

@@ -36,4 +36,5 @@ export const validatePromo = async (
   return true;
 };
 
-export const transformPriceForStripe = (price: number) => price * 100;
+export const transformPriceForStripe = (price: number) =>
+  Math.round(price * 100);
