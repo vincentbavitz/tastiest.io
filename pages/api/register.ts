@@ -31,9 +31,14 @@ export default async function register(
   }
 
   const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
-  const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY, {
-    apiVersion: '2020-08-27',
-  });
+  const stripe = new Stripe(
+    process.env.NODE_ENV === 'production'
+      ? process.env.STRIPE_LIVE_SECRET_KEY
+      : process.env.STRIPE_TEST_SECRET_KEY,
+    {
+      apiVersion: '2020-08-27',
+    },
+  );
 
   const role = UserRole.EATER;
 

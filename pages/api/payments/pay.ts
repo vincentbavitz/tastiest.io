@@ -128,9 +128,14 @@ export default async function pay(
       return;
     }
 
-    const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY, {
-      apiVersion: '2020-08-27',
-    });
+    const stripe = new Stripe(
+      process.env.NODE_ENV === 'production'
+        ? process.env.STRIPE_LIVE_SECRET_KEY
+        : process.env.STRIPE_TEST_SECRET_KEY,
+      {
+        apiVersion: '2020-08-27',
+      },
+    );
 
     // The `confirm` parameter attempts to pay immediately & automatically
     const paymentIntent = await stripe.paymentIntents.create({
