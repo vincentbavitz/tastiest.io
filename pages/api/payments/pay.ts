@@ -7,6 +7,9 @@ import {
   IBooking,
   IOrder,
   PAYMENTS,
+  RestaurantData,
+  RestaurantDataApi,
+  transformPriceForStripe,
   UserData,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
@@ -15,7 +18,6 @@ import moment from 'moment';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
-import { transformPriceForStripe } from 'utils/order';
 
 export type PayParams = {
   token: string;
@@ -137,14 +139,40 @@ export default async function pay(
       },
     );
 
+    const RESTAURANT_PAYOUT_PC = 0.75;
+    const totalPaymentValue = order.price.final;
+    const restaurantPaymentValue = totalPaymentValue * RESTAURANT_PAYOUT_PC;
+
+    const restaurantDataApi = new RestaurantDataApi(
+      firebaseAdmin,
+      order.deal.restaurant.id,
+    );
+
+    const {
+      stripeConnectedAccount,
+    } = await restaurantDataApi.getRestaurantField(RestaurantData.FINANCIAL);
+
+    dlog('pay ➡️ stripeConnectedAccount:', stripeConnectedAccount);
+
     // The `confirm` parameter attempts to pay immediately & automatically
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: transformPriceForStripe(order.price.final),
+      amount: transformPriceForStripe(totalPaymentValue),
       currency: 'gbp',
       customer: customerId,
       payment_method: order.paymentMethod,
       off_session: true,
       confirm: true,
+
+      // Automatically transfer to Connected Account
+      transfer_data: {
+        amount: transformPriceForStripe(restaurantPaymentValue),
+        destination: stripeConnectedAccount.id,
+      },
+    });
+
+    dlog('info', {
+      amount: transformPriceForStripe(restaurantPaymentValue),
+      destination: stripeConnectedAccount.id,
     });
 
     // Payment success
@@ -223,27 +251,9 @@ export default async function pay(
       });
       return;
     }
-
-    dlog('pay ➡️ paymentIntent:', paymentIntent);
-
-    response.json({
-      success: false,
-      data: { order: null },
-      error: 'There was an issue with your payment card.',
-    });
-
-    analytics.track({
-      event: 'Payment Failure',
-      userId: order.userId,
-      properties: {
-        token,
-        message:
-          'Payment failed due to either insufficient funds or Stripe side security check failed.',
-        stripePaymentError: paymentIntent.last_payment_error,
-        ...order,
-      },
-    });
   } catch (error) {
+    dlog('error', error);
+
     response.json({
       success: false,
       data: { order: null },

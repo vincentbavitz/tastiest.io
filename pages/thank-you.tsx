@@ -65,10 +65,10 @@ export const getServerSideProps = async context => {
   //
   //
 
-  const { firstName } = await userDataApi.getUserData(UserData.DETAILS);
+  const userDetails = await userDataApi.getUserData(UserData.DETAILS);
 
   return {
-    props: { firstName, order },
+    props: { firstName: userDetails?.firstName, order },
   };
 };
 
@@ -104,7 +104,7 @@ function ThankYou(
               style={{ maxWidth: isDesktop ? '30rem' : '50em' }}
               className="text-2xl font-somatic text-primary"
             >
-              Thanks {firstName}! You're going to love it
+              Thanks{firstName ? ` ${firstName}` : ''}! You're going to love it
             </h2>
           </div>
         </div>

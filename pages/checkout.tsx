@@ -51,7 +51,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const fromSlug = decodeURI(String(context.query.fromSlug));
 
   dlog('checkout ➡️ fromSlug:', fromSlug);
-  dlog('checkout ➡️ fromSlug:', fromSlug);
   dlog('checkout ➡️ dealId:', dealId);
 
   if (isNaN(heads) || heads < 1 || !dealId?.length) {

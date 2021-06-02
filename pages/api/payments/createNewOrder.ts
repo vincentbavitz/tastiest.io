@@ -35,9 +35,7 @@ export default async function createNewOrder(
   request: NextApiRequest,
   response: NextApiResponse<FunctionsResponse<CreateNewOrderReturn>>,
 ) {
-  dlog('createNewOrder ➡️ request:', request);
-
-  // Only allow POST
+  // Only asllow POST
   if (request?.method !== 'POST') {
     dlog('Failed to create new order');
     response.status(405).end();
@@ -132,11 +130,7 @@ const validateOrderRequest = async (orderRequest: IOrderRequest) => {
   // Get deal and restaurant from Contentful
   // If deal does not exist on Contentful, there was a clientside mismatch.
   // This could be an innocent error, or the user is sending nefarious requests.
-  const cms = new CmsApi(
-    process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID,
-    process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN,
-    'production',
-  );
+  const cms = new CmsApi();
 
   const deal = await cms.getDeal(orderRequest.dealId ?? '');
 
@@ -156,11 +150,7 @@ const validateOrderRequest = async (orderRequest: IOrderRequest) => {
 
 const buildOrder = async (orderRequest: IOrderRequest) => {
   // Get deal
-  const cms = new CmsApi(
-    process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID,
-    process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN,
-    'production',
-  );
+  const cms = new CmsApi();
   const deal = await cms.getDeal(orderRequest.dealId ?? '');
 
   // Validate deal and slug, validate that deal is still available
