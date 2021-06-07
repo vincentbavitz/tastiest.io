@@ -14,7 +14,7 @@ export function InputEmail(props: Props) {
       size="large"
       type="email"
       placeholder="Email address"
-      prefix={<EmailIcon className="w-8 h-4" />}
+      prefix={<EmailIcon className="w-6 fill-current text-primary" />}
       maxLength={50}
       value={value}
       onValueChange={onValueChange}

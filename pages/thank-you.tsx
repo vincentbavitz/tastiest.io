@@ -113,7 +113,11 @@ function ThankYou(
           title="Book via the Restaurant's Phone line"
           button={
             <a href={`tel:${order.deal.restaurant?.publicPhoneNumber}`}>
-              <Button size="large" round prefix={<PhoneIcon className="h-8" />}>
+              <Button
+                size="large"
+                round
+                prefix={<PhoneIcon className="h-8 text-white fill-current" />}
+              >
                 {isTouchDevice
                   ? 'Phone Booking'
                   : order.deal.restaurant?.publicPhoneNumber ?? 'Phone Booking'}

@@ -66,7 +66,7 @@ const CheckoutStepAuthDesktop = ({ order }: Props) => {
               {order?.deal?.tagline} x{order?.heads}
             </p>
 
-            <p className="pl-4 text-xl font-medium">£{totalPrice}</p>
+            <p className="pl-4 text-xl font-medium">£{totalPrice.toFixed(2)}</p>
           </div>
         </CheckoutCard>
       </div>
@@ -104,7 +104,9 @@ const CheckoutStepAuthMobile = ({ order }: Props) => {
                 <span className="font-medium">Qty:</span> {order?.heads}
               </p>
 
-              <p className="pl-4 text-xl font-medium">£{totalPrice}</p>
+              <p className="pl-4 text-xl font-medium">
+                £{totalPrice.toFixed(2)}
+              </p>
             </div>
           </div>
         </CheckoutCard>

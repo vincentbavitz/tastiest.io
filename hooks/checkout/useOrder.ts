@@ -1,4 +1,4 @@
-import { IOrder, postFetch } from '@tastiest-io/tastiest-utils';
+import { dlog, IOrder, postFetch } from '@tastiest-io/tastiest-utils';
 import { useAuth } from 'hooks/useAuth';
 import { useRouter } from 'next/router';
 import { PayParams, PayReturn } from 'pages/api/payments/pay';
@@ -58,14 +58,20 @@ export function useOrder(token: string, initialOrder?: IOrder) {
     return { success, error };
   };
 
-  const pay = async () => {
+  const pay = async (shopifyProductId: string) => {
+    dlog('useOrder ➡️ paying:');
+    dlog('useOrder ➡️ shopifyProductId:', shopifyProductId);
+
     const {
       data: { order: _order },
       success,
       error,
     } = await postFetch<PayParams, PayReturn>(LocalEndpoint.PAY, {
       token,
+      shopifyProductId,
     });
+
+    dlog('useOrder ➡️ order:', order);
 
     // Payment success
     if (success) {

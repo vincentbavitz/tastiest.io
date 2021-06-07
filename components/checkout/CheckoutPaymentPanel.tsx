@@ -36,6 +36,10 @@ export function CheckoutPaymentPanel(props: Props) {
     (state: IState) => state.checkout,
   );
 
+  const totalPrice = (
+    Math.floor(order.heads) * order.deal.pricePerHeadGBP
+  ).toFixed(2);
+
   useEffect(() => {
     dlog('CheckoutPaymentPanel ➡️ isPaymentProcessing:', isPaymentProcessing);
   }, [isPaymentProcessing]);
@@ -70,9 +74,7 @@ export function CheckoutPaymentPanel(props: Props) {
           <p>
             Booking for {order.heads} {order.heads === 1 ? 'person' : 'people'}
           </p>
-          <p className="font-medium">
-            £{Math.floor(order.heads) * order.deal.pricePerHeadGBP}
-          </p>
+          <p className="font-medium">£{totalPrice}</p>
         </div>
 
         {isDesktop && (
@@ -83,7 +85,7 @@ export function CheckoutPaymentPanel(props: Props) {
 
             <div className="flex items-center justify-between mb-1 space-x-2 font-medium">
               <p>Total</p>
-              <p>£{order.price.final}</p>
+              <p>£{order.price.final.toFixed(2)}</p>
             </div>
 
             <Button

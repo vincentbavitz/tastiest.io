@@ -23,10 +23,13 @@ export function InputPassword(props: Props) {
       size="large"
       type={show ? 'text' : 'password'}
       placeholder={placeholder}
-      prefix={<LockIcon className="h-6 ml-2 mr-2" />}
+      prefix={<LockIcon className="w-6 -mt-1 fill-current text-primary" />}
       suffix={
         toggleShow ? (
-          <a onClick={() => toggleShow()} className="text-gray-500">
+          <a
+            onClick={() => toggleShow()}
+            className="text-gray-500 cursor-pointer"
+          >
             {show ? 'Hide' : 'Show'}
           </a>
         ) : null

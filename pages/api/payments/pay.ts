@@ -21,11 +21,15 @@ import { firebaseAdmin } from 'utils/firebaseAdmin';
 
 export type PayParams = {
   token: string;
+  shopifyProductId: string;
 };
 
 export type PayReturn = {
   order: IOrder | null;
 };
+
+const shopifyDomain = 'tastiestio.myshopify.com';
+const shopifyStorefrontAccessToken = 'bcb518fdae51ece62ff871661a5ca08a';
 
 const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
 
@@ -58,7 +62,7 @@ export default async function pay(
     body = request.body;
   }
 
-  const { token = null } = body;
+  const { token = null, shopifyProductId = null } = body;
 
   // Order token is required
   if (!token || !token.length) {
@@ -166,8 +170,20 @@ export default async function pay(
       // Automatically transfer to Connected Account
       transfer_data: {
         amount: transformPriceForStripe(restaurantPaymentValue),
-        destination: stripeConnectedAccount.id,
+        destination:
+          process.env.NODE_ENV === 'production'
+            ? stripeConnectedAccount.id
+            : process.env.STRIPE_TEST_CONNECTED_ACCOUNT_ID,
       },
+      // Temporarily used for Shopify and Automate.io
+      description: JSON.stringify({
+        title: order.deal.name,
+        quantity: order.heads,
+        unitPrice: order.deal.pricePerHeadGBP,
+        restaurantPhone: order.deal.restaurant.publicPhoneNumber,
+        restaurantAddress: order.deal.restaurant.location.address,
+        shopifyProductId,
+      }),
     });
 
     dlog('info', {
@@ -235,6 +251,9 @@ export default async function pay(
           ...booking,
         },
       });
+
+      // Send event to Shopify using Automate.io
+      dlog('pay ➡️ shopifyProductId:', shopifyProductId);
 
       // Update identify with new payment and user-data
       analytics.identify({

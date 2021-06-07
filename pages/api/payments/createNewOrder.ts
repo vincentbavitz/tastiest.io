@@ -131,7 +131,6 @@ const validateOrderRequest = async (orderRequest: IOrderRequest) => {
   // If deal does not exist on Contentful, there was a clientside mismatch.
   // This could be an innocent error, or the user is sending nefarious requests.
   const cms = new CmsApi();
-
   const deal = await cms.getDeal(orderRequest.dealId ?? '');
 
   if (!deal) {

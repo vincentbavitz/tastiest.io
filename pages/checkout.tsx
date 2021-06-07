@@ -38,6 +38,7 @@ interface Props {
   order: IOrder;
   userId: string | null;
   step: CheckoutStep;
+  shopifyProductId: string;
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {
@@ -49,6 +50,8 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const heads = parseInt(String(context.query.heads));
   const dealId = String(context.query.sku);
   const fromSlug = decodeURI(String(context.query.fromSlug));
+
+  const shopifyProductId = String(context.query.productId);
 
   dlog('checkout ➡️ fromSlug:', fromSlug);
   dlog('checkout ➡️ dealId:', dealId);
@@ -144,7 +147,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
 
   return {
-    props: { userId: null, order },
+    props: { userId: null, order, shopifyProductId },
   };
 };
 
@@ -152,6 +155,8 @@ export const getServerSideProps: GetServerSideProps = async context => {
  *  and feeds dynamic values into children
  */
 function Checkout(props: Props) {
+  const { shopifyProductId } = props;
+
   const { isDesktop } = useScreenSize();
   const { order } = useOrder(props.order?.token, props.order);
 
@@ -180,6 +185,8 @@ function Checkout(props: Props) {
     ? CheckoutStep.PAYMENT
     : CheckoutStep.SIGN_IN;
 
+  dlog('checkout ➡️ shopifyProductId:', shopifyProductId);
+
   return (
     <div className="pb-20">
       <Head>
@@ -187,9 +194,19 @@ function Checkout(props: Props) {
       </Head>
       <Elements stripe={stripePromise}>
         {isDesktop ? (
-          <CheckoutDesktop order={order} step={step} userId={userId} />
+          <CheckoutDesktop
+            order={order}
+            step={step}
+            userId={userId}
+            shopifyProductId={shopifyProductId}
+          />
         ) : (
-          <CheckoutMobile order={order} step={step} userId={userId} />
+          <CheckoutMobile
+            order={order}
+            step={step}
+            userId={userId}
+            shopifyProductId={shopifyProductId}
+          />
         )}
       </Elements>
     </div>
@@ -197,7 +214,7 @@ function Checkout(props: Props) {
 }
 
 function CheckoutDesktop(props: Props) {
-  const { userId, order, step } = props;
+  const { userId, order, step, shopifyProductId } = props;
 
   return (
     <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
@@ -206,7 +223,11 @@ function CheckoutDesktop(props: Props) {
 
         {step === CheckoutStep.SIGN_IN && <CheckoutStepAuth order={order} />}
         {step === CheckoutStep.PAYMENT && (
-          <CheckoutStepPayment userId={userId} order={order} />
+          <CheckoutStepPayment
+            userId={userId}
+            order={order}
+            shopifyProductId={shopifyProductId}
+          />
         )}
       </div>
     </Contained>
@@ -214,7 +235,7 @@ function CheckoutDesktop(props: Props) {
 }
 
 function CheckoutMobile(props: Props) {
-  const { userId, order, step } = props;
+  const { userId, order, step, shopifyProductId } = props;
 
   return (
     <Contained>
@@ -223,7 +244,11 @@ function CheckoutMobile(props: Props) {
 
         {step === CheckoutStep.SIGN_IN && <CheckoutStepAuth order={order} />}
         {step === CheckoutStep.PAYMENT && (
-          <CheckoutStepPayment userId={userId} order={order} />
+          <CheckoutStepPayment
+            userId={userId}
+            order={order}
+            shopifyProductId={shopifyProductId}
+          />
         )}
       </div>
     </Contained>

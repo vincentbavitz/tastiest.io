@@ -2,6 +2,7 @@ import { Button } from '@tastiest-io/tastiest-components';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useToggle } from 'react-use';
 import {
   CheckoutSignInTabSelected,
   setSignInTabSelected,
@@ -18,6 +19,7 @@ export function CheckoutSignIn() {
 
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
+  const [showPassword, toggleShowPassword] = useToggle(false);
   const cleanupInputValue = (value: string | number) =>
     String(value).toLowerCase().trim();
 
@@ -30,6 +32,8 @@ export function CheckoutSignIn() {
         onValueChange={value => setSignInEmail(cleanupInputValue(value))}
       />
       <InputPassword
+        show={showPassword}
+        toggleShow={toggleShowPassword}
         value={signInPassword}
         onValueChange={value => setSignInPassword(cleanupInputValue(value))}
       />

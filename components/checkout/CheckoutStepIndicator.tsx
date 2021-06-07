@@ -40,7 +40,7 @@ function CheckCircle({ label, complete }: CheckCircleProps) {
   return (
     <div className="z-10 flex flex-col items-center">
       {complete ? (
-        <CheckCircleIcon className="h-8 bg-white" />
+        <CheckCircleIcon className="w-8 bg-white fill-current text-primary" />
       ) : (
         <div className="w-8 h-8 bg-white border-2 border-gray-400 rounded-full"></div>
       )}
@@ -69,14 +69,22 @@ function ProgressBar({ step }: Props) {
     <>
       <div
         style={{
-          left: '10px',
-          right: '10px',
+          left: '1.1rem',
+          right: '1.25rem',
+          height: '2.15rem',
         }}
         className="absolute top-0 flex items-center justify-start h-10 overflow-hidden"
       >
         <div className="w-full h-0 duration-300 border-b-2 border-gray-400"></div>
       </div>
-      <div className="absolute top-0 flex items-center justify-start w-full h-10 mx-1 overflow-hidden">
+      <div
+        style={{
+          left: '1.1rem',
+          right: '1.5rem',
+          height: '2.15rem',
+        }}
+        className="absolute top-0 flex items-center justify-start mx-1 overflow-hidden"
+      >
         <div
           style={{ transform }}
           className="w-full h-0 duration-300 border-b-2 border-primary"

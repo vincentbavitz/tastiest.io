@@ -51,6 +51,7 @@ const CARD_ELEMENT_OPTIONS: StripeCardNumberElementOptions = {
 interface Props {
   userId: string;
   order: IOrder;
+  shopifyProductId: string;
 }
 
 type FormData = {
@@ -62,7 +63,7 @@ type FormData = {
 };
 
 export function CheckoutStepPayment(props: Props) {
-  const { order: initialOrder, userId } = props;
+  const { order: initialOrder, shopifyProductId } = props;
 
   const { user, isSignedIn } = useAuth();
   const { userData, setUserData } = useUserData(user);
@@ -170,7 +171,7 @@ export function CheckoutStepPayment(props: Props) {
       return { success: false, error: updateOrderError };
     }
 
-    const { success, error } = await pay();
+    const { success, error } = await pay(shopifyProductId);
 
     // Uh-oh - a general payment error!
     // This usually means the card declined.
