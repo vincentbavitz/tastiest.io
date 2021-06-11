@@ -34,16 +34,24 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
 
   const requestUTMs = {
-    // context:
+    utm_source: context.query.utm_source ?? null,
+    utm_medium: context.query.utm_medium ?? null,
+    utm_campaign: context.query.utm_campaign ?? null,
+    utm_term: context.query.utm_term ?? null,
+    utm_content: context.query.utm_content ?? null,
   };
 
+  const utmSuffix = Object.entries(requestUTMs)
+    .filter(([_, value]) => Boolean(value))
+    .map(([key, value]) => (value ? `${key}=${value}` : null));
+
   // Offer redirection
-  const destination = offerRedirects[String(context.query.offer)];
-  if (context.query.offer?.length && destination) {
+  const redirectDestination = offerRedirects[String(context.query.offer)];
+  if (context.query.offer?.length && redirectDestination) {
     return {
       props: {},
       redirect: {
-        destination,
+        destination: `${redirectDestination}?${utmSuffix}`,
       },
     };
   }
