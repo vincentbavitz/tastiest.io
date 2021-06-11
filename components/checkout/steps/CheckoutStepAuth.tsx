@@ -112,12 +112,7 @@ const CheckoutStepAuthMobile = ({ order }: Props) => {
         </CheckoutCard>
       )}
 
-      <div
-        style={{
-          minWidth: `${UI.CHECKOUT_SPLIT_WIDTH_PX}px`,
-        }}
-        className="flex flex-col pb-24 space-y-4"
-      >
+      <div className="flex flex-col pb-24 space-y-4">
         <CheckoutAuthTabs />
 
         {tab === CheckoutSignInTabSelected.NEW_USER && <CheckoutSignUp />}

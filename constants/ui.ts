@@ -26,7 +26,7 @@ const UI = {
     OFFER_WIDGET_FLOAT_GAP_PX: 33,
   },
 
-  CHECKOUT_SPLIT_WIDTH_PX: 360,
+  CHECKOUT_SPLIT_WIDTH_PX: 1,
 };
 
 export default UI;

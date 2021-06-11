@@ -252,7 +252,7 @@ export function SuggestRestaurant() {
               <div className="w-full tablet:w-24">
                 <Button
                   wide
-                  className="tracking-widest "
+                  className="tracking-wide"
                   onClick={handleSubmit(submit)}
                 >
                   {isSubmitting ? (

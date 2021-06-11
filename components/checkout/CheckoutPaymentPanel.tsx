@@ -64,10 +64,18 @@ export function CheckoutPaymentPanel(props: Props) {
       <CheckoutCard title="Order Summary" order={order}>
         <div>
           <div className="flex justify-between text-sm">
-            <p className="font-medium">{order?.deal.restaurant.name}</p>
+            <div>
+              <p className="text-base font-medium">
+                {order?.deal?.restaurant?.name}
+                <br />
+                <p className="text-sm font-normal leading-tight text-gray-700">
+                  {order?.deal?.tagline}
+                </p>
+              </p>
+            </div>
+
             <p className="font-medium">£{order?.deal?.pricePerHeadGBP}</p>
           </div>
-          <p className="text-sm">{order?.deal?.tagline}</p>
         </div>
 
         <div className="flex items-center justify-between text-sm">

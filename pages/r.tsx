@@ -33,6 +33,10 @@ export const getServerSideProps: GetServerSideProps = async context => {
     };
   }
 
+  const requestUTMs = {
+    // context:
+  };
+
   // Offer redirection
   const destination = offerRedirects[String(context.query.offer)];
   if (context.query.offer?.length && destination) {

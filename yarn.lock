@@ -2568,10 +2568,10 @@
   dependencies:
     mini-svg-data-uri "^1.2.3"
 
-"@tastiest-io/tastiest-components@^0.40.0":
-  version "0.40.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.40.0/ec84e9f7737924f4526d3910ab268bfe63128a9918753e9c1c927243a92acf44#f0db8b08b30bbe6f889e54878ced78c4a28f1a9b"
-  integrity sha512-5gNhb1IoxinWrGPq5ToCJY/zG0dzuMdz6rzq7ensgEtMhyxCwO3e6ScKc0qZr6fm+WZ57QfjfPf36Chm38zbig==
+"@tastiest-io/tastiest-components@^0.41.0":
+  version "0.41.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.41.0/2267b51e214ebcd95b14926bb4d590906b355f67f8d009aad909322cab3b8688#33ad3a966dd9c449299bd5d13a606b35bcd45899"
+  integrity sha512-JTWK9e2PVRzrV+W+R7MMeTM4fU0A5TwfQYo2UYes9IfHmqV9pA5ov5N/dkchq9lEQZjqX3K17RYl83OmF0m3dQ==
   dependencies:
     "@storybook/addon-postcss" "^2.0.0"
     "@tailwindcss/aspect-ratio" "^0.2.0"

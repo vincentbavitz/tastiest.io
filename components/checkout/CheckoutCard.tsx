@@ -30,21 +30,25 @@ export function CheckoutCard(props: Props) {
           {title}
         </div>
 
-        <div className={clsx('flex flex-row overflow-hidden tablet:flex-col')}>
+        <div
+          className={clsx(
+            'flex overflow-hidden flex-col mobile:flex-row tablet:flex-col border-2 border-secondary tablet:border-0 rounded-b-xl tablet:rounded-b-none',
+          )}
+        >
           <div
             className={clsx(
-              'relative h-40 bg-opacity-75',
-              isDesktop ? 'w-full' : 'w-64',
+              'relative bg-opacity-75 overflow-hidden',
+              'tablet:w-full mobile:w-56 h-40 mobile:h-auto',
               isDesktop && 'border-l-2 border-r-2 border-secondary pl-px',
             )}
           >
             <img
-              className="absolute inset-0 object-cover"
+              className="absolute inset-0 object-cover w-full h-full"
               src={`${order?.deal?.image?.imageUrl}?w=300`}
             />
           </div>
 
-          <div className="flex flex-col flex-grow px-3 pt-3 pb-4 space-y-3 tablet:border-b-2 tablet:border-l-2 tablet:border-r-2 border-secondary rounded-b-xl">
+          <div className="flex flex-col justify-between flex-grow px-3 pt-3 pb-4 space-y-3 tablet:border-b-2 tablet:border-l-2 tablet:border-r-2 border-secondary rounded-b-xl">
             {children}
           </div>
         </div>
