@@ -209,39 +209,7 @@ function TermsAndConditions() {
           Content, as well as send newsletters and other communications to you.
           In order to send emails to you, we need to know a little bit about
           you. Take a look at our data collection and processing practices in
-          our&nbsp;
-        </span>
-        <span
-          style={{
-            fontSize: '10.5pt',
-            fontFamily: 'Arial',
-            color: '#000000',
-            backgroundColor: '#ffff00',
-            fontWeight: 400,
-            fontStyle: 'normal',
-            fontVariant: 'normal',
-            textDecoration: 'none',
-            verticalAlign: 'baseline',
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          Privacy Policy for
-        </span>
-        <span
-          style={{
-            fontSize: '10.5pt',
-            fontFamily: 'Arial',
-            color: '#000000',
-            backgroundColor: 'transparent',
-            fontWeight: 400,
-            fontStyle: 'normal',
-            fontVariant: 'normal',
-            textDecoration: 'none',
-            verticalAlign: 'baseline',
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          &nbsp;details.
+          our <a href="/privacy">Privacy Policy</a> for details.
         </span>
       </p>
       <p
@@ -2502,55 +2470,8 @@ function TermsAndConditions() {
             whiteSpace: 'pre-wrap',
           }}
         >
-          8.1. Please see our&nbsp;
-        </span>
-        <span
-          style={{
-            fontSize: '11pt',
-            fontFamily: 'Arial',
-            color: '#000000',
-            backgroundColor: '#ffff00',
-            fontWeight: 400,
-            fontStyle: 'normal',
-            fontVariant: 'normal',
-            textDecoration: 'none',
-            verticalAlign: 'baseline',
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          Privacy Policy
-        </span>
-        <span
-          style={{
-            fontSize: '11pt',
-            fontFamily: 'Arial',
-            color: '#000000',
-            backgroundColor: 'transparent',
-            fontWeight: 400,
-            fontStyle: 'normal',
-            fontVariant: 'normal',
-            textDecoration: 'none',
-            verticalAlign: 'baseline',
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          &nbsp;and Cookies Policy
-        </span>
-        <span
-          style={{
-            fontSize: '10.5pt',
-            fontFamily: 'Arial',
-            color: '#000000',
-            backgroundColor: 'transparent',
-            fontWeight: 400,
-            fontStyle: 'normal',
-            fontVariant: 'normal',
-            textDecoration: 'none',
-            verticalAlign: 'baseline',
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          &nbsp;which form part of this Agreement.
+          8.1. Please see our <a href="/privacy">Privacy Policy</a> which form
+          part of this Agreement.
         </span>
       </p>
       <p
@@ -2612,39 +2533,8 @@ function TermsAndConditions() {
           party advertising company, which may, on our behalf, place or
           recognise a unique "cookie" on your browser. If you would like more
           information about this practice and to know your choices about not
-          having this information used by any company, see our&nbsp;
-        </span>
-        <span
-          style={{
-            fontSize: '11pt',
-            fontFamily: 'Arial',
-            color: '#000000',
-            backgroundColor: '#ffff00',
-            fontWeight: 400,
-            fontStyle: 'normal',
-            fontVariant: 'normal',
-            textDecoration: 'none',
-            verticalAlign: 'baseline',
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          Cookies Policy and Privacy Policy
-        </span>
-        <span
-          style={{
-            fontSize: '10.5pt',
-            fontFamily: 'Arial',
-            color: '#000000',
-            backgroundColor: 'transparent',
-            fontWeight: 400,
-            fontStyle: 'normal',
-            fontVariant: 'normal',
-            textDecoration: 'none',
-            verticalAlign: 'baseline',
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          .
+          having this information used by any company, see our{' '}
+          <a href="/privacy">Privacy Policy</a>.
         </span>
       </p>
       <p
