@@ -24,12 +24,7 @@ const InputCustom = (props: Props) => (
 export function InputDate(props: Props) {
   const handleOnChange = ({ value }: NumberFormatValues) => {
     dlog('value', value);
-
-    const date = stringToDate(
-      value,
-      props.minYear ?? '1900',
-      props.maxYear ?? '2099',
-    );
+    const date = stringToDate(value);
 
     props.onDateChange(date);
   };
@@ -38,7 +33,7 @@ export function InputDate(props: Props) {
     <NumberFormat
       placeholder="DD/MM/YYYY"
       mask={['M', 'M', 'D', 'D', 'Y', 'Y', 'Y', 'Y']}
-      format={value => dateFormat(value, props?.minYear, props?.maxYear)}
+      format={value => dateFormat(value)}
       customInput={InputCustom}
       value={dateToString(props.date)}
       onValueChange={handleOnChange}

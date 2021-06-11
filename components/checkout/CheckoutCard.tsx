@@ -1,4 +1,5 @@
 import { IOrder } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { ReactNode } from 'react';
 
@@ -10,7 +11,7 @@ interface Props {
 
 export function CheckoutCard(props: Props) {
   const { title, order, children } = props;
-  const { isMobile } = useScreenSize();
+  const { isDesktop } = useScreenSize();
 
   if (!order) return null;
 
@@ -29,10 +30,16 @@ export function CheckoutCard(props: Props) {
           {title}
         </div>
 
-        <div className="flex flex-row overflow-hidden border-2 rounded-b-xl tablet:flex-col border-secondary">
-          <div className="relative w-64 h-40 bg-opacity-75 sm:w-full sm:border-l-2 sm:border-r-2 border-secondary">
+        <div className={clsx('flex flex-row overflow-hidden tablet:flex-col')}>
+          <div
+            className={clsx(
+              'relative h-40 bg-opacity-75',
+              isDesktop ? 'w-full' : 'w-64',
+              isDesktop && 'border-l-2 border-r-2 border-secondary pl-px',
+            )}
+          >
             <img
-              className="object-cover w-full h-full -mt-px -ml-px"
+              className="absolute inset-0 object-cover"
               src={`${order?.deal?.image?.imageUrl}?w=300`}
             />
           </div>
