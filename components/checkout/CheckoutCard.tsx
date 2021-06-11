@@ -38,7 +38,8 @@ export function CheckoutCard(props: Props) {
           <div
             className={clsx(
               'relative bg-opacity-75 overflow-hidden',
-              'tablet:w-full mobile:w-56 h-40 mobile:h-auto',
+              'tablet:w-full mobile:w-56',
+              isDesktop ? 'h-36' : 'h-40 mobile:h-auto',
               isDesktop && 'border-l-2 border-r-2 border-secondary pl-px',
             )}
           >

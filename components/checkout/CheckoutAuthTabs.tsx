@@ -39,9 +39,15 @@ export function CheckoutAuthTabs() {
       {tab !== CheckoutSignInTabSelected.NEW_USER && (
         <Button
           wide
+          type={
+            tab === CheckoutSignInTabSelected.HAS_ACCOUNT ? 'text' : 'solid'
+          }
           size="large"
           color={
-            tab === CheckoutSignInTabSelected.NONE ? 'primary' : 'secondary'
+            tab === CheckoutSignInTabSelected.NONE ||
+            tab === CheckoutSignInTabSelected.HAS_ACCOUNT
+              ? 'primary'
+              : 'secondary'
           }
           off={tab === CheckoutSignInTabSelected.HAS_ACCOUNT}
           onClick={() =>
@@ -57,10 +63,14 @@ export function CheckoutAuthTabs() {
       {tab !== CheckoutSignInTabSelected.HAS_ACCOUNT && (
         <Button
           wide
+          type={tab === CheckoutSignInTabSelected.NEW_USER ? 'text' : 'solid'}
           size="large"
           off={tab === CheckoutSignInTabSelected.NEW_USER}
           color={
-            tab === CheckoutSignInTabSelected.NONE ? 'primary' : 'secondary'
+            tab === CheckoutSignInTabSelected.NONE ||
+            tab === CheckoutSignInTabSelected.NEW_USER
+              ? 'primary'
+              : 'secondary'
           }
           onClick={() =>
             dispatch(setSignInTabSelected(CheckoutSignInTabSelected.NEW_USER))
