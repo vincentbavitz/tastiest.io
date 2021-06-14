@@ -1,5 +1,4 @@
 import {
-  dlog,
   FirestoreCollection,
   FunctionsResponse,
   generateConfirmationCode,
@@ -74,51 +73,81 @@ export default async function pay(
     return;
   }
 
+  // Fetch the order from Firestore using orderToken
+  const snapshot = await firebaseAdmin
+    .firestore()
+    .collection(FirestoreCollection.ORDERS)
+    .where('token', '==', token)
+    .limit(1)
+    .get();
+
+  let order: IOrder;
+  snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
+
+  // Is the order already paid or expired?
+  const isOrderExpired =
+    order?.createdAt + PAYMENTS.ORDER_EXPIRY_MS < Date.now();
+  if (order.paidAt || isOrderExpired) {
+    const _error = 'Order already paid or is expired';
+
+    // Payment expired or already paid
+    analytics.track({
+      event: 'Payment Error',
+      userId: order.userId,
+      properties: {
+        token,
+        ...order,
+        error: _error,
+      },
+    });
+
+    response.json({
+      success: false,
+      data: { order: null },
+      error: _error,
+    });
+    return;
+  }
+
+  // Does order contain userId?
+  if (!order?.userId) {
+    response.json({
+      success: false,
+      data: { order: null },
+      error: 'No user ID given',
+    });
+    return;
+  }
+
+  const userDataApi = new UserDataApi(firebaseAdmin, order?.userId);
+  const details = await userDataApi.getUserData(UserData.DETAILS);
+  const eaterName = `${details.firstName} ${details.lastName}`;
+
+  // Payment method exists?
+  if (!order?.paymentMethod || !order?.paymentMethod.length) {
+    const _error = 'No payment method ID given';
+
+    response.json({
+      success: false,
+      data: { order: null },
+      error: _error,
+    });
+
+    // Payment failure
+    analytics.track({
+      event: 'Payment Error',
+      userId: order.userId,
+      properties: {
+        token,
+        firstName: details.firstName,
+        ...order,
+        error: _error,
+      },
+    });
+    return;
+  }
+
   try {
-    // Fetch the order from Firestore using orderToken
-    const snapshot = await firebaseAdmin
-      .firestore()
-      .collection(FirestoreCollection.ORDERS)
-      .where('token', '==', token)
-      .limit(1)
-      .get();
-
-    let order: IOrder;
-    snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
-
-    // Is the order already paid or expired?
-    const isOrderExpired =
-      order?.createdAt + PAYMENTS.ORDER_EXPIRY_MS < Date.now();
-    if (order.paidAt || isOrderExpired) {
-      response.json({
-        success: false,
-        data: { order: null },
-        error: 'Order already paid or is expired',
-      });
-      return;
-    }
-
-    // Does order contain userId?
-    if (!order?.userId) {
-      response.json({
-        success: false,
-        data: { order: null },
-        error: 'No user ID given',
-      });
-      return;
-    }
-
-    // Payment method exists?
-    if (!order?.paymentMethod || !order?.paymentMethod.length) {
-      response.json({
-        success: false,
-        data: { order: null },
-        error: 'No payment method ID given',
-      });
-      return;
-    }
-
-    const userDataApi = new UserDataApi(firebaseAdmin, order?.userId);
     const paymentDetails = await userDataApi.getUserData(
       UserData.PAYMENT_DETAILS,
     );
@@ -126,10 +155,23 @@ export default async function pay(
     const customerId = paymentDetails?.stripeCustomerId;
 
     if (!customerId) {
+      const _error = "Stripe customer doesn't exist";
       response.json({
         success: false,
         data: { order: null },
-        error: "Stripe customer doesn't exist",
+        error: _error,
+      });
+
+      // Payment failure
+      analytics.track({
+        event: 'Payment Error',
+        userId: order.userId,
+        properties: {
+          token,
+          firstName: details.firstName,
+          ...order,
+          error: _error,
+        },
       });
       return;
     }
@@ -156,8 +198,6 @@ export default async function pay(
       stripeConnectedAccount,
     } = await restaurantDataApi.getRestaurantField(RestaurantData.FINANCIAL);
 
-    dlog('pay ➡️ stripeConnectedAccount:', stripeConnectedAccount);
-
     // The `confirm` parameter attempts to pay immediately & automatically
     const paymentIntent = await stripe.paymentIntents.create({
       amount: transformPriceForStripe(totalPaymentValue),
@@ -175,7 +215,7 @@ export default async function pay(
             ? stripeConnectedAccount.id
             : process.env.STRIPE_TEST_CONNECTED_ACCOUNT_ID,
       },
-      // Temporarily used for Shopify and Automate.io
+      // Temporarily used for Shopify webhook syncing
       description: JSON.stringify({
         title: order.deal.name,
         quantity: order.heads,
@@ -186,10 +226,16 @@ export default async function pay(
       }),
     });
 
-    dlog('info', {
-      amount: transformPriceForStripe(restaurantPaymentValue),
-      destination: stripeConnectedAccount.id,
-    });
+    // ////////////////////////////////////////////////////
+    //              MANAGING PAYMENT SUCCESS             //
+    // ////////////////////////////////////////////////////
+    //
+    // When 3D Secure is performed, we need to reconfirm the payment
+    // after authentication has been performed.
+    // Reference: https://stripe.com/docs/payments/accept-a-payment-synchronously#web-confirm-payment
+    if (paymentIntent.status === 'requires_confirmation') {
+      await stripe.paymentIntents.confirm(paymentIntent.id);
+    }
 
     // Payment success
     if (paymentIntent.status === 'succeeded') {
@@ -206,9 +252,6 @@ export default async function pay(
         );
 
       // Update user data
-      const details = await userDataApi.getUserData(UserData.DETAILS);
-      const eaterName = `${details.firstName} ${details.lastName}`;
-
       // Add to bookings
       const booking: IBooking = {
         orderId: order.id,
@@ -252,9 +295,6 @@ export default async function pay(
         },
       });
 
-      // Send event to Shopify using Automate.io
-      dlog('pay ➡️ shopifyProductId:', shopifyProductId);
-
       // Update identify with new payment and user-data
       analytics.identify({
         userId: order.userId,
@@ -269,9 +309,38 @@ export default async function pay(
         error: null,
       });
       return;
+    } else {
+      const _error = 'Unable to confirm payment';
+
+      analytics.track({
+        event: 'Payment Failure',
+        userId: order.userId,
+        properties: {
+          token,
+          firstName: details.firstName,
+          ...order,
+          error: _error,
+        },
+      });
+
+      response.json({
+        success: false,
+        data: { order: null },
+        error: _error,
+      });
     }
   } catch (error) {
-    dlog('error', error);
+    // Payment failure
+    analytics.track({
+      event: 'Payment Error',
+      userId: order.userId,
+      properties: {
+        token,
+        firstName: details.firstName,
+        ...order,
+        error: String(error),
+      },
+    });
 
     response.json({
       success: false,
