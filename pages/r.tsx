@@ -5,9 +5,9 @@ const offerRedirects = {
   ['2K6OPwu8MxTzN4pqyRK6FC']:
     'https://offers.tastiest.io/products/all-you-can-eat-burgers-and-wings-in-chalk-farm',
   ['v5WWg3Sr573AleBLH9LmH']:
-    'https://offers.tastiest.io/products/19-scintillating-meats-all-you-can-eat-1',
+    'http://tastiestio.myshopify.com/products/best-all-you-can-eat-rodizio-in-london',
   ['1jfZHInkintF44aehS5HZ4']:
-    'https://offers.tastiest.io/products/birthday-offer',
+    'https://offers.tastiest.io/products/mini-burgers-birthday-offer',
   ['46VXx97nHDkRYyWRNdyybz']:
     'https://offers.tastiest.io/products/afternoon-tea-and-bottomless-prosecco',
   ['1H2ZQPjkOsqtnjBNrpWypM']:
@@ -16,6 +16,8 @@ const offerRedirects = {
     'http://tastiestio.myshopify.com/products/date-night-with-the-best-jerk-chicken-in-south-east-london',
   ['60fOUc99NMmt2klYJH8pkt']:
     'http://tastiestio.myshopify.com/products/birthday-offer-with-the-best-jerk-chicken-in-south-east-london',
+  ['5OEoxkYWz8KYAg0rMwVBNi']:
+    'https://offers.tastiest.io/products/vegan-vegetarian-all-you-can-eat-mini-burgers',
 };
 
 /** Redirection takes two possible GET parameters

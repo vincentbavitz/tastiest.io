@@ -27,8 +27,8 @@ export type PayReturn = {
   order: IOrder | null;
 };
 
-const shopifyDomain = 'tastiestio.myshopify.com';
-const shopifyStorefrontAccessToken = 'bcb518fdae51ece62ff871661a5ca08a';
+// const shopifyDomain = 'tastiestio.myshopify.com';
+// const shopifyStorefrontAccessToken = 'bcb518fdae51ece62ff871661a5ca08a';
 
 const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
 
