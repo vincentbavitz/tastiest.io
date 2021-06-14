@@ -85,7 +85,7 @@ export function CheckoutPaymentPanel(props: Props) {
           <p className="font-medium">£{totalPrice}</p>
         </div>
 
-        {isDesktop && (
+        {/* {isDesktop && (
           <>
             <PromoCodeInput initialOrder={order} />
 
@@ -111,7 +111,7 @@ export function CheckoutPaymentPanel(props: Props) {
 
             <TermsAndConditions />
           </>
-        )}
+        )} */}
       </CheckoutCard>
 
       {/* Payment error display */}
@@ -121,7 +121,7 @@ export function CheckoutPaymentPanel(props: Props) {
 
       {!isDesktop && (
         <div className="flex flex-col pt-4 mb-10 space-y-3">
-          <PromoCodeInput initialOrder={order} />
+          {/* <PromoCodeInput initialOrder={order} /> */}
           <div className="w-full h-px border-b border-gray-300"></div>
           <div className="flex justify-between text-xl font-medium">
             <p>Total</p>

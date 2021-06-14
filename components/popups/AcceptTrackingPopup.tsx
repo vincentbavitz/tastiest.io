@@ -31,7 +31,7 @@ export function AcceptTrackingPopup() {
           <div className="flex items-center px-3 py-2 mb-2 text-black bg-white rounded-md shadow-md pointer-events-auto">
             <p className={clsx('pl-1 pr-1', isMobile && 'text-xs')}>
               By using Tastiest, you agree to our{' '}
-              <a href="#" className="underline">
+              <a href="/privacy" className="underline">
                 cookie policy
               </a>
               .
