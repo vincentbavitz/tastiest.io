@@ -80,7 +80,7 @@ export function CheckoutPaymentPanel(props: Props) {
 
         <div className="flex items-center justify-between text-sm">
           <p>
-            Booking for {order.heads} {order.heads === 1 ? 'person' : 'people'}
+            Buy for {order.heads} {order.heads === 1 ? 'person' : 'people'}
           </p>
           <p className="font-medium">£{totalPrice}</p>
         </div>
@@ -173,7 +173,7 @@ const TermsAndConditions = () => (
       Terms of Use
     </a>
     {', '}
-    <a href="/privacy" className="font-semibold underline cursor-pointer">
+    <a href="/terms-of-sale" className="font-semibold underline cursor-pointer">
       Terms of Sale
     </a>{' '}
     and have read the{' '}

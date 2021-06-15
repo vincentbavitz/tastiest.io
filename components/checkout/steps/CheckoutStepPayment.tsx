@@ -308,7 +308,7 @@ export function CheckoutStepPayment(props: Props) {
                 disabled={isPaymentProcessing}
                 externalSuffix={
                   <Tooltip content="This is the 3 digit code on the back of your card.">
-                    <HelpIcon className="h-6" />
+                    <HelpIcon className="h-6 text-gray-400 fill-current hover:text-gray-400" />
                   </Tooltip>
                 }
               >

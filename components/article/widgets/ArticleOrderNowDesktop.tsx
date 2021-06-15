@@ -86,7 +86,7 @@ export function ArticleOrderNowDesktop(props: Props) {
 
             <div className="flex items-end justify-between text-xs">
               <span>
-                Booking for {heads} {heads === 1 ? 'person' : 'people'}
+                Buy for {heads} {heads === 1 ? 'person' : 'people'}
               </span>
               <div className="flex items-center h-full">
                 <PoundIcon

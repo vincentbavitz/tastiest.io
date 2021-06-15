@@ -3484,7 +3484,11 @@ function TermsAndConditions() {
         >
           services promoted on the Tastiest Site which can be redeemed from a
           Merchant subject to terms and conditions listed on the Offer page and
-          our Terms of Sale.
+          our{' '}
+          <a href="/terms-of-sale" className="hover:underline">
+            Terms of Sale
+          </a>
+          .
         </span>
       </p>
       <p
