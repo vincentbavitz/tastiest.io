@@ -51,6 +51,7 @@ const CARD_ELEMENT_OPTIONS: StripeCardNumberElementOptions = {
 interface Props {
   userId: string;
   order: IOrder;
+  anonymousId: string;
   shopifyProductId: string;
 }
 

@@ -39,6 +39,7 @@ interface Props {
   userId: string | null;
   step: CheckoutStep;
   shopifyProductId: string;
+  anonymousId: string;
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {
@@ -50,8 +51,8 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const heads = parseInt(String(context.query.heads));
   const dealId = String(context.query.sku);
   const fromSlug = decodeURI(String(context.query.fromSlug));
-
   const shopifyProductId = String(context.query.productId);
+  const anonymousId = String(context.query.anonymousId);
 
   dlog('checkout ➡️ fromSlug:', fromSlug);
   dlog('checkout ➡️ dealId:', dealId);
@@ -78,11 +79,13 @@ export const getServerSideProps: GetServerSideProps = async context => {
     urlPrefix + LocalEndpoint.CREATE_NEW_ORDER,
     {
       userId: null,
+      anonymousId,
       dealId,
       heads,
       fromSlug,
       promoCode: null,
       timestamp: Date.now(),
+      shopifyProductId,
     },
   );
 
@@ -147,7 +150,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
 
   return {
-    props: { userId: null, order, shopifyProductId },
+    props: { userId: null, anonymousId, order, shopifyProductId },
   };
 };
 
@@ -155,7 +158,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
  *  and feeds dynamic values into children
  */
 function Checkout(props: Props) {
-  const { shopifyProductId } = props;
+  const { shopifyProductId, anonymousId } = props;
 
   const { isDesktop } = useScreenSize();
   const { order } = useOrder(props.order?.token, props.order);
@@ -172,12 +175,20 @@ function Checkout(props: Props) {
     // Update user client-side when useAuth loads
     if (user?.uid && isSignedIn) {
       setUserId(user.uid);
+
+      // Identify user with Segment, coming from Shopify
+      window.analytics.identify(user.uid, { anonymousId: anonymousId ?? null });
     }
 
     // Purge invalid session when useAuth has finished
     // loading and no user is signed in
     if (isSignedIn === false) {
       setUserId(null);
+
+      // Identify user with Segment, coming from Shopify
+      window.analytics.identify(anonymousId, {
+        anonymousId: anonymousId ?? null,
+      });
     }
   }, [user]);
 
@@ -199,6 +210,7 @@ function Checkout(props: Props) {
             step={step}
             userId={userId}
             shopifyProductId={shopifyProductId}
+            anonymousId={anonymousId}
           />
         ) : (
           <CheckoutMobile
@@ -206,6 +218,7 @@ function Checkout(props: Props) {
             step={step}
             userId={userId}
             shopifyProductId={shopifyProductId}
+            anonymousId={anonymousId}
           />
         )}
       </Elements>
@@ -214,7 +227,7 @@ function Checkout(props: Props) {
 }
 
 function CheckoutDesktop(props: Props) {
-  const { userId, order, step, shopifyProductId } = props;
+  const { userId, order, step, shopifyProductId, anonymousId } = props;
 
   return (
     <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
@@ -227,6 +240,7 @@ function CheckoutDesktop(props: Props) {
             userId={userId}
             order={order}
             shopifyProductId={shopifyProductId}
+            anonymousId={anonymousId}
           />
         )}
       </div>
@@ -235,7 +249,7 @@ function CheckoutDesktop(props: Props) {
 }
 
 function CheckoutMobile(props: Props) {
-  const { userId, order, step, shopifyProductId } = props;
+  const { userId, order, step, shopifyProductId, anonymousId } = props;
 
   return (
     <Contained>
@@ -248,6 +262,7 @@ function CheckoutMobile(props: Props) {
             userId={userId}
             order={order}
             shopifyProductId={shopifyProductId}
+            anonymousId={anonymousId}
           />
         )}
       </div>

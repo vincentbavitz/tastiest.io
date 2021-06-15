@@ -26,7 +26,9 @@ export type CreateNewOrderReturn = {
  *  heads: number;
  *  fromSlug: string;
  *  promoCode: string | undefined
- *  userId: string | undefined```
+ *  userId: string | undefined
+ *  anonymousId: string | undefined
+ * ```
  *
  * Response is of the shape `{ orderId: string | null, error: Error | string | null }`
  */
@@ -50,7 +52,15 @@ export default async function createNewOrder(
     body = request.body;
   }
 
-  const { dealId, heads: _heads, fromSlug, promoCode, userId } = body;
+  const {
+    dealId,
+    heads: _heads,
+    fromSlug,
+    promoCode,
+    userId,
+    anonymousId,
+    shopifyProductId,
+  } = body;
   const heads = Math.floor(_heads);
 
   const orderRequest: IOrderRequest = {
@@ -85,14 +95,23 @@ export default async function createNewOrder(
   // Track with Segment
   const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
   analytics.track({
-    userId: userId ?? null,
-    anonymousId: userId ? null : uuid(),
-    event: 'New Unpaid Order',
+    userId: userId ?? anonymousId ?? null,
+    anonymousId: anonymousId ?? null,
+    event: 'Checkout Started',
     properties: {
-      orderId: order.id,
+      anonymousId,
+      shopifyProductId,
+      ...order,
       ...orderRequest,
     },
   });
+
+  // https://offers.tastiest.io/products/afternoon-tea-and-bottomless-prosecco
+  // https://tastiest.io/checkout?productId=40185498042567&sku=46VXx97nHDkRYyWRNdyybz&heads=7&fromSlug=https://offers.tastiest.io/products/afternoon-tea-and-bottomless-prosecco&anonymousId=18d36457-7f08-4e17-b0b5-0bfb1d36ad2b
+  // http://localhost:3000/checkout?productId=40185498042567&sku=46VXx97nHDkRYyWRNdyybz&heads=7&fromSlug=https://offers.tastiest.io/products/afternoon-tea-and-bottomless-prosecco&anonymousId=18d36457-7f08-4e17-b0b5-0bfb1d36ad2b
+
+  // const eveny: any = {};
+  // const url = `https://tastiest.io/checkout?productId={{ event.shopifyProductId }}&sku={{ event.orderId }}&heads={{ event.heads }}&anonymousId={{ event.anonymousId }}`;
 
   response.json({
     success: true,

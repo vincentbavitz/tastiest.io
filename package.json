@@ -27,7 +27,7 @@
     "@svgr/cli": "^5.5.0",
     "@tastiest-io/tastiest-components": "^0.41.0",
     "@tastiest-io/tastiest-icons": "^0.24.0",
-    "@tastiest-io/tastiest-utils": "^0.132.0",
+    "@tastiest-io/tastiest-utils": "^0.134.0",
     "D": "^1.0.0",
     "analytics-node": "^4.0.1",
     "analytics.js": "^2.9.1",
