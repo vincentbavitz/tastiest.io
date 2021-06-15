@@ -85,9 +85,9 @@ export function CheckoutPaymentPanel(props: Props) {
           <p className="font-medium">£{totalPrice}</p>
         </div>
 
-        {/* {isDesktop && (
+        {isDesktop && (
           <>
-            <PromoCodeInput initialOrder={order} />
+            {/* <PromoCodeInput initialOrder={order} /> */}
 
             <hr className="bg-primary border-primary text-primary" />
 
@@ -111,7 +111,7 @@ export function CheckoutPaymentPanel(props: Props) {
 
             <TermsAndConditions />
           </>
-        )} */}
+        )}
       </CheckoutCard>
 
       {/* Payment error display */}
