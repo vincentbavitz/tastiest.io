@@ -208,7 +208,7 @@ export function CheckoutStepPayment(props: Props) {
   dlog('CheckoutStepPayment ➡️ errors:', errors);
 
   return (
-    <div className="flex flex-col-reverse w-full pb-24 tablet:pb-0 tablet:flex-row tablet:justify-between">
+    <div className="flex flex-col-reverse w-full tablet:flex-row tablet:justify-between">
       <div
         style={{
           minWidth:
@@ -308,8 +308,11 @@ export function CheckoutStepPayment(props: Props) {
                 className="py-1"
                 disabled={isPaymentProcessing}
                 externalSuffix={
-                  <Tooltip content="This is the 3 digit code on the back of your card.">
-                    <HelpIcon className="h-6 text-gray-400 fill-current hover:text-gray-400" />
+                  <Tooltip
+                    placement="top-right"
+                    content="This is the 3 digit code on the back of your card."
+                  >
+                    <HelpIcon className="h-6 text-gray-300 duration-200 fill-current hover:text-gray-400" />
                   </Tooltip>
                 }
               >

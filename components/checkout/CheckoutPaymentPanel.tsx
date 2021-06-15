@@ -169,15 +169,27 @@ const SecureTransactionText = () => (
 const TermsAndConditions = () => (
   <div className="text-2xs">
     By placing this order, I agree to the{' '}
-    <a href="/terms-of-use" className="font-semibold underline cursor-pointer">
+    <a
+      href="/terms-of-use"
+      target="_blank"
+      className="font-semibold underline cursor-pointer"
+    >
       Terms of Use
     </a>
     {', '}
-    <a href="/terms-of-sale" className="font-semibold underline cursor-pointer">
+    <a
+      href="/terms-of-sale"
+      target="_blank"
+      className="font-semibold underline cursor-pointer"
+    >
       Terms of Sale
     </a>{' '}
     and have read the{' '}
-    <a href="/privacy" className="font-semibold underline cursor-pointer">
+    <a
+      href="/privacy"
+      target="_blank"
+      className="font-semibold underline cursor-pointer"
+    >
       Privacy Statement.
     </a>
   </div>

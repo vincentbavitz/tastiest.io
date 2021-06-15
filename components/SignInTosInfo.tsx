@@ -10,6 +10,7 @@ export function SignInTosInfo({ center }: Props) {
       By proceeding, you agree to our{' '}
       <a
         href="/terms-of-use"
+        target="_blank"
         className="font-semibold underline cursor-pointer"
       >
         Terms of Use

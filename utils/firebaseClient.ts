@@ -1,4 +1,3 @@
-import { FIREBASE } from '@tastiest-io/tastiest-utils';
 import firebaseClient from 'firebase/app';
 import 'firebase/auth';
 
@@ -13,6 +12,8 @@ const CLIENT_CONFIG = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
+const FIREBASE_DEFAULT_REGION = 'us1-central';
+
 if (!firebaseClient.apps.length) {
   firebaseClient.initializeApp(CLIENT_CONFIG);
 
@@ -25,7 +26,7 @@ if (!firebaseClient.apps.length) {
   }
 }
 
-export const getFunctionsEndpoint = (region = FIREBASE.DEFAULT_REGION) =>
+export const getFunctionsEndpoint = (region = FIREBASE_DEFAULT_REGION) =>
   `https://${region}-tastiest-dishes.cloudfunctions.net`;
 
 export { firebaseClient };

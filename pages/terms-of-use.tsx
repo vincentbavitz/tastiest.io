@@ -159,7 +159,11 @@ function TermsAndConditions() {
         >
           1.3. Whatever you purchase via the Site, in addition to this
           Agreement, you will be subject to our Terms of Sale which can be found{' '}
-          <a href="/terms-of-sale" className="text-primary hover:underline">
+          <a
+            href="/terms-of-sale"
+            target="_blank"
+            className="text-primary hover:underline"
+          >
             here
           </a>
           .
@@ -3485,7 +3489,7 @@ function TermsAndConditions() {
           services promoted on the Tastiest Site which can be redeemed from a
           Merchant subject to terms and conditions listed on the Offer page and
           our{' '}
-          <a href="/terms-of-sale" className="hover:underline">
+          <a href="/terms-of-sale" target="_blank" className="hover:underline">
             Terms of Sale
           </a>
           .
