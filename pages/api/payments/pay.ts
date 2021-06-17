@@ -21,6 +21,7 @@ import { firebaseAdmin } from 'utils/firebaseAdmin';
 export type PayParams = {
   token: string;
   shopifyProductId: string;
+  anonymousId: string;
 };
 
 export type PayReturn = {
@@ -61,7 +62,7 @@ export default async function pay(
     body = request.body;
   }
 
-  const { token = null, shopifyProductId = null } = body;
+  const { token = null, shopifyProductId = null, anonymousId = null } = body;
 
   // Order token is required
   if (!token || !token.length) {
@@ -223,6 +224,7 @@ export default async function pay(
         restaurantPhone: order.deal.restaurant.publicPhoneNumber,
         restaurantAddress: order.deal.restaurant.location.address,
         shopifyProductId,
+        anonymousId,
       }),
     });
 

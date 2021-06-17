@@ -64,7 +64,7 @@ type FormData = {
 };
 
 export function CheckoutStepPayment(props: Props) {
-  const { order: initialOrder, shopifyProductId } = props;
+  const { order: initialOrder, shopifyProductId, anonymousId } = props;
 
   const { user, isSignedIn } = useAuth();
   const { userData, setUserData } = useUserData(user);
@@ -172,7 +172,7 @@ export function CheckoutStepPayment(props: Props) {
       return { success: false, error: updateOrderError };
     }
 
-    const { success, error } = await pay(shopifyProductId);
+    const { success, error } = await pay(shopifyProductId, anonymousId);
 
     // Uh-oh - a general payment error!
     // This usually means the card declined.
