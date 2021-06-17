@@ -1667,7 +1667,6 @@ function TermsOfSale() {
             fontWeight: 400,
             fontStyle: 'normal',
             fontVariant: 'normal',
-
             textDecoration: 'none',
             verticalAlign: 'baseline',
             whiteSpace: 'pre-wrap',
@@ -1678,42 +1677,7 @@ function TermsOfSale() {
           a Offer from Tastiest. The Site on which Tastiest markets the Offers
           is owned by Tastiest Technologies Ltd. You can find more information
           about the terms of use of the Site, which are expressly incorporated
-          into these Terms of Sale, here
-        </span>
-        <span
-          style={{
-            fontSize: '11pt',
-            fontFamily: 'Calibri,sans-serif',
-            color: '#000000',
-            backgroundColor: 'transparent',
-            fontWeight: 400,
-            fontStyle: 'normal',
-            fontVariant: 'normal',
-
-            textDecoration: 'none',
-            verticalAlign: 'baseline',
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          &nbsp;
-        </span>
-        <span
-          style={{
-            fontSize: '11pt',
-            fontFamily: 'Calibri,sans-serif',
-            color: '#000000',
-            backgroundColor: '#ffff00',
-            fontWeight: 400,
-            fontStyle: 'normal',
-            fontVariant: 'normal',
-
-            textDecoration: 'none',
-            verticalAlign: 'baseline',
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          [ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-          &nbsp; &nbsp; &nbsp;].
+          into these Terms of Sale.
         </span>
       </p>
       <p

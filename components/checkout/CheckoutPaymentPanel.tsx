@@ -30,7 +30,7 @@ export function CheckoutPaymentPanel(props: Props) {
 
   const router = useRouter();
   const { order } = useOrder(props.order?.token, props.order);
-  const { isDesktop } = useScreenSize();
+  const { isMobile, isDesktop } = useScreenSize();
 
   const { isPaymentProcessing } = useSelector(
     (state: IState) => state.checkout,
@@ -56,6 +56,7 @@ export function CheckoutPaymentPanel(props: Props) {
     <div
       style={{
         minWidth: '250px',
+        maxWidth: isMobile ? '300px' : 'unset',
       }}
       className="relative"
     >

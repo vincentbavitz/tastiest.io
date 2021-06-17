@@ -1,7 +1,6 @@
 import { Button } from '@tastiest-io/tastiest-components';
 import { PhoneIcon } from '@tastiest-io/tastiest-icons';
 import {
-  dlog,
   FirestoreCollection,
   IOrder,
   SVG,
@@ -11,24 +10,17 @@ import {
 import { useDevice } from 'hooks/useDevice';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetServerSidePropsType } from 'next';
-import nookies from 'nookies';
 import { ThankYouHero, ThankYouPhone } from 'public/assets/page';
 import React, { ReactNode } from 'react';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { Contained } from '../components/Contained';
 
 export const getServerSideProps = async context => {
-  const cookieToken = nookies.get(context)?.token;
-  const userDataApi = new UserDataApi(firebaseAdmin);
-  const { userId } = await userDataApi.initFromCookieToken(cookieToken);
-
-  dlog('thank-you ➡️ userId:', userId);
-
   // Verify order is legit; else redirect and wipe order data.
   const token = String(context.query.token ?? '') ?? null;
 
   // If no order or user exists in URI, redirect to home
-  if (!token || !userId) {
+  if (!token) {
     return {
       redirect: {
         destination: '/',
@@ -61,10 +53,7 @@ export const getServerSideProps = async context => {
     };
   }
 
-  // Order already booked?
-  //
-  //
-
+  const userDataApi = new UserDataApi(firebaseAdmin, order.userId);
   const userDetails = await userDataApi.getUserData(UserData.DETAILS);
 
   return {

@@ -3,6 +3,7 @@ export { default as FavouritesHero } from './FavouritesHero';
 export { default as HelpHeroSuccess } from './HelpHeroSuccess';
 export { default as HelpHero } from './HelpHero';
 export { default as Home } from './Home';
+export { default as HowItWorksHero } from './HowItWorksHero';
 export { default as Page404Hero } from './Page404Hero';
 export { default as PreferencesHero } from './PreferencesHero';
 export { default as SearchHeroDesktop } from './SearchHeroDesktop';

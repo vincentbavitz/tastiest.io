@@ -334,7 +334,7 @@ export function CheckoutStepPayment(props: Props) {
 
       <div
         className={clsx(
-          'w-full tablet:flex-grow tablet:w-5/12',
+          'flex justify-center mobile:block w-full tablet:flex-grow tablet:w-5/12',
           isDesktop && 'pl-10',
         )}
       >

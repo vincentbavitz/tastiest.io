@@ -11,7 +11,7 @@ interface Props {
 
 export function CheckoutCard(props: Props) {
   const { title, order, children } = props;
-  const { isDesktop } = useScreenSize();
+  const { isMobile, isTablet, isDesktop } = useScreenSize();
 
   if (!order) return null;
 
@@ -38,9 +38,10 @@ export function CheckoutCard(props: Props) {
           <div
             className={clsx(
               'relative bg-opacity-75 overflow-hidden',
-              'tablet:w-full mobile:w-56',
-              isDesktop ? 'h-36' : 'h-40 mobile:h-auto',
-              isDesktop && 'border-l-2 border-r-2 border-secondary pl-px',
+              isMobile && '',
+              isTablet ? 'w-40 h-40' : 'aspect-w-1 aspect-h-1',
+              isDesktop &&
+                'border-l-2 border-r-2 border-secondary pl-px w-full',
             )}
           >
             <img
