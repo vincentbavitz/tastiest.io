@@ -284,9 +284,20 @@ export default async function pay(
         order.paymentMethod,
       );
 
+      // Update identify with new payment and user-data
+      await analytics.identify({
+        anonymousId,
+        userId: order.userId,
+        traits: {
+          anonymousId,
+          ...details,
+        },
+      });
+
       analytics.track({
         event: 'Payment Success',
         userId: order.userId,
+        anonymousId,
         properties: {
           token,
           firstName: details.firstName,
@@ -294,14 +305,6 @@ export default async function pay(
           paymentCard: paymentMethod.card,
           ...order,
           ...booking,
-        },
-      });
-
-      // Update identify with new payment and user-data
-      analytics.identify({
-        userId: order.userId,
-        traits: {
-          ...details,
         },
       });
 

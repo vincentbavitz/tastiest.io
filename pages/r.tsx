@@ -45,7 +45,8 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   const utmSuffix = Object.entries(requestUTMs)
     .filter(([_, value]) => Boolean(value))
-    .map(([key, value]) => (value ? `${key}=${value}` : null));
+    .map(([key, value]) => (value ? `${key}=${value}` : null))
+    .join('&');
 
   // Offer redirection
   const redirectDestination = offerRedirects[String(context.query.offer)];
