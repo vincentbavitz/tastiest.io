@@ -58,7 +58,11 @@ export function useOrder(token: string, initialOrder?: IOrder) {
     return { success, error };
   };
 
-  const pay = async (shopifyProductId: string, anonymousId: string) => {
+  const pay = async (
+    shopifyProductId: string,
+    anonymousId: string,
+    cartToken: string,
+  ) => {
     dlog('useOrder ➡️ paying:');
     dlog('useOrder ➡️ shopifyProductId:', shopifyProductId);
     dlog('useOrder ➡️ anonymousId:', anonymousId);
@@ -71,6 +75,7 @@ export function useOrder(token: string, initialOrder?: IOrder) {
       token,
       shopifyProductId,
       anonymousId,
+      cartToken,
     });
 
     dlog('useOrder ➡️ order:', order);

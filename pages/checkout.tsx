@@ -40,6 +40,7 @@ interface Props {
   step: CheckoutStep;
   shopifyProductId: string;
   anonymousId: string;
+  cartToken: string;
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {
@@ -52,6 +53,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const dealId = String(context.query.sku);
   const fromSlug = decodeURI(String(context.query.fromSlug));
   const shopifyProductId = String(context.query.productId);
+  const cartToken = String(context.query.cart_token);
   const anonymousId = String(context.query.anonymousId);
 
   dlog('checkout ➡️ fromSlug:', fromSlug);
@@ -150,7 +152,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
 
   return {
-    props: { userId: null, anonymousId, order, shopifyProductId },
+    props: { userId: null, anonymousId, order, shopifyProductId, cartToken },
   };
 };
 
@@ -158,7 +160,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
  *  and feeds dynamic values into children
  */
 function Checkout(props: Props) {
-  const { shopifyProductId, anonymousId } = props;
+  const { shopifyProductId, anonymousId, cartToken } = props;
 
   const { isDesktop } = useScreenSize();
   const { order } = useOrder(props.order?.token, props.order);
@@ -172,6 +174,8 @@ function Checkout(props: Props) {
   // Manage user signed-in-status very carefully such that
   // a logged out user never sees the payment step for even a millisecond.
   useEffect(() => {
+    window.analytics.setAnonymousId(anonymousId);
+
     // Update user client-side when useAuth loads
     if (user?.uid && isSignedIn) {
       setUserId(user.uid);
@@ -184,11 +188,6 @@ function Checkout(props: Props) {
     // loading and no user is signed in
     if (isSignedIn === false) {
       setUserId(null);
-
-      // Identify user with Segment, coming from Shopify
-      window.analytics.identify(anonymousId, {
-        anonymousId: anonymousId ?? null,
-      });
     }
   }, [user]);
 
@@ -211,6 +210,7 @@ function Checkout(props: Props) {
             userId={userId}
             shopifyProductId={shopifyProductId}
             anonymousId={anonymousId}
+            cartToken={cartToken}
           />
         ) : (
           <CheckoutMobile
@@ -219,6 +219,7 @@ function Checkout(props: Props) {
             userId={userId}
             shopifyProductId={shopifyProductId}
             anonymousId={anonymousId}
+            cartToken={cartToken}
           />
         )}
       </Elements>
@@ -227,7 +228,14 @@ function Checkout(props: Props) {
 }
 
 function CheckoutDesktop(props: Props) {
-  const { userId, order, step, shopifyProductId, anonymousId } = props;
+  const {
+    userId,
+    order,
+    step,
+    shopifyProductId,
+    anonymousId,
+    cartToken,
+  } = props;
 
   return (
     <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
@@ -241,6 +249,7 @@ function CheckoutDesktop(props: Props) {
             order={order}
             shopifyProductId={shopifyProductId}
             anonymousId={anonymousId}
+            cartToken={cartToken}
           />
         )}
       </div>
@@ -249,7 +258,14 @@ function CheckoutDesktop(props: Props) {
 }
 
 function CheckoutMobile(props: Props) {
-  const { userId, order, step, shopifyProductId, anonymousId } = props;
+  const {
+    userId,
+    order,
+    step,
+    shopifyProductId,
+    anonymousId,
+    cartToken,
+  } = props;
 
   return (
     <Contained>
@@ -263,6 +279,7 @@ function CheckoutMobile(props: Props) {
             order={order}
             shopifyProductId={shopifyProductId}
             anonymousId={anonymousId}
+            cartToken={cartToken}
           />
         )}
       </div>

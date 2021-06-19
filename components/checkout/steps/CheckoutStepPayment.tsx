@@ -53,6 +53,7 @@ interface Props {
   order: IOrder;
   anonymousId: string;
   shopifyProductId: string;
+  cartToken: string;
 }
 
 type FormData = {
@@ -64,7 +65,12 @@ type FormData = {
 };
 
 export function CheckoutStepPayment(props: Props) {
-  const { order: initialOrder, shopifyProductId, anonymousId } = props;
+  const {
+    order: initialOrder,
+    shopifyProductId,
+    anonymousId,
+    cartToken,
+  } = props;
 
   const { user, isSignedIn } = useAuth();
   const { userData, setUserData } = useUserData(user);
@@ -172,7 +178,11 @@ export function CheckoutStepPayment(props: Props) {
       return { success: false, error: updateOrderError };
     }
 
-    const { success, error } = await pay(shopifyProductId, anonymousId);
+    const { success, error } = await pay(
+      shopifyProductId,
+      anonymousId,
+      cartToken,
+    );
 
     // Uh-oh - a general payment error!
     // This usually means the card declined.

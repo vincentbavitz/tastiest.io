@@ -22,6 +22,7 @@ export type PayParams = {
   token: string;
   shopifyProductId: string;
   anonymousId: string;
+  cartToken: string;
 };
 
 export type PayReturn = {
@@ -62,7 +63,12 @@ export default async function pay(
     body = request.body;
   }
 
-  const { token = null, shopifyProductId = null, anonymousId = null } = body;
+  const {
+    token = null,
+    shopifyProductId = null,
+    anonymousId = null,
+    cartToken = null,
+  } = body;
 
   // Order token is required
   if (!token || !token.length) {
@@ -225,6 +231,7 @@ export default async function pay(
         restaurantAddress: order.deal.restaurant.location.address,
         shopifyProductId,
         anonymousId,
+        cartToken,
       }),
     });
 
@@ -307,6 +314,10 @@ export default async function pay(
           ...booking,
         },
       });
+
+      // Order Completed is handled by LittleData's own internal webhook.
+      // littleDataAnalytics.track({
+      // })
 
       response.json({
         success: true,
