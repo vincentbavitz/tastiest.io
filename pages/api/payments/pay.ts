@@ -312,6 +312,8 @@ export default async function pay(
           paymentCard: paymentMethod.card,
           ...order,
           ...booking,
+          // For Pixel
+          action_source: 'Tastiest Backend',
         },
       });
 
