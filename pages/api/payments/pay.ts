@@ -5,8 +5,8 @@ import {
   generateUserFacingId,
   IBooking,
   IOrder,
+  IRestaurant,
   PAYMENTS,
-  RestaurantData,
   RestaurantDataApi,
   transformPriceForStripe,
   UserData,
@@ -202,8 +202,9 @@ export default async function pay(
     );
 
     const {
-      stripeConnectedAccount,
-    } = await restaurantDataApi.getRestaurantField(RestaurantData.FINANCIAL);
+      details: restaurantDetails,
+      financial: { stripeConnectedAccount },
+    } = await restaurantDataApi.getRestaurantData();
 
     // The `confirm` parameter attempts to pay immediately & automatically
     const paymentIntent = await stripe.paymentIntents.create({
@@ -263,9 +264,12 @@ export default async function pay(
       // Update user data
       // Add to bookings
       const booking: IBooking = {
+        userId: order.userId,
+        email: details.email,
+        restaurant: restaurantDetails as IRestaurant,
+        restaurantId: order.deal.restaurant.id,
         orderId: order.id,
         userFacingBookingId: generateUserFacingId(),
-        restaurantId: order.deal.restaurant.id,
         eaterName,
         dealName: order.deal.name,
         heads: order.heads,
