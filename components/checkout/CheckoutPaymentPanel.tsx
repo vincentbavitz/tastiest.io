@@ -66,13 +66,13 @@ export function CheckoutPaymentPanel(props: Props) {
         <div>
           <div className="flex justify-between text-sm">
             <div>
-              <p className="text-base font-medium">
+              <div className="text-base font-medium">
                 {order?.deal?.restaurant?.name}
                 <br />
                 <p className="text-sm font-normal leading-tight text-gray-700">
                   {order?.deal?.tagline}
                 </p>
-              </p>
+              </div>
             </div>
 
             <p className="font-medium">£{order?.deal?.pricePerHeadGBP}</p>
