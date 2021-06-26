@@ -306,7 +306,7 @@ export default async function pay(
       });
 
       analytics.track({
-        event: 'Payment Success',
+        event: 'Order Completed',
         userId: order.userId,
         anonymousId,
         properties: {
@@ -316,8 +316,44 @@ export default async function pay(
           paymentCard: paymentMethod.card,
           ...order,
           ...booking,
+
+          user: {
+            ...details,
+          },
+
+          // Internal measurements
+          tastiestPortion: order.price.final * 0.25, // TODO -> Subtract PROMO,
+          restaurantPortion: order.price.final * 0.75,
+
+          // For Segment's E-Commerse Spec
+          // https://segment.com/docs/connections/spec/ecommerce/v2/#order-completed
+          checkout_id: order.token,
+          order_id: order.id,
+          affiliation: '',
+          total: order.price.final,
+          subtotal: order.price.gross,
+          revenue: order.price.final * 0.25,
+          shipping: 0,
+          tax: 0,
+          discount: 0,
+          coupon: order.promoCode,
+          currency: order.price.currency,
+          products: [
+            {
+              product_id: order.deal.id,
+              sku: order.deal.id,
+              name: order.deal.name,
+              price: order.deal.pricePerHeadGBP,
+              quantity: order.heads,
+              category: '',
+              url: `https://tastiest.io/r?offer=${order.deal.id}`,
+              image_url: order.deal.image.imageUrl,
+            },
+          ],
+
           // For Pixel
-          action_source: 'Tastiest Backend',
+          email: details.email,
+          action_source: 'website',
         },
       });
 
