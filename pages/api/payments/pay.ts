@@ -160,7 +160,6 @@ export default async function pay(
     );
 
     const customerId = paymentDetails?.stripeCustomerId;
-
     if (!customerId) {
       const _error = "Stripe customer doesn't exist";
       response.json({
@@ -265,12 +264,13 @@ export default async function pay(
       // Add to bookings
       const booking: IBooking = {
         userId: order.userId,
-        email: details.email,
         restaurant: restaurantDetails as IRestaurant,
         restaurantId: order.deal.restaurant.id,
         orderId: order.id,
         userFacingBookingId: generateUserFacingId(),
         eaterName,
+        eaterEmail: details.email,
+        eaterMobile: details.mobile,
         dealName: order.deal.name,
         heads: order.heads,
         price: order.price,

@@ -37,7 +37,7 @@ const TrackingProvider = ({ children }) => {
   // /////////////////////////////////////// //
   const handleLocationChange = url => {
     // Update analytics page location
-    window.analytics.page();
+    window.analytics.page('Page Viewed');
   };
 
   useEffect(() => {
