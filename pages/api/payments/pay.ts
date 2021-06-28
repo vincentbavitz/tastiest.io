@@ -295,38 +295,18 @@ export default async function pay(
         order.paymentMethod,
       );
 
-      // Update identify with new payment and user-data
-      await analytics.identify({
-        anonymousId,
-        userId: order.userId,
-        traits: {
-          anonymousId,
-          ...details,
-        },
-      });
-
-      analytics.track({
+      // Facebook event only
+      await analytics.track({
         event: 'Order Completed',
-        userId: order.userId,
-        anonymousId,
-        properties: {
-          token,
-          firstName: details.firstName,
-          paidAtDate: moment(booking.paidAt).format('Do MMMM YYYY'),
-          paymentCard: paymentMethod.card,
-          ...order,
-          ...booking,
-
-          user: {
-            ...details,
+        userId: anonymousId,
+        context: {
+          userAgent:
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36',
+          page: {
+            url: 'https://tastiest.io/checkout',
           },
-
-          // Internal measurements
-          tastiestPortion: order.price.final * 0.25, // TODO -> Subtract PROMO,
-          restaurantPortion: order.price.final * 0.75,
-
-          // For Segment's E-Commerse Spec
-          // https://segment.com/docs/connections/spec/ecommerce/v2/#order-completed
+        },
+        properties: {
           checkout_id: order.token,
           order_id: order.id,
           affiliation: '',
@@ -354,6 +334,38 @@ export default async function pay(
           // For Pixel
           email: details.email,
           action_source: 'website',
+        },
+      });
+
+      // Update identify with new payment and user-data
+      await analytics.identify({
+        anonymousId,
+        userId: order.userId,
+        traits: {
+          anonymousId,
+          ...details,
+        },
+      });
+
+      // Internal `Payment Success` event
+      await analytics.track({
+        event: 'Payment Success',
+        userId: order.userId,
+        properties: {
+          token,
+          firstName: details.firstName,
+          paidAtDate: moment(booking.paidAt).format('Do MMMM YYYY'),
+          paymentCard: paymentMethod.card,
+          ...order,
+          ...booking,
+
+          user: {
+            ...details,
+          },
+
+          // Internal measurements
+          tastiestPortion: order.price.final * 0.25, // TODO -> Subtract PROMO,
+          restaurantPortion: order.price.final * 0.75,
         },
       });
 
