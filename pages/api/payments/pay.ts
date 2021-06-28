@@ -290,7 +290,6 @@ export default async function pay(
         .doc(order.id)
         .set(booking);
 
-      // Track payment success
       const paymentMethod = await stripe.paymentMethods.retrieve(
         order.paymentMethod,
       );
@@ -299,7 +298,9 @@ export default async function pay(
       const tastiestPortion = order.price.final * 0.25; // TODO -> Subtract PROMO,
       const restaurantPortion = order.price.final * 0.75;
 
-      // Facebook event only
+      // Track payment success
+      // Track using Segment's Payment Success schema
+      // https://segment.com/docs/connections/spec/ecommerce/v2/#order-completed
       await analytics.track({
         event: 'Order Completed',
         userId: anonymousId,
@@ -363,6 +364,10 @@ export default async function pay(
       await analytics.track({
         event: 'Payment Success',
         userId: order.userId,
+        integrations: {
+          All: true,
+          'Facebook Pixel': false,
+        },
         properties: {
           token,
           firstName: details.firstName,
@@ -380,10 +385,6 @@ export default async function pay(
           restaurantPortion,
         },
       });
-
-      // Order Completed is handled by LittleData's own internal webhook.
-      // littleDataAnalytics.track({
-      // })
 
       response.json({
         success: true,
