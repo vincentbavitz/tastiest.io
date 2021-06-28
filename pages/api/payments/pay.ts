@@ -295,6 +295,10 @@ export default async function pay(
         order.paymentMethod,
       );
 
+      // Internal measurements
+      const tastiestPortion = order.price.final * 0.25; // TODO -> Subtract PROMO,
+      const restaurantPortion = order.price.final * 0.75;
+
       // Facebook event only
       await analytics.track({
         event: 'Order Completed',
@@ -305,6 +309,10 @@ export default async function pay(
           page: {
             url: 'https://tastiest.io/checkout',
           },
+        },
+        integrations: {
+          All: false,
+          'Facebook Pixel': true,
         },
         properties: {
           checkout_id: order.token,
@@ -330,6 +338,10 @@ export default async function pay(
               image_url: order.deal.image.imageUrl,
             },
           ],
+
+          // Internal measurements
+          tastiestPortion,
+          restaurantPortion,
 
           // For Pixel
           email: details.email,
@@ -364,8 +376,8 @@ export default async function pay(
           },
 
           // Internal measurements
-          tastiestPortion: order.price.final * 0.25, // TODO -> Subtract PROMO,
-          restaurantPortion: order.price.final * 0.75,
+          tastiestPortion,
+          restaurantPortion,
         },
       });
 
