@@ -62,6 +62,7 @@ export function useOrder(token: string, initialOrder?: IOrder) {
     shopifyProductId: string,
     anonymousId: string,
     cartToken: string,
+    userAgent: string,
   ) => {
     dlog('useOrder ➡️ paying:');
     dlog('useOrder ➡️ shopifyProductId:', shopifyProductId);
@@ -76,6 +77,7 @@ export function useOrder(token: string, initialOrder?: IOrder) {
       shopifyProductId,
       anonymousId,
       cartToken,
+      userAgent,
     });
 
     dlog('useOrder ➡️ order:', order);

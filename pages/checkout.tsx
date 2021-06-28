@@ -7,6 +7,7 @@ import {
   PAYMENTS,
   postFetch,
 } from '@tastiest-io/tastiest-utils';
+import Analytics from 'analytics-node';
 import { useOrder } from 'hooks/checkout/useOrder';
 import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -34,12 +35,15 @@ const stripePromise = loadStripe(
     : process.env.NEXT_PUBLIC_STRIPE_LIVE_PUBLISHABLE_KEY,
 );
 
+const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
+
 interface Props {
   order: IOrder;
   userId: string | null;
   step: CheckoutStep;
   shopifyProductId: string;
   anonymousId: string;
+  userAgent: string;
   cartToken: string;
 }
 
@@ -55,9 +59,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const shopifyProductId = String(context.query.productId);
   const cartToken = String(context.query.cart_token);
   const anonymousId = String(context.query.anonymousId);
-
-  dlog('checkout ➡️ fromSlug:', fromSlug);
-  dlog('checkout ➡️ dealId:', dealId);
+  const userAgent = String(context.query.userAgent ?? '');
 
   if (isNaN(heads) || heads < 1 || !dealId?.length) {
     return {
@@ -151,8 +153,48 @@ export const getServerSideProps: GetServerSideProps = async context => {
     };
   }
 
+  // Track `Product Added` event for Facebook Pixel and Google Analytics
+  analytics.track({
+    event: 'Product Added',
+    userId: anonymousId,
+    context: {
+      userAgent,
+      page: {
+        url: fromSlug,
+      },
+    },
+    integrations: {
+      All: false,
+      'Facebook Pixel': true,
+      'Facebook Conversions API': true,
+      'Google Analytics': true,
+    },
+    properties: {
+      cart_id: order.token,
+      product_id: order.id,
+      sku: order.id,
+      category: '',
+      name: order.deal.name,
+      brand: '',
+      variant: '',
+      price: order.deal.pricePerHeadGBP,
+      quantity: order.heads,
+      coupon: '',
+      position: 0,
+      url: `https://tastiest.io/r?offer=${order.deal.id}`,
+      image_url: order.deal.image.imageUrl,
+    },
+  });
+
   return {
-    props: { userId: null, anonymousId, order, shopifyProductId, cartToken },
+    props: {
+      userId: null,
+      order,
+      shopifyProductId,
+      cartToken,
+      userAgent,
+      anonymousId,
+    },
   };
 };
 
@@ -160,7 +202,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
  *  and feeds dynamic values into children
  */
 function Checkout(props: Props) {
-  const { shopifyProductId, anonymousId, cartToken } = props;
+  const { shopifyProductId, anonymousId, cartToken, userAgent } = props;
 
   const { isDesktop } = useScreenSize();
   const { order } = useOrder(props.order?.token, props.order);
@@ -211,6 +253,7 @@ function Checkout(props: Props) {
             shopifyProductId={shopifyProductId}
             anonymousId={anonymousId}
             cartToken={cartToken}
+            userAgent={userAgent}
           />
         ) : (
           <CheckoutMobile
@@ -220,6 +263,7 @@ function Checkout(props: Props) {
             shopifyProductId={shopifyProductId}
             anonymousId={anonymousId}
             cartToken={cartToken}
+            userAgent={userAgent}
           />
         )}
       </Elements>
@@ -235,6 +279,7 @@ function CheckoutDesktop(props: Props) {
     shopifyProductId,
     anonymousId,
     cartToken,
+    userAgent,
   } = props;
 
   return (
@@ -250,6 +295,7 @@ function CheckoutDesktop(props: Props) {
             shopifyProductId={shopifyProductId}
             anonymousId={anonymousId}
             cartToken={cartToken}
+            userAgent={userAgent}
           />
         )}
       </div>
@@ -265,6 +311,7 @@ function CheckoutMobile(props: Props) {
     shopifyProductId,
     anonymousId,
     cartToken,
+    userAgent,
   } = props;
 
   return (
@@ -280,6 +327,7 @@ function CheckoutMobile(props: Props) {
             shopifyProductId={shopifyProductId}
             anonymousId={anonymousId}
             cartToken={cartToken}
+            userAgent={userAgent}
           />
         )}
       </div>

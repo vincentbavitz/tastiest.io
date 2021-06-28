@@ -54,6 +54,7 @@ interface Props {
   anonymousId: string;
   shopifyProductId: string;
   cartToken: string;
+  userAgent: string;
 }
 
 type FormData = {
@@ -70,6 +71,7 @@ export function CheckoutStepPayment(props: Props) {
     shopifyProductId,
     anonymousId,
     cartToken,
+    userAgent,
   } = props;
 
   const { user, isSignedIn } = useAuth();
@@ -182,6 +184,7 @@ export function CheckoutStepPayment(props: Props) {
       shopifyProductId,
       anonymousId,
       cartToken,
+      userAgent,
     );
 
     // Uh-oh - a general payment error!

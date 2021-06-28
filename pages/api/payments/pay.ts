@@ -23,6 +23,7 @@ export type PayParams = {
   shopifyProductId: string;
   anonymousId: string;
   cartToken: string;
+  userAgent: string;
 };
 
 export type PayReturn = {
@@ -68,6 +69,7 @@ export default async function pay(
     shopifyProductId = null,
     anonymousId = null,
     cartToken = null,
+    userAgent = '',
   } = body;
 
   // Order token is required
@@ -100,6 +102,7 @@ export default async function pay(
     // Payment expired or already paid
     analytics.track({
       event: 'Payment Error',
+      context: { userAgent },
       userId: order.userId,
       properties: {
         token,
@@ -171,6 +174,7 @@ export default async function pay(
       // Payment failure
       analytics.track({
         event: 'Payment Error',
+        context: { userAgent },
         userId: order.userId,
         properties: {
           token,
@@ -305,8 +309,7 @@ export default async function pay(
         event: 'Order Completed',
         userId: anonymousId,
         context: {
-          userAgent:
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36',
+          userAgent,
           page: {
             url: 'https://tastiest.io/checkout',
           },
@@ -314,6 +317,8 @@ export default async function pay(
         integrations: {
           All: false,
           'Facebook Pixel': true,
+          'Facebook Conversions API': true,
+          'Google Analytics': true,
         },
         properties: {
           checkout_id: order.token,
@@ -364,10 +369,6 @@ export default async function pay(
       await analytics.track({
         event: 'Payment Success',
         userId: order.userId,
-        integrations: {
-          All: true,
-          'Facebook Pixel': false,
-        },
         properties: {
           token,
           firstName: details.firstName,
