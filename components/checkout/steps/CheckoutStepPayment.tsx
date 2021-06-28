@@ -144,6 +144,16 @@ export function CheckoutStepPayment(props: Props) {
     dispatch(setIsPaymentProcessing(true));
     setError(null);
 
+    // Fire off `Payment Info Entered` event following Segment's eCommerce Spec
+    // https://segment.com/docs/connections/spec/ecommerce/v2/#payment-info-entered
+    window.analytics.track('Payment Info Entered', {
+      checkout_id: order.token,
+      order_id: order.id,
+      step: 2,
+      payment_method: cardBrand,
+      user: { ...userData.details },
+    });
+
     const { paymentMethod, error: paymentMethodError } = await addCard(
       cardHolderName,
       cardPostcode,
