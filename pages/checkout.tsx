@@ -87,6 +87,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
       dealId,
       heads,
       fromSlug,
+      userAgent,
       promoCode: null,
       timestamp: Date.now(),
       shopifyProductId,

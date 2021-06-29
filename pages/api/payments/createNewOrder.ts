@@ -15,7 +15,11 @@ import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { calculatePromoPrice, validatePromo } from 'utils/order';
 import { v4 as uuid } from 'uuid';
 
-export type CreateNewOrderParams = IOrderRequest;
+export type CreateNewOrderParams = IOrderRequest & {
+  shopifyProductId?: string;
+  userAgent?: string;
+};
+
 export type CreateNewOrderReturn = {
   token: string;
 };
@@ -59,6 +63,7 @@ export default async function createNewOrder(
     promoCode,
     userId,
     anonymousId,
+    userAgent,
     shopifyProductId,
   } = body;
   const heads = Math.floor(_heads);
@@ -92,26 +97,49 @@ export default async function createNewOrder(
     .doc(order.id)
     .set(order);
 
-  // Track with Segment
+  // Track with Segment following Segment's E-Commerce Spec
+  // https://segment.com/docs/connections/spec/ecommerce/v2/#checkout-started
   const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
+
+  // Use anonymousId for Pixel deduplication from Shopify
   analytics.track({
-    userId: userId ?? anonymousId ?? null,
-    anonymousId: anonymousId ?? null,
     event: 'Checkout Started',
+    userId: anonymousId ?? userId,
+    context: {
+      userAgent,
+      page: {
+        url: fromSlug,
+      },
+    },
     properties: {
       anonymousId,
       shopifyProductId,
       ...order,
       ...orderRequest,
+
+      // Segment E-Commerce Spec
+      order_id: order.id,
+      affiliation: '',
+      value: order.deal.pricePerHeadGBP,
+      shipping: 0,
+      tax: 0,
+      discount: 0,
+      coupon: order.promoCode,
+      currency: order.price.currency,
+      products: [
+        {
+          product_id: order.deal.id,
+          sku: order.deal.id,
+          name: order.deal.name,
+          price: order.deal.pricePerHeadGBP,
+          quantity: order.heads,
+          category: '',
+          url: `https://tastiest.io/r?offer=${order.deal.id}`,
+          image_url: order.deal.image.imageUrl,
+        },
+      ],
     },
   });
-
-  // https://offers.tastiest.io/products/afternoon-tea-and-bottomless-prosecco
-  // https://tastiest.io/checkout?productId=40185498042567&sku=46VXx97nHDkRYyWRNdyybz&heads=7&fromSlug=https://offers.tastiest.io/products/afternoon-tea-and-bottomless-prosecco&anonymousId=18d36457-7f08-4e17-b0b5-0bfb1d36ad2b
-  // http://localhost:3000/checkout?productId=40185498042567&sku=46VXx97nHDkRYyWRNdyybz&heads=7&fromSlug=https://offers.tastiest.io/products/afternoon-tea-and-bottomless-prosecco&anonymousId=18d36457-7f08-4e17-b0b5-0bfb1d36ad2b
-
-  // const eveny: any = {};
-  // const url = `https://tastiest.io/checkout?productId={{ event.shopifyProductId }}&sku={{ event.orderId }}&heads={{ event.heads }}&anonymousId={{ event.anonymousId }}`;
 
   response.json({
     success: true,
