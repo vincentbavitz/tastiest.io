@@ -126,7 +126,11 @@ export default async function register(
 
     // Split into separate sub-functions to run in parallel
     // avoiding awaits.
-    Promise.all([trackPromise(), createStripeCustomerPromise(), setDetails()]);
+    await Promise.all([
+      trackPromise(),
+      createStripeCustomerPromise(),
+      setDetails(),
+    ]);
 
     // Custom token used for signing in.
     // We can then sign in with signInWithCustomToken in useAuth
@@ -137,7 +141,7 @@ export default async function register(
       .status(202)
       .json({ data: { user: userRecord, token }, error: null, success: false });
   } catch (error) {
-    response.json({ data: null, error, success: false });
+    response.json({ data: { user: null, token: null }, error, success: false });
     return;
   }
 }

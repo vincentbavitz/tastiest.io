@@ -12,7 +12,7 @@ import { RegisterParams, RegisterReturn } from 'pages/api/register';
 import { useContext, useState } from 'react';
 import { useFirebase } from 'react-redux-firebase';
 import { LocalEndpoint } from 'types/api';
-import { AuthContext } from '../contexts/auth';
+import { AuthContext, AuthError } from '../contexts/auth';
 import { useUserData } from './useUserData';
 
 export const useAuth = () => {
@@ -88,25 +88,22 @@ export const useAuth = () => {
     password: string,
     firstName?: string,
   ) => {
-    _setError(null);
-
-    dlog('useAuth ➡️ email:', email);
-    dlog('useAuth ➡️ password:', password);
-    dlog('useAuth ➡️ firstName:', firstName);
-
     try {
-      const { data: { user = null, token = null } = {} } = await postFetch<
-        RegisterParams,
-        RegisterReturn
-      >(LocalEndpoint.REGISTER, {
-        email,
-        password,
-        firstName: firstName ?? null,
-        userAgent: navigator?.userAgent ?? null,
-      });
+      const {
+        data: { user = null, token = null } = {},
+        error,
+      } = await postFetch<RegisterParams, RegisterReturn>(
+        LocalEndpoint.REGISTER,
+        {
+          email,
+          password,
+          firstName: firstName ?? null,
+          userAgent: navigator?.userAgent ?? null,
+        },
+      );
 
-      if (!user || !token) {
-        return { user: null };
+      if (error) {
+        return { user: null, error: (error as unknown) as AuthError };
       }
 
       // User has accepted cookies implicitly
@@ -117,8 +114,7 @@ export const useAuth = () => {
 
       return { user };
     } catch (error) {
-      setError(error);
-      return { user: null };
+      return { user: null, error };
     }
   };
 

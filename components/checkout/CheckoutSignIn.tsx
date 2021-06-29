@@ -1,4 +1,5 @@
 import { Button } from '@tastiest-io/tastiest-components';
+import { AuthError, AuthErrorMessageMap } from 'contexts/auth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -46,6 +47,13 @@ export function CheckoutSignIn() {
       >
         Sign in to Proceed to Checkout
       </Button>
+
+      {error && (
+        <div className="mb-1 -mt-1 text-sm text-center text-black">
+          {AuthErrorMessageMap[((error as unknown) as AuthError).code]
+            ?.userFacingMessage ?? String(error)}
+        </div>
+      )}
 
       {!isDesktop && (
         <div className="flex justify-center">

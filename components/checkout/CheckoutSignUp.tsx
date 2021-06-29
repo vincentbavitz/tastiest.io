@@ -2,6 +2,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import { UserIcon } from '@tastiest-io/tastiest-icons';
 import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
+import { AuthError, AuthErrorMessageMap } from 'contexts/auth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -55,16 +56,19 @@ export function CheckoutSignUp() {
 
     setError('');
     setLoading(true);
-    const { user } = await signUp(signUpEmail, signUpPassword0, signUpName);
-    if (!user?.uid) {
-      setLoading(false);
-    }
 
-    dlog('error', firebaseAuthError);
+    const { user, error } = await signUp(
+      signUpEmail,
+      signUpPassword0,
+      signUpName,
+    );
+
+    setError(error);
+    setLoading(false);
 
     if (user?.uid) {
       // Track sign up from checkout
-      window.analytics.track('User Sign-up From Checkout', {
+      window.analytics.track('User Signed Up', {
         userId: user.uid,
       });
 
@@ -143,6 +147,15 @@ export function CheckoutSignUp() {
           'Sign up to Proceed to Checkout'
         )}
       </Button>
+
+      {error && (
+        <div className="mb-1 -mt-1 text-sm text-center text-red-700">
+          {
+            AuthErrorMessageMap[((error as unknown) as AuthError).code]
+              ?.userFacingMessage
+          }
+        </div>
+      )}
     </>
   );
 }
