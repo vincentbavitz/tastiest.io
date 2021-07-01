@@ -130,7 +130,7 @@ export function SignInModal() {
         size="large"
         type="solid"
         color="primary"
-        onClick={() => signIn(signInEmail, signInPassword)}
+        onClick={() => signIn(signInEmail, signInPassword, '')}
       >
         Sign In
       </Button>

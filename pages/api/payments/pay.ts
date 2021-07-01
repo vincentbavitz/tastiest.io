@@ -308,7 +308,7 @@ export default async function pay(
       // https://segment.com/docs/connections/spec/ecommerce/v2/#order-completed
       await analytics.track({
         event: 'Order Completed',
-        userId: anonymousId,
+        userId: order.userId,
         context: {
           userAgent,
           page: {
@@ -354,13 +354,6 @@ export default async function pay(
           email: details.email,
           action_source: 'website',
         },
-      });
-
-      // Update identify with new payment and user-data
-      await analytics.identify({
-        userId: order.userId,
-        email: details.email,
-        ...details,
       });
 
       // Internal `Payment Success` event

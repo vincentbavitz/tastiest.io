@@ -6,7 +6,6 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
 import { NextApiRequest, NextApiResponse } from 'next';
-import Stripe from 'stripe';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 
 export interface RegisterParams {
@@ -32,15 +31,6 @@ export default async function register(
   }
 
   const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
-  const stripe = new Stripe(
-    process.env.NODE_ENV === 'production'
-      ? process.env.STRIPE_LIVE_SECRET_KEY
-      : process.env.STRIPE_TEST_SECRET_KEY,
-    {
-      apiVersion: '2020-08-27',
-    },
-  );
-
   const role = UserRole.EATER;
 
   // Doesn't matter if JSON encoded or not
@@ -112,28 +102,9 @@ export default async function register(
       });
     };
 
-    const createStripeCustomerPromise = async () => {
-      //  When a user is created, create a Stripe customer object for them.
-      // https://stripe.com/docs/payments/save-and-reuse#web-create-customer
-      const customer = await stripe.customers.create({ email });
-      const intent = await stripe.setupIntents.create({
-        customer: customer.id,
-      });
-
-      // Set setup secret etc
-      userDataApi.setUserData(UserData.PAYMENT_DETAILS, {
-        stripeCustomerId: customer.id,
-        stripeSetupSecret: intent.client_secret,
-      });
-    };
-
     // Split into separate sub-functions to run in parallel
     // avoiding awaits.
-    await Promise.all([
-      trackPromise(),
-      createStripeCustomerPromise(),
-      setDetails(),
-    ]);
+    await Promise.all([trackPromise(), setDetails()]);
 
     // Custom token used for signing in.
     // We can then sign in with signInWithCustomToken in useAuth

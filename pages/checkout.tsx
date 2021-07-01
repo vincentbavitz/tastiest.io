@@ -228,6 +228,9 @@ function Checkout(props: Props) {
         userId: user.uid,
         anonymousId: anonymousId ?? null,
         email: user.email,
+        context: {
+          userAgent: navigator?.userAgent,
+        },
       });
     }
 

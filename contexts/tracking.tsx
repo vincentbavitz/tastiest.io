@@ -1,6 +1,6 @@
 import { useAuth } from 'hooks/useAuth';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useLocalStorage } from 'react-use';
 
 export enum LocalStorageItem {
@@ -35,16 +35,16 @@ const TrackingProvider = ({ children }) => {
   // /////////////////////////////////////// //
   //  Manange location changes with Segment  //
   // /////////////////////////////////////// //
-  const handleLocationChange = url => {
-    // Update analytics page location
-    window.analytics.page('Page Viewed');
-  };
+  // const handleLocationChange = url => {
+  //   // Update analytics page location
+  //   window.analytics.page('Page Viewed');
+  // };
 
-  useEffect(() => {
-    handleLocationChange(router.route);
-    router.events.on('routeChangeComplete', handleLocationChange);
-    return () => router.events.off('routeChangeComplete', handleLocationChange);
-  }, []);
+  // useEffect(() => {
+  //   handleLocationChange(router.route);
+  //   router.events.on('routeChangeComplete', handleLocationChange);
+  //   return () => router.events.off('routeChangeComplete', handleLocationChange);
+  // }, []);
 
   return (
     <TrackingContext.Provider value={hasAcceptedAnalytics}>
