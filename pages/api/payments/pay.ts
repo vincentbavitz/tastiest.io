@@ -358,8 +358,9 @@ export default async function pay(
       // Update identify with new payment and user-data
       await analytics.identify({
         anonymousId,
-        userId: order.userId,
         traits: {
+          userId: order.userId,
+          email: details.email,
           anonymousId,
           ...details,
         },

@@ -224,7 +224,11 @@ function Checkout(props: Props) {
       setUserId(user.uid);
 
       // Identify user with Segment, coming from Shopify
-      window.analytics.identify(user.uid, { anonymousId: anonymousId ?? null });
+      window.analytics.identify(user.uid, {
+        userId: user.uid,
+        email: user.email,
+        anonymousId: anonymousId ?? null,
+      });
     }
 
     // Purge invalid session when useAuth has finished

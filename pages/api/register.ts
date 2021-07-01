@@ -91,10 +91,11 @@ export default async function register(
       await analytics.identify({
         userId: userRecord?.uid,
         traits: {
+          userId: userRecord?.uid,
+          email: userRecord?.email,
           firstName,
-          email,
-          context: { userAgent },
         },
+        context: { userAgent },
       });
 
       // No need to await tracking after we've identified them

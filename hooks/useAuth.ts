@@ -61,9 +61,8 @@ export const useAuth = () => {
 
         // Identify user with Segment
         window.analytics.identify(credential.user.uid, {
-          traits: {
-            email: user.email,
-          },
+          userId: credential.user.uid,
+          email: user.email,
           context: {
             userAgent: navigator?.userAgent,
           },
