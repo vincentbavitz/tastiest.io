@@ -31,7 +31,11 @@ export const useAuth = () => {
     _setError(error);
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (
+    email: string,
+    password: string,
+    anonymousId: string,
+  ) => {
     _setError(null);
     if (!email?.length || !password?.length) {
       return;
@@ -60,7 +64,7 @@ export const useAuth = () => {
         localStorage.setItem(LocalStorageItem.HAS_ACCEPTED_COOKIES, '1');
 
         // Identify user with Segment
-        window.analytics.identify(credential.user.uid, {
+        window.analytics.identify(anonymousId, {
           userId: credential.user.uid,
           email: user.email,
           context: {
@@ -86,7 +90,10 @@ export const useAuth = () => {
     email: string,
     password: string,
     firstName?: string,
+    anonymousId?: string,
   ) => {
+    dlog('useAuth ➡️ anonymousId:', anonymousId);
+
     try {
       const {
         data: { user = null, token = null } = {},
@@ -96,6 +103,7 @@ export const useAuth = () => {
         {
           email,
           password,
+          anonymousId: anonymousId ?? null,
           firstName: firstName ?? null,
           userAgent: navigator?.userAgent ?? null,
         },

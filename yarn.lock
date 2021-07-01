@@ -2038,13 +2038,6 @@
   resolved "https://registry.yarnpkg.com/@ndhoule/keys/-/keys-2.0.0.tgz"
   integrity sha1-PWSuZ3xlomF0e/OkV8YuspKk4M4=
 
-"@ndhoule/map@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@ndhoule/map/-/map-2.0.1.tgz"
-  integrity sha1-9coKR0JOpn9G4qbUmbnpvIhq76g=
-  dependencies:
-    "@ndhoule/each" "^2.0.1"
-
 "@ndhoule/pick@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@ndhoule/pick/-/pick-2.0.0.tgz#e1eb1a6ca3243eef56daa095c3a1612c74a52156"
@@ -2274,13 +2267,6 @@
     has-cors "^1.1.0"
     json3 "^3.3.2"
     jsonp "^0.2.0"
-
-"@segment/snippet@^4.13.1":
-  version "4.13.1"
-  resolved "https://registry.yarnpkg.com/@segment/snippet/-/snippet-4.13.1.tgz"
-  integrity sha512-Z4HCHb/aLX9+92DI8PUUovLLFoKowCrq4IXHjyrXE24Y8ZKRoEiFW8IZKYZ3yEkfS2z54UKDHDJ/NxNNmZMU1Q==
-  dependencies:
-    "@ndhoule/map" "^2.0.1"
 
 "@segment/store@^1.3.20":
   version "1.3.20"
@@ -10467,6 +10453,11 @@ node-int64@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
   integrity sha1-h6kGXNs1XTGC2PlM4RGIuCXGijs=
+
+node-klaviyo@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/node-klaviyo/-/node-klaviyo-1.1.1.tgz#ab716be9764442d88315110d95de87cd3a17ae7a"
+  integrity sha512-GunMtQo0HKC8yT557WVBzRvz/B00mpeE/ILxghN4E8PCmAG4NdYqbX+QgneCr/1iVWFTjbynBZgIYPVpaAyEzg==
 
 node-libs-browser@^2.2.1:
   version "2.2.1"

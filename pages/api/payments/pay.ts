@@ -357,13 +357,9 @@ export default async function pay(
 
       // Update identify with new payment and user-data
       await analytics.identify({
-        anonymousId,
-        traits: {
-          userId: order.userId,
-          email: details.email,
-          anonymousId,
-          ...details,
-        },
+        userId: order.userId,
+        email: details.email,
+        ...details,
       });
 
       // Internal `Payment Success` event
@@ -372,6 +368,7 @@ export default async function pay(
         userId: order.userId,
         properties: {
           token,
+          email: details.email,
           firstName: details.firstName,
           paidAtDate: moment(booking.paidAt).format('Do MMMM YYYY'),
           paymentCard: paymentMethod.card,

@@ -16,7 +16,13 @@ import { InputEmail } from '../inputs/InputEmail';
 import { InputPassword } from '../inputs/InputPassword';
 import { SignInTosInfo } from '../SignInTosInfo';
 
-export function CheckoutSignUp() {
+interface Props {
+  anonymousId: string;
+}
+
+export function CheckoutSignUp(props: Props) {
+  const { anonymousId } = props;
+
   const {
     signUp,
     resetPassword,
@@ -61,19 +67,11 @@ export function CheckoutSignUp() {
       signUpEmail,
       signUpPassword0,
       signUpName,
+      anonymousId,
     );
 
     setError(error);
     setLoading(false);
-
-    if (user?.uid) {
-      // Track sign up from checkout
-      window.analytics.track('User Signed Up', {
-        userId: user.uid,
-      });
-
-      return;
-    }
   };
 
   dlog('CheckoutSignUCheckoutSignUp ➡️ firebaseAuthError:', firebaseAuthError);

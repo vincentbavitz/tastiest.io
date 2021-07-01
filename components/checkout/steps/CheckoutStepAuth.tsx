@@ -15,6 +15,7 @@ import { CheckoutSignUp } from '../CheckoutSignUp';
 
 interface Props {
   order: IOrder;
+  anonymousId: string;
 }
 
 export function CheckoutStepAuth(props: Props) {
@@ -27,7 +28,7 @@ export function CheckoutStepAuth(props: Props) {
   );
 }
 
-const CheckoutStepAuthDesktop = ({ order }: Props) => {
+const CheckoutStepAuthDesktop = ({ order, anonymousId }: Props) => {
   const { signInTabSelected: tab } = useSelector(
     (state: IState) => state.checkout,
   );
@@ -51,9 +52,9 @@ const CheckoutStepAuthDesktop = ({ order }: Props) => {
         <CheckoutAuthTabs />
 
         {tab === CheckoutSignInTabSelected.NEW_USER ? (
-          <CheckoutSignUp />
+          <CheckoutSignUp anonymousId={anonymousId} />
         ) : (
-          <CheckoutSignIn />
+          <CheckoutSignIn anonymousId={anonymousId} />
         )}
       </div>
 
@@ -74,7 +75,7 @@ const CheckoutStepAuthDesktop = ({ order }: Props) => {
   );
 };
 
-const CheckoutStepAuthMobile = ({ order }: Props) => {
+const CheckoutStepAuthMobile = ({ order, anonymousId }: Props) => {
   const { signInTabSelected: tab } = useSelector(
     (state: IState) => state.checkout,
   );
@@ -115,8 +116,12 @@ const CheckoutStepAuthMobile = ({ order }: Props) => {
       <div className="flex flex-col pb-24 space-y-4">
         <CheckoutAuthTabs />
 
-        {tab === CheckoutSignInTabSelected.NEW_USER && <CheckoutSignUp />}
-        {tab === CheckoutSignInTabSelected.HAS_ACCOUNT && <CheckoutSignIn />}
+        {tab === CheckoutSignInTabSelected.NEW_USER && (
+          <CheckoutSignUp anonymousId={anonymousId} />
+        )}
+        {tab === CheckoutSignInTabSelected.HAS_ACCOUNT && (
+          <CheckoutSignIn anonymousId={anonymousId} />
+        )}
       </div>
     </div>
   );

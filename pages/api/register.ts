@@ -14,6 +14,7 @@ export interface RegisterParams {
   password: string;
   firstName: string | null;
   userAgent: string | null;
+  anonymousId: string | null;
 }
 
 export type RegisterReturn = {
@@ -50,7 +51,7 @@ export default async function register(
     body = request.body;
   }
 
-  const { email, password, firstName, userAgent } = body;
+  const { email, password, firstName, userAgent, anonymousId } = body;
 
   if (!email?.length || !password?.length) {
     response.json({
@@ -88,8 +89,9 @@ export default async function register(
 
     const trackPromise = async () => {
       // Track sign up.
+
       await analytics.identify({
-        userId: userRecord?.uid,
+        anonymousId,
         traits: {
           userId: userRecord?.uid,
           email: userRecord?.email,

@@ -224,10 +224,10 @@ function Checkout(props: Props) {
       setUserId(user.uid);
 
       // Identify user with Segment, coming from Shopify
-      window.analytics.identify(user.uid, {
+      window.analytics.identify(anonymousId, {
         userId: user.uid,
-        email: user.email,
         anonymousId: anonymousId ?? null,
+        email: user.email,
       });
     }
 
@@ -292,7 +292,9 @@ function CheckoutDesktop(props: Props) {
       <div className="relative flex flex-col w-full mt-12 space-y-10">
         <CheckoutStepIndicator step={step} />
 
-        {step === CheckoutStep.SIGN_IN && <CheckoutStepAuth order={order} />}
+        {step === CheckoutStep.SIGN_IN && (
+          <CheckoutStepAuth anonymousId={anonymousId} order={order} />
+        )}
         {step === CheckoutStep.PAYMENT && (
           <CheckoutStepPayment
             userId={userId}
@@ -324,7 +326,9 @@ function CheckoutMobile(props: Props) {
       <div className="relative flex flex-col w-full mt-12 space-y-10">
         <CheckoutStepIndicator step={step} />
 
-        {step === CheckoutStep.SIGN_IN && <CheckoutStepAuth order={order} />}
+        {step === CheckoutStep.SIGN_IN && (
+          <CheckoutStepAuth anonymousId={anonymousId} order={order} />
+        )}
         {step === CheckoutStep.PAYMENT && (
           <CheckoutStepPayment
             userId={userId}

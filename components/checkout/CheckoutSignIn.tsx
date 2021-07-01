@@ -12,7 +12,13 @@ import { useAuth } from '../../hooks/useAuth';
 import { InputEmail } from '../inputs/InputEmail';
 import { InputPassword } from '../inputs/InputPassword';
 
-export function CheckoutSignIn() {
+interface Props {
+  anonymousId: string;
+}
+
+export function CheckoutSignIn(props: Props) {
+  const { anonymousId } = props;
+
   const { isDesktop } = useScreenSize();
 
   const { signIn, error } = useAuth();
@@ -43,7 +49,7 @@ export function CheckoutSignIn() {
         size="large"
         type="solid"
         color="primary"
-        onClick={() => signIn(signInEmail, signInPassword)}
+        onClick={() => signIn(signInEmail, signInPassword, anonymousId)}
       >
         Sign in to Proceed to Checkout
       </Button>

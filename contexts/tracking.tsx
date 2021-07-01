@@ -25,12 +25,12 @@ const TrackingProvider = ({ children }) => {
     isSignedIn || hasAcceptedCookies,
   );
 
-  useEffect(() => {
-    if (!hasAcceptedAnalytics) {
-      window.analytics?.off();
-      setHasAcceptedAnalytics(false);
-    }
-  }, [isSignedIn, hasAcceptedCookies]);
+  // useEffect(() => {
+  //   if (!hasAcceptedAnalytics) {
+  //     window.analytics?.off();
+  //     setHasAcceptedAnalytics(false);
+  //   }
+  // }, [isSignedIn, hasAcceptedCookies]);
 
   // /////////////////////////////////////// //
   //  Manange location changes with Segment  //
