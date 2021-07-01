@@ -241,6 +241,8 @@ const buildOrder = async (orderRequest: IOrderRequest) => {
     paidAt: null,
     abandonedAt: null,
     refund: null,
+
+    isTest: process.env.NODE_ENV === 'development',
   };
 
   return order;

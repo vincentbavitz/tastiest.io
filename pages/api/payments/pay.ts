@@ -286,6 +286,7 @@ export default async function pay(
         cancelledAt: null,
         confirmationCode: generateConfirmationCode(),
         isConfirmationCodeVerified: false,
+        isTest: process.env.NODE_ENV === 'development',
       };
 
       firebaseAdmin

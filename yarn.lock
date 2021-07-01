@@ -2578,14 +2578,29 @@
   resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.24.0/d9451e8f78ac4f0a4172b2dcb5c268308de93a450ce0e5e9558b210667d22248#ece4ade86e9bd8343401e9a802f52200666cc04f"
   integrity sha512-TnkOoS2qq8WqLGtBCIAAvImfkYSyZ33J+CN0gdIPEiCjl1NoPgDr0Iph4LxVMFQiMuD6Z9rDqydI9ntxYY9yfA==
 
-"@tastiest-io/tastiest-utils@^0.141.0":
-  version "0.141.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.141.0/46eadfd2d022cedeca2c6677db6b140670380ae5c21201ea01e02b1dfd957678#167f30d9e0af2b37bf7a62f614caed93ac7eafab"
-  integrity sha512-+OcS3wfYdRZ29uKgJ3SxOc8ULBP4UaZRpgE5rmPROZFSfaCEUjmHKyxVKTyvz3yvrnJOlQnGYypC6LWa+eiQXA==
+"@tastiest-io/tastiest-utils@^0.143.0":
+  version "0.143.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.143.0/227bbec507c7a42e24d835a99dac32eec90f389c7eb2eb0d2501a51b17425091#b520422398b875ae185360b3c16795d034e0164f"
+  integrity sha512-EXHwJkDBSXW/TaZIdVYDO6YJfE851NvbbjaEKCl3rnxpDSZh/ts9+2d8ftKlE8d4OpvkYerTVuEC9aMkFlZ4cw==
   dependencies:
     "@contentful/rich-text-types" "^14.1.2"
     "@shopify/shopify-api" "^1.4.0"
     "@stripe/stripe-js" "^1.13.2"
+    "@types/react" "^17.0.3"
+    contentful "^8.2.1"
+    firebase-admin "^9.6.0"
+    moment "^2.29.1"
+    stripe "^8.143.0"
+
+"@tastiest-io/tastiest-utils@^0.144.0":
+  version "0.144.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.144.0/4fa0649decbdf2caf968d61686893d4459d2a296642874a6c50e6600a9c41ce7#dcb7c0516832ff65f57246e6f3de589990cd702c"
+  integrity sha512-pTE8LNEeUQuV7mofcuwTIR+M+PXYegDVYpM3STVLJpEQPEIESVy91uDFerW7NsjP3DN0acWuE7LsOTPjOUBwjA==
+  dependencies:
+    "@contentful/rich-text-types" "^14.1.2"
+    "@shopify/shopify-api" "^1.4.0"
+    "@stripe/stripe-js" "^1.13.2"
+    "@tastiest-io/tastiest-utils" "^0.143.0"
     "@types/react" "^17.0.3"
     contentful "^8.2.1"
     firebase-admin "^9.6.0"
