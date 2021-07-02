@@ -147,7 +147,6 @@ export default async function updateOrder(
     }
 
     // Validate payment method and add if valid
-    console.log('adfasfd');
     if (paymentMethodId && paymentMethodId?.length) {
       dlog('updateOrder ➡️ paymentMethodId:', paymentMethodId);
 
@@ -158,9 +157,9 @@ export default async function updateOrder(
       };
 
       const stripe = new Stripe(
-        process.env.NODE_ENV === 'production'
-          ? process.env.STRIPE_LIVE_SECRET_KEY
-          : process.env.STRIPE_TEST_SECRET_KEY,
+        process.env.NODE_ENV === 'development'
+          ? process.env.STRIPE_TEST_SECRET_KEY
+          : process.env.STRIPE_LIVE_SECRET_KEY,
         {
           apiVersion: '2020-08-27',
         },
