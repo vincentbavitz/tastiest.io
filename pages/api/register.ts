@@ -30,8 +30,9 @@ export default async function register(
     response.status(405).end();
   }
 
-  const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
   const role = UserRole.EATER;
+  const isTestAccount = process.env.NODE_ENV === 'development';
+  const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
 
   // Doesn't matter if JSON encoded or not
   let body;
@@ -61,13 +62,13 @@ export default async function register(
     });
 
     const userDataApi = new UserDataApi(firebaseAdmin, userRecord.uid);
-
-    const setDetails = () => {
+    const setDetails = async () => {
       // Set custom user claim (user role) to `eater`
       // (as apposed to `restaurant`, `admin`).
       // This is used in authentication etc.
-      firebaseAdmin.auth().setCustomUserClaims(userRecord?.uid, {
+      await firebaseAdmin.auth().setCustomUserClaims(userRecord?.uid, {
         [UserRole.EATER]: true,
+        isTestAccount,
       });
 
       // Set firstName if it was given
@@ -79,7 +80,6 @@ export default async function register(
 
     const trackPromise = async () => {
       // Track sign up.
-
       await analytics.identify({
         anonymousId,
         traits: {

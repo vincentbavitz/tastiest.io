@@ -13,7 +13,6 @@ import {
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
-import moment from 'moment';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
@@ -226,17 +225,10 @@ export default async function pay(
             ? stripeConnectedAccount.id
             : process.env.STRIPE_TEST_CONNECTED_ACCOUNT_ID,
       },
-      // Temporarily used for Shopify webhook syncing
-      description: JSON.stringify({
-        title: order.deal.name,
-        quantity: order.heads,
-        unitPrice: order.deal.pricePerHeadGBP,
-        restaurantPhone: order.deal.restaurant.publicPhoneNumber,
-        restaurantAddress: order.deal.restaurant.location.address,
-        shopifyProductId,
-        anonymousId,
-        cartToken,
-      }),
+      // Used to manage Stripe Webhooks like `onPaymentSuccessWebhook`
+      metadata: {
+        orderId: order.id,
+      },
     });
 
     // ////////////////////////////////////////////////////
@@ -295,10 +287,6 @@ export default async function pay(
         .doc(order.id)
         .set(booking);
 
-      const paymentMethod = await stripe.paymentMethods.retrieve(
-        order.paymentMethod,
-      );
-
       // Internal measurements
       const tastiestPortion = order.price.final * 0.25; // TODO -> Subtract PROMO,
       const restaurantPortion = order.price.final * 0.75;
@@ -353,29 +341,6 @@ export default async function pay(
           // For Pixel
           email: details.email,
           action_source: 'website',
-        },
-      });
-
-      // Internal `Payment Success` event
-      await analytics.track({
-        event: 'Payment Success',
-        userId: order.userId,
-        properties: {
-          token,
-          email: details.email,
-          firstName: details.firstName,
-          paidAtDate: moment(booking.paidAt).format('Do MMMM YYYY'),
-          paymentCard: paymentMethod.card,
-          ...order,
-          ...booking,
-
-          user: {
-            ...details,
-          },
-
-          // Internal measurements
-          tastiestPortion,
-          restaurantPortion,
         },
       });
 
