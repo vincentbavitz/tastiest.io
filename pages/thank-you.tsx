@@ -2,17 +2,18 @@ import { Button } from '@tastiest-io/tastiest-components';
 import { PhoneIcon } from '@tastiest-io/tastiest-icons';
 import {
   FirestoreCollection,
+  IBooking,
   IOrder,
-  SVG,
   UserData,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
-import { useDevice } from 'hooks/useDevice';
+import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetServerSidePropsType } from 'next';
-import { ThankYouHero, ThankYouPhone } from 'public/assets/page';
+import { ThankYouFood, ThankYouHero, ThankYouPhone } from 'public/assets/page';
 import React, { ReactNode } from 'react';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { v4 as uuid } from 'uuid';
 import { Contained } from '../components/Contained';
 
 export const getServerSideProps = async context => {
@@ -32,7 +33,7 @@ export const getServerSideProps = async context => {
   // Get order, given our order ID.s
   // If the order exists, /api/payments/createNewOrder
   // has already verified that it's valid.
-  const snapshot = await firebaseAdmin
+  const orderSnapshot = await firebaseAdmin
     .firestore()
     .collection(FirestoreCollection.ORDERS)
     .where('token', '==', token)
@@ -40,10 +41,19 @@ export const getServerSideProps = async context => {
     .get();
 
   let order: IOrder;
-  snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
+  orderSnapshot.docs.forEach(doc => (order = doc.data() as IOrder));
+
+  // Get the corresponding booking
+  const bookingSnapshot = await firebaseAdmin
+    .firestore()
+    .collection(FirestoreCollection.BOOKINGS)
+    .doc(order.id)
+    .get();
+
+  const booking = bookingSnapshot.data() as IBooking;
 
   // Redirect if user somehow got to this state of no order request.
-  if (!order || !order.paidAt) {
+  if (!order || !order.paidAt || !booking) {
     return {
       redirect: {
         // TODO -> Destination should be /city/cuisine/slug
@@ -57,28 +67,26 @@ export const getServerSideProps = async context => {
   const userDetails = await userDataApi.getUserData(UserData.DETAILS);
 
   return {
-    props: { firstName: userDetails?.firstName, order },
+    props: { firstName: userDetails?.firstName, order, booking },
   };
 };
 
 function ThankYou(
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) {
-  const { firstName, order } = props;
+  const { firstName, order, booking } = props;
   const { isDesktop } = useScreenSize();
-
-  const { isTouchDevice } = useDevice();
 
   return (
     <Contained>
-      <div className="flex flex-col items-center w-full mt-6 mb-20 space-y-20">
+      <div className="flex flex-col items-center w-full mt-6 mb-20 space-y-16">
         <div
           style={{
             maxWidth: '40rem',
           }}
           className="flex flex-col items-center w-full tablet:flex-row"
         >
-          <div className="flex justify-start order-last w-full tablet:order-first">
+          <div className="flex justify-center order-last w-full tablet:justify-start tablet:order-first">
             <ThankYouHero
               style={{
                 maxWidth: '300px',
@@ -98,64 +106,64 @@ function ThankYou(
           </div>
         </div>
 
+        <h2 className="w-full pt-6 pb-4 text-4xl text-center border-b-2 border-secondary font-somatic">
+          What's next?
+        </h2>
+
         <BookingSection
-          title="Book via the Restaurant's Phone line"
-          button={
-            <a href={`tel:${order.deal.restaurant?.publicPhoneNumber}`}>
-              <Button
-                size="large"
-                round
-                prefix={<PhoneIcon className="h-8 text-white fill-current" />}
-              >
-                {isTouchDevice
-                  ? 'Phone Booking'
-                  : order.deal.restaurant?.publicPhoneNumber ?? 'Phone Booking'}
-              </Button>
-            </a>
-          }
-          bookingSvg={ThankYouPhone}
+          title={`Book with ${booking.restaurant.name}`}
+          step={1}
+          figure={<ThankYouPhone className="w-full h-full" />}
           promptText={
             <p>
-              Call{' '}
-              {order.deal.restaurant?.publicPhoneNumber ?? 'the restaurant'} and
-              quote <b>"Tastiest"</b> when you book to get this offer!
+              Let them know you bought with <b>Tastiest</b> when you book.
             </p>
           }
-        />
+        >
+          <a href={`tel:${order.deal.restaurant?.publicPhoneNumber}`}>
+            <Button
+              size="large"
+              round
+              prefix={<PhoneIcon className="h-8 text-white fill-current" />}
+            >
+              {order.deal.restaurant?.publicPhoneNumber}
+            </Button>
+          </a>
+        </BookingSection>
 
-        {/* {order.deal.restaurant.bookingSystemSite && (
-          <BookingSection
-            title="Book via the Restaurant's online booking system"
-            button={
-              <a
-                href={
-                  order.deal.restaurant?.bookingSystemSite ??
-                  order.deal.restaurant.website
-                }
-              >
-                <Button
-                  size="large"
-                  round
-                  prefix={<MouseIcon className="h-8" />}
+        <BookingSection
+          title="Redeem with your booking code"
+          step={2}
+          promptText={
+            <p>
+              Simply let {booking.restaurant.name} know your 4 digit booking
+              code when you arrive.
+            </p>
+          }
+          figure={
+            <div className="flex space-x-2">
+              {booking.confirmationCode.split('').map(digit => (
+                <div
+                  key={uuid()}
+                  style={{ minWidth: '3rem' }}
+                  className="flex items-center justify-center flex-1 h-16 text-3xl rounded-lg font-somatic bg-secondary-2"
                 >
-                  Book Online
-                </Button>
-              </a>
-            }
-            bookingSvg={ThankYouOnline}
-            promptText={
-              <p>
-                Book online and mention
-                <b>"Tastiest"</b> in your order notes to get this offer!
-              </p>
-            }
-          />
-        )} */}
+                  {digit}
+                </div>
+              ))}
+            </div>
+          }
+        ></BookingSection>
+
+        <BookingSection
+          title={`Enjoy your food!`}
+          step={3}
+          figure={<ThankYouFood className="w-full h-full" />}
+        />
 
         <Contained maxWidth={800}>
           <div className="w-full h-0 border-b-4 border-secondary"></div>
         </Contained>
-
         <div className="flex justify-center w-full">
           <a href="https://offers.tastiest.io">
             <Button size="large" className="text-2xl font-somatic" round>
@@ -170,60 +178,57 @@ function ThankYou(
 
 interface BookingSectionProps {
   title: string;
-  button: JSX.Element;
-  promptText: ReactNode;
-  bookingSvg: SVG;
+  step: number;
+  figure: ReactNode;
+  children?: ReactNode;
+  promptText?: ReactNode;
 }
 
 function BookingSection(props: BookingSectionProps) {
-  const { title, promptText, button } = props;
+  const { step, title, figure, promptText, children } = props;
 
   const { isDesktop } = useScreenSize();
 
   return (
-    <div className="flex flex-col space-x-6">
-      <div className="flex flex-row items-start justify-center space-x-6 mobile:items-center">
-        <div className="flex flex-col items-start">
+    <div className="">
+      <div className="flex flex-col items-center justify-center tablet:flex-row">
+        <div
+          style={{
+            width: isDesktop ? '16rem' : '13rem',
+            minHeight: '8rem',
+          }}
+          className="relative flex items-end justify-center w-full tablet:items-center"
+        >
+          {figure}
+          <div className="absolute top-0 left-0 flex items-center justify-center w-8 h-8 mt-6 -ml-4 text-xl font-bold text-white rounded-full bg-secondary-1">
+            {step}
+          </div>
+        </div>
+
+        <div className={clsx('flex-grow', isDesktop && 'pl-10')}>
           <h2
-            style={{ maxWidth: !isDesktop ? '16rem' : '13rem' }}
-            className="text-2xl leading-tight font-somatic mobile:text-3xl"
+            style={{ width: !isDesktop ? 'auto' : '11em' }}
+            className="pt-4 text-2xl leading-tight text-center tablet:pt-0 font-somatic mobile:text-2xl tablet:text-left"
           >
             {title}
           </h2>
 
-          {!!isDesktop && (
-            <div className="pt-4">
-              {button}
+          {(promptText || children) && (
+            <div className="flex flex-col items-center tablet:items-start">
+              {children ? <div className="pt-4 pb-2">{children}</div> : null}
 
-              <p style={{ maxWidth: '15rem' }} className="pt-4">
-                {promptText}
-              </p>
+              <div>
+                <p
+                  style={{ maxWidth: isDesktop ? '17.5rem' : 'auto' }}
+                  className="pt-2 text-center tablet:text-left"
+                >
+                  {promptText}
+                </p>
+              </div>
             </div>
           )}
         </div>
-
-        <div
-          style={{
-            maxWidth: '16rem',
-          }}
-          className="flex items-start w-full -mt-6"
-        >
-          <props.bookingSvg className="w-full h-full" />
-        </div>
       </div>
-
-      {!isDesktop && (
-        <div className="flex flex-col items-center pt-8 space-y-4">
-          {button}
-
-          <span
-            style={{ maxWidth: '20rem' }}
-            className="mt-6 text-lg text-center"
-          >
-            {promptText}
-          </span>
-        </div>
-      )}
     </div>
   );
 }

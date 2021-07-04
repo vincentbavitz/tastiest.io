@@ -63,13 +63,7 @@ export default async function pay(
     body = request.body;
   }
 
-  const {
-    token = null,
-    shopifyProductId = null,
-    anonymousId = null,
-    cartToken = null,
-    userAgent = '',
-  } = body;
+  const { token = null, userAgent = '' } = body;
 
   // Order token is required
   if (!token || !token.length) {
