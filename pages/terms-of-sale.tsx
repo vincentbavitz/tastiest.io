@@ -40,11 +40,6 @@ const sections: ILegalSection[] = [
         You will be bound only to the version of the Terms of Sale you agreed to
         at the time you purchase an Offer.
       </>,
-      <></>,
-      <></>,
-      <></>,
-
-      <></>,
     ],
   },
 
@@ -266,8 +261,6 @@ const sections: ILegalSection[] = [
             it shall not contravene the requirements of fairness or professional
             diligence in what it does.
           </>,
-          <></>,
-          <></>,
         ],
       },
       <>
@@ -348,9 +341,6 @@ const sections: ILegalSection[] = [
         you and us. The parties also agree that the United Nations Convention
         for the International Sale of Goods does not apply to this transaction.
       </>,
-      <></>,
-      <></>,
-      <></>,
     ],
   },
 ];

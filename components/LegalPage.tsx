@@ -66,7 +66,7 @@ const Section = (props: LegalSectionProps) => {
             <div key={uuid()} className="pt-2 pl-3">
               <Section
                 {...(subsection as ILegalSection)}
-                sectionNumber={`${sectionNumber}.${index + 1}`}
+                sectionNumber={`${sectionNumber}.${index}`}
               />
             </div>
           );
