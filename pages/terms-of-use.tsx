@@ -953,7 +953,7 @@ const sections: ILegalSection[] = [
   },
 ];
 
-function TermsAndConditions() {
+function TermsOfUse() {
   return (
     <>
       <Head>
@@ -969,4 +969,4 @@ function TermsAndConditions() {
   );
 }
 
-export default TermsAndConditions;
+export default TermsOfUse;
