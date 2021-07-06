@@ -1,56 +1,11 @@
-import { Contained } from 'components/Contained';
+import { ILegalSection, LegalPage } from 'components/LegalPage';
+import Head from 'next/head';
 import React from 'react';
-import { v4 as uuid } from 'uuid';
-
-interface ILegalSection {
-  title: string | null;
-  subsections: Array<JSX.Element | ILegalSection>;
-}
-
-interface LegalSectionProps extends ILegalSection {
-  sectionNumber: number | string;
-}
-
-const Section = (props: LegalSectionProps) => {
-  const { title, subsections, sectionNumber } = props;
-
-  return (
-    <div className="">
-      {title && (
-        <h4 className="py-10 pb-4 text-lg font-semibold text-center">
-          <span className="font-normal">{sectionNumber}. </span>
-          {title}
-        </h4>
-      )}
-
-      {subsections.map((subsection, index) => {
-        if (subsection?.['subsections']?.length) {
-          return (
-            <div className="pt-2 pl-3">
-              <Section
-                {...(subsection as ILegalSection)}
-                sectionNumber={`${sectionNumber}.${index + 1}`}
-              />
-            </div>
-          );
-        }
-
-        return (
-          <p key={sectionNumber} className="pt-1">
-            <span className="font-bold tracking-wider text-primary font-somatic">
-              {sectionNumber}.{index + 1}.
-            </span>{' '}
-            {subsection}
-          </p>
-        );
-      })}
-    </div>
-  );
-};
+import { generateTitle } from 'utils/metadata';
 
 const sections: ILegalSection[] = [
   {
-    title: 'SOME BASICS YOU SHOULD KNOW ABOUT THESE TERMS OF USE',
+    title: 'THE BASICS ABOUT THESE TERMS OF USE',
     subsections: [
       <>
         What this document is and who we are: You are reading a legal document
@@ -329,7 +284,7 @@ const sections: ILegalSection[] = [
         advertising, marketing, market research, merchant feedback, quality
         control or any other lawful purpose.
       </>,
-      <div key={uuid()}>
+      <>
         <span>
           Copyright Procedures: Tastiest reserves the right to terminate your or
           any third-party’s right to use the Site if such use infringes the
@@ -362,7 +317,7 @@ const sections: ILegalSection[] = [
           that you are the copyright owner or authorized to act on the copyright
           owner’s behalf.
         </span>
-      </div>,
+      </>,
       <>
         Infringement Reporting Procedures: If you own copyright, trademark,
         patent or other intellectual property rights (“IP Rights Owner”), or if
@@ -1000,25 +955,17 @@ const sections: ILegalSection[] = [
 
 function TermsAndConditions() {
   return (
-    <Contained maxWidth={800}>
-      <div className="pt-10"></div>
+    <>
+      <Head>
+        <title>{generateTitle('Terms of Use')}</title>
+      </Head>
 
-      <h1 className="text-xl font-semibold leading-7 tracking-wide text-center text-primary">
-        <span className="text-2xl">TERMS OF USE</span>
-        <br />
-        TASTIEST TECHNOLOGIES LTD
-      </h1>
-      <p className="pt-4 text-sm text-center">
-        This page sets out the terms for the use of the Site offered by Tastiest
-        Technologies Ltd and the Services we offer.
-      </p>
-
-      {sections.map((section, index) => (
-        <div key={section.title} className="pb-10">
-          <Section {...section} sectionNumber={index + 1} />
-        </div>
-      ))}
-    </Contained>
+      <LegalPage
+        pageTitle={'TERMS OF USE'}
+        pageDescription="This page sets out the terms for the use of the Site offered by Tastiest Technologies Ltd and the Services we offer."
+        sections={sections}
+      />
+    </>
   );
 }
 

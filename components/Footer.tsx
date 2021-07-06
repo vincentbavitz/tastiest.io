@@ -177,7 +177,7 @@ const ThanksForSupportMessage = ({
 }) => (
   <div
     className={clsx(
-      'flex flex-col items-center space-y-2 tablet:space-y-4 tablet:justify-between tablet:items-start tablet:pl-4 tablet:ml-4 tablet:border-l tablet:border-white',
+      'flex flex-col items-center space-y-2 tablet:space-y-4 tablet:justify-between tablet:items-start tablet:border-white',
       wide ? 'w-full' : 'w-64',
     )}
   >
