@@ -32,14 +32,6 @@ const TrackingProvider = ({ children }) => {
   //   }
   // }, [isSignedIn, hasAcceptedCookies]);
 
-  // /////////////////////////////////////// //
-  //  Manange location changes with Segment  //
-  // /////////////////////////////////////// //
-  // const handleLocationChange = url => {
-  //   // Update analytics page location
-  //   window.analytics.page('Page Viewed');
-  // };
-
   // useEffect(() => {
   //   handleLocationChange(router.route);
   //   router.events.on('routeChangeComplete', handleLocationChange);

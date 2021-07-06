@@ -1,12 +1,6 @@
 import { TrackingContext } from 'contexts/tracking';
 import { useContext } from 'react';
 
-// enum Pages {
-//   HOME = 'Home',
-//   FAVOURITES = 'Favourites',
-//   ARTICLE = ''
-// }
-
 // Each tracking event fires in three directions.
 //    1. Firebase (per user)
 //    2. Segment --> Klaviyo
