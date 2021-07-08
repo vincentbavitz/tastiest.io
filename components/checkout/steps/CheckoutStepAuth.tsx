@@ -1,4 +1,4 @@
-import { IOrder } from '@tastiest-io/tastiest-utils';
+import { formatCurrency, IOrder } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -67,7 +67,9 @@ const CheckoutStepAuthDesktop = ({ order, anonymousId }: Props) => {
               {order?.deal?.tagline} x{order?.heads}
             </p>
 
-            <p className="pl-4 text-lg font-medium">£{totalPrice.toFixed(2)}</p>
+            <p className="pl-4 text-lg font-medium">
+              £{formatCurrency(totalPrice)}
+            </p>
           </div>
         </CheckoutCard>
       </div>
@@ -106,7 +108,7 @@ const CheckoutStepAuthMobile = ({ order, anonymousId }: Props) => {
               </p>
 
               <p className="pl-4 text-xl font-medium">
-                £{totalPrice.toFixed(2)}
+                £{formatCurrency(totalPrice)}
               </p>
             </div>
           </div>

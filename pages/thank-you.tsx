@@ -2,6 +2,7 @@ import { Button } from '@tastiest-io/tastiest-components';
 import { PhoneIcon } from '@tastiest-io/tastiest-icons';
 import {
   FirestoreCollection,
+  formatCurrency,
   IBooking,
   IOrder,
   UserData,
@@ -9,9 +10,11 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
+import moment from 'moment';
 import { InferGetServerSidePropsType } from 'next';
 import { ThankYouFood, ThankYouHero, ThankYouPhone } from 'public/assets/page';
 import React, { ReactNode } from 'react';
+import Stripe from 'stripe';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { v4 as uuid } from 'uuid';
 import { Contained } from '../components/Contained';
@@ -66,16 +69,34 @@ export const getServerSideProps = async context => {
   const userDataApi = new UserDataApi(firebaseAdmin, order.userId);
   const userDetails = await userDataApi.getUserData(UserData.DETAILS);
 
+  const stripe = new Stripe(
+    process.env.NODE_ENV === 'production'
+      ? process.env.STRIPE_LIVE_SECRET_KEY
+      : process.env.STRIPE_TEST_SECRET_KEY,
+    {
+      apiVersion: '2020-08-27',
+    },
+  );
+
+  const paymentMethod = await stripe.paymentMethods.retrieve(
+    order.paymentMethod,
+  );
+
+  const paymentCard = {
+    brand: paymentMethod.card.brand,
+    last4: paymentMethod.card.last4,
+  };
+
   return {
-    props: { firstName: userDetails?.firstName, order, booking },
+    props: { firstName: userDetails?.firstName, order, booking, paymentCard },
   };
 };
 
 function ThankYou(
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) {
-  const { firstName, order, booking } = props;
-  const { isDesktop } = useScreenSize();
+  const { firstName, order, booking, paymentCard } = props;
+  const { isMobile, isDesktop } = useScreenSize();
 
   return (
     <Contained>
@@ -163,7 +184,164 @@ function ThankYou(
 
         <Contained maxWidth={800}>
           <div className="w-full h-0 border-b-4 border-secondary"></div>
+
+          <div className="w-full">
+            <h4 className="pt-6 pb-8 text-xl text-center font-somatic text-primary">
+              Your Order
+            </h4>
+
+            <table className="w-full text-sm mobile:text-base">
+              <thead className="font-semibold text-gray-500">
+                <td>AMOUNT</td>
+                <td>DATE</td>
+                <td className="text-right">PAYMENT</td>
+              </thead>
+
+              <tbody>
+                <tr className="border-t border-gray-500">
+                  <td className="pt-1">£{formatCurrency(order.price.final)}</td>
+                  <td className="pt-1">
+                    {moment(order.paidAt).format('Do MMMM YYYY')}
+                  </td>
+                  <td className="pt-1 text-right uppercase ">
+                    {paymentCard.brand} - {paymentCard.last4}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h4 className="pt-6 mb-2 text-base font-semibold text-gray-500 border-b border-gray-300 mobile:text-lg">
+              ORDER SUMMARY
+            </h4>
+
+            {!isMobile && (
+              <table className="w-full">
+                <thead className="text-sm font-semibold text-gray-500 mobile:text-base">
+                  <td>Description</td>
+                  <td>Qty.</td>
+                  <td className="text-right">Price</td>
+                </thead>
+
+                <tbody>
+                  <tr className="bg-gray-100">
+                    <td className="pt-2 pl-2">
+                      <img
+                        src={`${order.deal.image.imageUrl}?w=300`}
+                        style={{ maxWidth: '33vw' }}
+                        className="w-56 pb-1"
+                      />
+                    </td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr className="bg-gray-100 border-b border-gray-500">
+                    <td className="pl-2">
+                      <div className="pb-2">
+                        <p className="text-gray-800 text-bold">
+                          {order.deal.restaurant.name}
+                        </p>
+                        <p className="-mt-1 text-sm opacity-75">
+                          {order.deal.name}
+                        </p>
+                      </div>
+                    </td>
+                    <td className="align-top">{order.heads}</td>
+                    <td className="pr-2 text-right align-top">
+                      £{formatCurrency(order.deal.pricePerHeadGBP)}
+                    </td>
+                  </tr>
+
+                  <tr className="font-bold text-gray-600 bg-gray-100">
+                    <td className="pt-1 pl-2 align-bottom">Subtotal</td>
+                    <td></td>
+                    <td className="pt-1 pr-2 text-right align-bottom">
+                      £{formatCurrency(order.price.gross)}
+                    </td>
+                  </tr>
+
+                  {order.promoCode && (
+                    <tr className="font-bold text-gray-600 bg-gray-100">
+                      <td className="pt-1 pl-2 align-bottom">
+                        Discount{' '}
+                        <span className="text-primary">{order.promoCode}</span>
+                      </td>
+                      <td></td>
+                      <td className="pt-1 pr-2 text-right align-bottom">
+                        -£
+                        {formatCurrency(order.price.gross - order.price.final)}
+                      </td>
+                    </tr>
+                  )}
+
+                  <tr className="text-lg font-bold text-gray-600 bg-gray-100">
+                    <td className="pt-1 pl-2 align-top">Amount Charged</td>
+                    <td></td>
+                    <td className="pt-1 pb-1 pr-2 text-right align-top">
+                      £{formatCurrency(order.price.final)}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            )}
+
+            {isMobile && (
+              <div className="flex flex-col p-2 space-y-1 bg-gray-100">
+                <div className="flex justify-between">
+                  <img
+                    src={`${order.deal.image.imageUrl}?w=300`}
+                    style={{ maxWidth: '60%' }}
+                    className="w-56 pb-1"
+                  />
+                </div>
+
+                <div className="">
+                  <p className="font-bold text-gray-600">
+                    {order.deal.restaurant.name}
+                  </p>
+                  <p className="text-sm leading-tight opacity-75">
+                    {order.deal.name}
+                  </p>
+                </div>
+
+                <div className="flex justify-between pt-2 text-sm">
+                  <p className="font-bold text-gray-600">Quantity</p>
+                  <p className="text-sm leading-tight opacity-75">
+                    {order.heads}
+                  </p>
+                </div>
+
+                <div className="flex justify-between pt-2 text-sm border-t border-gray-600">
+                  <p className="font-bold text-gray-600">Subtotal</p>
+                  <p className="leading-tight opacity-75">
+                    £{formatCurrency(order.price.gross)}
+                  </p>
+                </div>
+
+                {order.promoCode && (
+                  <div className="flex justify-between pt-2 text-sm">
+                    <p className="font-bold text-gray-600">
+                      Discount:{' '}
+                      <span className="text-primary">{order.promoCode}</span>
+                    </p>
+                    <p className="leading-tight opacity-75">
+                      -£{formatCurrency(order.price.gross - order.price.final)}
+                    </p>
+                  </div>
+                )}
+
+                <div className="flex justify-between">
+                  <p className="font-bold text-gray-600">Total</p>
+                  <p className="leading-tight opacity-75">
+                    £{formatCurrency(order.price.final)}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="w-full pt-10 border-b-2 border-dashed border-primary"></div>
         </Contained>
+
         <div className="flex justify-center w-full">
           <a href="https://offers.tastiest.io">
             <Button size="large" className="text-2xl font-somatic" round>

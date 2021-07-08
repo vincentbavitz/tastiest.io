@@ -15,6 +15,7 @@ import {
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
+import crypto from 'crypto';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
@@ -330,6 +331,48 @@ export default async function pay(
                 image_url: order.deal.image.imageUrl,
               },
             ],
+            user_data: {
+              fn: crypto
+                .createHash('sha256')
+                .update(details.firstName)
+                .digest('hex'),
+
+              ln: crypto
+                .createHash('sha256')
+                .update(details.lastName)
+                .digest('hex'),
+
+              em: crypto
+                .createHash('sha256')
+                .update(details.email)
+                .digest('hex'),
+
+              ph: crypto
+                .createHash('sha256')
+                .update(details.mobile)
+                .digest('hex'),
+              db: crypto
+                .createHash('sha256')
+                .update(JSON.stringify(details.birthday))
+                .digest('hex'),
+
+              zp: crypto
+                .createHash('sha256')
+                .update(details.postalCode)
+                .digest('hex'),
+
+              ct: crypto.createHash('sha256').update('London').digest('hex'),
+              country: crypto
+                .createHash('sha256')
+                .update('United Kingdom')
+                .digest('hex'),
+
+              client_user_agent: crypto
+                .createHash('sha256')
+                .update(userAgent)
+                .digest('hex'),
+              external_id: order.userId,
+            },
 
             // Internal measurements
             tastiestPortion,

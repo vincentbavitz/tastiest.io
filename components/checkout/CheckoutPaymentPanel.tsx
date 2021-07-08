@@ -3,6 +3,7 @@ import { Button, Input } from '@tastiest-io/tastiest-components';
 import { LockIcon, SupportIcon } from '@tastiest-io/tastiest-icons';
 import {
   dlog,
+  formatCurrency,
   IOrder,
   PAYMENTS,
   TastiestPaymentError,
@@ -36,9 +37,9 @@ export function CheckoutPaymentPanel(props: Props) {
     (state: IState) => state.checkout,
   );
 
-  const totalPrice = (
-    Math.floor(order.heads) * order.deal.pricePerHeadGBP
-  ).toFixed(2);
+  const totalPrice = formatCurrency(
+    Math.floor(order.heads) * order.deal.pricePerHeadGBP,
+  );
 
   useEffect(() => {
     dlog('CheckoutPaymentPanel ➡️ isPaymentProcessing:', isPaymentProcessing);
@@ -94,7 +95,7 @@ export function CheckoutPaymentPanel(props: Props) {
 
             <div className="flex items-center justify-between mb-1 space-x-2 font-medium">
               <p>Total</p>
-              <p>£{order.price.final.toFixed(2)}</p>
+              <p>£{formatCurrency(order.price.final)}</p>
             </div>
 
             <Button
@@ -126,7 +127,7 @@ export function CheckoutPaymentPanel(props: Props) {
           <div className="w-full h-px border-b border-gray-300"></div>
           <div className="flex justify-between text-xl font-medium">
             <p>Total</p>
-            <p>£{order.price.final.toFixed(2)}</p>
+            <p>£{formatCurrency(order.price.final)}</p>
           </div>
         </div>
       )}

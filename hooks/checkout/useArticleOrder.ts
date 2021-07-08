@@ -1,5 +1,6 @@
 import {
   dlog,
+  formatCurrency,
   IDeal,
   IOrderRequest,
   postFetch,
@@ -19,7 +20,7 @@ export const useArticleOrder = (deal: IDeal, fromSlug: string) => {
   const router = useRouter();
 
   const [heads, setHeads] = useState<ValidHead>(1);
-  const totalPrice = (Number(heads) * deal?.pricePerHeadGBP).toFixed(2);
+  const totalPrice = formatCurrency(Number(heads) * deal?.pricePerHeadGBP);
 
   const submit = async () => {
     const orderRequest: IOrderRequest = {
