@@ -7,7 +7,9 @@ import {
   IOrder,
   IRestaurant,
   PAYMENTS,
+  reportInternalError,
   RestaurantDataApi,
+  TastiestInternalErrorCode,
   transformPriceForStripe,
   UserData,
   UserDataApi,
@@ -288,64 +290,75 @@ export default async function pay(
       // Track payment success
       // Track using Segment's Payment Success schema
       // https://segment.com/docs/connections/spec/ecommerce/v2/#order-completed
-      await analytics.track({
-        event: 'Order Completed',
-        userId: order.userId,
-        context: {
-          userAgent,
-          page: {
-            url: 'https://tastiest.io/checkout',
+      await analytics.track(
+        {
+          event: 'Order Completed',
+          userId: order.userId,
+          context: {
+            userAgent,
+            page: {
+              url: 'https://tastiest.io/checkout',
+            },
+          },
+          integrations: {
+            All: false,
+            'Facebook Pixel': true,
+            'Facebook Conversions API': true,
+            'Google Analytics': true,
+          },
+          properties: {
+            checkout_id: order.token,
+            order_id: order.id,
+            affiliation: '',
+            total: order.price.final,
+            subtotal: order.price.gross,
+            revenue: order.price.final * 0.25,
+            shipping: 0,
+            tax: 0,
+            discount: 0,
+            coupon: order.promoCode,
+            currency: order.price.currency,
+            products: [
+              {
+                product_id: order.deal.id,
+                sku: order.deal.id,
+                name: order.deal.name,
+                price: order.deal.pricePerHeadGBP,
+                quantity: order.heads,
+                category: '',
+                url: `https://tastiest.io/r?offer=${order.deal.id}`,
+                image_url: order.deal.image.imageUrl,
+              },
+            ],
+
+            // Internal measurements
+            tastiestPortion,
+            restaurantPortion,
+
+            // For Pixel
+            email: details.email,
+            action_source: 'website',
           },
         },
-        integrations: {
-          All: false,
-          'Facebook Pixel': true,
-          'Facebook Conversions API': true,
-          'Google Analytics': true,
-        },
-        properties: {
-          checkout_id: order.token,
-          order_id: order.id,
-          affiliation: '',
-          total: order.price.final,
-          subtotal: order.price.gross,
-          revenue: order.price.final * 0.25,
-          shipping: 0,
-          tax: 0,
-          discount: 0,
-          coupon: order.promoCode,
-          currency: order.price.currency,
-          products: [
-            {
-              product_id: order.deal.id,
-              sku: order.deal.id,
-              name: order.deal.name,
-              price: order.deal.pricePerHeadGBP,
-              quantity: order.heads,
-              category: '',
-              url: `https://tastiest.io/r?offer=${order.deal.id}`,
-              image_url: order.deal.image.imageUrl,
-            },
-          ],
+        () =>
+          response.json({
+            success: true,
+            data: { order },
+            error: null,
+          }),
+      );
 
-          // Internal measurements
-          tastiestPortion,
-          restaurantPortion,
-
-          // For Pixel
-          email: details.email,
-          action_source: 'website',
-        },
-      });
-
-      response.json({
-        success: true,
-        data: { order },
-        error: null,
-      });
       return;
     } else {
-      const _error = 'Unable to confirm payment';
+      const _error = 'Payment Failure - Unable to confirm payment';
+      reportInternalError({
+        code: TastiestInternalErrorCode.PAYMENT_ERROR,
+        message: _error,
+        timestamp: Date.now(),
+        shouldAlert: true,
+        originFile: 'pages/api/payments/pay.ts:357',
+        properties: { ...order },
+      });
 
       analytics.track({
         event: 'Payment Failure',
@@ -365,6 +378,16 @@ export default async function pay(
       });
     }
   } catch (error) {
+    reportInternalError({
+      code: TastiestInternalErrorCode.PAYMENT_ERROR,
+      message: 'Payment Failure - Caught error',
+      timestamp: Date.now(),
+      shouldAlert: true,
+      originFile: 'pages/api/payments/pay.ts',
+      properties: { ...order },
+      raw: String(error),
+    });
+
     // Payment failure
     analytics.track({
       event: 'Payment Error',
