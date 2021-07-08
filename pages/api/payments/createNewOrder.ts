@@ -8,6 +8,8 @@ import {
   IOrder,
   IOrderRequest,
   IPromo,
+  reportInternalError,
+  TastiestInternalErrorCode,
 } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
 import crypto from 'crypto';
@@ -91,68 +93,88 @@ export default async function createNewOrder(
 
   const order = await buildOrder(orderRequest);
 
-  // Create new order in Firebase
-  await firebaseAdmin
-    .firestore()
-    .collection(FirestoreCollection.ORDERS)
-    .doc(order.id)
-    .set(order);
+  try {
+    // Create new order in Firebase
+    await firebaseAdmin
+      .firestore()
+      .collection(FirestoreCollection.ORDERS)
+      .doc(order.id)
+      .set(order);
 
-  // Track with Segment following Segment's E-Commerce Spec
-  // https://segment.com/docs/connections/spec/ecommerce/v2/#checkout-started
-  const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
+    // Track with Segment following Segment's E-Commerce Spec
+    // https://segment.com/docs/connections/spec/ecommerce/v2/#checkout-started
+    const analytics = new Analytics(
+      process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY,
+    );
 
-  // Use anonymousId for Pixel deduplication from Shopify
-  analytics.track({
-    event: 'Checkout Started',
-    userId: anonymousId ?? userId,
-    context: {
-      userAgent,
-      page: {
-        url: fromSlug,
-      },
-    },
-    properties: {
-      anonymousId,
-      shopifyProductId,
-      ...order,
-      ...orderRequest,
-
-      // Segment E-Commerce Spec
-      order_id: order.id,
-      affiliation: '',
-      value: order.deal.pricePerHeadGBP,
-      shipping: 0,
-      tax: 0,
-      discount: 0,
-      coupon: order.promoCode,
-      currency: order.price.currency,
-      products: [
-        {
-          product_id: order.deal.id,
-          sku: order.deal.id,
-          name: order.deal.name,
-          price: order.deal.pricePerHeadGBP,
-          quantity: order.heads,
-          category: '',
-          url: `https://tastiest.io/r?offer=${order.deal.id}`,
-          image_url: order.deal.image.imageUrl,
+    // Use anonymousId for Pixel deduplication from Shopify
+    analytics.track({
+      event: 'Checkout Started',
+      userId: anonymousId ?? userId,
+      context: {
+        userAgent,
+        page: {
+          url: fromSlug,
         },
-      ],
-      user_data: {
-        ct: crypto.createHash('sha256').update('London').digest('hex'),
-        country: crypto
-          .createHash('sha256')
-          .update('United Kingdom')
-          .digest('hex'),
-        client_user_agent: crypto
-          .createHash('sha256')
-          .update(userAgent)
-          .digest('hex'),
-        external_id: order.userId,
       },
-    },
-  });
+      properties: {
+        anonymousId,
+        shopifyProductId,
+        ...order,
+        ...orderRequest,
+
+        // Segment E-Commerce Spec
+        order_id: order.id,
+        affiliation: '',
+        value: order.deal.pricePerHeadGBP,
+        shipping: 0,
+        tax: 0,
+        discount: 0,
+        coupon: order.promoCode,
+        currency: order.price.currency,
+        products: [
+          {
+            product_id: order.deal.id,
+            sku: order.deal.id,
+            name: order.deal.name,
+            price: order.deal.pricePerHeadGBP,
+            quantity: order.heads,
+            category: '',
+            url: `https://tastiest.io/r?offer=${order.deal.id}`,
+            image_url: order.deal.image.imageUrl,
+          },
+        ],
+        user_data: {
+          ct: crypto.createHash('sha256').update('London').digest('hex'),
+          country: crypto
+            .createHash('sha256')
+            .update('United Kingdom')
+            .digest('hex'),
+          client_user_agent: crypto
+            .createHash('sha256')
+            .update(userAgent)
+            .digest('hex'),
+          external_id: order.userId,
+        },
+      },
+    });
+  } catch (error) {
+    await reportInternalError({
+      code: TastiestInternalErrorCode.PAYMENT_ERROR,
+      message: 'Payment Failure - Caught error',
+      timestamp: Date.now(),
+      shouldAlert: false,
+      originFile: 'pages/api/payments/createNewOrder.ts',
+      properties: {},
+      raw: String(error),
+    });
+
+    response.json({
+      success: false,
+      data: null,
+      error: String(error),
+    });
+  }
 
   response.json({
     success: true,

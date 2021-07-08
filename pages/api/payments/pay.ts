@@ -78,82 +78,82 @@ export default async function pay(
     return;
   }
 
-  // Fetch the order from Firestore using orderToken
-  const snapshot = await firebaseAdmin
-    .firestore()
-    .collection(FirestoreCollection.ORDERS)
-    .where('token', '==', token)
-    .limit(1)
-    .get();
-
-  let order: IOrder;
-  snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
-
-  // Is the order already paid or expired?
-  const isOrderExpired =
-    order?.createdAt + PAYMENTS.ORDER_EXPIRY_MS < Date.now();
-  if (order.paidAt || isOrderExpired) {
-    const _error = 'Order already paid or is expired';
-
-    // Payment expired or already paid
-    analytics.track({
-      event: 'Payment Error',
-      context: { userAgent },
-      userId: order.userId,
-      properties: {
-        token,
-        ...order,
-        error: _error,
-      },
-    });
-
-    response.json({
-      success: false,
-      data: { order: null },
-      error: _error,
-    });
-    return;
-  }
-
-  // Does order contain userId?
-  if (!order?.userId) {
-    response.json({
-      success: false,
-      data: { order: null },
-      error: 'No user ID given',
-    });
-    return;
-  }
-
-  const userDataApi = new UserDataApi(firebaseAdmin, order?.userId);
-  const details = await userDataApi.getUserData(UserData.DETAILS);
-  const eaterName = `${details.firstName} ${details.lastName}`;
-
-  // Payment method exists?
-  if (!order?.paymentMethod || !order?.paymentMethod.length) {
-    const _error = 'No payment method ID given';
-
-    response.json({
-      success: false,
-      data: { order: null },
-      error: _error,
-    });
-
-    // Payment failure
-    analytics.track({
-      event: 'Payment Error',
-      userId: order.userId,
-      properties: {
-        token,
-        firstName: details.firstName,
-        ...order,
-        error: _error,
-      },
-    });
-    return;
-  }
-
   try {
+    // Fetch the order from Firestore using orderToken
+    const snapshot = await firebaseAdmin
+      .firestore()
+      .collection(FirestoreCollection.ORDERS)
+      .where('token', '==', token)
+      .limit(1)
+      .get();
+
+    let order: IOrder;
+    snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
+
+    const userDataApi = new UserDataApi(firebaseAdmin, order?.userId);
+    const details = await userDataApi.getUserData(UserData.DETAILS);
+    const eaterName = `${details.firstName} ${details.lastName}`;
+
+    // Is the order already paid or expired?
+    const isOrderExpired =
+      order?.createdAt + PAYMENTS.ORDER_EXPIRY_MS < Date.now();
+    if (order.paidAt || isOrderExpired) {
+      const _error = 'Order already paid or is expired';
+
+      // Payment expired or already paid
+      analytics.track({
+        event: 'Payment Error',
+        context: { userAgent },
+        userId: order.userId,
+        properties: {
+          token,
+          ...order,
+          error: _error,
+        },
+      });
+
+      response.json({
+        success: false,
+        data: { order: null },
+        error: _error,
+      });
+      return;
+    }
+
+    // Does order contain userId?
+    if (!order?.userId) {
+      response.json({
+        success: false,
+        data: { order: null },
+        error: 'No user ID given',
+      });
+      return;
+    }
+
+    // Payment method exists?
+    if (!order?.paymentMethod || !order?.paymentMethod.length) {
+      const _error = 'No payment method ID given';
+
+      response.json({
+        success: false,
+        data: { order: null },
+        error: _error,
+      });
+
+      // Payment failure
+      analytics.track({
+        event: 'Payment Error',
+        userId: order.userId,
+        properties: {
+          token,
+          firstName: details.firstName,
+          ...order,
+          error: _error,
+        },
+      });
+      return;
+    }
+
     const paymentDetails = await userDataApi.getUserData(
       UserData.PAYMENT_DETAILS,
     );
@@ -394,11 +394,11 @@ export default async function pay(
       return;
     } else {
       const _error = 'Payment Failure - Unable to confirm payment';
-      reportInternalError({
+      await reportInternalError({
         code: TastiestInternalErrorCode.PAYMENT_ERROR,
         message: _error,
         timestamp: Date.now(),
-        shouldAlert: true,
+        shouldAlert: false,
         originFile: 'pages/api/payments/pay.ts:357',
         properties: { ...order },
       });
@@ -421,33 +421,27 @@ export default async function pay(
       });
     }
   } catch (error) {
-    reportInternalError({
+    await reportInternalError({
       code: TastiestInternalErrorCode.PAYMENT_ERROR,
       message: 'Payment Failure - Caught error',
       timestamp: Date.now(),
-      shouldAlert: true,
+      shouldAlert: false,
       originFile: 'pages/api/payments/pay.ts',
-      properties: { ...order },
+      properties: { token },
       raw: String(error),
-    });
-
-    // Payment failure
-    analytics.track({
-      event: 'Payment Error',
-      userId: order.userId,
-      properties: {
-        token,
-        firstName: details.firstName,
-        ...order,
-        error: String(error),
-      },
     });
 
     response.json({
       success: false,
       data: { order: null },
-      error,
+      error: String(error),
     });
-    return;
   }
+
+  response.json({
+    success: false,
+    data: null,
+    error: null,
+  });
+  return;
 }
