@@ -2755,10 +2755,10 @@
     moment "^2.29.1"
     stripe "^8.143.0"
 
-"@tastiest-io/tastiest-utils@^0.156.0":
-  version "0.156.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.156.0/6e4832294cbe6c2f32d2c6d0debff49b8ff88992a3e1df5e406b967e00153953#d1547f550fdd6c550a8e65eb3c401e0eeca72e70"
-  integrity sha512-0tQa9cjvD+Ybfg+Q6xcIisJjEnBfWQzAffd+37fp2gCrn7+A4Oc0k8ThYuKnLEDu/9nlHfBMia862Zbl7yHThQ==
+"@tastiest-io/tastiest-utils@^0.157.0":
+  version "0.157.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.157.0/9b10f2bff129435e0e1bd2a614ceda41d9960738a60dd19f6debc2f171681e92#675277effec9eee3cbfcf1e91fc15141127c8dba"
+  integrity sha512-qVCJiFIL57yCiaQV0AnyTicdjGILb1ba5cFs42VF0RVQSRiKpl9pnNkc5Bg7GyuqgKcRCQrUYpOGn24X2i1n9Q==
   dependencies:
     "@contentful/rich-text-types" "^14.1.2"
     "@shopify/shopify-api" "^1.4.0"
