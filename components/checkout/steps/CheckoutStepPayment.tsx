@@ -152,6 +152,17 @@ export function CheckoutStepPayment(props: Props) {
       step: 2,
       payment_method: cardBrand,
       user: { ...userData.details },
+      traits: {
+        firstName,
+        lastName,
+        email: userData.details.email,
+        phone: mobile,
+        birthday: JSON.stringify(userData.details.birthday),
+        address: {
+          city: 'London',
+          postalCode: userData.details.postalCode,
+        },
+      },
     });
 
     const { paymentMethod, error: paymentMethodError } = await addCard(

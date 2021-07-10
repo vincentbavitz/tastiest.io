@@ -12,7 +12,6 @@ import {
   TastiestInternalErrorCode,
 } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
-import crypto from 'crypto';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { calculatePromoPrice, validatePromo } from 'utils/order';
@@ -144,17 +143,10 @@ export default async function createNewOrder(
             image_url: order.deal.image.imageUrl,
           },
         ],
-        user_data: {
-          ct: crypto.createHash('sha256').update('London').digest('hex'),
-          country: crypto
-            .createHash('sha256')
-            .update('United Kingdom')
-            .digest('hex'),
-          client_user_agent: crypto
-            .createHash('sha256')
-            .update(userAgent)
-            .digest('hex'),
-          external_id: order.userId,
+        traits: {
+          address: {
+            city: 'London',
+          },
         },
       },
     });
