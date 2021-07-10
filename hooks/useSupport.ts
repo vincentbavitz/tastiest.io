@@ -68,7 +68,9 @@ export function useSupport() {
       recipientHasOpened: false,
     };
 
+    const requestId = uuid();
     const supportRequest: IUserSupportRequest = {
+      id: requestId,
       name,
       email,
       type,
@@ -88,7 +90,7 @@ export function useSupport() {
       setIsSubmitting(true);
       await firestore
         .collection(FirestoreCollection.SUPPORT_USERS)
-        .doc(userId ?? uuid())
+        .doc(requestId)
         .set(supportRequest);
 
       setIsSubmitting(false);

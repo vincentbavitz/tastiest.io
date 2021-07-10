@@ -1,7 +1,9 @@
 import { Button } from '@tastiest-io/tastiest-components';
+import { AuthError, AuthErrorMessageMap } from 'contexts/auth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useToggle } from 'react-use';
 import {
   CheckoutSignInTabSelected,
   setSignInTabSelected,
@@ -10,7 +12,13 @@ import { useAuth } from '../../hooks/useAuth';
 import { InputEmail } from '../inputs/InputEmail';
 import { InputPassword } from '../inputs/InputPassword';
 
-export function CheckoutSignIn() {
+interface Props {
+  anonymousId: string;
+}
+
+export function CheckoutSignIn(props: Props) {
+  const { anonymousId } = props;
+
   const { isDesktop } = useScreenSize();
 
   const { signIn, error } = useAuth();
@@ -18,6 +26,8 @@ export function CheckoutSignIn() {
 
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
+  const [showPassword, toggleShowPassword] = useToggle(false);
+
   const cleanupInputValue = (value: string | number) =>
     String(value).toLowerCase().trim();
 
@@ -30,6 +40,8 @@ export function CheckoutSignIn() {
         onValueChange={value => setSignInEmail(cleanupInputValue(value))}
       />
       <InputPassword
+        show={showPassword}
+        toggleShow={toggleShowPassword}
         value={signInPassword}
         onValueChange={value => setSignInPassword(cleanupInputValue(value))}
       />
@@ -38,10 +50,17 @@ export function CheckoutSignIn() {
         size="large"
         type="solid"
         color="primary"
-        onClick={() => signIn(signInEmail, signInPassword)}
+        onClick={() => signIn(signInEmail, signInPassword, anonymousId)}
       >
         Sign in to Proceed to Checkout
       </Button>
+
+      {error && (
+        <div className="mb-1 -mt-1 text-sm text-center text-black">
+          {AuthErrorMessageMap[((error as unknown) as AuthError).code]
+            ?.userFacingMessage ?? String(error)}
+        </div>
+      )}
 
       {!isDesktop && (
         <div className="flex justify-center">

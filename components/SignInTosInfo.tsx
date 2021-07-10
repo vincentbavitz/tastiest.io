@@ -8,11 +8,21 @@ export function SignInTosInfo({ center }: Props) {
   return (
     <div className={classNames('text-xs', center && 'text-center')}>
       By proceeding, you agree to our{' '}
-      <a href="/privacy" className="font-semibold underline cursor-pointer">
+      <a
+        href="/terms-of-use"
+        target="_blank"
+        rel="noreferrer"
+        className="font-semibold underline cursor-pointer"
+      >
         Terms of Use
       </a>{' '}
       and confirm that you have read our{' '}
-      <a href="/privacy" className="font-semibold underline cursor-pointer">
+      <a
+        href="/privacy"
+        target="_blank"
+        rel="noreferrer"
+        className="font-semibold underline cursor-pointer"
+      >
         Privacy and Cookie Statement
       </a>
       .

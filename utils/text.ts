@@ -39,28 +39,15 @@ export function limitYear(year: string, minYear: string, maxYear: string) {
 export const dateToString = (date: IDateObject) =>
   date ? `${date.day}${date.month}${date.year}` : null;
 
-export const stringToDate = (
-  value: string,
-  minYear: string,
-  maxYear: string,
-): IDateObject => {
-  const day = limit(value.substring(0, 2), '31') as TDay;
-  const month = limit(value.substring(2, 4), '12') as TMonth;
-  const year = limitYear(
-    value.substring(4, 8),
-    minYear ?? '1900',
-    maxYear ?? '2099',
-  ) as TYear;
-
+export const stringToDate = (value: string): IDateObject => {
+  const day = value.substring(0, 2) as TDay;
+  const month = value.substring(2, 4) as TMonth;
+  const year = value.substring(4, 8) as TYear;
   return { day, month, year };
 };
 
-export function dateFormat(value: string, minYear?: string, maxYear?: string) {
-  const { day, month, year } = stringToDate(
-    value,
-    minYear ?? '1900',
-    maxYear ?? '2099',
-  );
+export function dateFormat(value: string) {
+  const { day, month, year } = stringToDate(value);
 
   return (
     day + (month.length ? '/' + month : '') + (year.length ? '/' + year : '')

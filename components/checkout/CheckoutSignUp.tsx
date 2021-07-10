@@ -2,6 +2,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import { UserIcon } from '@tastiest-io/tastiest-icons';
 import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
+import { AuthError, AuthErrorMessageMap } from 'contexts/auth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -15,13 +16,20 @@ import { InputEmail } from '../inputs/InputEmail';
 import { InputPassword } from '../inputs/InputPassword';
 import { SignInTosInfo } from '../SignInTosInfo';
 
-export function CheckoutSignUp() {
+interface Props {
+  anonymousId: string;
+}
+
+export function CheckoutSignUp(props: Props) {
+  const { anonymousId } = props;
+
   const {
     signUp,
     resetPassword,
     isSignedIn,
     error: firebaseAuthError,
   } = useAuth();
+
   const { isDesktop } = useScreenSize();
   const dispatch = useDispatch();
 
@@ -55,10 +63,16 @@ export function CheckoutSignUp() {
 
     setError('');
     setLoading(true);
-    const { user } = await signUp(signUpEmail, signUpPassword0, signUpName);
-    if (!user?.uid) {
-      setLoading(false);
-    }
+
+    const { user, error } = await signUp(
+      signUpEmail,
+      signUpPassword0,
+      signUpName,
+      anonymousId,
+    );
+
+    setError(error);
+    setLoading(false);
 
     dlog('error', firebaseAuthError);
 
@@ -81,10 +95,10 @@ export function CheckoutSignUp() {
         size="large"
         type="text"
         placeholder="First Name"
-        prefix={<UserIcon className="w-8 h-5" />}
+        prefix={<UserIcon className="w-6 fill-current text-primary" />}
         maxLength={20}
         value={signUpName}
-        onValueChange={value => setSignUpName(titleCase(value.trim()))}
+        onValueChange={value => setSignUpName(titleCase(value ?? ''))}
       />
       <InputEmail
         value={signUpEmail}
@@ -143,6 +157,15 @@ export function CheckoutSignUp() {
           'Sign up to Proceed to Checkout'
         )}
       </Button>
+
+      {error && (
+        <div className="mb-1 -mt-1 text-sm text-center text-red-700">
+          {
+            AuthErrorMessageMap[((error as unknown) as AuthError).code]
+              ?.userFacingMessage
+          }
+        </div>
+      )}
     </>
   );
 }

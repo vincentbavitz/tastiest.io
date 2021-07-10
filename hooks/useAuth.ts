@@ -12,7 +12,7 @@ import { RegisterParams, RegisterReturn } from 'pages/api/register';
 import { useContext, useState } from 'react';
 import { useFirebase } from 'react-redux-firebase';
 import { LocalEndpoint } from 'types/api';
-import { AuthContext } from '../contexts/auth';
+import { AuthContext, AuthError } from '../contexts/auth';
 import { useUserData } from './useUserData';
 
 export const useAuth = () => {
@@ -31,7 +31,11 @@ export const useAuth = () => {
     _setError(error);
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (
+    email: string,
+    password: string,
+    anonymousId: string,
+  ) => {
     _setError(null);
     if (!email?.length || !password?.length) {
       return;
@@ -60,10 +64,9 @@ export const useAuth = () => {
         localStorage.setItem(LocalStorageItem.HAS_ACCEPTED_COOKIES, '1');
 
         // Identify user with Segment
-        window.analytics.identify(credential.user.uid, {
-          traits: {
-            email: user.email,
-          },
+        window.analytics.identify(anonymousId, {
+          userId: credential.user.uid,
+          email: user.email,
           context: {
             userAgent: navigator?.userAgent,
           },
@@ -87,6 +90,7 @@ export const useAuth = () => {
     email: string,
     password: string,
     firstName?: string,
+    anonymousId?: string,
   ) => {
     _setError(null);
 
@@ -95,18 +99,22 @@ export const useAuth = () => {
     dlog('useAuth ➡️ firstName:', firstName);
 
     try {
-      const { data: { user = null, token = null } = {} } = await postFetch<
-        RegisterParams,
-        RegisterReturn
-      >(LocalEndpoint.REGISTER, {
-        email,
-        password,
-        firstName: firstName ?? null,
-        userAgent: navigator?.userAgent ?? null,
-      });
+      const {
+        data: { user = null, token = null } = {},
+        error,
+      } = await postFetch<RegisterParams, RegisterReturn>(
+        LocalEndpoint.REGISTER,
+        {
+          email,
+          password,
+          anonymousId: anonymousId ?? null,
+          firstName: firstName ?? null,
+          userAgent: navigator?.userAgent ?? null,
+        },
+      );
 
-      if (!user || !token) {
-        return { user: null };
+      if (error) {
+        return { user: null, error: (error as unknown) as AuthError };
       }
 
       // User has accepted cookies implicitly
@@ -117,8 +125,7 @@ export const useAuth = () => {
 
       return { user };
     } catch (error) {
-      setError(error);
-      return { user: null };
+      return { user: null, error };
     }
   };
 

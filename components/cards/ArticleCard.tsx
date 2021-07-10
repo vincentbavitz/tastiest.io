@@ -52,7 +52,7 @@ export function ArticleCard(props: Props): JSX.Element {
           <div className="absolute inset-0">
             <img
               className="object-cover w-full h-full"
-              src={`${featureImage?.imageUrl}?w=300`}
+              src={`${featureImage?.imageUrl}?w=700`}
               alt={featureImage?.description}
             />
           </div>

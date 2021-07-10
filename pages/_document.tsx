@@ -1,23 +1,16 @@
-import * as snippet from '@segment/snippet';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
 import { Favicon } from '../components/Favicon';
 
 export default class CustomDocument extends Document<any> {
-  private renderSegmentSnippet() {
-    const opts = {
-      apiKey: process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY,
-      // note: the page option only covers SSR tracking.
-      // Page.js is used to track other events using `window.analytics.page()`
-      page: true,
-    };
-
-    if (process.env.NODE_ENV === 'development') {
-      return snippet.max(opts);
-    }
-
-    return snippet.min(opts);
-  }
+  private renderSegmentSnippet = () => {
+    return `
+        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware", "user"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics._writeKey="${process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY}";analytics.SNIPPET_VERSION="4.13.2";
+        analytics.load("${process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY}");
+        analytics.page();
+        }}();
+    `;
+  };
 
   private renderHotJarSnippet = () => `
     (function(h,o,t,j,a,r){
@@ -28,6 +21,20 @@ export default class CustomDocument extends Document<any> {
       r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
       a.appendChild(r);
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+  `;
+
+  private renderTawkToSnippet = () => `
+    <!--Start of Tawk.to Script-->
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/60cb997d65b7290ac63685ba/1f9t2cevc';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    <!--End of Tawk.to Script-->
   `;
 
   render() {
@@ -42,6 +49,11 @@ export default class CustomDocument extends Document<any> {
           {/* Inject HotJar */}
           <script
             dangerouslySetInnerHTML={{ __html: this.renderHotJarSnippet() }}
+          />
+
+          {/* Inject TawkTo */}
+          <script
+            dangerouslySetInnerHTML={{ __html: this.renderTawkToSnippet() }}
           />
 
           <Favicon />

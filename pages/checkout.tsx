@@ -5,43 +5,81 @@ import {
   FirestoreCollection,
   IOrder,
   PAYMENTS,
+  postFetch,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
+import Analytics from 'analytics-node';
 import { useOrder } from 'hooks/checkout/useOrder';
 import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
-import { GetServerSideProps } from 'next';
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import nookies from 'nookies';
+import { ParsedUrlQuery } from 'querystring';
 import React, { useEffect, useState } from 'react';
 import { CheckoutStep } from 'state/checkout';
+import { LocalEndpoint } from 'types/api';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { CheckoutStepIndicator } from '../components/checkout/CheckoutStepIndicator';
 import { CheckoutStepAuth } from '../components/checkout/steps/CheckoutStepAuth';
 import { CheckoutStepPayment } from '../components/checkout/steps/CheckoutStepPayment';
 import { Contained } from '../components/Contained';
 import { UI } from '../constants';
+import {
+  CreateNewOrderParams,
+  CreateNewOrderReturn,
+} from './api/payments/createNewOrder';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
 const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY,
+  process.env.NODE_ENV !== 'production'
+    ? process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY
+    : process.env.NEXT_PUBLIC_STRIPE_LIVE_PUBLISHABLE_KEY,
 );
+
+const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
 
 interface Props {
   order: IOrder;
-  userId: string | null;
   step: CheckoutStep;
+  userId: string | null;
+  anonymousId: string;
+  userAgent: string;
 }
 
-export const getServerSideProps: GetServerSideProps = async context => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext<ParsedUrlQuery>,
+) => {
   // Get user ID from cookie.
   const cookieToken = nookies.get(context)?.token;
   const userDataApi = new UserDataApi(firebaseAdmin);
   const { userId } = await userDataApi.initFromCookieToken(cookieToken);
 
-  // Verify order is legit; else redirect and wipe order data.
-  const token = String(context.query.token ?? '') ?? null;
+  const userAgent = String(context.query.userAgent ?? '');
+  const anonymousId = String(context.query.anonymousId);
+
+  // Construct the order from Shopify query parameters...
+  const urlPrefix =
+    process.env.NODE_ENV === 'production'
+      ? 'https://tastiest.io'
+      : 'http://localhost:3000';
+
+  const {
+    data: { token },
+    error,
+  } = await postFetch<CreateNewOrderParams, CreateNewOrderReturn>(
+    urlPrefix + LocalEndpoint.CREATE_NEW_ORDER,
+    {
+      userId,
+      anonymousId,
+      userAgent,
+      promoCode: null,
+      timestamp: Date.now(),
+    },
+  );
+
+  dlog('checkout ➡️ error:', error);
 
   // If no order exists in URI, redirect to home
   if (!token) {
@@ -101,15 +139,25 @@ export const getServerSideProps: GetServerSideProps = async context => {
     };
   }
 
-  return {
-    props: { userId, order },
+  const props: Props = {
+    order,
+    userId,
+    userAgent,
+    anonymousId,
+    step: userId ? CheckoutStep.PAYMENT : CheckoutStep.SIGN_IN,
   };
+
+  return { props };
 };
 
 /** Parent component takes initial values from props
  *  and feeds dynamic values into children
  */
-function Checkout(props: Props) {
+function Checkout(
+  props: InferGetServerSidePropsType<typeof getServerSideProps>,
+) {
+  const { anonymousId, userAgent } = props;
+
   const { isDesktop } = useScreenSize();
   const { order } = useOrder(props.order.token, props.order);
 
@@ -132,6 +180,16 @@ function Checkout(props: Props) {
     if (isSignedIn === false) {
       setUserId(null);
     }
+
+    // Link
+    window.analytics.identify(anonymousId, {
+      userId: user.uid,
+      anonymousId: anonymousId ?? null,
+      email: user.email,
+      context: {
+        userAgent: navigator?.userAgent,
+      },
+    });
   }, [user]);
 
   const step: CheckoutStep = userId
@@ -139,15 +197,27 @@ function Checkout(props: Props) {
     : CheckoutStep.SIGN_IN;
 
   return (
-    <div>
+    <div className="pb-20">
       <Head>
         <title>Checkout - Tastiest</title>
       </Head>
       <Elements stripe={stripePromise}>
         {isDesktop ? (
-          <CheckoutDesktop order={order} step={step} userId={userId} />
+          <CheckoutDesktop
+            order={order}
+            step={step}
+            userId={userId}
+            anonymousId={anonymousId}
+            userAgent={userAgent}
+          />
         ) : (
-          <CheckoutMobile order={order} step={step} userId={userId} />
+          <CheckoutMobile
+            order={order}
+            step={step}
+            userId={userId}
+            anonymousId={anonymousId}
+            userAgent={userAgent}
+          />
         )}
       </Elements>
     </div>

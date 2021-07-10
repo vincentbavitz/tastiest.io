@@ -6,7 +6,6 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
 import { NextApiRequest, NextApiResponse } from 'next';
-import Stripe from 'stripe';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 
 export interface RegisterParams {
@@ -14,6 +13,7 @@ export interface RegisterParams {
   password: string;
   firstName: string | null;
   userAgent: string | null;
+  anonymousId: string | null;
 }
 
 export type RegisterReturn = {
@@ -30,12 +30,8 @@ export default async function register(
     response.status(405).end();
   }
 
-  const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
-  const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY, {
-    apiVersion: '2020-08-27',
-  });
-
   const role = UserRole.EATER;
+  const isTestAccount = process.env.NODE_ENV === 'development';
 
   // Doesn't matter if JSON encoded or not
   let body;
@@ -45,7 +41,8 @@ export default async function register(
     body = request.body;
   }
 
-  const { email, password, firstName, userAgent } = body;
+  const { email, password, firstName, userAgent, anonymousId } = body;
+  const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
 
   if (!email?.length || !password?.length) {
     response.json({
@@ -66,12 +63,13 @@ export default async function register(
 
     const userDataApi = new UserDataApi(firebaseAdmin, userRecord.uid);
 
-    const setDetails = () => {
+    const setDetails = async () => {
       // Set custom user claim (user role) to `eater`
       // (as apposed to `restaurant`, `admin`).
       // This is used in authentication etc.
-      firebaseAdmin.auth().setCustomUserClaims(userRecord?.uid, {
+      await firebaseAdmin.auth().setCustomUserClaims(userRecord?.uid, {
         [UserRole.EATER]: true,
+        isTestAccount,
       });
 
       // Set firstName if it was given
@@ -84,12 +82,13 @@ export default async function register(
     const trackPromise = async () => {
       // Track sign up.
       await analytics.identify({
-        userId: userRecord?.uid,
+        anonymousId,
         traits: {
+          userId: userRecord.uid,
+          email: userRecord.email,
           firstName,
-          email,
-          context: { userAgent },
         },
+        context: { userAgent },
       });
 
       // No need to await tracking after we've identified them
@@ -104,24 +103,9 @@ export default async function register(
       });
     };
 
-    const createStripeCustomerPromise = async () => {
-      //  When a user is created, create a Stripe customer object for them.
-      // https://stripe.com/docs/payments/save-and-reuse#web-create-customer
-      const customer = await stripe.customers.create({ email });
-      const intent = await stripe.setupIntents.create({
-        customer: customer.id,
-      });
-
-      // Set setup secret etc
-      userDataApi.setUserData(UserData.PAYMENT_DETAILS, {
-        stripeCustomerId: customer.id,
-        stripeSetupSecret: intent.client_secret,
-      });
-    };
-
     // Split into separate sub-functions to run in parallel
     // avoiding awaits.
-    Promise.all([trackPromise(), createStripeCustomerPromise(), setDetails()]);
+    await Promise.all([trackPromise(), setDetails()]);
 
     // Custom token used for signing in.
     // We can then sign in with signInWithCustomToken in useAuth
@@ -132,7 +116,7 @@ export default async function register(
       .status(202)
       .json({ data: { user: userRecord, token }, error: null, success: false });
   } catch (error) {
-    response.json({ data: null, error, success: false });
+    response.json({ data: { user: null, token: null }, error, success: false });
     return;
   }
 }

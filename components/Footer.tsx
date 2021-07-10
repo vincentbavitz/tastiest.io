@@ -177,7 +177,7 @@ const ThanksForSupportMessage = ({
 }) => (
   <div
     className={clsx(
-      'flex flex-col items-center space-y-2 tablet:space-y-4 tablet:justify-between tablet:items-start tablet:pl-4 tablet:ml-4 tablet:border-l tablet:border-white',
+      'flex flex-col items-center space-y-2 tablet:space-y-4 tablet:justify-between tablet:items-start tablet:border-white',
       wide ? 'w-full' : 'w-64',
     )}
   >
@@ -224,14 +224,10 @@ const SocialsBlock = () => (
 const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
   <>
     <p>
-      <a className="cursor-pointer hover:underline">How It Works</a>
+      {/* <a className="cursor-pointer hover:underline">How It Works</a> */}
     </p>
-    <p>
-      <a className="cursor-pointer hover:underline">Our Mission</a>
-    </p>
-    <p>
-      <a className="cursor-pointer hover:underline">Press Kit</a>
-    </p>
+    <p>{/* <a className="cursor-pointer hover:underline">Our Mission</a> */}</p>
+    <p>{/* <a className="cursor-pointer hover:underline">Press Kit</a> */}</p>
     <p>
       <a
         href="restaurants.tastiest.io"

@@ -157,7 +157,9 @@ const OverlayInner = (props: OverlayInnerProps) => {
         </div>
 
         <div className="flex items-end justify-between text-sm">
-          <span>Booking for {heads} people</span>
+          <span>
+            Buy for {heads} {heads === 1 ? 'person' : 'people'}
+          </span>
           <div className="flex items-center h-full tracking-wide">
             £<p>{totalPrice}</p>
           </div>
@@ -180,7 +182,7 @@ const OverlayInnerCard = ({ deal }: OverlayInnerCardProps) => {
       >
         <div className="aspect-w-16 aspect-h-9">
           <img
-            src={`${deal?.image?.imageUrl}?w=300`}
+            src={`${deal?.image?.imageUrl}?w=700`}
             className="object-cover"
           />
         </div>

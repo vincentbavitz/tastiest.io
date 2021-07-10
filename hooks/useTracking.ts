@@ -25,3 +25,17 @@ enum TrackingType {
 export function useTracking() {
   return useContext(TrackingContext);
 }
+
+// function useSession() {
+//   // Find Session or make a new one
+//   const [tastiestSessionId, setTastiestSessionId] = useLocalStorage<string>(
+//     'tastiest-session-id',
+//   );
+
+//   if (!tastiestSessionId) {
+//     // Make a new session
+//     const _sessionId = uuid();
+//     setTastiestSessionId(_sessionId);
+
+//   }
+// }

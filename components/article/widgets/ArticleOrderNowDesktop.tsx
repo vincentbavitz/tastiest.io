@@ -40,7 +40,7 @@ export function ArticleOrderNowDesktop(props: Props) {
           <div className="pb-4 mx-4 overflow-hidden bg-secondary-1 rounded-xl">
             <div className="aspect-w-16 aspect-h-9">
               <img
-                src={`${deal?.image?.imageUrl}?w=300`}
+                src={`${deal?.image?.imageUrl}?w=700`}
                 className="object-cover"
               />
             </div>
@@ -85,7 +85,9 @@ export function ArticleOrderNowDesktop(props: Props) {
             </div>
 
             <div className="flex items-end justify-between text-xs">
-              <span>Booking for {heads} people</span>
+              <span>
+                Buy for {heads} {heads === 1 ? 'person' : 'people'}
+              </span>
               <div className="flex items-center h-full">
                 <PoundIcon
                   style={{ height: '0.6rem' }}

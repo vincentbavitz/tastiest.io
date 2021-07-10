@@ -1,4 +1,5 @@
 import { IOrder } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { ReactNode } from 'react';
 
@@ -10,7 +11,7 @@ interface Props {
 
 export function CheckoutCard(props: Props) {
   const { title, order, children } = props;
-  const { isMobile } = useScreenSize();
+  const { isMobile, isTablet, isDesktop } = useScreenSize();
 
   if (!order) return null;
 
@@ -29,15 +30,27 @@ export function CheckoutCard(props: Props) {
           {title}
         </div>
 
-        <div className="flex flex-row border-2 rounded-b-xl tablet:flex-col border-secondary">
-          <div className="relative w-40 p-3 bg-opacity-75 tablet:w-auto tablet:aspect-w-16 tablet:aspect-h-9 tablet:p-0">
+        <div
+          className={clsx(
+            'flex overflow-hidden flex-col mobile:flex-row tablet:flex-col border-2 border-secondary tablet:border-0 rounded-b-xl tablet:rounded-b-none',
+          )}
+        >
+          <div
+            className={clsx(
+              'relative bg-opacity-75 overflow-hidden',
+              isMobile && '',
+              isTablet ? 'w-40 h-40' : 'aspect-w-1 aspect-h-1',
+              isDesktop &&
+                'border-l-2 border-r-2 border-secondary pl-px w-full',
+            )}
+          >
             <img
-              className="object-cover w-full h-full"
-              src={`${order?.deal?.image?.imageUrl}?w=300`}
+              className="absolute inset-0 object-cover w-full h-full"
+              src={`${order?.deal?.image?.imageUrl}?w=700`}
             />
           </div>
 
-          <div className="flex flex-col flex-grow px-3 pt-3 pb-4 space-y-3 tablet:border-b-2 tablet:border-l-2 tablet:border-r-2 border-secondary rounded-b-xl">
+          <div className="flex flex-col justify-between flex-grow px-3 pt-3 pb-4 space-y-3 tablet:border-b-2 tablet:border-l-2 tablet:border-r-2 border-secondary rounded-b-xl">
             {children}
           </div>
         </div>
