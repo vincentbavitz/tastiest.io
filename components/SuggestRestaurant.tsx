@@ -27,8 +27,7 @@ export function SuggestRestaurant() {
 
   // Form values
   const [requestRecieved, setRequestRecieved] = useState(false);
-
-  const { suggestRestaurant, isSubmitting } = useFeedback();
+  const { makeRecommendation, isSubmitting } = useFeedback();
 
   // prettier-ignore
   const svgDesktopMarginLeft = isHuge ?
@@ -45,7 +44,7 @@ export function SuggestRestaurant() {
       return;
     }
 
-    const { success } = await suggestRestaurant(
+    const { success } = await makeRecommendation(
       false,
       {
         userGivenDish,

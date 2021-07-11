@@ -2873,10 +2873,10 @@
   resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.19.0/842923a642eb90d51bc28b9b60813561808b9748faec74c0e4e82d9ce86c86d5#6b1ded510718ae36e1f0749b8462de839873f980"
   integrity sha512-AhxdIyYpZbBdjxtto6YHicZk+WMtlO63yeSZiDVPZSA75Y3SdDGa2q+ACW3lQ+XmiE2dun/4A0Hr0EuXdebxlg==
 
-"@tastiest-io/tastiest-icons@^0.24.0":
-  version "0.24.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.24.0/d9451e8f78ac4f0a4172b2dcb5c268308de93a450ce0e5e9558b210667d22248#ece4ade86e9bd8343401e9a802f52200666cc04f"
-  integrity sha512-TnkOoS2qq8WqLGtBCIAAvImfkYSyZ33J+CN0gdIPEiCjl1NoPgDr0Iph4LxVMFQiMuD6Z9rDqydI9ntxYY9yfA==
+"@tastiest-io/tastiest-icons@^0.25.0":
+  version "0.25.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.25.0/c9cb96e77f651e61735e7e8eead9828da7f6969ca9719ae256fa0766d966cac9#4bf107935f8e028a4bff393c500a40d5fe217306"
+  integrity sha512-SLvKwiBgGVqYEX1Khg9NFNuSF0J8OWILnWqkhTbo2ZPDCPQ1g975UrmjjjVZQP3ec1/6OaDbA4sF6wOKbUn+bA==
 
 "@tastiest-io/tastiest-utils@^0.143.0":
   version "0.143.0"
@@ -2907,10 +2907,10 @@
     moment "^2.29.1"
     stripe "^8.143.0"
 
-"@tastiest-io/tastiest-utils@^0.157.0":
-  version "0.157.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.157.0/9b10f2bff129435e0e1bd2a614ceda41d9960738a60dd19f6debc2f171681e92#675277effec9eee3cbfcf1e91fc15141127c8dba"
-  integrity sha512-qVCJiFIL57yCiaQV0AnyTicdjGILb1ba5cFs42VF0RVQSRiKpl9pnNkc5Bg7GyuqgKcRCQrUYpOGn24X2i1n9Q==
+"@tastiest-io/tastiest-utils@^0.158.0":
+  version "0.158.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.158.0/5777a5facb2c5b45fbe83b85985e409541faa49ff65e34a65897905d3a45cdd9#846be3c4e915d7e9a18f6a4bd0010a415d9d4fae"
+  integrity sha512-DvSak3bb+DOD09XeVhlFB5knRV/MmilU+/yekNTxOiw8ke1Zb6A1SGGSyympcIlGoRYiacohWk7ZCQ91Us3yYw==
   dependencies:
     "@contentful/rich-text-types" "^14.1.2"
     "@shopify/shopify-api" "^1.4.0"

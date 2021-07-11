@@ -1,5 +1,7 @@
-import { Button } from '@tastiest-io/tastiest-components';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Button, Input } from '@tastiest-io/tastiest-components';
 import {
+  CheckIcon,
   HotIcon,
   ItalianIcon,
   JapaneseIcon,
@@ -9,9 +11,13 @@ import {
 } from '@tastiest-io/tastiest-icons';
 import { dlog, SVG } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
+import clsx from 'clsx';
+import { InputGroup } from 'components/inputs/InputGroup';
+import { useFeedback } from 'hooks/useFeedback';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useRouter } from 'next/router';
-import React from 'react';
+import { ThumbsUpIllustration } from 'public/assets/illustrations';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CUISINES } from '../../constants';
 import { useSearch } from '../../hooks/useSearch';
@@ -94,10 +100,12 @@ function SearchOverlayInnerDefault() {
           <div
             key={category.name.toLowerCase()}
             onClick={() => router.push(category.href)}
-            className="flex items-center text-lg font-medium rounded-lg cursor-pointer text-primary font-roboto hover:bg-primary hover:bg-opacity-10"
+            className="flex items-center px-2 py-1 text-lg font-medium rounded-lg cursor-pointer text-primary font-roboto hover:bg-secondary-1 hover:bg-opacity-10"
           >
-            <category.svg className="w-8 h-8 mr-2 tablet:h-5 tablet:w-5" />
-            <p className="text-xl mobile:text-base">{category.name}</p>
+            <category.svg className="w-6 h-6 mr-2 fill-current tablet:h-5 tablet:w-5" />
+            <p className="text-xl text-black mobile:text-base">
+              {category.name}
+            </p>
           </div>
         ))}
       </div>
@@ -203,16 +211,95 @@ function SearchOverlayInnerResults() {
 
 function SearchOverlayInnerNoResults() {
   const { isDesktop } = useScreenSize();
+  const searchState = useSelector((state: IState) => state.search);
+  const { searchOverlayExpanded } = useSelector(
+    (state: IState) => state.navigation,
+  );
+
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [suggestionInputOpen, setSuggestionInputOpen] = useState(false);
+  const [suggestionQuery, setSuggestionQuery] = useState(
+    searchState.searchQuery,
+  );
+
+  const { makeRecommendation, isSubmitting } = useFeedback();
+
+  // Suggestion query should autofill with search query data.
+  useEffect(() => {
+    setSuggestionQuery(searchState.searchQuery);
+  }, [searchState.searchQuery]);
+
+  // Reset state when modal opens or closes.
+  useEffect(() => {
+    setHasSubmitted(false);
+    setSuggestionInputOpen(false);
+    setSuggestionQuery(searchState.searchQuery);
+  }, [searchOverlayExpanded, searchState.searchQuery]);
+
+  const sendSuggestion = async () => {
+    if (isSubmitting) {
+      return;
+    }
+
+    const { success: hasSubmitted } = await makeRecommendation(false, {
+      userGivenDish: suggestionQuery,
+    });
+
+    setHasSubmitted(hasSubmitted);
+  };
 
   return (
     <div
-      className={classNames('flex flex-col mt-4', [
+      className={clsx(
+        'flex flex-col items-center',
         !isDesktop ? 'px-0' : 'px-4',
-      ])}
+        hasSubmitted ? 'mt-3' : 'mt-6',
+      )}
     >
-      No results found. Would you like to suggest a dish?
-      <Button>Suggest</Button>
-      <div className="w-full h-px mt-2 bg-red-500 bg-opacity-25"></div>
+      {hasSubmitted ? (
+        <div className="flex items-center">
+          <ThumbsUpIllustration className="h-24 -ml-10" />
+
+          <h4 className="pl-4 text-xl font-somatic text-primary">Thanks!</h4>
+        </div>
+      ) : (
+        <>
+          <p className="pb-2">
+            No results found. Would you like to suggest a dish?
+          </p>
+
+          <div className="flex justify-center w-full px-1">
+            {suggestionInputOpen ? (
+              <div className="flex-grow">
+                <InputGroup>
+                  <Input
+                    value={suggestionQuery}
+                    onValueChange={setSuggestionQuery}
+                  />
+                  <Button onClick={sendSuggestion}>
+                    {isSubmitting ? (
+                      <LoadingOutlined className="w-5 text-xl text-white" />
+                    ) : (
+                      <CheckIcon className="w-5 h-3 text-white fill-current" />
+                    )}
+                  </Button>
+                </InputGroup>
+              </div>
+            ) : (
+              <Button onClick={() => setSuggestionInputOpen(true)}>
+                Suggest
+              </Button>
+            )}
+          </div>
+        </>
+      )}
+
+      <div
+        className={clsx(
+          'w-full h-px bg-red-500 bg-opacity-25',
+          hasSubmitted ? 'mt-3' : 'mt-6',
+        )}
+      ></div>
     </div>
   );
 }

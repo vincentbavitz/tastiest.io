@@ -17,9 +17,9 @@ export const generateStaticURL = ({
 
   // prettier-ignore
   const as = 
-    `/${city}/${cuisine}` +
+    (`/${city}/${cuisine}` +
     `${restaurant?.length ? '/' + restaurant : ''}` +
-    `${slug?.length ? '/' + slug : ''}`
+    `${slug?.length ? '/' + slug : ''}`)
     .toLowerCase();
 
   return { href, as };

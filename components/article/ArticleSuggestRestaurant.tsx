@@ -47,7 +47,7 @@ const ArticleSuggestRestaurantContent = ({
   restaurant,
   city,
 }: IPost) => {
-  const { suggestRestaurant, isSubmitting } = useFeedback();
+  const { makeRecommendation, isSubmitting } = useFeedback();
 
   const { isDesktop } = useScreenSize();
   const [recommendedName, setRecommendedName] = useState('');
@@ -56,7 +56,7 @@ const ArticleSuggestRestaurantContent = ({
   const submit = async () => {
     if (requestRecieved) return;
 
-    const { success } = await suggestRestaurant(true, {
+    const { success } = await makeRecommendation(true, {
       dish: dishName,
       cuisine,
       location: restaurant.location,

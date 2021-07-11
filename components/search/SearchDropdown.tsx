@@ -48,7 +48,7 @@ export function SearchDropdown({ isShown, innerOverlayStyle = {} }: Props) {
         >
           <div
             style={innerOverlayStyle}
-            className="relative overflow-y-auto w-full"
+            className="relative w-full overflow-y-auto"
           >
             <SearchOverlayInner />
           </div>

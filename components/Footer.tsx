@@ -224,11 +224,6 @@ const SocialsBlock = () => (
 const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
   <>
     <p>
-      {/* <a className="cursor-pointer hover:underline">How It Works</a> */}
-    </p>
-    <p>{/* <a className="cursor-pointer hover:underline">Our Mission</a> */}</p>
-    <p>{/* <a className="cursor-pointer hover:underline">Press Kit</a> */}</p>
-    <p>
       <a
         href="restaurants.tastiest.io"
         className="cursor-pointer hover:underline"
@@ -236,6 +231,11 @@ const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
         Tastiest For {!flat && <br />} Restaurants
       </a>
     </p>
+    <p>
+      {/* <a className="cursor-pointer hover:underline">How It Works</a> */}
+    </p>
+    <p>{/* <a className="cursor-pointer hover:underline">Our Mission</a> */}</p>
+    <p>{/* <a className="cursor-pointer hover:underline">Press Kit</a> */}</p>
   </>
 );
 

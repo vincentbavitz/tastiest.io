@@ -1,7 +1,6 @@
 import { useAuth } from 'hooks/useAuth';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { useLocalStorage } from 'react-use';
+import React, { useEffect } from 'react';
 
 export enum LocalStorageItem {
   HAS_ACCEPTED_COOKIES = 'HAS_ACCEPTED_COOKIES',
@@ -14,23 +13,13 @@ const TrackingProvider = ({ children }) => {
   const { isSignedIn } = useAuth();
   const router = useRouter();
 
-  // ////////////////////////////////////// //
-  // Turn off analytics until user opts in  //
-  // ////////////////////////////////////// //
-  const [hasAcceptedCookies] = useLocalStorage(
-    LocalStorageItem.HAS_ACCEPTED_COOKIES,
-  );
-
-  const [hasAcceptedAnalytics, setHasAcceptedAnalytics] = useState(
-    isSignedIn || hasAcceptedCookies,
-  );
-
+  // /////////////////////////////////////// //
+  //   Analytics is automatically opted in.  //
+  //   User can leave otherwise.             //
+  // /////////////////////////////////////// //
   useEffect(() => {
-    if (!hasAcceptedAnalytics) {
-      window.analytics?.off();
-      setHasAcceptedAnalytics(false);
-    }
-  }, [isSignedIn, hasAcceptedCookies]);
+    window.analytics?.on();
+  }, []);
 
   // /////////////////////////////////////// //
   //  Manange location changes with Segment  //
@@ -47,9 +36,7 @@ const TrackingProvider = ({ children }) => {
   }, []);
 
   return (
-    <TrackingContext.Provider value={hasAcceptedAnalytics}>
-      {children}
-    </TrackingContext.Provider>
+    <TrackingContext.Provider value={''}>{children}</TrackingContext.Provider>
   );
 };
 

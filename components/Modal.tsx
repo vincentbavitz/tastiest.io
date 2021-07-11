@@ -50,7 +50,6 @@ export function Modal(props: Props) {
     }
 
     // Refuse to open if another modal is currently open
-
     if (modalId !== openedModal) {
       dlog(`Cannot open modal ${modalId}, ${openedModal} is already open.`);
 
