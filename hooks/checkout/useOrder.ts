@@ -58,15 +58,8 @@ export function useOrder(token: string, initialOrder?: IOrder) {
     return { success, error };
   };
 
-  const pay = async (
-    shopifyProductId: string,
-    anonymousId: string,
-    cartToken: string,
-    userAgent: string,
-  ) => {
+  const pay = async () => {
     dlog('useOrder ➡️ paying:');
-    dlog('useOrder ➡️ shopifyProductId:', shopifyProductId);
-    dlog('useOrder ➡️ anonymousId:', anonymousId);
 
     const {
       data: { order: _order },
@@ -74,10 +67,8 @@ export function useOrder(token: string, initialOrder?: IOrder) {
       error,
     } = await postFetch<PayParams, PayReturn>(LocalEndpoint.PAY, {
       token,
-      shopifyProductId,
-      anonymousId,
-      cartToken,
-      userAgent,
+      userId: user.uid,
+      userAgent: navigator.userAgent,
     });
 
     // Payment success

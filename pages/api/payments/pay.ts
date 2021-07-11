@@ -1,23 +1,28 @@
 import {
-  dlog,
   FirestoreCollection,
   FunctionsResponse,
+  generateConfirmationCode,
   generateUserFacingId,
   IBooking,
   IOrder,
+  IRestaurant,
   PAYMENTS,
+  reportInternalError,
+  RestaurantDataApi,
+  TastiestInternalErrorCode,
+  transformPriceForStripe,
   UserData,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
-import moment from 'moment';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
-import { generateConfirmationCode, transformPriceForStripe } from 'utils/order';
 
 export type PayParams = {
   token: string;
+  userId: string;
+  userAgent: string;
 };
 
 export type PayReturn = {
@@ -55,7 +60,7 @@ export default async function pay(
     body = request.body;
   }
 
-  const { token = null } = body;
+  const { token = null, userAgent = '' } = body;
 
   // Order token is required
   if (!token || !token.length) {
@@ -79,14 +84,32 @@ export default async function pay(
     let order: IOrder;
     snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
 
+    const userDataApi = new UserDataApi(firebaseAdmin, order?.userId);
+    const details = await userDataApi.getUserData(UserData.DETAILS);
+    const eaterName = `${details.firstName} ${details.lastName}`;
+
     // Is the order already paid or expired?
     const isOrderExpired =
       order?.createdAt + PAYMENTS.ORDER_EXPIRY_MS < Date.now();
     if (order.paidAt || isOrderExpired) {
+      const _error = 'Order already paid or is expired';
+
+      // Payment expired or already paid
+      analytics.track({
+        event: 'Payment Error',
+        context: { userAgent },
+        userId: order.userId,
+        properties: {
+          token,
+          ...order,
+          error: _error,
+        },
+      });
+
       response.json({
         success: false,
         data: { order: null },
-        error: 'Order already paid or is expired',
+        error: _error,
       });
       return;
     }
@@ -103,43 +126,112 @@ export default async function pay(
 
     // Payment method exists?
     if (!order?.paymentMethod || !order?.paymentMethod.length) {
+      const _error = 'No payment method ID given';
+
       response.json({
         success: false,
         data: { order: null },
-        error: 'No payment method ID given',
+        error: _error,
+      });
+
+      // Payment failure
+      analytics.track({
+        event: 'Payment Error',
+        userId: order.userId,
+        properties: {
+          token,
+          firstName: details.firstName,
+          ...order,
+          error: _error,
+        },
       });
       return;
     }
 
-    const userDataApi = new UserDataApi(firebaseAdmin, order?.userId);
     const paymentDetails = await userDataApi.getUserData(
       UserData.PAYMENT_DETAILS,
     );
 
     const customerId = paymentDetails?.stripeCustomerId;
-
     if (!customerId) {
+      const _error = "Stripe customer doesn't exist";
       response.json({
         success: false,
         data: { order: null },
-        error: "Stripe customer doesn't exist",
+        error: _error,
+      });
+
+      // Payment failure
+      analytics.track({
+        event: 'Payment Error',
+        context: { userAgent },
+        userId: order.userId,
+        properties: {
+          token,
+          firstName: details.firstName,
+          ...order,
+          error: _error,
+        },
       });
       return;
     }
 
-    const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY, {
-      apiVersion: '2020-08-27',
-    });
+    const stripe = new Stripe(
+      process.env.NODE_ENV === 'production'
+        ? process.env.STRIPE_LIVE_SECRET_KEY
+        : process.env.STRIPE_TEST_SECRET_KEY,
+      {
+        apiVersion: '2020-08-27',
+      },
+    );
+
+    const RESTAURANT_PAYOUT_PC = 0.75;
+    const totalPaymentValue = order.price.final;
+    const restaurantPaymentValue = totalPaymentValue * RESTAURANT_PAYOUT_PC;
+
+    const restaurantDataApi = new RestaurantDataApi(
+      firebaseAdmin,
+      order.deal.restaurant.id,
+    );
+
+    const {
+      details: restaurantDetails,
+      financial: { stripeConnectedAccount },
+    } = await restaurantDataApi.getRestaurantData();
 
     // The `confirm` parameter attempts to pay immediately & automatically
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: transformPriceForStripe(order.price.final),
+      amount: transformPriceForStripe(totalPaymentValue),
       currency: 'gbp',
       customer: customerId,
       payment_method: order.paymentMethod,
       off_session: true,
       confirm: true,
+
+      // Automatically transfer to Connected Account
+      transfer_data: {
+        amount: transformPriceForStripe(restaurantPaymentValue),
+        destination:
+          process.env.NODE_ENV === 'production'
+            ? stripeConnectedAccount.id
+            : process.env.STRIPE_TEST_CONNECTED_ACCOUNT_ID,
+      },
+      // Used to manage Stripe Webhooks like `onPaymentSuccessWebhook`
+      metadata: {
+        orderId: order.id,
+      },
     });
+
+    // ////////////////////////////////////////////////////
+    //              MANAGING PAYMENT SUCCESS             //
+    // ////////////////////////////////////////////////////
+    //
+    // When 3D Secure is performed, we need to reconfirm the payment
+    // after authentication has been performed.
+    // Reference: https://stripe.com/docs/payments/accept-a-payment-synchronously#web-confirm-payment
+    if (paymentIntent.status === 'requires_confirmation') {
+      await stripe.paymentIntents.confirm(paymentIntent.id);
+    }
 
     // Payment success
     if (paymentIntent.status === 'succeeded') {
@@ -156,15 +248,16 @@ export default async function pay(
         );
 
       // Update user data
-      const details = await userDataApi.getUserData(UserData.DETAILS);
-      const eaterName = `${details.firstName} ${details.lastName}`;
-
       // Add to bookings
       const booking: IBooking = {
+        userId: order.userId,
+        restaurant: restaurantDetails as IRestaurant,
+        restaurantId: order.deal.restaurant.id,
         orderId: order.id,
         userFacingBookingId: generateUserFacingId(),
-        restaurantId: order.deal.restaurant.id,
         eaterName,
+        eaterEmail: details.email,
+        eaterMobile: details.mobile,
         dealName: order.deal.name,
         heads: order.heads,
         price: order.price,
@@ -176,6 +269,7 @@ export default async function pay(
         cancelledAt: null,
         confirmationCode: generateConfirmationCode(),
         isConfirmationCodeVerified: false,
+        isTest: process.env.NODE_ENV === 'development',
       };
 
       firebaseAdmin
@@ -184,65 +278,138 @@ export default async function pay(
         .doc(order.id)
         .set(booking);
 
-      // Track payment success
-      const paymentMethod = await stripe.paymentMethods.retrieve(
-        order.paymentMethod,
+      // Internal measurements
+      const tastiestPortion = order.price.final * 0.25; // TODO -> Subtract PROMO,
+      const restaurantPortion = order.price.final * 0.75;
+
+      // Track using Segment's Payment Success schema
+      // https://segment.com/docs/connections/spec/ecommerce/v2/#order-completed
+      await analytics.track(
+        {
+          event: 'Order Completed',
+          userId: order.userId,
+          context: {
+            userAgent,
+            page: {
+              url: 'https://tastiest.io/checkout',
+            },
+          },
+          integrations: {
+            All: false,
+            'Facebook Pixel': true,
+            'Facebook Conversions API': true,
+            'Google Analytics': true,
+          },
+          properties: {
+            checkout_id: order.token,
+            order_id: order.id,
+            affiliation: '',
+            total: order.price.final,
+            subtotal: order.price.gross,
+            revenue: order.price.final * 0.25,
+            shipping: 0,
+            tax: 0,
+            discount: 0,
+            coupon: order.promoCode,
+            currency: order.price.currency,
+            products: [
+              {
+                product_id: order.deal.id,
+                sku: order.deal.id,
+                name: order.deal.name,
+                price: order.deal.pricePerHeadGBP,
+                quantity: order.heads,
+                category: '',
+                url: `https://tastiest.io/r?offer=${order.deal.id}`,
+                image_url: order.deal.image.imageUrl,
+              },
+            ],
+            traits: {
+              firstName: details.firstName,
+              lastName: details.lastName,
+              email: details.email,
+              phone: details.mobile,
+              birthday: JSON.stringify(details.birthday),
+              postalCode: details.postalCode,
+
+              address: {
+                city: 'London',
+              },
+            },
+
+            // Internal measurements
+            tastiestPortion,
+            restaurantPortion,
+
+            // For Pixel
+            action_source: 'website',
+          },
+        },
+        () =>
+          response.json({
+            success: true,
+            data: { order },
+            error: null,
+          }),
       );
-
-      analytics.track({
-        event: 'Payment Success',
-        userId: order.userId,
-        properties: {
-          token,
-          firstName: details.firstName,
-          paidAtDate: moment(booking.paidAt).format('Do MMMM YYYY'),
-          paymentCard: paymentMethod.card,
-          ...order,
-          ...booking,
-        },
-      });
-
-      // Update identify with new payment and user-data
-      analytics.identify({
-        userId: order.userId,
-        traits: {
-          ...details,
-        },
-      });
 
       response.json({
         success: true,
         data: { order },
         error: null,
       });
+
       return;
+    } else {
+      const _error = 'Payment Failure - Unable to confirm payment';
+      await reportInternalError({
+        code: TastiestInternalErrorCode.PAYMENT_ERROR,
+        message: _error,
+        timestamp: Date.now(),
+        shouldAlert: false,
+        originFile: 'pages/api/payments/pay.ts:357',
+        properties: { ...order },
+      });
+
+      analytics.track({
+        event: 'Payment Failure',
+        userId: order.userId,
+        properties: {
+          token,
+          firstName: details.firstName,
+          ...order,
+          error: _error,
+        },
+      });
+
+      response.json({
+        success: false,
+        data: { order: null },
+        error: _error,
+      });
     }
-
-    dlog('pay ➡️ paymentIntent:', paymentIntent);
-
-    response.json({
-      success: false,
-      data: { order: null },
-      error: 'There was an issue with your payment card.',
-    });
-
-    analytics.track({
-      event: 'Payment Failure',
-      userId: order.userId,
-      properties: {
-        token,
-        message:
-          'Payment failed due to either insufficient funds or Stripe side security check failed.',
-        stripePaymentError: paymentIntent.last_payment_error,
-        ...order,
-      },
-    });
   } catch (error) {
+    await reportInternalError({
+      code: TastiestInternalErrorCode.PAYMENT_ERROR,
+      message: 'Payment Failure - Caught error',
+      timestamp: Date.now(),
+      shouldAlert: false,
+      originFile: 'pages/api/payments/pay.ts',
+      properties: { token },
+      raw: String(error),
+    });
+
     response.json({
       success: false,
       data: { order: null },
-      error,
+      error: String(error),
     });
-    return;
   }
+
+  response.json({
+    success: false,
+    data: null,
+    error: null,
+  });
+  return;
 }
