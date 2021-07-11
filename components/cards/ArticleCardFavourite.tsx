@@ -12,7 +12,7 @@ import router from 'next/dist/client/router';
 import Link from 'next/link';
 import React, { SyntheticEvent, useState } from 'react';
 import { useMeasure } from 'react-use';
-import { generateSlugURL } from 'utils/routing';
+import { generateStaticURL } from 'utils/routing';
 
 interface Props extends Partial<IPost> {
   isFavourite: boolean;
@@ -38,7 +38,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
 
   const [isShareDropdownOpen, setIsShareDropdownOpen] = useState(false);
 
-  const { href, as } = generateSlugURL({
+  const { href, as } = generateStaticURL({
     city,
     slug,
     cuisine,

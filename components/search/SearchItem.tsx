@@ -3,13 +3,13 @@ import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import React from 'react';
-import { generateSlugURL } from '../../utils/routing';
+import { generateStaticURL } from '../../utils/routing';
 
 export function SearchItem(props: IPost) {
   const { title, featureImage, city, cuisine, slug, restaurant } = props;
   const { isDesktop } = useScreenSize();
 
-  const { href, as } = generateSlugURL({
+  const { href, as } = generateStaticURL({
     city,
     cuisine,
     slug,

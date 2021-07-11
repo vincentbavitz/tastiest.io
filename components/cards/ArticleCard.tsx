@@ -4,7 +4,7 @@ import { TagRow } from 'components/TagRow';
 import Link from 'next/link';
 import React from 'react';
 import { useMeasure } from 'react-use';
-import { generateSlugURL } from 'utils/routing';
+import { generateStaticURL } from 'utils/routing';
 
 interface Props extends IPost {
   // Compact omits description
@@ -27,7 +27,7 @@ export function ArticleCard(props: Props): JSX.Element {
   const [ref, { width }] = useMeasure();
   const isSmall = width < 170;
 
-  const { href, as } = generateSlugURL({
+  const { href, as } = generateStaticURL({
     city,
     slug,
     cuisine,

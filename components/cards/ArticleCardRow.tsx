@@ -2,12 +2,12 @@ import { IPost } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import React from 'react';
-import { generateSlugURL } from '../../utils/routing';
+import { generateStaticURL } from '../../utils/routing';
 
 export function ArticleCardRow(post: IPost) {
   const { isDesktop } = useScreenSize();
   const { city, slug, cuisine } = post;
-  const { href, as } = generateSlugURL({
+  const { href, as } = generateStaticURL({
     city,
     slug,
     cuisine,

@@ -1,39 +1,26 @@
 interface IGenerateURLParams {
   city: string;
-  restaurant: string;
   cuisine: string;
-  slug: string;
+  restaurant?: string;
+  slug?: string;
 }
 
-export const generateSlugURL = ({
+export const generateStaticURL = ({
   city = '',
-  restaurant = '',
   cuisine = '',
-  slug = '',
+  restaurant,
+  slug,
 }: IGenerateURLParams) => {
-  // Build restaurnat URL
-  if (city.length && restaurant.length && cuisine.length && slug.length) {
-    const href = `/[city]${'/[cuisine-or-restaurant]'}${'/[cuisine]'}${
-      slug && '/[slug]'
-    }`.toLowerCase();
+  const href = `/[city]/[cuisine]${restaurant?.length ? '/[restaurant]' : ''}${
+    slug?.length ? '/[slug]' : ''
+  }`.toLowerCase();
 
-    const as = `/${city}/${restaurant}/${cuisine}/${slug}`.toLowerCase();
+  // prettier-ignore
+  const as = 
+    `/${city}/${cuisine}` +
+    `${restaurant?.length ? '/' + restaurant : ''}` +
+    `${slug?.length ? '/' + slug : ''}`
+    .toLowerCase();
 
-    return { href, as };
-  }
-
-  // Route to 404 if the link is invalid
-  return { href: '/404', as: '/404' };
-};
-
-export const generateCuisineURL = ({ city = '', cuisine = '' }) => {
-  if (city.length && cuisine.length) {
-    const href = `/[city]${'[cuisine-or-restaurant]'}`.toLowerCase();
-    const as = `/${city}/${cuisine}`.toLowerCase();
-
-    return { href, as };
-  }
-
-  // Route to 404 if the link is invalid
-  return { href: '/404', as: '/404' };
+  return { href, as };
 };

@@ -2,7 +2,7 @@ import { SVG } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import Link from 'next/link';
 import React from 'react';
-import { generateCuisineURL } from '../../utils/routing';
+import { generateStaticURL } from 'utils/routing';
 
 interface Props {
   // Ensure that the accompanying SVG is in /assets/cuisines
@@ -15,7 +15,7 @@ interface Props {
 export function CuisineItem(props: Props) {
   // const state = useGeolocation();
   const { name, onClick } = props;
-  const { href, as } = generateCuisineURL({ city: 'london', cuisine: name });
+  const { href, as } = generateStaticURL({ city: 'london', cuisine: name });
 
   const handleOnClick = () => {
     if (onClick) {
