@@ -1,11 +1,7 @@
 import {
   FirestoreCollection,
   FunctionsResponse,
-  generateConfirmationCode,
-  generateUserFacingId,
-  IBooking,
   IOrder,
-  IRestaurant,
   PAYMENTS,
   reportInternalError,
   RestaurantDataApi,
@@ -86,7 +82,6 @@ export default async function pay(
 
     const userDataApi = new UserDataApi(firebaseAdmin, order?.userId);
     const details = await userDataApi.getUserData(UserData.DETAILS);
-    const eaterName = `${details.firstName} ${details.lastName}`;
 
     // Is the order already paid or expired?
     const isOrderExpired =
@@ -236,7 +231,7 @@ export default async function pay(
     // Payment success
     if (paymentIntent.status === 'succeeded') {
       // Update order
-      firebaseAdmin
+      await firebaseAdmin
         .firestore()
         .collection(FirestoreCollection.ORDERS)
         .doc(order.id)
@@ -246,37 +241,6 @@ export default async function pay(
           },
           { merge: true },
         );
-
-      // Update user data
-      // Add to bookings
-      const booking: IBooking = {
-        userId: order.userId,
-        restaurant: restaurantDetails as IRestaurant,
-        restaurantId: order.deal.restaurant.id,
-        orderId: order.id,
-        userFacingBookingId: generateUserFacingId(),
-        eaterName,
-        eaterEmail: details.email,
-        eaterMobile: details.mobile,
-        dealName: order.deal.name,
-        heads: order.heads,
-        price: order.price,
-        paidAt: Date.now(),
-        bookingDate: null,
-        hasBooked: false,
-        hasArrived: false,
-        hasCancelled: false,
-        cancelledAt: null,
-        confirmationCode: generateConfirmationCode(),
-        isConfirmationCodeVerified: false,
-        isTest: process.env.NODE_ENV === 'development',
-      };
-
-      firebaseAdmin
-        .firestore()
-        .collection(FirestoreCollection.BOOKINGS)
-        .doc(order.id)
-        .set(booking);
 
       // Internal measurements
       const tastiestPortion = order.price.final * 0.25; // TODO -> Subtract PROMO,
