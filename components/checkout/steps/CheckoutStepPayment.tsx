@@ -21,9 +21,9 @@ import { InputContactBirthday } from 'components/inputs/contact/InputContactBirt
 import { InputMobile } from 'components/inputs/contact/InputMobile';
 import { InputName } from 'components/inputs/contact/InputName';
 import InputPostcode from 'components/inputs/contact/InputPostcode';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useCheckout } from 'hooks/checkout/useCheckout';
 import { useOrder } from 'hooks/checkout/useOrder';
-import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import React, { useEffect, useState } from 'react';
@@ -240,6 +240,7 @@ export function CheckoutStepPayment(props: Props) {
             />
 
             <InputContactBirthday
+              label="Birthday"
               date={birthday}
               disabled={isPaymentProcessing}
               onDateChange={value => setBirthday(value)}

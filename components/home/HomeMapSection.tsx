@@ -24,9 +24,9 @@ export function HomeMapSection() {
       <div className="flex justify-end w-full px-6">
         <div
           style={{
-            boxShadow: '0px 0px 75px 75px rgba(255,255,255,0.5)',
+            boxShadow: '0px 0px 150px 90px rgba(255,255,255,0.75)',
           }}
-          className="z-10 flex flex-col items-center justify-center py-4 bg-white bg-opacity-50"
+          className="z-10 flex flex-col items-center justify-center py-4 bg-white bg-opacity-75"
         >
           <Title level={3} className="text-center text-primary font-somatic">
             Discover and
@@ -45,7 +45,6 @@ export function HomeMapSection() {
             onClick={() => dispatch(expandSearchOverlay())}
             type="solid"
             color="primary"
-            size="small"
             className="text-sm"
           >
             Search

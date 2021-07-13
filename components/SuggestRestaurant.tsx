@@ -1,7 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import clsx from 'clsx';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useFeedback } from 'hooks/useFeedback';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';

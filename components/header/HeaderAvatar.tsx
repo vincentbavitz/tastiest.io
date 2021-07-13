@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useAuth } from '../../hooks/useAuth';
-import { openSignInModal } from '../../state/navigation';
+import { useAuth } from '../../hooks/auth/useAuth';
+import { openAuthModal } from '../../state/navigation';
 import { UserAvatar } from '../avatar/UserAvatar';
 
 type SVGIcon = (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
@@ -74,7 +74,7 @@ export function HeaderAvatar() {
     }
 
     setIsDropdownOpen(false);
-    dispatch(openSignInModal());
+    dispatch(openAuthModal());
   };
 
   return (

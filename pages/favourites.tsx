@@ -20,7 +20,7 @@ import { NothingFoundIllustration } from 'public/assets/illustrations';
 import { FavouritesHero } from 'public/assets/page';
 import React from 'react';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../hooks/auth/useAuth';
 import { useUserData } from '../hooks/useUserData';
 
 export const getServerSideProps: GetServerSideProps = async context => {

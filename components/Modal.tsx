@@ -6,7 +6,7 @@ import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useClickAway, useKey } from 'react-use';
 import { UI } from '../constants';
-import { closeSignInModal, collapseSearchOverlay } from '../state/navigation';
+import { closeAuthModal, collapseSearchOverlay } from '../state/navigation';
 import { IState } from '../state/reducers';
 
 interface Props {
@@ -39,8 +39,8 @@ export function Modal(props: Props) {
 
   const ref = useRef(null);
   const boxRef = useRef(null);
-  useKey('Escape', () => dispatch(closeSignInModal()));
-  useClickAway(boxRef, () => dispatch(closeSignInModal()));
+  useKey('Escape', () => dispatch(closeAuthModal()));
+  useClickAway(boxRef, () => dispatch(closeAuthModal()));
   // useLockBodyScroll(isOpen);
 
   useEffect(() => {

@@ -1,10 +1,12 @@
 import {
+  dlog,
   FunctionsResponse,
   UserData,
   UserDataApi,
   UserRole,
 } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
+import { AuthError, AuthErrorCode, AuthErrorMessageMap } from 'contexts/auth';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 
@@ -23,7 +25,7 @@ export type RegisterReturn = {
 
 export default async function register(
   request: NextApiRequest,
-  response: NextApiResponse<FunctionsResponse<RegisterReturn>>,
+  response: NextApiResponse<FunctionsResponse<RegisterReturn, AuthError>>,
 ) {
   // Only allow POST
   if (request.method !== 'POST') {
@@ -47,22 +49,44 @@ export default async function register(
   if (!email?.length || !password?.length) {
     response.json({
       data: { user: null, token: null },
-      error: 'No email or no password given',
+      error: AuthErrorMessageMap[AuthErrorCode.INVALID_CREDENTIAL],
+      success: false,
+    });
+    return;
+  }
+
+  let userRecord: firebaseAdmin.auth.UserRecord;
+  try {
+    userRecord = await firebaseAdmin.auth().createUser({
+      email,
+      emailVerified: false,
+      password,
+      disabled: false,
+    });
+  } catch (error) {
+    // Firebase create-user error
+    dlog('register ➡️ error:', error);
+    response.json({
+      data: { user: null, token: null },
+      error:
+        AuthErrorMessageMap[(error as AuthError).code] ??
+        AuthErrorMessageMap[AuthErrorCode.INTERNAL_ERROR],
+      success: false,
+    });
+    return;
+  }
+
+  if (!userRecord) {
+    response.json({
+      data: { user: null, token: null },
+      error: AuthErrorMessageMap[AuthErrorCode.USER_NOT_FOUND],
       success: false,
     });
     return;
   }
 
   try {
-    const userRecord = await firebaseAdmin.auth().createUser({
-      email,
-      emailVerified: false,
-      password,
-      disabled: false,
-    });
-
     const userDataApi = new UserDataApi(firebaseAdmin, userRecord.uid);
-
     const setDetails = async () => {
       // Set custom user claim (user role) to `eater`
       // (as apposed to `restaurant`, `admin`).
@@ -114,9 +138,14 @@ export default async function register(
 
     response
       .status(202)
-      .json({ data: { user: userRecord, token }, error: null, success: false });
+      .json({ data: { user: userRecord, token }, error: null, success: true });
   } catch (error) {
-    response.json({ data: { user: null, token: null }, error, success: false });
+    dlog('register ➡️ error:', error);
+    response.json({
+      data: { user: null, token: null },
+      error: AuthErrorMessageMap[AuthErrorCode.INTERNAL_ERROR],
+      success: false,
+    });
     return;
   }
 }

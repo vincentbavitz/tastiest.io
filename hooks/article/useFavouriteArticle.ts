@@ -1,7 +1,7 @@
 import { UserData } from '@tastiest-io/tastiest-utils';
 import { useDispatch } from 'react-redux';
-import { openSignInModal } from 'state/navigation';
-import { useAuth } from '../useAuth';
+import { openAuthModal } from 'state/navigation';
+import { useAuth } from '../auth/useAuth';
 import { useUserData } from '../useUserData';
 
 export function useFavouriteArticle() {
@@ -12,7 +12,7 @@ export function useFavouriteArticle() {
 
   const toggleSaveArticle = (slug: string) => {
     if (!isSignedIn) {
-      dispatch(openSignInModal());
+      dispatch(openAuthModal());
     }
 
     const isArticleSaved =

@@ -1,5 +1,5 @@
 import { dlog, IOrder, postFetch } from '@tastiest-io/tastiest-utils';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
 import { PayParams, PayReturn } from 'pages/api/payments/pay';
 import {

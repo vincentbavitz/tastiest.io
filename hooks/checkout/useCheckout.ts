@@ -14,7 +14,7 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import 'firebase/firestore'; // REMEMBER to include this for all useFirestore things
 import { useState } from 'react';
-import { useAuth } from '../useAuth';
+import { useAuth } from '../auth/useAuth';
 import { useUserData } from '../useUserData';
 
 export function useCheckout() {

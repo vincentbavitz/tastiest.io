@@ -53,3 +53,6 @@ export function dateFormat(value: string) {
     day + (month.length ? '/' + month : '') + (year.length ? '/' + year : '')
   );
 }
+
+export const cleanupInputValue = (value: string | number) =>
+  String(value).toLowerCase().trim();

@@ -27,10 +27,10 @@ export const navigationReducer = (
       return { ...state, searchOverlayExpanded: !state.searchOverlayExpanded };
     }
     case NavigationActions.OPEN_SIGN_IN_MODAL: {
-      return { ...state, isSignInModalOpen: true };
+      return { ...state, isAuthModalOpen: true };
     }
     case NavigationActions.CLOSE_SIGN_IN_MODAL: {
-      return { ...state, isSignInModalOpen: false };
+      return { ...state, isAuthModalOpen: false };
     }
     case NavigationActions.SET_MODAL_IS_OPEN: {
       return { ...state, modalIsOpen: action.payload };

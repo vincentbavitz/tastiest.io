@@ -2,7 +2,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input, TextArea } from '@tastiest-io/tastiest-components';
 import { UserQueryType } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useSupport } from 'hooks/useSupport';
 import Head from 'next/head';

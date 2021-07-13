@@ -2147,13 +2147,6 @@
   resolved "https://registry.yarnpkg.com/@ndhoule/keys/-/keys-2.0.0.tgz"
   integrity sha1-PWSuZ3xlomF0e/OkV8YuspKk4M4=
 
-"@ndhoule/map@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@ndhoule/map/-/map-2.0.1.tgz"
-  integrity sha1-9coKR0JOpn9G4qbUmbnpvIhq76g=
-  dependencies:
-    "@ndhoule/each" "^2.0.1"
-
 "@ndhoule/pick@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@ndhoule/pick/-/pick-2.0.0.tgz#e1eb1a6ca3243eef56daa095c3a1612c74a52156"
@@ -2530,13 +2523,6 @@
     json3 "^3.3.2"
     jsonp "^0.2.0"
 
-"@segment/snippet@^4.13.1":
-  version "4.13.1"
-  resolved "https://registry.yarnpkg.com/@segment/snippet/-/snippet-4.13.1.tgz"
-  integrity sha512-Z4HCHb/aLX9+92DI8PUUovLLFoKowCrq4IXHjyrXE24Y8ZKRoEiFW8IZKYZ3yEkfS2z54UKDHDJ/NxNNmZMU1Q==
-  dependencies:
-    "@ndhoule/map" "^2.0.1"
-
 "@segment/store@^1.3.20":
   version "1.3.20"
   resolved "https://registry.yarnpkg.com/@segment/store/-/store-1.3.20.tgz#859f6a1415aa82cb92cd4d0d0265f5661c0502d4"
@@ -2852,10 +2838,10 @@
   dependencies:
     mini-svg-data-uri "^1.2.3"
 
-"@tastiest-io/tastiest-components@^0.43.0":
-  version "0.43.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.43.0/43f405aaed6f2d5df440ea41e5adccf1a468e834d6cac2a2c6cd92533f2bf6ed#3dacfd94e0ddd287b8954d292d39f0f02dee3bfa"
-  integrity sha512-Km1E5dsCbPb78R1+8NOUeCTpfXRlj17KEbxca4fq8ei0aiA1W1qyFCpv5soXJkFXA8rrNpl6IshMPxrSjwChfw==
+"@tastiest-io/tastiest-components@^0.55.0":
+  version "0.55.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.55.0/c485f62dd0eab32940546594ea9dff4c5c36c75386ee33265eb341958f4ef659#ca28976d82dc345a5ca309b40fe512a9e7c8ee79"
+  integrity sha512-stthr+EKO1QAGEuI3MDPOAP89MYoZC8gyNyVPPHolwu/IpPTahjEduowppblEA+TNpZeBj8zlUoWcENkgC5WMQ==
   dependencies:
     "@nivo/core" "^0.72.0"
     "@nivo/line" "^0.72.0"
@@ -2907,10 +2893,10 @@
     moment "^2.29.1"
     stripe "^8.143.0"
 
-"@tastiest-io/tastiest-utils@^0.158.0":
-  version "0.158.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.158.0/5777a5facb2c5b45fbe83b85985e409541faa49ff65e34a65897905d3a45cdd9#846be3c4e915d7e9a18f6a4bd0010a415d9d4fae"
-  integrity sha512-DvSak3bb+DOD09XeVhlFB5knRV/MmilU+/yekNTxOiw8ke1Zb6A1SGGSyympcIlGoRYiacohWk7ZCQ91Us3yYw==
+"@tastiest-io/tastiest-utils@^0.161.0":
+  version "0.161.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.161.0/2bc2842a42b4cede69a4973de745e21f1bdf5eed67c8a6459e0e877cfbea58dc#2543bc806c13544546495b5daf471f7eeb0953e8"
+  integrity sha512-fT/AeKBD2zfOJm6sOJNMwpQUhI94oj+5UTYm14ZMXS2j8MMwrHtj961+4LQZe9rnyzFDs6wzKQYsSOBNceJaEg==
   dependencies:
     "@contentful/rich-text-types" "^14.1.2"
     "@shopify/shopify-api" "^1.4.0"

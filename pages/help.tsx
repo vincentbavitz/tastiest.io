@@ -2,7 +2,7 @@ import { LeftOutlined } from '@ant-design/icons';
 import { Button, Input, Select } from '@tastiest-io/tastiest-components';
 import { dlog, SupportRequestType } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useSupport } from 'hooks/useSupport';
 import { useUserData } from 'hooks/useUserData';

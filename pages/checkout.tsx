@@ -9,8 +9,8 @@ import {
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useOrder } from 'hooks/checkout/useOrder';
-import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';

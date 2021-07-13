@@ -10,7 +10,7 @@ import { HomeMapSection } from '../components/home/HomeMapSection';
 import { HomeRecentSearchesSection } from '../components/home/HomeRecentSearchesSection';
 import { HomeSearchSection } from '../components/home/HomeSearchSection';
 import { METADATA } from '../constants';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../hooks/auth/useAuth';
 import { useUserData } from '../hooks/useUserData';
 
 interface Props {

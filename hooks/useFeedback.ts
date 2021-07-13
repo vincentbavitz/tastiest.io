@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useFirestore } from 'react-redux-firebase';
 import { v4 as uuid } from 'uuid';
-import { useAuth } from './useAuth';
+import { useAuth } from './auth/useAuth';
 import { useUserData } from './useUserData';
 
 interface IRecommendationDetails {

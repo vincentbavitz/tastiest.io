@@ -9,7 +9,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IState } from '../state/reducers';
 import { setSearchResultItems } from '../state/search';
-import { useAuth } from './useAuth';
+import { useAuth } from './auth/useAuth';
 import { useUserData } from './useUserData';
 
 export function useSearch() {

@@ -2,8 +2,8 @@ import { HeartIcon } from '@tastiest-io/tastiest-icons';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { useWindowSize } from 'react-use';
-import { useAuth } from '../../hooks/useAuth';
-import { openSignInModal } from '../../state/navigation';
+import { useAuth } from '../../hooks/auth/useAuth';
+import { openAuthModal } from '../../state/navigation';
 import { Title } from '../Title';
 
 export function HeaderSavedPlaces() {
@@ -22,7 +22,7 @@ export function HeaderSavedPlaces() {
       return;
     }
 
-    dispatch(openSignInModal());
+    dispatch(openAuthModal());
   };
 
   return (

@@ -6,13 +6,13 @@ interface Props {
 
 export function SignInTosInfo({ center }: Props) {
   return (
-    <div className={classNames('text-xs', center && 'text-center')}>
+    <div className={classNames('text-xs opacity-50', center && 'text-center')}>
       By proceeding, you agree to our{' '}
       <a
         href="/terms-of-use"
         target="_blank"
         rel="noreferrer"
-        className="font-semibold underline cursor-pointer"
+        className="font-semibold cursor-pointer hover:underline"
       >
         Terms of Use
       </a>{' '}
@@ -21,7 +21,7 @@ export function SignInTosInfo({ center }: Props) {
         href="/privacy"
         target="_blank"
         rel="noreferrer"
-        className="font-semibold underline cursor-pointer"
+        className="font-semibold cursor-pointer hover:underline"
       >
         Privacy and Cookie Statement
       </a>

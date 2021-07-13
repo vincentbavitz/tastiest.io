@@ -8,7 +8,7 @@ import {
 import { createStore } from 'redux';
 import { createFirestoreInstance } from 'redux-firestore';
 import { setOnCheckoutPage } from 'state/checkout';
-import { openSignInModal } from 'state/navigation';
+import { openAuthModal } from 'state/navigation';
 import { rootReducer } from 'state/reducers';
 import { METADATA } from '../constants';
 import { firebaseClient } from '../utils/firebaseClient';
@@ -33,7 +33,7 @@ const AmbianceProvider = ({ children }) => {
   const handleLocationChange = url => {
     // Open login modal from URL params
     if (METADATA.URL_SIGN_IN_REGEX.test(url)) {
-      store.dispatch(openSignInModal());
+      store.dispatch(openAuthModal());
     }
 
     // Update onCheckoutPage when user is checking out

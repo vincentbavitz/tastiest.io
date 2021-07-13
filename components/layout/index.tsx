@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { CuisineBar } from '../cuisine/CuisineBar';
 import { Footer } from '../Footer';
 import { Header } from '../header/Header';
-import { SignInModal } from '../modals/SignInModal';
+import { AuthModal } from '../modals/auth/AuthModal';
 import { AcceptTrackingPopup } from '../popups/AcceptTrackingPopup';
 import { SearchOverlay } from '../search/SearchOverlay';
 
@@ -18,7 +18,7 @@ export default function Layout({ children }: Props) {
   return (
     <>
       <PageLoader />
-      <SignInModal />
+      <AuthModal />
 
       <div
         style={{ minHeight: '100vh' }}

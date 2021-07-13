@@ -1,5 +1,5 @@
 import { Input } from '@tastiest-io/tastiest-components';
-import { dlog, IDateObject, USER } from '@tastiest-io/tastiest-utils';
+import { dlog, IDateObject } from '@tastiest-io/tastiest-utils';
 import React, { useState } from 'react';
 import NumberFormat, { NumberFormatValues } from 'react-number-format';
 import { dateFormat, dateToString, stringToDate } from 'utils/text';
@@ -10,9 +10,12 @@ interface Props {
   disabled?: boolean;
   error?: string;
   value?: string;
+  label?: string;
+  size?: 'large' | 'medium' | 'small';
 }
 
 const InputCustom = (props: Props) => {
+  const { size = 'large', label } = props;
   const [error, setError] = useState<string>();
 
   const validate = () => {
@@ -27,8 +30,8 @@ const InputCustom = (props: Props) => {
 
   return (
     <Input
-      size="large"
-      label="Birthday"
+      size={size}
+      label={label}
       inputMode="decimal"
       inputClassName="font-mono w-full"
       {...props}
@@ -42,8 +45,8 @@ export function InputContactBirthday(props: Props) {
   const handleOnChange = ({ value }: NumberFormatValues) => {
     const date = stringToDate(
       value,
-      USER.OLDEST_BIRTH_YEAR,
-      USER.YOUNGEST_BIRTH_YEAR,
+      // USER.OLDEST_BIRTH_YEAR,
+      // USER.YOUNGEST_BIRTH_YEAR,
     );
 
     props.onDateChange(date);
@@ -53,8 +56,8 @@ export function InputContactBirthday(props: Props) {
     <NumberFormat
       placeholder="DD/MM/YYYY"
       mask={['M', 'M', 'D', 'D', 'Y', 'Y', 'Y', 'Y']}
-      format={value =>
-        dateFormat(value, USER.OLDEST_BIRTH_YEAR, USER.YOUNGEST_BIRTH_YEAR)
+      format={
+        value => dateFormat(value) // USER.OLDEST_BIRTH_YEAR, USER.YOUNGEST_BIRTH_YEAR)
       }
       customInput={InputCustom}
       value={dateToString(props.date)}

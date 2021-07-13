@@ -13,7 +13,7 @@ import {
 import { Contained } from 'components/Contained';
 import CuisineSelect from 'components/inputs/CuisineSelect';
 import { InputDate } from 'components/inputs/InputDate';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import { InferGetServerSidePropsType } from 'next';

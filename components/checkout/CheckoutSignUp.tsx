@@ -3,6 +3,7 @@ import { Button, Input } from '@tastiest-io/tastiest-components';
 import { UserIcon } from '@tastiest-io/tastiest-icons';
 import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
 import { AuthError, AuthErrorMessageMap } from 'contexts/auth';
+import { useRegister } from 'hooks/auth/useRegister';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -11,7 +12,7 @@ import {
   CheckoutSignInTabSelected,
   setSignInTabSelected,
 } from 'state/checkout';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/auth/useAuth';
 import { InputEmail } from '../inputs/InputEmail';
 import { InputPassword } from '../inputs/InputPassword';
 import { SignInTosInfo } from '../SignInTosInfo';
@@ -23,12 +24,9 @@ interface Props {
 export function CheckoutSignUp(props: Props) {
   const { anonymousId } = props;
 
-  const {
-    signUp,
-    resetPassword,
-    isSignedIn,
-    error: firebaseAuthError,
-  } = useAuth();
+  const { resetPassword, isSignedIn, error: firebaseAuthError } = useAuth();
+
+  const { register, success, error: fetchError, submitting } = useRegister();
 
   const { isDesktop } = useScreenSize();
   const dispatch = useDispatch();
@@ -38,7 +36,6 @@ export function CheckoutSignUp(props: Props) {
   const [signUpPassword0, setSignUpPassword0] = useState('');
   const [signUpPassword1, setSignUpPassword1] = useState('');
   const [error, setError] = useState<string>('');
-  const [loading, setLoading] = useState(false);
 
   const cleanupInputValue = (value: string | number) =>
     String(value).toLowerCase().trim();
@@ -62,17 +59,9 @@ export function CheckoutSignUp(props: Props) {
     }
 
     setError('');
-    setLoading(true);
 
-    const { user, error } = await signUp(
-      signUpEmail,
-      signUpPassword0,
-      signUpName,
-      anonymousId,
-    );
-
+    const { user } = await register(signUpEmail, signUpPassword0, signUpName);
     setError(error);
-    setLoading(false);
 
     dlog('error', firebaseAuthError);
 
@@ -151,7 +140,7 @@ export function CheckoutSignUp(props: Props) {
       </div>
 
       <Button wide size="large" type="solid" color="primary" onClick={submit}>
-        {loading ? (
+        {submitting ? (
           <LoadingOutlined className="text-2xl" />
         ) : (
           'Sign up to Proceed to Checkout'

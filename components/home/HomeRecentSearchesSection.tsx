@@ -1,6 +1,6 @@
 import React from 'react';
 import { v4 as uuid } from 'uuid';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/auth/useAuth';
 import { useUserData } from '../../hooks/useUserData';
 import { HorizontalScrollable } from '../HorizontalScrollable';
 import { OutlineBlock } from '../OutlineBlock';
