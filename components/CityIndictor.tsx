@@ -20,7 +20,7 @@ export function CityIndictor(props: Props) {
         className={classNames(
           'flex content-center h-4 px-4 py-3 font-bold rounded',
           background === 'white' && 'bg-white bg-opacity-50 text-primary',
-          background === 'primary' && 'bg-secondary text-black',
+          background === 'primary' && 'bg-secondary text-alt-1',
         )}
       >
         <p className="self-center text-xs">{titleCase(city)}</p>

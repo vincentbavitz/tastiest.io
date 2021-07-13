@@ -2838,11 +2838,12 @@
   dependencies:
     mini-svg-data-uri "^1.2.3"
 
-"@tastiest-io/tastiest-components@^0.55.0":
-  version "0.55.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.55.0/c485f62dd0eab32940546594ea9dff4c5c36c75386ee33265eb341958f4ef659#ca28976d82dc345a5ca309b40fe512a9e7c8ee79"
-  integrity sha512-stthr+EKO1QAGEuI3MDPOAP89MYoZC8gyNyVPPHolwu/IpPTahjEduowppblEA+TNpZeBj8zlUoWcENkgC5WMQ==
+"@tastiest-io/tastiest-components@^0.57.0":
+  version "0.57.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.57.0/c1b03662c688d344d078b44ce9a638a29d26c3da223135e903c063bc1c0e105f#033ea96a5578caaad0cff0f21211c3c9ac0a4f3b"
+  integrity sha512-I+0FmD+yXVyTMVMaEUsQ/93zW/bY/qDdGxt/ciqGo9SD84MRsFHdaP9O7XaiG1G+Y2PSo1S+nv+SImS1xQd1Aw==
   dependencies:
+    "@ant-design/icons" "^4.6.2"
     "@nivo/core" "^0.72.0"
     "@nivo/line" "^0.72.0"
     "@storybook/addon-postcss" "^2.0.0"
@@ -2859,10 +2860,10 @@
   resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.19.0/842923a642eb90d51bc28b9b60813561808b9748faec74c0e4e82d9ce86c86d5#6b1ded510718ae36e1f0749b8462de839873f980"
   integrity sha512-AhxdIyYpZbBdjxtto6YHicZk+WMtlO63yeSZiDVPZSA75Y3SdDGa2q+ACW3lQ+XmiE2dun/4A0Hr0EuXdebxlg==
 
-"@tastiest-io/tastiest-icons@^0.25.0":
-  version "0.25.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.25.0/c9cb96e77f651e61735e7e8eead9828da7f6969ca9719ae256fa0766d966cac9#4bf107935f8e028a4bff393c500a40d5fe217306"
-  integrity sha512-SLvKwiBgGVqYEX1Khg9NFNuSF0J8OWILnWqkhTbo2ZPDCPQ1g975UrmjjjVZQP3ec1/6OaDbA4sF6wOKbUn+bA==
+"@tastiest-io/tastiest-icons@^0.26.0":
+  version "0.26.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.26.0/ff9bb921ba874004493ccc962a83c35a7466288768c0a72c114f96e34431dd1f#b316f89a05658f0b9760daf1f93511699b5258ff"
+  integrity sha512-90oB3EZ9KKvR9EMPmpdeefhnMYORnmrMZwk+CgAi1AFIuZaFDDb+q89MRP5heYKGiTholVSc5Imj97NdsHBCOw==
 
 "@tastiest-io/tastiest-utils@^0.143.0":
   version "0.143.0"

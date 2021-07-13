@@ -56,7 +56,7 @@ export function CheckoutSignIn(props: Props) {
       </Button>
 
       {error && (
-        <div className="mb-1 -mt-1 text-sm text-center text-black">
+        <div className="mb-1 -mt-1 text-sm text-center text-alt-1">
           {AuthErrorMessageMap[((error as unknown) as AuthError).code]
             ?.userFacingMessage ?? String(error)}
         </div>

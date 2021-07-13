@@ -30,8 +30,9 @@ export enum AuthErrorCode {
   WRONG_PASSWORD = 'auth/wrong-password',
   TOO_MANY_REQUESTS = 'auth/too-many-requests',
 
-  // Tastiest internal error
+  // Tastiest Custom Auth Error Codes
   INTERNAL_ERROR = 'auth/internal-error',
+  PASSWORDS_DO_NOT_MATCH = 'auth/passwords-do-not-match', // when registering
 }
 
 export type AuthError = {
@@ -165,11 +166,22 @@ export const AuthErrorMessageMap = {
     message: '',
     userFacingMessage: 'Incorrect password.',
   },
+  [AuthErrorCode.PASSWORDS_DO_NOT_MATCH]: {
+    code: AuthErrorCode.PASSWORDS_DO_NOT_MATCH,
+    message: '',
+    userFacingMessage: 'Passwords do not match.',
+  },
 } as { [key: string]: AuthError };
 
+type AuthContextShape = {
+  user: firebaseClient.User | null;
+  isSignedIn: null | boolean;
+};
+
 // Example taken from  https://github1s.com/colinhacks/next-firebase-ssr/blob/HEAD/auth.tsx
-export const AuthContext = createContext<{ user: firebaseClient.User | null }>({
+export const AuthContext = createContext<AuthContextShape>({
   user: null,
+  isSignedIn: null,
 });
 
 export function AuthProvider({ children }: any) {
@@ -217,7 +229,12 @@ export function AuthProvider({ children }: any) {
     dlog('User', user);
   }, [user]);
 
+  // Null if the user information has not been loaded yet -- else boolean
+  const isSignedIn = user === undefined ? null : Boolean(user?.uid);
+
   return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, isSignedIn }}>
+      {children}
+    </AuthContext.Provider>
   );
 }

@@ -1,32 +1,22 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import { UserIcon } from '@tastiest-io/tastiest-icons';
 import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
-import { AuthError, AuthErrorMessageMap } from 'contexts/auth';
+import { AuthError, AuthErrorCode, AuthErrorMessageMap } from 'contexts/auth';
 import { useRegister } from 'hooks/auth/useRegister';
 import { useScreenSize } from 'hooks/useScreenSize';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useToggle } from 'react-use';
 import {
   CheckoutSignInTabSelected,
   setSignInTabSelected,
 } from 'state/checkout';
-import { useAuth } from '../../hooks/auth/useAuth';
 import { InputEmail } from '../inputs/InputEmail';
 import { InputPassword } from '../inputs/InputPassword';
 import { SignInTosInfo } from '../SignInTosInfo';
 
-interface Props {
-  anonymousId: string;
-}
-
-export function CheckoutSignUp(props: Props) {
-  const { anonymousId } = props;
-
-  const { resetPassword, isSignedIn, error: firebaseAuthError } = useAuth();
-
-  const { register, success, error: fetchError, submitting } = useRegister();
+export function CheckoutSignUp() {
+  const { register, error: fetchError, submitting } = useRegister();
 
   const { isDesktop } = useScreenSize();
   const dispatch = useDispatch();
@@ -35,7 +25,14 @@ export function CheckoutSignUp(props: Props) {
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPassword0, setSignUpPassword0] = useState('');
   const [signUpPassword1, setSignUpPassword1] = useState('');
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<AuthError | null>(null);
+
+  // Sync local errors with fetchError
+  useEffect(() => {
+    if (fetchError) {
+      setError(fetchError);
+    }
+  }, [fetchError]);
 
   const cleanupInputValue = (value: string | number) =>
     String(value).toLowerCase().trim();
@@ -45,29 +42,15 @@ export function CheckoutSignUp(props: Props) {
 
   const submit = async () => {
     if (signUpPassword0 !== signUpPassword1) {
-      setError('Passwords do not match');
+      setError(AuthErrorMessageMap[AuthErrorCode.PASSWORDS_DO_NOT_MATCH]);
       return;
     }
-
-    if (!signUpName?.length) {
-      setError('Please enter your name');
-    }
-
-    if (!signUpEmail.length) {
-      setError('Please enter your email');
-      return;
-    }
-
-    setError('');
 
     const { user } = await register(signUpEmail, signUpPassword0, signUpName);
-    setError(error);
-
-    dlog('error', firebaseAuthError);
 
     if (user?.uid) {
       // Track sign up from checkout
-      window.analytics.track('User Sign-up From Checkout', {
+      window.analytics.track('User Signed Up', {
         userId: user.uid,
       });
 
@@ -75,7 +58,6 @@ export function CheckoutSignUp(props: Props) {
     }
   };
 
-  dlog('CheckoutSignUCheckoutSignUp ➡️ firebaseAuthError:', firebaseAuthError);
   dlog('CheckoutSignUp ➡️ error:', error);
 
   return (
@@ -107,9 +89,9 @@ export function CheckoutSignUp(props: Props) {
         onValueChange={value => setSignUpPassword1(cleanupInputValue(value))}
       />
 
-      {(firebaseAuthError?.length || error?.length > 1) && (
+      {error && (
         <div className="mb-1 -mt-1 text-sm text-center text-danger">
-          {error || firebaseAuthError}
+          {error.userFacingMessage}
         </div>
       )}
 
@@ -139,12 +121,15 @@ export function CheckoutSignUp(props: Props) {
         </div>
       </div>
 
-      <Button wide size="large" type="solid" color="primary" onClick={submit}>
-        {submitting ? (
-          <LoadingOutlined className="text-2xl" />
-        ) : (
-          'Sign up to Proceed to Checkout'
-        )}
+      <Button
+        wide
+        size="large"
+        type="solid"
+        color="primary"
+        loading={submitting}
+        onClick={submit}
+      >
+        Sign up to Proceed to Checkout
       </Button>
 
       {error && (

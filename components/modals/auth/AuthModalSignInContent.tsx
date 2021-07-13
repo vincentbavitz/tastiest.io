@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import { EmailIcon, LockIcon } from '@tastiest-io/tastiest-icons';
 import { dlog } from '@tastiest-io/tastiest-utils';
@@ -94,11 +93,10 @@ export const AuthModalSignInContent = ({ setStep }: ContentElementProps) => {
         size="large"
         type="solid"
         color="primary"
+        loading={submitting}
         onClick={onClickSignIn}
       >
-        <>
-          {submitting ? <LoadingOutlined className="text-3xl" /> : <>Sign In</>}
-        </>
+        Sign In
       </Button>
 
       <ContentError error={error} />

@@ -1,4 +1,5 @@
 import { Button } from '@tastiest-io/tastiest-components';
+import { SearchIcon } from '@tastiest-io/tastiest-icons';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { getMapBoxStaticSource } from 'utils/location';
@@ -46,6 +47,7 @@ export function HomeMapSection() {
             type="solid"
             color="primary"
             className="text-sm"
+            prefix={<SearchIcon className="w-1 h-1 text-white fill-current" />}
           >
             Search
           </Button>

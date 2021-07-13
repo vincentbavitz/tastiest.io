@@ -1,5 +1,4 @@
 import { UserCredential } from '@firebase/auth-types';
-import { dlog } from '@tastiest-io/tastiest-utils';
 import { AuthContext, AuthError, AuthErrorMessageMap } from 'contexts/auth';
 import { LocalStorageItem } from 'contexts/tracking';
 import { useContext, useState } from 'react';
@@ -28,15 +27,6 @@ export const useSignIn = () => {
           .auth()
           .signInWithEmailAndPassword(email, password);
       } catch (error) {
-        dlog('useSignIn ➡️ error:', error);
-        dlog(
-          'useSignIn ➡️ error as AuthError).code:',
-          (error as AuthError).code,
-        );
-        dlog(
-          'useSignIn ➡️ AuthErrorMessageMap[(error as AuthError).code]:',
-          AuthErrorMessageMap[(error as AuthError).code],
-        );
         setError(AuthErrorMessageMap[(error as AuthError).code]);
 
         setSubmitting(false);

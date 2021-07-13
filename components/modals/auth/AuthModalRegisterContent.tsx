@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import { EmailIcon, LockIcon, UserIcon } from '@tastiest-io/tastiest-icons';
 import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
@@ -137,9 +136,10 @@ export const AuthModalRegisterContent = ({ setStep }: ContentElementProps) => {
         size="large"
         type="solid"
         color="primary"
+        loading={submitting}
         onClick={onClickRegister}
       >
-        <>{submitting ? <LoadingOutlined className="text-3xl" /> : <>Join</>}</>
+        Join
       </Button>
 
       <ContentError error={error} />

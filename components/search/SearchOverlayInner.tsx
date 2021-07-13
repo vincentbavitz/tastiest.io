@@ -103,7 +103,7 @@ function SearchOverlayInnerDefault() {
             className="flex items-center px-2 py-1 text-lg font-medium rounded-lg cursor-pointer text-primary font-roboto hover:bg-secondary-1 hover:bg-opacity-10"
           >
             <category.svg className="w-6 h-6 mr-2 fill-current tablet:h-5 tablet:w-5" />
-            <p className="text-xl text-black mobile:text-base">
+            <p className="text-xl text-alt-1 mobile:text-base">
               {category.name}
             </p>
           </div>
@@ -112,7 +112,7 @@ function SearchOverlayInnerDefault() {
 
       {/* CUISINES */}
       <div className="flex flex-col mt-6">
-        <span className="ml-1 font-medium tracking-wide text-black tablet:text-sm">
+        <span className="ml-1 font-medium tracking-wide text-alt-1 tablet:text-sm">
           Find your next favourite dish!
         </span>
 
@@ -140,7 +140,7 @@ function SearchOverlayInnerDefault() {
 
       {/* POPULAR DISHES
       <div className="flex flex-col mt-6">
-        <span className="ml-1 text-sm font-semibold tracking-wide text-black">
+        <span className="ml-1 text-sm font-semibold tracking-wide text-alt-1">
           Popular dishes
         </span>
 

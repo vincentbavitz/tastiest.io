@@ -88,6 +88,17 @@ function Post(post: IPost) {
     cms.getTopPosts(8).then(result => setRecommendedPosts(result?.posts));
   });
 
+  // const segmentYouTubeSnippet = `
+  //     var player;
+  //   function onYouTubeIframeAPIReady() {
+  //     player = new YT.Player('player', {
+  //       videoId: '${post.video}'
+  //     });
+  //     var ytAnalytics = new window.analyticsPlugins.YT(player, 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX0365');
+  //     ytAnalytics.initialize();
+  //   }
+  // `;
+
   return (
     <>
       <Head>
