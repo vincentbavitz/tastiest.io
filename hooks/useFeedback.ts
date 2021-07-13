@@ -82,7 +82,7 @@ export function useFeedback() {
     try {
       setIsSubmitting(true);
       await firestore
-        .collection(FirestoreCollection.SUGGESTIONS_RESTAURANTS)
+        .collection(FirestoreCollection.SUGGESTIONS)
         .doc(uuid())
         .set(recommendation);
 
