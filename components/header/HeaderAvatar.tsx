@@ -1,7 +1,6 @@
 import { Dropdown, DropdownItem } from '@tastiest-io/tastiest-components';
 import {
   BookmarkIcon,
-  CalendarIcon,
   HeartIcon,
   RightArrowIcon,
 } from '@tastiest-io/tastiest-icons';
@@ -64,13 +63,13 @@ export function HeaderAvatar() {
       isSelected: false,
       icon: BookmarkIcon,
     },
-    {
-      id: 'bookings',
-      name: 'Bookings',
-      href: '/bookings',
-      isSelected: false,
-      icon: CalendarIcon,
-    },
+    // {
+    //   id: 'bookings',
+    //   name: 'Bookings',
+    //   href: '/bookings',
+    //   isSelected: false,
+    //   icon: CalendarIcon,
+    // },
     {
       id: 'sign-out',
       name: 'Sign Out',

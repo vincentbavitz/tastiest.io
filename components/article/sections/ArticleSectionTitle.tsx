@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { CityIndictor } from 'components/CityIndictor';
+import { LocationIndictor } from 'components/LocationIndictor';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
 import { UI } from '../../../constants';
@@ -7,11 +7,11 @@ import { Contained } from '../../Contained';
 
 interface Props {
   title: string;
-  city: string;
+  location: string;
 }
 
 export function ArticleSectionTitle(props: Props) {
-  const { title, city } = props;
+  const { title, location } = props;
   const { isDesktop } = useScreenSize();
 
   return (
@@ -34,7 +34,7 @@ export function ArticleSectionTitle(props: Props) {
           </h1>
         </div>
 
-        <CityIndictor city={city} />
+        <LocationIndictor location={location} />
       </div>
     </Contained>
   );

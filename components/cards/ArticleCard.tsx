@@ -2,8 +2,7 @@ import { IPost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import { TagRow } from 'components/TagRow';
 import Link from 'next/link';
-import React from 'react';
-import { useMeasure } from 'react-use';
+import React, { useMemo, useRef } from 'react';
 import { generateStaticURL } from 'utils/routing';
 
 interface Props extends IPost {
@@ -14,7 +13,6 @@ interface Props extends IPost {
 export function ArticleCard(props: Props): JSX.Element {
   const {
     compact,
-    featureImage,
     title,
     description,
     tags,
@@ -22,17 +20,24 @@ export function ArticleCard(props: Props): JSX.Element {
     city,
     cuisine,
     restaurant,
+    deal: { image },
   } = props;
 
-  const [ref, { width }] = useMeasure();
+  // const [ref, { width }] = useMeasure();
+  const ref = useRef(null);
+  const width = 300;
   const isSmall = width < 170;
 
-  const { href, as } = generateStaticURL({
-    city,
-    slug,
-    cuisine,
-    restaurant: restaurant.uriName,
-  });
+  const { href, as } = useMemo(
+    () =>
+      generateStaticURL({
+        city,
+        slug,
+        cuisine,
+        restaurant: restaurant.uriName,
+      }),
+    [],
+  );
 
   return (
     <div
@@ -48,12 +53,12 @@ export function ArticleCard(props: Props): JSX.Element {
         style={{ paddingBottom: '60%' }}
         className="relative w-full h-0 overflow-hidden bg-white bg-opacity-25"
       >
-        {featureImage.url && (
+        {image.url && (
           <div className="absolute inset-0">
             <img
               className="object-cover w-full h-full"
-              src={`${featureImage?.url}?w=700`}
-              alt={featureImage?.description}
+              src={`${image?.url}?w=700`}
+              alt={image?.description}
             />
           </div>
         )}

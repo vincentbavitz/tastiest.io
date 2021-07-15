@@ -22,7 +22,7 @@ interface Props extends Partial<IPost> {
 export function ArticleCardFavourite(props: Props): JSX.Element {
   const {
     id,
-    featureImage,
+    // featureImage,
     title,
     city,
     slug,
@@ -30,6 +30,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
     isFavourite,
     restaurant,
     onToggleFavourite,
+    deal: { image },
   } = props;
   const { isTablet, isDesktop, isHuge } = useScreenSize();
 
@@ -62,12 +63,12 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
           isSmall ? 'rounded-lg' : 'rounded-xl',
         )}
       >
-        {featureImage.url && (
+        {image.url && (
           <div className="absolute inset-0">
             <img
               className="object-cover w-full h-full"
-              src={featureImage?.url}
-              alt={featureImage?.description}
+              src={image?.url}
+              alt={image?.description}
             />
           </div>
         )}

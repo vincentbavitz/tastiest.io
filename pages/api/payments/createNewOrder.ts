@@ -27,12 +27,14 @@ export type CreateNewOrderReturn = {
 
 /**
  * Requires the query parameters...
- *  ```dealId: string;
+ *  ```
+ *  dealId: string;
  *  heads: number;
  *  fromSlug: string;
  *  promoCode: string | undefined
  *  userId: string | undefined
- *  anonymousId: string | undefined```
+ *  anonymousId: string | undefined
+ * ```
  *
  * Response is of the shape `{ orderId: string | null, error: Error | string | null }`
  */
@@ -70,7 +72,6 @@ export default async function createNewOrder(
   } = body;
 
   const heads = Math.floor(_heads);
-
   const orderRequest: IOrderRequest = {
     dealId,
     heads,
@@ -158,6 +159,7 @@ export default async function createNewOrder(
       timestamp: Date.now(),
       shouldAlert: false,
       originFile: 'pages/api/payments/createNewOrder.ts',
+      severity: 'CRITICAL',
       properties: {},
       raw: String(error),
     });

@@ -42,10 +42,10 @@ export function ArticleSuggestRestaurant(props: IPost) {
 }
 
 const ArticleSuggestRestaurantContent = ({
-  dishName,
+  city,
   cuisine,
   restaurant,
-  city,
+  deal: { dishName },
 }: IPost) => {
   const { makeRecommendation, isSubmitting } = useFeedback();
 

@@ -4,12 +4,12 @@ import classNames from 'classnames';
 import React from 'react';
 
 interface Props {
-  city: string;
+  location: string;
   background?: 'secondary' | 'white';
 }
 
-export function CityIndictor(props: Props) {
-  const { city, background = 'primary' } = props;
+export function LocationIndictor(props: Props) {
+  const { location, background = 'primary' } = props;
 
   return (
     <div className="inline-flex items-center">
@@ -23,7 +23,7 @@ export function CityIndictor(props: Props) {
           background === 'primary' && 'bg-secondary text-alt-1',
         )}
       >
-        <p className="self-center text-xs">{titleCase(city)}</p>
+        <p className="self-center text-xs">{titleCase(location)}</p>
       </div>
     </div>
   );

@@ -2,14 +2,12 @@ import classNames from 'classnames';
 import { Contained } from 'components/Contained';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
-import { v4 as uuid } from 'uuid';
 import { HorizontalScrollable } from '../HorizontalScrollable';
 
 interface Props {
   rowLimit?: number;
   horizontalScroll?: boolean;
   children: JSX.Element[];
-
   size?: 'small' | 'medium' | 'large';
 
   // If you are paginating, do not set rowLimit
@@ -51,7 +49,7 @@ export function CardGrid(props: Props) {
           <HorizontalScrollable>
             {children.map(child => (
               <div
-                key={uuid()}
+                key={child.key}
                 style={{
                   width: '80vw',
                   minWidth: '250px',
@@ -75,7 +73,7 @@ export function CardGrid(props: Props) {
             )}
           >
             {cards.map(item => (
-              <div key={uuid()} className="w-full">
+              <div key={item.key} className="w-full">
                 {item}
               </div>
             ))}

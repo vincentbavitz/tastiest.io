@@ -1,17 +1,17 @@
 import { LocationBrandIcon } from '@tastiest-io/tastiest-icons';
 import { dlog, IRestaurant } from '@tastiest-io/tastiest-utils';
+import { LocationIndictor } from 'components/LocationIndictor';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
 import { getMapBoxStaticSource } from 'utils/location';
-import { CityIndictor } from '../../CityIndictor';
 import { Title } from '../../Title';
 
 interface Props {
-  city: string;
+  location: string;
   restaurant: IRestaurant;
 }
 
-export function ArticleWidgetMap({ city, restaurant }: Props) {
+export function ArticleWidgetMap({ location, restaurant }: Props) {
   const { isDesktop } = useScreenSize();
 
   dlog('ArticleWidgetMap ➡️ fsadasd:');
@@ -37,7 +37,7 @@ export function ArticleWidgetMap({ city, restaurant }: Props) {
       </div>
 
       <div className="flex flex-col justify-end pb-4 space-y-3">
-        {isDesktop && <CityIndictor city={city} />}
+        {isDesktop && <LocationIndictor location={location} />}
 
         <div className="flex flex-col mt-3 font-medium desktop:ml-0 desktop:mt-0">
           <Title level={1} bold margin={false}>

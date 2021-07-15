@@ -6,7 +6,6 @@ import { Contained } from '../../Contained';
 import { RichBody } from '../../RichBody';
 import ArticleContained from '../ArticleContained';
 import { ArticleWidgetMap } from '../widgets/ArticleWidgetMap';
-import { ArticleSectionFeatureImage } from './ArticleSectionFeatureImage';
 import ArticleSectionOfferBreakdown from './ArticleSectionOfferBreakdown';
 
 // TODO
@@ -28,11 +27,14 @@ const MobileContent = (post: IPost) => (
 
       <p className="pb-4 leading-7 font-roboto">{post.description}</p>
 
-      <ArticleSectionFeatureImage featureImage={post?.featureImage} />
+      {/* <ArticleSectionFeatureImage featureImage={post?.featureImage} /> */}
       <AuxiliaryDivider url={post?.offerDivider?.url} />
       <ArticleSectionOfferBreakdown {...post.deal} />
 
-      <ArticleWidgetMap city={post.city} restaurant={post.restaurant} />
+      <ArticleWidgetMap
+        location={post.displayLocation}
+        restaurant={post.restaurant}
+      />
 
       <RichBody body={post.body} />
     </div>
@@ -50,7 +52,7 @@ const DesktopContent = (post: IPost) => {
       <div className="flex flex-col mt-4 space-y-6">
         <div className="">{post?.description}</div>
 
-        <ArticleSectionFeatureImage featureImage={post?.featureImage} />
+        {/* <ArticleSectionFeatureImage featureImage={post?.featureImage} /> */}
 
         <RichBody body={post.body} />
       </div>

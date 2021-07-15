@@ -1,5 +1,4 @@
 import React from 'react';
-import { v4 as uuid } from 'uuid';
 import { useAuth } from '../../hooks/auth/useAuth';
 import { useUserData } from '../../hooks/useUserData';
 import { HorizontalScrollable } from '../HorizontalScrollable';
@@ -19,7 +18,10 @@ export function HomeRecentSearchesSection() {
           <SectionTitle>Your recent searches</SectionTitle>
           <HorizontalScrollable>
             {recentSearches.slice(0, 10).map(item => (
-              <OutlineBlock key={uuid()} href={`/search?s=${item.query}`}>
+              <OutlineBlock
+                key={item.timestamp}
+                href={`/search?s=${item.query}`}
+              >
                 {item?.query.slice(0, 15)}
               </OutlineBlock>
             ))}

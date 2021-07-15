@@ -13,7 +13,7 @@ interface IPath {
     slug: string;
     city: string;
     cuisine: string;
-    ['cuisine-or-restaurant']: string;
+    restaurant: string;
   };
 }
 
@@ -41,7 +41,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       slug: item.slug,
       city: item.city.toLowerCase(),
       cuisine: item.cuisine.toLowerCase(),
-      'cuisine-or-restaurant': item.restaurant.uriName.toLowerCase(),
+      restaurant: item.restaurant.uriName.toLowerCase(),
     },
   }));
 

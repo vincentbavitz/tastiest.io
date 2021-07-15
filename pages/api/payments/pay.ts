@@ -331,7 +331,8 @@ export default async function pay(
         message: _error,
         timestamp: Date.now(),
         shouldAlert: false,
-        originFile: 'pages/api/payments/pay.ts:357',
+        originFile: 'pages/api/payments/pay.ts:335',
+        severity: 'CRITICAL',
         properties: { ...order },
       });
 
@@ -359,6 +360,7 @@ export default async function pay(
       timestamp: Date.now(),
       shouldAlert: false,
       originFile: 'pages/api/payments/pay.ts',
+      severity: 'CRITICAL',
       properties: { token },
       raw: String(error),
     });

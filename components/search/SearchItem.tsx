@@ -6,7 +6,14 @@ import React from 'react';
 import { generateStaticURL } from '../../utils/routing';
 
 export function SearchItem(props: IPost) {
-  const { title, featureImage, city, cuisine, slug, restaurant } = props;
+  const {
+    title,
+    city,
+    cuisine,
+    slug,
+    restaurant,
+    deal: { image },
+  } = props;
   const { isDesktop } = useScreenSize();
 
   const { href, as } = generateStaticURL({
@@ -35,8 +42,8 @@ export function SearchItem(props: IPost) {
           <div className={classNames('w-full', !isDesktop && 'h-64')}>
             <img
               className="w-full h-full"
-              src={featureImage.url}
-              alt={featureImage.description}
+              src={image.url}
+              alt={image.description}
             />
           </div>
 

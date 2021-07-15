@@ -16,11 +16,11 @@ export function Article(post: IPost) {
 }
 
 function ArticleMobile(post: IPost) {
-  const { title, city } = post;
+  const { title, displayLocation: location } = post;
 
   return (
     <article>
-      <ArticleSectionTitle title={title} city={city} />
+      <ArticleSectionTitle title={title} location={location} />
 
       <ArticleSectionAbstract {...post} />
       <ArticleSectionContent {...post} />
@@ -29,7 +29,7 @@ function ArticleMobile(post: IPost) {
 }
 
 function ArticleDesktop(post: IPost) {
-  const { title, city } = post;
+  const { title, displayLocation: location } = post;
 
   // Manage scrolling behaviour
   // Whether or not we follow scroll or remain in place
@@ -52,7 +52,7 @@ function ArticleDesktop(post: IPost) {
   return (
     <div className="relative">
       <article>
-        <ArticleSectionTitle title={title} city={city} />
+        <ArticleSectionTitle title={title} location={location} />
 
         {/* Floating deal */}
         <Sticky

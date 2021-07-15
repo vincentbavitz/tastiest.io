@@ -130,9 +130,9 @@ function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
     city,
     cuisine,
     slug,
-    dishName,
     toggleSaveArticle,
     isArticleSaved,
+    deal: { dishName },
   } = props;
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

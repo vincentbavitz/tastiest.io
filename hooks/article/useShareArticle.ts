@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { generateSlugURL } from 'utils/routing';
+import { generateStaticURL } from 'utils/routing';
 import { METADATA } from '../../constants';
 
 export interface IUseShareArticle {
@@ -18,7 +18,7 @@ const useShareArticle = ({
   restaurant,
 }: IUseShareArticle) => {
   const { as: path } = useMemo(
-    () => generateSlugURL({ city, slug, cuisine, restaurant }),
+    () => generateStaticURL({ city, slug, cuisine, restaurant }),
     [],
   );
 
