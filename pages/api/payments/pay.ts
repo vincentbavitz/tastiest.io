@@ -327,7 +327,7 @@ export default async function pay(
                 quantity: order.heads,
                 category: '',
                 url: `https://tastiest.io/r?offer=${order.deal.id}`,
-                image_url: order.deal.image.imageUrl,
+                image_url: order.deal.image.url,
               },
             ],
             traits: {

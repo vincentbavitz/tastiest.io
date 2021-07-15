@@ -29,7 +29,7 @@ const MobileContent = (post: IPost) => (
       <p className="pb-4 leading-7 font-roboto">{post.description}</p>
 
       <ArticleSectionFeatureImage featureImage={post?.featureImage} />
-      <AuxiliaryDivider url={post?.offerDivider?.imageUrl} />
+      <AuxiliaryDivider url={post?.offerDivider?.url} />
       <ArticleSectionOfferBreakdown {...post.deal} />
 
       <ArticleWidgetMap city={post.city} restaurant={post.restaurant} />

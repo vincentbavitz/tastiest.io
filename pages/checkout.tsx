@@ -183,7 +183,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
       coupon: '',
       position: 0,
       url: `https://tastiest.io/r?offer=${order.deal.id}`,
-      image_url: order.deal.image.imageUrl,
+      image_url: order.deal.image.url,
     },
   });
 

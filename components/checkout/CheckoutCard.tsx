@@ -46,7 +46,7 @@ export function CheckoutCard(props: Props) {
           >
             <img
               className="absolute inset-0 object-cover w-full h-full"
-              src={`${order?.deal?.image?.imageUrl}?w=700`}
+              src={`${order?.deal?.image?.url}?w=700`}
             />
           </div>
 

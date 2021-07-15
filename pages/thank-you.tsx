@@ -226,7 +226,7 @@ function ThankYou(
                   <tr className="bg-gray-100">
                     <td className="pt-2 pl-2">
                       <img
-                        src={`${order.deal.image.imageUrl}?w=300`}
+                        src={`${order.deal.image.url}?w=300`}
                         style={{ maxWidth: '33vw' }}
                         className="w-56 pb-1"
                       />
@@ -288,7 +288,7 @@ function ThankYou(
               <div className="flex flex-col p-2 space-y-1 bg-gray-100">
                 <div className="flex justify-between">
                   <img
-                    src={`${order.deal.image.imageUrl}?w=300`}
+                    src={`${order.deal.image.url}?w=300`}
                     style={{ maxWidth: '60%' }}
                     className="w-56 pb-1"
                   />

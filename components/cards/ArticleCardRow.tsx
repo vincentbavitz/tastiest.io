@@ -34,9 +34,9 @@ export function ArticleCardRow(post: IPost) {
       }}
       className="relative overflow-hidden rounded-lg bg-primary bg-opacity-10"
     >
-      {post?.featureImage?.imageUrl && (
+      {post?.featureImage?.url && (
         <img
-          src={post.featureImage.imageUrl}
+          src={post.featureImage.url}
           alt={post.featureImage?.description}
           className="object-cover w-full h-full rounded-lg"
         />

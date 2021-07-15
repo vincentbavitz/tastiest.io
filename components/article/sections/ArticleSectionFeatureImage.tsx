@@ -10,7 +10,7 @@ export function ArticleSectionFeatureImage({ featureImage }: Props) {
       <div className="relative w-full mb-4 overflow-hidden bg-gray-300 rounded-xl aspect-w-16 aspect-h-9">
         <div className="absolute inset-0">
           <img
-            src={`${featureImage?.imageUrl}?w=600`}
+            src={`${featureImage?.url}?w=600`}
             alt={featureImage?.description}
             className="object-cover w-full h-full"
           />

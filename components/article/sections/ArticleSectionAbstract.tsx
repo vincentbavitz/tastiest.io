@@ -34,7 +34,7 @@ export function ArticleSectionAbstract(props: IPost) {
 
           <div className="flex justify-center w-full h-4 pt-20 mb-12">
             <img
-              src={abstractDivider?.imageUrl}
+              src={abstractDivider?.url}
               className="h-32 -mt-20 desktop:h-56 desktop:-mt-32"
             />
           </div>
@@ -47,7 +47,7 @@ export function ArticleSectionAbstract(props: IPost) {
 
           <div className="flex justify-center w-full h-4 pt-20 mb-12">
             <img
-              src={abstractDivider?.imageUrl}
+              src={abstractDivider?.url}
               className="h-32 -mt-20 desktop:h-56 desktop:-mt-32"
             />
           </div>
@@ -78,7 +78,7 @@ const CharacterEatingDesktop = ({ titleDivider }: ITitleDividerProps) => (
       }}
     >
       <img
-        src={titleDivider?.imageUrl}
+        src={titleDivider?.url}
         style={{
           width: `${EATING_CHARACTER_SIZE_REM}rem`,
           height: `${EATING_CHARACTER_SIZE_REM}rem`,
@@ -96,7 +96,7 @@ const CharacterEatingMobile = ({ titleDivider }: ITitleDividerProps) => (
     }}
   >
     <img
-      src={titleDivider?.imageUrl}
+      src={titleDivider?.url}
       style={{
         width: '15rem',
         height: '15rem',

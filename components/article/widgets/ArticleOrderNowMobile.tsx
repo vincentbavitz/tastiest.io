@@ -181,10 +181,7 @@ const OverlayInnerCard = ({ deal }: OverlayInnerCardProps) => {
         className="pb-4 mx-4 mb-3 overflow-hidden text-lg bg-secondary-1 rounded-xl"
       >
         <div className="aspect-w-16 aspect-h-9">
-          <img
-            src={`${deal?.image?.imageUrl}?w=700`}
-            className="object-cover"
-          />
+          <img src={`${deal?.image?.url}?w=700`} className="object-cover" />
         </div>
 
         <div className="flex flex-col justify-center pt-2 mx-4 space-y-4">

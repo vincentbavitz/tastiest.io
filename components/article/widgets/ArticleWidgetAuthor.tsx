@@ -9,7 +9,7 @@ interface Props {
 export function ArticleWidgetAuthor({ author, date }: Props) {
   return (
     <div className="flex items-center space-x-3">
-      <Avatar size={10} imageSrc={author?.profileImage?.imageUrl} />
+      <Avatar size={10} imageSrc={author?.profileImage?.url} />
 
       <div className="flex flex-col leading-tight">
         <span className="text-sm font-bold tracking-wider font-roboto">
