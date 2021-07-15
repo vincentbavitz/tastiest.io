@@ -62,11 +62,11 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
           isSmall ? 'rounded-lg' : 'rounded-xl',
         )}
       >
-        {featureImage.imageUrl && (
+        {featureImage.url && (
           <div className="absolute inset-0">
             <img
               className="object-cover w-full h-full"
-              src={featureImage?.imageUrl}
+              src={featureImage?.url}
               alt={featureImage?.description}
             />
           </div>
