@@ -80,7 +80,8 @@ export function useOrder(token: string, initialOrder?: IOrder) {
       userAgent,
     });
 
-    dlog('useOrder ➡️ order:', order);
+    console.log('useOrder ➡️ error:', error);
+    console.log('useOrder ➡️ order:', _order);
 
     // Payment success
     if (success) {

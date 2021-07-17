@@ -1,11 +1,7 @@
 import {
   FirestoreCollection,
   FunctionsResponse,
-  generateConfirmationCode,
-  generateUserFacingId,
-  IBooking,
   IOrder,
-  IRestaurant,
   PAYMENTS,
   reportInternalError,
   RestaurantDataApi,
@@ -65,7 +61,13 @@ export default async function pay(
     body = request.body;
   }
 
-  const { token = null, userAgent = '' } = body;
+  const {
+    token = null,
+    shopifyProductId = null,
+    anonymousId = null,
+    cartToken = null,
+    userAgent = '',
+  } = body;
 
   // Order token is required
   if (!token || !token.length) {
@@ -77,87 +79,78 @@ export default async function pay(
     return;
   }
 
+  // Fetch the order from Firestore using orderToken
+  const snapshot = await firebaseAdmin
+    .firestore()
+    .collection(FirestoreCollection.ORDERS)
+    .where('token', '==', token)
+    .limit(1)
+    .get();
+
+  let order: IOrder;
+  snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
+
+  // Is the order already paid or expired?
+  const isOrderExpired =
+    order?.createdAt + PAYMENTS.ORDER_EXPIRY_MS < Date.now();
+  if (order.paidAt || isOrderExpired) {
+    const _error = 'Order already paid or is expired';
+
+    // Payment expired or already paid
+    analytics.track({
+      event: 'Payment Error',
+      context: { userAgent },
+      userId: order.userId,
+      properties: {
+        token,
+        ...order,
+        error: _error,
+      },
+    });
+
+    response.json({
+      success: false,
+      data: { order: null },
+      error: _error,
+    });
+    return;
+  }
+
+  // Does order contain userId?
+  if (!order?.userId) {
+    response.json({
+      success: false,
+      data: { order: null },
+      error: 'No user ID given',
+    });
+    return;
+  }
+
+  const userDataApi = new UserDataApi(firebaseAdmin, order?.userId);
+  const details = await userDataApi.getUserData(UserData.DETAILS);
+
   try {
-    // Fetch the order from Firestore using orderToken
-    const snapshot = await firebaseAdmin
-      .firestore()
-      .collection(FirestoreCollection.ORDERS)
-      .where('token', '==', token)
-      .limit(1)
-      .get();
-
-    let order: IOrder;
-    snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
-
-    const userDataApi = new UserDataApi(firebaseAdmin, order?.userId);
-    const details = await userDataApi.getUserData(UserData.DETAILS);
-    const eaterName = `${details.firstName} ${details.lastName}`;
-
-    // Is the order already paid or expired?
-    const isOrderExpired =
-      order?.createdAt + PAYMENTS.ORDER_EXPIRY_MS < Date.now();
-    if (order.paidAt || isOrderExpired) {
-      const _error = 'Order already paid or is expired';
-
-      // Payment expired or already paid
-      analytics.track(
-        {
-          event: 'Payment Error',
-          context: { userAgent },
-          userId: order.userId,
-          properties: {
-            token,
-            ...order,
-            error: _error,
-          },
-        },
-        () => {
-          response.json({
-            success: false,
-            data: { order: null },
-            error: _error,
-          });
-        },
-      );
-
-      return;
-    }
-
-    // Does order contain userId?
-    if (!order?.userId) {
-      response.json({
-        success: false,
-        data: { order: null },
-        error: 'No user ID given',
-      });
-      return;
-    }
-
     // Payment method exists?
     if (!order?.paymentMethod || !order?.paymentMethod.length) {
       const _error = 'No payment method ID given';
 
-      // Payment failure
-      await analytics.track(
-        {
-          event: 'Payment Error',
-          userId: order.userId,
-          properties: {
-            token,
-            firstName: details.firstName,
-            ...order,
-            error: _error,
-          },
-        },
-        () => {
-          response.json({
-            success: false,
-            data: { order: null },
-            error: _error,
-          });
-        },
-      );
+      response.json({
+        success: false,
+        data: { order: null },
+        error: _error,
+      });
 
+      // Payment failure
+      analytics.track({
+        event: 'Payment Error',
+        userId: order.userId,
+        properties: {
+          token,
+          firstName: details.firstName,
+          ...order,
+          error: _error,
+        },
+      });
       return;
     }
 
@@ -168,29 +161,24 @@ export default async function pay(
     const customerId = paymentDetails?.stripeCustomerId;
     if (!customerId) {
       const _error = "Stripe customer doesn't exist";
+      response.json({
+        success: false,
+        data: { order: null },
+        error: _error,
+      });
 
       // Payment failure
-      analytics.track(
-        {
-          event: 'Payment Error',
-          context: { userAgent },
-          userId: order.userId,
-          properties: {
-            token,
-            firstName: details.firstName,
-            ...order,
-            error: _error,
-          },
+      analytics.track({
+        event: 'Payment Error',
+        context: { userAgent },
+        userId: order.userId,
+        properties: {
+          token,
+          firstName: details.firstName,
+          ...order,
+          error: _error,
         },
-        () => {
-          response.json({
-            success: false,
-            data: { order: null },
-            error: _error,
-          });
-        },
-      );
-
+      });
       return;
     }
 
@@ -234,10 +222,17 @@ export default async function pay(
             ? stripeConnectedAccount.id
             : process.env.STRIPE_TEST_CONNECTED_ACCOUNT_ID,
       },
-      // Used to manage Stripe Webhooks like `onPaymentSuccessWebhook`
-      metadata: {
-        orderId: order.id,
-      },
+      // Temporarily used for Shopify webhook syncing
+      description: JSON.stringify({
+        title: order.deal.name,
+        quantity: order.heads,
+        unitPrice: order.deal.pricePerHeadGBP,
+        restaurantPhone: order.deal.restaurant.publicPhoneNumber,
+        restaurantAddress: order.deal.restaurant.location.address,
+        shopifyProductId,
+        anonymousId,
+        cartToken,
+      }),
     });
 
     // ////////////////////////////////////////////////////
@@ -254,7 +249,7 @@ export default async function pay(
     // Payment success
     if (paymentIntent.status === 'succeeded') {
       // Update order
-      firebaseAdmin
+      await firebaseAdmin
         .firestore()
         .collection(FirestoreCollection.ORDERS)
         .doc(order.id)
@@ -265,37 +260,6 @@ export default async function pay(
           { merge: true },
         );
 
-      // Update user data
-      // Add to bookings
-      const booking: IBooking = {
-        userId: order.userId,
-        restaurant: restaurantDetails as IRestaurant,
-        restaurantId: order.deal.restaurant.id,
-        orderId: order.id,
-        userFacingBookingId: generateUserFacingId(),
-        eaterName,
-        eaterEmail: details.email,
-        eaterMobile: details.mobile,
-        dealName: order.deal.name,
-        heads: order.heads,
-        price: order.price,
-        paidAt: Date.now(),
-        bookingDate: null,
-        hasBooked: false,
-        hasArrived: false,
-        hasCancelled: false,
-        cancelledAt: null,
-        confirmationCode: generateConfirmationCode(),
-        isConfirmationCodeVerified: false,
-        isTest: process.env.NODE_ENV === 'development',
-      };
-
-      firebaseAdmin
-        .firestore()
-        .collection(FirestoreCollection.BOOKINGS)
-        .doc(order.id)
-        .set(booking);
-
       // Internal measurements
       const tastiestPortion = order.price.final * 0.25; // TODO -> Subtract PROMO,
       const restaurantPortion = order.price.final * 0.75;
@@ -303,86 +267,74 @@ export default async function pay(
       // Track payment success
       // Track using Segment's Payment Success schema
       // https://segment.com/docs/connections/spec/ecommerce/v2/#order-completed
-      await analytics.track(
-        {
-          event: 'Order Completed',
-          userId: order.userId,
-          context: {
-            userAgent,
-            page: {
-              url: 'https://tastiest.io/checkout',
-            },
-          },
-          integrations: {
-            All: false,
-            'Facebook Pixel': true,
-            'Facebook Conversions API': true,
-            'Google Analytics': true,
-          },
-          properties: {
-            checkout_id: order.token,
-            order_id: order.id,
-            affiliation: '',
-            total: order.price.final,
-            subtotal: order.price.gross,
-            revenue: order.price.final * 0.25,
-            shipping: 0,
-            tax: 0,
-            discount: 0,
-            coupon: order.promoCode,
-            currency: order.price.currency,
-            products: [
-              {
-                product_id: order.deal.id,
-                sku: order.deal.id,
-                name: order.deal.name,
-                price: order.deal.pricePerHeadGBP,
-                quantity: order.heads,
-                category: '',
-                url: `https://tastiest.io/r?offer=${order.deal.id}`,
-                image_url: order.deal.image.url,
-              },
-            ],
-            traits: {
-              firstName: details.firstName,
-              lastName: details.lastName,
-              email: details.email,
-              phone: details.mobile,
-              birthday: JSON.stringify(details.birthday),
-              address: {
-                city: 'London',
-                postalCode: details.postalCode,
-              },
-            },
-
-            // Internal measurements
-            tastiestPortion,
-            restaurantPortion,
-
-            // For Pixel
-            email: details.email,
-            action_source: 'website',
+      await analytics.track({
+        event: 'Order Completed',
+        userId: order.userId,
+        context: {
+          userAgent,
+          page: {
+            url: 'https://tastiest.io/checkout',
           },
         },
-        () =>
-          response.json({
-            success: true,
-            data: { order },
-            error: null,
-          }),
-      );
+        integrations: {
+          All: false,
+          'Facebook Pixel': true,
+          'Facebook Conversions API': true,
+          'Google Analytics': true,
+        },
+        properties: {
+          checkout_id: order.token,
+          order_id: order.id,
+          affiliation: '',
+          total: order.price.final,
+          subtotal: order.price.gross,
+          revenue: order.price.final * 0.25,
+          shipping: 0,
+          tax: 0,
+          discount: 0,
+          coupon: order.promoCode,
+          currency: order.price.currency,
+          products: [
+            {
+              product_id: order.deal.id,
+              sku: order.deal.id,
+              name: order.deal.name,
+              price: order.deal.pricePerHeadGBP,
+              quantity: order.heads,
+              category: '',
+              url: `https://tastiest.io/r?offer=${order.deal.id}`,
+              image_url: order.deal.image.url,
+            },
+          ],
+          traits: {
+            firstName: details.firstName,
+            lastName: details.lastName,
+            email: details.email,
+            phone: details.mobile,
+            birthday: JSON.stringify(details.birthday),
+            address: {
+              city: 'London',
+              postalCode: details.postalCode,
+            },
+          },
 
-      return;
-    } else {
-      const _error = 'Payment Failure - Unable to confirm payment';
-      await reportInternalError({
-        code: TastiestInternalErrorCode.PAYMENT_ERROR,
-        message: _error,
-        timestamp: Date.now(),
-        shouldAlert: false,
-        originFile: 'pages/api/payments/pay.ts:370',
-        properties: { ...order },
+          // Internal measurements
+          tastiestPortion,
+          restaurantPortion,
+
+          // For Pixel
+          email: details.email,
+          action_source: 'website',
+        },
       });
+
+      response.json({
+        success: true,
+        data: { order },
+        error: null,
+      });
+    } else {
+      const _error = 'Unable to confirm payment';
 
       analytics.track({
         event: 'Payment Failure',
@@ -400,8 +352,6 @@ export default async function pay(
         data: { order: null },
         error: _error,
       });
-
-      return;
     }
   } catch (error) {
     await reportInternalError({
@@ -410,16 +360,26 @@ export default async function pay(
       timestamp: Date.now(),
       shouldAlert: false,
       originFile: 'pages/api/payments/pay.ts',
-      properties: { token },
+      properties: {},
       raw: String(error),
+    });
+
+    // Payment failure
+    await analytics.track({
+      event: 'Payment Error',
+      userId: order.userId,
+      properties: {
+        token,
+        firstName: details.firstName,
+        ...order,
+        error: String(error),
+      },
     });
 
     response.json({
       success: false,
       data: { order: null },
-      error: String(error),
+      error,
     });
-
-    return;
   }
 }
