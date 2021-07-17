@@ -1,9 +1,14 @@
 import {
   FirestoreCollection,
   FunctionsResponse,
+  generateConfirmationCode,
+  generateUserFacingId,
+  IBooking,
   IOrder,
+  IRestaurant,
   PAYMENTS,
   reportInternalError,
+  RestaurantData,
   RestaurantDataApi,
   TastiestInternalErrorCode,
   transformPriceForStripe,
@@ -233,6 +238,9 @@ export default async function pay(
         anonymousId,
         cartToken,
       }),
+      metadata: {
+        orderId: order.id,
+      },
     });
 
     // ////////////////////////////////////////////////////
@@ -259,6 +267,50 @@ export default async function pay(
           },
           { merge: true },
         );
+
+      const userDataApi = new UserDataApi(firebaseAdmin, order.userId);
+      const userDetails = await userDataApi.getUserData(UserData.DETAILS);
+      const restaurantDataApi = new RestaurantDataApi(
+        firebaseAdmin,
+        order.deal.restaurant.id,
+      );
+
+      const restaurantDetails = await restaurantDataApi.getRestaurantField(
+        RestaurantData.DETAILS,
+      );
+
+      const eaterName = `${userDetails.firstName} ${userDetails.lastName}`;
+
+      // Update user data
+      // Add to bookings
+      const booking: IBooking = {
+        userId: order.userId,
+        restaurant: restaurantDetails as IRestaurant,
+        restaurantId: order.deal.restaurant.id,
+        orderId: order.id,
+        userFacingBookingId: generateUserFacingId(),
+        eaterName,
+        eaterEmail: userDetails.email as string,
+        eaterMobile: userDetails.mobile as string,
+        dealName: order.deal.name,
+        heads: order.heads,
+        price: order.price,
+        paidAt: Date.now(),
+        bookingDate: null,
+        hasBooked: false,
+        hasArrived: false,
+        hasCancelled: false,
+        cancelledAt: null,
+        confirmationCode: generateConfirmationCode(),
+        isConfirmationCodeVerified: false,
+        isTest: process.env.NODE_ENV === 'development',
+      };
+
+      await firebaseAdmin
+        .firestore()
+        .collection(FirestoreCollection.BOOKINGS)
+        .doc(order.id)
+        .set(booking);
 
       // Internal measurements
       const tastiestPortion = order.price.final * 0.25; // TODO -> Subtract PROMO,
