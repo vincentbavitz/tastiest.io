@@ -48,7 +48,7 @@ function MobileHeader() {
     >
       <div className="relative flex items-center justify-between w-full h-full">
         <div className="flex flex-shrink-0" onMouseDown={handleExpandSearch}>
-          <SearchIcon className="h-6 cursor-pointer" />
+          <SearchIcon className="h-6 cursor-pointer fill-current text-primary" />
         </div>
 
         <Link href="/">
@@ -142,7 +142,7 @@ function CheckoutHeader({ isDesktop }: { isDesktop: boolean }) {
         isDesktop ? 'justify-between' : 'justify-center',
       )}
     >
-      <div className="flex items-center flex-shrink-0 text-secondary">
+      <div className="flex items-center flex-shrink-0">
         <TastiestIcon className="h-8 fill-current text-primary" />
       </div>
     </div>

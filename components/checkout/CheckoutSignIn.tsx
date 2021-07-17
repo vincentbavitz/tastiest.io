@@ -12,13 +12,7 @@ import {
 import { InputEmail } from '../inputs/InputEmail';
 import { InputPassword } from '../inputs/InputPassword';
 
-interface Props {
-  anonymousId: string;
-}
-
-export function CheckoutSignIn(props: Props) {
-  const { anonymousId } = props;
-
+export function CheckoutSignIn() {
   const { isDesktop } = useScreenSize();
 
   const { signIn, submitting, error } = useSignIn();

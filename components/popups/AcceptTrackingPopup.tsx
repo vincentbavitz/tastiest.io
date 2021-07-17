@@ -30,11 +30,14 @@ export function AcceptTrackingPopup() {
       className="fixed bottom-0 flex justify-center w-full pointer-events-none"
     >
       <div
-        style={{ filter: 'drop-shadow(0px 0px 5px rgba(0,0,0,0.15))' }}
-        className="flex items-center px-3 py-2 mb-2 text-gray-800 bg-white rounded-md pointer-events-auto"
+        style={{
+          filter: 'drop-shadow(0px 0px 5px rgba(0,0,0,0.15))',
+          maxWidth: '95vw',
+        }}
+        className="flex flex-col items-center px-3 py-2 mb-2 text-center text-gray-800 bg-white rounded-md pointer-events-auto mobile:flex-row"
       >
-        <CookieEmoji className="w-6 pl-1" />
-        <p className="pl-2 pr-1 text-sm mobile:text-base">
+        <p className="pl-2 pr-1 text-xs mobile:text-sm">
+          <CookieEmoji className="inline w-4 mr-1" />
           By using Tastiest, you agree to our{' '}
           <a
             href="/privacy"

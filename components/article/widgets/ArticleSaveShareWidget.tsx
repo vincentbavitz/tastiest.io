@@ -66,7 +66,7 @@ export function ArticleSaveShareWidget(props: IPost) {
         />
       )}
 
-      <div ref={ref} className="flex flex-col items-center">
+      <div ref={ref} className="flex flex-col items-center pt-16 tablet:pt-0">
         <div className="z-10 flex justify-center w-full">
           <div
             style={{ width: 'fit-content' }}
@@ -80,7 +80,7 @@ export function ArticleSaveShareWidget(props: IPost) {
                 <HeartFilledIcon
                   className={clsx(
                     'text-primary fill-current',
-                    isDesktop ? 'h-5' : 'h-5',
+                    isDesktop ? 'h-4' : 'h-4',
                   )}
                 />
               ) : (
@@ -98,7 +98,12 @@ export function ArticleSaveShareWidget(props: IPost) {
               className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 cursor-pointer hover:bg-white rounded-r-md"
               onClick={() => setIsDropdownOpen(true)}
             >
-              <ShareIcon className={isDesktop ? 'h-5' : 'h-5'} />
+              <ShareIcon
+                className={clsx(
+                  'text-primary fill-current',
+                  isDesktop ? 'h-5' : 'h-5',
+                )}
+              />
               <span>Share</span>
             </div>
           </div>
@@ -146,25 +151,25 @@ function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
     >
       <div className="flex items-center justify-between w-full h-12 px-6 bg-white shadow-lg">
         <p className="text-lg tracking-wide whitespace-nowrap mobile:text-xl">
-          {dishName}
+          {dishName.replace('*', '')}
         </p>
 
         <div className="flex items-center mt-1 space-x-4">
           {isArticleSaved ? (
             <HeartFilledIcon
               onClick={() => toggleSaveArticle(slug)}
-              className="h-6"
+              className="h-5 cursor-pointer"
             />
           ) : (
             <HeartIcon
               onClick={() => toggleSaveArticle(slug)}
-              className="h-6 fill-current text-primary"
+              className="h-6 cursor-pointer fill-current text-primary"
             />
           )}
 
           <ShareIcon
             onClick={() => setIsDropdownOpen(true)}
-            className="h-6 -mt-1"
+            className="h-6 cursor-pointer fill-current text-primary"
           />
         </div>
       </div>

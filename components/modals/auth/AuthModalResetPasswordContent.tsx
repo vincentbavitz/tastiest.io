@@ -1,6 +1,6 @@
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import { EmailIcon } from '@tastiest-io/tastiest-icons';
-import { useAuth } from 'hooks/auth/useAuth';
+import { useResetPassword } from 'hooks/auth/useResetPassword';
 import React, { useState } from 'react';
 import { cleanupInputValue } from 'utils/text';
 import { ContentElementProps, LoginFlowStep } from './AuthModal';
@@ -12,7 +12,7 @@ export const AuthModalResetPasswordContent = ({
   setStep,
 }: ContentElementProps) => {
   const [email, setEmail] = useState('');
-  const { resetPassword } = useAuth();
+  const { resetPassword } = useResetPassword();
 
   const onClickResetPassword = async () => {
     const resetPasswordSuccessful = await resetPassword(email);

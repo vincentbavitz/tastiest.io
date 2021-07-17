@@ -51,7 +51,9 @@ export function ArticleWidgetMap({ location, restaurant }: Props) {
             rel="noreferrer"
             className="font-normal hover:underline"
           >
-            {restaurant?.website.replace(/^(https?:\/\/)?(www\.)?/g, '')}
+            {restaurant?.website
+              .replace(/^(https?:\/\/)?(www\.)?/g, '')
+              .replace(/\/$/, '')}
           </a>
         </div>
       </div>

@@ -86,7 +86,7 @@ function Post(post: IPost) {
   useEffect(() => {
     dlog('[slug] ➡️ recommendedPosts:', recommendedPosts);
     cms.getTopPosts(8).then(result => setRecommendedPosts(result?.posts));
-  });
+  }, []);
 
   // const segmentYouTubeSnippet = `
   //     var player;
