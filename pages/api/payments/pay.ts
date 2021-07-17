@@ -100,22 +100,26 @@ export default async function pay(
       const _error = 'Order already paid or is expired';
 
       // Payment expired or already paid
-      analytics.track({
-        event: 'Payment Error',
-        context: { userAgent },
-        userId: order.userId,
-        properties: {
-          token,
-          ...order,
-          error: _error,
+      analytics.track(
+        {
+          event: 'Payment Error',
+          context: { userAgent },
+          userId: order.userId,
+          properties: {
+            token,
+            ...order,
+            error: _error,
+          },
         },
-      });
+        () => {
+          response.json({
+            success: false,
+            data: { order: null },
+            error: _error,
+          });
+        },
+      );
 
-      response.json({
-        success: false,
-        data: { order: null },
-        error: _error,
-      });
       return;
     }
 
@@ -133,23 +137,27 @@ export default async function pay(
     if (!order?.paymentMethod || !order?.paymentMethod.length) {
       const _error = 'No payment method ID given';
 
-      response.json({
-        success: false,
-        data: { order: null },
-        error: _error,
-      });
-
       // Payment failure
-      analytics.track({
-        event: 'Payment Error',
-        userId: order.userId,
-        properties: {
-          token,
-          firstName: details.firstName,
-          ...order,
-          error: _error,
+      await analytics.track(
+        {
+          event: 'Payment Error',
+          userId: order.userId,
+          properties: {
+            token,
+            firstName: details.firstName,
+            ...order,
+            error: _error,
+          },
         },
-      });
+        () => {
+          response.json({
+            success: false,
+            data: { order: null },
+            error: _error,
+          });
+        },
+      );
+
       return;
     }
 
@@ -160,24 +168,29 @@ export default async function pay(
     const customerId = paymentDetails?.stripeCustomerId;
     if (!customerId) {
       const _error = "Stripe customer doesn't exist";
-      response.json({
-        success: false,
-        data: { order: null },
-        error: _error,
-      });
 
       // Payment failure
-      analytics.track({
-        event: 'Payment Error',
-        context: { userAgent },
-        userId: order.userId,
-        properties: {
-          token,
-          firstName: details.firstName,
-          ...order,
-          error: _error,
+      analytics.track(
+        {
+          event: 'Payment Error',
+          context: { userAgent },
+          userId: order.userId,
+          properties: {
+            token,
+            firstName: details.firstName,
+            ...order,
+            error: _error,
+          },
         },
-      });
+        () => {
+          response.json({
+            success: false,
+            data: { order: null },
+            error: _error,
+          });
+        },
+      );
+
       return;
     }
 
@@ -367,7 +380,7 @@ export default async function pay(
         message: _error,
         timestamp: Date.now(),
         shouldAlert: false,
-        originFile: 'pages/api/payments/pay.ts:357',
+        originFile: 'pages/api/payments/pay.ts:370',
         properties: { ...order },
       });
 
@@ -387,6 +400,8 @@ export default async function pay(
         data: { order: null },
         error: _error,
       });
+
+      return;
     }
   } catch (error) {
     await reportInternalError({
@@ -404,12 +419,7 @@ export default async function pay(
       data: { order: null },
       error: String(error),
     });
-  }
 
-  response.json({
-    success: false,
-    data: null,
-    error: null,
-  });
-  return;
+    return;
+  }
 }

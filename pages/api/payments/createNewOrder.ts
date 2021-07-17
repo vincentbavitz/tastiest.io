@@ -166,6 +166,8 @@ export default async function createNewOrder(
       data: null,
       error: String(error),
     });
+
+    return;
   }
 
   response.json({
