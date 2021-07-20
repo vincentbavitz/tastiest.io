@@ -44,8 +44,8 @@ export function ArticleCard(props: Props): JSX.Element {
       ref={ref}
       className={classNames(
         'overflow-hidden w-full bg-aux-orange bg-opacity-75',
-        isSmall ? 'rounded-lg' : 'rounded-xl',
-        isSmall ? 'pb-3' : 'pb-1',
+        isSmall || compact ? 'rounded-lg' : 'rounded-xl',
+        isSmall ? 'pb-2' : 'pb-1',
       )}
       // onClick={e => handleClick(e)}
     >
@@ -64,7 +64,7 @@ export function ArticleCard(props: Props): JSX.Element {
         )}
       </div>
 
-      <div className={isSmall ? 'px-3' : 'px-4'}>
+      <div className={isSmall || compact ? 'px-3' : 'px-4'}>
         <div className={isSmall ? 'py-2' : 'py-3'}>
           <div
             style={{
@@ -73,12 +73,12 @@ export function ArticleCard(props: Props): JSX.Element {
               paddingBottom: '2.2em',
             }}
             className={classNames(
-              isSmall ? 'text-base' : 'text-lg',
+              isSmall || compact ? 'text-base' : 'text-lg',
               'font-somatic overflow-hidden cursor-pointer hover:underline',
             )}
           >
             <Link href={href} as={as}>
-              <a href="">{title}</a>
+              <a href="text-black">{title}</a>
             </Link>
           </div>
 
@@ -86,7 +86,7 @@ export function ArticleCard(props: Props): JSX.Element {
         </div>
 
         <div className={classNames('flex space-x-1 mt-1', !isSmall && 'mb-2')}>
-          <TagRow tags={tags} limit={3} />
+          <TagRow tags={tags} size={compact ? 'small' : 'medium'} limit={3} />
         </div>
       </div>
     </div>

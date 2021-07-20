@@ -2838,10 +2838,10 @@
   dependencies:
     mini-svg-data-uri "^1.2.3"
 
-"@tastiest-io/tastiest-components@^0.57.0":
-  version "0.57.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.57.0/c1b03662c688d344d078b44ce9a638a29d26c3da223135e903c063bc1c0e105f#033ea96a5578caaad0cff0f21211c3c9ac0a4f3b"
-  integrity sha512-I+0FmD+yXVyTMVMaEUsQ/93zW/bY/qDdGxt/ciqGo9SD84MRsFHdaP9O7XaiG1G+Y2PSo1S+nv+SImS1xQd1Aw==
+"@tastiest-io/tastiest-components@^0.58.0":
+  version "0.58.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.58.0/8a6179d2ba18aa282fe7c5ed01ac4f697038cce7f78161220b833b8be2c0add9#7474b27086f876ade9f75551ac2b661b9c1167f9"
+  integrity sha512-shIx5qysH2rhFQSVKfTt725BR+EP1e6SyKJG2Z54RqyyYq0KwrYNiHCwhqFxzYINoWbSYOXPR986xCociEwYwA==
   dependencies:
     "@ant-design/icons" "^4.6.2"
     "@nivo/core" "^0.72.0"

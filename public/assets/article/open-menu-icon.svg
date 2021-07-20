@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Layer_1"
+   data-name="Layer 1"
+   viewBox="0 0 94.440646 83.820002"
+   version="1.1"
+   sodipodi:docname="open-menu-icon.svg"
+   inkscape:version="1.1 (ce6663b3b7, 2021-05-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview45"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="105.71246"
+     inkscape:cy="-21.213203"
+     inkscape:window-width="1920"
+     inkscape:window-height="1015"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Layer_1" />
+  <defs
+     id="defs4">
+    <style
+       id="style2">.cls-1{fill:#fe4c00;}.cls-2,.cls-4{fill:#fff;}.cls-3{fill:#c12a02;}.cls-4{stroke:#fe4c00;}.cls-4,.cls-5{stroke-miterlimit:10;stroke-width:5px;}.cls-5{fill:none;stroke:#ffe499;}</style>
+  </defs>
+  <title
+     id="title6">illustrations</title>
+  <path
+     class="cls-3"
+     d="M 87.09008,16.670001 H 7.3500805 a 47.19,47.19 0 0 0 -1.45,48.14 H 88.55008 a 47.22,47.22 0 0 0 -1.46,-48.14 z"
+     id="path28" />
+  <circle
+     class="cls-4"
+     cx="47.220081"
+     cy="41.91"
+     r="39.41"
+     id="circle30" />
+  <circle
+     class="cls-5"
+     cx="47.00008"
+     cy="42.310001"
+     r="28.52"
+     id="circle32" />
+  <path
+     class="cls-1"
+     d="m 29.63008,71.060001 v 0 a 2.71,2.71 0 0 1 -0.44,-3.84 l 24,-31 a 2.72,2.72 0 1 1 4.3,3.33 l -24,31 a 2.7,2.7 0 0 1 -3.86,0.51 z"
+     id="path34" />
+  <path
+     class="cls-1"
+     d="m 74.00008,22.160001 -9.81,13.06 a 3.42,3.42 0 0 1 -2.76,1.36 3.54,3.54 0 0 1 -2.15,-0.72 l -2.85,-2.14 a 3.55,3.55 0 0 1 -1.43,-2.84 3.31,3.31 0 0 1 0.69,-2 l 9.84,-13 a 2.003004,2.003004 0 1 0 -3.2,-2.41 l -9.84,12.95 a 7.43,7.43 0 0 0 -1.49,4.46 7.55,7.55 0 0 0 3,6 l 2.82,2.13 a 7.56,7.56 0 0 0 4.56,1.53 7.4,7.4 0 0 0 6,-3 l 9.84,-13 a 2,2 0 0 0 -3.19,-2.41 z"
+     id="path36" />
+  <path
+     class="cls-1"
+     d="m 68.42008,17.220001 -12.91,17.26 a 2,2 0 1 0 3.2,2.4 l 12.91,-17.22 a 2,2 0 1 0 -3.2,-2.4"
+     id="path38" />
+  <rect
+     class="cls-1"
+     x="13.464495"
+     y="48.325325"
+     width="5.4619875"
+     height="46.778309"
+     rx="2.7309937"
+     transform="rotate(-33.215251)"
+     id="rect40"
+     style="stroke-width:1.00404" />
+  <path
+     class="cls-1"
+     d="m 30.78168,14.243001 0.7812,-0.5115 17.4515,26.6532 -9.1812,6.0115 -11.9515,-18.2532 a 10.040418,10.040418 0 0 1 2.9,-13.9 z"
+     id="path42"
+     style="stroke-width:1.00404" />
+  <metadata
+     id="metadata862">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>illustrations</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

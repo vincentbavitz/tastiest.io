@@ -1,11 +1,11 @@
 import { Button, Select } from '@tastiest-io/tastiest-components';
 import { ExitIcon, RightIcon } from '@tastiest-io/tastiest-icons';
-import { IDeal, valdHeads, ValidHead } from '@tastiest-io/tastiest-utils';
+import { IDeal } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import { Contained } from 'components/Contained';
 import { useArticleOrder } from 'hooks/checkout/useArticleOrder';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLockBodyScroll } from 'react-use';
 import { UI } from '../../../constants';
 
@@ -45,7 +45,7 @@ export default function ArticleOrderNowMobile({ deal, slug }: Props) {
             >
               <div className="flex items-center justify-between w-full text-xl font-somatic">
                 <div className="w-5"></div>
-                <span>Get the offer!</span>
+                <div>Get the offer!</div>
                 <RightIcon className="h-5 text-white stroke-current" />
               </div>
             </Button>
@@ -112,7 +112,12 @@ const OrderNowOverlay = ({ deal, slug, onClose }: OrderNowOverlayProps) => {
             <p className="">£{totalPrice}</p>
           </div>
 
-          <Button wide className="text-2xl font-somatic" onClick={submit}>
+          <Button
+            wide
+            size="large"
+            className="text-2xl font-somatic"
+            onClick={submit}
+          >
             Buy now
           </Button>
         </div>
@@ -124,11 +129,17 @@ const OrderNowOverlay = ({ deal, slug, onClose }: OrderNowOverlayProps) => {
 interface OverlayInnerProps extends Props {
   heads: number;
   totalPrice: string;
-  setHeads: (value: ValidHead) => void;
+  setHeads: (value: number) => void;
 }
 
 const OverlayInner = (props: OverlayInnerProps) => {
   const { deal, totalPrice, heads, setHeads } = props;
+  const allowedHeads = deal.allowedHeads.sort((a, b) => a - b);
+
+  // Set valid heads from the first mount
+  useEffect(() => {
+    setHeads(allowedHeads[0]);
+  }, []);
 
   return (
     <div className="relative z-30 w-full py-6 bg-white">
@@ -141,14 +152,15 @@ const OverlayInner = (props: OverlayInnerProps) => {
           <span className="text-lg font-medium font-roboto bold text-primary">
             Book for
           </span>
-          <div className="w-12">
-            <Select
-              size="small"
-              text-center
-              onChange={value => setHeads(Number(value) as ValidHead)}
-            >
-              {valdHeads.map(n => (
-                <option key={n} className="text-center" value={n}>
+          <div className="w-20">
+            <Select onChange={value => setHeads(Number(value))}>
+              {allowedHeads.map(n => (
+                <option
+                  selected={allowedHeads[0] === n}
+                  key={n}
+                  className="text-center"
+                  value={n}
+                >
                   {n}
                 </option>
               ))}

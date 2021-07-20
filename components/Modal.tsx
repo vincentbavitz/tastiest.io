@@ -17,6 +17,7 @@ interface Props {
   className?: string;
   close?: () => void;
   onMobileFullscreen?: boolean;
+  noPadding?: boolean;
 }
 
 export function Modal(props: Props) {
@@ -26,6 +27,7 @@ export function Modal(props: Props) {
     close,
     className,
     children,
+    noPadding,
     onMobileFullscreen,
   } = props;
 
@@ -81,7 +83,8 @@ export function Modal(props: Props) {
           width: onMobileFullscreen && isMobile ? '100vw' : 'unset',
         }}
         className={classNames(
-          'relative border-2 border-gray px-6 pb-4 pt-12 bg-white',
+          'relative border-2 border-gray pt-12 bg-white',
+          !noPadding && 'px-6 pb-4',
           className,
         )}
       >

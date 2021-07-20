@@ -5,7 +5,9 @@ import React from 'react';
 import { Contained } from '../../Contained';
 import { RichBody } from '../../RichBody';
 import ArticleContained from '../ArticleContained';
+import OpenMenuButton from '../OpenMenuButton';
 import { ArticleWidgetMap } from '../widgets/ArticleWidgetMap';
+import ArticleSectionNeedToKnow from './ArticleSectionNeedToKnow';
 import ArticleSectionOfferBreakdown from './ArticleSectionOfferBreakdown';
 
 // TODO
@@ -19,16 +21,23 @@ export function ArticleSectionContent(post: IPost) {
 
 const MobileContent = (post: IPost) => (
   <Contained>
-    <div className="flex flex-col space-y-4">
-      <div>
-        <h3 className="text-xl font-medium">{post?.restaurant?.name}</h3>
-        <CovidAware className="h-12 -mt-1" />
-      </div>
+    <div className="flex items-center justify-between border-b-2 border-secondary-2">
+      <h3 className="text-xl font-medium">{post?.restaurant?.name}</h3>
+      <CovidAware className="block h-6 mobile:hidden" />
+    </div>
 
+    <div className="flex items-center justify-center pb-4 mt-4 space-x-4 mobile:justify-between">
+      <CovidAware className="hidden h-10 mobile:block" />
+      {post.menuImage && (
+        <OpenMenuButton menu={post.menuImage}>Open Menu</OpenMenuButton>
+      )}
+    </div>
+
+    <div className="flex flex-col space-y-4">
       <p className="pb-4 leading-7 font-roboto">{post.description}</p>
 
       {/* <ArticleSectionFeatureImage featureImage={post?.featureImage} /> */}
-      <AuxiliaryDivider url={post?.offerDivider?.url} />
+
       <ArticleSectionOfferBreakdown {...post.deal} />
 
       <ArticleWidgetMap
@@ -37,6 +46,8 @@ const MobileContent = (post: IPost) => (
       />
 
       <RichBody body={post.body} />
+      <AuxiliaryDivider url={post?.offerDivider?.url} />
+      <ArticleSectionNeedToKnow body={post.needToKnow} />
     </div>
   </Contained>
 );
@@ -44,17 +55,30 @@ const MobileContent = (post: IPost) => (
 const DesktopContent = (post: IPost) => {
   return (
     <ArticleContained>
-      <div className="flex items-center justify-start space-x-4">
-        <h3 className="text-xl font-medium">{post?.restaurant?.name}</h3>
-        <CovidAware className="h-12" />
+      <h3 className="text-xl font-medium border-b-2 border-secondary-2">
+        {post?.restaurant?.name}
+      </h3>
+
+      <div className="flex items-center justify-between mt-4 space-x-4">
+        <CovidAware className="h-10" />
+        {post.menuImage && (
+          <OpenMenuButton menu={post.menuImage}>Open Menu</OpenMenuButton>
+        )}
       </div>
 
       <div className="flex flex-col mt-4 space-y-6">
         <div className="">{post?.description}</div>
 
-        {/* <ArticleSectionFeatureImage featureImage={post?.featureImage} /> */}
+        <ArticleSectionOfferBreakdown {...post.deal} />
+
+        <ArticleWidgetMap
+          location={post.displayLocation}
+          restaurant={post.restaurant}
+        />
 
         <RichBody body={post.body} />
+        <AuxiliaryDivider url={post?.offerDivider?.url} />
+        <ArticleSectionNeedToKnow body={post.needToKnow} />
       </div>
     </ArticleContained>
   );

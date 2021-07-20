@@ -25,7 +25,7 @@ export function TagRow({ tags, limit, size }: Props) {
     >
       {smallestTags.map(tag => (
         <div key={tag} className="mb-2">
-          <TagBlock tag={tag} size={size} />
+          <TagBlock tag={tag} size={'small'} />
         </div>
       ))}
     </div>

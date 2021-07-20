@@ -4,7 +4,6 @@ import {
   IDeal,
   IOrderRequest,
   postFetch,
-  ValidHead,
 } from '@tastiest-io/tastiest-utils';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
@@ -19,7 +18,7 @@ export const useArticleOrder = (deal: IDeal, fromSlug: string) => {
   const { user } = useAuth();
   const router = useRouter();
 
-  const [heads, setHeads] = useState<ValidHead>(1);
+  const [heads, setHeads] = useState<number>(1);
   const totalPrice = formatCurrency(Number(heads) * deal?.pricePerHeadGBP);
 
   const submit = async () => {

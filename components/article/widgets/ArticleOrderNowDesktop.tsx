@@ -1,10 +1,10 @@
 import { Button, Select } from '@tastiest-io/tastiest-components';
 import { PoundIcon } from '@tastiest-io/tastiest-icons';
-import { IDeal, valdHeads, ValidHead } from '@tastiest-io/tastiest-utils';
+import { IDeal } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import { useArticleOrder } from 'hooks/checkout/useArticleOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { UI } from '../../../constants';
 
 interface Props {
@@ -20,6 +20,12 @@ export function ArticleOrderNowDesktop(props: Props) {
   );
 
   const { isDesktop } = useScreenSize();
+  const allowedHeads = deal.allowedHeads.sort((a, b) => a - b);
+
+  // Set valid heads from the first mount
+  useEffect(() => {
+    setHeads(allowedHeads[0]);
+  }, []);
 
   return (
     <Contained>
@@ -31,7 +37,7 @@ export function ArticleOrderNowDesktop(props: Props) {
               : '300px',
             maxWidth: isDesktop ? 'unset' : '75vw',
           }}
-          className="relative z-30 pt-2 pb-4 mt-20 bg-white border-4 pointer-events-auto desktop:mt-0 border-secondary-1 rounded-xl"
+          className="relative z-30 pt-2 pb-4 mt-16 bg-white border-4 pointer-events-auto border-secondary-1 rounded-xl"
         >
           <h3 className="mb-2 text-xl text-center font-somatic text-primary">
             Get the offer!
@@ -42,14 +48,15 @@ export function ArticleOrderNowDesktop(props: Props) {
               <img src={`${deal?.image?.url}?w=700`} className="object-cover" />
             </div>
 
-            <div className="flex flex-col justify-center pt-2 mx-4 space-y-4">
+            <div className="flex flex-col justify-center pt-2 space-y-4">
               <p className="text-base leading-none text-center font-somatic">
                 {deal?.tagline}
               </p>
 
-              <div className="py-2 mb-3 text-center border-t-2 border-b-2 border-white border-dashed">
-                <p className="flex items-center text-base font-somatic text-primary">
-                  For <PoundIcon className="inline h-3 mx-1 fill-current" />
+              <div className="py-2 mx-2 mb-3 text-center border-t-2 border-b-2 border-white border-dashed">
+                <p className="text-base leading-tight font-somatic text-primary">
+                  For{' '}
+                  <PoundIcon className="inline h-3 mx-1 -mt-1 fill-current" />
                   {deal?.pricePerHeadGBP}, you'll get
                 </p>
               </div>
@@ -70,10 +77,15 @@ export function ArticleOrderNowDesktop(props: Props) {
               <div className="w-12">
                 <Select
                   size="small"
-                  onChange={value => setHeads(Number(value) as ValidHead)}
+                  onChange={value => setHeads(Number(value))}
                 >
-                  {valdHeads.map(n => (
-                    <option key={n} className="text-center" value={n}>
+                  {allowedHeads.map(n => (
+                    <option
+                      selected={allowedHeads[0] === n}
+                      key={n}
+                      className="text-center"
+                      value={n}
+                    >
                       {n}
                     </option>
                   ))}
@@ -108,7 +120,6 @@ export function ArticleOrderNowDesktop(props: Props) {
               wide
               onClick={submit}
               type="solid"
-              size="small"
               className="text-base font-somatic"
             >
               Buy now

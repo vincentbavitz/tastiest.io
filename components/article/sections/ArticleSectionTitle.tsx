@@ -48,7 +48,7 @@ export function ArticleSectionTitle(props: Props) {
               minHeight: isDesktop ? '7rem' : 'auto',
             }}
           >
-            <h1 className="text-3xl leading-none text-center mobile:text-4xl font-somatic text-primary desktop:text-5xl">
+            <h1 className="text-3xl leading-none text-center mobile:text-4xl font-somatic text-primary desktop:text-4xl">
               {title}
             </h1>
           </div>
@@ -89,6 +89,7 @@ const CharcterEatingIllustration = ({ svg }: ITitleDividerProps) => {
           style={{
             height: `${HEIGHT_REM}rem`,
             transform: `translateY(${OFFSET_PERCENTAGE}%)`,
+            maxWidth: 'unset',
           }}
         />
       </div>

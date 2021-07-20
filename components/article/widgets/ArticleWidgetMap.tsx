@@ -4,7 +4,6 @@ import { LocationIndictor } from 'components/LocationIndictor';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
 import { getMapBoxStaticSource } from 'utils/location';
-import { Title } from '../../Title';
 
 interface Props {
   location: string;
@@ -31,25 +30,26 @@ export function ArticleWidgetMap({ location, restaurant }: Props) {
             restaurant?.location?.lon,
             isDesktop ? 1100 : 900,
             isDesktop ? 300 : 500,
-            isDesktop ? 10 : 15,
+            isDesktop ? 13 : 15,
           )}
         />
       </div>
 
       <div className="flex flex-col justify-end pb-4 space-y-3">
-        {isDesktop && <LocationIndictor location={location} />}
+        {isDesktop && (
+          <div className="flex justify-between mt-2">
+            <h4 className="text-lg font-medium">{restaurant?.name}</h4>
+            <LocationIndictor location={location} />
+          </div>
+        )}
 
-        <div className="flex flex-col mt-3 font-medium desktop:ml-0 desktop:mt-0">
-          <Title level={1} bold margin={false}>
-            {restaurant?.name}
-          </Title>
-
-          <span>{restaurant?.location?.address}</span>
+        <div className="text-sm opacity-50">
+          <p>{restaurant?.location?.address}</p>
           <a
             href={restaurant?.website}
             target="_blank"
             rel="noreferrer"
-            className="font-normal hover:underline"
+            className="font-normal"
           >
             {restaurant?.website
               .replace(/^(https?:\/\/)?(www\.)?/g, '')

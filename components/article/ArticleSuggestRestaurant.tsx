@@ -22,14 +22,14 @@ export function ArticleSuggestRestaurant(props: IPost) {
 
           <div className="w-4/12">
             <SuggestRestaurantArticleIllustrationDesktop
-              style={{ height: '16rem', transform: 'rotateY(180deg)' }}
+              style={{ height: '18rem', transform: 'rotateY(180deg)' }}
             />
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center mt-10 space-y-6">
+        <div className="flex flex-col items-start mt-10 space-y-6">
           <SuggestRestaurantArticleIllustrationDesktop
-            style={{ maxHeight: '22rem' }}
+            style={{ maxHeight: '10rem' }}
           />
 
           <div className="pb-8 pl-3">

@@ -14,33 +14,30 @@ export function ArticleSectionAbstract(props: IPost) {
   dlog('ArticleSectionAbstract ➡️ titleDivider:', titleDivider);
 
   return (
-    <div className="relative w-full bg-secondary-1">
+    <div className="relative w-full mb-12 bg-secondary-1">
       <ArticleSaveShareWidget {...props} />
 
       {isDesktop ? (
         <ArticleContained>
-          <div className="mt-6">
+          <div className="mt-2">
             <ArticleFeatureVideoWidget video={video} />
           </div>
 
-          <div className="flex justify-center w-full h-4 pt-20 mb-12">
-            <img
-              src={abstractDivider?.url}
-              className="h-32 -mt-20 desktop:h-56 desktop:-mt-32"
-            />
+          <div className="relative pt-16">
+            <div className="flex justify-center w-full h-px">
+              <img
+                src={abstractDivider?.url}
+                className="h-32 transform -translate-y-1/2"
+              />
+            </div>
           </div>
         </ArticleContained>
       ) : (
         <Contained>
-          <div className="pb-10">
-            <ArticleFeatureVideoWidget video={video} />
-          </div>
+          <ArticleFeatureVideoWidget video={video} />
 
           <div className="flex justify-center w-full h-4 pt-20 mb-12">
-            <img
-              src={abstractDivider?.url}
-              className="h-32 -mt-20 desktop:h-56 desktop:-mt-32"
-            />
+            <img src={abstractDivider?.url} className="h-32 -mt-20" />
           </div>
         </Contained>
       )}
