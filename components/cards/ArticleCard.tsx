@@ -1,8 +1,10 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 import { IPost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import { TagRow } from 'components/TagRow';
 import Link from 'next/link';
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { useHoverDirty, useVideo } from 'react-use';
 import { generateStaticURL } from 'utils/routing';
 
 interface Props extends IPost {
@@ -20,7 +22,7 @@ export function ArticleCard(props: Props): JSX.Element {
     city,
     cuisine,
     restaurant,
-    deal: { image },
+    deal: { image, dynamicImage },
   } = props;
 
   // const [ref, { width }] = useMeasure();
@@ -39,6 +41,19 @@ export function ArticleCard(props: Props): JSX.Element {
     [],
   );
 
+  const [video, state, controls, videoRef] = useVideo(
+    <video src={dynamicImage.url} className="object-cover w-full h-full" />,
+  );
+
+  const isHovering = useHoverDirty(videoRef);
+  useEffect(() => {
+    if (isHovering) {
+      controls.play();
+    } else {
+      controls.pause();
+    }
+  }, [isHovering]);
+
   return (
     <div
       ref={ref}
@@ -54,13 +69,16 @@ export function ArticleCard(props: Props): JSX.Element {
         className="relative w-full h-0 overflow-hidden bg-white bg-opacity-25"
       >
         {image.url && (
-          <div className="absolute inset-0">
-            <img
-              className="object-cover w-full h-full"
-              src={`${image?.url}?w=700`}
-              alt={image?.description}
-            />
-          </div>
+          <>
+            <div className="absolute inset-0 z-10">{video}</div>
+            <div className="absolute inset-0">
+              <img
+                className="object-cover w-full h-full"
+                src={`${image?.url}?w=700`}
+                alt={image?.description}
+              />
+            </div>
+          </>
         )}
       </div>
 

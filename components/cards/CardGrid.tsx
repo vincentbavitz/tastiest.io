@@ -68,7 +68,7 @@ export function CardGrid(props: Props) {
             className={classNames(
               `grid grid-rows-${rows}`,
               `grid-cols-${cols}`,
-              isDesktop && (size === 'small' ? 'gap-6' : 'gap-8'),
+              isDesktop && (size === 'small' ? 'gap-4' : 'gap-6'),
               isTablet && (size === 'small' ? 'gap-4' : 'gap-6'),
             )}
           >

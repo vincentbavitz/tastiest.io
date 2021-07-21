@@ -66,7 +66,7 @@ export function ArticleOrderNowDesktop(props: Props) {
                 </p>
               </div>
 
-              <div className="text-sm text-center">
+              <div className="text-sm text-center leading-1">
                 {deal?.includes.slice(0, DEAL_INCLUDES_QTY - 1).map(item => (
                   <div key={item}>{item}</div>
                 ))}

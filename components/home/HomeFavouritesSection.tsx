@@ -10,14 +10,14 @@ interface Props {
 }
 
 export function HomeFavouritesSection(props: Props) {
-  const { isDesktop } = useScreenSize();
+  const { isHuge, isDesktop } = useScreenSize();
   const { cards } = props;
 
   return (
     <div className="flex flex-col space-y-4">
       <SectionTitle>Discover your next favourite dish!</SectionTitle>
 
-      <HorizontalScrollable fit={isDesktop ? 4 : undefined}>
+      <HorizontalScrollable fit={isHuge ? 5 : isDesktop ? 4 : undefined}>
         {cards.map(post => (
           <div
             key={post.id}
@@ -27,6 +27,17 @@ export function HomeFavouritesSection(props: Props) {
           </div>
         ))}
       </HorizontalScrollable>
+
+      {/* <CardGrid horizontalScroll size="small" rowLimit={2}>
+        {cards.map(post => (
+          <div
+            key={post.id}
+            style={{ minWidth: isDesktop ? 'unset' : '200px' }}
+          >
+            <ArticleCard compact {...post} />
+          </div>
+        ))}
+      </CardGrid> */}
     </div>
   );
 }

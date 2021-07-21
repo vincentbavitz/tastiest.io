@@ -38,7 +38,6 @@ export const getServerSideProps = async (
 ) => {
   const cms = new CmsApi();
   const page = Number(context.query.page ?? 1);
-  const { posts: topPosts } = await cms.getTopPosts(5);
   const modifier = context.query.m as ModifierKey | undefined;
 
   // ////////////////////////////// //
@@ -50,6 +49,7 @@ export const getServerSideProps = async (
       page,
     );
 
+    const { posts: topPosts } = await cms.getTopPosts(6);
     const props: Props = {
       posts,
       topPosts,
@@ -93,6 +93,7 @@ export const getServerSideProps = async (
       .filter(p => Boolean(p))
       .slice(0, CMS.BLOG_RESULTS_PER_PAGE);
 
+    const { posts: topPosts } = await cms.getTopPosts(6);
     const props: Props = {
       posts,
       topPosts,
@@ -114,6 +115,7 @@ export const getServerSideProps = async (
     page,
   );
 
+  const { posts: topPosts } = await cms.getTopPosts(posts.length ? 6 : 12);
   const props: Props = {
     posts,
     topPosts,
@@ -154,7 +156,7 @@ const Search = (
   // USING MODIFIER       ?m=
   //
 
-  const pageCount = Math.ceil(props.totalCount / SEARCH.SEARCH_ITEMS_PER_PAGE);
+  const pageCount = Math.ceil(totalCount / SEARCH.SEARCH_ITEMS_PER_PAGE);
   const showPagination = posts.length > 0 && pageCount > 1;
 
   dlog('search ➡️ key:', modifier);
@@ -215,7 +217,7 @@ const Search = (
               activeClassName={'active'}
               containerClassName={'pagination'}
               subContainerClassName={''}
-              initialPage={props.currentPage - 1}
+              initialPage={currentPage - 1}
               pageCount={pageCount}
               marginPagesDisplayed={2}
               pageRangeDisplayed={5}
@@ -229,7 +231,7 @@ const Search = (
         <RecommendedPosts
           label="Didn't find what you were looking for?"
           posts={topPosts}
-          rowLimit={1}
+          rowLimit={posts.length ? 1 : 2}
         ></RecommendedPosts>
       </div>
 
