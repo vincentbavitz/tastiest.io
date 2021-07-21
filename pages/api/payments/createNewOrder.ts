@@ -68,8 +68,9 @@ export default async function createNewOrder(
     userId,
     anonymousId,
     userAgent,
-    shopifyProductId,
   } = body;
+
+  dlog('createNewOrder ➡️ dealId:', dealId);
 
   const heads = Math.floor(_heads);
   const orderRequest: IOrderRequest = {
@@ -80,6 +81,8 @@ export default async function createNewOrder(
     userId,
     timestamp: Date.now(),
   };
+
+  dlog('createNewOrder ➡️ orderRequest:', orderRequest);
 
   const { success, error } = await validateOrderRequest(orderRequest);
 
@@ -108,7 +111,7 @@ export default async function createNewOrder(
       process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY,
     );
 
-    // Use anonymousId for Pixel deduplication from Shopify
+    // Use anonymousId for Pixel deduplication
     analytics.track({
       event: 'Checkout Started',
       userId: anonymousId ?? userId,
@@ -120,7 +123,6 @@ export default async function createNewOrder(
       },
       properties: {
         anonymousId,
-        shopifyProductId,
         ...order,
         ...orderRequest,
 
@@ -193,17 +195,6 @@ const validateOrderRequest = async (orderRequest: IOrderRequest) => {
     };
   }
 
-  // Valid number of heads?
-  if (
-    orderRequest?.heads < 1 ||
-    orderRequest.heads > FIREBASE.ORDER_REQUEST_MAX_HEADS
-  ) {
-    return {
-      success: false,
-      error: 'validateOrderRequest: Invalid number of heads',
-    };
-  }
-
   // Get deal and restaurant from Contentful
   // If deal does not exist on Contentful, there was a clientside mismatch.
   // This could be an innocent error, or the user is sending nefarious requests.
@@ -214,11 +205,16 @@ const validateOrderRequest = async (orderRequest: IOrderRequest) => {
     return { success: false, error: 'Deal does not exist with this ID' };
   }
 
+  // Valid number of heads?
+  if (!deal.allowedHeads.includes(orderRequest.heads)) {
+    return {
+      success: false,
+      error: 'validateOrderRequest: Invalid number of heads',
+    };
+  }
+
   // Validate promotion code
   orderRequest.promoCode;
-
-  // Validate user ID (required?)
-  null;
 
   // Passed all tests 🎉
   return { success: true, error: null };

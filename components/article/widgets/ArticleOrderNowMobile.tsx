@@ -69,114 +69,22 @@ interface OrderNowOverlayProps extends Props {
 }
 
 const OrderNowOverlay = ({ deal, slug, onClose }: OrderNowOverlayProps) => {
-  const { totalPrice, heads, setHeads, submit } = useArticleOrder(deal, slug);
-
   return (
     <div
       style={{
         zIndex: UI.Z_INDEX_FLOATING_COMPONENTS + 1,
       }}
       className={classNames(
-        'fixed flex flex-col justify-between inset-0 bg-white w-full overflow-y-auto',
+        'fixed flex flex-col justify-between inset-0 bg-white w-full h-full',
       )}
     >
-      <Contained>
-        <div className="flex items-center justify-between py-2">
-          <div className="w-6"></div>
-          <h3 className="text-3xl text-center font-somatic text-primary">
-            Get the offer!
-          </h3>
-          <ExitIcon
-            onClick={onClose}
-            className="w-6 text-gray-300 fill-current"
-          />
-        </div>
+      <OverlayInnerHeader onClose={onClose} />
 
-        <div className="-mx-2 border-b border-gray-500 border-opacity-25"></div>
-
-        <OverlayInner
-          deal={deal}
-          slug={slug}
-          heads={heads}
-          setHeads={setHeads}
-          totalPrice={totalPrice}
-        />
-      </Contained>
-
-      <Contained>
-        <div className="flex flex-col mb-6 space-y-4">
-          <div className="-mx-2 border-b border-black"></div>
-
-          <div className="flex justify-between px-1 text-2xl font-medium">
-            <p className="">Total</p>
-            <p className="">£{totalPrice}</p>
-          </div>
-
-          <Button
-            wide
-            size="large"
-            className="text-2xl font-somatic"
-            onClick={submit}
-          >
-            Buy now
-          </Button>
-        </div>
-      </Contained>
-    </div>
-  );
-};
-
-interface OverlayInnerProps extends Props {
-  heads: number;
-  totalPrice: string;
-  setHeads: (value: number) => void;
-}
-
-const OverlayInner = (props: OverlayInnerProps) => {
-  const { deal, totalPrice, heads, setHeads } = props;
-  const allowedHeads = deal.allowedHeads.sort((a, b) => a - b);
-
-  // Set valid heads from the first mount
-  useEffect(() => {
-    setHeads(allowedHeads[0]);
-  }, []);
-
-  return (
-    <div className="relative z-30 w-full py-6 bg-white">
-      <OverlayInnerCard deal={deal} />
-
-      <div className="my-4 -mx-2 border-b border-gray-500"></div>
-
-      <div className="flex flex-col mx-4 space-y-2">
-        <div className="flex items-end justify-between">
-          <span className="text-lg font-medium font-roboto bold text-primary">
-            Book for
-          </span>
-          <div className="w-20">
-            <Select onChange={value => setHeads(Number(value))}>
-              {allowedHeads.map(n => (
-                <option
-                  selected={allowedHeads[0] === n}
-                  key={n}
-                  className="text-center"
-                  value={n}
-                >
-                  {n}
-                </option>
-              ))}
-            </Select>
-          </div>
-        </div>
-
-        <div className="flex items-end justify-between text-sm">
-          <span>
-            Buy for {heads} {heads === 1 ? 'person' : 'people'}
-          </span>
-          <div className="flex items-center h-full tracking-wide">
-            £<p>{totalPrice}</p>
-          </div>
-        </div>
+      <div className="flex-grow overflow-auto">
+        <OverlayInnerCard deal={deal} />
       </div>
+
+      <OverlayInnerAction deal={deal} slug={slug} />
     </div>
   );
 };
@@ -187,10 +95,10 @@ interface OverlayInnerCardProps {
 
 const OverlayInnerCard = ({ deal }: OverlayInnerCardProps) => {
   return (
-    <div className="flex justify-center w-full">
+    <div className="flex justify-center w-full py-6">
       <div
         style={{ width: '16rem' }}
-        className="pb-4 mx-4 mb-3 overflow-hidden text-lg bg-secondary-1 rounded-xl"
+        className="pb-4 mx-4 overflow-hidden text-lg bg-secondary-1 rounded-xl"
       >
         <div className="aspect-w-16 aspect-h-9">
           <img src={`${deal?.image?.url}?w=700`} className="object-cover" />
@@ -215,5 +123,93 @@ const OverlayInnerCard = ({ deal }: OverlayInnerCardProps) => {
         </div>
       </div>
     </div>
+  );
+};
+
+interface OverlayInnerHeaderProps {
+  onClose: () => void;
+}
+
+const OverlayInnerHeader = ({ onClose }: OverlayInnerHeaderProps) => {
+  return (
+    <Contained>
+      <div className="flex items-center justify-between py-2">
+        <div className="w-6"></div>
+        <h3 className="text-3xl text-center font-somatic text-primary">
+          Get the offer!
+        </h3>
+        <ExitIcon
+          onClick={onClose}
+          className="w-6 text-gray-300 fill-current"
+        />
+      </div>
+
+      <div className="-mx-2 border-b border-gray-500 border-opacity-25"></div>
+    </Contained>
+  );
+};
+
+interface OverlayInnerActionProps {
+  deal: IDeal;
+  slug: string;
+}
+
+const OverlayInnerAction = ({ deal, slug }: OverlayInnerActionProps) => {
+  const { totalPrice, heads, setHeads, submit } = useArticleOrder(deal, slug);
+  const allowedHeads = deal.allowedHeads.sort((a, b) => a - b);
+
+  // Set valid heads from the first mount
+  useEffect(() => {
+    setHeads(allowedHeads[0]);
+  }, []);
+
+  return (
+    <Contained>
+      <div className="my-3 -mx-2 border-b border-black border-opacity-25"></div>
+
+      <div className="flex flex-col mx-2 space-y-2">
+        <div className="flex items-center justify-between">
+          <div className="text-lg font-medium font-roboto bold text-primary">
+            Book for
+          </div>
+
+          <div className="w-20">
+            <Select onChange={value => setHeads(Number(value))}>
+              {allowedHeads.map(n => (
+                <option
+                  selected={allowedHeads[0] === n}
+                  key={n}
+                  className="text-center"
+                  value={n}
+                >
+                  {n}
+                </option>
+              ))}
+            </Select>
+          </div>
+
+          <div className="text-lg font-medium font-roboto bold text-primary">
+            {heads === 1 ? 'person' : 'people'}
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col pt-2 mb-4">
+        <div className="mb-2 -mx-2 border-b border-gray-500 border-opacity-25"></div>
+
+        <div className="flex justify-between px-1 mb-4 text-xl font-medium">
+          <p className="">Total</p>
+          <p className="">£{totalPrice}</p>
+        </div>
+
+        <Button
+          wide
+          size="large"
+          className="text-2xl font-somatic"
+          onClick={submit}
+        >
+          Buy now
+        </Button>
+      </div>
+    </Contained>
   );
 };

@@ -35,6 +35,9 @@ export const navigationReducer = (
     case NavigationActions.SET_MODAL_IS_OPEN: {
       return { ...state, modalIsOpen: action.payload };
     }
+    case NavigationActions.TOGGLE_OFFER_MENU_MODAL: {
+      return { ...state, isOfferMenuOpen: action.payload };
+    }
     default:
       return state;
   }

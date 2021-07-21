@@ -147,7 +147,7 @@ const NoPostsForCuisine = ({
     >
       <div className="col-span-4">
         <h4 className="mb-4 text-lg text-center mobile:text-left">
-          Sorry! There are no articles {!isMobile && <br />} for {cuisineName}{' '}
+          Sorry! There are no offers {!isMobile && <br />} for {cuisineName}{' '}
           yet.
         </h4>
         <h2 className="text-3xl leading-tight text-center mobile:text-left font-somatic text-primary">

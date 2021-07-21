@@ -92,6 +92,10 @@ body {
   justify-content: center;
 
   li {
+    &::before {
+      content: unset;
+    }
+
     &:first-child {
       border-top-left-radius: 0.25rem;
       border-bottom-left-radius: 0.25rem;

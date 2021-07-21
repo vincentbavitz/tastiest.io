@@ -47,7 +47,7 @@ export function HomeMapSection() {
             type="solid"
             color="primary"
             className="text-sm"
-            prefix={<SearchIcon className="w-1 h-1 text-white fill-current" />}
+            prefix={<SearchIcon className="w-4 h-4 text-white fill-current" />}
           >
             Search
           </Button>

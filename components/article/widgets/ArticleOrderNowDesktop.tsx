@@ -7,6 +7,8 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useEffect } from 'react';
 import { UI } from '../../../constants';
 
+const DEAL_INCLUDES_QTY = 4;
+
 interface Props {
   deal: IDeal;
   slug: string;
@@ -61,19 +63,25 @@ export function ArticleOrderNowDesktop(props: Props) {
                 </p>
               </div>
 
-              <div className="text-center">
-                {deal?.includes.map(item => (
+              <div className="text-sm text-center">
+                {deal?.includes.slice(0, DEAL_INCLUDES_QTY - 1).map(item => (
                   <div key={item}>{item}</div>
                 ))}
+                {deal.includes.length > DEAL_INCLUDES_QTY && (
+                  <a onClick={() => null} className="font-medium text-primary">
+                    See full menu
+                  </a>
+                )}
               </div>
             </div>
           </div>
 
           <div className="flex flex-col mx-4 space-y-3">
             <div className="flex items-center justify-between mt-4">
-              <span className="font-medium font-roboto bold text-primary">
+              <div className="font-medium font-roboto bold text-primary">
                 Book for
-              </span>
+              </div>
+
               <div className="w-12">
                 <Select
                   size="small"
@@ -91,15 +99,17 @@ export function ArticleOrderNowDesktop(props: Props) {
                   ))}
                 </Select>
               </div>
+
+              <div className="font-medium font-roboto bold text-primary">
+                {heads === 1 ? 'person' : 'people'}
+              </div>
             </div>
 
-            <div className="flex items-end justify-between text-xs">
-              <span>
-                Buy for {heads} {heads === 1 ? 'person' : 'people'}
-              </span>
+            <div className="flex items-end justify-between font-medium">
+              <span className="">Total</span>
               <div className="flex items-center h-full">
                 <PoundIcon
-                  style={{ height: '0.6rem' }}
+                  style={{ height: '0.78rem', marginTop: '-0.125rem' }}
                   className="inline mr-1"
                 />
                 <p>{totalPrice}</p>
@@ -107,14 +117,6 @@ export function ArticleOrderNowDesktop(props: Props) {
             </div>
 
             <div className="w-full my-2 border-t border-primary"></div>
-
-            <div className="flex justify-between font-medium">
-              <span>Total</span>
-              <span>
-                <PoundIcon className="inline h-3 mr-1 -mt-1" />
-                {totalPrice}
-              </span>
-            </div>
 
             <Button
               wide

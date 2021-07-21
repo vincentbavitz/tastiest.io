@@ -1,22 +1,27 @@
+import { CmsApi } from '@tastiest-io/tastiest-utils';
 import { GetServerSideProps } from 'next';
+import { BASE_URL } from 'utils/redirects';
 
 export const getServerSideProps: GetServerSideProps = async context => {
-  const restaurant = context.params?.restaurant;
-  const city = context.params?.city;
+  const restaurantId = context.params?.restaurant;
 
-  // Redirect if user went to /city/restaurant/cuisine
-  // to /city/restaurant
+  const cmsApi = new CmsApi();
+  const restaurant = await cmsApi.getRestaurantById(String(restaurantId));
+
+  if (!restaurant) {
+    return {
+      props: {},
+      redirect: BASE_URL,
+    };
+  }
+
   return {
-    props: {},
-    redirect: {
-      destination: `/${city}/restaurant/${restaurant}`,
-      permanent: false,
-    },
+    props: { restaurant },
   };
 };
 
-function RestaurantCuisineRedirect() {
+function RestaurantPage() {
   return <>sdfafsfihsdf</>;
 }
 
-export default RestaurantCuisineRedirect;
+export default RestaurantPage;

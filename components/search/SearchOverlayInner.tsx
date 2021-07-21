@@ -1,14 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input } from '@tastiest-io/tastiest-components';
-import {
-  CheckIcon,
-  HotIcon,
-  ItalianIcon,
-  JapaneseIcon,
-  LocationIcon,
-  TrendingIcon,
-  XiaoIcon,
-} from '@tastiest-io/tastiest-icons';
+import { CheckIcon, HotIcon, TrendingIcon } from '@tastiest-io/tastiest-icons';
 import { dlog, SVG } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import clsx from 'clsx';
@@ -32,19 +24,9 @@ interface IDynamicOptions {
 }
 
 const dynamicCategories: Array<IDynamicOptions> = [
-  { name: 'Nearby', href: '/search?key=nearby', svg: LocationIcon },
-  { name: 'Trending', href: '/search?key=trending', svg: TrendingIcon },
-  { name: 'New!', href: '/search?key=new', svg: HotIcon },
-];
-
-const popularDishes: Array<IDynamicOptions> = [
-  { name: 'Best Spaghetti', href: '/search?dish=spaghetti', svg: ItalianIcon },
-  {
-    name: 'Best Xiao Long Bao',
-    href: '/search?dish=xiao-long-bao',
-    svg: XiaoIcon,
-  },
-  { name: 'Best Sushi', href: '/search/?dish=sushi', svg: JapaneseIcon },
+  // { name: 'Nearby', href: '/search?m=nearby', svg: LocationIcon },
+  { name: 'Trending', href: '/search?m=trending', svg: TrendingIcon },
+  { name: 'New!', href: '/search?m=new', svg: HotIcon },
 ];
 
 export function SearchOverlayInner() {

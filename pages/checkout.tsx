@@ -20,6 +20,7 @@ import React, { useEffect, useState } from 'react';
 import { CheckoutStep } from 'state/checkout';
 import { LocalEndpoint } from 'types/api';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { BASE_URL } from 'utils/redirects';
 import { CheckoutStepIndicator } from '../components/checkout/CheckoutStepIndicator';
 import { CheckoutStepAuth } from '../components/checkout/steps/CheckoutStepAuth';
 import { CheckoutStepPayment } from '../components/checkout/steps/CheckoutStepPayment';
@@ -59,21 +60,15 @@ export const getServerSideProps = async (
   const userAgent = String(context.query.userAgent ?? '');
   const anonymousId = String(context.query.anonymousId);
 
-  // Construct the order from Shopify query parameters...
-  const urlPrefix =
-    process.env.NODE_ENV === 'production'
-      ? 'https://tastiest.io'
-      : 'http://localhost:3000';
-
   const {
     data: { token },
     error,
   } = await postFetch<CreateNewOrderParams, CreateNewOrderReturn>(
-    urlPrefix + LocalEndpoint.CREATE_NEW_ORDER,
+    BASE_URL + LocalEndpoint.CREATE_NEW_ORDER,
     {
       userId,
-      anonymousId,
       userAgent,
+      anonymousId,
       promoCode: null,
       timestamp: Date.now(),
     },
