@@ -23,7 +23,7 @@ export function InputPassword(props: Props) {
       size="large"
       type={show ? 'text' : 'password'}
       placeholder={placeholder}
-      prefix={<LockIcon className="h-6 ml-2 mr-2" />}
+      prefix={<LockIcon className="w-8 h-6 fill-current text-primary" />}
       suffix={
         toggleShow ? (
           <a onClick={() => toggleShow()} className="text-gray-500">

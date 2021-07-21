@@ -1,4 +1,4 @@
-import { IOrder } from '@tastiest-io/tastiest-utils';
+import { formatCurrency, IOrder } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -79,7 +79,7 @@ const CheckoutStepAuthMobile = ({ order }: Props) => {
     (state: IState) => state.checkout,
   );
 
-  const totalPrice = (order?.heads ?? 1) * order?.deal?.pricePerHeadGBP;
+  const totalPrice = formatCurrency(order.heads * order?.deal?.pricePerHeadGBP);
 
   // Set initial value of sign in
   const dispatch = useDispatch();

@@ -13,6 +13,7 @@ import {
 } from 'pages/api/payments/createNewOrder';
 import { useState } from 'react';
 import { LocalEndpoint } from 'types/api';
+import { BASE_URL } from 'utils/redirects';
 
 export const useArticleOrder = (deal: IDeal, fromSlug: string) => {
   const { user } = useAuth();
@@ -29,17 +30,19 @@ export const useArticleOrder = (deal: IDeal, fromSlug: string) => {
       fromSlug,
       promoCode: null,
       timestamp: Date.now(),
+      anonymousId: window.analytics?.user()?.anonymousId(),
+      userAgent: navigator?.userAgent,
     };
-
-    dlog('useArticleOrder ➡️ orderRequest:', orderRequest);
 
     const {
       data: { token },
+      error,
     } = await postFetch<CreateNewOrderParams, CreateNewOrderReturn>(
-      LocalEndpoint.CREATE_NEW_ORDER,
+      BASE_URL + LocalEndpoint.CREATE_NEW_ORDER,
       orderRequest,
     );
 
+    dlog('useArticleOrder ➡️ orderRequest:', orderRequest);
     dlog('useArticleOrder ➡️ token:', token);
 
     if (token) {

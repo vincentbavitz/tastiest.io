@@ -96,7 +96,7 @@ export function ArticleCard(props: Props): JSX.Element {
             )}
           >
             <Link href={href} as={as}>
-              <a href="text-black">{title}</a>
+              <a>{title}</a>
             </Link>
           </div>
 

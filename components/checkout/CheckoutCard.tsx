@@ -7,6 +7,7 @@ interface Props {
   title: string;
   order: IOrder;
   children: ReactNode;
+  isLoading?: boolean;
 }
 
 export function CheckoutCard(props: Props) {

@@ -86,7 +86,7 @@ export default async function updateOrder(
     snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
 
     // Does the order belong to this user?
-    if (order?.userId && order?.userId !== userId) {
+    if (order.userId && order?.userId !== userId) {
       dlog('updateOrder ➡️ userId:', userId);
       dlog('updateOrder ➡️ order?.userId:', order?.userId);
       response.json({

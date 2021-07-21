@@ -15,11 +15,12 @@ import {
   Text,
   UnorderedList,
 } from '@contentful/rich-text-types';
-import { CMS } from '@tastiest-io/tastiest-utils';
+import { dlog } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import React, { ReactNode } from 'react';
-import { renderShortcode } from '../utils/shortcodes';
+import { BaseShortCodeRegex } from 'utils/shortcodes';
 import { ArticleCallout } from './article/ArticleCallout';
+import Shortcode from './Shortcode';
 
 const Bold = ({ children }) => (
   <span className="font-semibold">{children}</span>
@@ -61,10 +62,12 @@ export function RichBody(props: Props) {
           // Grab shortcodes
           // const children;
           const plaintext = documentToPlainTextString(node);
-          const isShortcode = CMS.SHORTCODE_REGEX.test(plaintext);
+          const isShortcode = BaseShortCodeRegex.test(plaintext);
+
+          dlog('RichBody ➡️ isShortcode:', isShortcode);
 
           return isShortcode ? (
-            renderShortcode(plaintext)
+            <Shortcode>{plaintext}</Shortcode>
           ) : (
             <Paragraph paragraphMargins={paragraphMargins}>
               {children}

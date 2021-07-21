@@ -43,8 +43,6 @@ export default async function createNewOrder(
   request: NextApiRequest,
   response: NextApiResponse<FunctionsResponse<CreateNewOrderReturn>>,
 ) {
-  dlog('createNewOrder ➡️ request:', request);
-
   // Only allow POST
   if (request?.method !== 'POST') {
     dlog('Failed to create new order');
@@ -68,9 +66,7 @@ export default async function createNewOrder(
     userId,
     anonymousId,
     userAgent,
-  } = body;
-
-  dlog('createNewOrder ➡️ dealId:', dealId);
+  } = body as Partial<IOrderRequest>;
 
   const heads = Math.floor(_heads);
   const orderRequest: IOrderRequest = {
@@ -82,11 +78,15 @@ export default async function createNewOrder(
     timestamp: Date.now(),
   };
 
+  dlog('createNewOrder ➡️ body:', body);
+  dlog('createNewOrder ➡️ dealId:', dealId);
   dlog('createNewOrder ➡️ orderRequest:', orderRequest);
 
   const { success, error } = await validateOrderRequest(orderRequest);
 
   if (!success) {
+    dlog('createNewOrder ➡️ error:', error);
+
     response.json({
       success: false,
       data: { token: null },

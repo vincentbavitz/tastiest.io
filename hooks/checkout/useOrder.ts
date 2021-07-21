@@ -22,7 +22,7 @@ export function useOrder(token: string, initialOrder?: IOrder) {
     },
   );
 
-  // Set userId as soon as they signs in
+  // Set userId as soon as they sign in
   useEffect(() => {
     if (!order?.userId && user?.uid) {
       updateOrder({ userId: user.uid });

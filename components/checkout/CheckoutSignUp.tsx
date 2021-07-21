@@ -66,7 +66,7 @@ export function CheckoutSignUp() {
         size="large"
         type="text"
         placeholder="First Name"
-        prefix={<UserIcon className="w-6 fill-current text-primary" />}
+        prefix={<UserIcon className="w-8 h-6 fill-current text-primary" />}
         maxLength={20}
         value={signUpName}
         onValueChange={value => setSignUpName(titleCase(value ?? ''))}

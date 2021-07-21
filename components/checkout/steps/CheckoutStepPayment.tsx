@@ -121,7 +121,6 @@ export function CheckoutStepPayment(props: Props) {
       cardPostcode?.length > 0 ||
       JSON.stringify(birthday) !== JSON.stringify(userData.details?.birthday)
     ) {
-      alert('setting user data');
       setUserData(UserData.DETAILS, {
         firstName,
         lastName,
@@ -153,6 +152,8 @@ export function CheckoutStepPayment(props: Props) {
       return;
     }
 
+    dlog('CheckoutStepPayment ➡️ order:', order);
+
     const { error: updateOrderError } = await updateOrder({
       paymentMethodId: paymentMethod.id,
     });
@@ -170,6 +171,7 @@ export function CheckoutStepPayment(props: Props) {
     }
 
     const { success, error } = await pay();
+    dlog('CheckoutStepPayment ➡️ error:', error);
 
     // Uh-oh - a general payment error!
     // This usually means the card declined.
@@ -209,7 +211,7 @@ export function CheckoutStepPayment(props: Props) {
           minWidth:
             isMobile || isTablet ? 'unset' : `${UI.CHECKOUT_SPLIT_WIDTH_PX}px`,
         }}
-        className="flex flex-col w-full pb-20 space-y-16 tablet:pb-0 tablet:w-7/12"
+        className="flex flex-col w-full space-y-16 tablet:w-7/12"
       >
         <div>
           {isDesktop ? (
@@ -333,8 +335,8 @@ export function CheckoutStepPayment(props: Props) {
       >
         <CheckoutPaymentPanel
           order={order}
-          submit={handleSubmit(makePayment)}
           error={error}
+          submit={handleSubmit(makePayment)}
         />
       </div>
     </div>

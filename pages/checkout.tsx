@@ -1,3 +1,4 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import {
@@ -5,7 +6,6 @@ import {
   FirestoreCollection,
   IOrder,
   PAYMENTS,
-  postFetch,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
@@ -16,20 +16,14 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import nookies from 'nookies';
 import { ParsedUrlQuery } from 'querystring';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { CheckoutStep } from 'state/checkout';
-import { LocalEndpoint } from 'types/api';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
-import { BASE_URL } from 'utils/redirects';
 import { CheckoutStepIndicator } from '../components/checkout/CheckoutStepIndicator';
 import { CheckoutStepAuth } from '../components/checkout/steps/CheckoutStepAuth';
 import { CheckoutStepPayment } from '../components/checkout/steps/CheckoutStepPayment';
 import { Contained } from '../components/Contained';
 import { UI } from '../constants';
-import {
-  CreateNewOrderParams,
-  CreateNewOrderReturn,
-} from './api/payments/createNewOrder';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -45,8 +39,6 @@ interface Props {
   order: IOrder;
   step: CheckoutStep;
   userId: string | null;
-  anonymousId: string;
-  userAgent: string;
 }
 
 export const getServerSideProps = async (
@@ -57,24 +49,7 @@ export const getServerSideProps = async (
   const userDataApi = new UserDataApi(firebaseAdmin);
   const { userId } = await userDataApi.initFromCookieToken(cookieToken);
 
-  const userAgent = String(context.query.userAgent ?? '');
-  const anonymousId = String(context.query.anonymousId);
-
-  const {
-    data: { token },
-    error,
-  } = await postFetch<CreateNewOrderParams, CreateNewOrderReturn>(
-    BASE_URL + LocalEndpoint.CREATE_NEW_ORDER,
-    {
-      userId,
-      userAgent,
-      anonymousId,
-      promoCode: null,
-      timestamp: Date.now(),
-    },
-  );
-
-  dlog('checkout ➡️ error:', error);
+  const token = String(context.query.token);
 
   // If no order exists in URI, redirect to home
   if (!token) {
@@ -112,6 +87,16 @@ export const getServerSideProps = async (
     };
   }
 
+  // Order belongs to this user?
+  if (order.userId !== userId) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
   // Order expired?
   const isExpired = order.createdAt + PAYMENTS.ORDER_EXPIRY_MS < Date.now();
   if (isExpired) {
@@ -137,8 +122,6 @@ export const getServerSideProps = async (
   const props: Props = {
     order,
     userId,
-    userAgent,
-    anonymousId,
     step: userId ? CheckoutStep.PAYMENT : CheckoutStep.SIGN_IN,
   };
 
@@ -151,43 +134,15 @@ export const getServerSideProps = async (
 function Checkout(
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) {
-  const { anonymousId, userAgent } = props;
-
   const { isDesktop } = useScreenSize();
   const { order } = useOrder(props.order.token, props.order);
 
   // User sign in management needs to be very explicit here
   const { user, isSignedIn } = useAuth();
-  const [userId, setUserId] = useState<string | null>(props.userId);
 
   dlog('checkout ➡️ user:', user);
 
-  // Manage user signed-in-status very carefully such that
-  // a logged out user never sees the payment step for even a millisecond.
-  useEffect(() => {
-    // Update user client-side when useAuth loads
-    if (user?.uid && isSignedIn) {
-      setUserId(user.uid);
-    }
-
-    // Purge invalid session when useAuth has finished
-    // loading and no user is signed in
-    if (isSignedIn === false) {
-      setUserId(null);
-    }
-
-    // Link
-    window.analytics.identify(anonymousId, {
-      userId: user.uid,
-      anonymousId: anonymousId ?? null,
-      email: user.email,
-      context: {
-        userAgent: navigator?.userAgent,
-      },
-    });
-  }, [user]);
-
-  const step: CheckoutStep = userId
+  const step: CheckoutStep = user?.uid
     ? CheckoutStep.PAYMENT
     : CheckoutStep.SIGN_IN;
 
@@ -206,68 +161,46 @@ function Checkout(
   `;
 
   return (
-    <div className="pb-20">
+    <div className="flex-grow pb-20">
       <Head>
         <title>Checkout - Tastiest</title>
-
-        {/* Inject TawkTo */}
         <script dangerouslySetInnerHTML={{ __html: renderTawkToSnippet() }} />
       </Head>
+
       <Elements stripe={stripePromise}>
-        {isDesktop ? (
-          <CheckoutDesktop
-            order={order}
-            step={step}
-            userId={userId}
-            anonymousId={anonymousId}
-            userAgent={userAgent}
-          />
-        ) : (
-          <CheckoutMobile
-            order={order}
-            step={step}
-            userId={userId}
-            anonymousId={anonymousId}
-            userAgent={userAgent}
-          />
-        )}
+        <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
+          <div className="relative flex flex-col w-full mt-12 space-y-10">
+            <CheckoutStepIndicator step={step} />
+
+            {isSignedIn === null ? (
+              <div className="flex justify-between">
+                <div className="w-full pt-32 tablet:w-7/12">
+                  <CheckoutLoader />
+                </div>
+              </div>
+            ) : (
+              <>
+                {step === CheckoutStep.SIGN_IN && (
+                  <CheckoutStepAuth order={order} />
+                )}
+                {step === CheckoutStep.PAYMENT && (
+                  <CheckoutStepPayment userId={user.uid} order={order} />
+                )}
+              </>
+            )}
+          </div>
+        </Contained>
       </Elements>
     </div>
   );
 }
 
-function CheckoutDesktop(props: Props) {
-  const { userId, order, step } = props;
-
+const CheckoutLoader = () => {
   return (
-    <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
-      <div className="relative flex flex-col w-full mt-12 space-y-10">
-        <CheckoutStepIndicator step={step} />
-
-        {step === CheckoutStep.SIGN_IN && <CheckoutStepAuth order={order} />}
-        {step === CheckoutStep.PAYMENT && (
-          <CheckoutStepPayment userId={userId} order={order} />
-        )}
-      </div>
-    </Contained>
+    <div className="flex items-center justify-center flex-grow w-full h-full">
+      <LoadingOutlined className="text-6xl text-primary" />
+    </div>
   );
-}
-
-function CheckoutMobile(props: Props) {
-  const { userId, order, step } = props;
-
-  return (
-    <Contained>
-      <div className="relative flex flex-col w-full mt-12 space-y-10">
-        <CheckoutStepIndicator step={step} />
-
-        {step === CheckoutStep.SIGN_IN && <CheckoutStepAuth order={order} />}
-        {step === CheckoutStep.PAYMENT && (
-          <CheckoutStepPayment userId={userId} order={order} />
-        )}
-      </div>
-    </Contained>
-  );
-}
+};
 
 export default Checkout;

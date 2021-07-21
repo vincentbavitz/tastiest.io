@@ -1,14 +1,13 @@
 import { Button } from '@tastiest-io/tastiest-components';
 import { CookieEmoji } from '@tastiest-io/tastiest-icons';
 import { LocalStorageItem } from 'contexts/tracking';
-import { useScreenSize } from 'hooks/useScreenSize';
+import { useAuth } from 'hooks/auth/useAuth';
 import React from 'react';
 import { useLocalStorage } from 'react-use';
 import { UI } from '../../constants';
 
 export function AcceptTrackingPopup() {
-  const { isMobile } = useScreenSize();
-
+  const { isSignedIn } = useAuth();
   const [hasAcceptedCookies, setHasAcceptedCookies] = useLocalStorage(
     LocalStorageItem.HAS_ACCEPTED_COOKIES,
     null,
@@ -18,7 +17,7 @@ export function AcceptTrackingPopup() {
     setHasAcceptedCookies(1);
   };
 
-  if (hasAcceptedCookies) {
+  if (hasAcceptedCookies || isSignedIn) {
     return null;
   }
 
