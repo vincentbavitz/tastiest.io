@@ -41,8 +41,16 @@ export function Modal(props: Props) {
 
   const ref = useRef(null);
   const boxRef = useRef(null);
-  useKey('Escape', () => dispatch(closeAuthModal()));
-  useClickAway(boxRef, () => dispatch(closeAuthModal()));
+
+  useKey('Escape', () => {
+    dispatch(closeAuthModal());
+    close();
+  });
+
+  useClickAway(boxRef, () => {
+    dispatch(closeAuthModal());
+    close();
+  });
   // useLockBodyScroll(isOpen);
 
   useEffect(() => {

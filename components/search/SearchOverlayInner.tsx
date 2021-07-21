@@ -102,7 +102,7 @@ function SearchOverlayInnerDefault() {
           {/* Get 5 most popular cuisines */}
           {Object.values(CUISINES)
             .sort((a, b) => b.popularity - a.popularity)
-            .slice(0, 5)
+            .slice(0, 4)
             .map(cuisine => (
               <div key={cuisine.name.toLowerCase()} className="mt-2 mr-2">
                 <OutlineBlock

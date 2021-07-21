@@ -44,7 +44,7 @@ export function ArticleSectionTitle(props: Props) {
         >
           <div
             style={{
-              maxWidth: `${MAX_TITLE_WIDTH}rems`,
+              maxWidth: `${MAX_TITLE_WIDTH}rem`,
               minHeight: isDesktop ? '7rem' : 'auto',
             }}
             className="flex items-end"

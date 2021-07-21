@@ -1,16 +1,16 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@tastiest-io/tastiest-icons';
 import classNames from 'classnames';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, ReactNode, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useKey } from 'react-use';
 import { useSearch } from '../../hooks/useSearch';
 import {
   collapseSearchOverlay,
   expandSearchOverlay,
 } from '../../state/navigation';
-import { IState } from '../../state/reducers';
 import { setSearchQuery } from '../../state/search';
 
 interface Props {
@@ -47,7 +47,7 @@ export function SearchInput(props: Props) {
 
   // State
   // const navigationState = useSelector((state: IState) => state.navigation);
-  const searchState = useSelector((state: IState) => state.search);
+  // const searchState = useSelector((state: IState) => state.search);
   // const { searchOverlayExpanded } = navigationState;
   const searchOverlayExpanded = true;
   const dispatch = useDispatch();
@@ -57,11 +57,11 @@ export function SearchInput(props: Props) {
 
   // Hooks
   const router = useRouter();
-  const { search, saveUserSearch } = useSearch();
+  const { isSearching, query, saveUserSearch } = useSearch();
 
   // Force focus when user starts typing
   // useStartTyping(() => inputRef?.current?.focus());
-  const inputValue = searchState.searchQuery;
+  // const inputValue = searchState.searchQuery;
 
   // Internal functions
   const pushToSearchPage = () => {
@@ -107,11 +107,6 @@ export function SearchInput(props: Props) {
   // Search on enter
   useKey('Enter', pushToSearchPage);
 
-  // Effects
-  useEffect(() => {
-    search(String(inputValue));
-  }, [inputValue]);
-
   // Autofocus
   useEffect(() => {
     setTimeout(() => {
@@ -156,7 +151,7 @@ export function SearchInput(props: Props) {
             inputClassName,
           )}
           placeholder={placeholder}
-          value={inputValue}
+          value={query}
           onKeyDown={() => inputRef?.current?.focus()}
           onFocus={handleFocus}
           onChange={handleOnChange}
@@ -166,7 +161,7 @@ export function SearchInput(props: Props) {
       {searchIcon && (
         // Internal elements
         <div
-          className="cursor-pointer"
+          className="flex items-center cursor-pointer"
           onClick={() => {
             if (searchOverlayExpanded) {
               pushToSearchPage();
@@ -175,13 +170,23 @@ export function SearchInput(props: Props) {
             }
           }}
         >
-          <SearchIcon
-            className={clsx(
-              'h-6 fill-current',
-              searchIcon === 'primary' && 'text-primary',
-              searchIcon === 'secondary' && 'text-secondary',
-            )}
-          />
+          {isSearching ? (
+            <LoadingOutlined
+              className={clsx(
+                'text-xl fill-current pr-1',
+                searchIcon === 'primary' && 'text-primary',
+                searchIcon === 'secondary' && 'text-secondary',
+              )}
+            />
+          ) : (
+            <SearchIcon
+              className={clsx(
+                'h-6 fill-current',
+                searchIcon === 'primary' && 'text-primary',
+                searchIcon === 'secondary' && 'text-secondary',
+              )}
+            />
+          )}
         </div>
       )}
     </div>

@@ -5,6 +5,8 @@ import { Contained } from 'components/Contained';
 import { useArticleOrder } from 'hooks/checkout/useArticleOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { toggleOfferMenu } from 'state/navigation';
 import { UI } from '../../../constants';
 
 const DEAL_INCLUDES_QTY = 4;
@@ -21,6 +23,7 @@ export function ArticleOrderNowDesktop(props: Props) {
     fromSlug,
   );
 
+  const dispatch = useDispatch();
   const { isDesktop } = useScreenSize();
   const allowedHeads = deal.allowedHeads.sort((a, b) => a - b);
 
@@ -68,7 +71,10 @@ export function ArticleOrderNowDesktop(props: Props) {
                   <div key={item}>{item}</div>
                 ))}
                 {deal.includes.length > DEAL_INCLUDES_QTY && (
-                  <a onClick={() => null} className="font-medium text-primary">
+                  <a
+                    onClick={() => dispatch(toggleOfferMenu(true))}
+                    className="font-medium text-primary"
+                  >
                     See full menu
                   </a>
                 )}
