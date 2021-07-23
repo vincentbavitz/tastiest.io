@@ -44,6 +44,7 @@ export const useArticleOrder = (deal: IDeal, fromSlug: string) => {
 
     dlog('useArticleOrder ➡️ orderRequest:', orderRequest);
     dlog('useArticleOrder ➡️ token:', token);
+    dlog('useArticleOrder ➡️ error:', error);
 
     if (token) {
       router.push(`/checkout/?token=${token}`);

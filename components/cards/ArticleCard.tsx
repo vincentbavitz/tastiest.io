@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { IPost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
-import { TagRow } from 'components/TagRow';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useHoverDirty, useVideo } from 'react-use';
@@ -41,11 +40,7 @@ export function ArticleCard(props: Props): JSX.Element {
     [],
   );
 
-  const [video, state, controls, videoRef] = useVideo(
-    <video src={dynamicImage.url} className="object-cover w-full h-full" />,
-  );
-
-  const isHovering = useHoverDirty(videoRef);
+  const isHovering = useHoverDirty(ref);
   useEffect(() => {
     if (isHovering) {
       controls.play();
@@ -53,6 +48,14 @@ export function ArticleCard(props: Props): JSX.Element {
       controls.pause();
     }
   }, [isHovering]);
+
+  const [video, state, controls] = useVideo(
+    <video
+      loop
+      src={dynamicImage.url}
+      className="object-cover w-full h-full"
+    />,
+  );
 
   return (
     <div
@@ -70,7 +73,9 @@ export function ArticleCard(props: Props): JSX.Element {
       >
         {image.url && (
           <>
-            <div className="absolute inset-0 z-10">{video}</div>
+            <div className="absolute inset-0 z-10 pointer-events-none">
+              {video}
+            </div>
             <div className="absolute inset-0">
               <img
                 className="object-cover w-full h-full"
@@ -103,9 +108,9 @@ export function ArticleCard(props: Props): JSX.Element {
           {!compact && <p className="text-base text-gray-700">{description}</p>}
         </div>
 
-        <div className={classNames('flex space-x-1 mt-1', !isSmall && 'mb-2')}>
+        {/* <div className={classNames('flex space-x-1 mt-1', !isSmall && 'mb-2')}>
           <TagRow tags={tags} size={compact ? 'small' : 'medium'} limit={3} />
-        </div>
+        </div> */}
       </div>
     </div>
   );

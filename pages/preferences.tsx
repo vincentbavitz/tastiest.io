@@ -177,7 +177,7 @@ const Preferences = ({
         <div className="flex flex-col space-y-8 tablet:space-y-12">
           <PreferenceBlock
             title="Your favourite Cuisines"
-            subtitle="So we know what to recommend to you."
+            subtitle="So we know what to recommend."
           >
             <CuisineSelect
               initial={initial_1}
@@ -206,7 +206,7 @@ const Preferences = ({
           </PreferenceBlock>
           <PreferenceBlock
             title="Birthday"
-            subtitle="So we can give you something special."
+            subtitle="To give you something special."
           >
             <div style={{ width: '8.5rem' }}>
               <InputDate
@@ -224,7 +224,7 @@ const Preferences = ({
             title="Address"
             subtitle="So we can find the tastiest food near you."
           >
-            <div
+            {/* <div
               style={{ maxWidth: '70vw', width: '30rem' }}
               className="w-full"
             >
@@ -238,7 +238,7 @@ const Preferences = ({
                 }}
                 maxLength={120}
               />
-            </div>
+            </div> */}
 
             <div style={{ width: '8.5rem' }}>
               <Input

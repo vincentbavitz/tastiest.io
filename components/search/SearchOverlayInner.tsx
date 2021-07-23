@@ -246,9 +246,7 @@ function SearchOverlayInnerNoResults() {
         </div>
       ) : (
         <>
-          <p className="pb-2">
-            No results found. Would you like to suggest a dish?
-          </p>
+          <p className="pb-2">No results found. Suggest a dish?</p>
 
           <div className="flex justify-center w-full px-1">
             {suggestionInputOpen ? (

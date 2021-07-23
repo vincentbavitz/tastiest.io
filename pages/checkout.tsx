@@ -16,7 +16,7 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import nookies from 'nookies';
 import { ParsedUrlQuery } from 'querystring';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CheckoutStep } from 'state/checkout';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { CheckoutStepIndicator } from '../components/checkout/CheckoutStepIndicator';
@@ -88,10 +88,10 @@ export const getServerSideProps = async (
   }
 
   // Order belongs to this user?
-  if (order.userId !== userId) {
+  if (userId && order?.userId && order.userId !== userId) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/ad',
         permanent: false,
       },
     };
@@ -141,6 +141,13 @@ function Checkout(
   const { user, isSignedIn } = useAuth();
 
   dlog('checkout ➡️ user:', user);
+
+  // Does this order really belong to the signed in user?
+  useEffect(() => {
+    if (user?.uid && order?.userId && user.uid !== order?.userId) {
+      window.location.href = '/';
+    }
+  }, [user]);
 
   const step: CheckoutStep = user?.uid
     ? CheckoutStep.PAYMENT

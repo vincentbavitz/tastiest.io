@@ -19,7 +19,7 @@ interface Props {
 
 export const getStaticProps: GetStaticProps = async () => {
   const cms = new CmsApi();
-  const { posts = [] } = await cms.getPosts(12);
+  const { posts = [] } = await cms.getPosts(20);
 
   return {
     props: {
@@ -30,11 +30,10 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Index: NextPage<Props> = ({ posts = [] }) => {
-  const cards = posts ? posts.slice?.(0, 6) : [];
-
-  const { isDesktop } = useScreenSize();
+  const cards = posts ? posts.slice?.(0, 20) : [];
 
   const { user } = useAuth();
+  const { isDesktop } = useScreenSize();
   const { userData } = useUserData(user);
 
   return (

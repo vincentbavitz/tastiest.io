@@ -224,18 +224,28 @@ const SocialsBlock = () => (
 const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
   <>
     <p>
-      <a
-        href="restaurants.tastiest.io"
-        className="cursor-pointer hover:underline"
-      >
+      <a href="restaurants.tastiest.io">
         Tastiest For {!flat && <br />} Restaurants
       </a>
     </p>
     <p>
-      {/* <a className="cursor-pointer hover:underline">How It Works</a> */}
+      <a>How It Works</a>
     </p>
-    <p>{/* <a className="cursor-pointer hover:underline">Our Mission</a> */}</p>
-    <p>{/* <a className="cursor-pointer hover:underline">Press Kit</a> */}</p>
+    <p>{/* <a className="">Our Mission</a> */}</p>
+    <p>{/* <a className="">Press Kit</a> */}</p>
+    <p>
+      <Link href="/privacy">
+        <a>Privacy & Cookies</a>
+      </Link>
+    </p>
+    <p>
+      <Link href="/terms-of-use">
+        <a>Terms of Use</a>
+      </Link>
+    </p>
+    <p>
+      <a>Terms of Sale</a>
+    </p>
   </>
 );
 

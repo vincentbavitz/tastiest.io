@@ -15,7 +15,7 @@ export function HomeFavouritesSection(props: Props) {
 
   return (
     <div className="flex flex-col space-y-4">
-      <SectionTitle>Discover your next favourite dish!</SectionTitle>
+      <SectionTitle>The Tastiest Dishes in London!</SectionTitle>
 
       <HorizontalScrollable fit={isHuge ? 5 : isDesktop ? 4 : undefined}>
         {cards.map(post => (
