@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { ThumbsUpIllustration } from 'public/assets/illustrations';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { generateStaticURL } from 'utils/routing';
 import { CUISINES } from '../../constants';
 import { useSearch } from '../../hooks/useSearch';
 import { IState } from '../../state/reducers';
@@ -106,10 +107,13 @@ function SearchOverlayInnerDefault() {
             .map(cuisine => (
               <div key={cuisine.name.toLowerCase()} className="mt-2 mr-2">
                 <OutlineBlock
-                  href={cuisine.href}
-                  size={
-                    !!isDesktop && searchBarPinnedToHeader ? 'tiny' : 'small'
+                  href={
+                    generateStaticURL({
+                      city: 'london',
+                      cuisine: cuisine.name.toLowerCase(),
+                    }).as
                   }
+                  size={isDesktop && searchBarPinnedToHeader ? 'tiny' : 'small'}
                   className="font-medium"
                   key={cuisine.name}
                 >

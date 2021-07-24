@@ -229,10 +229,12 @@ const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
       </a>
     </p>
     <p>
-      <a>How It Works</a>
+      <Link href="/how-it-works">
+        <a>How It Works</a>
+      </Link>
     </p>
-    <p>{/* <a className="">Our Mission</a> */}</p>
-    <p>{/* <a className="">Press Kit</a> */}</p>
+    {/* <p><a className="">Our Mission</a></p> */}
+    {/* <p><a className="">Press Kit</a></p> */}
     <p>
       <Link href="/privacy">
         <a>Privacy & Cookies</a>

@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@tastiest-io/tastiest-icons';
 import { convertRemToPixels } from '@tastiest-io/tastiest-utils';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useEffect, useRef, useState } from 'react';
 import { useScroll, useWindowSize } from 'react-use';
@@ -17,6 +17,7 @@ interface Props {
   // when not on touch device
   fit?: number;
   spacing?: 0 | 1 | 2 | 3 | 4 | 6 | 8;
+  chevronSize?: 6 | 8 | 10 | 12;
 }
 
 export function HorizontalScrollable(props: Props) {
@@ -39,7 +40,7 @@ export function HorizontalScrollable(props: Props) {
  * Intended for full width situations only
  */
 function HorizontalScrollableInner(props: Props) {
-  const { onItemClick, spacing = 3, children } = props;
+  const { onItemClick, spacing = 3, chevronSize = 8, children } = props;
 
   const scrollRef = useRef(null);
   const innerContentRef = useRef(null);
@@ -94,7 +95,7 @@ function HorizontalScrollableInner(props: Props) {
   return (
     <div className="relative flex w-full">
       <div
-        className={classNames(
+        className={clsx(
           'absolute left-0 flex items-center justify-between h-full w-full',
           isTouchDevice && 'hidden',
         )}
@@ -103,15 +104,16 @@ function HorizontalScrollableInner(props: Props) {
           style={{
             transform: `translateX(${isDesktop ? '-50%' : '50%'})`,
           }}
-          className={classNames(
+          className={clsx(
             'flex flex-col justify-center h-full z-50 duration-300',
             x <= 1 && 'opacity-0 pointer-events-none',
           )}
         >
           <ChevronLeftIcon
             onClick={handleLeftScroll}
-            className={classNames(
-              'h-8 mt-1 text-secondary fill-current cursor-pointer',
+            className={clsx(
+              'text-secondary-2 fill-current cursor-pointer',
+              `h-${chevronSize}`,
             )}
           />
         </div>
@@ -120,21 +122,24 @@ function HorizontalScrollableInner(props: Props) {
           style={{
             transform: `translateX(${isDesktop ? '50%' : '-50%'})`,
           }}
-          className={classNames(
+          className={clsx(
             'flex flex-col justify-center h-full z-50 duration-300',
             rightScrollHidden && 'opacity-0 pointer-events-none',
           )}
         >
           <ChevronRightIcon
             onClick={handleRightScroll}
-            className="h-8 mt-1 cursor-pointer fill-current text-secondary"
+            className={clsx(
+              'cursor-pointer fill-current text-secondary-2',
+              `h-${chevronSize}`,
+            )}
           />
         </div>
       </div>
       <div
         ref={scrollRef}
         style={{ width: `calc(100% + ${spacing / 4}rem)` }}
-        className={classNames(
+        className={clsx(
           'relative',
           'hide_scroll',
           'scrolling-touch',
@@ -144,10 +149,7 @@ function HorizontalScrollableInner(props: Props) {
       >
         <div
           ref={innerContentRef}
-          className={classNames(
-            'flex overflow-y-visible',
-            `children:px-${spacing}`,
-          )}
+          className={clsx('flex overflow-y-visible', `children:px-${spacing}`)}
           style={{
             width: 'min-content',
             marginLeft: `${!isDesktop ? UI.PAGE_CONTAINED_PADDING_VW : 0}vw`,

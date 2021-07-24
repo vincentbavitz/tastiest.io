@@ -25,7 +25,7 @@ export function CuisineBar(props: Props) {
 
   return (
     <div className="mt-20">
-      <HorizontalScrollable spacing={0} {...props}>
+      <HorizontalScrollable spacing={0} chevronSize={12} {...props}>
         {Object.values(CUISINES).map(cuisine => (
           <CuisineItem
             key={cuisine?.name}

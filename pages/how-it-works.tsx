@@ -6,7 +6,9 @@ function HowItWorks() {
   return (
     <div>
       <Contained>
-        <HowItWorksHero className="w-full h-auto font-somatic" />
+        <div className="flex justify-center w-full">
+          <HowItWorksHero className="w-full h-auto font-somatic" />
+        </div>
       </Contained>
     </div>
   );

@@ -64,7 +64,7 @@ const CUISINES = {
   },
   [CuisineSymbol.AMERICAN]: {
     name: 'American',
-    href: '/america',
+    href: '/american',
     svg: AmericanIcon,
     popularity: 10,
   },

@@ -1,15 +1,15 @@
-import { IPost } from '@tastiest-io/tastiest-utils';
-import { ArticleCard } from 'components/cards/ArticleCard';
+import { ITastiestDish } from '@tastiest-io/tastiest-utils';
+import TastiestDishCard from 'components/cards/TastiestDishCard';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
 import { SectionTitle } from '../SectionTitle';
 
 interface Props {
-  cards: IPost[];
+  cards: ITastiestDish[];
 }
 
-export function HomeFavouritesSection(props: Props) {
+export function HomeTastiestDishes(props: Props) {
   const { isHuge, isDesktop } = useScreenSize();
   const { cards } = props;
 
@@ -18,26 +18,15 @@ export function HomeFavouritesSection(props: Props) {
       <SectionTitle>The Tastiest Dishes in London!</SectionTitle>
 
       <HorizontalScrollable fit={isHuge ? 5 : isDesktop ? 4 : undefined}>
-        {cards.map(post => (
+        {cards.map(dish => (
           <div
-            key={post.id}
+            key={dish.id}
             style={{ minWidth: isDesktop ? 'unset' : '200px' }}
           >
-            <ArticleCard compact {...post} />
+            <TastiestDishCard compact {...dish} />
           </div>
         ))}
       </HorizontalScrollable>
-
-      {/* <CardGrid horizontalScroll size="small" rowLimit={2}>
-        {cards.map(post => (
-          <div
-            key={post.id}
-            style={{ minWidth: isDesktop ? 'unset' : '200px' }}
-          >
-            <ArticleCard compact {...post} />
-          </div>
-        ))}
-      </CardGrid> */}
     </div>
   );
 }

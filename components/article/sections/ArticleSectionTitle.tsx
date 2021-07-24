@@ -73,7 +73,7 @@ const CharcterEatingIllustration = ({ svg }: ITitleDividerProps) => {
   const { isDesktop, isHuge } = useScreenSize();
 
   const ASPECT_RATIO = 802 / 676;
-  const OFFSET_PERCENTAGE = 5.9;
+  const OFFSET_PERCENTAGE = 5.6;
   const HEIGHT_REM = isDesktop ? (isHuge ? 16 : 14) : 18;
   const CONTAINER_HEIGHT_REM = (1 - OFFSET_PERCENTAGE / 100) * HEIGHT_REM;
 

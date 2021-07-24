@@ -1,11 +1,11 @@
-import { CmsApi, IPost } from '@tastiest-io/tastiest-utils';
+import { CmsApi, ITastiestDish } from '@tastiest-io/tastiest-utils';
+import { HomeTastiestDishes } from 'components/home/HomeTastiestDishes';
 import { SuggestRestaurant } from 'components/SuggestRestaurant';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import React from 'react';
 import { Contained } from '../components/Contained';
-import { HomeFavouritesSection } from '../components/home/HomeFavouritesSection';
 import { HomeMapSection } from '../components/home/HomeMapSection';
 import { HomeRecentSearchesSection } from '../components/home/HomeRecentSearchesSection';
 import { HomeSearchSection } from '../components/home/HomeSearchSection';
@@ -14,23 +14,23 @@ import { useAuth } from '../hooks/auth/useAuth';
 import { useUserData } from '../hooks/useUserData';
 
 interface Props {
-  posts: Array<IPost>;
+  dishes: Array<ITastiestDish>;
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   const cms = new CmsApi();
-  const { posts = [] } = await cms.getPosts(20);
+  const { dishes = [] } = await cms.getTastiestDishes(20);
 
   return {
     props: {
-      posts,
+      dishes,
     },
     revalidate: 360,
   };
 };
 
-const Index: NextPage<Props> = ({ posts = [] }) => {
-  const cards = posts ? posts.slice?.(0, 20) : [];
+const Index: NextPage<Props> = ({ dishes = [] }) => {
+  const cards = dishes ? dishes.slice?.(0, 20) : [];
 
   const { user } = useAuth();
   const { isDesktop } = useScreenSize();
@@ -64,7 +64,7 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
           <HomeMapSection />
         </Contained>
 
-        <HomeFavouritesSection cards={cards} />
+        <HomeTastiestDishes cards={cards} />
 
         <SuggestRestaurant />
       </div>
