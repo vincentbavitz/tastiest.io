@@ -48,7 +48,7 @@ function MobileHeader() {
     >
       <div className="relative flex items-center justify-between w-full h-full">
         <div className="flex flex-shrink-0" onMouseDown={handleExpandSearch}>
-          <SearchIcon className="h-6 cursor-pointer fill-current text-primary" />
+          <SearchIcon className="h-8 cursor-pointer fill-current text-secondary" />
         </div>
 
         <Link href="/">

@@ -70,7 +70,11 @@ const ArticleSuggestRestaurantContent = ({
     <div>
       <div className="mb-4 desktop:w-9/12">
         <span className="text-xl leading-tight font-somatic text-primary">
-          Do you know a better {dishName} in {city}?
+          {/* Ensure the plural case makes sense. */}
+          {/* Eg. Do you know of better fries in London? */}
+          {/* Eg. Do you know a better steak in London? */}
+          Do you know {dishName.includes('*') ? 'of' : 'a'} better{' '}
+          {dishName.replace('*', '')} in {city}?
         </span>
       </div>
       <Input

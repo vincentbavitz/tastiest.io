@@ -42,13 +42,13 @@ export function HeaderSearch({ isShown, innerOverlayStyle = {} }: Props) {
         ref={searchRef}
         className={classNames(
           'flex items-center w-full justify-between h-10 pl-3 bg-white px-2',
-          'border-primary border-t-2 border-l-2 border-r-2',
+          'border-secondary border-t-2 border-l-2 border-r-2',
           searchOverlayExpanded ? 'rounded-t-lg' : 'rounded-lg',
           searchOverlayExpanded ? 'border-b-0' : 'border-b-2',
         )}
       >
         <SearchInput
-          searchIcon="primary"
+          searchIcon="secondary"
           placeholder="Search..."
           onFocus={() => dispatch(expandSearchOverlay())}
         />

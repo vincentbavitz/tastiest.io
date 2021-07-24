@@ -15,3 +15,7 @@ export const getMapBoxStaticSource = (
 
 export const getMapBoxStyleUrl = () =>
   `mapbox://styles/tastiestvince/${process.env.NEXT_PUBLIC_MAP_BOX_STYLE_ID}`;
+
+export const getGoogleMapLink = (lat: number, lon: number, zoom = 12) => {
+  return `https://maps.google.com/maps?q=${lat},${lon}&ll=${lat},${lon}&z=${zoom}`;
+};
