@@ -7,10 +7,13 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import { useSupport } from 'hooks/useSupport';
 import { useUserData } from 'hooks/useUserData';
 import { InferGetServerSidePropsType } from 'next';
+import { NextSeo } from 'next-seo';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { HelpHero, HelpHeroSuccess } from 'public/assets/page';
 import React, { useState } from 'react';
+import { generateTitle } from 'utils/metadata';
 import { UI } from '../constants';
 
 export const getServerSideProps = async context => {
@@ -47,11 +50,43 @@ const Help = ({
   initialSubject,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [sent, setHasSent] = useState(false);
+  const pageTitle = 'Get Help';
 
-  return sent ? (
-    <HelpSuccess setHasSent={setHasSent} />
-  ) : (
-    <HelpForm initialSubject={initialSubject} setHasSent={setHasSent} />
+  return (
+    <>
+      <NextSeo
+        title={pageTitle}
+        description=""
+        openGraph={{
+          title: 'Open Graph Title',
+          description: 'Open Graph Description',
+          images: [
+            {
+              url: '/assets/seo/page/help-800x600.png',
+              width: 800,
+              height: 600,
+              alt: 'Tastiest Help Hero',
+            },
+            {
+              url: '/assets/seo/page/help-400x300.png',
+              width: 400,
+              height: 300,
+              alt: 'Tastiest Help Hero',
+            },
+          ],
+        }}
+      />
+
+      <Head>
+        <title>{generateTitle(pageTitle)}</title>
+      </Head>
+
+      {sent ? (
+        <HelpSuccess setHasSent={setHasSent} />
+      ) : (
+        <HelpForm initialSubject={initialSubject} setHasSent={setHasSent} />
+      )}
+    </>
   );
 };
 

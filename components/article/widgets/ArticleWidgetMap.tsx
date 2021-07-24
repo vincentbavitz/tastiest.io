@@ -1,8 +1,7 @@
 import { ArrowUpOutlined } from '@ant-design/icons';
-import { dlog, IRestaurant } from '@tastiest-io/tastiest-utils';
+import { IRestaurant } from '@tastiest-io/tastiest-utils';
 import { LocationIndictor } from 'components/LocationIndictor';
 import { useMap } from 'hooks/useMap';
-import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
 
 interface Props {
@@ -11,11 +10,6 @@ interface Props {
 }
 
 export function ArticleWidgetMap({ location, restaurant }: Props) {
-  const { isDesktop } = useScreenSize();
-
-  dlog('ArticleWidgetMap ➡️ fsadasd:');
-  dlog('ArticleWidgetMap ➡️ isDesktop:', isDesktop);
-
   useMap('map', {
     lat: restaurant.location.lat,
     lng: restaurant.location.lon,
@@ -29,11 +23,11 @@ export function ArticleWidgetMap({ location, restaurant }: Props) {
   });
 
   return (
-    <div className="flex flex-col w-full desktop:flex-row desktop:justify-center desktop:space-x-8">
+    <div className="flex flex-col w-full">
       <div
         id="map"
         style={{ height: '250px' }}
-        className="relative w-full overflow-hidden bg-opacity-25 rounded-md bg-secondary-2 desktop:h-auto desktop:mt-0 desktop:w-1/2"
+        className="relative w-full overflow-hidden bg-opacity-25 rounded-md bg-secondary-2"
       ></div>
 
       <div className="flex flex-col justify-end pb-4">

@@ -3216,6 +3216,13 @@
   dependencies:
     moment "*"
 
+"@types/next-seo@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@types/next-seo/-/next-seo-2.1.2.tgz#ca666805eb21ca120551868b9a29fce6c65a3bf7"
+  integrity sha512-vn6nCBli9++YeGaP//bzekTYaRntbT1q3lEcwtaVU/qECuAfWFClX9NvgWZvKVibYzAhKc8AKQ9xE70/GySQLw==
+  dependencies:
+    next-seo "*"
+
 "@types/node-fetch@^2.5.7":
   version "2.5.11"
   resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.5.11.tgz#ce22a2e65fc8999f4dbdb7ddbbcf187d755169e4"
@@ -10942,6 +10949,11 @@ next-images@^1.4.0:
   dependencies:
     file-loader "^6.0.0"
     url-loader "^4.0.0"
+
+next-seo@*, next-seo@^4.26.0:
+  version "4.26.0"
+  resolved "https://registry.yarnpkg.com/next-seo/-/next-seo-4.26.0.tgz#4218cfae5651fdc2e330dcdf1cc1b34ce199d41c"
+  integrity sha512-5TqywQ3XAwqdmEU1AyNZjR7WdDKFTkDD8aBtgQelPvzBUEy8i0mTjtiw+09jhiHFNik6FqS8uPKCaYcY6jRgSQ==
 
 next-session@^3.3.2:
   version "3.3.2"
