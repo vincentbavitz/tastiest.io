@@ -8,7 +8,7 @@ interface Props {
 
 export default function ArticleContained({ children }: Props) {
   return (
-    <Contained>
+    <Contained maxWidth={900}>
       <div
         style={{
           width: `calc(100% - ${UI.ARTICLE.DESKTOP_OFFER_WIDGET_WIDTH_PX}px`,

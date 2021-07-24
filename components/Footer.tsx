@@ -244,7 +244,9 @@ const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
       </Link>
     </p>
     <p>
-      <a>Terms of Sale</a>
+      <Link href="/terms-of-sale">
+        <a>Terms of Sale</a>
+      </Link>
     </p>
   </>
 );

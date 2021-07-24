@@ -12,3 +12,6 @@ export const getMapBoxStaticSource = (
   },0,60/${width ?? 1200}x${height ?? 300}?access_token=${
     process.env.NEXT_PUBLIC_MAP_BOX_ACCESS_TOKEN
   }`;
+
+export const getMapBoxStyleUrl = () =>
+  `mapbox://styles/tastiestvince/${process.env.NEXT_PUBLIC_MAP_BOX_STYLE_ID}`;

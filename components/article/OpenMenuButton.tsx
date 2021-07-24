@@ -46,10 +46,10 @@ export default function OpenMenuButton(props: Props) {
         close={() => dispatch(toggleOfferMenu(false))}
       >
         <div
-          style={{ width: '450px', maxWidth: '80vw', height: '90vh' }}
+          style={{ width: '450px', maxWidth: '80vw', maxHeight: '90vh' }}
           className="overflow-auto "
         >
-          <img src={menu.url} />
+          <img className="w-full h-full" src={menu.url} />
         </div>
       </Modal>
     </div>

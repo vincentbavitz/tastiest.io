@@ -33,7 +33,7 @@ export function ArticleOrderNowDesktop(props: Props) {
   }, []);
 
   return (
-    <Contained>
+    <Contained maxWidth={900}>
       <div className="flex justify-end w-full">
         <div
           style={{
@@ -53,7 +53,7 @@ export function ArticleOrderNowDesktop(props: Props) {
               <img src={`${deal?.image?.url}?w=700`} className="object-cover" />
             </div>
 
-            <div className="flex flex-col justify-center pt-2 space-y-4">
+            <div className="flex flex-col justify-center pt-3 space-y-3">
               <p className="text-base leading-none text-center font-somatic">
                 {deal?.tagline}
               </p>

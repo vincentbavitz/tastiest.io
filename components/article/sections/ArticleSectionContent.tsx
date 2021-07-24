@@ -87,7 +87,7 @@ const DesktopContent = (post: IPost) => {
 const AuxiliaryDivider = ({ url }: { url: string }) => (
   <div className="flex items-center justify-center h-24 pb-10 -mt-20 space-x-10 desktop:h-56 desktop:-mt-32">
     <div className="flex-1 border-b-2 border-secondary"></div>
-    <img src={url} className="h-32" />
+    <img src={url} className="h-20" />
     <div className="flex-1 border-b-2 border-secondary"></div>
   </div>
 );

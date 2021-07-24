@@ -27,7 +27,7 @@ export function ArticleSectionAbstract(props: IPost) {
             <div className="flex justify-center w-full h-px">
               <img
                 src={abstractDivider?.url}
-                className="h-32 transform -translate-y-1/2"
+                className="h-20 -mt-2 transform -translate-y-1/2"
               />
             </div>
           </div>
@@ -37,7 +37,7 @@ export function ArticleSectionAbstract(props: IPost) {
           <ArticleFeatureVideoWidget video={video} />
 
           <div className="flex justify-center w-full h-4 pt-20 mb-12">
-            <img src={abstractDivider?.url} className="h-32 -mt-20" />
+            <img src={abstractDivider?.url} className="h-20 -mt-12" />
           </div>
         </Contained>
       )}
