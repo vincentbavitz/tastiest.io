@@ -15,10 +15,12 @@ import {
   Text,
   UnorderedList,
 } from '@contentful/rich-text-types';
-import { dlog } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import React, { ReactNode } from 'react';
-import { BaseShortCodeRegex } from 'utils/shortcodes';
+import {
+  BaseShortCodeRegex,
+  extractShortcodesFromParagraph,
+} from 'utils/shortcodes';
 import { ArticleCallout } from './article/ArticleCallout';
 import Shortcode from './Shortcode';
 
@@ -59,16 +61,39 @@ export function RichBody(props: Props) {
       },
       renderNode: {
         [BLOCKS.PARAGRAPH]: (node, children) => {
-          // Grab shortcodes
-          // const children;
           const plaintext = documentToPlainTextString(node);
-          const isShortcode = BaseShortCodeRegex.test(plaintext);
 
-          dlog('RichBody ➡️ isShortcode:', isShortcode);
+          if (BaseShortCodeRegex.test(plaintext)) {
+            // Get all the shortcodes from the string
+            const shortcodes = extractShortcodesFromParagraph(plaintext);
+            const fragments: string[] = [];
+            plaintext.split(/\{\{.*\}\}/gm).forEach((fragment, index) => {
+              // For each of the non-shortcode fragments, split the newlines
+              fragments.push(fragment.replace('\n', ''));
 
-          return isShortcode ? (
-            <Shortcode>{plaintext}</Shortcode>
-          ) : (
+              if (shortcodes?.[index]) {
+                fragments.push(shortcodes[index].original);
+              }
+            });
+
+            // Render the shortcode interlaced with plaintext.
+            return (
+              <Paragraph>
+                {fragments.map((fragment, index) =>
+                  BaseShortCodeRegex.test(fragment) ? (
+                    <Shortcode>{fragment}</Shortcode>
+                  ) : (
+                    <span key={fragment}>
+                      {fragment}
+                      {index % 2 === 0 && <br />}
+                    </span>
+                  ),
+                )}
+              </Paragraph>
+            );
+          }
+
+          return (
             <Paragraph paragraphMargins={paragraphMargins}>
               {children}
             </Paragraph>

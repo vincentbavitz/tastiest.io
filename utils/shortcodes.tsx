@@ -1,4 +1,4 @@
-export const BaseShortCodeRegex = /\{\{.*\}\}/;
+export const BaseShortCodeRegex = /\{\{.*\}\}/gm;
 
 export enum ShortCodeKey {
   MENU_LINK = 'MENU_LINK',
@@ -22,12 +22,27 @@ export type TShortCode<T extends ShortCodeKey> = {
   params: ShortCodeParams<T>;
 };
 
+export type TShortCodeRecord<T extends ShortCodeKey> = TShortCode<T> & {
+  original: string;
+};
+
 export const ShortCodesRegex = {
   [ShortCodeKey.MENU_LINK]: /\{\{[\s]*MENU_LINK[\s]*text="[\w\s.,'-_]{1,333}"[\s]*\}\}/,
   [ShortCodeKey.AUX_LINK]: /\{\{[\s]*AUX_LINK[\s]*text="[\w\s.,'-_]{1,333}"[\s]*\}\}/, // {{ AUX_LINK text="aux link"}}
   [ShortCodeKey.MENU_BUTTON]: /\{\{[\s]*MENU_BUTTON[\s]*text="[\w\s.,'-_]{1,333}"[\s]*\}\}/, // {{ MENU_BUTTON text="menu button"}}
   [ShortCodeKey.AUX_BUTTON]: /\{\{[\s]*AUX_BUTTON[\s]*text="[\w\s.,'-_]{1,333}"[\s]*\}\}/, // {{ AUX_BUTTON text="aux button"}}
-  [ShortCodeKey.COLOR]: /\{\{[\s]*COLOR[\s]*color="[#]?[\w0-9-]{3,333}"[\s]*text="[\w\s.,'-_]{1,333}"[\s]*\}\}/, // {{ COLOR color="#FF0083 text="Green!" }}
+  [ShortCodeKey.COLOR]: /\{\{[\s]*COLOR[\s]*color="[#]?[\w0-9-]{3,333}"[\s]*text="[^"]{1,333}"[\s]*\}\}/, // {{ COLOR color="#FF0083 text="Green!" }}
+};
+
+/** Extracts shortcodes from a paragraph */
+export const extractShortcodesFromParagraph = (
+  paragraph: string,
+): Array<TShortCodeRecord<any>> => {
+  const shortcodeStrings = paragraph.match(BaseShortCodeRegex);
+  return shortcodeStrings?.map(s => ({
+    original: s,
+    ...extractShortcodeParameters(s),
+  }));
 };
 
 /** Pulls out parameters from a shortcode. For example,

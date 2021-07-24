@@ -58,60 +58,63 @@ export function ArticleCard(props: Props): JSX.Element {
   );
 
   return (
-    <div
-      ref={ref}
-      className={classNames(
-        'overflow-hidden w-full bg-aux-orange bg-opacity-75',
-        isSmall || compact ? 'rounded-lg' : 'rounded-xl',
-        isSmall ? 'pb-2' : 'pb-1',
-      )}
-      // onClick={e => handleClick(e)}
-    >
-      <div
-        style={{ paddingBottom: '60%' }}
-        className="relative w-full h-0 overflow-hidden bg-white bg-opacity-25"
-      >
-        {image.url && (
-          <>
-            <div className="absolute inset-0 z-10 pointer-events-none">
-              {video}
-            </div>
-            <div className="absolute inset-0">
-              <img
-                className="object-cover w-full h-full"
-                src={`${image?.url}?w=700`}
-                alt={image?.description}
-              />
-            </div>
-          </>
-        )}
-      </div>
-
-      <div className={isSmall || compact ? 'px-3' : 'px-4'}>
-        <div className={isSmall ? 'py-2' : 'py-3'}>
+    <Link href={href} as={as}>
+      <a>
+        <div
+          ref={ref}
+          className={classNames(
+            'overflow-hidden w-full bg-secondary bg-opacity-75 no-underline',
+            isSmall || compact ? 'rounded-lg' : 'rounded-xl',
+            isSmall ? 'pb-2' : 'pb-1',
+          )}
+        >
           <div
-            style={{
-              lineHeight: '1.1em',
-              height: '0',
-              paddingBottom: '2.2em',
-            }}
-            className={classNames(
-              isSmall || compact ? 'text-base' : 'text-lg',
-              'font-somatic overflow-hidden cursor-pointer hover:underline',
-            )}
+            style={{ paddingBottom: '60%' }}
+            className="relative w-full h-0 overflow-hidden bg-white bg-opacity-25"
           >
-            <Link href={href} as={as}>
-              <a>{title}</a>
-            </Link>
+            {image.url && (
+              <>
+                <div className="absolute inset-0 z-10 pointer-events-none">
+                  {video}
+                </div>
+                <div className="absolute inset-0">
+                  <img
+                    className="object-cover w-full h-full"
+                    src={`${image?.url}?w=700`}
+                    alt={image?.description}
+                  />
+                </div>
+              </>
+            )}
           </div>
 
-          {!compact && <p className="text-base text-gray-700">{description}</p>}
-        </div>
+          <div className={isSmall || compact ? 'px-3' : 'px-4'}>
+            <div className={isSmall ? 'py-2' : 'py-3'}>
+              <div
+                style={{
+                  lineHeight: '1.1em',
+                  height: '0',
+                  paddingBottom: '2.2em',
+                }}
+                className={classNames(
+                  isSmall || compact ? 'text-base' : 'text-lg',
+                  'font-somatic overflow-hidden cursor-pointer hover:underline',
+                )}
+              >
+                {title}
+              </div>
 
-        {/* <div className={classNames('flex space-x-1 mt-1', !isSmall && 'mb-2')}>
+              {!compact && (
+                <p className="text-base text-gray-700">{description}</p>
+              )}
+            </div>
+
+            {/* <div className={classNames('flex space-x-1 mt-1', !isSmall && 'mb-2')}>
           <TagRow tags={tags} size={compact ? 'small' : 'medium'} limit={3} />
         </div> */}
-      </div>
-    </div>
+          </div>
+        </div>
+      </a>
+    </Link>
   );
 }
