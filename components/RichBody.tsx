@@ -15,6 +15,7 @@ import {
   Text,
   UnorderedList,
 } from '@contentful/rich-text-types';
+import { dlog } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import React, { ReactNode } from 'react';
 import {
@@ -30,14 +31,20 @@ const Bold = ({ children }) => (
 
 interface ParagraphProps {
   children: ReactNode;
-  paragraphMargins?: boolean;
+  margins?: boolean;
+  justify?: boolean;
 }
 
-const Paragraph = ({ children, paragraphMargins = true }: ParagraphProps) => (
+const Paragraph = ({
+  children,
+  justify = true,
+  margins = true,
+}: ParagraphProps) => (
   <p
     className={clsx(
-      'tracking-wide text-justify font-roboto',
-      paragraphMargins && 'mb-3',
+      'tracking-wide font-roboto',
+      margins && 'mb-3',
+      justify && 'text-justify',
     )}
   >
     {children}
@@ -46,13 +53,20 @@ const Paragraph = ({ children, paragraphMargins = true }: ParagraphProps) => (
 
 interface Props {
   body: Document;
-  paragraphMargins?: boolean;
   listColor?: 'primary' | 'secondary';
+  paragraph?: {
+    margins?: boolean;
+    justify?: boolean;
+  };
 }
 
 // Renders a rich text body
 export function RichBody(props: Props) {
-  const { body, paragraphMargins = true, listColor = 'primary' } = props;
+  const {
+    body,
+    listColor = 'primary',
+    paragraph = { margins: true, justify: true },
+  } = props;
 
   const options = React.useMemo(
     () => ({
@@ -78,7 +92,10 @@ export function RichBody(props: Props) {
 
             // Render the shortcode interlaced with plaintext.
             return (
-              <Paragraph>
+              <Paragraph
+                margins={paragraph.margins}
+                justify={paragraph.justify}
+              >
                 {fragments.map((fragment, index) =>
                   BaseShortCodeRegex.test(fragment) ? (
                     <Shortcode>{fragment}</Shortcode>
@@ -93,8 +110,10 @@ export function RichBody(props: Props) {
             );
           }
 
+          dlog('RichBody ➡️ paragraph:', paragraph);
+
           return (
-            <Paragraph paragraphMargins={paragraphMargins}>
+            <Paragraph margins={paragraph.margins} justify={paragraph.justify}>
               {children}
             </Paragraph>
           );

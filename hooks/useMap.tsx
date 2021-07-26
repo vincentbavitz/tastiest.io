@@ -9,6 +9,7 @@ interface UseMapParams {
   zoom?: number;
   pitch?: number;
   markers?: [{ lat: number; lng: number; size?: number }];
+  hideControls?: boolean;
 }
 
 export const useMap = (container: string, params: UseMapParams) => {
@@ -30,7 +31,9 @@ export const useMap = (container: string, params: UseMapParams) => {
     setMap(_map);
 
     // Add controls
-    _map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    if (!params?.hideControls) {
+      _map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    }
 
     // Add marker(s) to the map
     if (params.markers) {

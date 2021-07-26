@@ -13,7 +13,7 @@ import {
 import Analytics from 'analytics-node';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { db, firebaseAdmin } from 'utils/firebaseAdmin';
 
 export type PayParams = {
   token: string;
@@ -70,9 +70,7 @@ export default async function pay(
 
   try {
     // Fetch the order from Firestore using orderToken
-    const snapshot = await firebaseAdmin
-      .firestore()
-      .collection(FirestoreCollection.ORDERS)
+    const snapshot = await db(FirestoreCollection.ORDERS)
       .where('token', '==', token)
       .limit(1)
       .get();
@@ -231,16 +229,12 @@ export default async function pay(
     // Payment success
     if (paymentIntent.status === 'succeeded') {
       // Update order
-      await firebaseAdmin
-        .firestore()
-        .collection(FirestoreCollection.ORDERS)
-        .doc(order.id)
-        .set(
-          {
-            paidAt: Date.now(),
-          },
-          { merge: true },
-        );
+      await db(FirestoreCollection.ORDERS).doc(order.id).set(
+        {
+          paidAt: Date.now(),
+        },
+        { merge: true },
+      );
 
       // Internal measurements
       const tastiestPortion = order.price.final * 0.25; // TODO -> Subtract PROMO,

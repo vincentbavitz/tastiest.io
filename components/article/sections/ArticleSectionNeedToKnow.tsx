@@ -12,7 +12,11 @@ export default function ArticleSectionNeedToKnow({ body }: Props) {
       <h3 className="mb-3 text-lg font-medium border-b-2 border-opacity-50 border-secondary-1">
         Need To Know
       </h3>
-      <RichBody body={body} listColor="secondary" paragraphMargins={false} />
+      <RichBody
+        body={body}
+        listColor="secondary"
+        paragraph={{ margins: false }}
+      />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { FirestoreCollection, IOrder } from '@tastiest-io/tastiest-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { db } from 'utils/firebaseAdmin';
 
 /**
  * Requires `token` as a parameter.
@@ -27,9 +27,7 @@ export default async function getOrder(
 
   try {
     // Fetch the order from Firestore using orderToken
-    const snapshot = await firebaseAdmin
-      .firestore()
-      .collection(FirestoreCollection.ORDERS)
+    const snapshot = await db(FirestoreCollection.ORDERS)
       .where('token', '==', token)
       .limit(1)
       .get();

@@ -14,15 +14,17 @@ interface Props {
   isOpen: boolean;
   children: ReactNode;
   // size: 'small' | 'regular' | 'large';
+  title?: string;
   className?: string;
-  close?: () => void;
   onMobileFullscreen?: boolean;
   noPadding?: boolean;
+  close?: () => void;
 }
 
 export function Modal(props: Props) {
   const {
     modalId,
+    title,
     isOpen,
     close,
     className,
@@ -96,10 +98,12 @@ export function Modal(props: Props) {
           className,
         )}
       >
-        <div className="absolute top-0 right-0 z-0 flex justify-end pt-3 pr-3">
+        <div className="absolute top-0 left-0 right-0 z-0 flex items-center justify-between px-3 pt-3">
+          <div className="w-6"></div>
+          <div className="text-xl font-medium">{title}</div>
           <ExitIcon
             onClick={close}
-            className="h-6 cursor-pointer fill-current text-primary"
+            className="w-6 cursor-pointer fill-current text-primary"
           />
         </div>
         {children}

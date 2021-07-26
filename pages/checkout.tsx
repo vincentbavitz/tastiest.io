@@ -18,7 +18,7 @@ import nookies from 'nookies';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useEffect } from 'react';
 import { CheckoutStep } from 'state/checkout';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { db, firebaseAdmin } from 'utils/firebaseAdmin';
 import { CheckoutStepIndicator } from '../components/checkout/CheckoutStepIndicator';
 import { CheckoutStepAuth } from '../components/checkout/steps/CheckoutStepAuth';
 import { CheckoutStepPayment } from '../components/checkout/steps/CheckoutStepPayment';
@@ -66,9 +66,7 @@ export const getServerSideProps = async (
   // Get order, given our order ID.
   // If the order exists, /api/payments/createNewOrder
   // has already verified that it's valid.
-  const snapshot = await firebaseAdmin
-    .firestore()
-    .collection(FirestoreCollection.ORDERS)
+  const snapshot = await db(FirestoreCollection.ORDERS)
     .where('token', '==', token)
     .limit(1)
     .get();

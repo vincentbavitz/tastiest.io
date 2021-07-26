@@ -15,7 +15,7 @@ import { InferGetServerSidePropsType } from 'next';
 import { ThankYouFood, ThankYouHero, ThankYouPhone } from 'public/assets/page';
 import React, { ReactNode } from 'react';
 import Stripe from 'stripe';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { db, firebaseAdmin } from 'utils/firebaseAdmin';
 import { v4 as uuid } from 'uuid';
 import { Contained } from '../components/Contained';
 
@@ -36,9 +36,7 @@ export const getServerSideProps = async context => {
   // Get order, given our order ID.s
   // If the order exists, /api/payments/createNewOrder
   // has already verified that it's valid.
-  const orderSnapshot = await firebaseAdmin
-    .firestore()
-    .collection(FirestoreCollection.ORDERS)
+  const orderSnapshot = await db(FirestoreCollection.ORDERS)
     .where('token', '==', token)
     .limit(1)
     .get();
@@ -47,9 +45,7 @@ export const getServerSideProps = async context => {
   orderSnapshot.docs.forEach(doc => (order = doc.data() as IOrder));
 
   // Get the corresponding booking
-  const bookingSnapshot = await firebaseAdmin
-    .firestore()
-    .collection(FirestoreCollection.BOOKINGS)
+  const bookingSnapshot = await db(FirestoreCollection.BOOKINGS)
     .doc(order.id)
     .get();
 

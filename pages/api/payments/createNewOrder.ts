@@ -13,7 +13,7 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { db } from 'utils/firebaseAdmin';
 import { calculatePromoPrice, validatePromo } from 'utils/order';
 import { v4 as uuid } from 'uuid';
 
@@ -99,11 +99,7 @@ export default async function createNewOrder(
 
   try {
     // Create new order in Firebase
-    await firebaseAdmin
-      .firestore()
-      .collection(FirestoreCollection.ORDERS)
-      .doc(order.id)
-      .set(order);
+    await db(FirestoreCollection.ORDERS).doc(order.id).set(order);
 
     // Track with Segment following Segment's E-Commerce Spec
     // https://segment.com/docs/connections/spec/ecommerce/v2/#checkout-started

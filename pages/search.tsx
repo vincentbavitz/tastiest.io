@@ -17,7 +17,7 @@ import { SearchHeroDesktop, SearchHeroMobile } from 'public/assets/page';
 import { ParsedUrlQuery } from 'querystring';
 import React from 'react';
 import ReactPaginate from 'react-paginate';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { db } from 'utils/firebaseAdmin';
 import { METADATA, SEARCH } from '../constants';
 
 type ModifierKey = 'new' | 'nearby' | 'trending';
@@ -63,9 +63,7 @@ export const getServerSideProps = async (
 
   if (modifier === 'trending') {
     // Get the most popular posts from last 100 orders
-    const ordersSnapshot = await firebaseAdmin
-      .firestore()
-      .collection(FirestoreCollection.ORDERS)
+    const ordersSnapshot = await db(FirestoreCollection.ORDERS)
       .limit(100)
       .get();
 
