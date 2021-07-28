@@ -21,6 +21,9 @@ const nextConfig = {
   fallback: {
     fs: false,
   },
+  images: {
+    domains: ['images.cfassets.net'],
+  },
 };
 
 // module.exports = withPlugins(nextConfig);

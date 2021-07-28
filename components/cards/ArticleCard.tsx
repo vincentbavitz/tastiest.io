@@ -62,7 +62,7 @@ export function ArticleCard(props: Props): JSX.Element {
 
   return (
     <Link href={href} as={as}>
-      <a>
+      <a className="no-underline">
         <div
           ref={ref}
           className={classNames(

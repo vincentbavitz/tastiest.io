@@ -9,7 +9,7 @@
 a {
   @apply cursor-pointer;
 
-  &:hover {
+  &:not(.no-underline):hover {
     @apply underline;
   }
 }
@@ -40,7 +40,17 @@ ul {
 }
 
 body {
-  @apply text-alt;
+  @apply text-alt bg-white font-roboto font-normal;
+  font-smooth: antialiased;
+
+  ::selection {
+    color: white;
+    @apply bg-primary bg-opacity-25;
+  }
+
+  & > div {
+    overflow-x: hidden;
+  }
 }
 
 @tailwind utilities;
@@ -75,22 +85,6 @@ body {
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
-
-body {
-  @apply bg-white font-roboto font-normal;
-  font-smooth: antialiased;
-
-  ::selection {
-    color: white;
-    @apply bg-primary bg-opacity-25;
-  }
-
-  & > div {
-    overflow-x: hidden;
-  }
-}
-
-
 
 
 // Pagination

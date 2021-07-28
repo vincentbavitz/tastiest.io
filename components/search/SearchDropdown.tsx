@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import React, { CSSProperties, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { UI } from '../../constants';
@@ -32,18 +32,18 @@ export function SearchDropdown({ isShown, innerOverlayStyle = {} }: Props) {
     <>
       <div ref={overlayContentRef} style={desktopOverlayStyles}>
         <div
-          className={classNames(
+          className={clsx(
             'relative',
             'flex',
             // Allows shadow to overflow
             'bg-white',
-            'border-primary',
             'border-t-none',
             'border-l-2',
             'border-r-2',
             'border-b-2',
             'rounded-b-lg',
             'pb-4',
+            searchBarPinnedToHeader ? 'border-secondary' : 'border-primary',
           )}
         >
           <div

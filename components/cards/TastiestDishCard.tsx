@@ -46,7 +46,7 @@ export default function TastiestDishCard(props: Props) {
 
   return (
     <Link href={href} as={as}>
-      <a>
+      <a className="no-underline">
         <div
           ref={ref}
           className={clsx(

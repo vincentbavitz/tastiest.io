@@ -14,6 +14,7 @@ import {
   InferGetStaticPropsType,
 } from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
 import { TastiestAward } from 'public/assets/ui';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useState } from 'react';
@@ -106,9 +107,14 @@ const RestaurantPage = (
   // prettier-ignore
   const heroIllustrationSizeRem = 
     isHuge ? 80 :
-    isTablet ? 50 :
-    isMobile ? 40 :
+    isTablet ? 30 :
+    isMobile ? 30 :
     60;
+
+  const heroIllustrationH = 671;
+  const heroIllustrationW = 1492;
+  const heroIllustrationHeightRem =
+    (heroIllustrationH / heroIllustrationW) * heroIllustrationSizeRem;
 
   const [mapModalOpen, setMapModalOpen] = useState(false);
 
@@ -133,10 +139,18 @@ const RestaurantPage = (
           <div
             style={{
               width: `${heroIllustrationSizeRem}rem`,
+              height: `${heroIllustrationHeightRem}rem`,
             }}
-            className="flex"
+            className="relative"
           >
-            <img src={restaurant.heroIllustration.url} className="h-full" />
+            <Image
+              src={restaurant.heroIllustration.url}
+              priority={true}
+              objectFit="cover"
+              loading="eager"
+              layout="fill"
+              unoptimized
+            />
           </div>
         </div>
       </div>

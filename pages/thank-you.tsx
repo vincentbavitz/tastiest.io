@@ -1,6 +1,7 @@
 import { Button } from '@tastiest-io/tastiest-components';
 import { PhoneIcon } from '@tastiest-io/tastiest-icons';
 import {
+  dlog,
   FirestoreCollection,
   formatCurrency,
   IBooking,
@@ -25,6 +26,8 @@ export const getServerSideProps = async context => {
 
   // If no order or user exists in URI, redirect to home
   if (!token) {
+    dlog('No token!');
+
     return {
       redirect: {
         destination: '/',
@@ -53,6 +56,18 @@ export const getServerSideProps = async context => {
 
   // Redirect if user somehow got to this state of no order request.
   if (!order || !order.paidAt || !booking) {
+    if (!booking) {
+      dlog('No booking!');
+    }
+
+    if (!order) {
+      dlog('No order!');
+    }
+
+    if (!order.paidAt) {
+      dlog('Order not paid!');
+    }
+
     return {
       redirect: {
         // TODO -> Destination should be /city/cuisine/slug
@@ -104,7 +119,6 @@ function ThankYou(
           }}
           className="flex flex-col items-center w-full tablet:flex-row"
         >
-          5
           <div className="flex justify-center order-last w-full tablet:justify-start tablet:order-first">
             <ThankYouHero
               style={{
@@ -340,7 +354,7 @@ function ThankYou(
         </Contained>
 
         <div className="flex justify-center w-full">
-          <a href="/">
+          <a href="/" className="no-underline">
             <Button size="large" className="text-2xl font-somatic" round>
               Find more great food!
             </Button>

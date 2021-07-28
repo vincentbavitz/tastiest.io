@@ -47,7 +47,7 @@ export default function OpenMenuButton(props: Props) {
       >
         <div
           style={{ width: '450px', maxWidth: '80vw', maxHeight: '90vh' }}
-          className="overflow-auto "
+          className="overflow-auto"
         >
           <img className="w-full h-full" src={menu.url} />
         </div>

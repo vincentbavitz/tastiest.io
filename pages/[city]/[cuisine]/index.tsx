@@ -196,7 +196,14 @@ const CuisineHero = ({ cuisine }: { cuisine: ICuisine }) => {
         className="relative h-px mobile:mt-10"
         style={{ width, minWidth, paddingBottom, transform }}
       >
-        <Image src={src} priority={true} objectFit="cover" layout="fill" />
+        <Image
+          src={src}
+          priority={true}
+          layout="fill"
+          objectFit="cover"
+          loading="eager"
+          unoptimized
+        />
       </div>
     );
   };
