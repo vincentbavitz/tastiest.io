@@ -3,6 +3,7 @@ import { RightOutlined } from '@ant-design/icons';
 import { Button } from '@tastiest-io/tastiest-components';
 import { IPost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
+import clsx from 'clsx';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useHoverDirty, useVideo } from 'react-use';
@@ -84,19 +85,27 @@ export function ArticleCard(props: Props): JSX.Element {
               <div className="absolute inset-0">
                 <img
                   className="object-cover w-full h-full"
-                  src={`${deal.image?.url}?w=700`}
+                  src={`${deal.image?.url}?w=400`}
                   alt={deal.image?.description}
                 />
               </div>
             )}
 
             {/* Offer includes items */}
-            <div className="absolute inset-0 z-50 flex flex-col px-3 py-3 space-y-2 text-white font-somatic">
+            <div
+              className={clsx(
+                'absolute inset-0 z-50 flex flex-col px-3 py-3 text-white font-somatic',
+                compact ? 'space-y-1' : 'space-y-2',
+              )}
+            >
               {deal.includes.slice(0, 3).map(item => (
                 <div
                   key={item}
                   style={{ width: 'fit-content' }}
-                  className="px-2 py-1 text-sm leading-4 bg-opacity-75 rounded-md bg-alt"
+                  className={clsx(
+                    'px-2 py-1 leading-4 bg-opacity-75 rounded-md bg-alt',
+                    compact ? 'text-xs' : 'text-sm',
+                  )}
                 >
                   {item}
                 </div>
@@ -124,9 +133,17 @@ export function ArticleCard(props: Props): JSX.Element {
             <div className="pb-2">
               <Button
                 wide
-                suffix={<RightOutlined className="text-xl text-white" />}
+                size={compact ? 'small' : 'medium'}
+                suffix={
+                  <RightOutlined
+                    className={clsx(
+                      'text-white',
+                      compact ? 'text-lg' : 'text-xl',
+                    )}
+                  />
+                }
               >
-                From £{deal.pricePerHeadGBP}/person
+                £{deal.pricePerHeadGBP}/person
               </Button>
             </div>
           </div>

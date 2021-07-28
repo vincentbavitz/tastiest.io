@@ -42,7 +42,7 @@ export function ArticleOrderNowDesktop(props: Props) {
               : '300px',
             maxWidth: isDesktop ? 'unset' : '75vw',
           }}
-          className="relative z-30 pt-2 pb-4 mt-16 bg-white border-4 pointer-events-auto border-secondary-1 rounded-xl"
+          className="relative z-30 pt-2 mt-16 bg-white border-4 pointer-events-auto last:pb-4 border-secondary-1 rounded-xl"
         >
           <h3 className="mb-2 text-xl text-center font-somatic text-primary">
             Get the offer!
@@ -53,7 +53,7 @@ export function ArticleOrderNowDesktop(props: Props) {
               <img src={`${deal?.image?.url}?w=700`} className="object-cover" />
             </div>
 
-            <div className="flex flex-col justify-center pt-3 space-y-3">
+            <div className="flex flex-col justify-center px-2 pt-3 space-y-3">
               <p className="text-base leading-none text-center font-somatic">
                 {deal?.tagline}
               </p>

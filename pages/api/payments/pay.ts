@@ -179,12 +179,22 @@ export default async function pay(
     );
 
     const RESTAURANT_PAYOUT_PC = 0.75;
-    const totalPaymentValue = order.price.final;
-    const restaurantPaymentValue = totalPaymentValue * RESTAURANT_PAYOUT_PC;
-
     const restaurantDataApi = new RestaurantDataApi(
       firebaseAdmin,
       order.deal.restaurant.id,
+    );
+
+    // Internal measurements
+    const calculateTastiestPortion = (gross: number, final: number) => {
+      const portion =
+        order.price.gross * (1 - RESTAURANT_PAYOUT_PC) - (gross - final);
+      return portion;
+    };
+
+    const restaurantPortion = order.price.gross * RESTAURANT_PAYOUT_PC;
+    const tastiestPortion = calculateTastiestPortion(
+      order.price.gross,
+      order.price.final,
     );
 
     const {
@@ -194,7 +204,7 @@ export default async function pay(
 
     // The `confirm` parameter attempts to pay immediately & automatically
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: transformPriceForStripe(totalPaymentValue),
+      amount: transformPriceForStripe(order.price.final),
       currency: 'gbp',
       customer: customerId,
       payment_method: order.paymentMethod,
@@ -203,7 +213,7 @@ export default async function pay(
 
       // Automatically transfer to Connected Account
       transfer_data: {
-        amount: transformPriceForStripe(restaurantPaymentValue),
+        amount: transformPriceForStripe(restaurantPortion),
         destination:
           process.env.NODE_ENV === 'production'
             ? stripeConnectedAccount.id
@@ -236,10 +246,6 @@ export default async function pay(
         { merge: true },
       );
 
-      // Internal measurements
-      const tastiestPortion = order.price.final * 0.25; // TODO -> Subtract PROMO,
-      const restaurantPortion = order.price.final * 0.75;
-
       // Track using Segment's Payment Success schema
       // https://segment.com/docs/connections/spec/ecommerce/v2/#order-completed
       await analytics.track({
@@ -263,7 +269,7 @@ export default async function pay(
           affiliation: '',
           total: order.price.final,
           subtotal: order.price.gross,
-          revenue: order.price.final * 0.25,
+          revenue: tastiestPortion,
           shipping: 0,
           tax: 0,
           discount: 0,

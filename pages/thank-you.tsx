@@ -33,7 +33,7 @@ export const getServerSideProps = async context => {
     };
   }
 
-  // Get order, given our order ID.s
+  // Get order, given our order IDs
   // If the order exists, /api/payments/createNewOrder
   // has already verified that it's valid.
   const orderSnapshot = await db(FirestoreCollection.ORDERS)

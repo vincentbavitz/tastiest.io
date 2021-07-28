@@ -225,7 +225,7 @@ const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
           </p>
 
           <p className="font-medium">
-            — £{order.price.gross - order.price.final}
+            — £{formatCurrency(order.price.gross - order.price.final)}
           </p>
         </div>
       ) : (

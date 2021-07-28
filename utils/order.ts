@@ -14,7 +14,7 @@ export const calculatePromoPrice = (price: number, promo: IPromo): number => {
     const discountGbp = price * (1 - Math.min(promo.discount.value, 100) / 100);
     dlog('createNewOrder ➡️ price:', price);
     dlog('createNewOrder ➡️ discountGbp:', discountGbp);
-    return price - discountGbp;
+    return discountGbp;
   }
 
   return Math.max(0, price - promo?.discount?.value ?? 0);
