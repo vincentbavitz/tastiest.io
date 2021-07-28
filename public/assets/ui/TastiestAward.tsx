@@ -5,8 +5,7 @@ function SvgTastiestAward(props: React.SVGProps<SVGSVGElement>) {
     <svg
       id="tastiest-award_svg__Layer_1"
       data-name="Layer 1"
-      width={249.698}
-      height={238.26}
+      viewBox="0 0 249.698 238.26"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >

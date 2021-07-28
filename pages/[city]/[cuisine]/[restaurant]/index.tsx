@@ -14,6 +14,7 @@ import {
   InferGetStaticPropsType,
 } from 'next';
 import Head from 'next/head';
+import { TastiestAward } from 'public/assets/ui';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useState } from 'react';
 import { getGoogleMapLink } from 'utils/location';
@@ -105,9 +106,9 @@ const RestaurantPage = (
   // prettier-ignore
   const heroIllustrationSizeRem = 
     isHuge ? 80 :
-    isTablet ? 60 :
+    isTablet ? 50 :
     isMobile ? 40 :
-    70;
+    60;
 
   const [mapModalOpen, setMapModalOpen] = useState(false);
 
@@ -117,20 +118,23 @@ const RestaurantPage = (
         <title>{generateTitle(restaurant.name)}</title>
       </Head>
       <div className="relative w-full">
-        <div className="absolute z-10 w-full top-4 mobile:top-8 tablet:top-12 desktop:top-16 leading-0">
-          <h1 className="text-3xl text-center text-primary font-somatic">
-            {restaurant.name}
-          </h1>
-        </div>
+        {isDesktop && (
+          <div className="absolute z-10 w-full top-4 mobile:top-8 tablet:top-12 desktop:top-16 leading-0">
+            <h1 className="text-3xl text-center text-primary font-somatic">
+              {restaurant.name}
+            </h1>
+          </div>
+        )}
 
         <div
-          className="flex justify-center pt-3 mobile:pt-0"
+          className="flex justify-center pt-6 tablet:pt-20"
           style={{ width: '200%', transform: `translateX(-25%)` }}
         >
           <div
             style={{
               width: `${heroIllustrationSizeRem}rem`,
             }}
+            className="flex"
           >
             <img src={restaurant.heroIllustration.url} className="h-full" />
           </div>
@@ -138,24 +142,36 @@ const RestaurantPage = (
       </div>
 
       <Contained maxWidth={900}>
-        <div className="flex w-full">
+        <div className="flex flex-col-reverse w-full pt-10 pb-16 tablet:flex-row">
           <div className="flex flex-col space-y-6">
-            <ArticleFeatureVideoWidget video={restaurant.video} />
+            <div className="pt-6 tablet:pt-0">
+              <ArticleFeatureVideoWidget video={restaurant.video} />
+            </div>
 
             <div>
               <RichBody body={restaurant.description}></RichBody>
             </div>
           </div>
 
-          <div className="flex flex-col pl-8 space-y-2">
-            <h3
-              style={{ minWidth: '10rem' }}
-              className="text-3xl text-primary font-somatic whitespace-nowrap"
-            >
-              {restaurant?.name}
-            </h3>
+          <div className="flex flex-col pl-0 space-y-2 tablet:pl-8">
+            <div className="flex flex-wrap items-end justify-between">
+              <h2
+                style={{ minWidth: '10rem' }}
+                className="text-3xl text-primary font-somatic whitespace-nowrap"
+              >
+                {restaurant?.name}
+              </h2>
 
-            {restaurant.location.displayLocation && (
+              {!isDesktop && restaurant.location.displayLocation && (
+                <div className="">
+                  <LocationIndictor
+                    location={restaurant.location.displayLocation}
+                  />
+                </div>
+              )}
+            </div>
+
+            {isDesktop && restaurant.location.displayLocation && (
               <div className="">
                 <LocationIndictor
                   location={restaurant.location.displayLocation}
@@ -185,28 +201,40 @@ const RestaurantPage = (
               </div>
             </div>
 
-            <div className="pt-6">
-              <p className="mb-1 font-medium border-b border-opacity-10 border-alt-1">
-                Opening Times
-              </p>
-              <div className="text-sm leading-5 text-left">
-                <RichBody
-                  paragraph={{ justify: false, margins: false }}
-                  body={restaurant.tradingHoursText}
-                ></RichBody>
+            <div className="flex flex-row-reverse justify-between tablet:flex-col">
+              <div className="pt-6">
+                <p className="mb-1 font-medium border-b border-opacity-10 border-alt-1">
+                  Opening Times
+                </p>
+                <div className="text-sm leading-5 text-left">
+                  <RichBody
+                    paragraph={{ justify: false, margins: false }}
+                    body={restaurant.tradingHoursText}
+                  ></RichBody>
+                </div>
               </div>
-            </div>
 
-            <div className="flex flex-col pt-6 space-y-4">
-              {tastiestDishes?.map(dish => (
-                <div key={dish.id}>{dish.name}</div>
-              ))}
+              <div className="flex flex-col py-6 space-y-4">
+                {tastiestDishes?.map(dish => (
+                  <div key={dish.id} className="flex items-center">
+                    <TastiestAward className="w-14" />
+                    <div>
+                      <div
+                        style={{ maxWidth: '13rem' }}
+                        className="pl-4 text-xl leading-5 font-somatic text-primary"
+                      >
+                        Best
+                        <br />
+                        {dish.name}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </Contained>
-
-      <div className="pb-64"></div>
 
       <RestaurantMapModal
         restaurant={restaurant}
@@ -222,7 +250,7 @@ const RestaurantPage = (
         <div className="mt-6">
           <CardGrid size="large">
             {posts.map(post => (
-              <ArticleCard key={post.id} {...post} compact />
+              <ArticleCard key={post.id} {...post} />
             ))}
           </CardGrid>
         </div>

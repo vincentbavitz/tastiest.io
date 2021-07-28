@@ -1,4 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
+import { RightOutlined } from '@ant-design/icons';
+import { Button } from '@tastiest-io/tastiest-components';
 import { IPost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import Link from 'next/link';
@@ -21,7 +23,7 @@ export function ArticleCard(props: Props): JSX.Element {
     city,
     cuisine,
     restaurant,
-    deal: { image, dynamicImage },
+    deal,
   } = props;
 
   // const [ref, { width }] = useMeasure();
@@ -52,7 +54,7 @@ export function ArticleCard(props: Props): JSX.Element {
   const [video, state, controls] = useVideo(
     <video
       loop
-      src={dynamicImage.url}
+      src={deal.dynamicImage.url}
       className="object-cover w-full h-full"
     />,
   );
@@ -63,7 +65,7 @@ export function ArticleCard(props: Props): JSX.Element {
         <div
           ref={ref}
           className={classNames(
-            'overflow-hidden w-full bg-secondary bg-opacity-75 no-underline',
+            'overflow-hidden w-full bg-secondary no-underline',
             isSmall || compact ? 'rounded-lg' : 'rounded-xl',
             isSmall ? 'pb-2' : 'pb-1',
           )}
@@ -72,20 +74,34 @@ export function ArticleCard(props: Props): JSX.Element {
             style={{ paddingBottom: '60%' }}
             className="relative w-full h-0 overflow-hidden bg-white bg-opacity-25"
           >
-            {image.url && (
-              <>
-                <div className="absolute inset-0 z-10 pointer-events-none">
-                  {video}
-                </div>
-                <div className="absolute inset-0">
-                  <img
-                    className="object-cover w-full h-full"
-                    src={`${image?.url}?w=700`}
-                    alt={image?.description}
-                  />
-                </div>
-              </>
+            {deal.dynamicImage.url && (
+              <div className="absolute inset-0 z-10 pointer-events-none">
+                {video}
+              </div>
             )}
+
+            {deal.image.url && (
+              <div className="absolute inset-0">
+                <img
+                  className="object-cover w-full h-full"
+                  src={`${deal.image?.url}?w=700`}
+                  alt={deal.image?.description}
+                />
+              </div>
+            )}
+
+            {/* Offer includes items */}
+            <div className="absolute inset-0 z-50 flex flex-col px-3 py-3 space-y-2 text-white font-somatic">
+              {deal.includes.slice(0, 3).map(item => (
+                <div
+                  key={item}
+                  style={{ width: 'fit-content' }}
+                  className="px-2 py-1 text-sm leading-4 bg-opacity-75 rounded-md bg-alt"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className={isSmall || compact ? 'px-3' : 'px-4'}>
@@ -94,24 +110,25 @@ export function ArticleCard(props: Props): JSX.Element {
                 style={{
                   lineHeight: '1.1em',
                   height: '0',
-                  paddingBottom: '2.2em',
+                  paddingBottom: '3.3em',
                 }}
                 className={classNames(
-                  isSmall || compact ? 'text-base' : 'text-lg',
+                  isSmall || compact ? 'text-lg' : 'text-xl',
                   'font-somatic overflow-hidden cursor-pointer hover:underline',
                 )}
               >
                 {title}
               </div>
-
-              {!compact && (
-                <p className="text-base text-gray-700">{description}</p>
-              )}
             </div>
 
-            {/* <div className={classNames('flex space-x-1 mt-1', !isSmall && 'mb-2')}>
-          <TagRow tags={tags} size={compact ? 'small' : 'medium'} limit={3} />
-        </div> */}
+            <div className="pb-2">
+              <Button
+                wide
+                suffix={<RightOutlined className="text-xl text-white" />}
+              >
+                From £{deal.pricePerHeadGBP}/person
+              </Button>
+            </div>
           </div>
         </div>
       </a>
