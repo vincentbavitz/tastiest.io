@@ -12,6 +12,7 @@ import { SuggestRestaurant } from 'components/SuggestRestaurant';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
 import { LookingIllustration } from 'public/assets/illustrations';
 import React from 'react';
 import { CardGrid } from '../../../components/cards/CardGrid';
@@ -168,49 +169,46 @@ const NoPostsForCuisine = ({
 
 const CuisineHero = ({ cuisine }: { cuisine: ICuisine }) => {
   const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
-  const isLargeDesktop = isHuge;
-  const isRegularDesktop = isDesktop && !isHuge;
 
-  const desktopIllustrationLocation = `/assets/cuisine-pages/${cuisine?.name
-    .replace(' ', '-')
-    .toLowerCase()}-hero-desktop.svg`;
+  const desktopH = 713;
+  const desktopW = 1450;
+  const desktopHPc = 100 * (desktopH / desktopW);
 
-  const mobileIllustrationLocation = `/assets/cuisine-pages/${cuisine?.name
+  const mobileH = 713;
+  const mobileW = 1300;
+  const mobileHPc = 100 * (mobileH / mobileW);
+
+  const src = `/assets/cuisine-pages/${cuisine?.name
     .replace(' ', '-')
-    .toLowerCase()}-hero-mobile.svg`;
+    .toLowerCase()}-hero-${isMobile ? 'mobile' : 'desktop'}.svg`;
+
+  const CuisineImage = () => {
+    const sizeMultipler = isMobile ? 1.33 : isTablet ? 1.5 : 1;
+    const width = `${100 * sizeMultipler}%`;
+    const minWidth = isMobile ? '325px' : 'auto';
+    const transform = `translateX(${sizeMultipler > 1 ? '-15%' : '0%'})`;
+    const paddingBottom = `${
+      (isMobile ? mobileHPc : desktopHPc) * sizeMultipler
+    }%`;
+
+    return (
+      <div
+        className="relative h-px mobile:mt-10"
+        style={{ width, minWidth, paddingBottom, transform }}
+      >
+        <Image src={src} priority={true} objectFit="cover" layout="fill" />
+      </div>
+    );
+  };
 
   return (
     <div>
-      {isLargeDesktop && (
+      {isHuge ? (
         <Contained maxWidth={933}>
-          <img src={desktopIllustrationLocation} className="w-full pt-6" />
+          <CuisineImage />
         </Contained>
-      )}
-
-      {isRegularDesktop && (
-        <img src={desktopIllustrationLocation} className="w-full" />
-      )}
-
-      {isTablet && (
-        <img
-          src={desktopIllustrationLocation}
-          style={{
-            width: '150%',
-            transform: `translateX(-15%)`,
-          }}
-        />
-      )}
-
-      {isMobile && (
-        <div
-          style={{
-            width: '133%',
-            transform: `translateX(-15%)`,
-          }}
-          className="relative mt-10"
-        >
-          <img src={mobileIllustrationLocation} className="w-full" />
-        </div>
+      ) : (
+        <CuisineImage />
       )}
     </div>
   );
