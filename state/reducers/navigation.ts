@@ -38,6 +38,9 @@ export const navigationReducer = (
     case NavigationActions.TOGGLE_OFFER_MENU_MODAL: {
       return { ...state, isOfferMenuOpen: action.payload };
     }
+    case NavigationActions.TOGGLE_ARTICLE_HIW_MODAL: {
+      return { ...state, isArticleHiwOpen: action.payload };
+    }
     default:
       return state;
   }

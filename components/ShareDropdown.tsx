@@ -2,6 +2,7 @@ import {
   Button,
   Dropdown,
   DropdownItem,
+  Input,
 } from '@tastiest-io/tastiest-components';
 import useShareArticle, {
   IUseShareArticle,
@@ -36,26 +37,26 @@ export const ShareDropdown = (props: IShareDropdownProps) => {
   const [_, copyToClipboard] = useCopyToClipboard();
 
   const items: Array<IShareDropdownItems> = [
-    {
-      id: 'share-to-facebook',
-      name: 'Facebook',
-      onClick: shareToFacebook,
-    },
-    {
-      id: 'share-to-twitter',
-      name: 'Twitter',
-      onClick: shareToTwitter,
-    },
-    {
-      id: 'share-to-whatsapp',
-      name: 'WhatsApp',
-      onClick: shareToWhatsApp,
-    },
-    {
-      id: 'share-to-reddit',
-      name: 'Reddit',
-      onClick: shareToReddit,
-    },
+    // {
+    //   id: 'share-to-facebook',
+    //   name: 'Facebook',
+    //   onClick: shareToFacebook,
+    // },
+    // {
+    //   id: 'share-to-twitter',
+    //   name: 'Twitter',
+    //   onClick: shareToTwitter,
+    // },
+    // {
+    //   id: 'share-to-whatsapp',
+    //   name: 'WhatsApp',
+    //   onClick: shareToWhatsApp,
+    // },
+    // {
+    //   id: 'share-to-reddit',
+    //   name: 'Reddit',
+    //   onClick: shareToReddit,
+    // },
   ];
 
   return (
@@ -87,6 +88,8 @@ export const ShareDropdown = (props: IShareDropdownProps) => {
                 COPY
               </Button>
             </InputGroup>
+
+            <Input color="secondary"></Input>
           </div>
 
           {items.map(item => (

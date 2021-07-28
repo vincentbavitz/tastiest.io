@@ -1,5 +1,6 @@
 import { IPost } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
+import ArticleHowItWorksModal from 'components/ArticleHowItWorksModal';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useRef } from 'react';
 import Sticky from 'react-stickynode';
@@ -28,6 +29,7 @@ function ArticleMobile(post: IPost) {
 
       <ArticleSectionAbstract {...post} />
       <ArticleSectionContent {...post} />
+      <ArticleHowItWorksModal />
     </article>
   );
 }
@@ -39,7 +41,6 @@ function ArticleDesktop(post: IPost) {
   // Whether or not we follow scroll or remain in place
   const refOrderNowSection = useRef(null);
   const refContentSection = useRef(null);
-
   const { y: windowScrollY } = useWindowScroll();
 
   const contentRects = refContentSection?.current?.getBoundingClientRect();
@@ -86,6 +87,8 @@ function ArticleDesktop(post: IPost) {
         <div ref={refContentSection}>
           <ArticleSectionContent {...post} />
         </div>
+
+        <ArticleHowItWorksModal />
       </article>
     </div>
   );

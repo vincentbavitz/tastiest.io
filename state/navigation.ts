@@ -5,6 +5,7 @@ export enum ModalInstance {
 export interface INavigation {
   searchOverlayExpanded: boolean;
   isAuthModalOpen: boolean;
+  isArticleHiwOpen: boolean;
   isOfferMenuOpen: boolean;
   cuisineBarScrollPos: number;
   openedModal: ModalInstance | null;
@@ -16,6 +17,7 @@ export const initialNavigationState: INavigation = {
   openedModal: null,
   isOfferMenuOpen: false,
   isAuthModalOpen: false,
+  isArticleHiwOpen: false,
 };
 
 export enum NavigationActions {
@@ -27,6 +29,7 @@ export enum NavigationActions {
   SAVE_CUISINE_BAR_SCROLL_POS = 'SAVE_CUISINE_BAR_SCROLL_POS',
   SET_MODAL_IS_OPEN = 'SET_MODAL_IS_OPEN',
   TOGGLE_OFFER_MENU_MODAL = 'TOGGLE_OFFER_MENU_MODAL', // menu on article page
+  TOGGLE_ARTICLE_HIW_MODAL = 'TOGGLE_ARTICLE_HIW_MODAL', // how it works modal on article page
 }
 
 // ////////////////////////////// //
@@ -65,5 +68,10 @@ export const setCurrentOpenModal = (isOpen: boolean) => ({
 
 export const toggleOfferMenu = (isOpen: boolean) => ({
   type: NavigationActions.TOGGLE_OFFER_MENU_MODAL,
+  payload: isOpen,
+});
+
+export const toggleHiwModal = (isOpen: boolean) => ({
+  type: NavigationActions.TOGGLE_ARTICLE_HIW_MODAL,
   payload: isOpen,
 });

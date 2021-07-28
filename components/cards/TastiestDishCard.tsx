@@ -50,10 +50,9 @@ export default function TastiestDishCard(props: Props) {
         <div
           ref={ref}
           className={clsx(
-            'overflow-hidden w-full bg-secondary bg-opacity-75 no-underline',
+            'overflow-hidden w-full no-underline',
             'border-4 border-secondary border-opacity-75',
-            isSmall || compact ? 'rounded-lg' : 'rounded-xl',
-            isSmall ? 'pb-2' : 'pb-1',
+            'rounded-xl',
           )}
         >
           <div className={clsx('h-12 bg-white')}>
@@ -66,11 +65,11 @@ export default function TastiestDishCard(props: Props) {
 
           <div
             style={{ paddingBottom: '100%' }}
-            className="relative w-full h-0 overflow-hidden bg-white bg-opacity-25"
+            className="relative w-full h-0 overflow-hidden bg-white"
           >
             {image.url && (
               <>
-                <div className="absolute inset-0 z-10 pointer-events-none">
+                <div className="absolute inset-0 z-10 pointer-events-none ">
                   {video}
                 </div>
                 <div className="absolute inset-0">
@@ -82,24 +81,19 @@ export default function TastiestDishCard(props: Props) {
                 </div>
               </>
             )}
-          </div>
 
-          <div className={isSmall || compact ? 'px-3' : 'px-4'}>
-            <div className={isSmall ? 'py-2' : 'py-3'}>
-              <div
-                style={{
-                  lineHeight: '1.1em',
-                  height: '0',
-                  paddingBottom: '2.2em',
-                }}
-                className={clsx(
-                  isSmall || compact ? 'text-base' : 'text-lg',
-                  'font-somatic overflow-hidden cursor-pointer hover:underline',
-                )}
-              >
-                {name}
-              </div>
+            <div
+              style={{
+                // filter: 'drop-shadow(0px 0px 2px rgba(0,0,0, 1))',
+                boxShadow: '0px 8px 14px 11px rgba(0,0,0,0.75)',
+              }}
+              className="absolute bottom-0 z-10 flex items-center justify-center w-full leading-4 text-center text-white bg-black bg-opacity-50 pointer-events-none font-somatic"
+            >
+              <div className="px-2 py-3">{name}</div>
             </div>
+
+            {/* White overlay on hover */}
+            <div className="absolute inset-0 z-10 duration-300 bg-white bg-opacity-0 hover:bg-opacity-10"></div>
           </div>
         </div>
       </a>

@@ -9,7 +9,6 @@ import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Contained } from '../Contained';
 import { HeaderAvatar } from './HeaderAvatar';
-import { HeaderSavedPlaces } from './HeaderSavedPlaces';
 import { HeaderSearch } from './HeaderSearch';
 
 export function Header() {
@@ -120,7 +119,7 @@ function DesktopHeader() {
                 }}
               />
             </div>
-            <HeaderSavedPlaces />
+            {/* <HeaderSavedPlaces /> */}
             <HeaderAvatar />
           </div>
         </div>

@@ -1,8 +1,4 @@
-import {
-  HeartFilledIcon,
-  HeartIcon,
-  ShareIcon,
-} from '@tastiest-io/tastiest-icons';
+import { ShareIcon } from '@tastiest-io/tastiest-icons';
 import { IPost } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { ShareDropdown } from 'components/ShareDropdown';
@@ -72,7 +68,7 @@ export function ArticleSaveShareWidget(props: IPost) {
             style={{ width: 'fit-content' }}
             className="flex my-4 rounded-md cursor-pointer bg-soft text-primary"
           >
-            <div
+            {/* <div
               onClick={() => toggleSaveArticle(props.slug)}
               className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 cursor-pointer hover:bg-white rounded-l-md"
             >
@@ -92,10 +88,10 @@ export function ArticleSaveShareWidget(props: IPost) {
                 />
               )}
               <span>Save</span>
-            </div>
+            </div> */}
 
             <div
-              className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 cursor-pointer hover:bg-white rounded-r-md"
+              className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 rounded-md cursor-pointer hover:bg-white"
               onClick={() => setIsDropdownOpen(true)}
             >
               <ShareIcon
@@ -155,17 +151,12 @@ function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
         </p>
 
         <div className="flex items-center mt-1 space-x-4">
-          {isArticleSaved ? (
-            <HeartFilledIcon
-              onClick={() => toggleSaveArticle(slug)}
-              className="h-5 cursor-pointer"
-            />
-          ) : (
+          {/* {isArticleSaved ? ( // /> //   className="h-5 cursor-pointer" //   onClick={() => toggleSaveArticle(slug)} // <HeartFilledIcon
             <HeartIcon
               onClick={() => toggleSaveArticle(slug)}
               className="h-6 cursor-pointer fill-current text-primary"
             />
-          )}
+          )} */}
 
           <ShareIcon
             onClick={() => setIsDropdownOpen(true)}

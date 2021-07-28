@@ -1,9 +1,5 @@
 import { Dropdown, DropdownItem } from '@tastiest-io/tastiest-components';
-import {
-  BookmarkIcon,
-  HeartIcon,
-  RightArrowIcon,
-} from '@tastiest-io/tastiest-icons';
+import { BookmarkIcon, RightArrowIcon } from '@tastiest-io/tastiest-icons';
 import { dlog, SVG, titleCase } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useSignOut } from 'hooks/auth/useSignOut';
@@ -49,13 +45,13 @@ export function HeaderAvatar() {
   }, [router.pathname]);
 
   const signedInDropdownItems: Array<IProfileDropdownItems> = [
-    {
-      id: 'saved-places',
-      name: 'Saved Places',
-      href: '/favourites',
-      isSelected: false,
-      icon: HeartIcon,
-    },
+    // {
+    //   id: 'saved-places',
+    //   name: 'Saved Places',
+    //   href: '/favourites',
+    //   isSelected: false,
+    //   icon: HeartIcon,
+    // },
     {
       id: 'preferences',
       name: 'Preferences',

@@ -15,6 +15,7 @@ export function ArticleWidgetMap({ location, restaurant }: Props) {
     lat: restaurant.location.lat,
     lng: restaurant.location.lon,
     zoom: 16,
+    pitch: 10,
     markers: [
       {
         lat: restaurant.location.lat,
@@ -27,6 +28,7 @@ export function ArticleWidgetMap({ location, restaurant }: Props) {
     'ArticleWidgetMap ➡️ restaurant.location.lat;:',
     restaurant.location.lat,
   );
+
   dlog(
     'ArticleWidgetMap ➡️  restaurant.location.lon:',
     restaurant.location.lon,
