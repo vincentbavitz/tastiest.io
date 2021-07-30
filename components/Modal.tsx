@@ -1,10 +1,18 @@
 import { ExitIcon } from '@tastiest-io/tastiest-icons';
 import { dlog } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
+import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, {
+  BaseSyntheticEvent,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useClickAway, useKey } from 'react-use';
+import { useKey } from 'react-use';
 import { UI } from '../constants';
 import { closeAuthModal, collapseSearchOverlay } from '../state/navigation';
 import { IState } from '../state/reducers';
@@ -49,11 +57,13 @@ export function Modal(props: Props) {
     close();
   });
 
-  useClickAway(boxRef, () => {
-    dispatch(closeAuthModal());
-    close();
-  });
-  // useLockBodyScroll(isOpen);
+  // Close when the user clicks outside the modal.
+  const containerId = `modal-container-${modalId}`;
+  const onClickedAway = (e: BaseSyntheticEvent) => {
+    if (e.target.id === containerId) {
+      close();
+    }
+  };
 
   useEffect(() => {
     // If modal is open, close search overlay
@@ -69,22 +79,30 @@ export function Modal(props: Props) {
     }
   }, []);
 
-  if (!isOpen || !shouldRender) {
-    return null;
-  }
-
   const padding =
     onMobileFullscreen && isMobile ? 0 : UI.PAGE_CONTAINED_PADDING_VW;
 
-  return (
+  if (typeof document === 'undefined') {
+    return null;
+  }
+
+  return ReactDOM.createPortal(
     <div
+      id={containerId}
       ref={ref}
       style={{
         zIndex: UI.Z_INDEX_MODAL_OVERLAY,
         paddingLeft: `${padding}vw`,
         paddingRight: `${padding}vw`,
       }}
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-25"
+      className={clsx(
+        'fixed inset-0 flex items-center justify-center bg-black bg-opacity-25',
+        'transition-opacity duration-300',
+        isOpen && shouldRender
+          ? 'opacity-100 pointer-events-auto'
+          : 'opacity-0 pointer-events-none',
+      )}
+      onClick={e => onClickedAway(e)}
     >
       <div
         ref={boxRef}
@@ -108,6 +126,7 @@ export function Modal(props: Props) {
         </div>
         {children}
       </div>
-    </div>
+    </div>,
+    document.getElementById('modal-root'),
   );
 }

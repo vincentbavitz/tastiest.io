@@ -28,9 +28,7 @@ const MobileContent = (post: IPost) => (
 
     <div className="flex items-center justify-center pb-4 mt-4 space-x-4 mobile:justify-between">
       <CovidAware className="hidden h-10 mobile:block" />
-      {post.menuImage && (
-        <OpenMenuButton menu={post.menuImage}>Open Menu</OpenMenuButton>
-      )}
+      {post.menuImage && <OpenMenuButton>Open Menu</OpenMenuButton>}
     </div>
 
     <div className="flex flex-col space-y-4">
@@ -61,9 +59,7 @@ const DesktopContent = (post: IPost) => {
 
       <div className="flex items-center justify-between mt-4 space-x-4">
         <CovidAware className="h-10" />
-        {post.menuImage && (
-          <OpenMenuButton menu={post.menuImage}>Open Menu</OpenMenuButton>
-        )}
+        {post.menuImage && <OpenMenuButton>Open Menu</OpenMenuButton>}
       </div>
 
       <div className="flex flex-col mt-4 space-y-6">

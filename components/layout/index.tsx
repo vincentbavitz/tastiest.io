@@ -18,7 +18,11 @@ export default function Layout({ children }: Props) {
   return (
     <>
       <PageLoader />
-      <AuthModal />
+
+      {/* Modals */}
+      <div id="modal-root">
+        <AuthModal />
+      </div>
 
       <div
         style={{ minHeight: '100vh' }}

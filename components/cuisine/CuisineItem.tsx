@@ -25,7 +25,7 @@ export function CuisineItem(props: Props) {
 
   return (
     <Link href={href} as={as}>
-      <a className="hover:no-underline">
+      <a className="no-underline">
         <div
           className="flex py-6 mx-2 mt-1 cursor-pointer tablet:py-4 tablet:mt-0"
           onClick={handleOnClick}

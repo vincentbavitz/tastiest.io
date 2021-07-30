@@ -8,14 +8,14 @@ import { SearchOverlayInner } from './SearchOverlayInner';
 interface Props {
   isShown: boolean;
   innerOverlayStyle?: CSSProperties;
+  theme?: 'primary' | 'secondary';
 }
 
-export function SearchDropdown({ isShown, innerOverlayStyle = {} }: Props) {
+export function SearchDropdown(props: Props) {
+  const { theme = 'primary', isShown, innerOverlayStyle } = props;
+
   const { searchOverlayExpanded } = useSelector(
     (state: IState) => state.navigation,
-  );
-  const { searchBarPinnedToHeader } = useSelector(
-    (state: IState) => state.search,
   );
 
   const overlayContentRef = useRef(null);
@@ -43,7 +43,7 @@ export function SearchDropdown({ isShown, innerOverlayStyle = {} }: Props) {
             'border-b-2',
             'rounded-b-lg',
             'pb-4',
-            searchBarPinnedToHeader ? 'border-secondary' : 'border-primary',
+            theme === 'primary' ? 'border-primary' : 'border-secondary',
           )}
         >
           <div

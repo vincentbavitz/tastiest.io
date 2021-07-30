@@ -1,8 +1,8 @@
+import { Modal } from 'components/Modal';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleHiwModal } from 'state/navigation';
 import { IState } from 'state/reducers';
-import { Modal } from './Modal';
 
 export default function ArticleHowItWorksModal() {
   // Article How-It-Works overlay
@@ -11,7 +11,7 @@ export default function ArticleHowItWorksModal() {
 
   return (
     <Modal
-      modalId="article-hiw-modal"
+      modalId="HOW_IT_WORKS"
       isOpen={isArticleHiwOpen}
       close={() => dispatch(toggleHiwModal(false))}
       noPadding

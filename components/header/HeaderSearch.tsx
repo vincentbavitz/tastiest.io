@@ -56,6 +56,7 @@ export function HeaderSearch({ isShown, innerOverlayStyle = {} }: Props) {
 
       <div className="h-0">
         <SearchDropdown
+          theme="secondary"
           isShown={isShown}
           innerOverlayStyle={innerOverlayStyle}
         />

@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 import { Contained } from './Contained';
-import { Footer } from './Footer';
 
 export interface ILegalSection {
   title: string | null;
@@ -42,7 +41,6 @@ export const LegalPage = (props: LegalPageProps) => {
           ))}
         </div>
       </Contained>
-      <Footer />
     </>
   );
 };

@@ -22,7 +22,7 @@ const nextConfig = {
     fs: false,
   },
   images: {
-    domains: ['images.cfassets.net'],
+    domains: ['images.cfassets.net', 'images.ctfassets.net'],
   },
 };
 
