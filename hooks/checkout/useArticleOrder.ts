@@ -3,9 +3,9 @@ import {
   formatCurrency,
   IDeal,
   IOrderRequest,
-  postFetch,
 } from '@tastiest-io/tastiest-utils';
 import { useAuth } from 'hooks/auth/useAuth';
+import usePostFetch from 'hooks/usePostFetch';
 import { useRouter } from 'next/router';
 import {
   CreateNewOrderParams,
@@ -13,7 +13,6 @@ import {
 } from 'pages/api/payments/createNewOrder';
 import { useState } from 'react';
 import { LocalEndpoint } from 'types/api';
-import { BASE_URL } from 'utils/redirects';
 
 export const useArticleOrder = (deal: IDeal, fromSlug: string) => {
   const { user } = useAuth();
@@ -21,6 +20,11 @@ export const useArticleOrder = (deal: IDeal, fromSlug: string) => {
 
   const [heads, setHeads] = useState<number>(1);
   const totalPrice = formatCurrency(Number(heads) * deal?.pricePerHeadGBP);
+
+  const { error, execute, success, submitting } = usePostFetch<
+    CreateNewOrderParams,
+    CreateNewOrderReturn
+  >(LocalEndpoint.CREATE_NEW_ORDER, { retries: 1 });
 
   const submit = async () => {
     const orderRequest: IOrderRequest = {
@@ -37,10 +41,7 @@ export const useArticleOrder = (deal: IDeal, fromSlug: string) => {
     const {
       data: { token },
       error,
-    } = await postFetch<CreateNewOrderParams, CreateNewOrderReturn>(
-      BASE_URL + LocalEndpoint.CREATE_NEW_ORDER,
-      orderRequest,
-    );
+    } = await execute(orderRequest);
 
     dlog('useArticleOrder ➡️ orderRequest:', orderRequest);
     dlog('useArticleOrder ➡️ token:', token);
@@ -54,5 +55,5 @@ export const useArticleOrder = (deal: IDeal, fromSlug: string) => {
     return;
   };
 
-  return { totalPrice, heads, setHeads, submit };
+  return { totalPrice, heads, setHeads, submit, submitting, success, error };
 };

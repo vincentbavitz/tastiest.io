@@ -55,9 +55,12 @@ export default function TastiestDishCard(props: Props) {
             'rounded-xl',
           )}
         >
-          <div className={clsx('h-12 bg-white')}>
+          <div
+            className={clsx('h-16 flex justify-center relative py-2 bg-white')}
+          >
             <img
               className="object-contain w-full h-full"
+              style={{ maxWidth: '50%' }}
               src={`${restaurant.profilePicture.url}?w=300`}
               alt={restaurant.profilePicture.description}
             />

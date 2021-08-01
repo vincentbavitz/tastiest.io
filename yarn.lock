@@ -1355,6 +1355,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.8.7":
+  version "7.14.8"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.8.tgz#7119a56f421018852694290b9f9148097391b446"
+  integrity sha512-twj3L8Og5SaCRCErB4x4ajbvBIVV77CGeFglHpeg5WC5FF8TZzBWXtTJ4MqaD9QszLYTtr+IsaAL2rEUevb+eg==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.12.13", "@babel/template@^7.3.3":
   version "7.12.13"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.12.13.tgz#530265be8a2589dbb37523844c5bcb55947fb327"
@@ -2888,10 +2895,10 @@
   dependencies:
     mini-svg-data-uri "^1.2.3"
 
-"@tastiest-io/tastiest-components@^0.58.0":
-  version "0.58.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.58.0/8a6179d2ba18aa282fe7c5ed01ac4f697038cce7f78161220b833b8be2c0add9#7474b27086f876ade9f75551ac2b661b9c1167f9"
-  integrity sha512-shIx5qysH2rhFQSVKfTt725BR+EP1e6SyKJG2Z54RqyyYq0KwrYNiHCwhqFxzYINoWbSYOXPR986xCociEwYwA==
+"@tastiest-io/tastiest-components@^0.61.0":
+  version "0.61.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-components/0.61.0/d50b0d2f61a13d1314764c142bf756be3fba8a5a9133c7fd20d49b2972102ba2#15abde6cee26904ea6e98fae6db13a4508df5e51"
+  integrity sha512-F1efTufJCiLGWsWPepoX9SdusRQRgBWCsDwz/W/OKPKJ5Vhw0DqM0+dTmUp2oVemwt0JIjKILphIB8a3jOempg==
   dependencies:
     "@ant-design/icons" "^4.6.2"
     "@nivo/core" "^0.72.0"
@@ -2900,6 +2907,7 @@
     "@tailwindcss/aspect-ratio" "^0.2.0"
     "@tastiest-io/tastiest-icons" "^0.19.0"
     postcss-cli "^8.3.1"
+    react-transition-group "^4.4.2"
     react-use "^17.2.3"
     storybook "^6.2.9"
     styled-components "^5.2.3"
@@ -6579,6 +6587,14 @@ dom-accessibility-api@^0.5.4:
   version "0.5.4"
   resolved "https://registry.yarnpkg.com/dom-accessibility-api/-/dom-accessibility-api-0.5.4.tgz#b06d059cdd4a4ad9a79275f9d414a5c126241166"
   integrity sha512-TvrjBckDy2c6v6RLxPv5QXOnU+SmF9nBII5621Ve5fu6Z/BDrENurBEvlC1f44lKEUVqOpK4w9E5Idc5/EgkLQ==
+
+dom-helpers@^5.0.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-5.2.1.tgz#d9400536b2bf8225ad98fe052e029451ac40e902"
+  integrity sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==
+  dependencies:
+    "@babel/runtime" "^7.8.7"
+    csstype "^3.0.2"
 
 dom-serializer@0:
   version "0.2.2"
@@ -12149,7 +12165,7 @@ prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@15.7.2, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.7.2:
+prop-types@15.7.2, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -12537,6 +12553,16 @@ react-stickynode@^3.0.5:
     prop-types "^15.6.0"
     shallowequal "^1.0.0"
     subscribe-ui-event "^2.0.6"
+
+react-transition-group@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.2.tgz#8b59a56f09ced7b55cbd53c36768b922890d5470"
+  integrity sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    dom-helpers "^5.0.1"
+    loose-envify "^1.4.0"
+    prop-types "^15.6.2"
 
 react-universal-interface@^0.6.2:
   version "0.6.2"

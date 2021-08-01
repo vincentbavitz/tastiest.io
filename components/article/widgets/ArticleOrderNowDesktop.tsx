@@ -18,10 +18,14 @@ interface Props {
 
 export function ArticleOrderNowDesktop(props: Props) {
   const { deal, slug: fromSlug } = props;
-  const { totalPrice, heads, setHeads, submit } = useArticleOrder(
-    deal,
-    fromSlug,
-  );
+  const {
+    totalPrice,
+    heads,
+    setHeads,
+    submit,
+    submitting,
+    error,
+  } = useArticleOrder(deal, fromSlug);
 
   const dispatch = useDispatch();
   const { isDesktop } = useScreenSize();
@@ -126,8 +130,9 @@ export function ArticleOrderNowDesktop(props: Props) {
 
             <Button
               wide
-              onClick={submit}
               type="solid"
+              onClick={submit}
+              loading={submitting}
               className="text-base font-somatic"
             >
               Buy now

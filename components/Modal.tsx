@@ -82,7 +82,10 @@ export function Modal(props: Props) {
   const padding =
     onMobileFullscreen && isMobile ? 0 : UI.PAGE_CONTAINED_PADDING_VW;
 
-  if (typeof document === 'undefined') {
+  if (
+    typeof document === 'undefined' ||
+    !document.getElementById('modal-root')
+  ) {
     return null;
   }
 

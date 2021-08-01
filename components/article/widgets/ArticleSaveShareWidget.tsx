@@ -63,12 +63,13 @@ export function ArticleSaveShareWidget(props: IPost) {
       )}
 
       <div ref={ref} className="flex flex-col items-center pt-16 tablet:pt-0">
-        <div className="z-10 flex justify-center w-full">
-          <div
-            style={{ width: 'fit-content' }}
-            className="flex my-4 rounded-md cursor-pointer bg-soft text-primary"
-          >
-            {/* <div
+        <div>
+          <div className="z-10 flex justify-center w-full">
+            <div
+              style={{ width: 'fit-content' }}
+              className="relative flex my-4 rounded-md cursor-pointer bg-soft text-primary"
+            >
+              {/* <div
               onClick={() => toggleSaveArticle(props.slug)}
               className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 cursor-pointer hover:bg-white rounded-l-md"
             >
@@ -90,30 +91,31 @@ export function ArticleSaveShareWidget(props: IPost) {
               <span>Save</span>
             </div> */}
 
-            <div
-              className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 rounded-md cursor-pointer hover:bg-white"
-              onClick={() => setIsDropdownOpen(true)}
-            >
-              <ShareIcon
-                className={clsx(
-                  'text-primary fill-current',
-                  isDesktop ? 'h-5' : 'h-5',
-                )}
-              />
-              <span>Share</span>
+              <div
+                className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 rounded-md cursor-pointer hover:bg-white"
+                onClick={() => setIsDropdownOpen(true)}
+              >
+                <ShareIcon
+                  className={clsx(
+                    'text-primary fill-current',
+                    isDesktop ? 'h-5' : 'h-5',
+                  )}
+                />
+                <span>Share</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <ShareDropdown
-          title={props.title}
-          city={props.city}
-          cuisine={props.cuisine}
-          restaurant={props.restaurant.uriName}
-          slug={props.slug}
-          isOpen={isDropdownOpen}
-          setIsOpen={setIsDropdownOpen}
-        />
+          <ShareDropdown
+            title={props.title}
+            city={props.city}
+            cuisine={props.cuisine}
+            restaurant={props.restaurant.uriName}
+            slug={props.slug}
+            isOpen={isDropdownOpen}
+            setIsOpen={setIsDropdownOpen}
+          />
+        </div>
       </div>
     </>
   );

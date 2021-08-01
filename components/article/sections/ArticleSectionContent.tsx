@@ -36,6 +36,9 @@ const MobileContent = (post: IPost) => (
 
       {/* <ArticleSectionFeatureImage featureImage={post?.featureImage} /> */}
 
+      <RichBody body={post.body} />
+      <AuxiliaryDivider url={post?.offerDivider?.url} />
+
       <ArticleSectionOfferBreakdown {...post.deal} />
 
       <ArticleWidgetMap
@@ -43,8 +46,6 @@ const MobileContent = (post: IPost) => (
         restaurant={post.restaurant}
       />
 
-      <RichBody body={post.body} />
-      <AuxiliaryDivider url={post?.offerDivider?.url} />
       <ArticleSectionNeedToKnow body={post.needToKnow} />
     </div>
   </Contained>
@@ -65,15 +66,16 @@ const DesktopContent = (post: IPost) => {
       <div className="flex flex-col mt-4 space-y-6">
         <div className="">{post?.description}</div>
 
-        <ArticleSectionOfferBreakdown {...post.deal} />
+        <RichBody body={post.body} />
 
+        <AuxiliaryDivider url={post?.offerDivider?.url} />
+
+        <ArticleSectionOfferBreakdown {...post.deal} />
         <ArticleWidgetMap
           location={post.displayLocation}
           restaurant={post.restaurant}
         />
 
-        <RichBody body={post.body} />
-        <AuxiliaryDivider url={post?.offerDivider?.url} />
         <ArticleSectionNeedToKnow body={post.needToKnow} />
       </div>
     </ArticleContained>
@@ -81,7 +83,7 @@ const DesktopContent = (post: IPost) => {
 };
 
 const AuxiliaryDivider = ({ url }: { url: string }) => (
-  <div className="flex items-center justify-center h-24 pb-10 -mt-20 space-x-10 desktop:h-56 desktop:-mt-32">
+  <div className="flex items-center justify-center h-24 pt-6 pb-10 -mt-20 space-x-10 desktop:h-56 desktop:-mt-32">
     <div className="flex-1 border-b-2 border-secondary"></div>
     <img src={url} className="h-20" />
     <div className="flex-1 border-b-2 border-secondary"></div>
