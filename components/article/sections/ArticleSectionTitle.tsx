@@ -181,13 +181,13 @@ const HowItWorksSpriteMobile = () => {
   const dispatch = useDispatch();
 
   return (
-    <div
-      style={{ filter: 'drop-shadow(0px 2px 10px #FFFFFF)' }}
-      className="relative z-50 flex flex-col items-end pr-4 ml-8"
-    >
+    <div className="relative z-50 flex flex-col items-end pr-4 ml-8">
       <SvgHowItWorksSpriteMobile className="w-full" />
 
-      <div style={{ width: '72.5%', minWidth: '7rem' }} className="pt-2 mr-2">
+      <div
+        style={{ width: '72.5%', minWidth: '7.33rem' }}
+        className="pt-2 pb-2 pl-2 mr-2 bg-white rounded-xl"
+      >
         {/* Custom buttom so we can scale the width with the SVG */}
         <div
           role="button"

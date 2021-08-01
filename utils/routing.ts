@@ -1,7 +1,7 @@
 interface IGenerateURLParams {
   city: string;
   cuisine: string;
-  restaurant?: string;
+  restaurant?: string; // uri name
   slug?: string;
 }
 

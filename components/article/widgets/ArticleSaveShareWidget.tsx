@@ -3,6 +3,7 @@ import { IPost } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { ShareDropdown } from 'components/ShareDropdown';
 import { useFavouriteArticle } from 'hooks/article/useFavouriteArticle';
+import useShareArticle from 'hooks/article/useShareArticle';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useEffect, useRef, useState } from 'react';
 import { useIntersection, useWindowScroll } from 'react-use';
@@ -40,6 +41,14 @@ const useSaveShareGeometry = () => {
 export function ArticleSaveShareWidget(props: IPost) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { isDesktop } = useScreenSize();
+
+  const { share } = useShareArticle(
+    {
+      ...props,
+      restaurant: props.restaurant.uriName,
+    },
+    { onNoNativeShare: () => setIsDropdownOpen(true) },
+  );
 
   const { savedArticles, toggleSaveArticle } = useFavouriteArticle();
   const isArticleSaved = savedArticles.some(slug => slug === props.slug);
@@ -93,7 +102,7 @@ export function ArticleSaveShareWidget(props: IPost) {
 
               <div
                 className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 rounded-md cursor-pointer hover:bg-white"
-                onClick={() => setIsDropdownOpen(true)}
+                onClick={() => share()}
               >
                 <ShareIcon
                   className={clsx(
@@ -139,6 +148,13 @@ function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
   } = props;
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { share } = useShareArticle(
+    {
+      ...props,
+      restaurant: props.restaurant.uriName,
+    },
+    { onNoNativeShare: () => setIsDropdownOpen(true) },
+  );
 
   return (
     <div
@@ -161,7 +177,7 @@ function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
           )} */}
 
           <ShareIcon
-            onClick={() => setIsDropdownOpen(true)}
+            onClick={() => share()}
             className="h-6 cursor-pointer fill-current text-primary"
           />
         </div>

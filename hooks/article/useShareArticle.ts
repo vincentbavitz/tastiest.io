@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { BASE_URL } from 'utils/redirects';
 import { generateStaticURL } from 'utils/routing';
 
-export interface IUseShareArticle {
+export interface IUseShareArticleParams {
   title: string;
   city: string;
   slug: string;
@@ -10,13 +10,18 @@ export interface IUseShareArticle {
   restaurant: string;
 }
 
-const useShareArticle = ({
-  title,
-  city,
-  slug,
-  cuisine,
-  restaurant,
-}: IUseShareArticle) => {
+export interface IUseShareArticleOptions {
+  // When there is no native sharing functionality (usually desktop)
+  onNoNativeShare?: (url: URL) => void;
+}
+
+const useShareArticle = (
+  params: IUseShareArticleParams,
+  options?: IUseShareArticleOptions,
+) => {
+  const { title, city, slug, cuisine, restaurant } = params;
+  const { onNoNativeShare } = options ?? {};
+
   const { as: path } = useMemo(
     () => generateStaticURL({ city, slug, cuisine, restaurant }),
     [],
@@ -28,19 +33,32 @@ const useShareArticle = ({
   tastiestUrl.searchParams.set('utm_medium', 'share');
   tastiestUrl.searchParams.set('utm_content', slug);
 
+  const share = (open?: boolean) => {
+    shareURL(title, tastiestUrl.toString(), { open });
+  };
+
   /**
    * REFERENCE
    * https://crunchify.com/list-of-all-social-sharing-urls-for-handy-reference-social-media-sharing-buttons-without-javascript/
    */
-  const shareURL = (title: string, url: string) => {
+  const shareURL = (
+    title: string,
+    url: string,
+    options?: { open?: boolean },
+  ) => {
     // Attempt to use native share API
-    if (navigator.share) {
-      navigator.share({ title, url });
+    if (navigator?.share) {
+      navigator.share?.({ title, url });
       return;
     }
 
+    // No native sharing, probably on desktop.
+    onNoNativeShare?.(tastiestUrl);
+
     // Fallback to in-browser sharing
-    window?.open(url, '_blank');
+    if (options?.open) {
+      window?.open(url, '_blank');
+    }
   };
 
   const shareToFacebook = () => {
@@ -66,6 +84,7 @@ const useShareArticle = ({
   };
 
   return {
+    share,
     tastiestUrl,
     shareToFacebook,
     shareToTwitter,

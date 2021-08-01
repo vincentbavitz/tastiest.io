@@ -1,14 +1,15 @@
 import { CopyOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Tooltip } from '@tastiest-io/tastiest-components';
 import useShareArticle, {
-  IUseShareArticle,
+  IUseShareArticleParams,
 } from 'hooks/article/useShareArticle';
+import { useDevice } from 'hooks/useDevice';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
 import { UI } from '../constants';
 
-interface IShareDropdownProps extends IUseShareArticle {
+interface IShareDropdownProps extends IUseShareArticleParams {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
   offsetY?: number;
@@ -24,13 +25,8 @@ export const ShareDropdown = (props: IShareDropdownProps) => {
   const { isOpen, setIsOpen, offsetY = -5 } = props;
   const { isDesktop } = useScreenSize();
 
-  const {
-    tastiestUrl,
-    shareToFacebook,
-    shareToTwitter,
-    shareToReddit,
-    shareToWhatsApp,
-  } = useShareArticle({ ...props });
+  const { isTouchDevice } = useDevice();
+  const { tastiestUrl } = useShareArticle({ ...props });
 
   // Track copies
   const [copied, setCopied] = useState(0);

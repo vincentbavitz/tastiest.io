@@ -15,11 +15,7 @@ export function ArticleSectionAbstract(props: IPost) {
 
   return (
     <div className="relative w-full mb-12 bg-secondary-1">
-      {isDesktop ? (
-        <ArticleSaveShareWidget {...props} />
-      ) : (
-        <div className="pt-20"></div>
-      )}
+      <ArticleSaveShareWidget {...props} />
 
       {isDesktop ? (
         <ArticleContained>
