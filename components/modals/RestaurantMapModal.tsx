@@ -3,6 +3,7 @@ import { Modal } from 'components/Modal';
 import { useMap } from 'hooks/useMap';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
+import { ModalInstance } from 'state/navigation';
 
 interface Props {
   restaurant: IRestaurant;
@@ -19,8 +20,8 @@ export function RestaurantMapModal(props: Props) {
 
   return (
     <Modal
+      id={ModalInstance.RESTAURANT_MAP}
       title="Restaurant Map"
-      modalId="restaurant-map"
       isOpen={isOpen}
       close={close}
       noPadding
@@ -31,6 +32,8 @@ export function RestaurantMapModal(props: Props) {
 }
 
 function RestaurantMapInner({ restaurant }: InnerProps) {
+  const { isMobile } = useScreenSize();
+
   useMap('map', {
     lat: restaurant.location.lat,
     lng: restaurant.location.lon,
@@ -42,8 +45,6 @@ function RestaurantMapInner({ restaurant }: InnerProps) {
       },
     ],
   });
-
-  const { isMobile } = useScreenSize();
 
   return (
     <div

@@ -36,9 +36,9 @@ export function AuthModal() {
 
   return (
     <Modal
+      id={ModalInstance.LOGIN}
       isOpen={isOpen}
       onMobileFullscreen
-      modalId={ModalInstance.LOGIN}
       close={() => dispatch(closeAuthModal())}
     >
       <div

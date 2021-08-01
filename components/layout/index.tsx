@@ -20,7 +20,7 @@ export default function Layout({ children }: Props) {
       <PageLoader />
 
       {/* Modals */}
-      <div id="modal-root">
+      <div id="modal-root" className="absolute">
         <AuthModal />
       </div>
 

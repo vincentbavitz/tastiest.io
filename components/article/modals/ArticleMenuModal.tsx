@@ -3,7 +3,7 @@ import { Modal } from 'components/Modal';
 import ResponsiveImage from 'components/ResponsiveImage';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleOfferMenu } from 'state/navigation';
+import { ModalInstance, toggleOfferMenu } from 'state/navigation';
 import { IState } from 'state/reducers';
 
 interface Props {
@@ -19,11 +19,12 @@ export default function ArticleMenuModal({ menu }: Props) {
 
   return (
     <Modal
-      noPadding
-      modalId="MENU"
+      id={ModalInstance.ARTICLE_MENU}
       onMobileFullscreen
       isOpen={isOfferMenuOpen}
       close={() => dispatch(toggleOfferMenu(false))}
+      noPadding
+      preload
     >
       <div
         style={{

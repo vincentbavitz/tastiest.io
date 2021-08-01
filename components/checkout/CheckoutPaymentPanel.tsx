@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { ModalInstance } from 'state/navigation';
 import { UI } from '../../constants';
 import { IState } from '../../state/reducers';
 import { CheckoutCard } from './CheckoutCard';
@@ -304,7 +305,11 @@ const PaymentErrorMessage = ({ order }: PaymentErrorMessageProps) => {
       <StillHavingTrouble />
     </div>
   ) : (
-    <Modal modalId="" isOpen={isModalOpen} close={() => setIsModalOpen(false)}>
+    <Modal
+      id={ModalInstance.CHECKOUT_PAYMENT_ISSUE}
+      isOpen={isModalOpen}
+      close={() => setIsModalOpen(false)}
+    >
       <div className="relative flex flex-col items-center text-center">
         <h4 className="mb-1 -mt-8 text-xl font-medium text-danger">
           {errorTitle}

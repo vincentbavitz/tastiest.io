@@ -3,6 +3,7 @@ import { Button, Dropdown, Tooltip } from '@tastiest-io/tastiest-components';
 import useShareArticle, {
   IUseShareArticle,
 } from 'hooks/article/useShareArticle';
+import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
 import { UI } from '../constants';
@@ -21,6 +22,7 @@ interface IShareDropdownItems {
 
 export const ShareDropdown = (props: IShareDropdownProps) => {
   const { isOpen, setIsOpen, offsetY = -5 } = props;
+  const { isDesktop } = useScreenSize();
 
   const {
     tastiestUrl,
@@ -35,7 +37,7 @@ export const ShareDropdown = (props: IShareDropdownProps) => {
   const [_, copyToClipboard] = useCopyToClipboard();
 
   const onClickCopyToClipboard = () => {
-    copyToClipboard(tastiestUrl);
+    copyToClipboard(tastiestUrl.toString());
     setCopied(copied + 1);
   };
 
@@ -65,7 +67,7 @@ export const ShareDropdown = (props: IShareDropdownProps) => {
   return (
     <div style={{ zIndex: UI.Z_INDEX_DROPDOWNS }} className="">
       <Dropdown
-        pull="center"
+        pull={isDesktop ? 'center' : 'right'}
         style="outline"
         isOpen={isOpen}
         offsetY={offsetY}
@@ -75,9 +77,9 @@ export const ShareDropdown = (props: IShareDropdownProps) => {
           <div className="flex items-center w-full border rounded-md bg-soft border-soft">
             <input
               className="pl-3 border-l outline-none bg-soft border-soft rounded-l-md"
-              style={{ minWidth: '12rem', maxWidth: '80vw' }}
+              style={{ minWidth: '20rem', maxWidth: '80vw' }}
               readOnly
-              value={tastiestUrl}
+              value={tastiestUrl.toString()}
             />
 
             <Button

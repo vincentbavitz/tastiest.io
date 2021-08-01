@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
+import { BASE_URL } from 'utils/redirects';
 import { generateStaticURL } from 'utils/routing';
-import { METADATA } from '../../constants';
 
 export interface IUseShareArticle {
   title: string;
@@ -23,10 +23,10 @@ const useShareArticle = ({
   );
 
   // Expand to the format: https://tastiest.io/path/to/format
-  const tastiestUrl =
-    METADATA.TASTIEST_HOST_URL +
-    `${path[0] === '/' ? '' : '/'}` +
-    encodeURI(path.trim().toLowerCase());
+  const tastiestUrl = new URL(path, BASE_URL);
+  tastiestUrl.searchParams.set('utm_source', 'tastiest');
+  tastiestUrl.searchParams.set('utm_medium', 'share');
+  tastiestUrl.searchParams.set('utm_content', slug);
 
   /**
    * REFERENCE
@@ -44,24 +44,24 @@ const useShareArticle = ({
   };
 
   const shareToFacebook = () => {
-    const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${tastiestUrl}`;
+    const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${tastiestUrl.toString()}`;
     shareURL(title, shareUrl);
   };
 
   const shareToWhatsApp = () => {
-    const shareUrl = `https://api.whatsapp.com/send?text=${title} ${tastiestUrl}`;
+    const shareUrl = `https://api.whatsapp.com/send?text=${title} ${tastiestUrl.toString()}`;
     shareURL(title, shareUrl);
   };
 
   const shareToTwitter = () => {
-    const shareUrl = `https://twitter.com/share?url=${tastiestUrl}&text=${title}`;
+    const shareUrl = `https://twitter.com/share?url=${tastiestUrl.toString()}&text=${title}`;
     //   &via=[via]&hashtags=[hashtags]
     //   https://api.whatsapp.com/send?text=${title} ${tastiestUrl}`;
     shareURL(title, shareUrl);
   };
 
   const shareToReddit = () => {
-    const shareUrl = `https://reddit.com/submit?url=${tastiestUrl}&title=${title}`;
+    const shareUrl = `https://reddit.com/submit?url=${tastiestUrl.toString()}&title=${title}`;
     shareURL(title, shareUrl);
   };
 

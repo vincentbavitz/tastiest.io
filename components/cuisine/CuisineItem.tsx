@@ -49,10 +49,11 @@ export function CuisineItem(props: Props) {
               'font-bold',
               'border-2',
               'rounded-lg',
-              'duration-150',
+              'duration-300',
               'text-primary',
               'border-secondary',
-              'hover:text-secondary',
+              'hover:border-primary',
+              'hover:-text-primary-1',
               'hover:bg-transparent',
             )}
           >

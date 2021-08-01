@@ -2,6 +2,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useEffect, useState } from 'react';
 import { getMapBoxStyleUrl } from 'utils/location';
+import { useScreenSize } from './useScreenSize';
 
 interface UseMapParams {
   lat: number;
@@ -16,6 +17,8 @@ export const useMap = (container: string, params: UseMapParams) => {
   const [map, setMap] = useState<mapboxgl.Map | null>(null);
   const pitch = params.pitch ?? 33;
   const zoom = params.zoom ?? 10;
+
+  const { width: windowWidth } = useScreenSize();
 
   // Initialize map
   useEffect(() => {
@@ -56,6 +59,11 @@ export const useMap = (container: string, params: UseMapParams) => {
 
     return () => _map.remove();
   }, []);
+
+  // Resize map for all dimensions
+  useEffect(() => {
+    map?.resize?.();
+  }, [map, windowWidth]);
 
   // Update coordinates and orientation from parent
   useEffect(() => {

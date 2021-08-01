@@ -42,7 +42,7 @@ const CUISINES = {
     name: 'Brazilian',
     href: '/brazilian',
     svg: IndianIcon,
-    popularity: 4,
+    popularity: 8,
   },
   [CuisineSymbol.INDIAN]: {
     name: 'Indian',
@@ -66,7 +66,7 @@ const CUISINES = {
     name: 'American',
     href: '/american',
     svg: AmericanIcon,
-    popularity: 10,
+    popularity: 12,
   },
   [CuisineSymbol.MEXICAN]: {
     name: 'Mexican',
@@ -78,7 +78,7 @@ const CUISINES = {
     name: 'Caribbean',
     href: '/caribbean',
     svg: CaribbeanIcon,
-    popularity: 3,
+    popularity: 10,
   },
   [CuisineSymbol.MEDITERRANEAN]: {
     name: 'Mediterranean',
