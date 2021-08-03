@@ -21,7 +21,7 @@ export default function TastiestDishCard(props: Props) {
     () =>
       generateStaticURL({
         city: restaurant.city,
-        cuisine: restaurant.cuisines[0],
+        cuisine: restaurant.cuisine,
         restaurant: restaurant.uriName,
       }),
     [],

@@ -3,11 +3,11 @@ import {
   CuisineSymbol,
   dlog,
   ICuisine,
-  IPost,
+  ITastiestDish,
   titleCase,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
-import { ArticleCard } from 'components/cards/ArticleCard';
+import TastiestDishCard from 'components/cards/TastiestDishCard';
 import { SuggestRestaurant } from 'components/SuggestRestaurant';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticPaths, GetStaticProps } from 'next';
@@ -26,7 +26,7 @@ interface IPath {
 
 interface Props {
   cuisineSymbol: CuisineSymbol;
-  posts: IPost[];
+  tastiestDishes: ITastiestDish[];
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -57,26 +57,28 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   dlog('index ➡️ cuisineSymbol:', cuisineSymbol);
 
   const cmsApi = new CmsApi();
-  const { posts = [] } = await cmsApi.getPostsOfCuisine(cuisineSymbol);
+  const {
+    dishes: tastiestDishes = [],
+  } = await cmsApi.getTastiestDishesOfCuisine(cuisineSymbol);
 
   return {
     props: {
       cuisineSymbol,
-      posts,
+      tastiestDishes,
     },
     revalidate: 360,
   };
 };
 
 export default function CuisinePage(props: Props) {
-  const { posts = [], cuisineSymbol } = props;
+  const { tastiestDishes = [], cuisineSymbol } = props;
   const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
 
   const cuisine = CUISINES[cuisineSymbol];
   const cuisineName = titleCase(String(cuisine?.name));
 
-  const cards = posts.map(post => (
-    <ArticleCard key={post.id} compact {...post} />
+  const cards = tastiestDishes.map(dish => (
+    <TastiestDishCard key={dish.id} compact {...dish} />
   ));
 
   return (

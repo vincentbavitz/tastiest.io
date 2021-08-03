@@ -91,13 +91,13 @@ export function HeaderAvatar() {
   };
 
   return (
-    <div>
+    <div className="relative w-8">
       <UserAvatar onClick={onAvatarClick} />
 
       <Dropdown
         isOpen={isDropdownOpen}
         style="outline"
-        pull="left"
+        pull="right"
         onClickAway={() => setIsDropdownOpen(false)}
       >
         <p className="pb-1 pl-4 pr-6 mb-1 text-sm text-gray-900 border-b border-gray-200">

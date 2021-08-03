@@ -38,7 +38,7 @@ export function ArticleSectionTitle(props: Props) {
 
   return (
     <Contained>
-      <div className={clsx('flex justify-center space-y-4')}>
+      <div className={clsx('flex justify-center tablet:mt-6 space-y-4')}>
         {isDesktop && <CharcterEatingIllustration svg={svg} />}
 
         <div

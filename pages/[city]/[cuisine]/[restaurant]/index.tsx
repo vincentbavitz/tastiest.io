@@ -1,4 +1,10 @@
-import { CmsApi, dlog, IRestaurant } from '@tastiest-io/tastiest-utils';
+import {
+  CmsApi,
+  dlog,
+  IRestaurant,
+  ITastiestDish,
+} from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
 import { ArticleFeatureVideoWidget } from 'components/article/widgets/ArticleFeatureVideoWidget';
 import { ArticleCard } from 'components/cards/ArticleCard';
 import { CardGrid } from 'components/cards/CardGrid';
@@ -20,6 +26,35 @@ import { ParsedUrlQuery } from 'querystring';
 import React, { useState } from 'react';
 import { getGoogleMapLink } from 'utils/location';
 import { generateTitle } from 'utils/metadata';
+
+interface BestDishAwardProps {
+  bestDish: ITastiestDish;
+  fullWidth?: boolean;
+}
+
+const BestDishAward = (props: BestDishAwardProps) => {
+  const { bestDish, fullWidth } = props;
+
+  return (
+    <div
+      key={bestDish.id}
+      style={{ width: 'fit-content' }}
+      className="flex items-center"
+    >
+      <TastiestAward className="w-14" />
+      <div>
+        <div
+          style={{ maxWidth: fullWidth ? 'unset' : '13rem' }}
+          className="pl-4 text-xl leading-5 font-somatic text-primary"
+        >
+          Best
+          <br />
+          {bestDish.name}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 interface IPath {
   params: {
@@ -52,7 +87,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const paths: IPath[] = restaurants.map(restaurant => ({
     params: {
       city: restaurant.city.toLowerCase(),
-      cuisine: restaurant.cuisines[0].toLowerCase(),
+      cuisine: restaurant.cuisine.toLowerCase(),
       restaurant: restaurant.uriName.toLowerCase(),
     },
   }));
@@ -215,7 +250,7 @@ const RestaurantPage = (
               </div>
             </div>
 
-            <div className="flex flex-row-reverse justify-between tablet:flex-col">
+            <div className="flex flex-col justify-between tablet:flex-col">
               <div className="pt-6">
                 <p className="mb-1 font-medium border-b border-opacity-10 border-alt-1">
                   Opening Times
@@ -228,22 +263,38 @@ const RestaurantPage = (
                 </div>
               </div>
 
-              <div className="flex flex-col py-6 space-y-4">
-                {tastiestDishes?.map(dish => (
-                  <div key={dish.id} className="flex items-center">
-                    <TastiestAward className="w-14" />
-                    <div>
-                      <div
-                        style={{ maxWidth: '13rem' }}
-                        className="pl-4 text-xl leading-5 font-somatic text-primary"
-                      >
-                        Best
-                        <br />
-                        {dish.name}
-                      </div>
-                    </div>
+              <div className="flex justify-center mobile:block">
+                {isDesktop && (
+                  <div className="flex flex-col py-6 space-y-4">
+                    {tastiestDishes.map((dish, key) => (
+                      <BestDishAward key={key} bestDish={dish} />
+                    ))}
                   </div>
-                ))}
+                )}
+
+                {isTablet && (
+                  <div className="grid grid-cols-2 grid-gap-4">
+                    {tastiestDishes.map((dish, key) => (
+                      <div
+                        key={key}
+                        className={clsx(
+                          'flex',
+                          key % 2 === 0 ? 'justify-start' : 'justify-end',
+                        )}
+                      >
+                        <BestDishAward bestDish={dish} />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {isMobile && (
+                  <div className="flex flex-col items-start w-full pt-6 space-y-6">
+                    {tastiestDishes.map((dish, key) => (
+                      <BestDishAward key={key} fullWidth bestDish={dish} />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -262,7 +313,7 @@ const RestaurantPage = (
         </SectionTitle>
 
         <div className="mt-6">
-          <CardGrid size="large">
+          <CardGrid size="large" horizontalScroll>
             {posts.map(post => (
               <ArticleCard key={post.id} {...post} />
             ))}

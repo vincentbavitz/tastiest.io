@@ -110,7 +110,7 @@ function SearchOverlayInnerDefault() {
                   href={
                     generateStaticURL({
                       city: 'london',
-                      cuisine: cuisine.name.toLowerCase(),
+                      cuisine: cuisine.name,
                     }).as
                   }
                   size={isDesktop && searchBarPinnedToHeader ? 'tiny' : 'small'}
