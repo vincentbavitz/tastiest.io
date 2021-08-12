@@ -34,11 +34,17 @@ const dynamicCategories: Array<IDynamicOptions> = [
 ];
 
 export function SearchOverlayInner() {
-  const { results, query } = useSearch();
+  const { results, query, isSearching } = useSearch();
+
+  const hasResults =
+    results?.posts?.length ||
+    results?.dishes?.length ||
+    results?.restaurants?.length;
 
   // Render conditionals
-  const renderSearchResults = query.length > 0 && results;
-  const renderSearchNoResults = query?.length > 0 && results;
+  const renderSearchResults = Boolean(query.length > 0 && hasResults);
+  const renderSearchNoResults =
+    query?.length > 0 && !isSearching && !hasResults;
   const renderSearchDefaltTemplate =
     !renderSearchResults && !renderSearchNoResults;
 
@@ -118,27 +124,6 @@ function SearchOverlayInnerDefault() {
             ))}
         </div>
       </div>
-
-      {/* POPULAR DISHES
-      <div className="flex flex-col mt-6">
-        <span className="ml-1 text-sm font-semibold tracking-wide text-alt-1">
-          Popular dishes
-        </span>
-
-        <div className="flex flex-col space-y-2 children:last:border-b-0">
-          {popularDishes.map(dish => (
-            <div
-              key={dish.name.toLowerCase()}
-              className="flex items-center w-full py-2 space-x-2 border-b border-secondary"
-            >
-              <dish.svg className="w-12 h-10" />
-              <Link href={dish.href}>
-                <a className="text-primary hover:underline">{dish.name}</a>
-              </Link>
-            </div>
-          ))}
-        </div>
-      </div> */}
     </div>
   );
 }
@@ -149,7 +134,10 @@ function SearchOverlayInnerResults() {
   const router = useRouter();
 
   const numResults =
-    results.posts.length + results.dishes.length + results.restaurants.length;
+    results?.posts?.length ??
+    0 + results?.dishes?.length ??
+    0 + results?.restaurants?.length ??
+    0;
 
   return (
     <>
@@ -235,7 +223,7 @@ function SearchOverlayInnerResults() {
       {numResults > 0 ? (
         <div
           className={classNames(
-            'flex w-full pt-4 justify-center px-6',
+            'flex w-full pt-6 justify-center px-6',
             !isDesktop ? 'mb-6' : 'mb-0',
           )}
         >
@@ -296,7 +284,9 @@ function SearchOverlayInnerNoResults() {
   };
 
   const hasResults =
-    results.posts.length || results.dishes.length || results.restaurants.length;
+    results?.posts?.length ||
+    results?.dishes?.length ||
+    results?.restaurants?.length;
 
   const renderSubmitted = hasSubmitted;
   const renderDefault = !hasSubmitted && !isSearching && !hasResults;
@@ -327,7 +317,7 @@ function SearchOverlayInnerNoResults() {
       )}
 
       {renderDefault && (
-        <div>
+        <div className="pb-2">
           <p className="pb-2">No results found. Suggest a dish?</p>
 
           <div className="flex justify-center w-full px-1">
