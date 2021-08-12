@@ -111,6 +111,7 @@ function DesktopHeader() {
                   <TastiestIcon className="h-8 fill-current text-primary" />
                 </a>
               </Link>
+
               <HeaderSearch
                 isShown={searchIsShown}
                 innerOverlayStyle={{
@@ -119,6 +120,7 @@ function DesktopHeader() {
                 }}
               />
             </div>
+
             {/* <HeaderSavedPlaces /> */}
             <HeaderAvatar />
           </div>

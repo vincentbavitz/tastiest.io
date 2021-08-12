@@ -1,28 +1,34 @@
-import { IPost } from '@tastiest-io/tastiest-utils';
+import { IPost, IRestaurant, ITastiestDish } from '@tastiest-io/tastiest-utils';
+
+export type SearchResult = {
+  posts: IPost[];
+  dishes: ITastiestDish[];
+  restaurants: IRestaurant[];
+};
 
 export interface ISearch {
   searchQuery: string;
   searchBarPinnedToHeader: boolean;
-  searchResultItems: Array<IPost>;
+  searchResult: SearchResult | null;
 }
 
 export const initialSearchState: ISearch = {
   searchQuery: '',
-  searchResultItems: [],
+  searchResult: null,
   searchBarPinnedToHeader: false,
 };
 
 export enum SearchActions {
   SET_SEARCH_QUERY = 'SET_SEARCH_QUERY',
-  SET_SEARCH_RESULT_ITEMS = 'SET_SEARCH_RESULT_ITEMS',
+  SET_SEARCH_RESULT = 'SET_SEARCH_RESULT',
   SET_SEARCH_BAR_PINNED_TO_HEADER = 'SET_SEARCH_BAR_PINNED_TO_HEADER',
 }
 
 // ////////////////////////////// //
 //         Action Creators        //
 // ////////////////////////////// //
-export const setSearchResultItems = (payload: Array<IPost>) => ({
-  type: SearchActions.SET_SEARCH_RESULT_ITEMS,
+export const setSearchResult = (payload: SearchResult) => ({
+  type: SearchActions.SET_SEARCH_RESULT,
   payload,
 });
 

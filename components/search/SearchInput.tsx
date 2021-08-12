@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import { SearchIcon } from '@tastiest-io/tastiest-icons';
 import classNames from 'classnames';
 import clsx from 'clsx';
@@ -170,7 +169,7 @@ export function SearchInput(props: Props) {
             }
           }}
         >
-          {isSearching ? (
+          {/* {isSearching ? (
             <LoadingOutlined
               className={clsx(
                 'text-xl fill-current pr-1',
@@ -178,15 +177,15 @@ export function SearchInput(props: Props) {
                 searchIcon === 'secondary' && 'text-secondary',
               )}
             />
-          ) : (
-            <SearchIcon
-              className={clsx(
-                'h-6 fill-current',
-                searchIcon === 'primary' && 'text-primary',
-                searchIcon === 'secondary' && 'text-secondary',
-              )}
-            />
-          )}
+          ) : ( */}
+          <SearchIcon
+            className={clsx(
+              'h-6 fill-current',
+              searchIcon === 'primary' && 'text-primary',
+              searchIcon === 'secondary' && 'text-secondary',
+            )}
+          />
+          {/* )} */}
         </div>
       )}
     </div>

@@ -18,14 +18,16 @@ interface Props {
   fit?: number;
   spacing?: 0 | 1 | 2 | 3 | 4 | 6 | 8;
   chevronSize?: 6 | 8 | 10 | 12;
+  noPadding?: boolean;
 }
 
 export function HorizontalScrollable(props: Props) {
+  const { noPadding } = props;
   const { isDesktop } = useScreenSize();
 
   return (
     <>
-      {!isDesktop ? (
+      {!isDesktop || noPadding ? (
         <HorizontalScrollableInner {...props} />
       ) : (
         <Contained>

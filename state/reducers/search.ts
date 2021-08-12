@@ -10,8 +10,8 @@ export const searchReducer = (
   action: SearchAction,
 ): ISearch => {
   switch (action.type) {
-    case SearchActions.SET_SEARCH_RESULT_ITEMS: {
-      return { ...state, searchResultItems: action.payload };
+    case SearchActions.SET_SEARCH_RESULT: {
+      return { ...state, searchResult: action.payload };
     }
     case SearchActions.SET_SEARCH_QUERY: {
       return { ...state, searchQuery: action.payload };

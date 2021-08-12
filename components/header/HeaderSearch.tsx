@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useScreenSize } from 'hooks/useScreenSize';
 import React, { CSSProperties, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-use';
@@ -23,6 +24,8 @@ export function HeaderSearch({ isShown, innerOverlayStyle = {} }: Props) {
   const searchRef = useRef(null);
   const location = useLocation();
 
+  const { isHuge } = useScreenSize();
+
   return (
     <div
       style={{
@@ -31,10 +34,11 @@ export function HeaderSearch({ isShown, innerOverlayStyle = {} }: Props) {
             ? UI.Z_INDEX_HEADER_SEARCH
             : 1
           : -1,
-        maxWidth: '650px',
+        width: '55vw',
+        maxWidth: '500px',
       }}
       className={classNames(
-        'mx-8 flex-grow',
+        'relative mx-8',
         isShown ? 'opacity-100' : 'opacity-0',
       )}
     >

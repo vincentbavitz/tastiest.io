@@ -30,7 +30,11 @@ export function SearchDropdown(props: Props) {
 
   return (
     <>
-      <div ref={overlayContentRef} style={desktopOverlayStyles}>
+      <div
+        ref={overlayContentRef}
+        style={desktopOverlayStyles}
+        className="w-auto"
+      >
         <div
           className={clsx(
             'relative',

@@ -2,13 +2,15 @@ import {
   CmsApi,
   IPost,
   IRecentSearch,
+  IRestaurant,
+  ITastiestDish,
   UserData,
 } from '@tastiest-io/tastiest-utils';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from 'react-use';
 import { IState } from '../state/reducers';
-import { setSearchResultItems } from '../state/search';
+import { SearchResult, setSearchResult } from '../state/search';
 import { useAuth } from './auth/useAuth';
 import { useUserData } from './useUserData';
 
@@ -20,7 +22,7 @@ export function useSearch() {
   const cms = React.useMemo(() => new CmsApi(), [process]);
 
   const query = searchState.searchQuery ?? '';
-  const results = searchState?.searchResultItems ?? [];
+  const results = searchState?.searchResult ?? null;
 
   const [isSearching, setIsSearching] = useState(false);
   const [debouncedQuery, setDebouncedQuery] = useState(query);
@@ -45,15 +47,30 @@ export function useSearch() {
     [debouncedQuery], // Only call effect if debounced search term changes
   );
 
-  const search = async (query: string): Promise<IPost[]> => {
-    const { posts } = await cms.searchPosts(query.trim());
-    const results = posts?.filter(post =>
-      // Ensure all values are present in each post
-      Object.values(post).every(value => Boolean(value)),
-    );
+  const search = async (query: string): Promise<SearchResult> => {
+    const postsPromise = cms.searchPosts(query.trim());
+    const dishesPromise = cms.searchTastiestDishes(query.trim());
+    const restaurantsPromise = cms.searchRestaurants(query.trim());
 
-    dispatch(setSearchResultItems(results));
-    return results;
+    // Search all content
+    const results = await Promise.all([
+      postsPromise,
+      dishesPromise,
+      restaurantsPromise,
+    ]);
+
+    const posts = results[0].posts ?? ([] as IPost[]);
+    const dishes = results[1].dishes ?? ([] as ITastiestDish[]);
+    const restaurants = results[2].restaurants ?? ([] as IRestaurant[]);
+
+    const result = {
+      posts,
+      dishes,
+      restaurants,
+    };
+
+    dispatch(setSearchResult(result));
+    return result;
   };
 
   const saveUserSearch = (query: string) => {

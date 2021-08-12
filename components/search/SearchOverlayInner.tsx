@@ -4,6 +4,10 @@ import { CheckIcon, HotIcon, TrendingIcon } from '@tastiest-io/tastiest-icons';
 import { dlog, SVG } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import clsx from 'clsx';
+import { ArticleCardSearchResult } from 'components/cards/ArticleCardSearchResult';
+import RestaurantCardSearchResult from 'components/cards/RestaurantCardSearchResult';
+import TastiestDishCardSearchResult from 'components/cards/TastiestDishCardSearchResult';
+import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { InputGroup } from 'components/inputs/InputGroup';
 import { useFeedback } from 'hooks/useFeedback';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -15,7 +19,6 @@ import { generateStaticURL } from 'utils/routing';
 import { CUISINES } from '../../constants';
 import { useSearch } from '../../hooks/useSearch';
 import { IState } from '../../state/reducers';
-import { ArticleCard } from '../cards/ArticleCard';
 import { OutlineBlock } from '../OutlineBlock';
 
 interface IDynamicOptions {
@@ -31,23 +34,15 @@ const dynamicCategories: Array<IDynamicOptions> = [
 ];
 
 export function SearchOverlayInner() {
-  const searchState = useSelector((state: IState) => state.search);
+  const { results, query } = useSearch();
 
-  const renderSearchResults =
-    searchState.searchQuery.length > 0 &&
-    searchState.searchResultItems?.length > 0;
-
+  // Render conditionals
+  const renderSearchResults = query.length > 0 && results;
+  const renderSearchNoResults = query?.length > 0 && results;
   const renderSearchDefaltTemplate =
-    searchState?.searchQuery?.length === 0 ||
-    (searchState?.searchQuery?.length > 0 &&
-      searchState.searchResultItems?.length === 0);
-
-  const renderSearchNoResults =
-    searchState.searchQuery.length > 0 &&
-    searchState?.searchResultItems?.length === 0;
+    !renderSearchResults && !renderSearchNoResults;
 
   const { isDesktop } = useScreenSize();
-  const router = useRouter();
 
   return (
     <>
@@ -149,78 +144,144 @@ function SearchOverlayInnerDefault() {
 }
 
 function SearchOverlayInnerResults() {
-  const { results: allResults, query: searchQuery } = useSearch();
+  const { results, query } = useSearch();
   const { isDesktop } = useScreenSize();
   const router = useRouter();
 
-  // Sort results by popularity and filter down to four results
-  dlog('Results', allResults);
-  const results = allResults?.slice(0, 4);
+  const numResults =
+    results.posts.length + results.dishes.length + results.restaurants.length;
 
   return (
     <>
       <div
-        className={classNames('flex flex-wrap', [
-          !isDesktop ? 'mt-10 px-0' : 'mt-6 px-4',
-          `children:odd:${!isDesktop ? 'pr-4' : 'pr-2'}`,
-          `children:even:${!isDesktop ? 'pl-4' : 'pl-2'}`,
-        ])}
-      >
-        {results?.map(card => (
-          <div key={card.id.toLowerCase()} className={classNames('w-1/2 mb-8')}>
-            <ArticleCard compact {...card} />
-          </div>
-        ))}
-      </div>
-      <div
-        className={classNames(
-          'flex w-full justify-center px-6',
-          !isDesktop ? 'mb-6' : 'mb-0',
+        className={clsx(
+          'flex flex-col space-y-4 px-4',
+          isDesktop ? 'px-4 mt-6' : 'mt-10 px-0',
         )}
       >
-        <Button
-          color="primary"
-          size={!isDesktop ? 'medium' : 'small'}
-          onClick={() =>
-            router.push({
-              pathname: '/search',
-              query: { s: searchQuery },
-            })
-          }
-        >
-          See all results
-        </Button>
+        {results?.dishes?.length ? (
+          <div>
+            <h4 className="pb-2 text-lg font-somatic">Dishes</h4>
+
+            <div
+              style={{
+                filter: 'drop-shadow(2px 2px 5px rgba(0,0,0,0.33))',
+              }}
+            >
+              <HorizontalScrollable noPadding spacing={2} chevronSize={6}>
+                {results?.dishes.map(dish => (
+                  <div
+                    key={dish.id.toLowerCase()}
+                    style={{ minWidth: '150px' }}
+                    className="h-full"
+                  >
+                    <TastiestDishCardSearchResult {...dish} />
+                  </div>
+                ))}
+              </HorizontalScrollable>
+            </div>
+          </div>
+        ) : null}
+
+        {results?.posts?.length ? (
+          <div>
+            <h4 className="pb-2 text-lg font-somatic">Offers</h4>
+
+            <div
+              style={{
+                filter: 'drop-shadow(2px 2px 5px rgba(0,0,0,0.33))',
+              }}
+            >
+              <HorizontalScrollable noPadding spacing={2} chevronSize={6}>
+                {results?.posts.map(post => (
+                  <div
+                    key={post.id.toLowerCase()}
+                    style={{ minWidth: '150px' }}
+                    className="h-full"
+                  >
+                    <ArticleCardSearchResult {...post} />
+                  </div>
+                ))}
+              </HorizontalScrollable>
+            </div>
+          </div>
+        ) : null}
+
+        {results?.restaurants?.length ? (
+          <div>
+            <h4 className="pb-2 text-lg font-somatic">Restaurants</h4>
+
+            <div
+              style={{
+                filter: 'drop-shadow(2px 2px 5px rgba(0,0,0,0.33))',
+              }}
+            >
+              <HorizontalScrollable noPadding spacing={2} chevronSize={6}>
+                {results?.restaurants.map(restaurant => (
+                  <div
+                    key={restaurant.id.toLowerCase()}
+                    style={{ minWidth: '150px' }}
+                    className="h-full"
+                  >
+                    <RestaurantCardSearchResult {...restaurant} />
+                  </div>
+                ))}
+              </HorizontalScrollable>
+            </div>
+          </div>
+        ) : null}
       </div>
+
+      {numResults > 0 ? (
+        <div
+          className={classNames(
+            'flex w-full pt-4 justify-center px-6',
+            !isDesktop ? 'mb-6' : 'mb-0',
+          )}
+        >
+          <Button
+            color="primary"
+            size={!isDesktop ? 'medium' : 'small'}
+            onClick={() =>
+              router.push({
+                pathname: '/search',
+                query: { s: query },
+              })
+            }
+          >
+            See all results
+          </Button>
+        </div>
+      ) : null}
     </>
   );
 }
 
 function SearchOverlayInnerNoResults() {
   const { isDesktop } = useScreenSize();
-  const searchState = useSelector((state: IState) => state.search);
   const { searchOverlayExpanded } = useSelector(
     (state: IState) => state.navigation,
   );
 
+  const { query, isSearching, results } = useSearch();
+
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [suggestionInputOpen, setSuggestionInputOpen] = useState(false);
-  const [suggestionQuery, setSuggestionQuery] = useState(
-    searchState.searchQuery,
-  );
+  const [suggestionQuery, setSuggestionQuery] = useState(query);
 
   const { makeRecommendation, isSubmitting } = useFeedback();
 
   // Suggestion query should autofill with search query data.
   useEffect(() => {
-    setSuggestionQuery(searchState.searchQuery);
-  }, [searchState.searchQuery]);
+    setSuggestionQuery(query);
+  }, [query]);
 
   // Reset state when modal opens or closes.
   useEffect(() => {
     setHasSubmitted(false);
     setSuggestionInputOpen(false);
-    setSuggestionQuery(searchState.searchQuery);
-  }, [searchOverlayExpanded, searchState.searchQuery]);
+    setSuggestionQuery(query);
+  }, [searchOverlayExpanded, query]);
 
   const sendSuggestion = async () => {
     if (isSubmitting) {
@@ -234,6 +295,15 @@ function SearchOverlayInnerNoResults() {
     setHasSubmitted(hasSubmitted);
   };
 
+  const hasResults =
+    results.posts.length || results.dishes.length || results.restaurants.length;
+
+  const renderSubmitted = hasSubmitted;
+  const renderDefault = !hasSubmitted && !isSearching && !hasResults;
+  const renderLoading = isSearching && !hasResults;
+
+  dlog('SearchOverlayInner ➡️ results:', results);
+
   return (
     <div
       className={clsx(
@@ -242,14 +312,22 @@ function SearchOverlayInnerNoResults() {
         hasSubmitted ? 'mt-3' : 'mt-6',
       )}
     >
-      {hasSubmitted ? (
+      {renderSubmitted && (
         <div className="flex items-center">
           <ThumbsUpIllustration className="h-24 -ml-10" />
 
           <h4 className="pl-4 text-xl font-somatic text-primary">Thanks!</h4>
         </div>
-      ) : (
-        <>
+      )}
+
+      {renderLoading && (
+        <div className="flex justify-center w-full py-6">
+          <LoadingOutlined className="text-2xl text-primary" />
+        </div>
+      )}
+
+      {renderDefault && (
+        <div>
           <p className="pb-2">No results found. Suggest a dish?</p>
 
           <div className="flex justify-center w-full px-1">
@@ -275,15 +353,8 @@ function SearchOverlayInnerNoResults() {
               </Button>
             )}
           </div>
-        </>
+        </div>
       )}
-
-      <div
-        className={clsx(
-          'w-full h-px bg-red-500 bg-opacity-25',
-          hasSubmitted ? 'mt-3' : 'mt-6',
-        )}
-      ></div>
     </div>
   );
 }
