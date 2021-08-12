@@ -34,7 +34,7 @@ export const useArticleOrder = (deal: IDeal, fromSlug: string) => {
       fromSlug,
       promoCode: null,
       timestamp: Date.now(),
-      anonymousId: window.analytics?.user()?.anonymousId(),
+      anonymousId: window.analytics?.user?.()?.anonymousId?.(),
       userAgent: navigator?.userAgent,
     };
 

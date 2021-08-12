@@ -4,7 +4,6 @@ import {
   VisaIcon,
 } from '@tastiest-io/tastiest-icons';
 import { CardBrand } from '@tastiest-io/tastiest-utils';
-import classNames from 'classnames';
 import React, { ReactNode } from 'react';
 import { InputWrapper } from '../InputWrapper';
 
@@ -18,26 +17,9 @@ const CardRow = ({ brand }: { brand: CardBrand }) => {
   // Cards light up in color when the card number matches the brand
   return (
     <div className="flex space-x-2">
-      <VisaIcon
-        className={classNames(
-          'h-6',
-          brand === CardBrand.VISA ? 'filter-none' : 'filter-grayscale',
-        )}
-      />
-
-      <MasteroIcon
-        className={classNames(
-          'h-6',
-          brand !== CardBrand.MASTERO && 'filter-grayscale',
-        )}
-      />
-
-      <MastercardIcon
-        className={classNames(
-          'h-6',
-          brand !== CardBrand.MASTERCARD && 'filter-grayscale',
-        )}
-      />
+      {brand === CardBrand.VISA && <VisaIcon className="h-6" />}
+      {brand === CardBrand.MASTERO && <MasteroIcon className="h-6" />}
+      {brand === CardBrand.MASTERCARD && <MastercardIcon className="h-6" />}
     </div>
   );
 };
@@ -49,7 +31,7 @@ export function InputCardNumberWrapper({ children, brand, disabled }: Props) {
         size="large"
         label="Card Number"
         className="font-mono"
-        externalSuffix={<CardRow brand={brand} />}
+        externalSuffix={brand ? <CardRow brand={brand} /> : null}
         disabled={disabled}
       >
         {children}

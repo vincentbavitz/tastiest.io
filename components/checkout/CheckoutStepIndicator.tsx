@@ -21,10 +21,7 @@ export function CheckoutStepIndicator({ step }: Props) {
       <div className="relative flex items-center justify-between w-full">
         <ProgressBar step={step} />
         <CheckCircle complete label="Log in" />
-        <CheckCircle
-          complete={step !== CheckoutStep.SIGN_IN}
-          label="Details and Checkout"
-        />
+        <CheckCircle complete={step !== CheckoutStep.SIGN_IN} label="Details" />
         <CheckCircle complete={step === CheckoutStep.COMPLETE} label="Done!" />
       </div>
     </div>

@@ -17,7 +17,7 @@ export const useSignIn = () => {
       return;
     }
 
-    const anonymousId = window.analytics?.user()?.anonymousId();
+    const anonymousId = window.analytics?.user?.()?.anonymousId?.();
     const attemptSignIn = async () => {
       let credential: UserCredential;
 

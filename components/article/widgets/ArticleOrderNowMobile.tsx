@@ -154,8 +154,13 @@ interface OverlayInnerActionProps {
   slug: string;
 }
 
-const OverlayInnerAction = ({ deal, slug }: OverlayInnerActionProps) => {
-  const { totalPrice, heads, setHeads, submit } = useArticleOrder(deal, slug);
+const OverlayInnerAction = (props: OverlayInnerActionProps) => {
+  const { deal, slug: fromSlug } = props;
+  const { totalPrice, heads, setHeads, submit, submitting } = useArticleOrder(
+    deal,
+    fromSlug,
+  );
+
   const allowedHeads = deal.allowedHeads.sort((a, b) => a - b);
 
   // Set valid heads from the first mount
@@ -205,6 +210,7 @@ const OverlayInnerAction = ({ deal, slug }: OverlayInnerActionProps) => {
           wide
           size="large"
           className="text-2xl font-somatic"
+          loading={submitting}
           onClick={submit}
         >
           Buy now

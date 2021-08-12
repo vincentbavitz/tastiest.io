@@ -78,7 +78,7 @@ export const getServerSideProps = async (
   if (!order) {
     return {
       redirect: {
-        // TODO -> Destination should be /city/cuisine/slug
+        // TODO -> Destination should be /city/cuisine/restaurant/slug
         destination: '/',
         permanent: false,
       },
@@ -89,7 +89,7 @@ export const getServerSideProps = async (
   if (userId && order?.userId && order.userId !== userId) {
     return {
       redirect: {
-        destination: '/ad',
+        destination: '/',
         permanent: false,
       },
     };
@@ -116,6 +116,14 @@ export const getServerSideProps = async (
       },
     };
   }
+
+  const recent = await db(FirestoreCollection.ORDERS)
+    .where('userId', '==', order.userId)
+    .orderBy('createdAt', 'desc')
+    .limit(10)
+    .get();
+
+  dlog('checkout ➡️     recent,:', recent);
 
   const props: Props = {
     order,
@@ -151,25 +159,10 @@ function Checkout(
     ? CheckoutStep.PAYMENT
     : CheckoutStep.SIGN_IN;
 
-  const renderTawkToSnippet = () => `
-    <!--Start of Tawk.to Script-->
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/60cb997d65b7290ac63685ba/1f9t2cevc';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
-    <!--End of Tawk.to Script-->
-  `;
-
   return (
     <div className="flex-grow pb-20">
       <Head>
         <title>Checkout - Tastiest</title>
-        <script dangerouslySetInnerHTML={{ __html: renderTawkToSnippet() }} />
       </Head>
 
       <Elements stripe={stripePromise}>

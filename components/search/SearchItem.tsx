@@ -42,8 +42,8 @@ export function SearchItem(props: IPost) {
           <div className={classNames('w-full', !isDesktop && 'h-64')}>
             <img
               className="w-full h-full"
-              src={image.url}
-              alt={image.description}
+              src={image?.url}
+              alt={image?.description}
             />
           </div>
 

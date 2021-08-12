@@ -1,14 +1,13 @@
 import {
   CmsApi,
   CuisineSymbol,
-  dlog,
-  ICuisine,
   ITastiestDish,
   titleCase,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import TastiestDishCard from 'components/cards/TastiestDishCard';
 import { SuggestRestaurant } from 'components/SuggestRestaurant';
+import { CuisineItem } from 'constants/cuisines';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
@@ -53,8 +52,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       notFound: true,
     };
   }
-
-  dlog('index ➡️ cuisineSymbol:', cuisineSymbol);
 
   const cmsApi = new CmsApi();
   const {
@@ -169,8 +166,8 @@ const NoPostsForCuisine = ({
   </div>
 );
 
-const CuisineHero = ({ cuisine }: { cuisine: ICuisine }) => {
-  const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
+const CuisineHero = ({ cuisine }: { cuisine: CuisineItem }) => {
+  const { isMobile, isTablet, isHuge } = useScreenSize();
 
   const desktopH = 713;
   const desktopW = 1450;
@@ -179,10 +176,6 @@ const CuisineHero = ({ cuisine }: { cuisine: ICuisine }) => {
   const mobileH = 713;
   const mobileW = 1300;
   const mobileHPc = 100 * (mobileH / mobileW);
-
-  const src = `/assets/cuisine-pages/${cuisine?.name
-    .replace(' ', '-')
-    .toLowerCase()}-hero-${isMobile ? 'mobile' : 'desktop'}.svg`;
 
   const CuisineImage = () => {
     const sizeMultipler = isMobile ? 1.33 : isTablet ? 1.5 : 1;
@@ -193,18 +186,32 @@ const CuisineHero = ({ cuisine }: { cuisine: ICuisine }) => {
       (isMobile ? mobileHPc : desktopHPc) * sizeMultipler
     }%`;
 
-    return (
+    return isMobile ? (
       <div
-        className="relative h-px mobile:mt-10"
+        className="relative h-px"
         style={{ width, minWidth, paddingBottom, transform }}
       >
         <Image
-          src={src}
-          priority={true}
+          src={cuisine.mobileHero}
           layout="fill"
           objectFit="cover"
           loading="eager"
           unoptimized
+          // priority
+        />
+      </div>
+    ) : (
+      <div
+        className="relative h-px mt-10"
+        style={{ width, minWidth, paddingBottom, transform }}
+      >
+        <Image
+          src={cuisine.desktopHero}
+          layout="fill"
+          objectFit="cover"
+          loading="eager"
+          unoptimized
+          // priority
         />
       </div>
     );

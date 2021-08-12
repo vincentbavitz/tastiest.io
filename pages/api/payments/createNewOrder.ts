@@ -243,12 +243,13 @@ const buildOrder = async (orderRequest: IOrderRequest) => {
   // New order
   const orderId = uuid();
   const orderToken = uuid();
+
   const order: IOrder = {
     id: orderId,
     userFacingOrderId: generateUserFacingId(),
     token: orderToken,
     deal,
-    userId: null,
+    userId: orderRequest.userId ?? null,
     heads: orderRequest.heads,
     fromSlug: orderRequest.fromSlug,
     price: {
