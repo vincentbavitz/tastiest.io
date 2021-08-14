@@ -13,12 +13,11 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { db } from 'utils/firebaseAdmin';
 import { calculatePromoPrice, validatePromo } from 'utils/order';
 import { v4 as uuid } from 'uuid';
 
 export type CreateNewOrderParams = IOrderRequest & {
-  shopifyProductId?: string;
   userAgent?: string;
 };
 
@@ -28,7 +27,8 @@ export type CreateNewOrderReturn = {
 
 /**
  * Requires the query parameters...
- *  ```dealId: string;
+ *  ```
+ *  dealId: string;
  *  heads: number;
  *  fromSlug: string;
  *  promoCode: string | undefined
@@ -43,7 +43,7 @@ export default async function createNewOrder(
   request: NextApiRequest,
   response: NextApiResponse<FunctionsResponse<CreateNewOrderReturn>>,
 ) {
-  // Only asllow POST
+  // Only allow POST
   if (request?.method !== 'POST') {
     dlog('Failed to create new order');
     response.status(405).end();
@@ -66,10 +66,9 @@ export default async function createNewOrder(
     userId,
     anonymousId,
     userAgent,
-    shopifyProductId,
-  } = body;
-  const heads = Math.floor(_heads);
+  } = body as Partial<IOrderRequest>;
 
+  const heads = Math.floor(_heads);
   const orderRequest: IOrderRequest = {
     dealId,
     heads,
@@ -79,9 +78,15 @@ export default async function createNewOrder(
     timestamp: Date.now(),
   };
 
+  dlog('createNewOrder ➡️ body:', body);
+  dlog('createNewOrder ➡️ dealId:', dealId);
+  dlog('createNewOrder ➡️ orderRequest:', orderRequest);
+
   const { success, error } = await validateOrderRequest(orderRequest);
 
   if (!success) {
+    dlog('createNewOrder ➡️ error:', error);
+
     response.json({
       success: false,
       data: { token: null },
@@ -94,11 +99,7 @@ export default async function createNewOrder(
 
   try {
     // Create new order in Firebase
-    await firebaseAdmin
-      .firestore()
-      .collection(FirestoreCollection.ORDERS)
-      .doc(order.id)
-      .set(order);
+    await db(FirestoreCollection.ORDERS).doc(order.id).set(order);
 
     // Track with Segment following Segment's E-Commerce Spec
     // https://segment.com/docs/connections/spec/ecommerce/v2/#checkout-started
@@ -106,7 +107,7 @@ export default async function createNewOrder(
       process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY,
     );
 
-    // Use anonymousId for Pixel deduplication from Shopify
+    // Use anonymousId for Pixel deduplication
     analytics.track({
       event: 'Checkout Started',
       userId: anonymousId ?? userId,
@@ -118,7 +119,6 @@ export default async function createNewOrder(
       },
       properties: {
         anonymousId,
-        shopifyProductId,
         ...order,
         ...orderRequest,
 
@@ -157,6 +157,7 @@ export default async function createNewOrder(
       timestamp: Date.now(),
       shouldAlert: false,
       originFile: 'pages/api/payments/createNewOrder.ts',
+      severity: 'CRITICAL',
       properties: {},
       raw: String(error),
     });
@@ -192,17 +193,6 @@ const validateOrderRequest = async (orderRequest: IOrderRequest) => {
     };
   }
 
-  // Valid number of heads?
-  if (
-    orderRequest?.heads < 1 ||
-    orderRequest.heads > FIREBASE.ORDER_REQUEST_MAX_HEADS
-  ) {
-    return {
-      success: false,
-      error: 'validateOrderRequest: Invalid number of heads',
-    };
-  }
-
   // Get deal and restaurant from Contentful
   // If deal does not exist on Contentful, there was a clientside mismatch.
   // This could be an innocent error, or the user is sending nefarious requests.
@@ -213,11 +203,16 @@ const validateOrderRequest = async (orderRequest: IOrderRequest) => {
     return { success: false, error: 'Deal does not exist with this ID' };
   }
 
+  // Valid number of heads?
+  if (!deal.allowedHeads.includes(orderRequest.heads)) {
+    return {
+      success: false,
+      error: 'validateOrderRequest: Invalid number of heads',
+    };
+  }
+
   // Validate promotion code
   orderRequest.promoCode;
-
-  // Validate user ID (required?)
-  null;
 
   // Passed all tests 🎉
   return { success: true, error: null };
@@ -248,12 +243,13 @@ const buildOrder = async (orderRequest: IOrderRequest) => {
   // New order
   const orderId = uuid();
   const orderToken = uuid();
+
   const order: IOrder = {
     id: orderId,
     userFacingOrderId: generateUserFacingId(),
     token: orderToken,
     deal,
-    userId: null,
+    userId: orderRequest.userId ?? null,
     heads: orderRequest.heads,
     fromSlug: orderRequest.fromSlug,
     price: {
@@ -271,7 +267,6 @@ const buildOrder = async (orderRequest: IOrderRequest) => {
     paidAt: null,
     abandonedAt: null,
     refund: null,
-
     isTest: process.env.NODE_ENV === 'development',
   };
 

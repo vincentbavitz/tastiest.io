@@ -1,8 +1,60 @@
+/* ************************ */
+/* ******* TAILWIND ******* */
+/* ************************ */
+
 @tailwind base;
 @tailwind components;
+
+
+a {
+  @apply cursor-pointer;
+
+  &:not(.no-underline):hover {
+    @apply underline;
+  }
+}
+
+ul {
+  @apply list-none;
+
+  li {
+    @apply flex;
+
+    p {
+      @apply mb-0;
+    }
+  }
+
+  li::before {
+    content: "\2022";
+    @apply text-primary font-bold inline-block w-4;
+  }
+
+  &.list-primary li::before {
+    @apply text-primary;
+  }
+
+  &.list-secondary li::before {
+    @apply text-secondary;
+  }
+}
+
+body {
+  @apply text-alt bg-white font-roboto font-normal;
+  font-smooth: antialiased;
+
+  ::selection {
+    color: white;
+    @apply bg-primary bg-opacity-25;
+  }
+
+  & > div {
+    overflow-x: hidden;
+  }
+}
+
 @tailwind utilities;
 
-$theme-primary: #fe4c00;
 
 /* ********************* */
 /* ******* FONTS ******* */
@@ -20,6 +72,7 @@ $theme-primary: #fe4c00;
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+
 .__next {
   overflow-x: hidden;
 }
@@ -33,21 +86,6 @@ $theme-primary: #fe4c00;
   border-top-right-radius: 15px;
 }
 
-body {
-  background-color: #ffffff;
-  font-family: Roboto;
-  font-weight: 400;
-  font-smooth: antialiased;
-
-  ::selection {
-    color: white;
-    background: rgba($theme-primary, 0.33);
-  }
-
-  & > div {
-    overflow-x: hidden;
-  }
-}
 
 // Pagination
 .pagination {
@@ -55,6 +93,10 @@ body {
   justify-content: center;
 
   li {
+    &::before {
+      content: unset;
+    }
+
     &:first-child {
       border-top-left-radius: 0.25rem;
       border-bottom-left-radius: 0.25rem;

@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
 import { v4 as uuid } from 'uuid';
 import { IState } from '../state/reducers';
-import { useAuth } from './useAuth';
+import { useAuth } from './auth/useAuth';
 import { useUserData } from './useUserData';
 
 export enum SupportRequestGenerationError {

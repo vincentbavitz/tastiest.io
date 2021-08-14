@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { ModalInstance } from 'state/navigation';
 import { UI } from '../../constants';
 import { IState } from '../../state/reducers';
 import { CheckoutCard } from './CheckoutCard';
@@ -174,6 +175,7 @@ const TermsAndConditions = () => (
     <a
       href="/terms-of-use"
       target="_blank"
+      rel="noreferrer"
       className="font-semibold underline cursor-pointer"
     >
       Terms of Use
@@ -182,6 +184,7 @@ const TermsAndConditions = () => (
     <a
       href="/terms-of-sale"
       target="_blank"
+      rel="noreferrer"
       className="font-semibold underline cursor-pointer"
     >
       Terms of Sale
@@ -190,6 +193,7 @@ const TermsAndConditions = () => (
     <a
       href="/privacy"
       target="_blank"
+      rel="noreferrer"
       className="font-semibold underline cursor-pointer"
     >
       Privacy Statement.
@@ -224,7 +228,7 @@ const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
           </p>
 
           <p className="font-medium">
-            — £{order.price.gross - order.price.final}
+            — £{formatCurrency(order.price.gross - order.price.final)}
           </p>
         </div>
       ) : (
@@ -303,7 +307,11 @@ const PaymentErrorMessage = ({ order }: PaymentErrorMessageProps) => {
       <StillHavingTrouble />
     </div>
   ) : (
-    <Modal modalId="" isOpen={isModalOpen} close={() => setIsModalOpen(false)}>
+    <Modal
+      id={ModalInstance.CHECKOUT_PAYMENT_ISSUE}
+      isOpen={isModalOpen}
+      close={() => setIsModalOpen(false)}
+    >
       <div className="relative flex flex-col items-center text-center">
         <h4 className="mb-1 -mt-8 text-xl font-medium text-danger">
           {errorTitle}

@@ -11,9 +11,12 @@ interface Props {
   disabled?: boolean;
   error?: string;
   value?: string;
+  label?: string;
+  size?: 'large' | 'medium' | 'small';
 }
 
 const InputCustom = (props: Props) => {
+  const { size = 'large', label } = props;
   const [error, setError] = useState<string>();
 
   const validate = () => {
@@ -28,8 +31,8 @@ const InputCustom = (props: Props) => {
 
   return (
     <Input
-      size="large"
-      label="Birthday"
+      size={size}
+      label={label}
       inputMode="decimal"
       color="secondary"
       inputClassName="font-mono w-full"
@@ -42,7 +45,12 @@ const InputCustom = (props: Props) => {
 
 export function InputContactBirthday(props: Props) {
   const handleOnChange = ({ value }: NumberFormatValues) => {
-    const date = stringToDate(value);
+    const date = stringToDate(
+      value,
+      // USER.OLDEST_BIRTH_YEAR,
+      // USER.YOUNGEST_BIRTH_YEAR,
+    );
+
     props.onDateChange(date);
   };
 
@@ -63,7 +71,9 @@ export function InputContactBirthday(props: Props) {
     <NumberFormat
       placeholder="DD/MM/YYYY"
       mask={['M', 'M', 'D', 'D', 'Y', 'Y', 'Y', 'Y']}
-      format={value => dateFormat(value)}
+      format={
+        value => dateFormat(value) // USER.OLDEST_BIRTH_YEAR, USER.YOUNGEST_BIRTH_YEAR)
+      }
       customInput={InputCustom}
       value={dateToString(throttledDate)}
       onChange={setCursor}

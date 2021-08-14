@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useFirestore } from 'react-redux-firebase';
 import { v4 as uuid } from 'uuid';
-import { useAuth } from './useAuth';
+import { useAuth } from './auth/useAuth';
 import { useUserData } from './useUserData';
 
 interface IRecommendationDetails {
@@ -21,7 +21,7 @@ interface IRecommendationDetails {
   restaurantName: string | null;
 }
 
-interface IRestaurantRecommendation extends IRecommendationDetails {
+interface IRecommendation extends IRecommendationDetails {
   email: string | null;
   userId: string | null;
   anonymousEmail: string | null;
@@ -45,7 +45,7 @@ export function useFeedback() {
 
   const name = `${firstName}${lastName ? ' ' + lastName : ''}`;
 
-  const suggestRestaurant = async (
+  const makeRecommendation = async (
     fromArticlePage: boolean,
     {
       dish,
@@ -60,7 +60,7 @@ export function useFeedback() {
     anonymousEmail?: string,
   ): Promise<{ success: boolean }> => {
     // Send recommendation to Firestore
-    const recommendation: IRestaurantRecommendation = {
+    const recommendation: IRecommendation = {
       email: user?.email ?? null,
       userId: user?.uid ?? null,
       anonymousEmail: user?.email ? null : anonymousEmail ?? null,
@@ -86,7 +86,7 @@ export function useFeedback() {
         .doc(uuid())
         .set(recommendation);
 
-      window.analytics.track('User suggested a restaurant', {
+      window.analytics.track('User Made a Recommendation', {
         name,
         ...recommendation,
       });
@@ -101,5 +101,5 @@ export function useFeedback() {
     return { success: false };
   };
 
-  return { suggestRestaurant, isSubmitting };
+  return { makeRecommendation, isSubmitting };
 }

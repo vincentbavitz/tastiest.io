@@ -43,7 +43,6 @@ export const stringToDate = (value: string): IDateObject => {
   const day = value.substring(0, 2) as TDay;
   const month = value.substring(2, 4) as TMonth;
   const year = value.substring(4, 8) as TYear;
-
   return { day, month, year };
 };
 
@@ -54,3 +53,6 @@ export function dateFormat(value: string) {
     day + (month.length ? '/' + month : '') + (year.length ? '/' + year : '')
   );
 }
+
+export const cleanupInputValue = (value: string | number) =>
+  String(value).toLowerCase().trim();

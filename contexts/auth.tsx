@@ -11,7 +11,6 @@ export enum AuthErrorCode {
   ID_TOKEN_EXPIRED = 'auth/id-token-expired',
   ID_TOKEN_REVOKED = 'auth/id-token-revoked',
   INSUFFICIENT_PERMISSION = 'auth/invalid-permission',
-  INTERNAL_ERROR = 'auth/internal-error',
   INVALID_ARGUMENT = 'auth/invalid-argument',
   INVALID_CLAIMS = 'auth/invalid-claims',
   INVALID_CREATION_TIME = 'auth/invalid-creation-time',
@@ -28,6 +27,12 @@ export enum AuthErrorCode {
   OPERATION_NOT_ALLOWED = 'auth/operation-not-allowed',
   UID_ALREADY_EXISTS = 'auth/uid-already-exists',
   USER_NOT_FOUND = 'auth/user-not-found',
+  WRONG_PASSWORD = 'auth/wrong-password',
+  TOO_MANY_REQUESTS = 'auth/too-many-requests',
+
+  // Tastiest Custom Auth Error Codes
+  INTERNAL_ERROR = 'auth/internal-error',
+  PASSWORDS_DO_NOT_MATCH = 'auth/passwords-do-not-match', // when registering
 }
 
 export type AuthError = {
@@ -151,11 +156,32 @@ export const AuthErrorMessageMap = {
     message: '',
     userFacingMessage: "We couldn't find your account. Why not make one now?",
   },
+  [AuthErrorCode.TOO_MANY_REQUESTS]: {
+    code: AuthErrorCode.TOO_MANY_REQUESTS,
+    message: '',
+    userFacingMessage: 'Too many attempts. Please try again later.',
+  },
+  [AuthErrorCode.WRONG_PASSWORD]: {
+    code: AuthErrorCode.WRONG_PASSWORD,
+    message: '',
+    userFacingMessage: 'Incorrect password.',
+  },
+  [AuthErrorCode.PASSWORDS_DO_NOT_MATCH]: {
+    code: AuthErrorCode.PASSWORDS_DO_NOT_MATCH,
+    message: '',
+    userFacingMessage: 'Passwords do not match.',
+  },
 } as { [key: string]: AuthError };
 
+type AuthContextShape = {
+  user: firebaseClient.User | null;
+  isSignedIn: null | boolean;
+};
+
 // Example taken from  https://github1s.com/colinhacks/next-firebase-ssr/blob/HEAD/auth.tsx
-export const AuthContext = createContext<{ user: firebaseClient.User | null }>({
+export const AuthContext = createContext<AuthContextShape>({
   user: null,
+  isSignedIn: null,
 });
 
 export function AuthProvider({ children }: any) {
@@ -203,7 +229,12 @@ export function AuthProvider({ children }: any) {
     dlog('User', user);
   }, [user]);
 
+  // Null if the user information has not been loaded yet -- else boolean
+  const isSignedIn = user === undefined ? null : Boolean(user?.uid);
+
   return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, isSignedIn }}>
+      {children}
+    </AuthContext.Provider>
   );
 }

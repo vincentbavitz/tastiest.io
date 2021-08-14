@@ -25,15 +25,17 @@ export function CuisineBar(props: Props) {
 
   return (
     <div className="mt-20">
-      <HorizontalScrollable spacing={0} {...props}>
-        {Object.values(CUISINES).map(cuisine => (
-          <CuisineItem
-            key={cuisine?.name}
-            name={cuisine?.name}
-            svg={cuisine?.svg}
-            onClick={handleItemClick}
-          />
-        ))}
+      <HorizontalScrollable spacing={0} chevronSize={12} {...props}>
+        {Object.values(CUISINES)
+          .sort((a, b) => b.popularity - a.popularity)
+          .map(cuisine => (
+            <CuisineItem
+              key={cuisine?.name}
+              name={cuisine?.name}
+              svg={cuisine?.svg}
+              onClick={handleItemClick}
+            />
+          ))}
       </HorizontalScrollable>
     </div>
   );

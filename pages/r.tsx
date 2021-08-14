@@ -1,24 +1,9 @@
-import { GetServerSideProps, NextPage } from 'next';
-import React from 'react';
-
-const offerRedirects = {
-  ['2K6OPwu8MxTzN4pqyRK6FC']:
-    'https://offers.tastiest.io/products/all-you-can-eat-burgers-and-wings-in-chalk-farm',
-  ['v5WWg3Sr573AleBLH9LmH']:
-    'http://tastiestio.myshopify.com/products/best-all-you-can-eat-rodizio-in-london',
-  ['1jfZHInkintF44aehS5HZ4']:
-    'https://offers.tastiest.io/products/mini-burgers-birthday-offer',
-  ['46VXx97nHDkRYyWRNdyybz']:
-    'https://offers.tastiest.io/products/afternoon-tea-and-bottomless-prosecco',
-  ['1H2ZQPjkOsqtnjBNrpWypM']:
-    'http://tastiestio.myshopify.com/products/all-you-can-eat-caribbean',
-  ['6ecz26qo6AnzZlC6EUREkW']:
-    'http://tastiestio.myshopify.com/products/date-night-with-the-best-jerk-chicken-in-south-east-london',
-  ['60fOUc99NMmt2klYJH8pkt']:
-    'http://tastiestio.myshopify.com/products/birthday-offer-with-the-best-jerk-chicken-in-south-east-london',
-  ['5OEoxkYWz8KYAg0rMwVBNi']:
-    'https://offers.tastiest.io/products/vegan-vegetarian-all-you-can-eat-mini-burgers',
-};
+import { GetServerSideProps } from 'next';
+import {
+  BASE_URL,
+  getOfferDestination,
+  getRestaurantDestination,
+} from 'utils/redirects';
 
 /** Redirection takes two possible GET parameters
  * 1. ?offer=<offerId>
@@ -43,32 +28,32 @@ export const getServerSideProps: GetServerSideProps = async context => {
     utm_content: context.query.utm_content ?? null,
   };
 
-  const utmSuffix = Object.entries(requestUTMs)
-    .filter(([_, value]) => Boolean(value))
-    .map(([key, value]) => (value ? `${key}=${value}` : null))
-    .join('&');
-
-  // Offer redirection
-  const redirectDestination = offerRedirects[String(context.query.offer)];
-  if (context.query.offer?.length && redirectDestination) {
-    return {
-      props: {},
-      redirect: {
-        destination: `${redirectDestination}?${utmSuffix}`,
-      },
-    };
+  let url: URL;
+  if (context.query?.offer?.length) {
+    url = await getOfferDestination(String(context.query.offer));
   }
+
+  if (context.query?.restaurant?.length) {
+    url = await getRestaurantDestination(String(context.query.restaurant));
+  }
+
+  // No valid redirectsd found
+  if (!url) {
+    return { props: {}, redirect: BASE_URL };
+  }
+
+  // Fill final URL with our incoming UTMS
+  Object.entries(requestUTMs).map(([utm, value]) => {
+    url.searchParams.set(utm, String(value));
+  });
 
   return {
     props: {},
     redirect: {
-      destination: 'https://offers.tastiest.io',
+      destination: url.href,
     },
   };
 };
 
-const Redirect: NextPage = () => {
-  return <></>;
-};
-
+const Redirect = () => <></>;
 export default Redirect;

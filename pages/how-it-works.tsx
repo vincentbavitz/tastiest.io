@@ -1,12 +1,17 @@
 import { Contained } from 'components/Contained';
-import { HowItWorksHero } from 'public/assets/page';
 import React from 'react';
 
 function HowItWorks() {
   return (
     <div>
       <Contained>
-        <HowItWorksHero className="w-full h-auto font-somatic" />
+        <div className="flex justify-center ">
+          <img
+            src="/assets/illustrations/how-it-works-illustration.png"
+            style={{ maxWidth: '450px' }}
+            className="w-7/12 py-20"
+          />
+        </div>
       </Contained>
     </div>
   );

@@ -1,6 +1,9 @@
 import PageLoader from 'components/PageLoader';
 import React, { ReactNode } from 'react';
 import { Header } from '../header/Header';
+import { AuthModal } from '../modals/auth/AuthModal';
+import { AcceptTrackingPopup } from '../popups/AcceptTrackingPopup';
+import { SearchOverlay } from '../search/SearchOverlay';
 
 interface Props {
   children: ReactNode;
@@ -12,8 +15,15 @@ export default function Layout({ children }: Props) {
 
   return (
     <>
-      <PageLoader />
-      {/* <SignInModal /> */}
+      {/* Page Loader (inside portal) */}
+      <div id="loader">
+        <PageLoader />
+      </div>
+
+      {/* Modals (inside portal) */}
+      <div id="modal-root" className="absolute">
+        <AuthModal />
+      </div>
 
       <div
         style={{ minHeight: '100vh' }}

@@ -77,7 +77,7 @@ const sections: ILegalSection[] = [
         to turn off the functionality that collects and shares location
         information and/or the functionality to tag your photos with location
         information. However, turning off location-sharing may affect certain
-        features that we offer. If you have any questions about the privacy
+        features that we experience. If you have any questions about the privacy
         settings of your Device, we suggest you contact the manufacturer of your
         Device or your mobile service provider for help.
       </>,
@@ -107,9 +107,9 @@ const sections: ILegalSection[] = [
           <>Facilitate your bookings</>,
           <>Measure interest in and improve our Services</>,
           <>
-            Notify you about special offers and products or services available
-            from us, our affiliates, or our partners that may be of interest to
-            you
+            Notify you about special experiences and products or services
+            available from us, our affiliates, or our partners that may be of
+            interest to you
           </>,
           <>Communicate with you</>,
           <>
@@ -141,10 +141,11 @@ const sections: ILegalSection[] = [
       },
       <>
         Please note that some information about you is required in order for us
-        to provide you with relevant offerings from us, our affiliates and our
-        partners and to enable you to enjoy other benefits of being a registered
-        user. Please review the “Information Choices” section below with respect
-        to your choices related to the collection and use of your information.
+        to provide you with relevant experienceings from us, our affiliates and
+        our partners and to enable you to enjoy other benefits of being a
+        registered user. Please review the “Information Choices” section below
+        with respect to your choices related to the collection and use of your
+        information.
       </>,
     ],
   },

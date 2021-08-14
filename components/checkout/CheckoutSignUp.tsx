@@ -1,34 +1,23 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import { UserIcon } from '@tastiest-io/tastiest-icons';
 import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
-import { AuthError, AuthErrorMessageMap } from 'contexts/auth';
+import { AuthError, AuthErrorCode, AuthErrorMessageMap } from 'contexts/auth';
+import { useRegister } from 'hooks/auth/useRegister';
 import { useScreenSize } from 'hooks/useScreenSize';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useToggle } from 'react-use';
 import {
   CheckoutSignInTabSelected,
   setSignInTabSelected,
 } from 'state/checkout';
-import { useAuth } from '../../hooks/useAuth';
 import { InputEmail } from '../inputs/InputEmail';
 import { InputPassword } from '../inputs/InputPassword';
 import { SignInTosInfo } from '../SignInTosInfo';
 
-interface Props {
-  anonymousId: string;
-}
+export function CheckoutSignUp() {
+  const { register, error: fetchError, submitting } = useRegister();
 
-export function CheckoutSignUp(props: Props) {
-  const { anonymousId } = props;
-
-  const {
-    signUp,
-    resetPassword,
-    isSignedIn,
-    error: firebaseAuthError,
-  } = useAuth();
   const { isDesktop } = useScreenSize();
   const dispatch = useDispatch();
 
@@ -36,8 +25,14 @@ export function CheckoutSignUp(props: Props) {
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPassword0, setSignUpPassword0] = useState('');
   const [signUpPassword1, setSignUpPassword1] = useState('');
-  const [error, setError] = useState<string>('');
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<AuthError | null>(null);
+
+  // Sync local errors with fetchError
+  useEffect(() => {
+    if (fetchError) {
+      setError(fetchError);
+    }
+  }, [fetchError]);
 
   const cleanupInputValue = (value: string | number) =>
     String(value).toLowerCase().trim();
@@ -47,34 +42,22 @@ export function CheckoutSignUp(props: Props) {
 
   const submit = async () => {
     if (signUpPassword0 !== signUpPassword1) {
-      setError('Passwords do not match');
+      setError(AuthErrorMessageMap[AuthErrorCode.PASSWORDS_DO_NOT_MATCH]);
       return;
     }
 
-    if (!signUpName?.length) {
-      setError('Please enter your name');
-    }
+    const { user } = await register(signUpEmail, signUpPassword0, signUpName);
 
-    if (!signUpEmail.length) {
-      setError('Please enter your email');
+    if (user?.uid) {
+      // Track sign up from checkout
+      window.analytics.track('User Signed Up', {
+        userId: user.uid,
+      });
+
       return;
     }
-
-    setError('');
-    setLoading(true);
-
-    const { user, error } = await signUp(
-      signUpEmail,
-      signUpPassword0,
-      signUpName,
-      anonymousId,
-    );
-
-    setError(error);
-    setLoading(false);
   };
 
-  dlog('CheckoutSignUCheckoutSignUp ➡️ firebaseAuthError:', firebaseAuthError);
   dlog('CheckoutSignUp ➡️ error:', error);
 
   return (
@@ -83,7 +66,7 @@ export function CheckoutSignUp(props: Props) {
         size="large"
         type="text"
         placeholder="First Name"
-        prefix={<UserIcon className="w-6 fill-current text-primary" />}
+        prefix={<UserIcon className="w-8 h-6 fill-current text-primary" />}
         maxLength={20}
         value={signUpName}
         onValueChange={value => setSignUpName(titleCase(value ?? ''))}
@@ -106,9 +89,9 @@ export function CheckoutSignUp(props: Props) {
         onValueChange={value => setSignUpPassword1(cleanupInputValue(value))}
       />
 
-      {(firebaseAuthError?.length || error?.length > 1) && (
+      {error && (
         <div className="mb-1 -mt-1 text-sm text-center text-danger">
-          {error || firebaseAuthError}
+          {error.userFacingMessage}
         </div>
       )}
 
@@ -138,12 +121,15 @@ export function CheckoutSignUp(props: Props) {
         </div>
       </div>
 
-      <Button wide size="large" type="solid" color="primary" onClick={submit}>
-        {loading ? (
-          <LoadingOutlined className="text-2xl" />
-        ) : (
-          'Sign up to Proceed to Checkout'
-        )}
+      <Button
+        wide
+        size="large"
+        type="solid"
+        color="primary"
+        loading={submitting}
+        onClick={submit}
+      >
+        Sign up to Proceed to Checkout
       </Button>
 
       {error && (

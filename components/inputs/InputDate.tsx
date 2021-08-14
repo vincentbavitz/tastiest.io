@@ -1,8 +1,7 @@
 import { Input } from '@tastiest-io/tastiest-components';
-import { dlog, IDateObject } from '@tastiest-io/tastiest-utils';
+import { IDateObject } from '@tastiest-io/tastiest-utils';
 import React from 'react';
-import NumberFormat, { NumberFormatValues } from 'react-number-format';
-import { dateFormat, dateToString, stringToDate } from 'utils/text';
+import { Controller, useForm } from 'react-hook-form';
 
 interface Props {
   // Data
@@ -17,26 +16,43 @@ interface Props {
   subLabel?: string;
 }
 
-const InputCustom = (props: Props) => (
-  <Input inputMode="decimal" inputClassName="font-mono w-full" {...props} />
-);
-
 export function InputDate(props: Props) {
-  const handleOnChange = ({ value }: NumberFormatValues) => {
-    dlog('value', value);
-    const date = stringToDate(value);
+  const { control } = useForm<{ date: string }>({
+    mode: 'onChange',
+    reValidateMode: 'onBlur',
+    criteriaMode: 'firstError',
+    shouldFocusError: true,
+  });
 
-    props.onDateChange(date);
+  const transformInput = (value: string) => {
+    return String(value)
+      .replace(/[^0-9/]*/g, '')
+      .slice(0, 10);
   };
 
   return (
-    <NumberFormat
-      placeholder="DD/MM/YYYY"
-      mask={['M', 'M', 'D', 'D', 'Y', 'Y', 'Y', 'Y']}
-      format={value => dateFormat(value)}
-      customInput={InputCustom}
-      value={dateToString(props.date)}
-      onValueChange={handleOnChange}
+    <Controller
+      control={control}
+      defaultValue=""
+      name="date"
+      rules={{
+        pattern: {
+          value: /^((0[1-9])|([1-2][0-9])|(3[0-1]))\/((0[1-9])|(1[0-2]))\/((19[2-9][0-9])|(201[0-1])|(200[0-9]))$/,
+          message: 'Please enter a valid date.',
+        },
+      }}
+      render={({ field, formState }) => (
+        <Input
+          {...field}
+          type="text"
+          inputMode="decimal"
+          placeholder="MM/DD/YYYY"
+          className="py-2 font-mono"
+          error={formState.errors.date?.message}
+          onChange={e => field.onChange(e.target.value)}
+          value={transformInput(field.value)}
+        ></Input>
+      )}
     />
   );
 }

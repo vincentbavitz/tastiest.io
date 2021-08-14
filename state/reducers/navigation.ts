@@ -27,13 +27,19 @@ export const navigationReducer = (
       return { ...state, searchOverlayExpanded: !state.searchOverlayExpanded };
     }
     case NavigationActions.OPEN_SIGN_IN_MODAL: {
-      return { ...state, isSignInModalOpen: true };
+      return { ...state, isAuthModalOpen: true };
     }
     case NavigationActions.CLOSE_SIGN_IN_MODAL: {
-      return { ...state, isSignInModalOpen: false };
+      return { ...state, isAuthModalOpen: false };
     }
     case NavigationActions.SET_MODAL_IS_OPEN: {
       return { ...state, modalIsOpen: action.payload };
+    }
+    case NavigationActions.TOGGLE_OFFER_MENU_MODAL: {
+      return { ...state, isOfferMenuOpen: action.payload };
+    }
+    case NavigationActions.TOGGLE_ARTICLE_HIW_MODAL: {
+      return { ...state, isArticleHiwOpen: action.payload };
     }
     default:
       return state;

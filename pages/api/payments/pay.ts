@@ -8,7 +8,6 @@ import {
   IRestaurant,
   PAYMENTS,
   reportInternalError,
-  RestaurantData,
   RestaurantDataApi,
   TastiestInternalErrorCode,
   transformPriceForStripe,
@@ -18,22 +17,17 @@ import {
 import Analytics from 'analytics-node';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { db, firebaseAdmin } from 'utils/firebaseAdmin';
 
 export type PayParams = {
   token: string;
-  shopifyProductId: string;
-  anonymousId: string;
-  cartToken: string;
+  userId: string;
   userAgent: string;
 };
 
 export type PayReturn = {
   order: IOrder | null;
 };
-
-// const shopifyDomain = 'tastiestio.myshopify.com';
-// const shopifyStorefrontAccessToken = 'bcb518fdae51ece62ff871661a5ca08a';
 
 const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
 
@@ -66,13 +60,7 @@ export default async function pay(
     body = request.body;
   }
 
-  const {
-    token = null,
-    shopifyProductId = null,
-    anonymousId = null,
-    cartToken = null,
-    userAgent = '',
-  } = body;
+  const { token = null, userAgent = '' } = body;
 
   // Order token is required
   if (!token || !token.length) {
@@ -84,57 +72,55 @@ export default async function pay(
     return;
   }
 
-  // Fetch the order from Firestore using orderToken
-  const snapshot = await firebaseAdmin
-    .firestore()
-    .collection(FirestoreCollection.ORDERS)
-    .where('token', '==', token)
-    .limit(1)
-    .get();
-
-  let order: IOrder;
-  snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
-
-  // Is the order already paid or expired?
-  const isOrderExpired =
-    order?.createdAt + PAYMENTS.ORDER_EXPIRY_MS < Date.now();
-  if (order.paidAt || isOrderExpired) {
-    const _error = 'Order already paid or is expired';
-
-    // Payment expired or already paid
-    analytics.track({
-      event: 'Payment Error',
-      context: { userAgent },
-      userId: order.userId,
-      properties: {
-        token,
-        ...order,
-        error: _error,
-      },
-    });
-
-    response.json({
-      success: false,
-      data: { order: null },
-      error: _error,
-    });
-    return;
-  }
-
-  // Does order contain userId?
-  if (!order?.userId) {
-    response.json({
-      success: false,
-      data: { order: null },
-      error: 'No user ID given',
-    });
-    return;
-  }
-
-  const userDataApi = new UserDataApi(firebaseAdmin, order?.userId);
-  const details = await userDataApi.getUserData(UserData.DETAILS);
-
   try {
+    // Fetch the order from Firestore using orderToken
+    const snapshot = await db(FirestoreCollection.ORDERS)
+      .where('token', '==', token)
+      .limit(1)
+      .get();
+
+    let order: IOrder;
+    snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
+
+    const userDataApi = new UserDataApi(firebaseAdmin, order?.userId);
+    const details = await userDataApi.getUserData(UserData.DETAILS);
+
+    // Is the order already paid or expired?
+    const isOrderExpired =
+      order?.createdAt + PAYMENTS.ORDER_EXPIRY_MS < Date.now();
+    if (order.paidAt || isOrderExpired) {
+      const _error = 'Order already paid or is expired';
+
+      // Payment expired or already paid
+      analytics.track({
+        event: 'Payment Error',
+        context: { userAgent },
+        userId: order.userId,
+        properties: {
+          token,
+          ...order,
+          error: _error,
+        },
+      });
+
+      response.json({
+        success: false,
+        data: { order: null },
+        error: _error,
+      });
+      return;
+    }
+
+    // Does order contain userId?
+    if (!order?.userId) {
+      response.json({
+        success: false,
+        data: { order: null },
+        error: 'No user ID given',
+      });
+      return;
+    }
+
     // Payment method exists?
     if (!order?.paymentMethod || !order?.paymentMethod.length) {
       const _error = 'No payment method ID given';
@@ -197,12 +183,22 @@ export default async function pay(
     );
 
     const RESTAURANT_PAYOUT_PC = 0.75;
-    const totalPaymentValue = order.price.final;
-    const restaurantPaymentValue = totalPaymentValue * RESTAURANT_PAYOUT_PC;
-
     const restaurantDataApi = new RestaurantDataApi(
       firebaseAdmin,
       order.deal.restaurant.id,
+    );
+
+    // Internal measurements
+    const calculateTastiestPortion = (gross: number, final: number) => {
+      const portion =
+        order.price.gross * (1 - RESTAURANT_PAYOUT_PC) - (gross - final);
+      return portion;
+    };
+
+    const restaurantPortion = order.price.gross * RESTAURANT_PAYOUT_PC;
+    const tastiestPortion = calculateTastiestPortion(
+      order.price.gross,
+      order.price.final,
     );
 
     const {
@@ -212,7 +208,7 @@ export default async function pay(
 
     // The `confirm` parameter attempts to pay immediately & automatically
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: transformPriceForStripe(totalPaymentValue),
+      amount: transformPriceForStripe(order.price.final),
       currency: 'gbp',
       customer: customerId,
       payment_method: order.paymentMethod,
@@ -221,23 +217,13 @@ export default async function pay(
 
       // Automatically transfer to Connected Account
       transfer_data: {
-        amount: transformPriceForStripe(restaurantPaymentValue),
+        amount: transformPriceForStripe(restaurantPortion),
         destination:
           process.env.NODE_ENV === 'production'
             ? stripeConnectedAccount.id
             : process.env.STRIPE_TEST_CONNECTED_ACCOUNT_ID,
       },
-      // Temporarily used for Shopify webhook syncing
-      description: JSON.stringify({
-        title: order.deal.name,
-        quantity: order.heads,
-        unitPrice: order.deal.pricePerHeadGBP,
-        restaurantPhone: order.deal.restaurant.publicPhoneNumber,
-        restaurantAddress: order.deal.restaurant.location.address,
-        shopifyProductId,
-        anonymousId,
-        cartToken,
-      }),
+      // Used to manage Stripe Webhooks like `onPaymentSuccessWebhook`
       metadata: {
         orderId: order.id,
       },
@@ -257,31 +243,13 @@ export default async function pay(
     // Payment success
     if (paymentIntent.status === 'succeeded') {
       // Update order
-      await firebaseAdmin
-        .firestore()
-        .collection(FirestoreCollection.ORDERS)
-        .doc(order.id)
-        .set(
-          {
-            paidAt: Date.now(),
-          },
-          { merge: true },
-        );
-
-      const userDataApi = new UserDataApi(firebaseAdmin, order.userId);
-      const userDetails = await userDataApi.getUserData(UserData.DETAILS);
-      const restaurantDataApi = new RestaurantDataApi(
-        firebaseAdmin,
-        order.deal.restaurant.id,
+      await db(FirestoreCollection.ORDERS).doc(order.id).set(
+        {
+          paidAt: Date.now(),
+        },
+        { merge: true },
       );
 
-      const restaurantDetails = await restaurantDataApi.getRestaurantField(
-        RestaurantData.DETAILS,
-      );
-
-      const eaterName = `${userDetails.firstName} ${userDetails.lastName}`;
-
-      // Update user data
       // Add to bookings
       const booking: IBooking = {
         userId: order.userId,
@@ -289,9 +257,9 @@ export default async function pay(
         restaurantId: order.deal.restaurant.id,
         orderId: order.id,
         userFacingBookingId: generateUserFacingId(),
-        eaterName,
-        eaterEmail: userDetails.email as string,
-        eaterMobile: userDetails.mobile as string,
+        eaterName: `${details.firstName} ${details.lastName}`,
+        eaterEmail: details.email as string,
+        eaterMobile: details.mobile as string,
         dealName: order.deal.name,
         heads: order.heads,
         price: order.price,
@@ -312,11 +280,6 @@ export default async function pay(
         .doc(order.id)
         .set(booking);
 
-      // Internal measurements
-      const tastiestPortion = order.price.final * 0.25; // TODO -> Subtract PROMO,
-      const restaurantPortion = order.price.final * 0.75;
-
-      // Track payment success
       // Track using Segment's Payment Success schema
       // https://segment.com/docs/connections/spec/ecommerce/v2/#order-completed
       await analytics.track({
@@ -340,7 +303,7 @@ export default async function pay(
           affiliation: '',
           total: order.price.final,
           subtotal: order.price.gross,
-          revenue: order.price.final * 0.25,
+          revenue: tastiestPortion,
           shipping: 0,
           tax: 0,
           discount: 0,
@@ -364,9 +327,10 @@ export default async function pay(
             email: details.email,
             phone: details.mobile,
             birthday: JSON.stringify(details.birthday),
+            postalCode: details.postalCode,
+
             address: {
               city: 'London',
-              postalCode: details.postalCode,
             },
           },
 
@@ -375,7 +339,6 @@ export default async function pay(
           restaurantPortion,
 
           // For Pixel
-          email: details.email,
           action_source: 'website',
         },
       });
@@ -385,8 +348,19 @@ export default async function pay(
         data: { order },
         error: null,
       });
+
+      return;
     } else {
-      const _error = 'Unable to confirm payment';
+      const _error = 'Payment Failure - Unable to confirm payment';
+      await reportInternalError({
+        code: TastiestInternalErrorCode.PAYMENT_ERROR,
+        message: _error,
+        timestamp: Date.now(),
+        shouldAlert: false,
+        originFile: 'pages/api/payments/pay.ts:335',
+        severity: 'CRITICAL',
+        properties: { ...order },
+      });
 
       analytics.track({
         event: 'Payment Failure',
@@ -404,6 +378,8 @@ export default async function pay(
         data: { order: null },
         error: _error,
       });
+
+      return;
     }
   } catch (error) {
     await reportInternalError({
@@ -412,26 +388,17 @@ export default async function pay(
       timestamp: Date.now(),
       shouldAlert: false,
       originFile: 'pages/api/payments/pay.ts',
-      properties: {},
+      severity: 'CRITICAL',
+      properties: { token },
       raw: String(error),
-    });
-
-    // Payment failure
-    await analytics.track({
-      event: 'Payment Error',
-      userId: order.userId,
-      properties: {
-        token,
-        firstName: details.firstName,
-        ...order,
-        error: String(error),
-      },
     });
 
     response.json({
       success: false,
       data: { order: null },
-      error,
+      error: String(error),
     });
+
+    return;
   }
 }

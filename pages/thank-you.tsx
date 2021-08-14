@@ -15,7 +15,7 @@ import { InferGetServerSidePropsType } from 'next';
 import { ThankYouFood, ThankYouHero, ThankYouPhone } from 'public/assets/page';
 import React, { ReactNode } from 'react';
 import Stripe from 'stripe';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { db, firebaseAdmin } from 'utils/firebaseAdmin';
 import { v4 as uuid } from 'uuid';
 import { Contained } from '../components/Contained';
 
@@ -25,6 +25,8 @@ export const getServerSideProps = async context => {
 
   // If no order or user exists in URI, redirect to home
   if (!token) {
+    dlog('No token!');
+
     return {
       redirect: {
         destination: '/',
@@ -33,12 +35,10 @@ export const getServerSideProps = async context => {
     };
   }
 
-  // Get order, given our order ID.s
+  // Get order, given our order IDs
   // If the order exists, /api/payments/createNewOrder
   // has already verified that it's valid.
-  const orderSnapshot = await firebaseAdmin
-    .firestore()
-    .collection(FirestoreCollection.ORDERS)
+  const orderSnapshot = await db(FirestoreCollection.ORDERS)
     .where('token', '==', token)
     .limit(1)
     .get();
@@ -47,9 +47,7 @@ export const getServerSideProps = async context => {
   orderSnapshot.docs.forEach(doc => (order = doc.data() as IOrder));
 
   // Get the corresponding booking
-  const bookingSnapshot = await firebaseAdmin
-    .firestore()
-    .collection(FirestoreCollection.BOOKINGS)
+  const bookingSnapshot = await db(FirestoreCollection.BOOKINGS)
     .doc(order.id)
     .get();
 
@@ -57,6 +55,18 @@ export const getServerSideProps = async context => {
 
   // Redirect if user somehow got to this state of no order request.
   if (!order || !order.paidAt || !booking) {
+    if (!booking) {
+      dlog('No booking!');
+    }
+
+    if (!order) {
+      dlog('No order!');
+    }
+
+    if (!order.paidAt) {
+      dlog('Order not paid!');
+    }
+
     return {
       redirect: {
         // TODO -> Destination should be /city/cuisine/slug
@@ -69,10 +79,11 @@ export const getServerSideProps = async context => {
   const userDataApi = new UserDataApi(firebaseAdmin, order.userId);
   const userDetails = await userDataApi.getUserData(UserData.DETAILS);
 
+  // Get Live / Test data
   const stripe = new Stripe(
-    process.env.NODE_ENV === 'production'
-      ? process.env.STRIPE_LIVE_SECRET_KEY
-      : process.env.STRIPE_TEST_SECRET_KEY,
+    order.isTest
+      ? process.env.STRIPE_TEST_SECRET_KEY
+      : process.env.STRIPE_LIVE_SECRET_KEY,
     {
       apiVersion: '2020-08-27',
     },
@@ -115,7 +126,6 @@ function ThankYou(
               className="w-full"
             />
           </div>
-
           <div className="flex flex-col items-center text-center">
             <h1 className="text-6xl font-somatic text-primary">Yay!</h1>
             <h2
@@ -343,7 +353,7 @@ function ThankYou(
         </Contained>
 
         <div className="flex justify-center w-full">
-          <a href="https://offers.tastiest.io">
+          <a href="/" className="no-underline">
             <Button size="large" className="text-2xl font-somatic" round>
               Find more great food!
             </Button>

@@ -1,6 +1,6 @@
 import { useUserData } from 'hooks/useUserData';
 import React from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/auth/useAuth';
 import { Avatar, AvatarProps } from './Avatar';
 
 export function UserAvatar(props: Omit<AvatarProps, 'imageSrc'>) {

@@ -1,4 +1,5 @@
-// const withPlugins = require('next-compose-plugins');
+const withPlugins = require('next-compose-plugins');
+const withImages = require('next-images');
 
 const nextConfig = {
   webpack(config, _options) {
@@ -21,7 +22,9 @@ const nextConfig = {
   fallback: {
     fs: false,
   },
+  images: {
+    domains: ['images.cfassets.net', 'images.ctfassets.net'],
+  },
 };
 
-// module.exports = withPlugins(nextConfig);
-module.exports = nextConfig;
+module.exports = withPlugins([withImages], nextConfig);

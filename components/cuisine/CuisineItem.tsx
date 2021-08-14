@@ -2,7 +2,7 @@ import { SVG } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import Link from 'next/link';
 import React from 'react';
-import { generateCuisineURL } from '../../utils/routing';
+import { generateStaticURL } from 'utils/routing';
 
 interface Props {
   // Ensure that the accompanying SVG is in /assets/cuisines
@@ -15,7 +15,7 @@ interface Props {
 export function CuisineItem(props: Props) {
   // const state = useGeolocation();
   const { name, onClick } = props;
-  const { href, as } = generateCuisineURL({ city: 'london', cuisine: name });
+  const { href, as } = generateStaticURL({ city: 'london', cuisine: name });
 
   const handleOnClick = () => {
     if (onClick) {
@@ -25,7 +25,7 @@ export function CuisineItem(props: Props) {
 
   return (
     <Link href={href} as={as}>
-      <a>
+      <a className="no-underline">
         <div
           className="flex py-6 mx-2 mt-1 cursor-pointer tablet:py-4 tablet:mt-0"
           onClick={handleOnClick}
@@ -49,10 +49,11 @@ export function CuisineItem(props: Props) {
               'font-bold',
               'border-2',
               'rounded-lg',
-              'duration-150',
+              'duration-300',
               'text-primary',
               'border-secondary',
-              'hover:text-secondary',
+              'hover:border-primary',
+              'hover:-text-primary-1',
               'hover:bg-transparent',
             )}
           >

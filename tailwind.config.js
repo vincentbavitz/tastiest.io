@@ -76,6 +76,9 @@ module.exports = {
     ],
     margin: ['children-last'],
     fontWeight: ['children-last'],
+    extend: {
+      brightness: ['hover', 'focus'],
+    },
   },
   plugins: [
     require('tailwindcss-children'),

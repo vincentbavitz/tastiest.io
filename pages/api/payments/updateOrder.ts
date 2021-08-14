@@ -8,7 +8,7 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { db } from 'utils/firebaseAdmin';
 import { calculatePromoPrice, validatePromo } from 'utils/order';
 
 export interface UpdateOrderParams {
@@ -75,9 +75,7 @@ export default async function updateOrder(
 
   try {
     // Fetch the order from Firestore using orderToken
-    const snapshot = await firebaseAdmin
-      .firestore()
-      .collection(FirestoreCollection.ORDERS)
+    const snapshot = await db(FirestoreCollection.ORDERS)
       .where('token', '==', token)
       .limit(1)
       .get();
@@ -86,7 +84,7 @@ export default async function updateOrder(
     snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
 
     // Does the order belong to this user?
-    if (order?.userId && order?.userId !== userId) {
+    if (order.userId && order?.userId !== userId) {
       dlog('updateOrder ➡️ userId:', userId);
       dlog('updateOrder ➡️ order?.userId:', order?.userId);
       response.json({
@@ -184,9 +182,7 @@ export default async function updateOrder(
     }
 
     // Sync with Firestore
-    await firebaseAdmin
-      .firestore()
-      .collection(FirestoreCollection.ORDERS)
+    await db(FirestoreCollection.ORDERS)
       .doc(order.id)
       .set(updatedOrder, { merge: true });
 

@@ -1,9 +1,231 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1635.3 755.53">
-  
-  
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 1300 713" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="linear-gradient-2" x1="111.09" y1="993.77" x2="1524.2" y2="334.82" gradientUnits="userSpaceOnUse">
+      <stop offset="0.07" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.12" stop-color="#fffcf3" stop-opacity="0.3"/>
+      <stop offset="0.59" stop-color="#ffcc2b" stop-opacity="0.4"/>
+      <stop offset="0.82" stop-color="#fffbf0" stop-opacity="0.1"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="clip-path-3" transform="translate(0.19 -24.23)">
+      <rect x="-0.19" width="1635.3" height="779.75" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-4" transform="translate(0.19 -24.23)">
+      <rect x="101.46" y="81.39" width="1430.4" height="525.96" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-5" transform="translate(0.19 -24.23)">
+      <rect x="106.46" y="86.39" width="1420.4" height="515.96" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-7" transform="translate(0.19 -24.23)">
+      <rect x="944.53" y="174.33" width="148.98" height="51.05" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-8" transform="translate(0.19 -24.23)">
+      <rect x="1324.63" y="281.08" width="146.87" height="50.33" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-9" transform="translate(0.19 -24.23)">
+      <rect x="741.24" y="24.23" width="761.76" height="607.88" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-10" transform="translate(0.19 -24.23)">
+      <rect x="1030.47" y="106.12" width="21.86" height="350.43" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-11" transform="translate(0.19 -24.23)">
+      <rect x="1175.29" y="103.36" width="21.86" height="350.43" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-12" transform="translate(0.19 -24.23)">
+      <rect x="1169.88" y="119.58" width="111.41" height="38.17" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-13" transform="translate(0.19 -24.23)">
+      <rect x="723.21" y="228.75" width="140.59" height="48.17" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-14" transform="translate(0.19 -24.23)">
+      <rect x="207.91" y="85.38" width="575.24" height="220.95" style="fill: none"/>
+    </clipPath>
+    <mask id="mask" x="208.1" y="61.15" width="575.24" height="220.95" maskUnits="userSpaceOnUse">
+      <g transform="translate(0.19 -24.23)">
+        <rect x="207.91" y="85.38" width="575.24" height="220.95" style="fill: url(#linear-gradient)"/>
+      </g>
+    </mask>
+    <linearGradient id="linear-gradient" x1="0.16" y1="781.15" x2="1.16" y2="781.15" gradientTransform="matrix(0, 220.95, 220.95, 0, -172098.23, 49.38)" gradientUnits="userSpaceOnUse">
+      <stop offset="0"/>
+      <stop offset="0.01"/>
+      <stop offset="0.04" stop-color="#181818"/>
+      <stop offset="0.12" stop-color="#4d4d4d"/>
+      <stop offset="0.2" stop-color="#7d7d7d"/>
+      <stop offset="0.28" stop-color="#a5a5a5"/>
+      <stop offset="0.37" stop-color="#c6c6c6"/>
+      <stop offset="0.45" stop-color="#dfdfdf"/>
+      <stop offset="0.54" stop-color="#f1f1f1"/>
+      <stop offset="0.64" stop-color="#fcfcfc"/>
+      <stop offset="0.75" stop-color="#fff"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-3" x1="0.16" y1="781.15" x2="1.16" y2="781.15" gradientTransform="matrix(0, 220.95, 220.95, 0, -172098.05, 25.15)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="0.01" stop-color="#fff"/>
+      <stop offset="0.05" stop-color="#fffcf2"/>
+      <stop offset="0.18" stop-color="#fff3d2"/>
+      <stop offset="0.31" stop-color="#ffecb9"/>
+      <stop offset="0.44" stop-color="#ffe8a7"/>
+      <stop offset="0.58" stop-color="#ffe59c"/>
+      <stop offset="0.75" stop-color="#ffe499"/>
+      <stop offset="1" stop-color="#ffe499"/>
+    </linearGradient>
+    <clipPath id="clip-path-15" transform="translate(0.19 -24.23)">
+      <rect x="334.25" y="314.29" width="35.34" height="41.95" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-16" transform="translate(0.19 -24.23)">
+      <rect x="279.21" y="321.88" width="43.6" height="48.8" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-17" transform="translate(0.19 -24.23)">
+      <rect x="242.34" y="355.92" width="49.3" height="45.51" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-18" transform="translate(0.19 -24.23)">
+      <rect x="406.27" y="355.92" width="49.3" height="45.51" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-19" transform="translate(0.19 -24.23)">
+      <rect x="379.95" y="321.88" width="43.6" height="48.8" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-20" transform="translate(0.19 -24.23)">
+      <rect x="535.68" y="540" width="19.54" height="10.99" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-21" transform="translate(0.19 -24.23)">
+      <rect x="547.35" y="433.15" width="120.89" height="94.49" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-22" transform="translate(0.19 -24.23)">
+      <rect x="648.76" y="395.41" width="86" height="171.36" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-23" transform="translate(0.19 -24.23)">
+      <rect x="716.31" y="499.37" width="18.45" height="67.4" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-24" transform="translate(0.19 -24.23)">
+      <rect x="717.24" y="533.39" width="16.59" height="31.57" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-25" transform="translate(0.19 -24.23)">
+      <rect x="717.24" y="534.72" width="16.59" height="30.24" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-26" transform="translate(0.19 -24.23)">
+      <rect x="696.31" y="499.37" width="18.45" height="67.4" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-27" transform="translate(0.19 -24.23)">
+      <rect x="697.23" y="533.39" width="16.59" height="31.57" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-28" transform="translate(0.19 -24.23)">
+      <rect x="697.23" y="534.72" width="16.59" height="30.24" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-29" transform="translate(0.19 -24.23)">
+      <rect x="659.48" y="499.37" width="18.45" height="67.4" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-30" transform="translate(0.19 -24.23)">
+      <rect x="660.41" y="533.39" width="16.59" height="31.57" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-31" transform="translate(0.19 -24.23)">
+      <rect x="660.41" y="534.72" width="16.59" height="30.24" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-32" transform="translate(0.19 -24.23)">
+      <rect x="569.04" y="541.28" width="71.34" height="23.44" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-33" transform="translate(0.19 -24.23)">
+      <rect x="304.43" y="357.24" width="70.2" height="54.93" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-34" transform="translate(0.19 -24.23)">
+      <rect x="491.12" y="550.76" width="59.25" height="17.06" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-35" transform="translate(0.19 -24.23)">
+      <rect x="594.73" y="395.41" width="43.6" height="122.81" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-36" transform="translate(0.19 -24.23)">
+      <rect x="72.75" y="628.06" width="1329.41" height="128.82" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-37" transform="translate(0.19 -24.23)">
+      <rect x="622.99" y="518.07" width="19.67" height="25.13" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-38" transform="translate(0.19 -24.23)">
+      <rect x="623.87" y="524.97" width="16.42" height="17.19" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-39" transform="translate(0.19 -24.23)">
+      <rect x="623.11" y="542.58" width="6.71" height="19" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-40" transform="translate(0.19 -24.23)">
+      <rect x="688.07" y="592.45" width="9.18" height="2.49" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-41" transform="translate(0.19 -24.23)">
+      <rect x="687.85" y="593.49" width="8.38" height="4.35" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-42" transform="translate(0.19 -24.23)">
+      <rect x="705.29" y="581.48" width="9.8" height="6.1" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-43" transform="translate(0.19 -24.23)">
+      <rect x="715.07" y="580.32" width="5.16" height="5.61" style="fill: none"/>
+    </clipPath>
+    <mask id="mask-2" x="707.14" y="570.42" width="19.92" height="9.78" maskUnits="userSpaceOnUse">
+      <g transform="translate(0.19 -24.23)">
+        <g style="clip-path: url(#clip-path)">
+          <rect x="709.35" y="594.65" width="17.53" height="9.77"/>
+          <g style="isolation: isolate">
+            <g style="clip-path: url(#clip-path-2)">
+              <rect x="706.96" y="594.65" width="19.56" height="6.07" style="fill: #eeefe4"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </mask>
+    <clipPath id="clip-path">
+      <rect x="709.89" y="595.25" width="16.66" height="8.96" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <rect x="709.35" y="594.65" width="17.53" height="9.77" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-44" transform="translate(0.19 -24.23)">
+      <rect x="709.89" y="595.25" width="16.66" height="8.96" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-45" transform="translate(0.19 -24.23)">
+      <rect x="716.04" y="597.75" width="10.08" height="5.42" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-46" transform="translate(0.19 -24.23)">
+      <rect x="710.46" y="595.72" width="7.61" height="2.76" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-47" transform="translate(0.19 -24.23)">
+      <rect x="730.87" y="581.87" width="9.18" height="2.49" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-48" transform="translate(0.19 -24.23)">
+      <rect x="731.9" y="578.96" width="8.38" height="4.35" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-49" transform="translate(0.19 -24.23)">
+      <rect x="648.61" y="541.25" width="13.36" height="63.79" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-50" transform="translate(0.19 -24.23)">
+      <rect x="649.53" y="576.73" width="11.48" height="26.41" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-51" transform="translate(0.19 -24.23)">
+      <rect x="649.51" y="575.52" width="11.42" height="2.69" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-52" transform="translate(0.19 -24.23)">
+      <rect x="765.63" y="521.23" width="15.96" height="23.61" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-53" transform="translate(0.19 -24.23)">
+      <rect x="766.42" y="528.14" width="14.55" height="15.64" style="fill: none"/>
+    </clipPath>
+    <clipPath id="clip-path-54" transform="translate(0.19 -24.23)">
+      <rect x="772.57" y="544.75" width="1.92" height="19.14" style="fill: none"/>
+    </clipPath>
+    <linearGradient id="linear-gradient-4" x1="482.01" y1="699.75" x2="482.01" y2="522.03" gradientTransform="matrix(1, 0, 0, -1, 0.19, 758.06)" gradientUnits="userSpaceOnUse">
+      <stop offset="0.01" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.08" stop-color="#fffaf0" stop-opacity="0.08"/>
+      <stop offset="0.24" stop-color="#ffedc9" stop-opacity="0.3"/>
+      <stop offset="0.44" stop-color="#ffdb94" stop-opacity="0.6"/>
+      <stop offset="0.5" stop-color="#d9b477" stop-opacity="0.7"/>
+      <stop offset="0.63" stop-color="#9f794b" stop-opacity="0.87"/>
+      <stop offset="0.74" stop-color="#7b5530" stop-opacity="0.97"/>
+      <stop offset="0.83" stop-color="#6f4827"/>
+    </linearGradient>
     <style>
   
- 
+  svg{
+      height: 713px;
+      width: 1300px;
+      
+  }
 #bail1a,#bail1c {
     animation: b1 2s linear infinite alternate;
     transform-origin: 10px 32px;
@@ -237,229 +459,8 @@
 }
   
   </style>
-  
-  <defs>
-    <linearGradient id="linear-gradient" x1="0.16" y1="781.15" x2="1.16" y2="781.15" gradientTransform="matrix(0, 220.95, 220.95, 0, -172098.23, 49.38)" gradientUnits="userSpaceOnUse">
-      <stop offset="0"/>
-      <stop offset="0.01"/>
-      <stop offset="0.04" stop-color="#181818"/>
-      <stop offset="0.12" stop-color="#4d4d4d"/>
-      <stop offset="0.2" stop-color="#7d7d7d"/>
-      <stop offset="0.28" stop-color="#a5a5a5"/>
-      <stop offset="0.37" stop-color="#c6c6c6"/>
-      <stop offset="0.45" stop-color="#dfdfdf"/>
-      <stop offset="0.54" stop-color="#f1f1f1"/>
-      <stop offset="0.64" stop-color="#fcfcfc"/>
-      <stop offset="0.75" stop-color="#fff"/>
-      <stop offset="1" stop-color="#fff"/>
-    </linearGradient>
-    <clipPath id="clip-path">
-      <rect x="709.89" y="595.25" width="16.66" height="8.96" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-2">
-      <rect x="709.35" y="594.65" width="17.53" height="9.77" style="fill: none"/>
-    </clipPath>
-    <linearGradient id="linear-gradient-2" x1="111.09" y1="993.77" x2="1524.2" y2="334.82" gradientUnits="userSpaceOnUse">
-      <stop offset="0.07" stop-color="#fff" stop-opacity="0"/>
-      <stop offset="0.12" stop-color="#fffcf3" stop-opacity="0.3"/>
-      <stop offset="0.59" stop-color="#ffcc2b" stop-opacity="0.4"/>
-      <stop offset="0.82" stop-color="#fffbf0" stop-opacity="0.1"/>
-      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
-    </linearGradient>
-    <clipPath id="clip-path-3" transform="translate(0.19 -24.23)">
-      <rect x="-0.19" width="1635.3" height="779.75" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-4" transform="translate(0.19 -24.23)">
-      <rect x="101.46" y="81.39" width="1430.4" height="525.96" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-5" transform="translate(0.19 -24.23)">
-      <rect x="106.46" y="86.39" width="1420.4" height="515.96" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-7" transform="translate(0.19 -24.23)">
-      <rect x="944.53" y="174.33" width="148.98" height="51.05" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-8" transform="translate(0.19 -24.23)">
-      <rect x="1324.63" y="281.08" width="146.87" height="50.33" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-9" transform="translate(0.19 -24.23)">
-      <rect x="741.24" y="24.23" width="761.76" height="607.88" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-10" transform="translate(0.19 -24.23)">
-      <rect x="1030.47" y="106.12" width="21.86" height="350.43" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-11" transform="translate(0.19 -24.23)">
-      <rect x="1175.29" y="103.36" width="21.86" height="350.43" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-12" transform="translate(0.19 -24.23)">
-      <rect x="1169.88" y="119.58" width="111.41" height="38.17" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-13" transform="translate(0.19 -24.23)">
-      <rect x="723.21" y="228.75" width="140.59" height="48.17" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-14" transform="translate(0.19 -24.23)">
-      <rect x="207.91" y="85.38" width="575.24" height="220.95" style="fill: none"/>
-    </clipPath>
-    <mask id="mask" x="208.1" y="61.15" width="575.24" height="220.95" maskUnits="userSpaceOnUse">
-      <g transform="translate(0.19 -24.23)">
-        <rect x="207.91" y="85.38" width="575.24" height="220.95" style="fill: url(#linear-gradient)"/>
-      </g>
-    </mask>
-    <linearGradient id="linear-gradient-3" x1="0.16" y1="781.15" x2="1.16" y2="781.15" gradientTransform="matrix(0, 220.95, 220.95, 0, -172098.05, 25.15)" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#fff"/>
-      <stop offset="0.01" stop-color="#fff"/>
-      <stop offset="0.05" stop-color="#fffcf2"/>
-      <stop offset="0.18" stop-color="#fff3d2"/>
-      <stop offset="0.31" stop-color="#ffecb9"/>
-      <stop offset="0.44" stop-color="#ffe8a7"/>
-      <stop offset="0.58" stop-color="#ffe59c"/>
-      <stop offset="0.75" stop-color="#ffe499"/>
-      <stop offset="1" stop-color="#ffe499"/>
-    </linearGradient>
-    <clipPath id="clip-path-15" transform="translate(0.19 -24.23)">
-      <rect x="334.25" y="314.29" width="35.34" height="41.95" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-16" transform="translate(0.19 -24.23)">
-      <rect x="279.21" y="321.88" width="43.6" height="48.8" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-17" transform="translate(0.19 -24.23)">
-      <rect x="242.34" y="355.92" width="49.3" height="45.51" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-18" transform="translate(0.19 -24.23)">
-      <rect x="406.27" y="355.92" width="49.3" height="45.51" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-19" transform="translate(0.19 -24.23)">
-      <rect x="379.95" y="321.88" width="43.6" height="48.8" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-20" transform="translate(0.19 -24.23)">
-      <rect x="535.68" y="540" width="19.54" height="10.99" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-21" transform="translate(0.19 -24.23)">
-      <rect x="547.35" y="433.15" width="120.89" height="94.49" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-22" transform="translate(0.19 -24.23)">
-      <rect x="648.76" y="395.41" width="86" height="171.36" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-23" transform="translate(0.19 -24.23)">
-      <rect x="716.31" y="499.37" width="18.45" height="67.4" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-24" transform="translate(0.19 -24.23)">
-      <rect x="717.24" y="533.39" width="16.59" height="31.57" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-25" transform="translate(0.19 -24.23)">
-      <rect x="717.24" y="534.72" width="16.59" height="30.24" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-26" transform="translate(0.19 -24.23)">
-      <rect x="696.31" y="499.37" width="18.45" height="67.4" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-27" transform="translate(0.19 -24.23)">
-      <rect x="697.23" y="533.39" width="16.59" height="31.57" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-28" transform="translate(0.19 -24.23)">
-      <rect x="697.23" y="534.72" width="16.59" height="30.24" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-29" transform="translate(0.19 -24.23)">
-      <rect x="659.48" y="499.37" width="18.45" height="67.4" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-30" transform="translate(0.19 -24.23)">
-      <rect x="660.41" y="533.39" width="16.59" height="31.57" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-31" transform="translate(0.19 -24.23)">
-      <rect x="660.41" y="534.72" width="16.59" height="30.24" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-32" transform="translate(0.19 -24.23)">
-      <rect x="569.04" y="541.28" width="71.34" height="23.44" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-33" transform="translate(0.19 -24.23)">
-      <rect x="304.43" y="357.24" width="70.2" height="54.93" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-34" transform="translate(0.19 -24.23)">
-      <rect x="491.12" y="550.76" width="59.25" height="17.06" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-35" transform="translate(0.19 -24.23)">
-      <rect x="594.73" y="395.41" width="43.6" height="122.81" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-36" transform="translate(0.19 -24.23)">
-      <rect x="72.75" y="628.06" width="1329.41" height="128.82" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-37" transform="translate(0.19 -24.23)">
-      <rect x="622.99" y="518.07" width="19.67" height="25.13" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-38" transform="translate(0.19 -24.23)">
-      <rect x="623.87" y="524.97" width="16.42" height="17.19" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-39" transform="translate(0.19 -24.23)">
-      <rect x="623.11" y="542.58" width="6.71" height="19" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-40" transform="translate(0.19 -24.23)">
-      <rect x="688.07" y="592.45" width="9.18" height="2.49" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-41" transform="translate(0.19 -24.23)">
-      <rect x="687.85" y="593.49" width="8.38" height="4.35" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-42" transform="translate(0.19 -24.23)">
-      <rect x="705.29" y="581.48" width="9.8" height="6.1" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-43" transform="translate(0.19 -24.23)">
-      <rect x="715.07" y="580.32" width="5.16" height="5.61" style="fill: none"/>
-    </clipPath>
-    <mask id="mask-2" x="707.14" y="570.42" width="19.92" height="9.78" maskUnits="userSpaceOnUse">
-      <g transform="translate(0.19 -24.23)">
-        <g style="clip-path: url(#clip-path)">
-          <rect x="709.35" y="594.65" width="17.53" height="9.77"/>
-          <g style="isolation: isolate">
-            <g style="clip-path: url(#clip-path-2)">
-              <rect x="706.96" y="594.65" width="19.56" height="6.07" style="fill: #eeefe4"/>
-            </g>
-          </g>
-        </g>
-      </g>
-    </mask>
-    <clipPath id="clip-path-44" transform="translate(0.19 -24.23)">
-      <rect x="709.89" y="595.25" width="16.66" height="8.96" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-45" transform="translate(0.19 -24.23)">
-      <rect x="716.04" y="597.75" width="10.08" height="5.42" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-46" transform="translate(0.19 -24.23)">
-      <rect x="710.46" y="595.72" width="7.61" height="2.76" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-47" transform="translate(0.19 -24.23)">
-      <rect x="730.87" y="581.87" width="9.18" height="2.49" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-48" transform="translate(0.19 -24.23)">
-      <rect x="731.9" y="578.96" width="8.38" height="4.35" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-49" transform="translate(0.19 -24.23)">
-      <rect x="648.61" y="541.25" width="13.36" height="63.79" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-50" transform="translate(0.19 -24.23)">
-      <rect x="649.53" y="576.73" width="11.48" height="26.41" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-51" transform="translate(0.19 -24.23)">
-      <rect x="649.51" y="575.52" width="11.42" height="2.69" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-52" transform="translate(0.19 -24.23)">
-      <rect x="765.63" y="521.23" width="15.96" height="23.61" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-53" transform="translate(0.19 -24.23)">
-      <rect x="766.42" y="528.14" width="14.55" height="15.64" style="fill: none"/>
-    </clipPath>
-    <clipPath id="clip-path-54" transform="translate(0.19 -24.23)">
-      <rect x="772.57" y="544.75" width="1.92" height="19.14" style="fill: none"/>
-    </clipPath>
-    <linearGradient id="linear-gradient-4" x1="482.01" y1="699.75" x2="482.01" y2="522.03" gradientTransform="matrix(1, 0, 0, -1, 0.19, 758.06)" gradientUnits="userSpaceOnUse">
-      <stop offset="0.01" stop-color="#fff" stop-opacity="0"/>
-      <stop offset="0.08" stop-color="#fffaf0" stop-opacity="0.08"/>
-      <stop offset="0.24" stop-color="#ffedc9" stop-opacity="0.3"/>
-      <stop offset="0.44" stop-color="#ffdb94" stop-opacity="0.6"/>
-      <stop offset="0.5" stop-color="#d9b477" stop-opacity="0.7"/>
-      <stop offset="0.63" stop-color="#9f794b" stop-opacity="0.87"/>
-      <stop offset="0.74" stop-color="#7b5530" stop-opacity="0.97"/>
-      <stop offset="0.83" stop-color="#6f4827"/>
-    </linearGradient>
   </defs>
-  <title>Spain_mobile</title>
-  <g style="isolation: isolate">
+  <g style="isolation: isolate;" transform="matrix(0.884899, 0, 0, 0.884899, -38.441837, 44.871193)">
     <g id="Layer_1" data-name="Layer 1">
       <rect y="573.07" width="1635.3" height="182.46" style="fill: url(#linear-gradient-2)"/>
       <g style="clip-path: url(#clip-path-3)">

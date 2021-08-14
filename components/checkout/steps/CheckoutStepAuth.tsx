@@ -82,7 +82,7 @@ const CheckoutStepAuthMobile = ({ order, anonymousId }: Props) => {
     (state: IState) => state.checkout,
   );
 
-  const totalPrice = (order?.heads ?? 1) * order?.deal?.pricePerHeadGBP;
+  const totalPrice = formatCurrency(order.heads * order?.deal?.pricePerHeadGBP);
 
   // Set initial value of sign in
   const dispatch = useDispatch();

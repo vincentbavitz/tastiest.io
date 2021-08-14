@@ -1,7 +1,5 @@
 import React, { ReactNode } from 'react';
-import { v4 as uuid } from 'uuid';
 import { Contained } from './Contained';
-import { Footer } from './Footer';
 
 export interface ILegalSection {
   title: string | null;
@@ -37,13 +35,12 @@ export const LegalPage = (props: LegalPageProps) => {
           <div className="pt-10 pb-4">{children}</div>
 
           {sections.map((section, index) => (
-            <div key={uuid()} className="pb-10">
+            <div key={index} className="pb-10">
               <Section {...section} sectionNumber={index + 1} />
             </div>
           ))}
         </div>
       </Contained>
-      <Footer />
     </>
   );
 };
@@ -63,7 +60,7 @@ const Section = (props: LegalSectionProps) => {
       {subsections.map((subsection, index) => {
         if (subsection?.['subsections']?.length) {
           return (
-            <div key={uuid()} className="pt-2 pl-3">
+            <div key={index} className="pt-2 pl-3">
               <Section
                 {...(subsection as ILegalSection)}
                 sectionNumber={`${sectionNumber}.${index}`}
@@ -73,7 +70,7 @@ const Section = (props: LegalSectionProps) => {
         }
 
         return (
-          <p key={uuid()} className="pt-1">
+          <p key={index} className="pt-1">
             <span className="text-lg tracking-wider text-primary font-somatic">
               {sectionNumber}.{index + 1}.
             </span>{' '}

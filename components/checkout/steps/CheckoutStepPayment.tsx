@@ -21,9 +21,9 @@ import { InputContactBirthday } from 'components/inputs/contact/InputContactBirt
 import { InputMobile } from 'components/inputs/contact/InputMobile';
 import { InputName } from 'components/inputs/contact/InputName';
 import InputPostcode from 'components/inputs/contact/InputPostcode';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useCheckout } from 'hooks/checkout/useCheckout';
 import { useOrder } from 'hooks/checkout/useOrder';
-import { useAuth } from 'hooks/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import React, { useEffect, useState } from 'react';
@@ -184,6 +184,8 @@ export function CheckoutStepPayment(props: Props) {
       return;
     }
 
+    dlog('CheckoutStepPayment ➡️ order:', order);
+
     const { error: updateOrderError } = await updateOrder({
       paymentMethodId: paymentMethod.id,
     });
@@ -201,12 +203,8 @@ export function CheckoutStepPayment(props: Props) {
       return { success: false, error: updateOrderError };
     }
 
-    const { success, error } = await pay(
-      shopifyProductId,
-      anonymousId,
-      cartToken,
-      userAgent,
-    );
+    const { success, error } = await pay();
+    dlog('CheckoutStepPayment ➡️ error:', error);
 
     // Uh-oh - a general payment error!
     // This usually means the card declined.
@@ -248,7 +246,7 @@ export function CheckoutStepPayment(props: Props) {
           minWidth:
             isMobile || isTablet ? 'unset' : `${UI.CHECKOUT_SPLIT_WIDTH_PX}px`,
         }}
-        className="flex flex-col w-full pb-20 space-y-16 tablet:pb-0 tablet:w-7/12"
+        className="flex flex-col w-full space-y-16 tablet:w-7/12"
       >
         <div>
           {isDesktop ? (
@@ -279,6 +277,7 @@ export function CheckoutStepPayment(props: Props) {
             />
 
             <InputContactBirthday
+              label="Birthday"
               date={birthday}
               disabled={isPaymentProcessing}
               onDateChange={value => setBirthday(value)}
@@ -368,14 +367,14 @@ export function CheckoutStepPayment(props: Props) {
 
       <div
         className={clsx(
-          'flex justify-center mobile:block w-full tablet:flex-grow tablet:w-5/12',
+          'w-full flex justify-center tablet:flex-grow tablet:w-5/12',
           isDesktop && 'pl-10',
         )}
       >
         <CheckoutPaymentPanel
           order={order}
-          submit={handleSubmit(makePayment)}
           error={error}
+          submit={handleSubmit(makePayment)}
         />
       </div>
     </div>

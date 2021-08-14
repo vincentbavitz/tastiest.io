@@ -1,7 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input } from '@tastiest-io/tastiest-components';
 import clsx from 'clsx';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useFeedback } from 'hooks/useFeedback';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
@@ -27,8 +27,7 @@ export function SuggestRestaurant() {
 
   // Form values
   const [requestRecieved, setRequestRecieved] = useState(false);
-
-  const { suggestRestaurant, isSubmitting } = useFeedback();
+  const { makeRecommendation, isSubmitting } = useFeedback();
 
   // prettier-ignore
   const svgDesktopMarginLeft = isHuge ?
@@ -45,7 +44,7 @@ export function SuggestRestaurant() {
       return;
     }
 
-    const { success } = await suggestRestaurant(
+    const { success } = await makeRecommendation(
       false,
       {
         userGivenDish,

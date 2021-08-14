@@ -1,85 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1635.11 788.34">
-  
-    <style>
- 
-
-#ic4{
-    animation: c4 55s linear infinite;
-    transform-origin: center;
-    
-    }
-    
-      @keyframes c4 { 0%{opacity: 0; transform: translateX(400px)}
-      50%{opacity: 0; transform: translateX(400px)}
-      52%{opacity: 0;}
-      54%{opacity: 1;}
-      
-      98%{opacity: 1;}
-      100%{opacity: 0; transform: translateX(-790px)}
-      }
-      #ic3{
-        animation: c3 40s linear infinite;
-        transform-origin: center;
-                
-    }
-        
-    @keyframes c3 { 0%{opacity: 0; transform: translateX(700px)}
-    25%{opacity: 0; transform: translateX(700px)}
-    27%{opacity: 0;}
-    29%{opacity: 1;}
-    
-    98%{opacity: 1;}
-    100%{opacity: 0; transform: translateX(-555px)}
-    }
-    #ic2{
-    animation: c2 40s linear infinite;
-    transform-origin: center;
-            
-    }
-            
-      @keyframes c2 { 0%{opacity: 0; transform: translateX(1000px)}
-      15%{opacity: 0; transform: translateX(1000px)}
-      17%{opacity: 0;}
-      19%{opacity: 1;}
-      
-      98%{opacity: 1;}
-      100%{opacity: 0; transform: translateX(-150px)}
-      }
-    #ic1{
-        animation: c1 30s linear infinite;
-        transform-origin: center;
-        
-    }
-        
-    @keyframes c1 { 0%{opacity: 0; transform: translateX(1200px)}
-    2%{opacity: 0;}
-    4%{opacity: 1;}
-    
-    98%{opacity: 1;}
-    100%{opacity: 0; transform: translateX(-100px)}
-    }
-#ihead{
-    animation: head 2s linear infinite;
-    animation-direction: alternate;
-    transform-origin: bottom;
-    transform-box: fill-box;
-}
-@keyframes head{
-    100%{transform: rotateZ( 7deg);}
-}
-
-#iarm{
-    animation: arm 1.5s linear infinite;
-    animation-direction: alternate;
-    transform-origin: 80% 2%;
-    transform-box: fill-box;
-}
-@keyframes arm{
-    100%{transform: rotateZ( -10deg);}
-}
- 
- </style>
-  
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 1300 713" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs>
     <clipPath id="clip-path">
       <rect width="1640.5" height="781.14" style="fill: none"/>
@@ -98,9 +18,6 @@
       <stop offset="0.49" stop-color="#ffcc2b" stop-opacity="0.5"/>
       <stop offset="0.82" stop-color="#fffbf0" stop-opacity="0"/>
     </linearGradient>
-    <clipPath id="clip-path-7">
-      <rect x="148.19" y="620.85" width="1492.3" height="162.39" style="fill: none"/>
-    </clipPath>
     <clipPath id="clip-path-8">
       <rect x="940.55" y="164.02" width="173.25" height="59.36" style="fill: none"/>
     </clipPath>
@@ -200,9 +117,91 @@
     <clipPath id="clip-path-42">
       <rect x="993.09" y="583.79" width="3.69" height="2.41" style="fill: none"/>
     </clipPath>
+    <style>
+      svg{
+      height: 713px;
+      width: 1300px;
+      
+  }
+
+#ic4{
+    animation: c4 55s linear infinite;
+    transform-origin: center;
+    
+    }
+    
+      @keyframes c4 { 0%{opacity: 0; transform: translateX(400px)}
+      50%{opacity: 0; transform: translateX(400px)}
+      52%{opacity: 0;}
+      54%{opacity: 1;}
+      
+      98%{opacity: 1;}
+      100%{opacity: 0; transform: translateX(-790px)}
+      }
+      #ic3{
+        animation: c3 40s linear infinite;
+        transform-origin: center;
+                
+    }
+        
+    @keyframes c3 { 0%{opacity: 0; transform: translateX(700px)}
+    25%{opacity: 0; transform: translateX(700px)}
+    27%{opacity: 0;}
+    29%{opacity: 1;}
+    
+    98%{opacity: 1;}
+    100%{opacity: 0; transform: translateX(-555px)}
+    }
+    #ic2{
+    animation: c2 40s linear infinite;
+    transform-origin: center;
+            
+    }
+            
+      @keyframes c2 { 0%{opacity: 0; transform: translateX(1000px)}
+      15%{opacity: 0; transform: translateX(1000px)}
+      17%{opacity: 0;}
+      19%{opacity: 1;}
+      
+      98%{opacity: 1;}
+      100%{opacity: 0; transform: translateX(-150px)}
+      }
+    #ic1{
+        animation: c1 30s linear infinite;
+        transform-origin: center;
+        
+    }
+        
+    @keyframes c1 { 0%{opacity: 0; transform: translateX(1200px)}
+    2%{opacity: 0;}
+    4%{opacity: 1;}
+    
+    98%{opacity: 1;}
+    100%{opacity: 0; transform: translateX(-100px)}
+    }
+#ihead{
+    animation: head 2s linear infinite;
+    animation-direction: alternate;
+    transform-origin: bottom;
+    transform-box: fill-box;
+}
+@keyframes head{
+    100%{transform: rotateZ( 7deg);}
+}
+
+#iarm{
+    animation: arm 1.5s linear infinite;
+    animation-direction: alternate;
+    transform-origin: 80% 2%;
+    transform-box: fill-box;
+}
+@keyframes arm{
+    100%{transform: rotateZ( -10deg);}
+}
+ 
+ </style>
   </defs>
-  <title>India_mobile</title>
-  <g style="isolation: isolate">
+  <g style="isolation: isolate;" transform="matrix(0.845171, 0, 0, 0.845171, -12.171268, 61.453808)">
     <g id="Layer_1" data-name="Layer 1">
       <g style="clip-path: url(#clip-path)">
         <g style="opacity: 0.300002992153168;mix-blend-mode: multiply">

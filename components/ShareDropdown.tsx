@@ -1,16 +1,15 @@
-import {
-  Button,
-  Dropdown,
-  DropdownItem,
-} from '@tastiest-io/tastiest-components';
+import { CopyOutlined } from '@ant-design/icons';
+import { Button, Dropdown, Tooltip } from '@tastiest-io/tastiest-components';
 import useShareArticle, {
-  IUseShareArticle,
+  IUseShareArticleParams,
 } from 'hooks/article/useShareArticle';
-import React from 'react';
+import { useDevice } from 'hooks/useDevice';
+import { useScreenSize } from 'hooks/useScreenSize';
+import React, { useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
-import { InputGroup } from './inputs/InputGroup';
+import { UI } from '../constants';
 
-interface IShareDropdownProps extends IUseShareArticle {
+interface IShareDropdownProps extends IUseShareArticleParams {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
   offsetY?: number;
@@ -24,77 +23,81 @@ interface IShareDropdownItems {
 
 export const ShareDropdown = (props: IShareDropdownProps) => {
   const { isOpen, setIsOpen, offsetY = -5 } = props;
+  const { isDesktop } = useScreenSize();
 
-  const {
-    tastiestUrl,
-    shareToFacebook,
-    shareToTwitter,
-    shareToReddit,
-    shareToWhatsApp,
-  } = useShareArticle({ ...props });
+  const { isTouchDevice } = useDevice();
+  const { tastiestUrl } = useShareArticle({ ...props });
 
+  // Track copies
+  const [copied, setCopied] = useState(0);
   const [_, copyToClipboard] = useCopyToClipboard();
 
+  const onClickCopyToClipboard = () => {
+    copyToClipboard(tastiestUrl.toString());
+    setCopied(copied + 1);
+  };
+
   const items: Array<IShareDropdownItems> = [
-    {
-      id: 'share-to-facebook',
-      name: 'Facebook',
-      onClick: shareToFacebook,
-    },
-    {
-      id: 'share-to-twitter',
-      name: 'Twitter',
-      onClick: shareToTwitter,
-    },
-    {
-      id: 'share-to-whatsapp',
-      name: 'WhatsApp',
-      onClick: shareToWhatsApp,
-    },
-    {
-      id: 'share-to-reddit',
-      name: 'Reddit',
-      onClick: shareToReddit,
-    },
+    // {
+    //   id: 'share-to-facebook',
+    //   name: 'Facebook',
+    //   onClick: shareToFacebook,
+    // },
+    // {
+    //   id: 'share-to-twitter',
+    //   name: 'Twitter',
+    //   onClick: shareToTwitter,
+    // },
+    // {
+    //   id: 'share-to-whatsapp',
+    //   name: 'WhatsApp',
+    //   onClick: shareToWhatsApp,
+    // },
+    // {
+    //   id: 'share-to-reddit',
+    //   name: 'Reddit',
+    //   onClick: shareToReddit,
+    // },
   ];
 
   return (
-    <div className="relative flex justify-center w-px">
+    <div style={{ zIndex: UI.Z_INDEX_DROPDOWNS }} className="">
       <Dropdown
-        pull="center"
-        isOpen={isOpen}
-        onClickAway={() => setIsOpen(false)}
+        pull={isDesktop ? 'center' : 'right'}
         style="outline"
+        isOpen={isOpen}
         offsetY={offsetY}
+        onClickAway={() => setIsOpen(false)}
       >
-        <>
-          <div className="px-3 pt-1 pb-2">
-            <InputGroup className="w-full border rounded-md bg-soft border-soft">
-              <div>
-                <input
-                  className="pl-3 text-sm border-l outline-none bg-soft border-soft rounded-l-md"
-                  style={{ minWidth: '9rem' }}
-                  readOnly
-                  value={tastiestUrl}
-                />
-              </div>
+        <div className="px-2 overflow-visible">
+          <div className="flex items-center w-full border rounded-md bg-soft border-soft">
+            <input
+              className="pl-3 border-l outline-none bg-soft border-soft rounded-l-md"
+              style={{ minWidth: '20rem', maxWidth: '80vw' }}
+              readOnly
+              value={tastiestUrl.toString()}
+            />
 
-              <Button
-                onClick={() => copyToClipboard(tastiestUrl)}
+            <Button
+              className="rounded-l-none"
+              onClick={onClickCopyToClipboard}
+              color="primary"
+            >
+              <Tooltip
+                isOpen={Boolean(copied)}
+                content="Copied"
                 size="small"
-                color="primary"
+                theme="light"
+                placement="top"
+                hideAfter={500}
               >
-                COPY
-              </Button>
-            </InputGroup>
+                <div className="-mt-1">
+                  <CopyOutlined className="-mt-1 text-xl" />
+                </div>
+              </Tooltip>
+            </Button>
           </div>
-
-          {items.map(item => (
-            <DropdownItem key={item.id} id={item.id} onSelect={item.onClick}>
-              <div className="w-full text-center">{item.name}</div>
-            </DropdownItem>
-          ))}
-        </>
+        </div>
       </Dropdown>
     </div>
   );
