@@ -5,7 +5,7 @@ export default function ArticleSectionOfferBreakdown(deal: IDeal) {
   return (
     <div className="w-full pb-6">
       <div className="flex w-full space-x-4">
-        <p className="text-xl font-semibold">The Offer</p>
+        <p className="text-xl font-semibold">The experience</p>
       </div>
 
       <ul className="pt-1 pb-2">

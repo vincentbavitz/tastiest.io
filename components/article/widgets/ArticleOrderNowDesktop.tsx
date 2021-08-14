@@ -49,7 +49,7 @@ export function ArticleOrderNowDesktop(props: Props) {
           className="relative z-30 pt-2 mt-16 bg-white border-4 pointer-events-auto last:pb-4 border-secondary-1 rounded-xl"
         >
           <h3 className="mb-2 text-xl text-center font-somatic text-primary">
-            Get the offer!
+            Get the experience!
           </h3>
 
           <div className="pb-4 mx-4 overflow-hidden bg-secondary-1 rounded-xl">
@@ -89,7 +89,7 @@ export function ArticleOrderNowDesktop(props: Props) {
           <div className="flex flex-col mx-4 space-y-3">
             <div className="flex items-center justify-between mt-4">
               <div className="font-medium font-roboto bold text-primary">
-                Book for
+                Buy for
               </div>
 
               <div className="w-12">

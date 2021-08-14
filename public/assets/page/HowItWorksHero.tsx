@@ -698,7 +698,7 @@ function SvgHowItWorksHero(props: React.SVGProps<SVGSVGElement>) {
           className="how-it-works-hero_svg__cls-40"
           transform="translate(88 846.2)"
         >
-          {'Offer.'}
+          {'Experience.'}
         </text>
       </g>
       <g>

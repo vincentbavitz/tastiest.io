@@ -15,7 +15,7 @@ export function HomeTastiestDishes(props: Props) {
 
   return (
     <div className="flex flex-col space-y-4">
-      <SectionTitle>The Tastiest Dishes in London!</SectionTitle>
+      <SectionTitle>Featured London Dishes</SectionTitle>
 
       <HorizontalScrollable fit={isHuge ? 5 : isDesktop ? 4 : undefined}>
         {cards.map(dish => (

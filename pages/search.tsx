@@ -161,9 +161,9 @@ const Search = (
 
   // prettier-ignore
   const pageLabel = 
-    modifier === 'new' ? 'New Offers' :
-    modifier === 'nearby' ? 'Nearby Offers' :
-    modifier === 'trending' ? 'Trending Offers' :
+    modifier === 'new' ? 'New Experiences' :
+    modifier === 'nearby' ? 'Nearby Experiences' :
+    modifier === 'trending' ? 'Trending Experiences' :
     posts.length > 0 ? 'Search Results' :
     'Nothing Found';
 

@@ -45,7 +45,7 @@ export default function ArticleOrderNowMobile({ deal, slug }: Props) {
             >
               <div className="flex items-center justify-between w-full text-xl font-somatic">
                 <div className="w-5"></div>
-                <div>Get the offer!</div>
+                <div>Get the experience!</div>
                 <RightIcon className="h-5 text-white stroke-current" />
               </div>
             </Button>
@@ -136,7 +136,7 @@ const OverlayInnerHeader = ({ onClose }: OverlayInnerHeaderProps) => {
       <div className="flex items-center justify-between py-2">
         <div className="w-6"></div>
         <h3 className="text-3xl text-center font-somatic text-primary">
-          Get the offer!
+          Get the experience!
         </h3>
         <ExitIcon
           onClick={onClose}

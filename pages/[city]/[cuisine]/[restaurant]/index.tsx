@@ -309,7 +309,7 @@ const RestaurantPage = (
 
       <div className="py-12">
         <SectionTitle>
-          <>Exclusive Tastiest Offers</>
+          <>Tastiest Experiences</>
         </SectionTitle>
 
         <div className="mt-6">

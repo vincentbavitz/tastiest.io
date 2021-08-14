@@ -173,7 +173,7 @@ function SearchOverlayInnerResults() {
 
         {results?.posts?.length ? (
           <div>
-            <h4 className="pb-2 text-lg font-somatic">Offers</h4>
+            <h4 className="pb-2 text-lg font-somatic">Experiences</h4>
 
             <div
               style={{
