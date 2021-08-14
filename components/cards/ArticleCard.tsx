@@ -91,7 +91,7 @@ export function ArticleCard(props: Props): JSX.Element {
               </div>
             )}
 
-            {/* Offer includes items */}
+            {/* experience includes items */}
             <div
               className={clsx(
                 'absolute inset-0 z-50 flex flex-col px-3 py-3 text-white font-somatic',

@@ -7,147 +7,150 @@ const sections: ILegalSection[] = [
   {
     title: 'General Information',
     subsections: [
-      <>These Terms of Sale apply to every Offer you purchase from Tastiest.</>,
+      <>
+        These Terms of Sale apply to every experience you purchase from
+        Tastiest.
+      </>,
       <>
         Tastiest means Tastiest Technologies Ltd (trading as Tastiest), a
         company incorporated under the laws of England and Wales registered in
         England under company number 12755129.
       </>,
       <>
-        <span className="font-bold">Offer</span> means the offer for the
-        products and/or services promoted on the Tastiest website or app which
-        when purchased entitles the Purchaser to either receive the Merchant
-        Offering from the Merchant during the period of time stated in the Offer
-        (the “Redemption Period”).
+        <span className="font-bold">Experience</span> means the experience for
+        the products and/or services promoted on the Tastiest website or app
+        which when purchased entitles the Purchaser to either receive the
+        Merchant experience from the Merchant during the period of time stated
+        in the experience (the “Redemption Period”).
       </>,
       <>
-        The Merchant Offering shall mean the goods and/or services to be
+        The Merchant experience shall mean the goods and/or services to be
         supplied and/or provided by the Merchant to the Purchaser, as specified
-        on Tastiest’s Site and in the Offer.
+        on Tastiest’s Site and in the experience.
       </>,
       <>
         The Merchant is a third party unrelated to Tastiest that sells, supplies
-        and/or provides the Merchant Offering. The contract for the supply and
-        purchase of the Merchant Offering will be between you and the Merchant
-        you redeem the Offer with and Tastiest will conclude the contract on
-        behalf of, and as agent for, the Merchant in all cases. Tastiest does
-        not sell, supply and/or provide the Merchant Offering. It only sells and
-        supplies the Offer.
+        and/or provides the Merchant experience. The contract for the supply and
+        purchase of the Merchant experience will be between you and the Merchant
+        you redeem the experience with and Tastiest will conclude the contract
+        on behalf of, and as agent for, the Merchant in all cases. Tastiest does
+        not sell, supply and/or provide the Merchant experience. It only sells
+        and supplies the experience.
       </>,
       <>
         Tastiest reserves the right to unilaterally amend these Terms of Sale at
         any time. All amendments to these Terms of Sale will be posted on-line.
         You will be bound only to the version of the Terms of Sale you agreed to
-        at the time you purchase an Offer.
+        at the time you purchase an experience.
       </>,
     ],
   },
 
   {
-    title: 'Purchase of an Offer',
+    title: 'Purchase of an experience',
     subsections: [
       <>
-        You must be at least 18 years old to purchase an Offer. Before you can
-        make a purchase you need to register and create an account with
+        You must be at least 18 years old to purchase an experience. Before you
+        can make a purchase you need to register and create an account with
         Tastiest.
       </>,
       <>
-        By clicking on the “Buy Now” button you submit an offer to Tastiest to
-        purchase the Offer. However, the purchase of the Offer is not complete
-        until you receive an email from Tastiest confirming acceptance of your
-        offer. Tastiest expressly reserves the right to reject your order. In
-        addition, even if Tastiest has accepted your order, it can cancel the
-        contract at any time if it reasonably suspects that you have committed
-        or that you may be committing any fraud against Tastiest, an affiliated
-        third party of Tastiest or the Merchant.
+        By clicking on the “Buy Now” button you submit an experience to Tastiest
+        to purchase the experience. However, the purchase of the experience is
+        not complete until you receive an email from Tastiest confirming
+        acceptance of your experience. Tastiest expressly reserves the right to
+        reject your order. In addition, even if Tastiest has accepted your
+        order, it can cancel the contract at any time if it reasonably suspects
+        that you have committed or that you may be committing any fraud against
+        Tastiest, an affiliated third party of Tastiest or the Merchant.
       </>,
     ],
   },
   {
-    title: 'Redemption of an Offer',
+    title: 'Redemption of an experience',
     subsections: [
       <>Unless expressly stated otherwise:</>,
       {
         title: null,
         subsections: [
-          <>the Offer can only be redeemed once;</>,
+          <>the experience can only be redeemed once;</>,
           <>
-            the Offer can only be redeemed with the Merchant and not with
+            the experience can only be redeemed with the Merchant and not with
             Tastiest;
           </>,
-          <>the Offer is valid for one person only; and</>,
+          <>the experience is valid for one person only; and</>,
           <>
             you must follow the redemption instructions associated with the
-            Offer when you redeem the Offer with the Merchant.
+            experience when you redeem the experience with the Merchant.
           </>,
         ],
       },
       <>
-        In order to redeem an Offer you must present your purchase confirmation
-        to the Merchant within the Redemption Period. If you do not redeem the
-        Offer within the Redemption Period, the Offer expires automatically and
-        cannot be redeemed anymore.
+        In order to redeem an experience you must present your purchase
+        confirmation to the Merchant within the Redemption Period. If you do not
+        redeem the experience within the Redemption Period, the experience
+        expires automatically and cannot be redeemed anymore.
       </>,
       <>
-        Unless expressly stated otherwise, the Offer does not entitle the
-        Purchaser to receive the Merchant Offering at a specific time. You are
+        Unless expressly stated otherwise, the experience does not entitle the
+        Purchaser to receive the Merchant experience at a specific time. You are
         strongly recommended to contact the Merchant at an early stage. Doing so
         will give you the best chance of securing your preferred time for the
-        supply and/or provision of the Merchant Offering. Tastiest cannot
+        supply and/or provision of the Merchant experience. Tastiest cannot
         influence the timing of supply and/or provision of the Merchant
-        Offering.
+        experience.
       </>,
       <>
-        If you decide to redeem the Offer for goods and/or services other than
-        the Merchant Offering, you will not be entitled to a credit, cash refund
-        or new Offer for the difference between the value of the Merchant
-        Offering and the actual value of the goods and/or services supplied
-        and/or provided by the Merchant to you.
+        If you decide to redeem the experience for goods and/or services other
+        than the Merchant experience, you will not be entitled to a credit, cash
+        refund or new experience for the difference between the value of the
+        Merchant experience and the actual value of the goods and/or services
+        supplied and/or provided by the Merchant to you.
       </>,
       <>
-        Offers are redeemable in their entirety only. If, for whatever reason,
-        you redeem the Offer with a Merchant for less than the original
-        (un-discounted) value of the Merchant Offering, you are not entitled to
-        a credit, cash refund or new Offer for the difference between the
-        original (un-discounted) value and the redeemed value.
+        experiences are redeemable in their entirety only. If, for whatever
+        reason, you redeem the experience with a Merchant for less than the
+        original (un-discounted) value of the Merchant experience, you are not
+        entitled to a credit, cash refund or new experience for the difference
+        between the original (un-discounted) value and the redeemed value.
       </>,
       <>
         On behalf of the Merchant, Tastiest may collect booking fees or other
-        costs associated with the purchase and/or redemption of a Offer. All
-        such fees or costs (if any) will be communicated to you before you
-        purchase the Offer.
+        costs associated with the purchase and/or redemption of a experience.
+        All such fees or costs (if any) will be communicated to you before you
+        purchase the experience.
       </>,
 
       <>
         In the event that a Merchant cannot supply and/or provide the Merchant
-        Offering as described for unforeseen reasons, Tastiest will notify you
+        experience as described for unforeseen reasons, Tastiest will notify you
         on behalf of the Merchant as soon as possible by email.
       </>,
     ],
   },
   {
-    title: 'Use of an Offer',
+    title: 'Use of an experience',
     subsections: [
       <>
-        Any purchase of a Offer is for your non-commercial, personal use only
-        (although you may give the Offer to someone else for their
-        non-commercial, personal use). The commercial trade of an Offer is
-        prohibited. The reproduction of a Offer is prohibited.
+        Any purchase of a experience is for your non-commercial, personal use
+        only (although you may give the experience to someone else for their
+        non-commercial, personal use). The commercial trade of an experience is
+        prohibited. The reproduction of a experience is prohibited.
       </>,
       <>
-        Your Offer is solely your responsibility. Neither Tastiest nor the
-        Merchant are responsible for lost or stolen Offers or for retrieving
-        Offer reference numbers or Offer security codes.
+        Your experience is solely your responsibility. Neither Tastiest nor the
+        Merchant are responsible for lost or stolen experiences or for
+        retrieving experience reference numbers or experience security codes.
       </>,
       <>
         You promise not to provide false data including false names, addresses
         and/or contact or payment details; or engage in any unlawful activity in
-        connection with the purchase or use of a Offer, or allow anyone else to
-        do so.
+        connection with the purchase or use of a experience, or allow anyone
+        else to do so.
       </>,
       <>
-        Any attempt to redeem an Offer contrary to these Terms of Sale may
-        render an Offer purchase void at Tastiest’s discretion.
+        Any attempt to redeem an experience contrary to these Terms of Sale may
+        render an experience purchase void at Tastiest’s discretion.
       </>,
     ],
   },
@@ -155,18 +158,18 @@ const sections: ILegalSection[] = [
     title: 'Cancellation (and exceptions), Refunds and Problems',
     subsections: [
       <>
-        You have a statutory right to cancel your purchase of the Offer within
-        14 calendar days after the day you receive the confirmation email (the
-        “Offer Cancellation Period”). However, if you redeem your Offer during
-        the Offer Cancellation Period, you expressly request the services to
-        begin being provided to you, and you acknowledge that you lose your
-        right to cancel the purchase of the Offer. Since Tastiest is not
-        responsible for the supply or provision of the Merchant Offering, once
-        your Offer is redeemed Tastiest has completed its services to you in
-        full.
+        You have a statutory right to cancel your purchase of the experience
+        within 14 calendar days after the day you receive the confirmation email
+        (the “experience Cancellation Period”). However, if you redeem your
+        experience during the experience Cancellation Period, you expressly
+        request the services to begin being provided to you, and you acknowledge
+        that you lose your right to cancel the purchase of the experience. Since
+        Tastiest is not responsible for the supply or provision of the Merchant
+        experience, once your experience is redeemed Tastiest has completed its
+        services to you in full.
       </>,
       <>
-        If you want to cancel your purchase of a Offer you can do so by
+        If you want to cancel your purchase of a experience you can do so by
         contacting us at{' '}
         <a
           target="_blank"
@@ -180,21 +183,21 @@ const sections: ILegalSection[] = [
       </>,
 
       <>
-        If you cancel your purchase of the Offer in accordance with this section
-        5, Tastiest will refund you for all payments made as part of your
-        purchase within 14 calendar days from the day on which you informed
+        If you cancel your purchase of the experience in accordance with this
+        section 5, Tastiest will refund you for all payments made as part of
+        your purchase within 14 calendar days from the day on which you informed
         Tastiest about your cancellation.
       </>,
       <>
-        If you redeem your Offer, but the Merchant has not properly provided you
-        with the Merchant Offering, or if you have a complaint regarding the
-        provision of the Merchant Offering, you must take action against the
-        Merchant directly. This is because the Merchant, and not Tastiest, is
-        responsible for the supply and/or provision of the Merchant Offering.
-        Tastiest only sells and supplies the Offer. However, if you and the
-        Merchant cannot agree on how to resolve the complaint, Tastiest may,
-        upon your request, try to help resolve the issue between you and the
-        Merchant.
+        If you redeem your experience, but the Merchant has not properly
+        provided you with the Merchant experience, or if you have a complaint
+        regarding the provision of the Merchant experience, you must take action
+        against the Merchant directly. This is because the Merchant, and not
+        Tastiest, is responsible for the supply and/or provision of the Merchant
+        experience. Tastiest only sells and supplies the experience. However, if
+        you and the Merchant cannot agree on how to resolve the complaint,
+        Tastiest may, upon your request, try to help resolve the issue between
+        you and the Merchant.
       </>,
       <>
         Unless you expressly inform Tastiest in advance not to, any refund will
@@ -218,25 +221,25 @@ const sections: ILegalSection[] = [
         You have 14 days from the date you receive the refund to reject it. If
         you do not reject the refund during these 14 days, the refund shall be
         in full and final settlement of any and all claims you may have against
-        Tastiest related to, arising out of, or connected to that Offer.
+        Tastiest related to, arising out of, or connected to that experience.
       </>,
     ],
   },
   {
-    title: 'Responsibility for the Merchant Offering',
+    title: 'Responsibility for the Merchant experience',
     subsections: [
       <>Please note that the Merchant, and not Tastiest , is:</>,
       {
         title: null,
         subsections: [
-          <>the seller, supplier and/or provider of the Merchant Offering;</>,
+          <>the seller, supplier and/or provider of the Merchant experience;</>,
           <>
-            the party who enters into a contract with the Offer Holder when the
-            Offer is redeemed; and
+            the party who enters into a contract with the experience Holder when
+            the experience is redeemed; and
           </>,
           <>
-            solely responsible for providing the Offer Holder with the Merchant
-            Offering and for the Merchant Offerings themselves.
+            solely responsible for providing the experience Holder with the
+            Merchant experience and for the Merchant experiences themselves.
           </>,
         ],
       },
@@ -254,8 +257,8 @@ const sections: ILegalSection[] = [
             obligations under these Terms of Sale;
           </>,
           <>
-            the Offers are of satisfactory quality and fit for their purpose;
-            and
+            the experiences are of satisfactory quality and fit for their
+            purpose; and
           </>,
           <>
             it shall not contravene the requirements of fairness or professional
@@ -276,8 +279,9 @@ const sections: ILegalSection[] = [
       </>,
       <>
         Tastiest does not promise the completeness, fitness for purpose or
-        legality of the Merchant Offering. Tastiest is not liable for the
-        quality, safety, usability or any other aspect of the Merchant Offering.
+        legality of the Merchant experience. Tastiest is not liable for the
+        quality, safety, usability or any other aspect of the Merchant
+        experience.
       </>,
       <>
         Tastiest is not liable for any breach of an obligation under these Terms
@@ -287,7 +291,7 @@ const sections: ILegalSection[] = [
       <>
         Other than the liability arising under section 7.2, Tastiest’s total
         liability to you will in no circumstances exceed the amount of 200% the
-        purchase price of the Offer.
+        purchase price of the experience.
       </>,
     ],
   },
@@ -297,8 +301,8 @@ const sections: ILegalSection[] = [
       <>
         <span className="font-bold">Tastiest’s Site</span> (the “Site”) means
         the Internet website, mobile applications, electronic communications or
-        services, or any location at which you can purchase a Offer from
-        Tastiest. The Site on which Tastiest markets the Offers is owned by
+        services, or any location at which you can purchase a experience from
+        Tastiest. The Site on which Tastiest markets the experiences is owned by
         Tastiest Technologies Ltd. You can find more information about the terms
         of use of the Site, which are expressly incorporated into these Terms of
         Sale.
@@ -354,7 +358,7 @@ function TermsOfSale() {
 
       <LegalPage
         pageTitle={'TERMS OF SALE'}
-        pageDescription="This page sets out the terms for the use of the Site offered by Tastiest Technologies Ltd and the Services we offer."
+        pageDescription="This page sets out the terms for the use of the Site experienceed by Tastiest Technologies Ltd and the Services we experience."
         sections={sections}
       />
     </>

@@ -152,9 +152,11 @@ function SearchOverlayInnerResults() {
             <h4 className="pb-2 text-lg font-somatic">Dishes</h4>
 
             <div
-              style={{
-                filter: 'drop-shadow(2px 2px 5px rgba(0,0,0,0.20))',
-              }}
+              style={
+                {
+                  // filter: 'drop-shadow(2px 2px 5px rgba(0,0,0,0.20))',
+                }
+              }
             >
               <HorizontalScrollable noPadding spacing={2} chevronSize={6}>
                 {results?.dishes.map(dish => (
@@ -173,12 +175,14 @@ function SearchOverlayInnerResults() {
 
         {results?.posts?.length ? (
           <div>
-            <h4 className="pb-2 text-lg font-somatic">Offers</h4>
+            <h4 className="pb-2 text-lg font-somatic">Experiences</h4>
 
             <div
-              style={{
-                filter: 'drop-shadow(2px 2px 5px rgba(0,0,0,0.20))',
-              }}
+              style={
+                {
+                  // filter: 'drop-shadow(2px 2px 5px rgba(0,0,0,0.20))',
+                }
+              }
             >
               <HorizontalScrollable noPadding spacing={2} chevronSize={6}>
                 {results?.posts.map(post => (
@@ -200,9 +204,11 @@ function SearchOverlayInnerResults() {
             <h4 className="pb-2 text-lg font-somatic">Restaurants</h4>
 
             <div
-              style={{
-                filter: 'drop-shadow(2px 2px 5px rgba(0,0,0,0.20))',
-              }}
+              style={
+                {
+                  // filter: 'drop-shadow(2px 2px 5px rgba(0,0,0,0.20))',
+                }
+              }
             >
               <HorizontalScrollable noPadding spacing={2} chevronSize={6}>
                 {results?.restaurants.map(restaurant => (

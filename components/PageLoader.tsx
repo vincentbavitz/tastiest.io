@@ -55,7 +55,7 @@ export default function PageLoader(props: Props) {
             zIndex: UI.Z_INDEX_PAGE_LOADER,
           }}
           className={clsx(
-            'fixed left-0 right-0 bottom-0 duration-300 flex items-center justify-center bg-white',
+            'fixed inset-0 duration-300 flex items-center justify-center bg-white',
             displayLoader || override ? 'opacity-100' : 'opacity-0',
           )}
         >

@@ -309,7 +309,7 @@ const RestaurantPage = (
 
       <div className="pt-4 pb-20">
         <SectionTitle>
-          <>Exclusive Tastiest Offers</>
+          <>Tastiest Experiences</>
         </SectionTitle>
 
         <div className="mt-6">
