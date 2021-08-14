@@ -41,7 +41,7 @@ export default function PageLoader(props: Props) {
     }
   }, [isPageLoading, router]);
 
-  useLockBodyScroll(override || isPageLoading);
+  useLockBodyScroll(override || displayLoader);
 
   if (typeof document === 'undefined' || !document.getElementById('loader')) {
     return null;
