@@ -215,7 +215,7 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
               Submit
             </Button>
             <p className="italic font-light">
-              - Get 5% off from us to say thank you for improving the platform
+              - Get 5% off from. Thank you for improving the platform
             </p>
           </div>
           <div>
