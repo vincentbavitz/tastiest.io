@@ -153,7 +153,7 @@ function SearchOverlayInnerResults() {
 
             <div
               style={{
-                filter: 'drop-shadow(2px 2px 5px rgba(0,0,0,0.33))',
+                filter: 'drop-shadow(2px 2px 5px rgba(0,0,0,0.20))',
               }}
             >
               <HorizontalScrollable noPadding spacing={2} chevronSize={6}>
@@ -177,7 +177,7 @@ function SearchOverlayInnerResults() {
 
             <div
               style={{
-                filter: 'drop-shadow(2px 2px 5px rgba(0,0,0,0.33))',
+                filter: 'drop-shadow(2px 2px 5px rgba(0,0,0,0.20))',
               }}
             >
               <HorizontalScrollable noPadding spacing={2} chevronSize={6}>
@@ -201,7 +201,7 @@ function SearchOverlayInnerResults() {
 
             <div
               style={{
-                filter: 'drop-shadow(2px 2px 5px rgba(0,0,0,0.33))',
+                filter: 'drop-shadow(2px 2px 5px rgba(0,0,0,0.20))',
               }}
             >
               <HorizontalScrollable noPadding spacing={2} chevronSize={6}>

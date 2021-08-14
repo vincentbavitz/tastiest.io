@@ -68,9 +68,9 @@ const DesktopContent = (post: IPost) => {
 
         <RichBody body={post.body} />
 
+        <ArticleSectionOfferBreakdown {...post.deal} />
         <AuxiliaryDivider url={post?.offerDivider?.url} />
 
-        <ArticleSectionOfferBreakdown {...post.deal} />
         <ArticleWidgetMap
           location={post.displayLocation}
           restaurant={post.restaurant}

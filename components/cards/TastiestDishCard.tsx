@@ -92,7 +92,9 @@ export default function TastiestDishCard(props: Props) {
               }}
               className="absolute bottom-0 z-10 flex items-center justify-center w-full leading-4 text-center text-white bg-black bg-opacity-50 pointer-events-none font-somatic"
             >
-              <div className="px-2 py-3">{name}</div>
+              <div className={clsx('py-3', compact ? 'px-2' : 'px-4')}>
+                {name}
+              </div>
             </div>
 
             {/* White overlay on hover */}

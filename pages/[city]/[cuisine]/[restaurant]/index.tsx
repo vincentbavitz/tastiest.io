@@ -307,7 +307,7 @@ const RestaurantPage = (
         close={() => setMapModalOpen(false)}
       />
 
-      <div className="py-12">
+      <div className="pt-4 pb-20">
         <SectionTitle>
           <>Exclusive Tastiest Offers</>
         </SectionTitle>

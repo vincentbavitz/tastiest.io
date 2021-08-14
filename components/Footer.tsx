@@ -233,8 +233,6 @@ const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
         <a>How It Works</a>
       </Link>
     </p>
-    {/* <p><a className="">Our Mission</a></p> */}
-    {/* <p><a className="">Press Kit</a></p> */}
     <p>
       <Link href="/privacy">
         <a>Privacy & Cookies</a>
@@ -248,6 +246,16 @@ const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
     <p>
       <Link href="/terms-of-sale">
         <a>Terms of Sale</a>
+      </Link>
+    </p>
+    <p>
+      <Link href="https://affiliate-program.tastiest.io/influencers">
+        <a>Influencers Program</a>
+      </Link>
+    </p>
+    <p>
+      <Link href="https://affiliate-program.tastiest.io/">
+        <a>Affiliate Program</a>
       </Link>
     </p>
   </>

@@ -17,9 +17,12 @@ export default function Layout({ children }: Props) {
 
   return (
     <>
-      <PageLoader />
+      {/* Page Loader (inside portal) */}
+      <div id="loader">
+        <PageLoader />
+      </div>
 
-      {/* Modals */}
+      {/* Modals (inside portal) */}
       <div id="modal-root" className="absolute">
         <AuthModal />
       </div>
