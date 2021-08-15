@@ -195,7 +195,7 @@ const CuisineHero = (props: CuisineHeroProps) => {
     const sizeMultipler = isMobile ? 1.33 : isTablet ? 1.5 : 1;
     const width = `${100 * sizeMultipler}%`;
     const minWidth = isMobile ? '325px' : 'auto';
-    const transform = `translateX(${sizeMultipler > 1 ? '-15%' : '0%'})`;
+    const transform = `translate(${sizeMultipler > 1 ? '-15%' : '0%'}, -10%)`;
     const paddingBottom = `${
       (isMobile ? mobileHPc : desktopHPc) * sizeMultipler
     }%`;
