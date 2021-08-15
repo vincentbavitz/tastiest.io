@@ -72,7 +72,7 @@ export default function TastiestDishCard(props: Props) {
           >
             {image.url && (
               <>
-                <div className="absolute inset-0 z-10 pointer-events-none ">
+                <div className="absolute inset-0 z-10 pointer-events-none rounded-xl">
                   {video}
                 </div>
                 <div className="absolute inset-0">
