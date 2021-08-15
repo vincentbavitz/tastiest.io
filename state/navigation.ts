@@ -28,8 +28,8 @@ export const initialNavigationState: INavigation = {
   isArticleHiwOpen: false,
 
   // Loader properties
-  isPageLoading: true,
-  shouldRenderLoader: true,
+  isPageLoading: false,
+  shouldRenderLoader: false,
 };
 
 export enum NavigationActions {

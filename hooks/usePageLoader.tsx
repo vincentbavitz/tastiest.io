@@ -4,7 +4,6 @@ import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsPageLoading, setShouldRenderLoader } from 'state/navigation';
 import { IState } from 'state/reducers';
-import { NAVIGATION } from '../constants';
 
 interface UsePageLoaderOptions {
   // Delay of the Loader popup (in ms) so quick routes look instantaneous
@@ -63,16 +62,14 @@ export function usePageLoader(
     };
 
     const handleComplete = () => {
-      const isManualPath = NAVIGATION.MANUAL_LOADING_TRIGGER_FOR_PATHS.some(
-        path => path.test(router.pathname),
-      );
-
-      dlog('usePageLoader ➡️ isManualPath:', isManualPath);
+      // const isManualPath = NAVIGATION.MANUAL_LOADING_TRIGGER_FOR_PATHS.some(
+      // path => path.test(router.pathname),
+      // );
 
       // If done manually, leave it
-      if (isManualPath) {
-        return;
-      }
+      // if (isManualPath) {
+      // return;
+      // }
 
       triggerPageIsLoaded();
     };
