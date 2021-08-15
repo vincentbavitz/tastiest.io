@@ -1,62 +1,52 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import { dlog } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
-import { usePageLoader } from 'contexts/loader';
+import { usePageLoader } from 'hooks/usePageLoader';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { useDispatch } from 'react-redux';
 import { useLockBodyScroll } from 'react-use';
+import { setShouldRenderLoader } from 'state/navigation';
 import { UI } from '../constants';
 
 interface Props {
-  override?: boolean;
-  withPageDecorations?: boolean;
   onLoadComplete?: () => void;
 }
 
 export default function PageLoader(props: Props) {
-  const { override, onLoadComplete } = props;
+  const { onLoadComplete } = props;
+
   const router = useRouter();
+  const dispatch = useDispatch();
 
-  const { isPageLoading } = usePageLoader();
-  const [displayLoader, setDisplayLoader] = useState(false);
-
-  // Delay the display of the loading so quick routes look instantaneous
-  useEffect(() => {
-    if (isPageLoading) {
-      setTimeout(() => {
-        setDisplayLoader(true);
-      }, 500);
-    }
-  }, [isPageLoading]);
-
-  dlog('PageLoader ➡️ isPageLoading:', isPageLoading);
-  dlog('PageLoader ➡️ displayLoader:', displayLoader);
+  const { isPageLoading, shouldRenderLoader } = usePageLoader({
+    loaderVisibilityDelay: 500,
+  });
 
   // Close the loader when the page is ready
   useEffect(() => {
-    if (router.isReady || !isPageLoading) {
-      setDisplayLoader(false);
+    if (!isPageLoading) {
+      dispatch(setShouldRenderLoader(false));
       onLoadComplete?.();
     }
   }, [isPageLoading, router]);
 
-  useLockBodyScroll(override || displayLoader);
+  useLockBodyScroll(shouldRenderLoader);
 
   if (typeof document === 'undefined' || !document.getElementById('loader')) {
     return null;
   }
 
   return ReactDOM.createPortal(
-    override || displayLoader ? (
+    shouldRenderLoader ? (
       <>
         <div
           style={{
             zIndex: UI.Z_INDEX_PAGE_LOADER,
           }}
           className={clsx(
-            'fixed left-0 right-0 bottom-0 duration-300 flex items-center justify-center bg-white',
-            displayLoader || override ? 'opacity-100' : 'opacity-0',
+            'fixed inset-0 duration-300 flex items-center justify-center bg-white',
+            shouldRenderLoader ? 'opacity-100' : 'opacity-0',
           )}
         >
           <LoadingOutlined className="text-6xl fill-current text-primary" />

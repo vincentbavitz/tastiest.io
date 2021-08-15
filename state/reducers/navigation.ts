@@ -41,6 +41,12 @@ export const navigationReducer = (
     case NavigationActions.TOGGLE_ARTICLE_HIW_MODAL: {
       return { ...state, isArticleHiwOpen: action.payload };
     }
+    case NavigationActions.SET_IS_PAGE_LOADING: {
+      return { ...state, isPageLoading: action.payload };
+    }
+    case NavigationActions.SET_SHOULD_RENDER_LOADER: {
+      return { ...state, shouldRenderLoader: action.payload };
+    }
     default:
       return state;
   }

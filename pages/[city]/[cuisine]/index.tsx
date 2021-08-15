@@ -6,15 +6,15 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import TastiestDishCard from 'components/cards/TastiestDishCard';
-import PageLoader from 'components/PageLoader';
 import { SuggestRestaurant } from 'components/SuggestRestaurant';
 import { CuisineItem } from 'constants/cuisines';
+import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { LookingIllustration } from 'public/assets/illustrations';
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { CardGrid } from '../../../components/cards/CardGrid';
 import { Contained } from '../../../components/Contained';
 import { CUISINES } from '../../../constants';
@@ -70,21 +70,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 export default function CuisinePage(props: Props) {
   const { tastiestDishes = [], cuisineSymbol } = props;
-  const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
-
-  // Page loader until the image is loaded
-  const [imageLoaded, setImageLoaded] = useState(true);
 
   const cuisine = CUISINES[cuisineSymbol];
   const cuisineName = titleCase(String(cuisine?.name));
-
   const cards = tastiestDishes.map(dish => (
     <TastiestDishCard key={dish.id} compact {...dish} />
   ));
 
-  if (!imageLoaded) {
-    return <PageLoader override />;
-  }
+  const { triggerPageIsLoaded } = usePageLoader();
+  const { isMobile, isTablet, isDesktop } = useScreenSize();
 
   return (
     <>
@@ -95,7 +89,10 @@ export default function CuisinePage(props: Props) {
 
         <div className="flex flex-col w-full space-y-10">
           <div className="relative mt-6 tablet:mt-6">
-            <CuisineHero setImageLoaded={setImageLoaded} cuisine={cuisine} />
+            <CuisineHero
+              cuisine={cuisine}
+              triggerPageIsLoaded={triggerPageIsLoaded}
+            />
 
             <div className="absolute inset-0">
               <div
@@ -176,11 +173,11 @@ const NoPostsForCuisine = ({
 
 interface CuisineHeroProps {
   cuisine: CuisineItem;
-  setImageLoaded: (value: boolean) => void;
+  triggerPageIsLoaded: () => void;
 }
 
 const CuisineHero = (props: CuisineHeroProps) => {
-  const { cuisine, setImageLoaded } = props;
+  const { cuisine, triggerPageIsLoaded } = props;
   const { isMobile, isTablet, isHuge } = useScreenSize();
 
   const desktopH = 713;
@@ -191,7 +188,7 @@ const CuisineHero = (props: CuisineHeroProps) => {
   const mobileW = 1300;
   const mobileHPc = 100 * (mobileH / mobileW);
 
-  const CuisineImage = () => {
+  const CuisineImage = useCallback(() => {
     const sizeMultipler = isMobile ? 1.33 : isTablet ? 1.5 : 1;
     const width = `${100 * sizeMultipler}%`;
     const minWidth = isMobile ? '325px' : 'auto';
@@ -211,7 +208,8 @@ const CuisineHero = (props: CuisineHeroProps) => {
           objectFit="cover"
           loading="eager"
           unoptimized
-          // priority
+          priority
+          onLoad={() => triggerPageIsLoaded()}
         />
       </div>
     ) : (
@@ -226,13 +224,11 @@ const CuisineHero = (props: CuisineHeroProps) => {
           loading="eager"
           unoptimized
           priority
-          onLoad={() => {
-            setImageLoaded(true);
-          }}
+          onLoad={() => triggerPageIsLoaded()}
         />
       </div>
     );
-  };
+  }, [isMobile, isTablet, isHuge, triggerPageIsLoaded]);
 
   return (
     <div>

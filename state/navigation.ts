@@ -13,6 +13,10 @@ export interface INavigation {
   isOfferMenuOpen: boolean;
   cuisineBarScrollPos: number;
   openedModal: ModalInstance | null;
+
+  // Loading Stuff
+  isPageLoading: boolean;
+  shouldRenderLoader: boolean | null;
 }
 
 export const initialNavigationState: INavigation = {
@@ -22,6 +26,10 @@ export const initialNavigationState: INavigation = {
   isOfferMenuOpen: false,
   isAuthModalOpen: false,
   isArticleHiwOpen: false,
+
+  // Loader properties
+  isPageLoading: true,
+  shouldRenderLoader: true,
 };
 
 export enum NavigationActions {
@@ -34,6 +42,9 @@ export enum NavigationActions {
   SET_MODAL_IS_OPEN = 'SET_MODAL_IS_OPEN',
   TOGGLE_OFFER_MENU_MODAL = 'TOGGLE_OFFER_MENU_MODAL', // menu on article page
   TOGGLE_ARTICLE_HIW_MODAL = 'TOGGLE_ARTICLE_HIW_MODAL', // how it works modal on article page
+
+  SET_IS_PAGE_LOADING = 'SET_IS_PAGE_LOADING',
+  SET_SHOULD_RENDER_LOADER = 'SET_SHOULD_RENDER_LOADER',
 }
 
 // ////////////////////////////// //
@@ -78,4 +89,15 @@ export const toggleOfferMenu = (isOpen: boolean) => ({
 export const toggleHiwModal = (isOpen: boolean) => ({
   type: NavigationActions.TOGGLE_ARTICLE_HIW_MODAL,
   payload: isOpen,
+});
+
+// Loader action creaters
+export const setIsPageLoading = (value: boolean) => ({
+  type: NavigationActions.SET_IS_PAGE_LOADING,
+  payload: value,
+});
+
+export const setShouldRenderLoader = (value: boolean) => ({
+  type: NavigationActions.SET_SHOULD_RENDER_LOADER,
+  payload: value,
 });

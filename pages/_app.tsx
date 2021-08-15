@@ -1,5 +1,4 @@
 import AmbianceProvider from 'contexts/ambiance';
-import { LoaderProvider } from 'contexts/loader';
 import 'firebase/firestore'; // <- needed if using firestore
 import { ScreenProvider } from 'hooks/useScreenSize';
 import { DefaultSeo } from 'next-seo';
@@ -15,31 +14,29 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
       <AmbianceProvider>
-        <LoaderProvider>
-          <ScreenProvider>
-            <Head>
-              <title>{METADATA.TITLE_SUFFIX}</title>
-            </Head>
+        <ScreenProvider>
+          <Head>
+            <title>{METADATA.TITLE_SUFFIX}</title>
+          </Head>
 
-            <DefaultSeo
-              openGraph={{
-                type: 'website',
-                locale: 'en_GB',
-                url: 'https://tastiest.io/',
-                site_name: 'Tastiest',
-              }}
-              twitter={{
-                handle: '@tastiestio',
-                site: 'tastiest.io',
-                cardType: 'summary_large_image',
-              }}
-            />
+          <DefaultSeo
+            openGraph={{
+              type: 'website',
+              locale: 'en_GB',
+              url: 'https://tastiest.io/',
+              site_name: 'Tastiest',
+            }}
+            twitter={{
+              handle: '@tastiestio',
+              site: 'tastiest.io',
+              cardType: 'summary_large_image',
+            }}
+          />
 
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </ScreenProvider>
-        </LoaderProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ScreenProvider>
       </AmbianceProvider>
     </AuthProvider>
   );
