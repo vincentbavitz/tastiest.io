@@ -30,7 +30,6 @@
  svg{
       height: 713px;
       width: 1450px;
-      
   }
 #clouds{
     animation: c2 80s linear infinite;

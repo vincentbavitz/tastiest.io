@@ -210,11 +210,12 @@ const CuisineHero = (props: CuisineHeroProps) => {
           unoptimized
           priority
           onLoad={() => triggerPageIsLoaded()}
+          className="block mobile:hidden"
         />
       </div>
     ) : (
       <div
-        className="relative h-px mt-10"
+        className="relative h-px mobile:mt-10"
         style={{ width, minWidth, paddingBottom, transform }}
       >
         <Image
@@ -225,6 +226,7 @@ const CuisineHero = (props: CuisineHeroProps) => {
           unoptimized
           priority
           onLoad={() => triggerPageIsLoaded()}
+          className="hidden mobile:block"
         />
       </div>
     );
