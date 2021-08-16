@@ -60,7 +60,7 @@ export function usePageLoader(
     dispatch(setShouldRenderLoader(false));
   }, [router, dispatch]);
 
-  dlog('usePageLoader ➡️ router.isReady:', router.isReady);
+  dlog('usePageLoader ➡️ isRouteLoading:', isRouteLoading);
   dlog('usePageLoader ➡️ isPageLoading:', isPageLoading);
 
   // Consider the page load complete when screen size is done loading
@@ -76,7 +76,10 @@ export function usePageLoader(
 
   useEffect(() => {
     const handleStart = (url: string) => {
-      if (url !== router.asPath) dispatch(setIsPageLoading(true));
+      if (url !== router.asPath) {
+        dispatch(setIsPageLoading(true));
+        dispatch(setIsRouteLoading(true));
+      }
     };
 
     const handleComplete = () => {

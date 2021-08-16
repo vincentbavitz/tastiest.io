@@ -1,5 +1,7 @@
+import clsx from 'clsx';
 import ContentLoader from 'components/loaders/ContentLoader';
 import PageLoader from 'components/loaders/PageLoader';
+import { usePageLoader } from 'hooks/usePageLoader';
 import React, { ReactNode } from 'react';
 import { CuisineBar } from '../cuisine/CuisineBar';
 import { Footer } from '../Footer';
@@ -13,11 +15,10 @@ interface Props {
 }
 
 export default function Layout({ children }: Props) {
+  const { isRouteLoading } = usePageLoader();
+
   return (
     <>
-      {/* Page Loader on initial load */}
-      <PageLoader />
-
       {/* Modals (inside portal) */}
       <div id="modal-root" className="absolute">
         <AuthModal />
@@ -25,7 +26,10 @@ export default function Layout({ children }: Props) {
 
       <div
         style={{ minHeight: '100vh' }}
-        className="flex flex-col justify-between"
+        className={clsx(
+          'flex flex-col justify-between duration-300 opacity-0',
+          !isRouteLoading && 'opacity-100',
+        )}
       >
         <div className="relative flex flex-col flex-grow">
           <Header />
@@ -41,15 +45,15 @@ export default function Layout({ children }: Props) {
           </ContentLoader>
         </div>
 
-        {/* Hide content when page is loading */}
-        {/* <div className={clsx(isPageLoading && 'hidden')}> */}
         <div>
           <Footer />
         </div>
-        {/* </div> */}
       </div>
 
       <AcceptTrackingPopup />
+
+      {/* Page Loader on initial load */}
+      <PageLoader />
     </>
   );
 }

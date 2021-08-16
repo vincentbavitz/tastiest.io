@@ -12,7 +12,6 @@ import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import { LookingIllustration } from 'public/assets/illustrations';
 import React, { useCallback } from 'react';
 import { CardGrid } from '../../../components/cards/CardGrid';
@@ -202,15 +201,15 @@ const CuisineHero = (props: CuisineHeroProps) => {
         className="relative h-px"
         style={{ width, minWidth, paddingBottom, transform }}
       >
-        <Image
+        <img
           src={cuisine.mobileHero}
-          layout="fill"
-          objectFit="cover"
-          loading="eager"
-          unoptimized
-          priority
-          onLoad={() => triggerPageIsLoaded()}
-          className="block mobile:hidden"
+          // layout="fill"
+          // objectFit="cover"
+          // loading="eager"
+          // unoptimized
+          // priority
+          // onLoad={() => triggerPageIsLoaded()}
+          className="block w-full mobile:hidden"
         />
       </div>
     ) : (
@@ -218,15 +217,15 @@ const CuisineHero = (props: CuisineHeroProps) => {
         className="relative h-px mobile:mt-10"
         style={{ width, minWidth, paddingBottom, transform }}
       >
-        <Image
+        <img
           src={cuisine.desktopHero}
-          layout="fill"
-          objectFit="cover"
-          loading="eager"
-          unoptimized
-          priority
-          onLoad={() => triggerPageIsLoaded()}
-          className="hidden mobile:block"
+          // layout="fill"
+          // objectFit="cover"
+          // loading="eager"
+          // unoptimized
+          // priority
+          // onLoad={() => triggerPageIsLoaded()}
+          className="hidden w-full mobile:block"
         />
       </div>
     );
