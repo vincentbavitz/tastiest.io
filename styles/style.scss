@@ -55,7 +55,6 @@ body {
 
 @tailwind utilities;
 
-
 /* ********************* */
 /* ******* FONTS ******* */
 /* ********************* */
@@ -63,11 +62,12 @@ body {
   font-family: SomaticRounded;
   src: url(/fonts/Somatic-Rounded.otf) format('opentype');
 }
-
+  
 @font-face {
   font-family: SourceCodePro;
   src: url(/fonts/SourceCodePro.ttf) format('truetype');
 }
+
 
 .__next {
   overflow-x: hidden;
