@@ -3,7 +3,7 @@ import { convertRemToPixels } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useEffect, useRef, useState } from 'react';
-import { useScroll, useWindowSize } from 'react-use';
+import { useScroll } from 'react-use';
 import { UI } from '../constants';
 import { useDevice } from '../hooks/useDevice';
 import { Contained } from './Contained';
@@ -44,18 +44,23 @@ export function HorizontalScrollable(props: Props) {
 function HorizontalScrollableInner(props: Props) {
   const { onItemClick, spacing = 3, chevronSize = 8, children } = props;
 
+  const {
+    isDesktop,
+    isMobile,
+    width: pageWidth,
+    isLoading: screenSizeLoading,
+  } = useScreenSize();
+
   const scrollRef = useRef(null);
   const innerContentRef = useRef(null);
-
   const { x } = useScroll(scrollRef);
-  const pageWidth = useWindowSize().width;
+
   const scrollDistance = pageWidth > 1400 ? 450 : pageWidth / 2;
 
   const [itemWidth, setItemWidth] = useState<number>();
   const [rightScrollHidden, setRightScrollHidden] = useState(false);
 
   const { isTouchDevice } = useDevice();
-  const { isDesktop, isMobile } = useScreenSize();
 
   const handleLeftScroll = () => {
     scrollRef.current.scrollBy({
@@ -92,7 +97,7 @@ function HorizontalScrollableInner(props: Props) {
 
     setItemWidth(_itemWidth);
     setRightScrollHidden(tooSmallToScroll || isFullRight);
-  }, [x, children]);
+  }, [scrollRef, x, pageWidth, screenSizeLoading, children]);
 
   return (
     <div className="relative flex w-full">
@@ -138,6 +143,7 @@ function HorizontalScrollableInner(props: Props) {
           />
         </div>
       </div>
+
       <div
         ref={scrollRef}
         style={{ width: `calc(100% + ${spacing / 4}rem)` }}
@@ -146,14 +152,14 @@ function HorizontalScrollableInner(props: Props) {
           'hide_scroll',
           'scrolling-touch',
           'overflow-x-scroll',
-          isDesktop ? `-ml-${spacing} ` : `-ml-${spacing}`,
+          isDesktop ? `-ml-${spacing}` : `-ml-${spacing}`,
         )}
       >
         <div
           ref={innerContentRef}
           className={clsx('flex overflow-y-visible', `children:px-${spacing}`)}
           style={{
-            width: 'min-content',
+            width: 'max-content',
             marginLeft: `${!isDesktop ? UI.PAGE_CONTAINED_PADDING_VW : 0}vw`,
           }}
         >
@@ -163,7 +169,7 @@ function HorizontalScrollableInner(props: Props) {
               {children?.map?.(child => (
                 <div
                   key={child.key}
-                  style={{ width: props.fit ? `${itemWidth}px` : 'auto' }}
+                  style={{ width: itemWidth ? `${itemWidth}px` : 'auto' }}
                   className=""
                 >
                   {child}

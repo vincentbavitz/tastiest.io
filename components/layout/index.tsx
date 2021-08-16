@@ -18,7 +18,7 @@ interface Props {
 export default function Layout({ children }: Props) {
   // We sometimes render elements which stick to the footer,
   // like <SuggestRestaurant />
-  const { isPageLoading } = usePageLoader({});
+  const { shouldRenderLoader } = usePageLoader({});
 
   const router = useRouter();
   dlog('index ➡️ router.pathname:', router.pathname);
@@ -44,7 +44,7 @@ export default function Layout({ children }: Props) {
           <CuisineBar />
 
           {/* Content Loader */}
-          {isPageLoading && (
+          {shouldRenderLoader && (
             <div
               style={{ minHeight: '500px' }}
               className="relative flex items-center justify-center flex-grow"
@@ -54,7 +54,7 @@ export default function Layout({ children }: Props) {
           )}
 
           {/* Hide content when page is loading */}
-          <div className={clsx(isPageLoading && 'hidden')}>
+          <div className={clsx(shouldRenderLoader && 'hidden')}>
             {/* If you'd like an element to stick to the footer in your page, simply wrap the */}
             {/* top <div> and the button <div> in <></> and they'll be split */}
             <div className="relative flex flex-col justify-between flex-grow">

@@ -16,6 +16,7 @@ export interface INavigation {
 
   // Loading Stuff
   isPageLoading: boolean;
+  isRouteLoading: boolean;
   shouldRenderLoader: boolean | null;
 }
 
@@ -28,8 +29,9 @@ export const initialNavigationState: INavigation = {
   isArticleHiwOpen: false,
 
   // Loader properties
-  isPageLoading: false,
-  shouldRenderLoader: false,
+  isPageLoading: true,
+  isRouteLoading: false,
+  shouldRenderLoader: true,
 };
 
 export enum NavigationActions {
@@ -44,6 +46,7 @@ export enum NavigationActions {
   TOGGLE_ARTICLE_HIW_MODAL = 'TOGGLE_ARTICLE_HIW_MODAL', // how it works modal on article page
 
   SET_IS_PAGE_LOADING = 'SET_IS_PAGE_LOADING',
+  SET_IS_ROUTE_LOADING = 'SET_IS_ROUTE_LOADING',
   SET_SHOULD_RENDER_LOADER = 'SET_SHOULD_RENDER_LOADER',
 }
 
@@ -94,6 +97,11 @@ export const toggleHiwModal = (isOpen: boolean) => ({
 // Loader action creaters
 export const setIsPageLoading = (value: boolean) => ({
   type: NavigationActions.SET_IS_PAGE_LOADING,
+  payload: value,
+});
+
+export const setIsRouteLoading = (value: boolean) => ({
+  type: NavigationActions.SET_IS_ROUTE_LOADING,
   payload: value,
 });
 

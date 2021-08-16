@@ -1,4 +1,4 @@
-import { ITastiestDish } from '@tastiest-io/tastiest-utils';
+import { dlog, ITastiestDish } from '@tastiest-io/tastiest-utils';
 import TastiestDishCard from 'components/cards/TastiestDishCard';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -13,16 +13,15 @@ export function HomeTastiestDishes(props: Props) {
   const { isHuge, isDesktop } = useScreenSize();
   const { cards } = props;
 
+  dlog('HomeTastiestDishes ➡️ cards:', cards);
+
   return (
     <div className="flex flex-col space-y-4">
       <SectionTitle>The Tastiest Dishes in London!</SectionTitle>
 
       <HorizontalScrollable fit={isHuge ? 5 : isDesktop ? 4 : undefined}>
         {cards.map(dish => (
-          <div
-            key={dish.id}
-            style={{ minWidth: isDesktop ? 'unset' : '200px' }}
-          >
+          <div key={dish.id} style={{ minWidth: '200px' }}>
             <TastiestDishCard compact {...dish} />
           </div>
         ))}

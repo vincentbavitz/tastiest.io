@@ -2,8 +2,14 @@ import { dlog } from '@tastiest-io/tastiest-utils';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsPageLoading, setShouldRenderLoader } from 'state/navigation';
+import { useLockBodyScroll } from 'react-use';
+import {
+  setIsPageLoading,
+  setIsRouteLoading,
+  setShouldRenderLoader,
+} from 'state/navigation';
 import { IState } from 'state/reducers';
+import { useScreenSize } from './useScreenSize';
 
 interface UsePageLoaderOptions {
   // Delay of the Loader popup (in ms) so quick routes look instantaneous
@@ -12,6 +18,7 @@ interface UsePageLoaderOptions {
 
 interface UsePageLoaderReturn {
   isPageLoading: boolean;
+  isRouteLoading: boolean;
   shouldRenderLoader: boolean | null;
 
   // Manually set when the page is considered loaded.
@@ -27,34 +34,45 @@ export function usePageLoader(
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const { isPageLoading, shouldRenderLoader } = useSelector(
+  const { isLoading: isScreenSizeLoading } = useScreenSize();
+  const { isPageLoading, isRouteLoading, shouldRenderLoader } = useSelector(
     (state: IState) => state.navigation,
   );
 
   // Delay the display of the loading so quick routes look instantaneous
   useEffect(() => {
-    if (isPageLoading) {
+    if (isRouteLoading) {
       setTimeout(() => {
-        if (isPageLoading) {
+        if (isRouteLoading) {
           dispatch(setShouldRenderLoader(true));
         }
       }, loaderVisibilityDelay);
     }
-  }, [isPageLoading]);
+  }, [isRouteLoading]);
+
+  // Lock body when we're moving
+  useLockBodyScroll(isPageLoading);
 
   // Manual trigger for isPageLoading
   const triggerPageIsLoaded = useCallback(() => {
-    dlog('usePageLoader: Triggered Manual Function');
-
     dispatch(setIsPageLoading(false));
+    dispatch(setIsRouteLoading(false));
     dispatch(setShouldRenderLoader(false));
   }, [router, dispatch]);
 
-  dlog(
-    'usePageLoader ➡️ isPageLoading,shouldRenderLoader:',
-    isPageLoading,
-    shouldRenderLoader,
-  );
+  dlog('usePageLoader ➡️ router.isReady:', router.isReady);
+  dlog('usePageLoader ➡️ isPageLoading:', isPageLoading);
+
+  // Consider the page load complete when screen size is done loading
+  useEffect(() => {
+    dlog('usePageLoader ➡️ router.isReady:', router.isReady);
+    dlog('usePageLoader ➡️ isScreenSizeLoading:', isScreenSizeLoading);
+
+    if (router.isReady && !isScreenSizeLoading) {
+      dispatch(setIsPageLoading(false));
+      dispatch(setShouldRenderLoader(false));
+    }
+  }, [router, isScreenSizeLoading]);
 
   useEffect(() => {
     const handleStart = (url: string) => {
@@ -62,16 +80,7 @@ export function usePageLoader(
     };
 
     const handleComplete = () => {
-      // const isManualPath = NAVIGATION.MANUAL_LOADING_TRIGGER_FOR_PATHS.some(
-      // path => path.test(router.pathname),
-      // );
-
-      // If done manually, leave it
-      // if (isManualPath) {
-      // return;
-      // }
-
-      triggerPageIsLoaded();
+      dispatch(setIsRouteLoading(false));
     };
 
     router.events.on('routeChangeStart', handleStart);
@@ -86,5 +95,10 @@ export function usePageLoader(
   }, [router]);
 
   // Custom definition of when the page is loaded. Eg. when images need to be loaded
-  return { isPageLoading, shouldRenderLoader, triggerPageIsLoaded };
+  return {
+    isPageLoading,
+    isRouteLoading,
+    shouldRenderLoader,
+    triggerPageIsLoaded,
+  };
 }

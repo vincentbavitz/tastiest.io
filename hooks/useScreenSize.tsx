@@ -63,8 +63,8 @@ export function useScreenSize() {
       isTablet: false,
       isDesktop: false,
       isHuge: false,
-      width: -1,
       isLoading: true,
+      width: -1,
     }
   );
 }
