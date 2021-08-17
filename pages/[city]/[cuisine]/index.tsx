@@ -6,14 +6,17 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import TastiestDishCard from 'components/cards/TastiestDishCard';
+import ContentLoader from 'components/loaders/ContentLoader';
 import { SuggestRestaurant } from 'components/SuggestRestaurant';
 import { CuisineItem } from 'constants/cuisines';
+import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { LookingIllustration } from 'public/assets/illustrations';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { CardGrid } from '../../../components/cards/CardGrid';
 import { Contained } from '../../../components/Contained';
 import { CUISINES } from '../../../constants';
@@ -77,17 +80,29 @@ export default function CuisinePage(props: Props) {
   ));
 
   const { isMobile, isTablet, isDesktop } = useScreenSize();
+  const [isContentLoading, setIsContentLoading] = useState(true);
+
+  // Reset content loading status
+  const router = useRouter();
+  const { isRouteLoading } = usePageLoader();
+  useEffect(() => {
+    const handleRouteChange = () => setIsContentLoading(true);
+    router.events.on('routeChangeStart', handleRouteChange);
+  }, [isRouteLoading]);
 
   return (
     <>
-      <div>
-        <Head>
-          <title>{generateTitle(cuisineName)}</title>
-        </Head>
+      <Head>
+        <title>{generateTitle(cuisineName)}</title>
+      </Head>
 
+      <ContentLoader isContentLoading={isContentLoading}>
         <div className="flex flex-col w-full space-y-10">
           <div className="relative mt-6 tablet:mt-6">
-            <CuisineHero cuisine={cuisine} />
+            <CuisineHero
+              onLoad={() => setIsContentLoading(false)}
+              cuisine={cuisine}
+            />
 
             <div className="absolute inset-0">
               <div
@@ -118,7 +133,7 @@ export default function CuisinePage(props: Props) {
             </Contained>
           )}
         </div>
-      </div>
+      </ContentLoader>
 
       <div className="pt-16">
         <SuggestRestaurant />
@@ -168,10 +183,11 @@ const NoPostsForCuisine = ({
 
 interface CuisineHeroProps {
   cuisine: CuisineItem;
+  onLoad: () => void;
 }
 
 const CuisineHero = (props: CuisineHeroProps) => {
-  const { cuisine } = props;
+  const { cuisine, onLoad } = props;
   const { isMobile, isTablet, isHuge } = useScreenSize();
 
   const desktopH = 713;
@@ -203,7 +219,7 @@ const CuisineHero = (props: CuisineHeroProps) => {
           loading="eager"
           unoptimized
           priority
-          // onLoad={() => triggerPageIsLoaded()}
+          onLoad={onLoad}
           className="block w-full mobile:hidden"
         />
       </div>
@@ -219,7 +235,7 @@ const CuisineHero = (props: CuisineHeroProps) => {
           loading="eager"
           unoptimized
           priority
-          // onLoad={() => triggerPageIsLoaded()}
+          onLoad={onLoad}
           className="hidden w-full mobile:block"
         />
       </div>

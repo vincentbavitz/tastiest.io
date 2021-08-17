@@ -15,7 +15,8 @@ export default function PageLoader() {
   useEffect(() => {
     // Disappear after fade out
     if (!isInitialLoading) {
-      setTimeout(() => setIsDisplayed(false), 300);
+      // setTimeout(() => setIsDisplayed(false), 300);
+      null;
     }
   }, [isInitialLoading]);
 

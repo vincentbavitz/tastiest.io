@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import ContentLoader from 'components/loaders/ContentLoader';
 import PageLoader from 'components/loaders/PageLoader';
 import { usePageLoader } from 'hooks/usePageLoader';
 import { NextComponentType, NextPageContext } from 'next';
@@ -40,15 +39,13 @@ export default function Layout({ pageProps, children: Component }: Props) {
           <Header />
           <CuisineBar />
 
-          <ContentLoader>
-            {/* If you'd like an element to stick to the footer in your page, simply wrap the */}
-            {/* top <div> and the button <div> in <></> and they'll be split */}
-            <div className="relative flex flex-col justify-between flex-grow">
-              {/* All pages control when they are considered loaded */}
-              <Component {...pageProps} />
-            </div>
-            <SearchOverlay />
-          </ContentLoader>
+          {/* If you'd like an element to stick to the footer in your page, simply wrap the */}
+          {/* top <div> and the button <div> in <></> and they'll be split */}
+          <div className="relative flex flex-col justify-between flex-grow">
+            {/* All pages control when they are considered loaded */}
+            <Component {...pageProps} />
+          </div>
+          <SearchOverlay />
         </div>
 
         <div>
