@@ -33,9 +33,7 @@ function App({ Component, pageProps }: AppProps) {
             }}
           />
 
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <Layout pageProps={pageProps}>{Component}</Layout>
         </ScreenProvider>
       </AmbianceProvider>
     </AuthProvider>

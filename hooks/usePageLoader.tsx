@@ -1,9 +1,10 @@
 import { dlog } from '@tastiest-io/tastiest-utils';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLockBodyScroll } from 'react-use';
 import {
+  setIsInitialLoading,
   setIsPageLoading,
   setIsRouteLoading,
   setShouldRenderLoader,
@@ -19,11 +20,8 @@ interface UsePageLoaderOptions {
 interface UsePageLoaderReturn {
   isPageLoading: boolean;
   isRouteLoading: boolean;
+  isInitialLoading: boolean;
   shouldRenderLoader: boolean | null;
-
-  // Manually set when the page is considered loaded.
-  // This will only override isPageLoading when `manual` is set.
-  triggerPageIsLoaded?: () => void;
 }
 
 export function usePageLoader(
@@ -35,44 +33,44 @@ export function usePageLoader(
   const dispatch = useDispatch();
 
   const { isLoading: isScreenSizeLoading } = useScreenSize();
-  const { isPageLoading, isRouteLoading, shouldRenderLoader } = useSelector(
-    (state: IState) => state.navigation,
-  );
+  const {
+    isPageLoading,
+    isRouteLoading,
+    isInitialLoading,
+    shouldRenderLoader,
+  } = useSelector((state: IState) => state.navigation);
 
   // Delay the display of the loading so quick routes look instantaneous
   useEffect(() => {
-    if (isRouteLoading) {
+    if (isPageLoading) {
       setTimeout(() => {
-        if (isRouteLoading) {
-          dispatch(setShouldRenderLoader(true));
-        }
+        if (isPageLoading) dispatch(setShouldRenderLoader(true));
       }, loaderVisibilityDelay);
+    } else {
+      dispatch(setShouldRenderLoader(false));
     }
-  }, [isRouteLoading]);
+  }, [router, isPageLoading]);
+
+  // Set first page load to complete
+  useEffect(() => {
+    if (isInitialLoading) {
+      dispatch(setIsInitialLoading(false));
+    }
+  }, [isPageLoading]);
 
   // Lock body when we're moving
   useLockBodyScroll(isPageLoading);
-
-  // Manual trigger for isPageLoading
-  const triggerPageIsLoaded = useCallback(() => {
-    dispatch(setIsPageLoading(false));
-    dispatch(setIsRouteLoading(false));
-    dispatch(setShouldRenderLoader(false));
-  }, [router, dispatch]);
 
   dlog('usePageLoader ➡️ isRouteLoading:', isRouteLoading);
   dlog('usePageLoader ➡️ isPageLoading:', isPageLoading);
 
   // Consider the page load complete when screen size is done loading
   useEffect(() => {
-    dlog('usePageLoader ➡️ router.isReady:', router.isReady);
-    dlog('usePageLoader ➡️ isScreenSizeLoading:', isScreenSizeLoading);
-
-    if (router.isReady && !isScreenSizeLoading) {
+    if (!isRouteLoading && !isScreenSizeLoading) {
       dispatch(setIsPageLoading(false));
       dispatch(setShouldRenderLoader(false));
     }
-  }, [router, isScreenSizeLoading]);
+  }, [isRouteLoading, isScreenSizeLoading]);
 
   useEffect(() => {
     const handleStart = (url: string) => {
@@ -101,7 +99,7 @@ export function usePageLoader(
   return {
     isPageLoading,
     isRouteLoading,
+    isInitialLoading,
     shouldRenderLoader,
-    triggerPageIsLoaded,
   };
 }

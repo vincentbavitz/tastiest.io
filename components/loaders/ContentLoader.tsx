@@ -5,16 +5,17 @@ import React, { ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
+  triggerLoaded?: () => void;
 }
 
 export default function ContentLoader(props: Props) {
   const { children } = props;
-  const { shouldRenderLoader } = usePageLoader();
+  const { isPageLoading } = usePageLoader();
 
   return (
     <div>
       {/* Content Loader */}
-      {shouldRenderLoader && (
+      {isPageLoading && (
         <div
           style={{ minHeight: '500px' }}
           className="relative flex items-center justify-center flex-grow"
@@ -24,7 +25,7 @@ export default function ContentLoader(props: Props) {
       )}
 
       {/* Hide content when page is loading */}
-      <div className={clsx(shouldRenderLoader && 'hidden')}>{children}</div>
+      <div className={clsx(isPageLoading && 'hidden')}>{children}</div>
     </div>
   );
 }

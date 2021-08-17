@@ -2,7 +2,8 @@ import clsx from 'clsx';
 import ContentLoader from 'components/loaders/ContentLoader';
 import PageLoader from 'components/loaders/PageLoader';
 import { usePageLoader } from 'hooks/usePageLoader';
-import React, { ReactNode } from 'react';
+import { NextComponentType, NextPageContext } from 'next';
+import React from 'react';
 import { CuisineBar } from '../cuisine/CuisineBar';
 import { Footer } from '../Footer';
 import { Header } from '../header/Header';
@@ -11,14 +12,18 @@ import { AcceptTrackingPopup } from '../popups/AcceptTrackingPopup';
 import { SearchOverlay } from '../search/SearchOverlay';
 
 interface Props {
-  children: ReactNode;
+  pageProps: any;
+  children: NextComponentType<NextPageContext>;
 }
 
-export default function Layout({ children }: Props) {
-  const { isRouteLoading } = usePageLoader();
+export default function Layout({ pageProps, children: Component }: Props) {
+  const { isInitialLoading } = usePageLoader();
 
   return (
     <>
+      {/* Page Loader on initial load */}
+      <PageLoader />
+
       {/* Modals (inside portal) */}
       <div id="modal-root" className="absolute">
         <AuthModal />
@@ -28,7 +33,7 @@ export default function Layout({ children }: Props) {
         style={{ minHeight: '100vh' }}
         className={clsx(
           'flex flex-col justify-between duration-300 opacity-0',
-          !isRouteLoading && 'opacity-100',
+          !isInitialLoading && 'opacity-100',
         )}
       >
         <div className="relative flex flex-col flex-grow">
@@ -39,7 +44,8 @@ export default function Layout({ children }: Props) {
             {/* If you'd like an element to stick to the footer in your page, simply wrap the */}
             {/* top <div> and the button <div> in <></> and they'll be split */}
             <div className="relative flex flex-col justify-between flex-grow">
-              {children}
+              {/* All pages control when they are considered loaded */}
+              <Component {...pageProps} />
             </div>
             <SearchOverlay />
           </ContentLoader>
@@ -51,9 +57,6 @@ export default function Layout({ children }: Props) {
       </div>
 
       <AcceptTrackingPopup />
-
-      {/* Page Loader on initial load */}
-      <PageLoader />
     </>
   );
 }

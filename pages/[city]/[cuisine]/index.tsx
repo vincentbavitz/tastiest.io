@@ -8,10 +8,10 @@ import clsx from 'clsx';
 import TastiestDishCard from 'components/cards/TastiestDishCard';
 import { SuggestRestaurant } from 'components/SuggestRestaurant';
 import { CuisineItem } from 'constants/cuisines';
-import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
 import { LookingIllustration } from 'public/assets/illustrations';
 import React, { useCallback } from 'react';
 import { CardGrid } from '../../../components/cards/CardGrid';
@@ -76,7 +76,6 @@ export default function CuisinePage(props: Props) {
     <TastiestDishCard key={dish.id} compact {...dish} />
   ));
 
-  const { triggerPageIsLoaded } = usePageLoader();
   const { isMobile, isTablet, isDesktop } = useScreenSize();
 
   return (
@@ -88,10 +87,7 @@ export default function CuisinePage(props: Props) {
 
         <div className="flex flex-col w-full space-y-10">
           <div className="relative mt-6 tablet:mt-6">
-            <CuisineHero
-              cuisine={cuisine}
-              triggerPageIsLoaded={triggerPageIsLoaded}
-            />
+            <CuisineHero cuisine={cuisine} />
 
             <div className="absolute inset-0">
               <div
@@ -172,11 +168,10 @@ const NoPostsForCuisine = ({
 
 interface CuisineHeroProps {
   cuisine: CuisineItem;
-  triggerPageIsLoaded: () => void;
 }
 
 const CuisineHero = (props: CuisineHeroProps) => {
-  const { cuisine, triggerPageIsLoaded } = props;
+  const { cuisine } = props;
   const { isMobile, isTablet, isHuge } = useScreenSize();
 
   const desktopH = 713;
@@ -201,13 +196,13 @@ const CuisineHero = (props: CuisineHeroProps) => {
         className="relative h-px"
         style={{ width, minWidth, paddingBottom, transform }}
       >
-        <img
+        <Image
           src={cuisine.mobileHero}
-          // layout="fill"
-          // objectFit="cover"
-          // loading="eager"
-          // unoptimized
-          // priority
+          layout="fill"
+          objectFit="cover"
+          loading="eager"
+          unoptimized
+          priority
           // onLoad={() => triggerPageIsLoaded()}
           className="block w-full mobile:hidden"
         />
@@ -217,19 +212,19 @@ const CuisineHero = (props: CuisineHeroProps) => {
         className="relative h-px mobile:mt-10"
         style={{ width, minWidth, paddingBottom, transform }}
       >
-        <img
+        <Image
           src={cuisine.desktopHero}
-          // layout="fill"
-          // objectFit="cover"
-          // loading="eager"
-          // unoptimized
-          // priority
+          layout="fill"
+          objectFit="cover"
+          loading="eager"
+          unoptimized
+          priority
           // onLoad={() => triggerPageIsLoaded()}
           className="hidden w-full mobile:block"
         />
       </div>
     );
-  }, [isMobile, isTablet, isHuge, triggerPageIsLoaded]);
+  }, [isMobile, isTablet, isHuge]);
 
   return (
     <div>
