@@ -73,14 +73,6 @@ const cms = new CmsApi();
 function Post(post: IPost) {
   const { title } = post;
 
-  // TODO; abstract away into onlocationchange in app.tsx
-  // Scroll to top on load
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.scrollTo(0, 0);
-    }
-  }, []);
-
   // Get recommended posts
   const [recommendedPosts, setRecommendedPosts] = useState([]);
   useEffect(() => {

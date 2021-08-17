@@ -47,6 +47,9 @@ export const navigationReducer = (
     case NavigationActions.SET_IS_ROUTE_LOADING: {
       return { ...state, isRouteLoading: action.payload };
     }
+    case NavigationActions.SET_IS_CONTENT_LOADING: {
+      return { ...state, isContentLoading: action.payload };
+    }
     case NavigationActions.SET_IS_INITIAL_LOADING: {
       return { ...state, isInitialLoading: action.payload };
     }

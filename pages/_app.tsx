@@ -10,7 +10,7 @@ import { METADATA } from '../constants';
 import { AuthProvider } from '../contexts/auth';
 import '../styles/style.scss';
 
-function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps, router }: AppProps) {
   return (
     <AuthProvider>
       <AmbianceProvider>
@@ -33,7 +33,9 @@ function App({ Component, pageProps }: AppProps) {
             }}
           />
 
-          <Layout pageProps={pageProps}>{Component}</Layout>
+          <Layout router={router} pageProps={pageProps}>
+            {Component}
+          </Layout>
         </ScreenProvider>
       </AmbianceProvider>
     </AuthProvider>

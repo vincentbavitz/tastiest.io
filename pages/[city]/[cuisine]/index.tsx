@@ -1,32 +1,57 @@
 import {
   CmsApi,
   CuisineSymbol,
-  ICuisine,
   ITastiestDish,
   titleCase,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import TastiestDishCard from 'components/cards/TastiestDishCard';
-import ContentLoader from 'components/loaders/ContentLoader';
 import { SuggestRestaurant } from 'components/SuggestRestaurant';
 import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { LookingIllustration } from 'public/assets/illustrations';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setIsContentLoading } from 'state/navigation';
 import { CardGrid } from '../../../components/cards/CardGrid';
 import { Contained } from '../../../components/Contained';
 import { CUISINES } from '../../../constants';
 import { generateTitle } from '../../../utils/metadata';
+import AmericanHeroDesktop from '/public/assets/cuisine-pages/american-hero-desktop.svg';
+import AmericanHeroMobile from '/public/assets/cuisine-pages/american-hero-mobile.svg';
+import BrazilianHeroDesktop from '/public/assets/cuisine-pages/brazilian-hero-desktop.svg';
+import BrazilianHeroMobile from '/public/assets/cuisine-pages/brazilian-hero-mobile.svg';
+import BritishHeroDesktop from '/public/assets/cuisine-pages/british-hero-desktop.svg';
+import BritishHeroMobile from '/public/assets/cuisine-pages/british-hero-mobile.svg';
+import CaribbeanHeroDesktop from '/public/assets/cuisine-pages/caribbean-hero-desktop.svg';
+import CaribbeanHeroMobile from '/public/assets/cuisine-pages/caribbean-hero-mobile.svg';
+import ChineseHeroDesktop from '/public/assets/cuisine-pages/chinese-hero-desktop.svg';
+import ChineseHeroMobile from '/public/assets/cuisine-pages/chinese-hero-mobile.svg';
+import FrenchHeroDesktop from '/public/assets/cuisine-pages/french-hero-desktop.svg';
+import FrenchHeroMobile from '/public/assets/cuisine-pages/french-hero-mobile.svg';
+import IndianHeroDesktop from '/public/assets/cuisine-pages/indian-hero-desktop.svg';
+import IndianHeroMobile from '/public/assets/cuisine-pages/indian-hero-mobile.svg';
+import ItalianHeroDesktop from '/public/assets/cuisine-pages/italian-hero-desktop.svg';
+import ItalianHeroMobile from '/public/assets/cuisine-pages/italian-hero-mobile.svg';
+import JapaneseHeroDesktop from '/public/assets/cuisine-pages/japanese-hero-desktop.svg';
+import JapaneseHeroMobile from '/public/assets/cuisine-pages/japanese-hero-mobile.svg';
+import MediterraneanHeroDesktop from '/public/assets/cuisine-pages/mediterranean-hero-desktop.svg';
+import MediterraneanHeroMobile from '/public/assets/cuisine-pages/mediterranean-hero-mobile.svg';
+import MexicanHeroDesktop from '/public/assets/cuisine-pages/mexican-hero-desktop.svg';
+import MexicanHeroMobile from '/public/assets/cuisine-pages/mexican-hero-mobile.svg';
+import SpanishHeroDesktop from '/public/assets/cuisine-pages/spanish-hero-desktop.svg';
+import SpanishHeroMobile from '/public/assets/cuisine-pages/spanish-hero-mobile.svg';
 
 interface IPath {
   params: { city: string; cuisine: string };
 }
 
 interface Props {
+  heroMobileSrc: string;
+  heroDesktopSrc: string;
   cuisineSymbol: CuisineSymbol;
   tastiestDishes: ITastiestDish[];
 }
@@ -61,8 +86,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     dishes: tastiestDishes = [],
   } = await cmsApi.getTastiestDishesOfCuisine(cuisineSymbol);
 
+  const cuisine = CUISINES[cuisineSymbol];
+  const cuisinePathName = cuisine.name.toLowerCase().replace('-', '');
+  const heroMobileSrc = `/assets/cuisine-pages/${cuisinePathName}-hero-mobile.svg`;
+  const heroDesktopSrc = `/assets/cuisine-pages/${cuisinePathName}-hero-desktop.svg`;
+
   return {
     props: {
+      heroMobileSrc,
+      heroDesktopSrc,
       cuisineSymbol,
       tastiestDishes,
     },
@@ -71,7 +103,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export default function CuisinePage(props: Props) {
-  const { tastiestDishes = [], cuisineSymbol } = props;
+  const {
+    heroMobileSrc,
+    heroDesktopSrc,
+    tastiestDishes = [],
+    cuisineSymbol,
+  } = props;
 
   const cuisine = CUISINES[cuisineSymbol];
   const cuisineName = titleCase(String(cuisine?.name));
@@ -80,15 +117,6 @@ export default function CuisinePage(props: Props) {
   ));
 
   const { isMobile, isTablet, isDesktop } = useScreenSize();
-  const [isContentLoading, setIsContentLoading] = useState(true);
-
-  // Reset content loading status
-  const router = useRouter();
-  const { isRouteLoading } = usePageLoader();
-  useEffect(() => {
-    const handleRouteChange = () => setIsContentLoading(true);
-    router.events.on('routeChangeStart', handleRouteChange);
-  }, [isRouteLoading]);
 
   return (
     <>
@@ -96,17 +124,10 @@ export default function CuisinePage(props: Props) {
         <title>{generateTitle(cuisineName)}</title>
       </Head>
 
-      <ContentLoader
-        isContentLoading={isContentLoading}
-        spinnerAreaHeight={550}
-        timeout={5000}
-      >
+      <div>
         <div className="flex flex-col w-full space-y-10">
           <div className="relative mt-6 tablet:mt-6">
-            <CuisineHero
-              onLoad={() => setIsContentLoading(false)}
-              cuisine={cuisine}
-            />
+            <CuisineHero cuisineSymbol={cuisineSymbol} />
 
             <div className="absolute inset-0">
               <div
@@ -137,7 +158,7 @@ export default function CuisinePage(props: Props) {
             </Contained>
           )}
         </div>
-      </ContentLoader>
+      </div>
 
       <div className="pt-16">
         <SuggestRestaurant />
@@ -186,13 +207,12 @@ const NoPostsForCuisine = ({
 );
 
 interface CuisineHeroProps {
-  cuisine: ICuisine;
-  onLoad: () => void;
+  cuisineSymbol: CuisineSymbol;
 }
 
-const CuisineHero = (props: CuisineHeroProps) => {
-  const { cuisine, onLoad } = props;
-  const { isMobile, isTablet, isHuge } = useScreenSize();
+const CuisineImage = (props: CuisineHeroProps) => {
+  const { cuisineSymbol } = props;
+  const { isMobile, isTablet } = useScreenSize();
 
   const desktopH = 713;
   const desktopW = 1450;
@@ -202,62 +222,186 @@ const CuisineHero = (props: CuisineHeroProps) => {
   const mobileW = 1300;
   const mobileHPc = 100 * (mobileH / mobileW);
 
-  const CuisineImage = useCallback(() => {
-    const sizeMultipler = isMobile ? 1.33 : isTablet ? 1.5 : 1;
-    const width = `${100 * sizeMultipler}%`;
-    const minWidth = isMobile ? '325px' : 'auto';
-    const transform = `translate(${sizeMultipler > 1 ? '-15%' : '0%'}, -10%)`;
-    const paddingBottom = `${
-      (isMobile ? mobileHPc : desktopHPc) * sizeMultipler
-    }%`;
+  const sizeMultipler = useMemo(() => (isMobile ? 1.33 : isTablet ? 1.5 : 1), [
+    isMobile,
+    isTablet,
+  ]);
 
-    const srcName = cuisine.name.toLowerCase().replace('-', '');
-    const mobileSrc = `/assets/cuisine-pages/${srcName}-hero-mobile.svg`;
-    const desktopSrc = `/assets/cuisine-pages/${srcName}-hero-desktop.svg`;
+  const style = useMemo(
+    () => ({
+      width: `${100 * sizeMultipler}%`,
+      minWidth: isMobile ? '325px' : 'auto',
+      transform: `translate(${sizeMultipler > 1 ? '-15%' : '0%'}, -10%)`,
+      paddingBottom: `${(isMobile ? mobileHPc : desktopHPc) * sizeMultipler}%`,
+    }),
+    [isMobile, isTablet],
+  );
 
-    return isMobile ? (
-      <div
-        className="relative h-px"
-        style={{ width, minWidth, paddingBottom, transform }}
-      >
+  // Manual trigger for isPageLoading
+  const dispatch = useDispatch();
+
+  AmericanHeroMobile;
+  BrazilianHeroDesktop;
+  BrazilianHeroMobile;
+  BritishHeroDesktop;
+  BritishHeroMobile;
+  CaribbeanHeroDesktop;
+  CaribbeanHeroMobile;
+  ChineseHeroDesktop;
+  ChineseHeroMobile;
+  FrenchHeroDesktop;
+  FrenchHeroMobile;
+  IndianHeroDesktop;
+  IndianHeroMobile;
+  ItalianHeroDesktop;
+  ItalianHeroMobile;
+  JapaneseHeroDesktop;
+  JapaneseHeroMobile;
+  MediterraneanHeroDesktop;
+  MediterraneanHeroMobile;
+  MexicanHeroDesktop;
+  MexicanHeroMobile;
+  SpanishHeroDesktop;
+  SpanishHeroMobile;
+
+  const { isRouteLoading, isPageLoading } = usePageLoader();
+  const [hasFiredLoadingEvent, setHasFiredLoadingEvent] = useState(false);
+
+  const manageLoadingComplete = useCallback(() => {
+    console.log('GOOD: manageLoadingComplete fires');
+    if (!isRouteLoading && !isPageLoading && !hasFiredLoadingEvent) {
+      dispatch(setIsContentLoading(false));
+      setHasFiredLoadingEvent(true);
+      console.log('GOOD: I"M IN');
+    }
+  }, [isRouteLoading, isPageLoading, hasFiredLoadingEvent]);
+
+  // Reset hasFiredLoadingEvent on route change
+  useEffect(() => {
+    setHasFiredLoadingEvent(false);
+  }, [cuisineSymbol]);
+
+  const source = useMemo(() => {
+    switch (cuisineSymbol) {
+      case CuisineSymbol.AMERICAN: {
+        return {
+          desktopSrc: AmericanHeroDesktop,
+          mobileSrc: AmericanHeroMobile,
+        };
+      }
+      case CuisineSymbol.BRAZILIAN: {
+        return {
+          desktopSrc: BrazilianHeroDesktop,
+          mobileSrc: BrazilianHeroMobile,
+        };
+      }
+      case CuisineSymbol.BRITISH: {
+        return {
+          desktopSrc: BritishHeroDesktop,
+          mobileSrc: BritishHeroMobile,
+        };
+      }
+      case CuisineSymbol.CARIBBEAN: {
+        return {
+          desktopSrc: CaribbeanHeroDesktop,
+          mobileSrc: CaribbeanHeroMobile,
+        };
+      }
+      case CuisineSymbol.CHINESE: {
+        return {
+          desktopSrc: ChineseHeroDesktop,
+          mobileSrc: ChineseHeroMobile,
+        };
+      }
+      case CuisineSymbol.FRENCH: {
+        return {
+          desktopSrc: FrenchHeroDesktop,
+          mobileSrc: FrenchHeroMobile,
+        };
+      }
+      case CuisineSymbol.INDIAN: {
+        return {
+          desktopSrc: IndianHeroDesktop,
+          mobileSrc: IndianHeroMobile,
+        };
+      }
+      case CuisineSymbol.ITALIAN: {
+        return {
+          desktopSrc: ItalianHeroDesktop,
+          mobileSrc: ItalianHeroMobile,
+        };
+      }
+      case CuisineSymbol.JAPANESE: {
+        return {
+          desktopSrc: JapaneseHeroDesktop,
+          mobileSrc: JapaneseHeroMobile,
+        };
+      }
+      case CuisineSymbol.MEDITERRANEAN: {
+        return {
+          desktopSrc: MediterraneanHeroDesktop,
+          mobileSrc: MediterraneanHeroMobile,
+        };
+      }
+      case CuisineSymbol.MEXICAN: {
+        return {
+          desktopSrc: MexicanHeroDesktop,
+          mobileSrc: MexicanHeroMobile,
+        };
+      }
+      case CuisineSymbol.SPANISH: {
+        return {
+          desktopSrc: SpanishHeroDesktop,
+          mobileSrc: SpanishHeroMobile,
+        };
+      }
+      default: {
+        return {
+          desktopSrc: null,
+          mobileSrc: null,
+        };
+      }
+    }
+  }, [cuisineSymbol]);
+
+  return (
+    <div className="relative h-px mobile:mt-10" style={style}>
+      {isMobile && (
         <Image
-          src={mobileSrc}
+          src={source.mobileSrc}
           layout="fill"
           objectFit="cover"
-          loading="eager"
-          unoptimized
           priority
           className="block w-full mobile:hidden"
-          onLoadingComplete={onLoad}
+          onLoadingComplete={() => manageLoadingComplete()}
         />
-      </div>
-    ) : (
-      <div
-        className="relative h-px mobile:mt-10"
-        style={{ width, minWidth, paddingBottom, transform }}
-      >
+      )}
+
+      {!isMobile && (
         <Image
-          src={desktopSrc}
+          src={source.desktopSrc}
           layout="fill"
           objectFit="cover"
-          loading="eager"
-          unoptimized
           priority
           className="hidden w-full mobile:block"
-          onLoadingComplete={onLoad}
+          onLoadingComplete={() => manageLoadingComplete()}
         />
-      </div>
-    );
-  }, [isMobile, isTablet, isHuge]);
+      )}
+    </div>
+  );
+};
+
+const CuisineHero = (props: CuisineHeroProps) => {
+  const { isHuge } = useScreenSize();
 
   return (
     <div>
       {isHuge ? (
         <Contained maxWidth={933}>
-          <CuisineImage />
+          <CuisineImage {...props} />
         </Contained>
       ) : (
-        <CuisineImage />
+        <CuisineImage {...props} />
       )}
     </div>
   );

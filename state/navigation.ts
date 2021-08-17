@@ -18,6 +18,7 @@ export interface INavigation {
   isPageLoading: boolean;
   isRouteLoading: boolean;
   isInitialLoading: boolean;
+  isContentLoading: boolean;
   shouldRenderLoader: boolean | null;
 }
 
@@ -33,6 +34,7 @@ export const initialNavigationState: INavigation = {
   isPageLoading: true,
   isRouteLoading: false,
   isInitialLoading: true,
+  isContentLoading: true,
   shouldRenderLoader: true,
 };
 
@@ -49,6 +51,7 @@ export enum NavigationActions {
 
   SET_IS_PAGE_LOADING = 'SET_IS_PAGE_LOADING',
   SET_IS_ROUTE_LOADING = 'SET_IS_ROUTE_LOADING',
+  SET_IS_CONTENT_LOADING = 'SET_IS_CONTENT_LOADING',
   SET_IS_INITIAL_LOADING = 'SET_IS_INITIAL_LOADING',
   SET_SHOULD_RENDER_LOADER = 'SET_SHOULD_RENDER_LOADER',
 }
@@ -110,6 +113,11 @@ export const setIsRouteLoading = (value: boolean) => ({
 
 export const setIsInitialLoading = (value: boolean) => ({
   type: NavigationActions.SET_IS_INITIAL_LOADING,
+  payload: value,
+});
+
+export const setIsContentLoading = (value: boolean) => ({
+  type: NavigationActions.SET_IS_CONTENT_LOADING,
   payload: value,
 });
 

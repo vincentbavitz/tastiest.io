@@ -1,26 +1,45 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
+import { usePageLoader } from 'hooks/usePageLoader';
+import { Router } from 'next/router';
 import React, { ReactNode, useEffect, useState } from 'react';
-import { UI } from '../../constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsContentLoading } from 'state/navigation';
+import { IState } from 'state/reducers';
+import { NAVIGATION, UI } from '../../constants';
 
 interface Props {
+  router: Router;
   children: ReactNode;
-  isContentLoading: boolean;
-  timeout?: number; // automatically close after (ms)
   noSpinner?: boolean;
   spinnerAreaHeight?: number; // in px
 }
 
 export default function ContentLoader(props: Props) {
-  const {
-    timeout,
-    children,
-    isContentLoading,
-    noSpinner = false,
-    spinnerAreaHeight,
-  } = props;
+  const { router, children, noSpinner = false, spinnerAreaHeight } = props;
 
+  const dispatch = useDispatch();
+  const { isPageLoading } = usePageLoader();
+  const { isContentLoading } = useSelector((state: IState) => state.navigation);
   const [isLoaderVisible, setIsLoaderVisible] = useState(isContentLoading);
+
+  // Reset content loading status on route change
+  useEffect(() => {
+    router.events.on('routeChangeStart', () => {
+      dispatch(setIsContentLoading(true));
+    });
+  }, [router, dispatch]);
+
+  // Set to manually trigger content loaded on certain pages
+  useEffect(() => {
+    const manual = NAVIGATION.MANUAL_LOADING_TRIGGER_FOR_PATHS.some(path =>
+      path.test(router.pathname),
+    );
+
+    if (!manual && !isPageLoading) {
+      dispatch(setIsContentLoading(false));
+    }
+  }, [router, dispatch, isPageLoading]);
 
   // Set display to none after it fades out
   useEffect(() => {
@@ -44,8 +63,8 @@ export default function ContentLoader(props: Props) {
           style={{ zIndex: isLoaderVisible ? UI.Z_INDEX_PAGE_LOADER : 0 }}
           className={clsx(
             'absolute inset-0 bg-white duration-300 pointer-events-none',
-            isContentLoading ? 'opacity-75' : 'opacity-0',
-            isLoaderVisible ? 'block' : 'hidden',
+            isContentLoading ? 'opacity-100' : 'opacity-0',
+            // isLoaderVisible ? 'block' : 'hidden',
           )}
         >
           {!noSpinner && (
@@ -53,7 +72,7 @@ export default function ContentLoader(props: Props) {
               style={{
                 height: spinnerAreaHeight
                   ? `${spinnerAreaHeight}px`
-                  : 'calc(90vh - 10rem)',
+                  : 'calc(80vh - 10rem)',
               }}
               className="absolute inset-0 flex items-center justify-center"
             >
