@@ -13,11 +13,9 @@ const nextConfig = {
       },
     };
   },
+  webpack5: true,
   experimental: {
     jsconfigPaths: true,
-  },
-  future: {
-    webpack5: true,
   },
   fallback: {
     fs: false,

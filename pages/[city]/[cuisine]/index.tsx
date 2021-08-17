@@ -1,6 +1,7 @@
 import {
   CmsApi,
   CuisineSymbol,
+  ICuisine,
   ITastiestDish,
   titleCase,
 } from '@tastiest-io/tastiest-utils';
@@ -8,7 +9,6 @@ import clsx from 'clsx';
 import TastiestDishCard from 'components/cards/TastiestDishCard';
 import ContentLoader from 'components/loaders/ContentLoader';
 import { SuggestRestaurant } from 'components/SuggestRestaurant';
-import { CuisineItem } from 'constants/cuisines';
 import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticPaths, GetStaticProps } from 'next';
@@ -96,7 +96,11 @@ export default function CuisinePage(props: Props) {
         <title>{generateTitle(cuisineName)}</title>
       </Head>
 
-      <ContentLoader isContentLoading={isContentLoading}>
+      <ContentLoader
+        isContentLoading={isContentLoading}
+        spinnerAreaHeight={550}
+        timeout={5000}
+      >
         <div className="flex flex-col w-full space-y-10">
           <div className="relative mt-6 tablet:mt-6">
             <CuisineHero
@@ -182,7 +186,7 @@ const NoPostsForCuisine = ({
 );
 
 interface CuisineHeroProps {
-  cuisine: CuisineItem;
+  cuisine: ICuisine;
   onLoad: () => void;
 }
 
@@ -207,20 +211,24 @@ const CuisineHero = (props: CuisineHeroProps) => {
       (isMobile ? mobileHPc : desktopHPc) * sizeMultipler
     }%`;
 
+    const srcName = cuisine.name.toLowerCase().replace('-', '');
+    const mobileSrc = `/assets/cuisine-pages/${srcName}-hero-mobile.svg`;
+    const desktopSrc = `/assets/cuisine-pages/${srcName}-hero-desktop.svg`;
+
     return isMobile ? (
       <div
         className="relative h-px"
         style={{ width, minWidth, paddingBottom, transform }}
       >
         <Image
-          src={cuisine.mobileHero}
+          src={mobileSrc}
           layout="fill"
           objectFit="cover"
           loading="eager"
           unoptimized
           priority
-          onLoad={onLoad}
           className="block w-full mobile:hidden"
+          onLoadingComplete={onLoad}
         />
       </div>
     ) : (
@@ -229,14 +237,14 @@ const CuisineHero = (props: CuisineHeroProps) => {
         style={{ width, minWidth, paddingBottom, transform }}
       >
         <Image
-          src={cuisine.desktopHero}
+          src={desktopSrc}
           layout="fill"
           objectFit="cover"
           loading="eager"
           unoptimized
           priority
-          onLoad={onLoad}
           className="hidden w-full mobile:block"
+          onLoadingComplete={onLoad}
         />
       </div>
     );
