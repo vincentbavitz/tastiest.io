@@ -22,6 +22,20 @@ export default function ContentLoader(props: Props) {
   const { isPageLoading } = usePageLoader();
   const { isContentLoading } = useSelector((state: IState) => state.navigation);
   const [isLoaderVisible, setIsLoaderVisible] = useState(isContentLoading);
+  const [isSpinnnerVisible, setIsSpinnerVisible] = useState(false);
+
+  // Spinner visible after a delay; only when page is taking a long time to load
+  useEffect(() => {
+    if (isContentLoading) {
+      setTimeout(() => {
+        if (isContentLoading) {
+          setIsSpinnerVisible(true);
+        }
+      }, 1500);
+    } else {
+      setIsSpinnerVisible(false);
+    }
+  }, [isContentLoading]);
 
   // Reset content loading status on route change
   useEffect(() => {
@@ -64,7 +78,7 @@ export default function ContentLoader(props: Props) {
           className={clsx(
             'absolute inset-0 bg-white duration-300 pointer-events-none',
             isContentLoading ? 'opacity-100' : 'opacity-0',
-            // isLoaderVisible ? 'block' : 'hidden',
+            isLoaderVisible ? 'block' : 'hidden',
           )}
         >
           {!noSpinner && (
@@ -74,9 +88,12 @@ export default function ContentLoader(props: Props) {
                   ? `${spinnerAreaHeight}px`
                   : 'calc(80vh - 10rem)',
               }}
-              className="absolute inset-0 flex items-center justify-center"
+              className={clsx(
+                'absolute duration-500 inset-0 flex items-center justify-center',
+                isSpinnnerVisible ? 'opacity-100' : 'opacity-0',
+              )}
             >
-              <LoadingOutlined className="-mt-20 text-6xl fill-current text-primary" />
+              <LoadingOutlined className="-mt-20 text-4xl opacity-50 fill-current text-primary" />
             </div>
           )}
         </div>
