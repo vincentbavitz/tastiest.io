@@ -156,7 +156,7 @@ const HowItWorksSpriteDesktop = () => {
 
       <div
         style={{ width: '55%', minWidth: '7rem' }}
-        className="absolute right-0 -bottom-1"
+        className="absolute right-0 -bottom-2"
       >
         {/* Custom buttom so we can scale the width with the SVG */}
         <div

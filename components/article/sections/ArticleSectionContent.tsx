@@ -21,7 +21,7 @@ export function ArticleSectionContent(post: IPost) {
 
 const MobileContent = (post: IPost) => (
   <Contained>
-    <div className="flex items-center justify-between border-b-2 border-secondary-2">
+    <div className="flex items-center justify-between">
       <h3 className="text-xl font-medium">{post?.restaurant?.name}</h3>
       <CovidAware className="block h-6 mobile:hidden" />
     </div>

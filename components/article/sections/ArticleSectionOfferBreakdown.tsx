@@ -14,7 +14,7 @@ export default function ArticleSectionOfferBreakdown(deal: IDeal) {
         ))}
       </ul>
 
-      <div className="flex w-full space-x-4 border-b border-gray-300">
+      <div className="flex w-full space-x-4">
         <p className="mb-3 text-base font-medium">
           for only £{deal.pricePerHeadGBP}
         </p>

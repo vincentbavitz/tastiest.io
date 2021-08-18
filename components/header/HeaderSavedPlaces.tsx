@@ -18,7 +18,7 @@ export function HeaderSavedPlaces() {
 
   const handleClick = () => {
     if (isSignedIn) {
-      router.push('/favourites');
+      router.push('/account/favourites');
       return;
     }
 

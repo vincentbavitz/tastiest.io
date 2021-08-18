@@ -94,7 +94,7 @@ export default function ContentLoader(props: Props) {
                 isSpinnnerVisible ? 'opacity-100' : 'opacity-0',
               )}
             >
-              <LoadingOutlined className="-mt-20 text-4xl opacity-50 fill-current text-primary" />
+              <LoadingOutlined className="-mt-20 text-6xl fill-current text-primary" />
             </div>
           )}
         </div>

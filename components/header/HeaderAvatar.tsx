@@ -1,8 +1,9 @@
 import { Dropdown, DropdownItem } from '@tastiest-io/tastiest-components';
 import { BookmarkIcon, RightArrowIcon } from '@tastiest-io/tastiest-icons';
-import { dlog, SVG, titleCase } from '@tastiest-io/tastiest-utils';
+import { SVG, titleCase } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useSignOut } from 'hooks/auth/useSignOut';
+import { usePageLoader } from 'hooks/usePageLoader';
 import { useUserData } from 'hooks/useUserData';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -33,11 +34,11 @@ export function HeaderAvatar() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  dlog('HeaderAvatar ➡️ userData:', userData);
-
+  const displayName = titleCase(userData?.details?.firstName);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const displayName = titleCase(userData?.details?.firstName);
+  // Don't display dropdown on route change
+  const { isPageLoading } = usePageLoader();
 
   // Close dropdown on route change
   useEffect(() => {
@@ -48,14 +49,14 @@ export function HeaderAvatar() {
     // {
     //   id: 'saved-places',
     //   name: 'Saved Places',
-    //   href: '/favourites',
+    //   href: '/account/favourites',
     //   isSelected: false,
     //   icon: HeartIcon,
     // },
     {
       id: 'preferences',
       name: 'Preferences',
-      href: '/preferences',
+      href: '/account/preferences',
       isSelected: false,
       icon: BookmarkIcon,
     },
@@ -95,7 +96,7 @@ export function HeaderAvatar() {
       <UserAvatar onClick={onAvatarClick} />
 
       <Dropdown
-        isOpen={isDropdownOpen}
+        isOpen={isDropdownOpen && !isPageLoading}
         style="outline"
         pull="right"
         onClickAway={() => setIsDropdownOpen(false)}
