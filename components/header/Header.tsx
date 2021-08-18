@@ -15,8 +15,16 @@ export function Header() {
   const { isDesktop } = useScreenSize();
   const { onCheckoutPage } = useSelector((state: IState) => state.checkout);
 
+  // Prevent clicking when things are loading
+  const { isContentLoading } = useSelector((state: IState) => state.navigation);
+
   return (
-    <div className="flex flex-col w-full">
+    <div
+      className={clsx(
+        'flex flex-col w-full',
+        isContentLoading && 'pointer-events-none',
+      )}
+    >
       {onCheckoutPage ? (
         <CheckoutHeader isDesktop={isDesktop} />
       ) : (

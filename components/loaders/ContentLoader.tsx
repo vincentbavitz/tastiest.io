@@ -24,7 +24,8 @@ export default function ContentLoader(props: Props) {
   const [isLoaderVisible, setIsLoaderVisible] = useState(isContentLoading);
   const [isSpinnnerVisible, setIsSpinnerVisible] = useState(false);
 
-  // Spinner visible after a delay; only when page is taking a long time to load
+  // Spinner visible after a delay;
+  // only when page is taking a long time to load
   useEffect(() => {
     if (isContentLoading) {
       setTimeout(() => {
@@ -81,7 +82,7 @@ export default function ContentLoader(props: Props) {
             isLoaderVisible ? 'block' : 'hidden',
           )}
         >
-          {!noSpinner && (
+          {noSpinner ? null : (
             <div
               style={{
                 height: spinnerAreaHeight

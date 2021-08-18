@@ -159,7 +159,7 @@ function HorizontalScrollableInner(props: Props) {
           ref={innerContentRef}
           className={clsx('flex overflow-y-visible', `children:px-${spacing}`)}
           style={{
-            width: 'max-content',
+            width: 'min-content',
             marginLeft: `${!isDesktop ? UI.PAGE_CONTAINED_PADDING_VW : 0}vw`,
           }}
         >

@@ -50,8 +50,6 @@ interface IPath {
 }
 
 interface Props {
-  heroMobileSrc: string;
-  heroDesktopSrc: string;
   cuisineSymbol: CuisineSymbol;
   tastiestDishes: ITastiestDish[];
 }
@@ -86,15 +84,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     dishes: tastiestDishes = [],
   } = await cmsApi.getTastiestDishesOfCuisine(cuisineSymbol);
 
-  const cuisine = CUISINES[cuisineSymbol];
-  const cuisinePathName = cuisine.name.toLowerCase().replace('-', '');
-  const heroMobileSrc = `/assets/cuisine-pages/${cuisinePathName}-hero-mobile.svg`;
-  const heroDesktopSrc = `/assets/cuisine-pages/${cuisinePathName}-hero-desktop.svg`;
-
   return {
     props: {
-      heroMobileSrc,
-      heroDesktopSrc,
       cuisineSymbol,
       tastiestDishes,
     },
@@ -103,12 +94,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export default function CuisinePage(props: Props) {
-  const {
-    heroMobileSrc,
-    heroDesktopSrc,
-    tastiestDishes = [],
-    cuisineSymbol,
-  } = props;
+  const { tastiestDishes = [], cuisineSymbol } = props;
 
   const cuisine = CUISINES[cuisineSymbol];
   const cuisineName = titleCase(String(cuisine?.name));
@@ -237,42 +223,14 @@ const CuisineImage = (props: CuisineHeroProps) => {
     [isMobile, isTablet],
   );
 
-  // Manual trigger for isPageLoading
   const dispatch = useDispatch();
-
-  AmericanHeroMobile;
-  BrazilianHeroDesktop;
-  BrazilianHeroMobile;
-  BritishHeroDesktop;
-  BritishHeroMobile;
-  CaribbeanHeroDesktop;
-  CaribbeanHeroMobile;
-  ChineseHeroDesktop;
-  ChineseHeroMobile;
-  FrenchHeroDesktop;
-  FrenchHeroMobile;
-  IndianHeroDesktop;
-  IndianHeroMobile;
-  ItalianHeroDesktop;
-  ItalianHeroMobile;
-  JapaneseHeroDesktop;
-  JapaneseHeroMobile;
-  MediterraneanHeroDesktop;
-  MediterraneanHeroMobile;
-  MexicanHeroDesktop;
-  MexicanHeroMobile;
-  SpanishHeroDesktop;
-  SpanishHeroMobile;
-
   const { isRouteLoading, isPageLoading } = usePageLoader();
   const [hasFiredLoadingEvent, setHasFiredLoadingEvent] = useState(false);
 
   const manageLoadingComplete = useCallback(() => {
-    console.log('GOOD: manageLoadingComplete fires');
     if (!isRouteLoading && !isPageLoading && !hasFiredLoadingEvent) {
       dispatch(setIsContentLoading(false));
       setHasFiredLoadingEvent(true);
-      console.log('GOOD: I"M IN');
     }
   }, [isRouteLoading, isPageLoading, hasFiredLoadingEvent]);
 

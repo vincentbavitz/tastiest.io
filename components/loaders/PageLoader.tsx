@@ -2,12 +2,14 @@ import { LoadingOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
 import { usePageLoader } from 'hooks/usePageLoader';
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { closeAuthModal, collapseSearchOverlay } from 'state/navigation';
 import { UI } from '../../constants';
 
 /** Page loader used only on initial page load */
 export default function PageLoader() {
   // Loading params
-  const { isInitialLoading } = usePageLoader();
+  const { isInitialLoading, isPageLoading } = usePageLoader();
   const [isDisplayed, setIsDisplayed] = useState(true);
   const [shouldRenderSpinner, setShouldRenderSpinner] = useState(false);
 
@@ -28,6 +30,14 @@ export default function PageLoader() {
       }
     }, 1000);
   }, [isInitialLoading]);
+
+  // Close the search overlay on route change.
+  // Close auth modal on route change.
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(collapseSearchOverlay());
+    dispatch(closeAuthModal());
+  }, [isPageLoading]);
 
   return isDisplayed ? (
     <div
