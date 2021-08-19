@@ -7,10 +7,16 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import { GetServerSideProps } from 'next';
 import nookies from 'nookies';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useFirebase } from 'react-redux-firebase';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { useAuth } from '../../hooks/auth/useAuth';
 import { useUserData } from '../../hooks/useUserData';
+
+interface Props {
+  signInToken: string;
+  resetPasswordRequest: IPasswordResetRequest;
+}
 
 export const getServerSideProps: GetServerSideProps = async context => {
   // Get user ID from cookie.
@@ -41,10 +47,8 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
 
   try {
-    // Init now that we have their email
+    // Get password reset requests
     await userDataApi.initFromEmail(email);
-
-    // Get password reset request
     const requests = await userDataApi.getUserData(
       UserData.PASSWORD_RESET_REQUESTS,
     );
@@ -86,8 +90,14 @@ export const getServerSideProps: GetServerSideProps = async context => {
       });
     }
 
+    // Create a sign in token for them
+    const signInToken = await firebaseAdmin
+      .auth()
+      .createCustomToken(userDataApi.userId);
+
+    const props: Props = { signInToken, resetPasswordRequest };
     return {
-      props: { resetPasswordRequest },
+      props,
     };
   } catch (error) {
     await reportInternalError({
@@ -110,17 +120,20 @@ export const getServerSideProps: GetServerSideProps = async context => {
   };
 };
 
-interface Props {
-  resetPasswordRequest: IPasswordResetRequest;
-}
-
 function ResetPassword(props: Props) {
-  const { resetPasswordRequest } = props;
+  const { signInToken, resetPasswordRequest } = props;
 
   const { user } = useAuth();
   const { userData = {} } = useUserData(user);
 
-  return <div>{resetPasswordRequest.createdAt}</div>;
+  const firebase = useFirebase();
+
+  // Don't sign in until their pw is changed.
+  useEffect(() => {
+    //   firebase.auth().pass
+  });
+
+  return <div>{resetPasswordRequest.token}</div>;
 }
 
 export default ResetPassword;

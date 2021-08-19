@@ -56,6 +56,9 @@ export default class CustomDocument extends Document<any> {
             dangerouslySetInnerHTML={{ __html: this.renderTawkToSnippet() }}
           />
 
+          {/* Inject Google Optimize */}
+          <script src="https://www.googleoptimize.com/optimize.js?id=OPT-MNCSH5K"></script>
+
           {/* Add Optimized Fonts */}
           <link
             rel="preload"

@@ -63,9 +63,9 @@ const Index: NextPage<Props> = ({ dishes = [] }) => {
         <Contained>
           <HomeMapSection />
         </Contained>
-
+        Best Dishes in Lodon
         <HomeTastiestDishes cards={cards} />
-
+        The Best Restaurants In London
         <SuggestRestaurant />
       </div>
     </>
