@@ -16,6 +16,7 @@ export const useResetPassword = () => {
     }
 
     try {
+      setError(null);
       setSubmitting(true);
       await firebase.auth().sendPasswordResetEmail(email);
       setSuccess(true);

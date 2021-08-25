@@ -1,7 +1,6 @@
 import { CmsApi, ITastiestDish } from '@tastiest-io/tastiest-utils';
 import { HomeTastiestDishes } from 'components/home/HomeTastiestDishes';
 import { SuggestRestaurant } from 'components/SuggestRestaurant';
-import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import React from 'react';
@@ -10,8 +9,6 @@ import { HomeMapSection } from '../components/home/HomeMapSection';
 import { HomeRecentSearchesSection } from '../components/home/HomeRecentSearchesSection';
 import { HomeSearchSection } from '../components/home/HomeSearchSection';
 import { METADATA } from '../constants';
-import { useAuth } from '../hooks/auth/useAuth';
-import { useUserData } from '../hooks/useUserData';
 
 interface Props {
   dishes: Array<ITastiestDish>;
@@ -31,10 +28,6 @@ export const getStaticProps: GetStaticProps = async () => {
 
 const Index: NextPage<Props> = ({ dishes = [] }) => {
   const cards = dishes ? dishes.slice?.(0, 20) : [];
-
-  const { user } = useAuth();
-  const { isDesktop } = useScreenSize();
-  const { userData } = useUserData(user);
 
   return (
     <>
@@ -63,9 +56,8 @@ const Index: NextPage<Props> = ({ dishes = [] }) => {
         <Contained>
           <HomeMapSection />
         </Contained>
-        Best Dishes in Lodon
+
         <HomeTastiestDishes cards={cards} />
-        The Best Restaurants In London
         <SuggestRestaurant />
       </div>
     </>

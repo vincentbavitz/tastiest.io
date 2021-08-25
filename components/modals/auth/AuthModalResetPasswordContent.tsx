@@ -12,20 +12,7 @@ export const AuthModalResetPasswordContent = ({
   setStep,
 }: ContentElementProps) => {
   const [email, setEmail] = useState('');
-  const { resetPassword } = useResetPassword();
-
-  const onClickResetPassword = async () => {
-    const resetPasswordSuccessful = await resetPassword(email);
-    setResetPasswordSuccess(resetPasswordSuccessful);
-  };
-
-  const [resetPasswordSuccess, setResetPasswordSuccess] = useState(null);
-  const error = null;
-
-  // Reset password success message when moving between steps
-  // useEffect(() => {
-  // setResetPasswordSuccess(null);
-  // }, [step]);
+  const { resetPassword, submitting, success, error } = useResetPassword();
 
   return (
     <AuthModalWrapper
@@ -40,6 +27,7 @@ export const AuthModalResetPasswordContent = ({
         prefix={<EmailIcon className="w-8 h-8 fill-current text-primary" />}
         value={email}
         onValueChange={value => setEmail(cleanupInputValue(value))}
+        disabled={success}
       ></Input>
 
       <Button
@@ -48,15 +36,17 @@ export const AuthModalResetPasswordContent = ({
         type="solid"
         color="primary"
         className="py-3"
-        onClick={onClickResetPassword}
+        loading={submitting}
+        disabled={submitting || success}
+        onClick={() => resetPassword(email)}
       >
         Reset
       </Button>
 
       <ContentError error={error} />
 
-      {!error && resetPasswordSuccess && (
-        <div className="mb-1 -mt-1 text-sm text-center">
+      {success && (
+        <div className="px-4 mb-1 -mt-1 text-base text-center">
           We've sent you an email with instructions to reset your password.
         </div>
       )}

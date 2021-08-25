@@ -21,7 +21,7 @@ export const ContentError = ({ error }: { error: AuthError }) => {
               className="flex items-center text-white"
             >
               <RightOutlined className="pr-1 -mt-1 text-secondary" />{' '}
-              {error.userFacingMessage}
+              {error.userFacingMessage ?? error.message}
             </div>
           }
         >
