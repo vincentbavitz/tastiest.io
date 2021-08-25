@@ -21,7 +21,7 @@ import nookies from 'nookies';
 import { PreferencesHero } from 'public/assets/page';
 import React, { ReactNode, useState } from 'react';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
-import { UI } from '../constants';
+import { UI } from '../../constants';
 
 export const getServerSideProps = async context => {
   // Get user ID from cookie.

@@ -63,5 +63,5 @@ export const useSignIn = () => {
     // setError(AuthErrorMessageMap[AuthErrorCode.INTERNAL_ERROR]);
   };
 
-  return { signIn, error, success, submitting };
+  return { signIn, success, submitting, error };
 };
