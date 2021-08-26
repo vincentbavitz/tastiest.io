@@ -1,4 +1,5 @@
 import { ILegalSection, LegalPage } from 'components/LegalPage';
+import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import React from 'react';
 import { generateTitle } from 'utils/metadata';
@@ -56,7 +57,7 @@ const sections: ILegalSection[] = [
           rel="noreferrer"
           className="text-primary hover:underline"
         >
-          Privacy Policy
+          Terms of Use Policy
         </a>{' '}
         for details.
       </>,
@@ -666,7 +667,7 @@ const sections: ILegalSection[] = [
           rel="noreferrer"
           className="text-primary hover:underline"
         >
-          Privacy Policy
+          Terms of Use Policy
         </a>{' '}
         which form part of this Agreement.
       </>,
@@ -687,7 +688,7 @@ const sections: ILegalSection[] = [
           rel="noreferrer"
           className="text-primary hover:underline"
         >
-          Privacy Policy
+          Terms of Use Policy
         </a>
         .
       </>,
@@ -959,6 +960,31 @@ function TermsOfUse() {
       <Head>
         <title>{generateTitle('Terms of Use')}</title>
       </Head>
+
+      <NextSeo
+        title="Tastiest - Terms of Use"
+        description="Tastiest's Terms of Use"
+        openGraph={{
+          title: 'Tastiest - Terms of Use',
+          description: "Tastiest's Terms of Use",
+          images: [
+            {
+              url:
+                'https://tastiest.io/assets/seo/page/terms-of-use-800x600.png',
+              width: 800,
+              height: 600,
+              alt: 'Tastiest Terms of Use Hero',
+            },
+            {
+              url:
+                'https://tastiest.io//assets/seo/page/terms-of-use-400x300.png',
+              width: 400,
+              height: 300,
+              alt: 'Tastiest Terms of Use Hero',
+            },
+          ],
+        }}
+      />
 
       <LegalPage
         pageTitle={'TERMS OF USE'}

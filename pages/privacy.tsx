@@ -1,4 +1,5 @@
 import { ILegalSection, LegalPage } from 'components/LegalPage';
+import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
@@ -656,6 +657,29 @@ function Privacy() {
       <Head>
         <title>{generateTitle('Privacy')}</title>
       </Head>
+
+      <NextSeo
+        title="Tastiest - Privacy"
+        description="Tastiest's Privacy and Cookies Policy"
+        openGraph={{
+          title: 'Tastiest - Privacy',
+          description: "Tastiest's Privacy and Cookies Policy",
+          images: [
+            {
+              url: 'https://tastiest.io/assets/seo/page/privacy-800x600.png',
+              width: 800,
+              height: 600,
+              alt: 'Tastiest Privacy Hero',
+            },
+            {
+              url: 'https://tastiest.io//assets/seo/page/privacy-400x300.png',
+              width: 400,
+              height: 300,
+              alt: 'Tastiest Privacy Hero',
+            },
+          ],
+        }}
+      />
 
       <LegalPage
         pageTitle={'PRIVACY AND COOKIES'}

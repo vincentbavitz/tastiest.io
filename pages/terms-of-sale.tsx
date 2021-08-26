@@ -1,4 +1,5 @@
 import { ILegalSection, LegalPage } from 'components/LegalPage';
+import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import React from 'react';
 import { generateTitle } from 'utils/metadata';
@@ -351,6 +352,31 @@ function TermsOfSale() {
       <Head>
         <title>{generateTitle('Terms of Sale')}</title>
       </Head>
+
+      <NextSeo
+        title="Tastiest - Terms of Sale"
+        description="Tastiest's Terms of Sale"
+        openGraph={{
+          title: 'Tastiest - Terms of Sale',
+          description: "Tastiest's Terms of Sale",
+          images: [
+            {
+              url:
+                'https://tastiest.io/assets/seo/page/terms-of-sale-800x600.png',
+              width: 800,
+              height: 600,
+              alt: 'Tastiest Terms of Sale Hero',
+            },
+            {
+              url:
+                'https://tastiest.io//assets/seo/page/terms-of-sale-400x300.png',
+              width: 400,
+              height: 300,
+              alt: 'Tastiest Terms of Sale Hero',
+            },
+          ],
+        }}
+      />
 
       <LegalPage
         pageTitle={'TERMS OF SALE'}

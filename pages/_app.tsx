@@ -28,8 +28,18 @@ function App({ Component, pageProps, router }: AppProps) {
             }}
             twitter={{
               handle: '@tastiestio',
-              site: 'tastiest.io',
+              site: '@tastiest.io',
               cardType: 'summary_large_image',
+            }}
+            facebook={{
+              appId: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID,
+            }}
+            robotsProps={{
+              notranslate: true,
+              noarchive: true,
+              maxSnippet: -1,
+              maxImagePreview: 'none',
+              maxVideoPreview: -1,
             }}
           />
 

@@ -19,6 +19,7 @@ import {
   GetStaticPropsContext,
   InferGetStaticPropsType,
 } from 'next';
+import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Image from 'next/image';
 import { TastiestAward } from 'public/assets/ui';
@@ -158,6 +159,30 @@ const RestaurantPage = (
       <Head>
         <title>{generateTitle(restaurant.name)}</title>
       </Head>
+
+      <NextSeo
+        title={generateTitle(restaurant.name)}
+        description={`The Tastiest deals at ${restaurant.name}`}
+        openGraph={{
+          title: generateTitle(restaurant.name),
+          description: `The Tastiest deals at ${restaurant.name}`,
+          images: [
+            {
+              url: restaurant.heroIllustration.url,
+              width: 800,
+              height: 600,
+              alt: `Tastiest's partner ${restaurant.name}`,
+            },
+            {
+              url: `https://tastiest.io/assets/seo/page/restaurant-${restaurant.uriName}.-800x600.png`,
+              width: 400,
+              height: 300,
+              alt: `Tastiest's partner ${restaurant.name}`,
+            },
+          ],
+        }}
+      />
+
       <div className="relative w-full">
         {isDesktop && (
           <div className="absolute z-10 w-full top-4 mobile:top-8 tablet:top-12 desktop:top-16 leading-0">

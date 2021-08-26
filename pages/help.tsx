@@ -50,25 +50,28 @@ const Help = ({
   initialSubject,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [sent, setHasSent] = useState(false);
-  const pageTitle = 'Get Help';
 
   return (
     <>
+      <Head>
+        <title>{generateTitle('Get Help')}</title>
+      </Head>
+
       <NextSeo
-        title={pageTitle}
-        description=""
+        title={generateTitle('Get Help')}
+        description="Tastiest Help and Support"
         openGraph={{
-          title: 'Open Graph Title',
-          description: 'Open Graph Description',
+          title: 'Tastiest - Help',
+          description: 'Help and Support',
           images: [
             {
-              url: '/assets/seo/page/help-800x600.png',
+              url: 'https://tastiest.io/assets/seo/page/help-800x600.png',
               width: 800,
               height: 600,
               alt: 'Tastiest Help Hero',
             },
             {
-              url: '/assets/seo/page/help-400x300.png',
+              url: 'https://tastiest.io//assets/seo/page/help-400x300.png',
               width: 400,
               height: 300,
               alt: 'Tastiest Help Hero',
@@ -76,10 +79,6 @@ const Help = ({
           ],
         }}
       />
-
-      <Head>
-        <title>{generateTitle(pageTitle)}</title>
-      </Head>
 
       {sent ? (
         <HelpSuccess setHasSent={setHasSent} />

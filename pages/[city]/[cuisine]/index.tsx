@@ -10,6 +10,7 @@ import { SuggestRestaurant } from 'components/SuggestRestaurant';
 import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetStaticPaths, GetStaticProps } from 'next';
+import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Image from 'next/image';
 import { LookingIllustration } from 'public/assets/illustrations';
@@ -109,6 +110,29 @@ export default function CuisinePage(props: Props) {
       <Head>
         <title>{generateTitle(cuisineName)}</title>
       </Head>
+
+      <NextSeo
+        title={generateTitle(cuisineName)}
+        description={`The Tastiest ${cuisineName} in London`}
+        openGraph={{
+          title: generateTitle(cuisineName),
+          description: `The Tastiest ${cuisineName} in London`,
+          images: [
+            {
+              url: `https://tastiest.io/assets/seo/page/cuisine-${cuisineSymbol.toLowerCase()}.-800x600.png`,
+              width: 800,
+              height: 600,
+              alt: `Tastiest ${cuisineName}`,
+            },
+            {
+              url: `https://tastiest.io/assets/seo/page/cuisine-${cuisineSymbol.toLowerCase()}.-800x600.png`,
+              width: 400,
+              height: 300,
+              alt: `Tastiest ${cuisineName}`,
+            },
+          ],
+        }}
+      />
 
       <div>
         <div className="flex flex-col w-full space-y-10">

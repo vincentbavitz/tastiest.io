@@ -13,6 +13,7 @@ import { useAuth } from 'hooks/auth/useAuth';
 import { useOrder } from 'hooks/checkout/useOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import nookies from 'nookies';
 import { ParsedUrlQuery } from 'querystring';
@@ -164,6 +165,29 @@ function Checkout(
       <Head>
         <title>Checkout - Tastiest</title>
       </Head>
+
+      <NextSeo
+        title="Tastiest - Checkout"
+        description="Tastiest Payment & Checkout"
+        openGraph={{
+          title: 'Tastiest - Checkout',
+          description: 'Tastiest - Payment & Checkout',
+          images: [
+            {
+              url: 'https://tastiest.io/assets/seo/page/checkout-800x600.png',
+              width: 800,
+              height: 600,
+              alt: 'Tastiest Checkout Hero',
+            },
+            {
+              url: 'https://tastiest.io//assets/seo/page/checkout-400x300.png',
+              width: 400,
+              height: 300,
+              alt: 'Tastiest Checkout Hero',
+            },
+          ],
+        }}
+      />
 
       <Elements stripe={stripePromise}>
         <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
