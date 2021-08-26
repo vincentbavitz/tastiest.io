@@ -168,15 +168,9 @@ const RestaurantPage = (
           description: `The Tastiest deals at ${restaurant.name}`,
           images: [
             {
-              url: restaurant.heroIllustration.url,
-              width: 800,
-              height: 600,
-              alt: `Tastiest's partner ${restaurant.name}`,
-            },
-            {
-              url: `https://tastiest.io/assets/seo/page/restaurant-${restaurant.uriName}.-800x600.png`,
-              width: 400,
-              height: 300,
+              url: restaurant.meta?.image?.url,
+              width: 1200,
+              height: 630,
               alt: `Tastiest's partner ${restaurant.name}`,
             },
           ],

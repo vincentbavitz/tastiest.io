@@ -119,15 +119,9 @@ export default function CuisinePage(props: Props) {
           description: `The Tastiest ${cuisineName} in London`,
           images: [
             {
-              url: `https://tastiest.io/assets/seo/page/cuisine-${cuisineSymbol.toLowerCase()}.-800x600.png`,
-              width: 800,
-              height: 600,
-              alt: `Tastiest ${cuisineName}`,
-            },
-            {
-              url: `https://tastiest.io/assets/seo/page/cuisine-${cuisineSymbol.toLowerCase()}.-800x600.png`,
-              width: 400,
-              height: 300,
+              url: `https://tastiest.io/assets/seo/cuisine/${cuisineSymbol.toLowerCase()}-og.png`,
+              width: 1200,
+              height: 630,
               alt: `Tastiest ${cuisineName}`,
             },
           ],

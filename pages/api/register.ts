@@ -60,6 +60,7 @@ export default async function register(
     userRecord = await firebaseAdmin.auth().createUser({
       email,
       emailVerified: false,
+      displayName: firstName,
       password,
       disabled: false,
     });
