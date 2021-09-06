@@ -1,3 +1,5 @@
+import { BellOutlined, HeartOutlined } from '@ant-design/icons';
+import { Tooltip } from '@tastiest-io/tastiest-components';
 import {
   CmsApi,
   dlog,
@@ -14,6 +16,7 @@ import { RestaurantMapModal } from 'components/modals/RestaurantMapModal';
 import { RichBody } from 'components/RichBody';
 import { SectionTitle } from 'components/SectionTitle';
 import { useScreenSize } from 'hooks/useScreenSize';
+import { useUserData } from 'hooks/useUserData';
 import {
   GetStaticPaths,
   GetStaticPropsContext,
@@ -139,6 +142,10 @@ const RestaurantPage = (
 
   const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
 
+  const { user } = useAuth();
+  const { userData } = useUserData(user);
+  // userData.metrics.
+
   // As a percentage
   // prettier-ignore
   const heroIllustrationSizeRem = 
@@ -180,9 +187,36 @@ const RestaurantPage = (
       <div className="relative w-full">
         {isDesktop && (
           <div className="absolute z-10 w-full top-4 mobile:top-8 tablet:top-12 desktop:top-16 leading-0">
-            <h1 className="text-3xl text-center text-primary font-somatic">
-              {restaurant.name}
-            </h1>
+            <Contained>
+              <div className="flex items-center">
+                <div className="flex-1"></div>
+                <h1 className="text-3xl text-center text-primary font-somatic">
+                  {restaurant.name}
+                </h1>
+
+                <div className="flex justify-end flex-1 space-x-2 text-2xl text-gray-400">
+                  <Tooltip
+                    theme="alt"
+                    placement="top-right"
+                    content={`Follow ${restaurant.name}`}
+                  >
+                    <div className="flex items-center h-full">
+                      <HeartOutlined className="duration-300 hover:text-pink-600" />
+                    </div>
+                  </Tooltip>
+
+                  <Tooltip
+                    theme="alt"
+                    placement="top-right"
+                    content="Get updates"
+                  >
+                    <div className="flex items-center h-full">
+                      <BellOutlined className="duration-300 hover:text-aux-orange" />
+                    </div>
+                  </Tooltip>
+                </div>
+              </div>
+            </Contained>
           </div>
         )}
 
@@ -344,3 +378,6 @@ const RestaurantPage = (
 };
 
 export default RestaurantPage;
+function useAuth(): { user: any } {
+  throw new Error('Function not implemented.');
+}
