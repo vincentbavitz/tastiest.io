@@ -1,5 +1,5 @@
 import { BellOutlined, HeartOutlined } from '@ant-design/icons';
-import { Tooltip } from '@tastiest-io/tastiest-components';
+import { Button, Tooltip } from '@tastiest-io/tastiest-components';
 import {
   CmsApi,
   dlog,
@@ -15,6 +15,7 @@ import { LocationIndictor } from 'components/LocationIndictor';
 import { RestaurantMapModal } from 'components/modals/RestaurantMapModal';
 import { RichBody } from 'components/RichBody';
 import { SectionTitle } from 'components/SectionTitle';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import {
@@ -144,7 +145,10 @@ const RestaurantPage = (
 
   const { user } = useAuth();
   const { userData } = useUserData(user);
-  // userData.metrics.
+
+  const following = userData?.metrics?.restaurantsFollowed?.find(
+    r => r.restaurantId === restaurant.id,
+  );
 
   // As a percentage
   // prettier-ignore
@@ -201,7 +205,14 @@ const RestaurantPage = (
                     content={`Follow ${restaurant.name}`}
                   >
                     <div className="flex items-center h-full">
-                      <HeartOutlined className="duration-300 hover:text-pink-600" />
+                      <Button>Following</Button>
+
+                      <HeartOutlined
+                        className={clsx(
+                          'duration-300 hover:text-pink-600',
+                          following ? 'text-pink-600' : null,
+                        )}
+                      />
                     </div>
                   </Tooltip>
 
@@ -378,6 +389,3 @@ const RestaurantPage = (
 };
 
 export default RestaurantPage;
-function useAuth(): { user: any } {
-  throw new Error('Function not implemented.');
-}
