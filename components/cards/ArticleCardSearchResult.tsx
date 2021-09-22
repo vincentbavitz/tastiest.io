@@ -58,7 +58,7 @@ export function ArticleCardSearchResult(props: IPost): JSX.Element {
                 }}
                 className={clsx(
                   'text-base',
-                  'font-somatic overflow-hidden cursor-pointer hover:underline',
+                  'font-primary overflow-hidden cursor-pointer hover:underline',
                 )}
               >
                 {title}

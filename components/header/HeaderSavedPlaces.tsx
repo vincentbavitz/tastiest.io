@@ -32,7 +32,7 @@ export function HeaderSavedPlaces() {
     >
       <HeartIcon className="h-6 mr-1 fill-current" />
       {shouldDisplayText && (
-        <Title level={4} margin={false} className="font-somatic">
+        <Title level={4} margin={false} className="font-primary">
           Saved Places
         </Title>
       )}

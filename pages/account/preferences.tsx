@@ -42,8 +42,8 @@ export const getServerSideProps = async context => {
   }
 
   // Grab user's preferences
-  const preferences = await userDataApi.getUserData(UserData.PREFERENCES);
-  const details = await userDataApi.getUserData(UserData.DETAILS);
+  const preferences = await userDataApi.getUserField(UserData.PREFERENCES);
+  const details = await userDataApi.getUserField(UserData.DETAILS);
 
   return {
     props: { userId, preferences, details },
@@ -158,7 +158,7 @@ const Preferences = ({
   return (
     <div>
       <div className="relative flex flex-col items-center w-full pb-12 mt-6 space-y-4">
-        <h1 className="text-3xl text-center font-somatic text-primary">
+        <h1 className="text-3xl text-center font-primary text-primary">
           Set your preferences
         </h1>
 
@@ -257,7 +257,7 @@ const Preferences = ({
 
         <div className="flex justify-center w-full pb-16 mt-6 tablet:mt-10">
           <Button
-            className="w-32 font-somatic tablet:w-auto"
+            className="w-32 font-primary tablet:w-auto"
             size={isMobile || isTablet ? 'large' : 'medium'}
             off={!savable}
             onClick={submit}
@@ -286,7 +286,7 @@ function PreferenceBlock({ title, subtitle, children }: PreferenceBlockProps) {
 
   return (
     <div>
-      <h2 className="text-3xl text-center tablet:text-left font-somatic text-primary">
+      <h2 className="text-3xl text-center tablet:text-left font-primary text-primary">
         {title}
       </h2>
       <p className="font-normal text-center tablet:text-left">{subtitle}</p>

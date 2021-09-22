@@ -94,7 +94,7 @@ export function ArticleCard(props: Props): JSX.Element {
             {/* Offer includes items */}
             <div
               className={clsx(
-                'absolute inset-0 z-50 flex flex-col px-3 py-3 text-white font-somatic',
+                'absolute inset-0 z-50 flex flex-col px-3 py-3 text-white font-primary',
                 compact ? 'space-y-1' : 'space-y-2',
               )}
             >
@@ -123,7 +123,7 @@ export function ArticleCard(props: Props): JSX.Element {
                 }}
                 className={classNames(
                   isSmall || compact ? 'text-lg' : 'text-xl',
-                  'font-somatic overflow-hidden cursor-pointer hover:underline',
+                  'font-primary overflow-hidden cursor-pointer hover:underline',
                 )}
               >
                 {title}

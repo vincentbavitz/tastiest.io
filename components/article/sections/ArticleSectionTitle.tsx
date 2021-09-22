@@ -53,7 +53,7 @@ export function ArticleSectionTitle(props: Props) {
             }}
             className="flex items-end"
           >
-            <h1 className="text-3xl leading-none text-center mobile:text-4xl font-somatic text-primary desktop:text-4xl">
+            <h1 className="text-3xl leading-none text-center mobile:text-4xl font-primary text-primary desktop:text-4xl">
               {title}
             </h1>
           </div>
@@ -164,7 +164,7 @@ const HowItWorksSpriteDesktop = () => {
           tabIndex={0}
           className={clsx(
             'flex justify-center px-2 py-2',
-            'font-medium desktop:text-lg font-somatic text-white duration-300',
+            'font-medium desktop:text-lg font-primary text-white duration-300',
             'rounded-lg bg-primary hover:-bg-primary-1',
             'outline-none',
           )}
@@ -194,7 +194,7 @@ const HowItWorksSpriteMobile = () => {
           tabIndex={0}
           className={clsx(
             'flex justify-center px-2 py-2',
-            'font-medium desktop:text-lg font-somatic text-white duration-300',
+            'font-medium desktop:text-lg font-primary text-white duration-300',
             'rounded-lg bg-primary hover:-bg-primary-1',
             'outline-none',
           )}

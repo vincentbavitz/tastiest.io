@@ -174,7 +174,7 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
             style={{ marginLeft: '-11.5rem' }}
             className="absolute inset-0 flex items-end justify-center mb-2"
           >
-            <h1 className="text-3xl text-center font-somatic text-primary">
+            <h1 className="text-3xl text-center font-primary text-primary">
               Suggest A Dish
             </h1>
           </div>
@@ -205,7 +205,7 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
           <div className="flex items-center space-x-4">
             <Button
               color="primary"
-              className="font-somatic"
+              className="font-primary"
               wide={isMobile || isTablet}
               onClick={submit}
             >
@@ -216,7 +216,7 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
             </p>
           </div>
           <div>
-            <h2 className="font-somatic text-3xl text-center space-x-2">
+            <h2 className="font-primary text-3xl text-center space-x-2">
               Why?
             </h2>
             <p className="text-center">
@@ -247,7 +247,7 @@ const HelpSuccess = ({ setHasSent }: HelpSubProps) => {
           <div // style={{ marginLeft: '-15.5rem' }}
             className="flex flex-col items-center justify-center w-full mb-10 space-y-4 mobile:mb-10 mobile:absolute mobile:inset-0 mobile:w-7/12 tablet:w-5/12"
           >
-            <h2 className="text-3xl text-center font-somatic text-primary">
+            <h2 className="text-3xl text-center font-primary text-primary">
               Thank you for <br />
               your suggestion... <br />
               use code "5OFF" <br />

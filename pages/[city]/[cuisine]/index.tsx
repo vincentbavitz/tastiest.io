@@ -140,7 +140,7 @@ export default function CuisinePage(props: Props) {
                 }}
                 className="flex justify-center w-full"
               >
-                <span className="text-4xl font-somatic text-primary">
+                <span className="text-4xl font-primary text-primary">
                   {cuisineName}
                 </span>
               </div>
@@ -194,7 +194,7 @@ const NoPostsForCuisine = ({
           Sorry! There are no offers {!isMobile && <br />} for {cuisineName}{' '}
           yet.
         </h4>
-        <h2 className="text-3xl leading-tight text-center mobile:text-left font-somatic text-primary">
+        <h2 className="text-3xl leading-tight text-center mobile:text-left font-primary text-primary">
           We are still {!isMobile && <br />}
           on the lookout {!isMobile && <br />} for the best dishes
           {!isMobile && <br />} near you!

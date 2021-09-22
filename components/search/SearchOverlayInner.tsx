@@ -149,7 +149,7 @@ function SearchOverlayInnerResults() {
       >
         {results?.dishes?.length ? (
           <div>
-            <h4 className="pb-2 text-lg font-somatic">Dishes</h4>
+            <h4 className="pb-2 text-lg font-primary">Dishes</h4>
 
             <div
               style={{
@@ -173,7 +173,7 @@ function SearchOverlayInnerResults() {
 
         {results?.posts?.length ? (
           <div>
-            <h4 className="pb-2 text-lg font-somatic">Offers</h4>
+            <h4 className="pb-2 text-lg font-primary">Offers</h4>
 
             <div
               style={{
@@ -197,7 +197,7 @@ function SearchOverlayInnerResults() {
 
         {results?.restaurants?.length ? (
           <div>
-            <h4 className="pb-2 text-lg font-somatic">Restaurants</h4>
+            <h4 className="pb-2 text-lg font-primary">Restaurants</h4>
 
             <div
               style={{
@@ -306,7 +306,7 @@ function SearchOverlayInnerNoResults() {
         <div className="flex items-center">
           <ThumbsUpIllustration className="h-24 -ml-10" />
 
-          <h4 className="pl-4 text-xl font-somatic text-primary">Thanks!</h4>
+          <h4 className="pl-4 text-xl font-primary text-primary">Thanks!</h4>
         </div>
       )}
 

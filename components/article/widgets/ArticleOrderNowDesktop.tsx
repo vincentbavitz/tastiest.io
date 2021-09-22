@@ -48,7 +48,7 @@ export function ArticleOrderNowDesktop(props: Props) {
           }}
           className="relative z-30 pt-2 mt-16 bg-white border-4 pointer-events-auto last:pb-4 border-secondary-1 rounded-xl"
         >
-          <h3 className="mb-2 text-xl text-center font-somatic text-primary">
+          <h3 className="mb-2 text-xl text-center font-primary text-primary">
             Get the offer!
           </h3>
 
@@ -58,12 +58,12 @@ export function ArticleOrderNowDesktop(props: Props) {
             </div>
 
             <div className="flex flex-col justify-center px-2 pt-3 space-y-3">
-              <p className="text-base leading-none text-center font-somatic">
+              <p className="text-base leading-none text-center font-primary">
                 {deal?.tagline}
               </p>
 
               <div className="py-2 mx-2 mb-3 text-center border-t-2 border-b-2 border-white border-dashed">
-                <p className="text-base leading-tight font-somatic text-primary">
+                <p className="text-base leading-tight font-primary text-primary">
                   For{' '}
                   <PoundIcon className="inline h-3 mx-1 -mt-1 fill-current" />
                   {deal?.pricePerHeadGBP}, you'll get
@@ -133,7 +133,7 @@ export function ArticleOrderNowDesktop(props: Props) {
               type="solid"
               onClick={submit}
               loading={submitting}
-              className="text-base font-somatic"
+              className="text-base font-primary"
             >
               Buy now
             </Button>

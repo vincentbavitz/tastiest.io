@@ -81,7 +81,7 @@ export const getServerSideProps = async context => {
   }
 
   const userDataApi = new UserDataApi(firebaseAdmin, order.userId);
-  const userDetails = await userDataApi.getUserData(UserData.DETAILS);
+  const userDetails = await userDataApi.getUserField(UserData.DETAILS);
 
   // Get Live / Test data
   const stripe = new Stripe(
@@ -159,10 +159,10 @@ function ThankYou(
               />
             </div>
             <div className="flex flex-col items-center text-center">
-              <h1 className="text-6xl font-somatic text-primary">Yay!</h1>
+              <h1 className="text-6xl font-primary text-primary">Yay!</h1>
               <h2
                 style={{ maxWidth: isDesktop ? '30rem' : '50em' }}
-                className="text-2xl font-somatic text-primary"
+                className="text-2xl font-primary text-primary"
               >
                 Thanks{firstName ? ` ${firstName}` : ''}! You're going to love
                 it
@@ -170,7 +170,7 @@ function ThankYou(
             </div>
           </div>
 
-          <h2 className="w-full pt-6 pb-4 text-4xl text-center border-b-2 border-secondary font-somatic">
+          <h2 className="w-full pt-6 pb-4 text-4xl text-center border-b-2 border-secondary font-primary">
             What's next?
           </h2>
 
@@ -210,7 +210,7 @@ function ThankYou(
                   <div
                     key={uuid()}
                     style={{ minWidth: '3rem' }}
-                    className="flex items-center justify-center flex-1 h-16 text-3xl rounded-lg font-somatic bg-secondary-2"
+                    className="flex items-center justify-center flex-1 h-16 text-3xl rounded-lg font-primary bg-secondary-2"
                   >
                     {digit}
                   </div>
@@ -229,7 +229,7 @@ function ThankYou(
             <div className="w-full h-0 border-b-4 border-secondary"></div>
 
             <div className="w-full">
-              <h4 className="pt-6 pb-8 text-xl text-center font-somatic text-primary">
+              <h4 className="pt-6 pb-8 text-xl text-center font-primary text-primary">
                 Your Order
               </h4>
 
@@ -394,7 +394,7 @@ function ThankYou(
 
           <div className="flex justify-center w-full">
             <a href="/" className="no-underline">
-              <Button size="large" className="text-2xl font-somatic" round>
+              <Button size="large" className="text-2xl font-primary" round>
                 Find more great food!
               </Button>
             </a>
@@ -437,7 +437,7 @@ function BookingSection(props: BookingSectionProps) {
         <div className={clsx('flex-grow', isDesktop && 'pl-10')}>
           <h2
             style={{ width: !isDesktop ? 'auto' : '11em' }}
-            className="pt-4 text-2xl leading-tight text-center tablet:pt-0 font-somatic mobile:text-2xl tablet:text-left"
+            className="pt-4 text-2xl leading-tight text-center tablet:pt-0 font-primary mobile:text-2xl tablet:text-left"
           >
             {title}
           </h2>

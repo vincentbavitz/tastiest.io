@@ -168,7 +168,7 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
             style={{ marginLeft: '-15.5rem' }}
             className="absolute inset-0 flex items-end justify-center mb-10"
           >
-            <h1 className="text-3xl text-center font-somatic text-primary">
+            <h1 className="text-3xl text-center font-primary text-primary">
               Help
             </h1>
           </div>
@@ -276,7 +276,7 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
           <div className="flex items-center space-x-4">
             <Button
               color="primary"
-              className="font-somatic"
+              className="font-primary"
               wide={isMobile || isTablet}
               onClick={submit}
             >
@@ -309,7 +309,7 @@ const HelpSuccess = ({ setHasSent }: HelpSubProps) => {
             // style={{ marginLeft: '-15.5rem' }}
             className="flex flex-col items-center justify-center w-full mb-10 space-y-4 mobile:mb-10 mobile:absolute mobile:inset-0 mobile:w-7/12 tablet:w-5/12"
           >
-            <h2 className="text-3xl text-center font-somatic text-primary">
+            <h2 className="text-3xl text-center font-primary text-primary">
               Thank you for
               <br /> your request...
               <br />

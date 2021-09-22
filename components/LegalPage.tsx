@@ -24,7 +24,7 @@ export const LegalPage = (props: LegalPageProps) => {
     <>
       <Contained maxWidth={800}>
         <div className="py-10">
-          <h1 className="text-xl leading-7 tracking-wide text-center font-somatic text-primary">
+          <h1 className="text-xl leading-7 tracking-wide text-center font-primary text-primary">
             <span className="text-3xl">{pageTitle}</span>
             <br />
             <span className="">TASTIEST TECHNOLOGIES LTD</span>
@@ -71,7 +71,7 @@ const Section = (props: LegalSectionProps) => {
 
         return (
           <p key={index} className="pt-1">
-            <span className="text-lg tracking-wider text-primary font-somatic">
+            <span className="text-lg tracking-wider text-primary font-primary">
               {sectionNumber}.{index + 1}.
             </span>{' '}
             {subsection}

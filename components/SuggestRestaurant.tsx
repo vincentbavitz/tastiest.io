@@ -194,7 +194,7 @@ export function SuggestRestaurant() {
             'relative flex-1 tablet:mb-1 flex flex-col justify-center',
           )}
         >
-          <h3 className="pb-4 text-3xl text-center text-primary tablet:text-left font-somatic">
+          <h3 className="pb-4 text-3xl text-center text-primary tablet:text-left font-primary">
             Suggest a restaurant
           </h3>
 

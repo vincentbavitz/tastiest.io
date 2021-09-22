@@ -142,13 +142,13 @@ function Tastiest404() {
             <div style={_404SectionStyles} className="absolute left-0 z-50">
               <h1
                 style={_404TitleStyles}
-                className="-mb-4 text-opacity-25 font-somatic text-primary text-7xl"
+                className="-mb-4 text-opacity-25 font-primary text-primary text-7xl"
               >
                 404
               </h1>
               <p
                 style={_404TextStyles}
-                className="text-4xl tracking-tight font-somatic text-primary"
+                className="text-4xl tracking-tight font-primary text-primary"
               >
                 Oops, this
                 <br />
@@ -182,7 +182,7 @@ function Tastiest404() {
             <div className="z-50 flex-col flex-grow pt-12 my-4 tablet:pt-0">
               <h2
                 className={classNames(
-                  'text-primary leading-tight ml-1 mb-4 font-somatic mt-6 text-2xl whitespace-no-wrap',
+                  'text-primary leading-tight ml-1 mb-4 font-primary mt-6 text-2xl whitespace-no-wrap',
                 )}
               >
                 Something went wrong?

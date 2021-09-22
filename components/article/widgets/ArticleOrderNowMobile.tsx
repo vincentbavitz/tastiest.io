@@ -43,7 +43,7 @@ export default function ArticleOrderNowMobile({ deal, slug }: Props) {
               className="shadow-md"
               onClick={() => setDisplayOverlay(true)}
             >
-              <div className="flex items-center justify-between w-full text-xl font-somatic">
+              <div className="flex items-center justify-between w-full text-xl font-primary">
                 <div className="w-5"></div>
                 <div>Get the offer!</div>
                 <RightIcon className="h-5 text-white stroke-current" />
@@ -105,7 +105,7 @@ const OverlayInnerCard = ({ deal }: OverlayInnerCardProps) => {
         </div>
 
         <div className="flex flex-col justify-center px-2 pt-2 mx-4 space-y-4">
-          <p className="text-xl leading-none text-center font-somatic">
+          <p className="text-xl leading-none text-center font-primary">
             {deal?.tagline}
           </p>
 
@@ -135,7 +135,7 @@ const OverlayInnerHeader = ({ onClose }: OverlayInnerHeaderProps) => {
     <Contained>
       <div className="flex items-center justify-between py-2">
         <div className="w-6"></div>
-        <h3 className="text-3xl text-center font-somatic text-primary">
+        <h3 className="text-3xl text-center font-primary text-primary">
           Get the offer!
         </h3>
         <ExitIcon
@@ -209,7 +209,7 @@ const OverlayInnerAction = (props: OverlayInnerActionProps) => {
         <Button
           wide
           size="large"
-          className="text-2xl font-somatic"
+          className="text-2xl font-primary"
           loading={submitting}
           onClick={submit}
         >

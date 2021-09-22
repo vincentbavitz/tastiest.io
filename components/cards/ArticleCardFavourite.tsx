@@ -83,7 +83,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
           }}
           className={classNames(
             isSmall ? 'text-lg' : 'text-xl',
-            'font-somatic text-primary hover:underline overflow-hidden cursor-pointer',
+            'font-primary text-primary hover:underline overflow-hidden cursor-pointer',
           )}
         >
           <Link href={href} as={as}>

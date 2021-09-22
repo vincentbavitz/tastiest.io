@@ -115,8 +115,10 @@ function DesktopHeader() {
           <div className="flex items-center justify-between w-full antialiased">
             <div className="flex flex-grow">
               <Link href="/">
-                <a className="flex items-center flex-shrink-0">
-                  <TastiestIcon className="h-8 fill-current text-primary" />
+                <a className="flex items-center flex-shrink-0 text-4xl leading-none text-black no-underline font-primary">
+                  {/* <TastiestIcon className="h-8 fill-current text-primary" /> */}
+                  Tastiest
+                  <span className="text-primary">.</span>
                 </a>
               </Link>
 

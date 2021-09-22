@@ -4,4 +4,5 @@ export enum LocalEndpoint {
   UPDATE_ORDER = '/api/payments/updateOrder',
   GET_ORDER = '/api/payments/getOrder',
   PAY = '/api/payments/pay',
+  UPDATE_FOLLOW_STATUS = '/api/updateFollowStatus',
 }

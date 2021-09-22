@@ -83,7 +83,7 @@ export default async function pay(
     snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
 
     const userDataApi = new UserDataApi(firebaseAdmin, order?.userId);
-    const details = await userDataApi.getUserData(UserData.DETAILS);
+    const details = await userDataApi.getUserField(UserData.DETAILS);
 
     // Is the order already paid or expired?
     const isOrderExpired =
@@ -145,7 +145,7 @@ export default async function pay(
       return;
     }
 
-    const paymentDetails = await userDataApi.getUserData(
+    const paymentDetails = await userDataApi.getUserField(
       UserData.PAYMENT_DETAILS,
     );
 

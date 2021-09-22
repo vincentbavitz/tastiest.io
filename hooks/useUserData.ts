@@ -26,7 +26,7 @@ export function useUserData(user: firebase.User) {
 
   const setUserData = async <T extends UserData>(
     field: T,
-    value: TUserData<T>,
+    value: Partial<TUserData<T>>,
     onInvalidUser?: () => void,
   ): Promise<IGenericAsyncReturnType> => {
     if (!user?.uid) {

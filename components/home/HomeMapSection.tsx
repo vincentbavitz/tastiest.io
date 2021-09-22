@@ -29,7 +29,7 @@ export function HomeMapSection() {
           }}
           className="z-10 flex flex-col items-center justify-center py-4 bg-white bg-opacity-75"
         >
-          <Title level={3} className="text-center text-primary font-somatic">
+          <Title level={3} className="text-center text-primary font-primary">
             Discover and
             <br />
             save your new

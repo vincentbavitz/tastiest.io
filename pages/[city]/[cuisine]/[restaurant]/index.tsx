@@ -1,5 +1,3 @@
-import { BellOutlined, HeartOutlined } from '@ant-design/icons';
-import { Button, Tooltip } from '@tastiest-io/tastiest-components';
 import {
   CmsApi,
   dlog,
@@ -13,11 +11,10 @@ import { CardGrid } from 'components/cards/CardGrid';
 import { Contained } from 'components/Contained';
 import { LocationIndictor } from 'components/LocationIndictor';
 import { RestaurantMapModal } from 'components/modals/RestaurantMapModal';
+import FollowButton from 'components/restaurant/FollowButton';
 import { RichBody } from 'components/RichBody';
 import { SectionTitle } from 'components/SectionTitle';
-import { useAuth } from 'hooks/auth/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
-import { useUserData } from 'hooks/useUserData';
 import {
   GetStaticPaths,
   GetStaticPropsContext,
@@ -50,7 +47,7 @@ const BestDishAward = (props: BestDishAwardProps) => {
       <div>
         <div
           style={{ maxWidth: fullWidth ? 'unset' : '13rem' }}
-          className="pl-4 text-xl leading-5 font-somatic text-primary"
+          className="pl-4 text-xl leading-5 font-primary text-primary"
         >
           Best
           <br />
@@ -139,16 +136,7 @@ const RestaurantPage = (
   props: InferGetStaticPropsType<typeof getStaticProps>,
 ) => {
   const { restaurant, tastiestDishes, posts } = props;
-  dlog('index ➡️ restaurant:', restaurant);
-
   const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
-
-  const { user } = useAuth();
-  const { userData } = useUserData(user);
-
-  const following = userData?.metrics?.restaurantsFollowed?.find(
-    r => r.restaurantId === restaurant.id,
-  );
 
   // As a percentage
   // prettier-ignore
@@ -194,37 +182,12 @@ const RestaurantPage = (
             <Contained>
               <div className="flex items-center">
                 <div className="flex-1"></div>
-                <h1 className="text-3xl text-center text-primary font-somatic">
+                <h1 className="text-3xl text-center text-primary font-primary">
                   {restaurant.name}
                 </h1>
 
                 <div className="flex justify-end flex-1 space-x-2 text-2xl text-gray-400">
-                  <Tooltip
-                    theme="alt"
-                    placement="top-right"
-                    content={`Follow ${restaurant.name}`}
-                  >
-                    <div className="flex items-center h-full">
-                      <Button>Following</Button>
-
-                      <HeartOutlined
-                        className={clsx(
-                          'duration-300 hover:text-pink-600',
-                          following ? 'text-pink-600' : null,
-                        )}
-                      />
-                    </div>
-                  </Tooltip>
-
-                  <Tooltip
-                    theme="alt"
-                    placement="top-right"
-                    content="Get updates"
-                  >
-                    <div className="flex items-center h-full">
-                      <BellOutlined className="duration-300 hover:text-aux-orange" />
-                    </div>
-                  </Tooltip>
+                  <FollowButton restaurant={restaurant} />
                 </div>
               </div>
             </Contained>
@@ -270,7 +233,7 @@ const RestaurantPage = (
             <div className="flex flex-wrap items-end justify-between">
               <h2
                 style={{ minWidth: '10rem' }}
-                className="text-3xl text-primary font-somatic whitespace-nowrap"
+                className="text-3xl text-primary font-primary whitespace-nowrap"
               >
                 {restaurant?.name}
               </h2>

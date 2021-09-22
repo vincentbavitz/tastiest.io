@@ -181,7 +181,7 @@ const Search = (
               }}
             />
             <div className="absolute inset-0 flex items-center justify-center">
-              <h1 className="text-2xl text-thin font-somatic text-primary">
+              <h1 className="text-2xl text-thin font-primary text-primary">
                 {pageLabel}
               </h1>
             </div>
@@ -190,7 +190,7 @@ const Search = (
           <Contained>
             <SearchHeroDesktop className="w-full" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <h1 className="text-2xl font-somatic text-primary">
+              <h1 className="text-2xl font-primary text-primary">
                 {pageLabel}
               </h1>
             </div>

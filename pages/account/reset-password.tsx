@@ -49,7 +49,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   try {
     // Get password reset requests
     await userDataApi.initFromEmail(email);
-    const requests = await userDataApi.getUserData(
+    const requests = await userDataApi.getUserField(
       UserData.PASSWORD_RESET_REQUESTS,
     );
 

@@ -40,7 +40,9 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
 
   // If user, get saved articles from firestore.
-  const savedPostSlugs = await userDataApi.getUserData(UserData.SAVED_ARTICLES);
+  const savedPostSlugs = await userDataApi.getUserField(
+    UserData.SAVED_ARTICLES,
+  );
 
   dlog('favourites ➡️ savedPostSlugs:', savedPostSlugs);
 
@@ -128,7 +130,7 @@ const SavedPlacesBackdrop = ({ isDesktop }: IScreen) => {
           </div>
 
           <div className="absolute inset-0 flex items-center justify-center">
-            <h1 className="text-3xl text-center font-somatic text-primary">
+            <h1 className="text-3xl text-center font-primary text-primary">
               Saved Dishes
             </h1>
           </div>
@@ -144,7 +146,7 @@ const SavedPlacesBackdrop = ({ isDesktop }: IScreen) => {
               style={{
                 fontSize: 'calc(1rem + 2vw)',
               }}
-              className="text-center font-somatic text-primary"
+              className="text-center font-primary text-primary"
             >
               Saved Dishes
             </h1>
@@ -179,7 +181,7 @@ const NoSavedPlacesBackdrop = ({ isMobile, isTablet, isDesktop }: IScreen) => {
               }}
               className="flex flex-col items-center space-y-3 transform mobile:-translate-x-16"
             >
-              <h2 className="text-2xl leading-none text-center font-somatic text-primary">
+              <h2 className="text-2xl leading-none text-center font-primary text-primary">
                 You haven't saved
                 <br />
                 any places yet!

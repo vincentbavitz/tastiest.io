@@ -41,7 +41,7 @@ export default function RestaurantCardSearchResult(props: IRestaurant) {
                 // filter: 'drop-shadow(0px 0px 2px rgba(0,0,0, 1))',
                 boxShadow: '0px 8px 14px 11px rgba(0,0,0,0.75)',
               }}
-              className="absolute inset-0 z-10 flex items-center justify-center w-full leading-4 text-center text-white bg-black bg-opacity-50 pointer-events-none font-somatic"
+              className="absolute inset-0 z-10 flex items-center justify-center w-full leading-4 text-center text-white bg-black bg-opacity-50 pointer-events-none font-primary"
             >
               <div className="px-2 py-3">{name}</div>
             </div>

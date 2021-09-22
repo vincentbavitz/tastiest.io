@@ -29,7 +29,7 @@ export function ArticleCardRow(post: IPost) {
               isDesktop={isDesktop}
             />
             <div className="w-2/3">
-              <h3 className="text-2xl font-somatic text-primary">
+              <h3 className="text-2xl font-primary text-primary">
                 {post.title}
               </h3>
             </div>
@@ -45,7 +45,7 @@ export function ArticleCardRow(post: IPost) {
             className="flex flex-col flex-grow"
           >
             <Link href={href} as={as}>
-              <a className="text-xl font-somatic text-primary">{post.title}</a>
+              <a className="text-xl font-primary text-primary">{post.title}</a>
             </Link>
 
             <ArticlePreviewContent description={post.description} />

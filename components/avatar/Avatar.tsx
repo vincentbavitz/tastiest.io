@@ -29,7 +29,7 @@ export function Avatar(props: AvatarProps) {
           alt={'Author profile picture'}
         />
       ) : initial?.length ? (
-        <div className="flex items-center justify-center w-full h-full text-xl text-white font-somatic">
+        <div className="flex items-center justify-center w-full h-full text-xl text-white font-primary">
           {initial[0]}
         </div>
       ) : (
