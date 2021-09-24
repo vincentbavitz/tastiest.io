@@ -1,15 +1,52 @@
 import { Button, Select } from '@tastiest-io/tastiest-components';
 import { PoundIcon } from '@tastiest-io/tastiest-icons';
 import { IDeal } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
 import { Contained } from 'components/Contained';
+import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { useArticleOrder } from 'hooks/checkout/useArticleOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
-import React, { useEffect } from 'react';
+import React, { ReactNode, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { toggleOfferMenu } from 'state/navigation';
+import { useHoverDirty } from 'react-use';
 import { UI } from '../../../constants';
 
-const DEAL_INCLUDES_QTY = 4;
+interface XScrollSelectItemProps {
+  children: ReactNode;
+  selected?: boolean;
+  disabled?: boolean;
+  onClick?: () => void;
+}
+
+const XScrollSelectItem = (props: XScrollSelectItemProps) => {
+  const { selected, disabled, children, onClick } = props;
+
+  const ref = useRef(null);
+  const isHovering = useHoverDirty(ref);
+
+  const disabledStyles =
+    'bg-gray-200 opacity-50 pointer-events-none cursor-default border-none';
+
+  const activeStyles = [
+    'cursor-pointer',
+    isHovering || selected ? 'border-opacity-100' : 'border-opacity-25',
+    selected ? 'border-2 border-blue-600' : 'border border-blue-500',
+  ];
+
+  return (
+    <div
+      ref={ref}
+      onClick={onClick}
+      className={clsx(
+        'flex justify-center items-center flex-col space-y-1 leading-none',
+        'mx-1 p-1 text-sm text-center duration-300 rounded-md whitespace-nowrap',
+        disabled ? disabledStyles : activeStyles,
+      )}
+    >
+      {children}
+    </div>
+  );
+};
 
 interface Props {
   deal: IDeal;
@@ -61,33 +98,40 @@ export function ArticleOrderNowDesktop(props: Props) {
               <p className="text-base leading-none text-center font-primary">
                 {deal?.tagline}
               </p>
-
-              <div className="py-2 mx-2 mb-3 text-center border-t-2 border-b-2 border-white border-dashed">
-                <p className="text-base leading-tight font-primary text-primary">
-                  For{' '}
-                  <PoundIcon className="inline h-3 mx-1 -mt-1 fill-current" />
-                  {deal?.pricePerHeadGBP}, you'll get
-                </p>
-              </div>
-
-              <div className="text-sm text-center leading-1">
-                {deal?.includes.slice(0, DEAL_INCLUDES_QTY - 1).map(item => (
-                  <div key={item}>{item}</div>
-                ))}
-                {deal.includes.length > DEAL_INCLUDES_QTY && (
-                  <a
-                    onClick={() => dispatch(toggleOfferMenu(true))}
-                    className="font-medium text-primary"
-                  >
-                    See full menu
-                  </a>
-                )}
-              </div>
             </div>
           </div>
 
-          <div className="flex flex-col mx-4 space-y-3">
-            <div className="flex items-center justify-between mt-4">
+          <div className="flex flex-col pt-4 mx-4 space-y-3">
+            <div className="px-2">
+              <HorizontalScrollable noPadding chevronSize={6}>
+                <XScrollSelectItem selected>
+                  <p className="leading-none">Sun</p>
+                  <p className="text-xs opacity-75">13 Oct</p>
+                </XScrollSelectItem>
+
+                <XScrollSelectItem disabled>
+                  <p className="leading-none">Mon</p>
+                  <p className="text-xs opacity-75">14 Oct</p>
+                </XScrollSelectItem>
+
+                <XScrollSelectItem>
+                  <p className="leading-none">Tue</p>
+                  <p className="text-xs opacity-75">15 Oct</p>
+                </XScrollSelectItem>
+              </HorizontalScrollable>
+            </div>
+
+            <div className="px-2 pt-3 border-t border-gray-100">
+              <HorizontalScrollable noPadding chevronSize={6}>
+                <XScrollSelectItem selected>10:33</XScrollSelectItem>
+
+                <XScrollSelectItem disabled>11:33</XScrollSelectItem>
+
+                <XScrollSelectItem>12:33</XScrollSelectItem>
+              </HorizontalScrollable>
+            </div>
+
+            <div className="flex items-center justify-between pt-3 pb-1 border-t border-gray-100">
               <div className="font-medium font-roboto bold text-primary">
                 Book for
               </div>
@@ -115,27 +159,24 @@ export function ArticleOrderNowDesktop(props: Props) {
               </div>
             </div>
 
-            <div className="flex items-end justify-between font-medium">
-              <span className="">Total</span>
-              <div className="flex items-center h-full">
-                <PoundIcon
-                  style={{ height: '0.78rem', marginTop: '-0.125rem' }}
-                  className="inline mr-1"
-                />
-                <p>{totalPrice}</p>
-              </div>
-            </div>
-
-            <div className="w-full my-2 border-t border-primary"></div>
-
             <Button
               wide
               type="solid"
               onClick={submit}
               loading={submitting}
-              className="text-base font-primary"
+              className="text-base font-roboto"
             >
-              Buy now
+              <div className="flex items-center justify-center">
+                <PoundIcon
+                  style={{
+                    height: '0.78rem',
+                    marginTop: '-0.125rem',
+                    marginRight: '0.15rem',
+                  }}
+                  className="inline fill-current"
+                />
+                <p>{totalPrice} — Buy Now</p>
+              </div>
             </Button>
           </div>
         </div>

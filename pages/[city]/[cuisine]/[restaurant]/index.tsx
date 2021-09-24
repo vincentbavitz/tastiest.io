@@ -153,6 +153,9 @@ const RestaurantPage = (
 
   const [mapModalOpen, setMapModalOpen] = useState(false);
 
+  dlog('index ➡️ posts:', posts);
+  dlog('index ➡️ tastiestDishes:', tastiestDishes);
+
   return (
     <div>
       <Head>
