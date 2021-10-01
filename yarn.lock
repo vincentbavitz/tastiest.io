@@ -2927,10 +2927,10 @@
   resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.27.0/d9710cf086df9bc081d6e14291485c7db22c6cd08f15e24d7d0445bd2be3198b#6c9b7d61174d8db09e48b67ce2c8e54902fa4695"
   integrity sha512-SZiCVVfbYnz6Sjls0UWHipMO7cBm4huitmLhick1VIWfR7u/FnMn8mHLfBzQyugzJxLhg4vEe6Hw2Orh6JDUpQ==
 
-"@tastiest-io/tastiest-utils@^0.211.0":
-  version "0.211.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.211.0/98d613950989946cc7728c36b882451f5e00672a84cc89945fe6575cf9bb1946#7015b3bead2dfc63f31a889be2f49a9e8b4f12b1"
-  integrity sha512-4zzPlrAgJwiUUvQ7Zn8abBW/df81Ofbc//PD941T1ndEMtinZ5cpbS2JIDoUOzDEF/jCQxD6O091Dfrv+HTx7g==
+"@tastiest-io/tastiest-utils@^0.219.0":
+  version "0.219.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/0.219.0/719ffcdb0cb3e0ffab6d223c70809e050de1d27f68c9d8af58f473bcf15c8887#8ff46e267ffc557400cf6e4227862bbeee2f0672"
+  integrity sha512-2Ny0tIJ0XDlKZAVfAYj7E/DIWKJcR+Lvi89Ur5OHEIidMUsFZovCuf8+NOsP1jGw1en8i54XWZQfb9MIbOjsUw==
   dependencies:
     "@contentful/rich-text-types" "^14.1.2"
     "@shopify/shopify-api" "^1.4.0"
@@ -3172,6 +3172,11 @@
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@types/long/-/long-4.0.1.tgz"
   integrity sha512-5tXH6Bx/kNGd3MgffdmP4dy2Z+G4eaXw0SE81Tq3BNadtnMR5/ySMzX4SLEzHJzSmPNn4HIdpQsBvXMUykr58w==
+
+"@types/luxon@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-2.0.4.tgz#f7b5a86ccd843c0ccaddfaedd9ee1081bc1cde3b"
+  integrity sha512-l3xuhmyF2kBldy15SeY6d6HbK2BacEcSK1qTF1ISPtPHr29JH0C1fndz9ExXLKpGl0J6pZi+dGp1i5xesMt60Q==
 
 "@types/mapbox-gl@^2.3.3":
   version "2.3.3"
@@ -10428,6 +10433,11 @@ lru-cache@^6.0.0:
   integrity sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
   dependencies:
     yallist "^4.0.0"
+
+luxon@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-2.0.2.tgz#11f2cd4a11655fdf92e076b5782d7ede5bcdd133"
+  integrity sha512-ZRioYLCgRHrtTORaZX1mx+jtxKtKuI5ZDvHNAmqpUzGqSrR+tL4FVLn/CUGMA3h0+AKD1MAxGI5GnCqR5txNqg==
 
 lz-string@^1.4.4:
   version "1.4.4"

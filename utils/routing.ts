@@ -1,3 +1,6 @@
+import { LocalEndpoint } from 'types/api';
+import { BASE_URL } from './redirects';
+
 interface IGenerateURLParams {
   city: string;
   cuisine: string;
@@ -23,4 +26,16 @@ export const generateStaticURL = ({
     .toLowerCase();
 
   return { href, as };
+};
+
+export const generateLocalEndpoint = (
+  endpoint: LocalEndpoint,
+  params?: Record<string, string>,
+) => {
+  const url = new URL(BASE_URL + endpoint);
+  Object.entries(params ?? {}).forEach(([key, value]) => {
+    url.searchParams.set(key, value);
+  });
+
+  return url.toString();
 };

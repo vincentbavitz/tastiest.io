@@ -6,10 +6,17 @@ import { Contained } from 'components/Contained';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { useArticleOrder } from 'hooks/checkout/useArticleOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
-import React, { ReactNode, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { DateTime } from 'luxon';
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { useHoverDirty } from 'react-use';
+import useSWR from 'swr';
+import { LocalEndpoint } from 'types/api';
+import { generateLocalEndpoint } from 'utils/routing';
 import { UI } from '../../../constants';
+import {
+  GetBookingSlotsReturn,
+  Slot,
+} from '../../../pages/api/restaurant/getBookingSlots';
 
 interface XScrollSelectItemProps {
   children: ReactNode;
@@ -64,14 +71,37 @@ export function ArticleOrderNowDesktop(props: Props) {
     error,
   } = useArticleOrder(deal, fromSlug);
 
-  const dispatch = useDispatch();
   const { isDesktop } = useScreenSize();
   const allowedHeads = deal.allowedHeads.sort((a, b) => a - b);
+
+  const swrURL = generateLocalEndpoint(LocalEndpoint.GET_BOOKING_SLOTS, {
+    restaurantId: deal.restaurant.id,
+    offerId: deal.id,
+    timezone: DateTime.local().zoneName,
+  });
+
+  const { data } = useSWR<GetBookingSlotsReturn>(swrURL, {
+    refreshInterval: 60000,
+  });
+
+  const slots = useMemo(
+    () => data?.slots?.sort((a, b) => a.timestamp - b.timestamp) ?? [],
+    [data],
+  );
+
+  // Update the selected booking day
+  const [selectedDay, setSelectedDay] = useState<Slot>(null);
+  const [selectedTime, setSelectedTime] = useState<number>(null);
 
   // Set valid heads from the first mount
   useEffect(() => {
     setHeads(allowedHeads[0]);
   }, []);
+
+  // Update the selected time when the day Changes
+  useEffect(() => {
+    setSelectedTime(selectedDay ? selectedDay.times[0] : null);
+  }, [selectedDay]);
 
   return (
     <Contained maxWidth={900}>
@@ -104,30 +134,38 @@ export function ArticleOrderNowDesktop(props: Props) {
           <div className="flex flex-col pt-4 mx-4 space-y-3">
             <div className="px-2">
               <HorizontalScrollable noPadding chevronSize={6}>
-                <XScrollSelectItem selected>
-                  <p className="leading-none">Sun</p>
-                  <p className="text-xs opacity-75">13 Oct</p>
-                </XScrollSelectItem>
+                {slots?.map((slot, key) => {
+                  const datetime = DateTime.fromMillis(slot.timestamp);
+                  const disabled = !slot.open;
 
-                <XScrollSelectItem disabled>
-                  <p className="leading-none">Mon</p>
-                  <p className="text-xs opacity-75">14 Oct</p>
-                </XScrollSelectItem>
-
-                <XScrollSelectItem>
-                  <p className="leading-none">Tue</p>
-                  <p className="text-xs opacity-75">15 Oct</p>
-                </XScrollSelectItem>
+                  return (
+                    <XScrollSelectItem
+                      key={key}
+                      disabled={disabled}
+                      selected={selectedDay?.ordinal === slot.ordinal}
+                      onClick={
+                        disabled ? undefined : () => setSelectedDay(slot)
+                      }
+                    >
+                      <p className="leading-none">{datetime.weekdayShort}</p>
+                      <p className="text-xs opacity-75">
+                        {datetime.toFormat('DD MMM')}
+                      </p>
+                    </XScrollSelectItem>
+                  );
+                })}
               </HorizontalScrollable>
             </div>
 
             <div className="px-2 pt-3 border-t border-gray-100">
               <HorizontalScrollable noPadding chevronSize={6}>
-                <XScrollSelectItem selected>10:33</XScrollSelectItem>
-
-                <XScrollSelectItem disabled>11:33</XScrollSelectItem>
-
-                <XScrollSelectItem>12:33</XScrollSelectItem>
+                {selectedDay.times.map((time, key) => {
+                  return (
+                    <XScrollSelectItem key={key} selected>
+                      {}
+                    </XScrollSelectItem>
+                  );
+                })}
               </HorizontalScrollable>
             </div>
 
