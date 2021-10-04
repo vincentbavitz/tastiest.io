@@ -85,9 +85,10 @@ export default function ContentLoader(props: Props) {
           {noSpinner ? null : (
             <div
               style={{
-                height: spinnerAreaHeight
-                  ? `${spinnerAreaHeight}px`
-                  : 'calc(80vh - 10rem)',
+                height: `calc(100vh - ${UI.HEADER_HEIGHT_MOBILE_REM}rem)`,
+                // height: spinnerAreaHeight
+                //   ? `${spinnerAreaHeight}px`
+                //   : 'calc(80vh - 10rem)',
               }}
               className={clsx(
                 'absolute duration-500 inset-0 flex items-center justify-center',

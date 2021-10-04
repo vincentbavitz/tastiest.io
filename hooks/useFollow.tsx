@@ -1,5 +1,5 @@
 import { dlog, postFetch } from '@tastiest-io/tastiest-utils';
-import { UpdateFollowParams } from 'pages/api/updateFollowStatus';
+import { UpdateFollowParams } from 'pages/api/restaurant/updateFollowStatus';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { openAuthModal } from 'state/navigation';

@@ -3,17 +3,17 @@ import {
   dlog,
   IRestaurant,
   ITastiestDish,
+  titleCase,
 } from '@tastiest-io/tastiest-utils';
-import clsx from 'clsx';
 import { ArticleFeatureVideoWidget } from 'components/article/widgets/ArticleFeatureVideoWidget';
 import { ArticleCard } from 'components/cards/ArticleCard';
 import { CardGrid } from 'components/cards/CardGrid';
 import { Contained } from 'components/Contained';
-import { LocationIndictor } from 'components/LocationIndictor';
 import { RestaurantMapModal } from 'components/modals/RestaurantMapModal';
 import FollowButton from 'components/restaurant/FollowButton';
 import { RichBody } from 'components/RichBody';
-import { SectionTitle } from 'components/SectionTitle';
+import TabbedContent from 'components/TabbedContent';
+import { useTabs } from 'components/Tabs';
 import { useScreenSize } from 'hooks/useScreenSize';
 import {
   GetStaticPaths,
@@ -26,8 +26,10 @@ import Image from 'next/image';
 import { TastiestAward } from 'public/assets/ui';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useState } from 'react';
+import { useVideo } from 'react-use';
 import { getGoogleMapLink } from 'utils/location';
 import { generateTitle } from 'utils/metadata';
+import { UI } from '../../../../constants';
 
 interface BestDishAwardProps {
   bestDish: ITastiestDish;
@@ -141,10 +143,10 @@ const RestaurantPage = (
   // As a percentage
   // prettier-ignore
   const heroIllustrationSizeRem = 
-    isHuge ? 80 :
-    isTablet ? 30 :
+    isHuge ? 60 :
+    isTablet ? 40 :
     isMobile ? 30 :
-    60;
+    45;
 
   const heroIllustrationH = 671;
   const heroIllustrationW = 1492;
@@ -155,6 +157,22 @@ const RestaurantPage = (
 
   dlog('index ➡️ posts:', posts);
   dlog('index ➡️ tastiestDishes:', tastiestDishes);
+
+  const [featureVideo, state, controls] = useVideo(
+    <video
+      loop
+      muted
+      autoPlay
+      src={'/test.mp4'}
+      className="object-cover w-full h-full bg-gray-400"
+    />,
+  );
+
+  // `About` and `Experiences` tabs
+  const tabs = useTabs([
+    { id: 'about', label: 'About' },
+    { id: 'experiences', label: 'Experiences' },
+  ]);
 
   return (
     <div>
@@ -180,7 +198,7 @@ const RestaurantPage = (
       />
 
       <div className="relative w-full">
-        {isDesktop && (
+        {/* {isDesktop && (
           <div className="absolute z-10 w-full top-4 mobile:top-8 tablet:top-12 desktop:top-16 leading-0">
             <Contained>
               <div className="flex items-center">
@@ -195,9 +213,9 @@ const RestaurantPage = (
               </div>
             </Contained>
           </div>
-        )}
+        )} */}
 
-        <div
+        {/* <div
           className="flex justify-center pt-6 tablet:pt-20"
           style={{ width: '200%', transform: `translateX(-25%)` }}
         >
@@ -217,11 +235,142 @@ const RestaurantPage = (
               unoptimized
             />
           </div>
+        </div> */}
+      </div>
+
+      {/* Restaurant's Feature Video */}
+      <div
+        style={{ maxHeight: '33rem' }}
+        className="relative flex items-center overflow-hidden"
+      >
+        <div className="relative w-full aspect-w-16 aspect-h-9">
+          {featureVideo}
+        </div>
+
+        <div className="absolute inset-0 bg-gray-900 opacity-25"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900"></div>
+
+        {/* Restaurant Name */}
+        <div className="absolute inset-0 flex items-center justify-center -mt-4">
+          <h1 className="text-4xl font-medium text-white font-primary">
+            {titleCase(restaurant.name)}
+          </h1>
+        </div>
+
+        {/* Follow and Notifications */}
+        <div className="absolute inset-0 h-full pb-4">
+          <div
+            style={{ paddingRight: `${UI.PAGE_CONTAINED_PADDING_VW}vw` }}
+            className="flex items-end justify-end h-full"
+          >
+            <FollowButton restaurant={restaurant} />
+          </div>
         </div>
       </div>
 
       <Contained maxWidth={900}>
-        <div className="flex flex-col-reverse w-full pt-10 pb-16 tablet:flex-row">
+        <div className="pt-8 tablet:pt-12">
+          <TabbedContent>
+            {[
+              {
+                id: 'about',
+                label: 'About',
+                content: (
+                  <div className="flex flex-col py-4 pb-10 space-y-10">
+                    <div className="">
+                      <ArticleFeatureVideoWidget video={restaurant.video} />
+                      <h4 className="pt-2 text-lg font-medium">
+                        Interview with the owner of {restaurant.name}
+                      </h4>
+                    </div>
+
+                    <div>
+                      <RichBody body={restaurant.description}></RichBody>
+                    </div>
+
+                    {/* Image and map overlay */}
+                    <div className="relative">
+                      <div
+                        className="flex justify-center pt-6 tablet:pt-20"
+                        style={{ width: '200%', transform: `translateX(-25%)` }}
+                      >
+                        <div
+                          style={{
+                            width: `${heroIllustrationSizeRem}rem`,
+                            height: `${heroIllustrationHeightRem}rem`,
+                          }}
+                          className="relative"
+                        >
+                          <Image
+                            src={restaurant.heroIllustration.url}
+                            priority={true}
+                            objectFit="cover"
+                            loading="eager"
+                            layout="fill"
+                            unoptimized
+                          />
+                        </div>
+                      </div>
+
+                      <div className="absolute inset-0 flex flex-col items-end justify-end leading-tight">
+                        <div className="px-4 py-2 bg-white bg-opacity-50 rounded-lg shadow-lg">
+                          <a
+                            target="_blank"
+                            rel="noreferrer"
+                            href={getGoogleMapLink(
+                              restaurant.location.lat,
+                              restaurant.location.lon,
+                            )}
+                          >
+                            {restaurant?.location?.address}
+                          </a>
+
+                          <div className="pt-1">
+                            <span
+                              onClick={() => setMapModalOpen(true)}
+                              className="font-medium underline cursor-pointer text-primary"
+                            >
+                              View Map
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                id: 'experiences',
+                label: 'Experiences',
+                content: (
+                  <div className="flex flex-col items-center pt-4 pb-10 space-y-4">
+                    {isMobile ? (
+                      posts.map(post => (
+                        <div
+                          key={post.id}
+                          style={{ maxWidth: '300px' }}
+                          className=""
+                        >
+                          <ArticleCard {...post} />
+                        </div>
+                      ))
+                    ) : (
+                      <CardGrid>
+                        {[...posts, ...posts, ...posts, ...posts].map(post => (
+                          <ArticleCard key={post.id} {...post} />
+                        ))}
+                      </CardGrid>
+                    )}
+                  </div>
+                ),
+              },
+            ]}
+          </TabbedContent>
+        </div>
+      </Contained>
+
+      <Contained maxWidth={900}>
+        {/* <div className="flex flex-col-reverse w-full pb-16 tablet:flex-row">
           <div className="flex flex-col space-y-6">
             <div className="pt-6 tablet:pt-0">
               <ArticleFeatureVideoWidget video={restaurant.video} />
@@ -328,7 +477,7 @@ const RestaurantPage = (
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </Contained>
 
       <RestaurantMapModal
@@ -336,20 +485,6 @@ const RestaurantPage = (
         isOpen={mapModalOpen}
         close={() => setMapModalOpen(false)}
       />
-
-      <div className="pt-4 pb-20">
-        <SectionTitle>
-          <>Exclusive Tastiest Offers</>
-        </SectionTitle>
-
-        <div className="mt-6">
-          <CardGrid size="large" horizontalScroll>
-            {posts.map(post => (
-              <ArticleCard key={post.id} {...post} />
-            ))}
-          </CardGrid>
-        </div>
-      </div>
     </div>
   );
 };

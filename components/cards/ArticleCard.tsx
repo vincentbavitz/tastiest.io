@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { RightOutlined } from '@ant-design/icons';
 import { Button } from '@tastiest-io/tastiest-components';
 import { IPost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import clsx from 'clsx';
+import LineLimit from 'components/text/LineLimit';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useHoverDirty, useVideo } from 'react-use';
@@ -32,6 +32,8 @@ export function ArticleCard(props: Props): JSX.Element {
   const width = 300;
   const isSmall = width < 170;
 
+  const shouldStackButtons = width < 225;
+
   const { href, as } = useMemo(
     () =>
       generateStaticURL({
@@ -52,7 +54,7 @@ export function ArticleCard(props: Props): JSX.Element {
     }
   }, [isHovering]);
 
-  const [video, state, controls] = useVideo(
+  const [video, , controls] = useVideo(
     <video
       loop
       src={deal.dynamicImage.url}
@@ -116,35 +118,39 @@ export function ArticleCard(props: Props): JSX.Element {
           <div className={isSmall || compact ? 'px-3' : 'px-4'}>
             <div className={isSmall ? 'py-2' : 'py-3'}>
               <div
-                style={{
-                  lineHeight: '1.1em',
-                  height: '0',
-                  paddingBottom: '3.3em',
-                }}
-                className={classNames(
+                className={clsx(
                   isSmall || compact ? 'text-lg' : 'text-xl',
-                  'font-primary overflow-hidden cursor-pointer hover:underline',
+                  'font-medium cursor-pointer hover:underline pb-2',
                 )}
               >
-                {title}
+                <LineLimit lines={2} fit="tight">
+                  {title}
+                </LineLimit>
               </div>
+
+              <LineLimit lines={3}>
+                <p className="opacity-75">{description}</p>
+              </LineLimit>
             </div>
 
-            <div className="pb-2">
-              <Button
-                wide
-                size={compact ? 'small' : 'medium'}
-                suffix={
-                  <RightOutlined
-                    className={clsx(
-                      'text-white',
-                      compact ? 'text-lg' : 'text-xl',
-                    )}
-                  />
-                }
-              >
-                £{deal.pricePerHeadGBP}/person
-              </Button>
+            <div
+              className={clsx(
+                'flex pb-2',
+                shouldStackButtons ? 'space-y-2' : 'space-x-2',
+                shouldStackButtons && 'flex-col',
+              )}
+            >
+              <div className="flex-1">
+                <Button wide size={compact ? 'small' : 'medium'}>
+                  Buy Now
+                </Button>
+              </div>
+
+              <div className="flex-1">
+                <Button wide size={compact ? 'small' : 'medium'}>
+                  More Info
+                </Button>
+              </div>
             </div>
           </div>
         </div>

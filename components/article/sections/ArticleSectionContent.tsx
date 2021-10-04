@@ -32,7 +32,7 @@ const MobileContent = (post: IPost) => (
     </div>
 
     <div className="flex flex-col space-y-4">
-      <p className="pb-4 leading-7 font-roboto">{post.description}</p>
+      <p className="pb-4 leading-7 font-secondary">{post.description}</p>
 
       {/* <ArticleSectionFeatureImage featureImage={post?.featureImage} /> */}
 

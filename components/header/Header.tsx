@@ -1,9 +1,15 @@
-import { SearchIcon, TastiestIcon } from '@tastiest-io/tastiest-icons';
+import {
+  HamburgerIcon,
+  SearchIcon,
+  TastiestIcon,
+} from '@tastiest-io/tastiest-icons';
 import clsx from 'clsx';
+import TastiestBrand from 'components/TastiestBrand';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useToggle } from 'react-use';
 import { UI } from '../../constants';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
@@ -43,29 +49,55 @@ function MobileHeader() {
     e.stopPropagation();
   };
 
+  const [isMobileMenuOpen, toggleIsMobileMenuOpen] = useToggle(false);
+
+  // Is header transparent?
+  // on restaurant page
+
   return (
     <div
       style={{
-        paddingLeft: '5vw',
-        paddingRight: '5vw',
+        paddingLeft: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
+        paddingRight: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
         height: `${UI.HEADER_HEIGHT_MOBILE_REM}rem`,
         zIndex: UI.Z_INDEX_HEADER,
       }}
-      className="absolute top-0 left-0 right-0 w-full bg-white"
+      className="fixed top-0 left-0 right-0 w-full bg-white"
     >
       <div className="relative flex items-center justify-between w-full h-full">
-        <div className="flex flex-shrink-0" onMouseDown={handleExpandSearch}>
-          <SearchIcon className="h-8 cursor-pointer fill-current text-secondary" />
-        </div>
-
         <Link href="/">
-          <a className="flex items-center flex-shrink-0">
-            <TastiestIcon className="h-8 fill-current text-primary" />
+          <a className="flex items-center flex-shrink-0 no-underline">
+            <TastiestBrand size={8} />
           </a>
         </Link>
 
-        <HeaderAvatar />
+        <HamburgerIcon
+          onClick={() => toggleIsMobileMenuOpen()}
+          className="h-8 cursor-pointer fill-current text-primary"
+        />
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen ? (
+        <div
+          style={{
+            top: `${UI.HEADER_HEIGHT_MOBILE_REM}rem`,
+            zIndex: UI.Z_INDEX_HEADER,
+            paddingLeft: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
+            paddingRight: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
+          }}
+          className="fixed left-0 right-0 flex flex-col py-3 space-y-3 bg-gray-100 shadow-lg"
+        >
+          <div className="flex items-center space-x-2">
+            <SearchIcon className="w-8 h-6" />
+            <span>Search</span>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <span>Profile</span>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -115,10 +147,8 @@ function DesktopHeader() {
           <div className="flex items-center justify-between w-full antialiased">
             <div className="flex flex-grow">
               <Link href="/">
-                <a className="flex items-center flex-shrink-0 text-4xl leading-none text-black no-underline font-primary">
-                  {/* <TastiestIcon className="h-8 fill-current text-primary" /> */}
-                  Tastiest
-                  <span className="text-primary">.</span>
+                <a>
+                  <TastiestBrand type="full" size={10} />
                 </a>
               </Link>
 

@@ -84,7 +84,7 @@ function SearchOverlayInnerDefault() {
           <div
             key={category.name.toLowerCase()}
             onClick={() => router.push(category.href)}
-            className="flex items-center px-2 py-1 text-lg font-medium rounded-lg cursor-pointer text-primary font-roboto hover:bg-secondary-1 hover:bg-opacity-10"
+            className="flex items-center px-2 py-1 text-lg font-medium rounded-lg cursor-pointer text-primary font-secondary hover:bg-secondary-1 hover:bg-opacity-10"
           >
             <category.svg className="w-6 h-6 mr-2 fill-current tablet:h-5 tablet:w-5" />
             <p className="text-xl text-alt-1 mobile:text-base">

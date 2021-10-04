@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { CUISINES } from '../../constants';
+import { CUISINES, UI } from '../../constants';
 import { IState } from '../../state/reducers';
 import { HorizontalScrollable } from '../HorizontalScrollable';
 import { CuisineItem } from './CuisineItem';
@@ -24,7 +24,7 @@ export function CuisineBar(props: Props) {
   }
 
   return (
-    <div className="mt-20">
+    <div style={{ marginTop: `${UI.HEADER_HEIGHT_MOBILE_REM}rem` }}>
       <HorizontalScrollable spacing={0} chevronSize={12} {...props}>
         {Object.values(CUISINES)
           .sort((a, b) => b.popularity - a.popularity)

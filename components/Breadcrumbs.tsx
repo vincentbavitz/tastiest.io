@@ -11,7 +11,7 @@ export function Breadcrumbs() {
   dlog('Breadcrumbs ➡️   path:', path);
 
   return (
-    <div className="flex items-center font-roboto">
+    <div className="flex items-center font-secondary">
       <HomeIcon className="w-4 h-4 mr-1 fill-current text-primary" />
       <span className="children:last:font-medium">
         {path.map((item, index) => (

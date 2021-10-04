@@ -2,12 +2,13 @@ import clsx from 'clsx';
 import ContentLoader from 'components/loaders/ContentLoader';
 import PageLoader from 'components/loaders/PageLoader';
 import { usePageLoader } from 'hooks/usePageLoader';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { NextComponentType, NextPageContext } from 'next';
 import { Router } from 'next/router';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { IState } from 'state/reducers';
-import { CuisineBar } from '../cuisine/CuisineBar';
+import { UI } from '../../constants';
 import { Footer } from '../Footer';
 import { Header } from '../header/Header';
 import { AuthModal } from '../modals/auth/AuthModal';
@@ -27,6 +28,7 @@ export default function Layout({
 }: Props) {
   const { isInitialLoading } = usePageLoader();
   const { isContentLoading } = useSelector((state: IState) => state.navigation);
+  const { isDesktop } = useScreenSize();
 
   // Scroll to top on load
   useEffect(() => {
@@ -54,12 +56,23 @@ export default function Layout({
       >
         <div className="relative flex flex-col flex-grow">
           <Header />
-          <CuisineBar />
+          {/* <CuisineBar /> */}
+
+          {/* Spacer */}
+          <div
+            style={{
+              paddingTop: `${
+                isDesktop
+                  ? UI.HEADER_HEIGHT_DESKTOP_REM
+                  : UI.HEADER_HEIGHT_MOBILE_REM
+              }rem`,
+            }}
+          ></div>
 
           <ContentLoader router={router}>
             {/* If you'd like an element to stick to the footer in your page, simply wrap the */}
             {/* top <div> and the button <div> in <></> and they'll be split */}
-            <div className="relative flex flex-col justify-between flex-grow">
+            <div className="relative flex flex-col justify-between flex-grow font-secondary bg-soft">
               {/* All pages control when they are considered loaded */}
               <Component {...pageProps} />
             </div>

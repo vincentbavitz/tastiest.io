@@ -46,7 +46,7 @@ export const AuthModalWrapper = (props: AuthModalWrapperProps) => {
         <div className="w-full text-center">
           <h1 className="text-3xl font-primary">{title}</h1>
           {subtitle && (
-            <h3 className="font-roboto font-semiobld">{subtitle}</h3>
+            <h3 className="font-secondary font-semiobld">{subtitle}</h3>
           )}
         </div>
 

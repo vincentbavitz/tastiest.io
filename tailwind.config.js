@@ -12,9 +12,8 @@ module.exports = {
     },
     fontFamily: {
       primary: ['Marmelad'],
+      secondary: ['Poppins'],
       mono: ['SourceCodePro'],
-      roboto: ['Roboto'],
-      robotoslab: ['RobotoSlab'],
     },
     fontSize: {
       '2xs': ['.66rem'],
@@ -47,7 +46,7 @@ module.exports = {
         alt: '#0c1d24',
         'alt-1': '#1f3440',
         'alt-2': '#57758f',
-        soft: '#ffeec4',
+        soft: '#FFFCF1',
         'soft-1': '#fff1d3',
         'aux-orange': '#ffb200',
         'aux-brown': '#dd8e00',

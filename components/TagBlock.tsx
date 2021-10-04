@@ -22,7 +22,7 @@ export function TagBlock(props: Props) {
         'hover:bg-white duration-150',
       )}
     >
-      <span className="px-2 font-roboto">{tag.toLowerCase()}</span>
+      <span className="px-2 font-secondary">{tag.toLowerCase()}</span>
     </a>
   );
 }

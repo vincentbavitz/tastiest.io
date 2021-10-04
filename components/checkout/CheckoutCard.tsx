@@ -26,7 +26,7 @@ export function CheckoutCard(props: Props) {
       <div className="overflow-hidden rounded-t-xl">
         <div
           style={{}}
-          className="w-full px-3 py-3 font-medium leading-none text-center font-roboto bg-secondary"
+          className="w-full px-3 py-3 font-medium leading-none text-center font-secondary bg-secondary"
         >
           {title}
         </div>
