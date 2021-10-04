@@ -226,21 +226,21 @@ const RestaurantPage = (
 
       {/* Restaurant's Feature Video */}
       <div
-        style={{ maxHeight: '38rem' }}
+        style={{ maxHeight: '28rem' }}
         className="relative flex items-center overflow-hidden"
       >
-        <div className="relative w-full aspect-w-16 aspect-h-9">
+        <div className="relative w-full aspect-w-10 mobile:aspect-w-12 tablet:aspect-w-16 aspect-h-9">
           <Image src={'/test.png'} layout="fill" priority />
           {featureVideo}
         </div>
 
         {/* White overlays */}
-        <div className="absolute inset-0 opacity-10 bg-tertiary"></div>
-        <div className="absolute top-0 bottom-0 left-0 right-0 bg-gradient-to-t from-tertiary"></div>
+        <div className="absolute inset-0 opacity-25 bg-tertiary"></div>
+        <div className="absolute bottom-0 left-0 right-0 top-1/2 bg-gradient-to-t from-tertiary"></div>
 
         <div className="absolute inset-0 flex flex-col items-center justify-end space-y-4">
           {/* Restaurant Name */}
-          <h1 className="text-4xl font-medium text-primary font-primary">
+          <h1 className="text-3xl font-medium mobile:text-4xl text-primary font-primary">
             {titleCase(restaurant.name)} -{' '}
             {titleCase(restaurant.location.displayLocation)}
           </h1>

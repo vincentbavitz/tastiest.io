@@ -57,8 +57,8 @@ function MobileHeader() {
         zIndex: UI.Z_INDEX_HEADER,
       }}
       className={clsx(
-        'fixed top-0 left-0 right-0 w-full',
-        transparent ? 'bg-gray-400 bg-opacity-25' : 'bg-white',
+        'fixed top-0 left-0 right-0 w-full duration-500 shadow-xl',
+        transparent ? 'glass' : 'bg-white',
       )}
     >
       <div className="relative flex items-center justify-between w-full h-full">
