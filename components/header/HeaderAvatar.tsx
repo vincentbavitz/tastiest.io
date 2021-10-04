@@ -110,7 +110,7 @@ export function HeaderAvatar() {
               {item.icon && (
                 <item.icon className="h-4 -mt-1 fill-current text-primary" />
               )}
-              <p className="text-alt-1 hover:underline">{item.name}</p>
+              <p className="text-light hover:underline">{item.name}</p>
             </div>
           );
 

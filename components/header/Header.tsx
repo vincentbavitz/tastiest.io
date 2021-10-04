@@ -139,15 +139,16 @@ function DesktopHeader() {
             ? UI.Z_INDEX_HEADER_SEARCH
             : UI.Z_INDEX_HEADER,
         height: `${UI.HEADER_HEIGHT_DESKTOP_REM}rem`,
+        backdropFilter: 'blur(5px)',
       }}
-      className="fixed top-0 left-0 right-0 flex items-center w-full bg-white"
+      className="fixed top-0 left-0 right-0 flex items-center w-full bg-gray-400 bg-opacity-25"
     >
       <Contained>
         <div className="flex items-center w-full h-full">
           <div className="flex items-center justify-between w-full antialiased">
             <div className="flex flex-grow">
               <Link href="/">
-                <a>
+                <a className="no-underline">
                   <TastiestBrand type="full" size={10} />
                 </a>
               </Link>

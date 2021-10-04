@@ -105,7 +105,7 @@ export function ArticleCard(props: Props): JSX.Element {
                   key={item}
                   style={{ width: 'fit-content' }}
                   className={clsx(
-                    'px-2 py-1 leading-4 bg-opacity-75 rounded-md bg-alt',
+                    'px-2 py-1 leading-4 bg-opacity-75 rounded-md bg-light',
                     compact ? 'text-xs' : 'text-sm',
                   )}
                 >

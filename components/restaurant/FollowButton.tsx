@@ -51,7 +51,7 @@ export default function FollowButton(props: Props) {
                 <BellOutlined
                   className={clsx(
                     'duration-300 text-lg',
-                    notifications ? 'text-alt' : 'text-gray-200',
+                    notifications ? 'text-white' : 'text-gray-200',
                   )}
                 />
               </div>

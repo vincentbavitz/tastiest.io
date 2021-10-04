@@ -8,7 +8,6 @@ import { Router } from 'next/router';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { IState } from 'state/reducers';
-import { UI } from '../../constants';
 import { Footer } from '../Footer';
 import { Header } from '../header/Header';
 import { AuthModal } from '../modals/auth/AuthModal';
@@ -60,19 +59,21 @@ export default function Layout({
 
           {/* Spacer */}
           <div
-            style={{
-              paddingTop: `${
-                isDesktop
-                  ? UI.HEADER_HEIGHT_DESKTOP_REM
-                  : UI.HEADER_HEIGHT_MOBILE_REM
-              }rem`,
-            }}
+            style={
+              {
+                // paddingTop: `${
+                // isDesktop
+                // ? UI.HEADER_HEIGHT_DESKTOP_REM
+                // : UI.HEADER_HEIGHT_MOBILE_REM
+                // }rem`,
+              }
+            }
           ></div>
 
           <ContentLoader router={router}>
             {/* If you'd like an element to stick to the footer in your page, simply wrap the */}
             {/* top <div> and the button <div> in <></> and they'll be split */}
-            <div className="relative flex flex-col justify-between flex-grow font-secondary bg-soft">
+            <div className="relative flex flex-col justify-between flex-grow font-secondary bg-light">
               {/* All pages control when they are considered loaded */}
               <Component {...pageProps} />
             </div>

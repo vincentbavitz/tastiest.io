@@ -45,10 +45,12 @@ export function HeaderSearch({ isShown, innerOverlayStyle = {} }: Props) {
       <div
         ref={searchRef}
         className={classNames(
-          'flex items-center w-full justify-between h-10 pl-3 bg-white px-2',
-          'border-secondary border-t-2 border-l-2 border-r-2',
+          'flex items-center w-full justify-between h-10 pl-3 px-2',
+          'bg-white',
+          // 'border-secondary border-t-2 border-l-2 border-r-2',
           searchOverlayExpanded ? 'rounded-t-lg' : 'rounded-lg',
-          searchOverlayExpanded ? 'border-b-0' : 'border-b-2',
+          // searchOverlayExpanded ? 'border-b-0' : 'border-b-2',
+          searchOverlayExpanded ? 'bg-opacity-100' : 'bg-opacity-50',
         )}
       >
         <SearchInput

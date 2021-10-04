@@ -29,7 +29,6 @@ import React, { useState } from 'react';
 import { useVideo } from 'react-use';
 import { getGoogleMapLink } from 'utils/location';
 import { generateTitle } from 'utils/metadata';
-import { UI } from '../../../../constants';
 
 interface BestDishAwardProps {
   bestDish: ITastiestDish;
@@ -247,24 +246,18 @@ const RestaurantPage = (
           {featureVideo}
         </div>
 
-        <div className="absolute inset-0 bg-gray-900 opacity-25"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900"></div>
+        <div className="absolute inset-0 opacity-25 bg-light"></div>
+        <div className="absolute bottom-0 left-0 right-0 top-1/2 bg-gradient-to-t from-light"></div>
 
-        {/* Restaurant Name */}
-        <div className="absolute inset-0 flex items-center justify-center -mt-4">
-          <h1 className="text-4xl font-medium text-white font-primary">
-            {titleCase(restaurant.name)}
+        <div className="absolute inset-0 flex flex-col items-center justify-end space-y-4">
+          {/* Restaurant Name */}
+          <h1 className="text-4xl font-medium text-primary font-primary">
+            {titleCase(restaurant.name)} -{' '}
+            {titleCase(restaurant.location.displayLocation)}
           </h1>
-        </div>
 
-        {/* Follow and Notifications */}
-        <div className="absolute inset-0 h-full pb-4">
-          <div
-            style={{ paddingRight: `${UI.PAGE_CONTAINED_PADDING_VW}vw` }}
-            className="flex items-end justify-end h-full"
-          >
-            <FollowButton restaurant={restaurant} />
-          </div>
+          {/* Follow and Notifications */}
+          <FollowButton restaurant={restaurant} />
         </div>
       </div>
 
