@@ -17,8 +17,8 @@ export default function TastiestBrand({
       {type === 'initial' ? (
         <div
           className={clsx(
-            'flex items-center justify-center  font-primary font-medium no-underline rounded-full text-primary ring-2 ring-primary',
-            fill ? 'bg-primary text-white' : 'text-primary',
+            'flex items-center justify-center  font-primary font-medium no-underline rounded-full text-secondary ring-2 ring-secondary',
+            fill ? 'bg-secondary text-white' : 'text-secondary',
             size === 6 && 'w-6 h-6 text-xl',
             size === 8 && 'w-8 h-8 text-2xl',
             size === 10 && 'w-10 h-10 text-3xl',
@@ -36,7 +36,7 @@ export default function TastiestBrand({
           )}
         >
           Tastiest
-          <span className="no-underline text-primary">.</span>
+          <span className="no-underline text-secondary">.</span>
         </div>
       )}
     </div>

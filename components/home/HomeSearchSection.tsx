@@ -4,7 +4,6 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { METADATA } from '../../constants';
 import { IState } from '../../state/reducers';
-import { HomeSearch } from './HomeSearch';
 
 export function HomeSearchSection(): JSX.Element {
   const navigationState = useSelector((state: IState) => state.navigation);
@@ -28,7 +27,7 @@ export function HomeSearchSection(): JSX.Element {
           }}
         >
           <HomeHero />
-          <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center w-full">
+          {/* <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center w-full">
             <div
               className={!isDesktop ? 'w-full' : 'w-7/12'}
               style={{
@@ -43,7 +42,7 @@ export function HomeSearchSection(): JSX.Element {
             >
               <HomeSearch />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

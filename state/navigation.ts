@@ -20,6 +20,9 @@ export interface INavigation {
   isInitialLoading: boolean;
   isContentLoading: boolean;
   shouldRenderLoader: boolean | null;
+
+  // Header style
+  headerTransparency: boolean;
 }
 
 export const initialNavigationState: INavigation = {
@@ -36,6 +39,9 @@ export const initialNavigationState: INavigation = {
   isInitialLoading: true,
   isContentLoading: true,
   shouldRenderLoader: true,
+
+  // Header style
+  headerTransparency: false,
 };
 
 export enum NavigationActions {
@@ -54,6 +60,9 @@ export enum NavigationActions {
   SET_IS_CONTENT_LOADING = 'SET_IS_CONTENT_LOADING',
   SET_IS_INITIAL_LOADING = 'SET_IS_INITIAL_LOADING',
   SET_SHOULD_RENDER_LOADER = 'SET_SHOULD_RENDER_LOADER',
+
+  // Header style
+  SET_HEADER_TRANSPARENCY = 'SET_HEADER_TRANSPARENCY',
 }
 
 // ////////////////////////////// //
@@ -124,4 +133,10 @@ export const setIsContentLoading = (value: boolean) => ({
 export const setShouldRenderLoader = (value: boolean) => ({
   type: NavigationActions.SET_SHOULD_RENDER_LOADER,
   payload: value,
+});
+
+// Header style
+export const setHeaderTransparency = (transparent: boolean) => ({
+  type: NavigationActions.SET_HEADER_TRANSPARENCY,
+  payload: transparent,
 });

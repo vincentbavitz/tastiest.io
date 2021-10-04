@@ -63,6 +63,12 @@ body {
   src: url(/fonts/SourceCodePro.ttf) format('truetype');
 }
 
+// Frosted glass
+.glass {
+  backdrop-filter: blur(5px);
+  @apply bg-gray-400 bg-opacity-25;
+
+}
 
 .__next {
   overflow-x: hidden;

@@ -7,7 +7,6 @@ import Head from 'next/head';
 import React from 'react';
 import { Contained } from '../components/Contained';
 import { HomeMapSection } from '../components/home/HomeMapSection';
-import { HomeRecentSearchesSection } from '../components/home/HomeRecentSearchesSection';
 import { HomeSearchSection } from '../components/home/HomeSearchSection';
 import { METADATA } from '../constants';
 
@@ -64,7 +63,7 @@ const Index: NextPage<Props> = ({ dishes = [] }) => {
           <HomeSearchSection />
         </Contained>
 
-        <HomeRecentSearchesSection />
+        {/* <HomeRecentSearchesSection /> */}
       </div>
 
       <div className="flex flex-col space-y-16">

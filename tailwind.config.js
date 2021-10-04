@@ -37,17 +37,16 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: '#081F53',
+        primary: '#57758F',
         'primary-1': '#',
         'primary-2': '#',
-        secondary: '#2F7CB2',
+        secondary: '#9EB8CC',
         'secondary-1': '#',
         'secondary-2': '#',
-        tertiary: '#BD244A',
+        tertiary: '#FFFEF3',
         'tertiary-1': '#',
         'tertiary-2': '#',
-        light: '#FFFCF1',
-        dark: '#1A1815',
+        aux: '#101D23',
       },
       display: ['huge', 'desktop', 'tablet', 'mobile'],
       backgroundOpacity: {

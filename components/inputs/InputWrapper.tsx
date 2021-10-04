@@ -71,7 +71,7 @@ export function InputWrapper(props: Props) {
           {prefix && (
             <span
               className={classNames(
-                `text-light`,
+                `text-tertiary`,
                 'flex',
                 'items-center',
                 'pr-4',

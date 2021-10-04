@@ -13,7 +13,7 @@ import { RestaurantMapModal } from 'components/modals/RestaurantMapModal';
 import FollowButton from 'components/restaurant/FollowButton';
 import { RichBody } from 'components/RichBody';
 import TabbedContent from 'components/TabbedContent';
-import { useTabs } from 'components/Tabs';
+import { useHeaderTransparency } from 'hooks/useHeaderTransparency';
 import { useScreenSize } from 'hooks/useScreenSize';
 import {
   GetStaticPaths,
@@ -23,12 +23,14 @@ import {
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { TastiestAward } from 'public/assets/ui';
 import { ParsedUrlQuery } from 'querystring';
-import React, { useState } from 'react';
-import { useVideo } from 'react-use';
+import React, { useEffect, useState } from 'react';
+import { useVideo, useWindowScroll } from 'react-use';
 import { getGoogleMapLink } from 'utils/location';
 import { generateTitle } from 'utils/metadata';
+import { UI } from '../../../../constants';
 
 interface BestDishAwardProps {
   bestDish: ITastiestDish;
@@ -152,12 +154,44 @@ const RestaurantPage = (
   const heroIllustrationHeightRem =
     (heroIllustrationH / heroIllustrationW) * heroIllustrationSizeRem;
 
+  const router = useRouter();
   const [mapModalOpen, setMapModalOpen] = useState(false);
 
   dlog('index ➡️ posts:', posts);
   dlog('index ➡️ tastiestDishes:', tastiestDishes);
 
-  const [featureVideo, state, controls] = useVideo(
+  // Transparent header on first load
+  const { setTransparancy } = useHeaderTransparency();
+  useEffect(() => {
+    setTransparancy(true);
+
+    // When leaving this page, make opaque
+    const handleRouteChange = () => {
+      setTransparancy(false);
+    };
+
+    router?.events?.on('routeChangeStart', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, []);
+
+  // Remove transparency on scroll
+  const TRANSPARENCY_Y_CUTOFF_PX = 250;
+  const { y: scrollY } = useWindowScroll();
+
+  useEffect(() => {
+    if (scrollY > TRANSPARENCY_Y_CUTOFF_PX) {
+      setTransparancy(false);
+    } else {
+      setTransparancy(true);
+    }
+
+    return () => setTransparancy(false);
+  }, [scrollY]);
+
+  const [featureVideo] = useVideo(
     <video
       loop
       muted
@@ -167,14 +201,8 @@ const RestaurantPage = (
     />,
   );
 
-  // `About` and `Experiences` tabs
-  const tabs = useTabs([
-    { id: 'about', label: 'About' },
-    { id: 'experiences', label: 'Experiences' },
-  ]);
-
   return (
-    <div>
+    <div style={{ marginTop: `-${UI.HEADER_HEIGHT_DESKTOP_REM}rem` }}>
       <Head>
         <title>{generateTitle(restaurant.name)}</title>
       </Head>
@@ -196,58 +224,18 @@ const RestaurantPage = (
         }}
       />
 
-      <div className="relative w-full">
-        {/* {isDesktop && (
-          <div className="absolute z-10 w-full top-4 mobile:top-8 tablet:top-12 desktop:top-16 leading-0">
-            <Contained>
-              <div className="flex items-center">
-                <div className="flex-1"></div>
-                <h1 className="text-3xl text-center text-primary font-primary">
-                  {restaurant.name}
-                </h1>
-
-                <div className="flex justify-end flex-1 space-x-2 text-2xl text-gray-400">
-                  <FollowButton restaurant={restaurant} />
-                </div>
-              </div>
-            </Contained>
-          </div>
-        )} */}
-
-        {/* <div
-          className="flex justify-center pt-6 tablet:pt-20"
-          style={{ width: '200%', transform: `translateX(-25%)` }}
-        >
-          <div
-            style={{
-              width: `${heroIllustrationSizeRem}rem`,
-              height: `${heroIllustrationHeightRem}rem`,
-            }}
-            className="relative"
-          >
-            <Image
-              src={restaurant.heroIllustration.url}
-              priority={true}
-              objectFit="cover"
-              loading="eager"
-              layout="fill"
-              unoptimized
-            />
-          </div>
-        </div> */}
-      </div>
-
       {/* Restaurant's Feature Video */}
       <div
-        style={{ maxHeight: '33rem' }}
+        style={{ maxHeight: '38rem' }}
         className="relative flex items-center overflow-hidden"
       >
         <div className="relative w-full aspect-w-16 aspect-h-9">
+          <Image src={'/test.png'} layout="fill" priority />
           {featureVideo}
         </div>
 
-        <div className="absolute inset-0 opacity-25 bg-light"></div>
-        <div className="absolute bottom-0 left-0 right-0 top-1/2 bg-gradient-to-t from-light"></div>
+        <div className="absolute inset-0 opacity-25 bg-tertiary"></div>
+        <div className="absolute top-0 bottom-0 left-0 right-0 bg-gradient-to-t from-tertiary"></div>
 
         <div className="absolute inset-0 flex flex-col items-center justify-end space-y-4">
           {/* Restaurant Name */}

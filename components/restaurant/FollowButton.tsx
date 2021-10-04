@@ -59,19 +59,8 @@ export default function FollowButton(props: Props) {
           </Button>
         </InputGroup>
       ) : (
-        <Button
-          type="text"
-          color={following ? 'primary' : 'neutral'}
-          onClick={following ? unfollow : follow}
-          loading={followLoading}
-        >
-          <Tooltip
-            theme="alt"
-            placement="top-right"
-            content={`Follow ${restaurant.name}`}
-          >
-            Follow
-          </Tooltip>
+        <Button color={'primary'} onClick={follow} loading={followLoading}>
+          <div className="text-white">Follow</div>
         </Button>
       )}
     </div>

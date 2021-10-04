@@ -1,10 +1,7 @@
-import {
-  HamburgerIcon,
-  SearchIcon,
-  TastiestIcon,
-} from '@tastiest-io/tastiest-icons';
+import { HamburgerIcon, TastiestIcon } from '@tastiest-io/tastiest-icons';
 import clsx from 'clsx';
 import TastiestBrand from 'components/TastiestBrand';
+import { useHeaderTransparency } from 'hooks/useHeaderTransparency';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
@@ -15,7 +12,6 @@ import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Contained } from '../Contained';
 import { HeaderAvatar } from './HeaderAvatar';
-import { HeaderSearch } from './HeaderSearch';
 
 export function Header() {
   const { isDesktop } = useScreenSize();
@@ -50,9 +46,7 @@ function MobileHeader() {
   };
 
   const [isMobileMenuOpen, toggleIsMobileMenuOpen] = useToggle(false);
-
-  // Is header transparent?
-  // on restaurant page
+  const { transparent } = useHeaderTransparency();
 
   return (
     <div
@@ -62,7 +56,10 @@ function MobileHeader() {
         height: `${UI.HEADER_HEIGHT_MOBILE_REM}rem`,
         zIndex: UI.Z_INDEX_HEADER,
       }}
-      className="fixed top-0 left-0 right-0 w-full bg-white"
+      className={clsx(
+        'fixed top-0 left-0 right-0 w-full',
+        transparent ? 'bg-gray-400 bg-opacity-25' : 'bg-white',
+      )}
     >
       <div className="relative flex items-center justify-between w-full h-full">
         <Link href="/">
@@ -88,11 +85,6 @@ function MobileHeader() {
           }}
           className="fixed left-0 right-0 flex flex-col py-3 space-y-3 bg-gray-100 shadow-lg"
         >
-          <div className="flex items-center space-x-2">
-            <SearchIcon className="w-8 h-6" />
-            <span>Search</span>
-          </div>
-
           <div className="flex items-center space-x-2">
             <span>Profile</span>
           </div>
@@ -129,6 +121,7 @@ function DesktopHeader() {
   }, [location.pathname, searchBarPinnedToHeader]);
 
   const navBarRef = useRef(null);
+  const { transparent } = useHeaderTransparency();
 
   return (
     <div
@@ -139,9 +132,11 @@ function DesktopHeader() {
             ? UI.Z_INDEX_HEADER_SEARCH
             : UI.Z_INDEX_HEADER,
         height: `${UI.HEADER_HEIGHT_DESKTOP_REM}rem`,
-        backdropFilter: 'blur(5px)',
       }}
-      className="fixed top-0 left-0 right-0 flex items-center w-full bg-gray-400 bg-opacity-25"
+      className={clsx(
+        'fixed top-0 left-0 right-0 flex items-center duration-500 w-full shadow-xl',
+        transparent ? 'glass' : 'bg-white',
+      )}
     >
       <Contained>
         <div className="flex items-center w-full h-full">
@@ -153,13 +148,13 @@ function DesktopHeader() {
                 </a>
               </Link>
 
-              <HeaderSearch
+              {/* <HeaderSearch
                 isShown={searchIsShown}
                 innerOverlayStyle={{
                   // When pinned to header, limit height to vh and lock body scroll
                   maxHeight: searchIsShown ? '80vh' : 'unset',
                 }}
-              />
+              /> */}
             </div>
 
             {/* <HeaderSavedPlaces /> */}
