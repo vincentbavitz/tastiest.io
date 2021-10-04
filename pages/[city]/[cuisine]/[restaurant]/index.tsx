@@ -234,7 +234,8 @@ const RestaurantPage = (
           {featureVideo}
         </div>
 
-        <div className="absolute inset-0 opacity-25 bg-tertiary"></div>
+        {/* White overlays */}
+        <div className="absolute inset-0 opacity-10 bg-tertiary"></div>
         <div className="absolute top-0 bottom-0 left-0 right-0 bg-gradient-to-t from-tertiary"></div>
 
         <div className="absolute inset-0 flex flex-col items-center justify-end space-y-4">
