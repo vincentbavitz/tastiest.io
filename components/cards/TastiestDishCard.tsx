@@ -51,7 +51,7 @@ export default function TastiestDishCard(props: Props) {
           ref={ref}
           className={clsx(
             'overflow-hidden w-full no-underline',
-            'border-4 border-secondary border-opacity-75',
+            'border-4 border-primary shadow-lg',
             'rounded-xl',
           )}
         >
@@ -59,7 +59,7 @@ export default function TastiestDishCard(props: Props) {
             className={clsx('h-16 flex justify-center relative py-2 bg-white')}
           >
             <img
-              className="object-contain w-full h-full"
+              className="object-contain w-full h-full mt-px"
               style={{ maxWidth: '50%' }}
               src={`${restaurant.profilePicture.url}?w=300`}
               alt={restaurant.profilePicture.description}

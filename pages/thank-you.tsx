@@ -6,7 +6,6 @@ import {
   formatCurrency,
   IBooking,
   IOrder,
-  UserData,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
@@ -81,7 +80,7 @@ export const getServerSideProps = async context => {
   }
 
   const userDataApi = new UserDataApi(firebaseAdmin, order.userId);
-  const userDetails = await userDataApi.getUserField(UserData.DETAILS);
+  const { details: userDetails } = await userDataApi.getUserData();
 
   // Get Live / Test data
   const stripe = new Stripe(

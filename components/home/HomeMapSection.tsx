@@ -1,9 +1,6 @@
-import { Button } from '@tastiest-io/tastiest-components';
-import { SearchIcon } from '@tastiest-io/tastiest-icons';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { getMapBoxStaticSource } from 'utils/location';
-import { expandSearchOverlay } from '../../state/navigation';
 import { Title } from '../Title';
 
 export function HomeMapSection() {
@@ -42,7 +39,7 @@ export function HomeMapSection() {
           mapbox://styles/tastiestvince/ckj6mv0zb04uz1amskq1bpi3u
           */}
 
-          <Button
+          {/* <Button
             onClick={() => dispatch(expandSearchOverlay())}
             type="solid"
             color="primary"
@@ -50,7 +47,7 @@ export function HomeMapSection() {
             prefix={<SearchIcon className="w-4 h-4 text-white fill-current" />}
           >
             Search
-          </Button>
+          </Button> */}
         </div>
       </div>
     </div>

@@ -9,7 +9,7 @@ export type Tab = {
 interface Props {
   tabs: Tab[];
   selectedTab: string;
-  setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedTab: (selected: string) => void;
 }
 
 /**
@@ -45,7 +45,7 @@ export default function Tabs(props: Props) {
               setSelectedTab(tab.id);
             }}
             className={clsx(
-              'flex-1 px-2 py-2 text-center duration-300 cursor-pointer border-b-2',
+              'flex-1 px-2 py-2 text-center duration-300 cursor-pointer border-b-2 select-none',
               selected ? 'font-medium border-primary' : 'border-transparent',
             )}
           >

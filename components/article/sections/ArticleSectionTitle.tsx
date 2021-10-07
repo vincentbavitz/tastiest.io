@@ -165,7 +165,7 @@ const HowItWorksSpriteDesktop = () => {
           className={clsx(
             'flex justify-center px-2 py-2',
             'font-medium desktop:text-lg font-primary text-white duration-300',
-            'rounded-lg bg-primary hover:-bg-primary-1',
+            'rounded-lg bg-primary hover:bg-primary-1',
             'outline-none',
           )}
           onClick={() => dispatch(toggleHiwModal(true))}
@@ -195,7 +195,7 @@ const HowItWorksSpriteMobile = () => {
           className={clsx(
             'flex justify-center px-2 py-2',
             'font-medium desktop:text-lg font-primary text-white duration-300',
-            'rounded-lg bg-primary hover:-bg-primary-1',
+            'rounded-lg bg-primary hover:bg-primary-1',
             'outline-none',
           )}
           onClick={() => dispatch(toggleHiwModal(true))}

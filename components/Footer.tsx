@@ -1,10 +1,7 @@
 import {
-  BrandIcon,
   FacebookIcon,
   HeartIcon,
   InstagramIcon,
-  LogoIcon,
-  TastiestIcon,
   TwitterIcon,
   YoutubeIcon,
 } from '@tastiest-io/tastiest-icons';
@@ -15,6 +12,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, ReactNode } from 'react';
 import { Contained } from './Contained';
+import TastiestBrand from './TastiestBrand';
 
 export function Footer() {
   const { isDesktop, isHuge } = useScreenSize();
@@ -24,7 +22,7 @@ export function Footer() {
   if (isCheckout) return <CheckoutFooter />;
 
   return (
-    <div className="py-4 font-normal text-center text-white mobile:py-8 bg-secondary">
+    <div className="py-4 font-normal text-center text-white mobile:py-8 bg-primary">
       <Contained>
         {!isDesktop && <MobileFooter />}
         {isDesktop && !isHuge && <DesktopFooter />}
@@ -39,7 +37,7 @@ const MobileFooter = () => {
 
   return (
     <div className="flex flex-col pb-10 space-y-6">
-      {!isTablet && <BrandIcon className="h-8 mt-6 fill-current" />}
+      {!isTablet && <TastiestBrand type="initial-ring" />}
 
       <div className="flex flex-col w-full pt-4 mt-6 space-x-0 space-y-4 mobile:space-y-0 mobile:flex-row mobile:space-x-6">
         <div className="flex-1">
@@ -74,7 +72,7 @@ const MobileFooter = () => {
           </div>
 
           <div className="flex justify-center pt-2">
-            <BrandIcon className="h-8 text-white fill-current" />
+            <TastiestBrand type="initial-ring" />
           </div>
         </>
       ) : (
@@ -116,7 +114,7 @@ const DesktopFooter = () => (
       </div>
     </div>
 
-    <BrandIcon className="h-8 mt-4 fill-current" />
+    <TastiestBrand type="full" theme="dark" />
   </div>
 );
 
@@ -140,7 +138,7 @@ const HugeFooter = () => (
       <div className="flex flex-col items-end justify-between h-full pr-4 mr-4 space-y-4 text-right border-r">
         <ImprovementPrompts />
 
-        <LogoIcon className="h-8 mt-6 fill-current" />
+        <TastiestBrand type="initial-ring" />
       </div>
 
       <ThanksForSupportMessage withLogo />
@@ -196,27 +194,27 @@ const ThanksForSupportMessage = ({
 
     <HeartIcon className="block h-6 fill-current tablet:hidden" />
 
-    {withLogo && <TastiestIcon className="h-8 fill-current" />}
+    {withLogo && <TastiestBrand type="initial-ring" />}
   </div>
 );
 
 const SocialsBlock = () => (
   <>
     <a href="https://instagram.com/tastiestio" target="_blank" rel="noreferrer">
-      <InstagramIcon className="w-10 h-10 cursor-pointer" />
+      <InstagramIcon className="w-10 h-10 duration-300 cursor-pointer fill-current hover:brightness-125 filter text-secondary" />
     </a>
     <a href="https://facebook.com/tastiestio" target="_blank" rel="noreferrer">
-      <FacebookIcon className="w-10 h-10 cursor-pointer" />
+      <FacebookIcon className="w-10 h-10 duration-300 cursor-pointer fill-current text-secondary hover:brightness-125 filter" />
     </a>
     <a href="https://twitter.com/tastiestio" target="_blank" rel="noreferrer">
-      <TwitterIcon className="w-10 h-10 cursor-pointer" />
+      <TwitterIcon className="w-10 h-10 duration-300 cursor-pointer fill-current text-secondary hover:brightness-125 filter" />
     </a>
     <a
       href="https://www.youtube.com/channel/UCSK_WmrVPgwxRBrqKbNxLkg"
       target="_blank"
       rel="noreferrer"
     >
-      <YoutubeIcon className="w-10 h-10 cursor-pointer" />
+      <YoutubeIcon className="w-10 h-10 duration-300 cursor-pointer fill-current text-secondary hover:brightness-125 filter" />
     </a>
   </>
 );

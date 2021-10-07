@@ -1,4 +1,4 @@
-import { HamburgerIcon, TastiestIcon } from '@tastiest-io/tastiest-icons';
+import { HamburgerIcon } from '@tastiest-io/tastiest-icons';
 import clsx from 'clsx';
 import TastiestBrand from 'components/TastiestBrand';
 import { useHeaderTransparency } from 'hooks/useHeaderTransparency';
@@ -180,7 +180,7 @@ function CheckoutHeader({ isDesktop }: { isDesktop: boolean }) {
       )}
     >
       <div className="flex items-center flex-shrink-0">
-        <TastiestIcon className="h-8 fill-current text-primary" />
+        <TastiestBrand type="full" />
       </div>
     </div>
   );

@@ -144,7 +144,6 @@ export default async function updateOrder(
     }
 
     // Validate payment method and add if valid
-    console.log('adfasfd');
     if (paymentMethodId && paymentMethodId?.length) {
       dlog('updateOrder ➡️ paymentMethodId:', paymentMethodId);
 

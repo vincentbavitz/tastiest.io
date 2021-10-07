@@ -1,6 +1,11 @@
 import { Button, Select } from '@tastiest-io/tastiest-components';
 import { PoundIcon } from '@tastiest-io/tastiest-icons';
-import { IDeal, minsIntoHumanTime } from '@tastiest-io/tastiest-utils';
+import {
+  dlog,
+  getMinsIntoDay,
+  IDeal,
+  minsIntoHumanTime,
+} from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
@@ -32,12 +37,12 @@ const XScrollSelectItem = (props: XScrollSelectItemProps) => {
   const isHovering = useHoverDirty(ref);
 
   const disabledStyles =
-    'bg-gray-200 opacity-50 pointer-events-none cursor-default border-none';
+    'bg-gray-200 opacity-50 pointer-events-none border-transparent cursor-default';
 
   const activeStyles = [
     'cursor-pointer',
     isHovering || selected ? 'border-opacity-100' : 'border-opacity-25',
-    selected ? 'border-2 border-blue-600' : 'border border-blue-500',
+    selected ? 'border-blue-600' : 'border-blue-200',
   ];
 
   return (
@@ -45,8 +50,8 @@ const XScrollSelectItem = (props: XScrollSelectItemProps) => {
       ref={ref}
       onClick={onClick}
       className={clsx(
-        'flex justify-center items-center flex-col space-y-1 leading-none',
-        'mx-1 py-1 px-3 text-sm text-center duration-300 rounded-md whitespace-nowrap',
+        'flex justify-center items-center flex-col border-2 space-y-1 leading-none',
+        'mx-1 py-1 px-2 text-sm text-center duration-300 rounded-md whitespace-nowrap',
         disabled ? disabledStyles : activeStyles,
       )}
     >
@@ -146,9 +151,15 @@ export function ArticleOrderNowDesktop(props: Props) {
               <HorizontalScrollable noPadding chevronSize={6}>
                 {slots?.map((slot, key) => {
                   const datetime = DateTime.fromMillis(slot.timestamp);
+
+                  // Is it too late for all the times in today?
+                  const isTodayUnavailable =
+                    slot.daysFromToday === 0 &&
+                    !selectedDay?.times.some(time => getMinsIntoDay() < time);
+
                   const disabled = !slot.open;
 
-                  return (
+                  return isTodayUnavailable ? null : (
                     <XScrollSelectItem
                       key={key}
                       disabled={disabled}
@@ -171,17 +182,25 @@ export function ArticleOrderNowDesktop(props: Props) {
               <HorizontalScrollable noPadding chevronSize={6}>
                 {selectedDay
                   ? selectedDay.times.map((time, key) => {
-                      const disabled = false;
+                      const disabled =
+                        selectedDay.daysFromToday === 0 &&
+                        getMinsIntoDay() > time;
+
+                      dlog(
+                        'ArticleOrderNowDesktop ➡️ getMinsIntoDay:',
+                        getMinsIntoDay(),
+                      );
 
                       return (
                         <XScrollSelectItem
                           key={key}
                           selected={selectedTime === time}
+                          disabled={disabled}
                           onClick={
                             disabled ? undefined : () => setSelectedTime(time)
                           }
                         >
-                          {minsIntoHumanTime(time)}
+                          <p className="text-xs">{minsIntoHumanTime(time)}</p>
                         </XScrollSelectItem>
                       );
                     })
@@ -193,7 +212,7 @@ export function ArticleOrderNowDesktop(props: Props) {
                       '2:00 PM',
                     ].map((time, key) => (
                       <XScrollSelectItem key={key} disabled>
-                        {time}
+                        <p className="text-xs">{time}</p>
                       </XScrollSelectItem>
                     ))}
               </HorizontalScrollable>

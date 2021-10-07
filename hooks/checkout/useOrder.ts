@@ -22,6 +22,8 @@ export function useOrder(token: string, initialOrder?: IOrder) {
     },
   );
 
+  dlog('useOrder ➡️ order:', order.price);
+
   // Set userId as soon as they sign in
   useEffect(() => {
     if (!order?.userId && user?.uid) {

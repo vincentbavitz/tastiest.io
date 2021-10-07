@@ -11,7 +11,6 @@ import {
   RestaurantDataApi,
   TastiestInternalErrorCode,
   transformPriceForStripe,
-  UserData,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
@@ -83,7 +82,32 @@ export default async function pay(
     snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
 
     const userDataApi = new UserDataApi(firebaseAdmin, order?.userId);
-    const details = await userDataApi.getUserField(UserData.DETAILS);
+    const { details, paymentDetails } = await userDataApi.getUserData();
+
+    // Verify that the payment method is valid for Stripe
+    const customerId = paymentDetails?.stripeCustomerId;
+    if (!customerId) {
+      const _error = "Stripe customer doesn't exist";
+      response.json({
+        success: false,
+        data: { order: null },
+        error: _error,
+      });
+
+      // Payment failure
+      analytics.track({
+        event: 'Payment Error',
+        context: { userAgent },
+        userId: order.userId,
+        properties: {
+          token,
+          firstName: details.firstName,
+          ...order,
+          error: _error,
+        },
+      });
+      return;
+    }
 
     // Is the order already paid or expired?
     const isOrderExpired =
@@ -134,34 +158,6 @@ export default async function pay(
       // Payment failure
       analytics.track({
         event: 'Payment Error',
-        userId: order.userId,
-        properties: {
-          token,
-          firstName: details.firstName,
-          ...order,
-          error: _error,
-        },
-      });
-      return;
-    }
-
-    const paymentDetails = await userDataApi.getUserField(
-      UserData.PAYMENT_DETAILS,
-    );
-
-    const customerId = paymentDetails?.stripeCustomerId;
-    if (!customerId) {
-      const _error = "Stripe customer doesn't exist";
-      response.json({
-        success: false,
-        data: { order: null },
-        error: _error,
-      });
-
-      // Payment failure
-      analytics.track({
-        event: 'Payment Error',
-        context: { userAgent },
         userId: order.userId,
         properties: {
           token,
@@ -362,7 +358,7 @@ export default async function pay(
         properties: { ...order },
       });
 
-      analytics.track({
+      await analytics.track({
         event: 'Payment Failure',
         userId: order.userId,
         properties: {
@@ -389,7 +385,7 @@ export default async function pay(
       shouldAlert: false,
       originFile: 'pages/api/payments/pay.ts',
       severity: 'CRITICAL',
-      properties: { token },
+      properties: { token, error: String(error) },
       raw: String(error),
     });
 

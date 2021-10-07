@@ -53,7 +53,7 @@ export function CuisineItem(props: Props) {
               'text-primary',
               'border-secondary',
               'hover:border-primary',
-              'hover:-text-primary-1',
+              'hover:text-primary-1',
               'hover:bg-transparent',
             )}
           >

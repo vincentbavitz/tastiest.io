@@ -62,7 +62,7 @@ export default function TastiestDishCardSearchResult(props: Props) {
                 </div>
                 <div className="absolute inset-0">
                   <img
-                    className="object-cover w-full h-full"
+                    className="object-cover w-full h-full rounded-b-lg"
                     src={`${image?.url}?w=700`}
                     alt={image?.description}
                   />

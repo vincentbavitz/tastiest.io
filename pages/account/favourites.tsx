@@ -4,7 +4,6 @@ import {
   CmsApi,
   dlog,
   IPost,
-  UserData,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import { ArticleCardFavourite } from 'components/cards/ArticleCardFavourite';
@@ -40,10 +39,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
 
   // If user, get saved articles from firestore.
-  const savedPostSlugs = await userDataApi.getUserField(
-    UserData.SAVED_ARTICLES,
-  );
-
+  const { savedArticles: savedPostSlugs } = await userDataApi.getUserData();
   dlog('favourites ➡️ savedPostSlugs:', savedPostSlugs);
 
   // Given ids of saved articles from firestore, get articles of these ids

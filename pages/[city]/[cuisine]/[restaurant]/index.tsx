@@ -14,6 +14,7 @@ import FollowButton from 'components/restaurant/FollowButton';
 import { RichBody } from 'components/RichBody';
 import TabbedContent from 'components/TabbedContent';
 import { useHeaderTransparency } from 'hooks/useHeaderTransparency';
+import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import {
   GetStaticPaths,
@@ -156,26 +157,22 @@ const RestaurantPage = (
 
   const router = useRouter();
   const [mapModalOpen, setMapModalOpen] = useState(false);
+  const { isPageLoading } = usePageLoader();
 
   dlog('index ➡️ posts:', posts);
   dlog('index ➡️ tastiestDishes:', tastiestDishes);
 
   // Transparent header on first load
   const { setTransparancy } = useHeaderTransparency();
+
+  // When page is loading, opaque.
   useEffect(() => {
-    setTransparancy(true);
-
-    // When leaving this page, make opaque
-    const handleRouteChange = () => {
+    if (isPageLoading) {
       setTransparancy(false);
-    };
-
-    router?.events?.on('routeChangeStart', handleRouteChange);
-
-    return () => {
-      router.events.off('routeChangeStart', handleRouteChange);
-    };
-  }, []);
+    } else {
+      setTransparancy(true);
+    }
+  }, [isPageLoading]);
 
   // Remove transparency on scroll
   const TRANSPARENCY_Y_CUTOFF_PX = 250;
@@ -230,7 +227,7 @@ const RestaurantPage = (
         className="relative flex items-center overflow-hidden"
       >
         <div className="relative w-full aspect-w-10 mobile:aspect-w-12 tablet:aspect-w-16 aspect-h-9">
-          <Image src={'/test.png'} layout="fill" priority />
+          <Image src={'/test.png'} loading={'eager'} layout="fill" priority />
           {featureVideo}
         </div>
 
@@ -250,18 +247,18 @@ const RestaurantPage = (
         </div>
       </div>
 
-      <Contained maxWidth={900}>
-        <div className="pt-8 tablet:pt-12">
-          <TabbedContent>
-            {[
-              {
-                id: 'about',
-                label: 'About',
-                content: (
+      <div className="pt-8 tablet:pt-12">
+        <TabbedContent contained>
+          {[
+            {
+              id: 'about',
+              label: 'About',
+              content: (
+                <Contained maxWidth={900}>
                   <div className="flex flex-col py-4 pb-10 space-y-10">
                     <div className="">
                       <ArticleFeatureVideoWidget video={restaurant.video} />
-                      <h4 className="pt-2 text-lg font-medium">
+                      <h4 className="pt-2 text-xl font-medium">
                         Interview with the owner of {restaurant.name}
                       </h4>
                     </div>
@@ -319,37 +316,37 @@ const RestaurantPage = (
                       </div>
                     </div>
                   </div>
-                ),
-              },
-              {
-                id: 'experiences',
-                label: 'Experiences',
-                content: (
-                  <div className="flex flex-col items-center pt-4 pb-10 space-y-4">
-                    {isMobile ? (
-                      posts.map(post => (
-                        <div
-                          key={post.id}
-                          style={{ maxWidth: '300px' }}
-                          className=""
-                        >
-                          <ArticleCard {...post} />
-                        </div>
-                      ))
-                    ) : (
-                      <CardGrid>
-                        {[...posts, ...posts, ...posts, ...posts].map(post => (
-                          <ArticleCard key={post.id} {...post} />
-                        ))}
-                      </CardGrid>
-                    )}
-                  </div>
-                ),
-              },
-            ]}
-          </TabbedContent>
-        </div>
-      </Contained>
+                </Contained>
+              ),
+            },
+            {
+              id: 'experiences',
+              label: 'Experiences',
+              content: (
+                <div className="flex flex-col items-center pt-4 pb-10 space-y-4">
+                  {isMobile ? (
+                    posts.map(post => (
+                      <div
+                        key={post.id}
+                        style={{ maxWidth: '300px' }}
+                        className=""
+                      >
+                        <ArticleCard {...post} />
+                      </div>
+                    ))
+                  ) : (
+                    <CardGrid>
+                      {posts.map(post => (
+                        <ArticleCard key={post.id} {...post} />
+                      ))}
+                    </CardGrid>
+                  )}
+                </div>
+              ),
+            },
+          ]}
+        </TabbedContent>
+      </div>
 
       <Contained maxWidth={900}>
         {/* <div className="flex flex-col-reverse w-full pb-16 tablet:flex-row">

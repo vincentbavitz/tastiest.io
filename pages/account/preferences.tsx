@@ -18,7 +18,6 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import { InferGetServerSidePropsType } from 'next';
 import nookies from 'nookies';
-import { PreferencesHero } from 'public/assets/page';
 import React, { ReactNode, useState } from 'react';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { UI } from '../../constants';
@@ -42,8 +41,7 @@ export const getServerSideProps = async context => {
   }
 
   // Grab user's preferences
-  const preferences = await userDataApi.getUserField(UserData.PREFERENCES);
-  const details = await userDataApi.getUserField(UserData.DETAILS);
+  const { details, preferences } = await userDataApi.getUserData();
 
   return {
     props: { userId, preferences, details },
@@ -162,7 +160,7 @@ const Preferences = ({
           Set your preferences
         </h1>
 
-        {isMobile ? (
+        {/* {isMobile ? (
           <PreferencesHero className="w-10/12" />
         ) : (
           <Contained maxWidth={UI.FORM_WIDTH_PX}>
@@ -170,7 +168,7 @@ const Preferences = ({
               <PreferencesHero className="w-full" />
             </div>
           </Contained>
-        )}
+        )} */}
       </div>
 
       <Contained maxWidth={UI.FORM_WIDTH_PX}>
@@ -263,7 +261,7 @@ const Preferences = ({
             onClick={submit}
             suffix={
               userHasSaved && !savable ? (
-                <CheckIcon className="h-6 text-white fill-current" />
+                <CheckIcon className="h-3 text-white fill-current" />
               ) : null
             }
           >
