@@ -36,7 +36,7 @@ export default function TastiestBrand({
             size === 6 && 'text-2xl',
             size === 8 && 'text-3xl',
             size === 10 && 'text-4xl',
-            theme === 'dark' ? 'text-tertiary' : 'text-black',
+            theme === 'dark' ? 'text-light' : 'text-dark',
           )}
         >
           Tastiest

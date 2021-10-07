@@ -41,7 +41,7 @@ const MobileFooter = () => {
 
       <div className="flex flex-col w-full pt-4 mt-6 space-x-0 space-y-4 mobile:space-y-0 mobile:flex-row mobile:space-x-6">
         <div className="flex-1">
-          <p className="mb-3 text-lg font-medium uppercase border-b border-white opacity-75 whitespace-nowrap">
+          <p className="mb-3 text-lg font-medium uppercase border-b border-white opacity-75 text-tertiary whitespace-nowrap">
             Quick Links
           </p>
 
@@ -51,7 +51,7 @@ const MobileFooter = () => {
         </div>
 
         <div className="flex-1">
-          <p className="mb-3 text-lg font-medium uppercase border-b border-white opacity-75 whitespace-nowrap">
+          <p className="mb-3 text-lg font-medium uppercase border-b border-white opacity-75 text-tertiary whitespace-nowrap">
             Follow Us
           </p>
 
@@ -114,7 +114,7 @@ const DesktopFooter = () => (
       </div>
     </div>
 
-    <TastiestBrand type="full" theme="dark" />
+    <TastiestBrand type="full" theme="dark" size={10} />
   </div>
 );
 
@@ -158,10 +158,11 @@ interface FooterColumnProps {
 }
 
 const FooterColumn: FC<FooterColumnProps> = ({ title, children }) => (
-  <div className="flex flex-col text-left">
-    <p className="mb-3 text-lg font-medium uppercase whitespace-nowrap">
+  <div className="flex flex-col text-left text-light">
+    <p className="mb-3 text-lg font-medium uppercase text-tertiary whitespace-nowrap">
       {title}
     </p>
+
     {children}
   </div>
 );
@@ -179,7 +180,7 @@ const ThanksForSupportMessage = ({
       wide ? 'w-full' : 'w-64',
     )}
   >
-    <p className="text-xl leading-tight tracking-wide text-center tablet:text-left">
+    <p className="text-xl leading-tight tracking-wide text-center text-tertiary tablet:text-left">
       THANK YOU FOR
       {!wide && <br />}
       YOUR SUPPORT!
@@ -262,23 +263,29 @@ const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
 const ImprovementPrompts = () => (
   <>
     <div className="leading-tight whitespace-nowrap">
-      <p className="">Don't See Your Favourite Restaurant?</p>
+      <p className="text-tertiary">Don't See Your Favourite Restaurant?</p>
       <Link href={`/help?type=${SupportRequestType.GENERAL}`}>
-        <a className="text-xs underline">Help our sales team sign them</a>
+        <a className="text-sm opacity-75 hover:underline">
+          Help our sales team sign them
+        </a>
       </Link>
     </div>
 
     <div className="leading-tight">
-      <p className="">Don't See A Key Feature?</p>
+      <p className="text-tertiary">Don't See A Key Feature?</p>
       <Link href={`/help?type=${SupportRequestType.FEATURE_REQUEST}`}>
-        <a className="text-xs underline">Help our product team add it</a>
+        <a className="text-sm opacity-75 hover:underline">
+          Help our product team add it
+        </a>
       </Link>
     </div>
 
     <div className="leading-tight">
-      <p className="">Found a bug?</p>
+      <p className="text-tertiary">Found a bug?</p>
       <Link href={`/help?type=${SupportRequestType.BUG}`}>
-        <a className="text-xs underline">Help our engineering team fix it</a>
+        <a className="text-sm opacity-75 hover:underline">
+          Help our engineering team fix it
+        </a>
       </Link>
     </div>
   </>

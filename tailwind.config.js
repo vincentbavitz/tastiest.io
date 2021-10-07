@@ -37,14 +37,14 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: '#073054',
-        'primary-1': '#4E6997',
-        secondary: '#9EB8CC',
-        'secondary-1': '#98AFD2',
-        tertiary: '#FFFEF3',
-        'tertiary-1': '#F7FADC',
-        aux: '#101D23',
-        'aux-1': '#0C2A39',
+        primary: '#101D23',
+        'primary-1': '#',
+        secondary: '#57758F',
+        'secondary-1': '#',
+        tertiary: '#9EB8CC',
+        'tertiary-1': '#',
+        dark: '#0D1E22',
+        light: '#FFFEF3',
       },
       display: ['huge', 'desktop', 'tablet', 'mobile'],
       backgroundOpacity: {
