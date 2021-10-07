@@ -110,6 +110,7 @@ export function ArticleOrderNowDesktop(props: Props) {
 
   const onClickBuyNow = async () => {
     const bookedForTimestamp = DateTime.fromMillis(selectedDay.timestamp)
+      .set({ hour: 0, minute: 0 })
       .plus({
         minutes: selectedTime,
       })

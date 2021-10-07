@@ -32,24 +32,15 @@ module.exports = {
       '8xl': ['6rem'],
       '9xl': ['7rem'],
     },
-    filter: {
-      grayscale: 'grayscale(1)',
-    },
     extend: {
       colors: {
         primary: '#101D23',
-        'primary-1': '#',
         secondary: '#57758F',
-        'secondary-1': '#',
         tertiary: '#9EB8CC',
-        'tertiary-1': '#',
         dark: '#0D1E22',
         light: '#FFFEF3',
       },
       display: ['huge', 'desktop', 'tablet', 'mobile'],
-      backgroundOpacity: {
-        '10': '0.1',
-      },
     },
   },
   variants: {
@@ -70,7 +61,6 @@ module.exports = {
   },
   plugins: [
     require('tailwindcss-children'),
-    require('tailwindcss-filters'),
     require('@tailwindcss/aspect-ratio'),
     // require('@tailwindcss/forms'),
   ],

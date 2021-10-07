@@ -260,12 +260,12 @@ export default async function pay(
         heads: order.heads,
         price: order.price,
         paidAt: Date.now(),
-        bookingDate: null,
         hasBooked: false,
         hasArrived: false,
         hasCancelled: false,
         cancelledAt: null,
         confirmationCode: generateConfirmationCode(),
+        bookedForTimestamp: order.bookedForTimestamp,
         isConfirmationCodeVerified: false,
         isTest: process.env.NODE_ENV === 'development',
       };

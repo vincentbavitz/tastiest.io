@@ -10,6 +10,7 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
+import { DateTime } from 'luxon';
 import moment from 'moment';
 import { InferGetServerSidePropsType } from 'next';
 import { NextSeo } from 'next-seo';
@@ -112,6 +113,12 @@ function ThankYou(
   const { firstName, order, booking, paymentCard } = props;
   const { isMobile, isDesktop } = useScreenSize();
 
+  dlog('thank-you ➡️ order:', order);
+
+  const humanBookedForDate = DateTime.fromMillis(
+    order.bookedForTimestamp,
+  ).toRelativeCalendar();
+
   return (
     <>
       <Head>
@@ -174,22 +181,24 @@ function ThankYou(
           </h2>
 
           <BookingSection
-            title={`Book with ${booking.restaurant.name}`}
+            title={`${booking.restaurant.name} is expecting you ${humanBookedForDate}.`}
             step={1}
             figure={<ThankYouPhone className="w-full h-full" />}
             promptText={
               <p>
-                Let them know you bought with <b>Tastiest</b> when you book.
+                Call them up and mention{' '}
+                <span className="font-bold">Tastiest</span> if you have any
+                questions.
               </p>
             }
           >
             <a href={`tel:${order.deal.restaurant?.publicPhoneNumber}`}>
               <Button
-                size="large"
-                round
-                prefix={<PhoneIcon className="h-8 text-white fill-current" />}
+                prefix={<PhoneIcon className="h-6 text-white fill-current" />}
               >
-                {order.deal.restaurant?.publicPhoneNumber}
+                <p className="font-normal tracking-wide">
+                  {order.deal.restaurant?.publicPhoneNumber}
+                </p>
               </Button>
             </a>
           </BookingSection>
@@ -209,7 +218,7 @@ function ThankYou(
                   <div
                     key={uuid()}
                     style={{ minWidth: '3rem' }}
-                    className="flex items-center justify-center flex-1 h-16 text-3xl rounded-lg font-primary bg-secondary-2"
+                    className="flex items-center justify-center flex-1 h-16 text-3xl rounded-lg font-primary bg-tertiary text-light"
                   >
                     {digit}
                   </div>
@@ -428,7 +437,8 @@ function BookingSection(props: BookingSectionProps) {
           className="relative flex items-end justify-center w-full tablet:items-center"
         >
           {figure}
-          <div className="absolute top-0 left-0 flex items-center justify-center w-8 h-8 mt-6 -ml-4 text-xl font-bold text-white rounded-full bg-secondary-1">
+
+          <div className="absolute top-0 left-0 flex items-center justify-center w-8 h-8 mt-6 -ml-4 text-xl font-bold text-white rounded-full bg-primary">
             {step}
           </div>
         </div>
@@ -448,7 +458,7 @@ function BookingSection(props: BookingSectionProps) {
               <div>
                 <p
                   style={{ maxWidth: isDesktop ? '17.5rem' : 'auto' }}
-                  className="pt-2 text-center tablet:text-left"
+                  className="pt-2 text-center opacity-75 tablet:text-left"
                 >
                   {promptText}
                 </p>
