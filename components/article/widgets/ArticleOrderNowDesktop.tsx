@@ -1,6 +1,6 @@
 import { Button, Select } from '@tastiest-io/tastiest-components';
 import { PoundIcon } from '@tastiest-io/tastiest-icons';
-import { IDeal } from '@tastiest-io/tastiest-utils';
+import { IDeal, minsIntoHumanTime } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
@@ -46,7 +46,7 @@ const XScrollSelectItem = (props: XScrollSelectItemProps) => {
       onClick={onClick}
       className={clsx(
         'flex justify-center items-center flex-col space-y-1 leading-none',
-        'mx-1 p-1 text-sm text-center duration-300 rounded-md whitespace-nowrap',
+        'mx-1 py-1 px-3 text-sm text-center duration-300 rounded-md whitespace-nowrap',
         disabled ? disabledStyles : activeStyles,
       )}
     >
@@ -103,6 +103,16 @@ export function ArticleOrderNowDesktop(props: Props) {
     setSelectedTime(selectedDay ? selectedDay.times[0] : null);
   }, [selectedDay]);
 
+  const onClickBuyNow = async () => {
+    const bookedForTimestamp = DateTime.fromMillis(selectedDay.timestamp)
+      .plus({
+        minutes: selectedTime,
+      })
+      .toMillis();
+
+    return submit(bookedForTimestamp);
+  };
+
   return (
     <Contained maxWidth={900}>
       <div className="flex justify-end w-full">
@@ -149,7 +159,7 @@ export function ArticleOrderNowDesktop(props: Props) {
                     >
                       <p className="leading-none">{datetime.weekdayShort}</p>
                       <p className="text-xs opacity-75">
-                        {datetime.toFormat('DD MMM')}
+                        {datetime.toFormat('d MMM')}
                       </p>
                     </XScrollSelectItem>
                   );
@@ -159,13 +169,33 @@ export function ArticleOrderNowDesktop(props: Props) {
 
             <div className="px-2 pt-3 border-t border-gray-100">
               <HorizontalScrollable noPadding chevronSize={6}>
-                {selectedDay.times.map((time, key) => {
-                  return (
-                    <XScrollSelectItem key={key} selected>
-                      {}
-                    </XScrollSelectItem>
-                  );
-                })}
+                {selectedDay
+                  ? selectedDay.times.map((time, key) => {
+                      const disabled = false;
+
+                      return (
+                        <XScrollSelectItem
+                          key={key}
+                          selected={selectedTime === time}
+                          onClick={
+                            disabled ? undefined : () => setSelectedTime(time)
+                          }
+                        >
+                          {minsIntoHumanTime(time)}
+                        </XScrollSelectItem>
+                      );
+                    })
+                  : [
+                      '10:00 AM',
+                      '11:00 AM',
+                      '12:00 PM',
+                      '1:00 PM',
+                      '2:00 PM',
+                    ].map((time, key) => (
+                      <XScrollSelectItem key={key} disabled>
+                        {time}
+                      </XScrollSelectItem>
+                    ))}
               </HorizontalScrollable>
             </div>
 
@@ -200,7 +230,7 @@ export function ArticleOrderNowDesktop(props: Props) {
             <Button
               wide
               type="solid"
-              onClick={submit}
+              onClick={onClickBuyNow}
               loading={submitting}
               className="text-base font-roboto"
             >

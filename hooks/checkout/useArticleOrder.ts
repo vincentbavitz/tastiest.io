@@ -26,12 +26,13 @@ export const useArticleOrder = (deal: IDeal, fromSlug: string) => {
     CreateNewOrderReturn
   >(LocalEndpoint.CREATE_NEW_ORDER, { retries: 1 });
 
-  const submit = async () => {
+  const submit = async (bookedForTimestamp: number) => {
     const orderRequest: IOrderRequest = {
-      userId: user?.uid ?? null,
-      dealId: deal.id,
       heads,
       fromSlug,
+      bookedForTimestamp,
+      userId: user?.uid ?? null,
+      dealId: deal.id,
       promoCode: null,
       timestamp: Date.now(),
       anonymousId: window.analytics?.user?.()?.anonymousId?.(),

@@ -34,6 +34,7 @@ export type CreateNewOrderReturn = {
  *  promoCode: string | undefined
  *  userId: string | undefined
  *  anonymousId: string | undefined
+ *  bookedForTimestamp: number;
  * ```
  *
  * Response is of the shape `{ orderId: string | null, error: Error | string | null }`
@@ -66,6 +67,7 @@ export default async function createNewOrder(
     userId,
     anonymousId,
     userAgent,
+    bookedForTimestamp,
   } = body as Partial<IOrderRequest>;
 
   const heads = Math.floor(_heads);
@@ -75,6 +77,7 @@ export default async function createNewOrder(
     fromSlug,
     promoCode,
     userId,
+    bookedForTimestamp,
     timestamp: Date.now(),
   };
 
@@ -261,6 +264,7 @@ const buildOrder = async (orderRequest: IOrderRequest) => {
     paymentCard: null,
     promoCode: promo?.code ?? null,
     createdAt: Date.now(),
+    bookedForTimestamp: orderRequest.bookedForTimestamp,
 
     // Timestamps
     // Null denotes not paid yet; not done yet.
