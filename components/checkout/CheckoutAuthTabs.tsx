@@ -1,84 +1,45 @@
-import { Button } from '@tastiest-io/tastiest-components';
-import { useScreenSize } from 'hooks/useScreenSize';
+import TabbedContent from 'components/TabbedContent';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   CheckoutSignInTabSelected,
   setSignInTabSelected,
-} from '../../state/checkout';
-import { IState } from '../../state/reducers';
-import { CheckoutTabs, ITab } from './CheckoutTabs';
+} from 'state/checkout';
+import { IState } from 'state/reducers';
+import { CheckoutSignIn } from './CheckoutSignIn';
+import { CheckoutSignUp } from './CheckoutSignUp';
 
 export function CheckoutAuthTabs() {
-  const { signInTabSelected: tab } = useSelector(
-    (state: IState) => state.checkout,
-  );
-
-  const { isDesktop } = useScreenSize();
   const dispatch = useDispatch();
+  const { signInTabSelected } = useSelector((state: IState) => state.checkout);
 
-  const tabs: ITab[] = [
-    {
-      label: 'I have an account',
-      selected: tab === CheckoutSignInTabSelected.HAS_ACCOUNT,
-      onClick: () =>
-        dispatch(setSignInTabSelected(CheckoutSignInTabSelected.HAS_ACCOUNT)),
-    },
-    {
-      label: "I'm new here",
-      selected: tab === CheckoutSignInTabSelected.NEW_USER,
-      onClick: () =>
-        dispatch(setSignInTabSelected(CheckoutSignInTabSelected.NEW_USER)),
-    },
-  ];
-
-  return isDesktop ? (
-    <CheckoutTabs tabs={tabs} />
-  ) : (
-    <div className="flex flex-col space-y-4">
-      {tab !== CheckoutSignInTabSelected.NEW_USER && (
-        <Button
-          wide
-          type={
-            tab === CheckoutSignInTabSelected.HAS_ACCOUNT ? 'text' : 'solid'
-          }
-          size="large"
-          color={
-            tab === CheckoutSignInTabSelected.NONE ||
-            tab === CheckoutSignInTabSelected.HAS_ACCOUNT
-              ? 'primary'
-              : 'secondary'
-          }
-          off={tab === CheckoutSignInTabSelected.HAS_ACCOUNT}
-          onClick={() =>
-            dispatch(
-              setSignInTabSelected(CheckoutSignInTabSelected.HAS_ACCOUNT),
-            )
-          }
-        >
-          I have an account
-        </Button>
-      )}
-
-      {tab !== CheckoutSignInTabSelected.HAS_ACCOUNT && (
-        <Button
-          wide
-          type={tab === CheckoutSignInTabSelected.NEW_USER ? 'text' : 'solid'}
-          size="large"
-          off={tab === CheckoutSignInTabSelected.NEW_USER}
-          color={
-            tab === CheckoutSignInTabSelected.NONE ||
-            tab === CheckoutSignInTabSelected.NEW_USER
-              ? 'primary'
-              : 'secondary'
-          }
-          onClick={() =>
-            dispatch(setSignInTabSelected(CheckoutSignInTabSelected.NEW_USER))
-          }
-        >
-          I'm new here
-        </Button>
-      )}
-    </div>
+  return (
+    <TabbedContent
+      manualSelected={signInTabSelected}
+      setManualSelected={value =>
+        dispatch(setSignInTabSelected(value as CheckoutSignInTabSelected))
+      }
+    >
+      {[
+        {
+          id: CheckoutSignInTabSelected.HAS_ACCOUNT,
+          label: 'I have an account',
+          content: (
+            <div className="flex flex-col space-y-4">
+              <CheckoutSignIn />
+            </div>
+          ),
+        },
+        {
+          id: CheckoutSignInTabSelected.NEW_USER,
+          label: "I'm new here",
+          content: (
+            <div className="flex flex-col space-y-4">
+              <CheckoutSignUp />
+            </div>
+          ),
+        },
+      ]}
+    </TabbedContent>
   );
 }

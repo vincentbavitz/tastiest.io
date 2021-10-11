@@ -42,7 +42,7 @@ const Paragraph = ({
 }: ParagraphProps) => (
   <p
     className={clsx(
-      'tracking-wide font-roboto',
+      'tracking-wide font-secondary',
       margins && 'mb-3',
       justify && 'text-justify',
     )}
@@ -128,7 +128,7 @@ export function RichBody(props: Props) {
         [BLOCKS.HEADING_2]: (node: Heading2) => {
           const content = (node.content[0] as Text)?.value;
           return (
-            <h2 className="mt-8 mb-2 text-3xl font-semibold tracking-wide font-roboto">
+            <h2 className="mt-8 mb-2 text-3xl font-semibold tracking-wide font-secondary">
               {content}
             </h2>
           );
@@ -136,7 +136,7 @@ export function RichBody(props: Props) {
         [BLOCKS.HEADING_3]: (node: Heading3) => {
           const content = (node.content[0] as Text)?.value;
           return (
-            <h2 className="mt-6 mb-2 text-xl font-semibold font-roboto">
+            <h2 className="mt-6 mb-2 text-xl font-semibold font-secondary">
               {content}
             </h2>
           );
@@ -144,7 +144,7 @@ export function RichBody(props: Props) {
         [BLOCKS.HEADING_4]: (node: Heading4) => {
           const content = (node.content[0] as Text)?.value;
           return (
-            <h2 className="mt-6 mb-2 text-lg font-bold font-roboto">
+            <h2 className="mt-6 mb-2 text-lg font-bold font-secondary">
               {content}
             </h2>
           );

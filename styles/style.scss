@@ -40,8 +40,9 @@ ul {
 }
 
 body {
-  @apply text-alt bg-white font-roboto font-normal;
+  @apply text-primary bg-white font-secondary font-normal;
   font-smooth: antialiased;
+  scroll-behavior: smooth;
 
   ::selection {
     color: white;
@@ -59,15 +60,16 @@ body {
 /* ******* FONTS ******* */
 /* ********************* */
 @font-face {
-  font-family: SomaticRounded;
-  src: url(/fonts/Somatic-Rounded.otf) format('opentype');
-}
-  
-@font-face {
   font-family: SourceCodePro;
   src: url(/fonts/SourceCodePro.ttf) format('truetype');
 }
 
+// Frosted glass
+.glass {
+  backdrop-filter: blur(5px);
+  @apply bg-gray-200 bg-opacity-25;
+
+}
 
 .__next {
   overflow-x: hidden;

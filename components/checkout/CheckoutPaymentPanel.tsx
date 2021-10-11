@@ -204,15 +204,24 @@ interface PromoCodeInputProps {
 }
 
 const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
-  const { order, updateOrder } = useOrder(initialOrder?.token, initialOrder);
   const [promoCode, setPromoCode] = useState('');
   const [error, setError] = useState('');
+
+  // Realtime order information
+  const { order, updateOrder, isOrderUpdating } = useOrder(
+    initialOrder?.token,
+    initialOrder,
+  );
 
   // Disabled if we already added a discount code
   const disabled = Boolean(order?.promoCode);
 
+  const [promoCodeLoading, setPromoCodeLoading] = useState(false);
+
   const applyPromoCode = async () => {
+    setPromoCodeLoading(true);
     const { success } = await updateOrder({ promoCode });
+    setPromoCodeLoading(false);
     setError(success ? null : 'Promo code is invalid or expired.');
   };
 
@@ -226,7 +235,11 @@ const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
           </p>
 
           <p className="font-medium">
-            — £{formatCurrency(order.price.gross - order.price.final)}
+            {promoCodeLoading ? (
+              '— £--.--'
+            ) : (
+              <>— £{formatCurrency(order.price.gross - order.price.final)}</>
+            )}
           </p>
         </div>
       ) : (

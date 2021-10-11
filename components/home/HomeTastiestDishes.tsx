@@ -19,8 +19,11 @@ export function HomeTastiestDishes(props: Props) {
     <div className="flex flex-col space-y-4">
       <SectionTitle>The Tastiest Dishes in London!</SectionTitle>
 
-      <HorizontalScrollable fit={isHuge ? 5 : isDesktop ? 4 : undefined}>
-        {cards.map(dish => (
+      <HorizontalScrollable
+        fit={isHuge ? 5 : isDesktop ? 4 : undefined}
+        spacing={8}
+      >
+        {[...cards, ...cards].map(dish => (
           <div key={dish.id} style={{ minWidth: '200px' }}>
             <TastiestDishCard compact {...dish} />
           </div>

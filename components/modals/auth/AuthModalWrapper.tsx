@@ -1,5 +1,5 @@
-import { TastiestIcon } from '@tastiest-io/tastiest-icons';
 import { SignInTosInfo } from 'components/SignInTosInfo';
+import TastiestBrand from 'components/TastiestBrand';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
 import React, { ReactNode, useEffect } from 'react';
@@ -42,11 +42,11 @@ export const AuthModalWrapper = (props: AuthModalWrapperProps) => {
   return (
     <>
       <div className="flex flex-col items-center flex-grow space-y-5">
-        <TastiestIcon className="h-8 fill-current text-primary" />
+        <TastiestBrand type="full" />
         <div className="w-full text-center">
           <h1 className="text-3xl font-primary">{title}</h1>
           {subtitle && (
-            <h3 className="font-roboto font-semiobld">{subtitle}</h3>
+            <h3 className="font-secondary font-semiobld">{subtitle}</h3>
           )}
         </div>
 

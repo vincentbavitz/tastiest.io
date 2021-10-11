@@ -1,5 +1,5 @@
-import { LogoIcon } from '@tastiest-io/tastiest-icons';
 import classNames from 'classnames';
+import TastiestBrand from 'components/TastiestBrand';
 
 export interface AvatarProps {
   // Size is in the same units as Tailwind units
@@ -34,10 +34,7 @@ export function Avatar(props: AvatarProps) {
         </div>
       ) : (
         // Default Tastiest Avatar
-        <LogoIcon
-          className="text-white fill-current"
-          style={{ height: '55%', marginTop: '15%' }}
-        />
+        <TastiestBrand fill type="initial" />
       )}
     </div>
   );

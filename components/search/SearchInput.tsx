@@ -146,6 +146,7 @@ export function SearchInput(props: Props) {
             'flex-grow',
             'border-none',
             'outline-none',
+            'bg-transparent',
             'w-0',
             inputClassName,
           )}

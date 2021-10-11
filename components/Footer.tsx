@@ -1,10 +1,7 @@
 import {
-  BrandIcon,
   FacebookIcon,
   HeartIcon,
   InstagramIcon,
-  LogoIcon,
-  TastiestIcon,
   TwitterIcon,
   YoutubeIcon,
 } from '@tastiest-io/tastiest-icons';
@@ -15,6 +12,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, ReactNode } from 'react';
 import { Contained } from './Contained';
+import TastiestBrand from './TastiestBrand';
 
 export function Footer() {
   const { isDesktop, isHuge } = useScreenSize();
@@ -24,7 +22,7 @@ export function Footer() {
   if (isCheckout) return <CheckoutFooter />;
 
   return (
-    <div className="py-4 font-normal text-center text-white mobile:py-8 bg-alt">
+    <div className="py-4 font-normal text-center text-white mobile:py-8 bg-primary">
       <Contained>
         {!isDesktop && <MobileFooter />}
         {isDesktop && !isHuge && <DesktopFooter />}
@@ -39,11 +37,11 @@ const MobileFooter = () => {
 
   return (
     <div className="flex flex-col pb-10 space-y-6">
-      {!isTablet && <BrandIcon className="h-8 mt-6 fill-current" />}
+      {!isTablet && <TastiestBrand type="initial-ring" />}
 
       <div className="flex flex-col w-full pt-4 mt-6 space-x-0 space-y-4 mobile:space-y-0 mobile:flex-row mobile:space-x-6">
         <div className="flex-1">
-          <p className="mb-3 text-lg font-medium uppercase border-b border-white opacity-75 whitespace-nowrap">
+          <p className="mb-3 text-lg font-medium uppercase border-b border-white opacity-75 text-tertiary whitespace-nowrap">
             Quick Links
           </p>
 
@@ -53,7 +51,7 @@ const MobileFooter = () => {
         </div>
 
         <div className="flex-1">
-          <p className="mb-3 text-lg font-medium uppercase border-b border-white opacity-75 whitespace-nowrap">
+          <p className="mb-3 text-lg font-medium uppercase border-b border-white opacity-75 text-tertiary whitespace-nowrap">
             Follow Us
           </p>
 
@@ -74,7 +72,7 @@ const MobileFooter = () => {
           </div>
 
           <div className="flex justify-center pt-2">
-            <BrandIcon className="h-8 text-white fill-current" />
+            <TastiestBrand type="initial-ring" />
           </div>
         </>
       ) : (
@@ -116,7 +114,7 @@ const DesktopFooter = () => (
       </div>
     </div>
 
-    <BrandIcon className="h-8 mt-4 fill-current" />
+    <TastiestBrand type="full" theme="dark" size={10} />
   </div>
 );
 
@@ -140,7 +138,7 @@ const HugeFooter = () => (
       <div className="flex flex-col items-end justify-between h-full pr-4 mr-4 space-y-4 text-right border-r">
         <ImprovementPrompts />
 
-        <LogoIcon className="h-8 mt-6 fill-current" />
+        <TastiestBrand type="initial-ring" />
       </div>
 
       <ThanksForSupportMessage withLogo />
@@ -160,10 +158,11 @@ interface FooterColumnProps {
 }
 
 const FooterColumn: FC<FooterColumnProps> = ({ title, children }) => (
-  <div className="flex flex-col text-left">
-    <p className="mb-3 text-lg font-medium uppercase whitespace-nowrap">
+  <div className="flex flex-col text-left text-light">
+    <p className="mb-3 text-lg font-medium uppercase text-tertiary whitespace-nowrap">
       {title}
     </p>
+
     {children}
   </div>
 );
@@ -181,7 +180,7 @@ const ThanksForSupportMessage = ({
       wide ? 'w-full' : 'w-64',
     )}
   >
-    <p className="text-xl leading-tight tracking-wide text-center tablet:text-left">
+    <p className="text-xl leading-tight tracking-wide text-center text-tertiary tablet:text-left">
       THANK YOU FOR
       {!wide && <br />}
       YOUR SUPPORT!
@@ -196,27 +195,27 @@ const ThanksForSupportMessage = ({
 
     <HeartIcon className="block h-6 fill-current tablet:hidden" />
 
-    {withLogo && <TastiestIcon className="h-8 fill-current" />}
+    {withLogo && <TastiestBrand type="initial-ring" />}
   </div>
 );
 
 const SocialsBlock = () => (
   <>
     <a href="https://instagram.com/tastiestio" target="_blank" rel="noreferrer">
-      <InstagramIcon className="w-10 h-10 cursor-pointer" />
+      <InstagramIcon className="w-10 h-10 duration-300 cursor-pointer fill-current hover:brightness-125 filter text-secondary" />
     </a>
     <a href="https://facebook.com/tastiestio" target="_blank" rel="noreferrer">
-      <FacebookIcon className="w-10 h-10 cursor-pointer" />
+      <FacebookIcon className="w-10 h-10 duration-300 cursor-pointer fill-current text-secondary hover:brightness-125 filter" />
     </a>
     <a href="https://twitter.com/tastiestio" target="_blank" rel="noreferrer">
-      <TwitterIcon className="w-10 h-10 cursor-pointer" />
+      <TwitterIcon className="w-10 h-10 duration-300 cursor-pointer fill-current text-secondary hover:brightness-125 filter" />
     </a>
     <a
       href="https://www.youtube.com/channel/UCSK_WmrVPgwxRBrqKbNxLkg"
       target="_blank"
       rel="noreferrer"
     >
-      <YoutubeIcon className="w-10 h-10 cursor-pointer" />
+      <YoutubeIcon className="w-10 h-10 duration-300 cursor-pointer fill-current text-secondary hover:brightness-125 filter" />
     </a>
   </>
 );
@@ -264,23 +263,29 @@ const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
 const ImprovementPrompts = () => (
   <>
     <div className="leading-tight whitespace-nowrap">
-      <p className="">Don't See Your Favourite Restaurant?</p>
+      <p className="text-tertiary">Don't See Your Favourite Restaurant?</p>
       <Link href={`/help?type=${SupportRequestType.GENERAL}`}>
-        <a className="text-xs underline">Help our sales team sign them</a>
+        <a className="text-sm opacity-75 hover:underline">
+          Help our sales team sign them
+        </a>
       </Link>
     </div>
 
     <div className="leading-tight">
-      <p className="">Don't See A Key Feature?</p>
+      <p className="text-tertiary">Don't See A Key Feature?</p>
       <Link href={`/help?type=${SupportRequestType.FEATURE_REQUEST}`}>
-        <a className="text-xs underline">Help our product team add it</a>
+        <a className="text-sm opacity-75 hover:underline">
+          Help our product team add it
+        </a>
       </Link>
     </div>
 
     <div className="leading-tight">
-      <p className="">Found a bug?</p>
+      <p className="text-tertiary">Found a bug?</p>
       <Link href={`/help?type=${SupportRequestType.BUG}`}>
-        <a className="text-xs underline">Help our engineering team fix it</a>
+        <a className="text-sm opacity-75 hover:underline">
+          Help our engineering team fix it
+        </a>
       </Link>
     </div>
   </>

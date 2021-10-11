@@ -56,6 +56,9 @@ export const navigationReducer = (
     case NavigationActions.SET_SHOULD_RENDER_LOADER: {
       return { ...state, shouldRenderLoader: action.payload };
     }
+    case NavigationActions.SET_HEADER_TRANSPARENCY: {
+      return { ...state, headerTransparency: action.payload };
+    }
     default:
       return state;
   }

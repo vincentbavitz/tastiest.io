@@ -168,13 +168,16 @@ const OverlayInnerAction = (props: OverlayInnerActionProps) => {
     setHeads(allowedHeads[0]);
   }, []);
 
+  // FIX ME
+  const bookedForTimestamp = Date.now();
+
   return (
     <Contained>
       <div className="my-3 -mx-2 border-b border-black border-opacity-25"></div>
 
       <div className="flex flex-col mx-2 space-y-2">
         <div className="flex items-center justify-between">
-          <div className="text-lg font-medium font-roboto bold text-primary">
+          <div className="text-lg font-medium font-secondary bold text-primary">
             Book for
           </div>
 
@@ -193,7 +196,7 @@ const OverlayInnerAction = (props: OverlayInnerActionProps) => {
             </Select>
           </div>
 
-          <div className="text-lg font-medium font-roboto bold text-primary">
+          <div className="text-lg font-medium font-secondary bold text-primary">
             {heads === 1 ? 'person' : 'people'}
           </div>
         </div>
@@ -211,7 +214,7 @@ const OverlayInnerAction = (props: OverlayInnerActionProps) => {
           size="large"
           className="text-2xl font-primary"
           loading={submitting}
-          onClick={submit}
+          onClick={() => submit(bookedForTimestamp)}
         >
           Buy now
         </Button>

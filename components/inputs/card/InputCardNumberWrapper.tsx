@@ -31,7 +31,7 @@ export function InputCardNumberWrapper({ children, brand, disabled }: Props) {
         size="large"
         label="Card Number"
         className="font-mono"
-        externalSuffix={brand ? <CardRow brand={brand} /> : null}
+        suffix={brand ? <CardRow brand={brand} /> : null}
         disabled={disabled}
       >
         {children}

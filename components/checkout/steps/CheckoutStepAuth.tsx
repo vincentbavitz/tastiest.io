@@ -49,12 +49,6 @@ const CheckoutStepAuthDesktop = ({ order }: Props) => {
         className="flex flex-col w-7/12 pb-24 space-y-4"
       >
         <CheckoutAuthTabs />
-
-        {tab === CheckoutSignInTabSelected.NEW_USER ? (
-          <CheckoutSignUp />
-        ) : (
-          <CheckoutSignIn />
-        )}
       </div>
 
       <div className="flex-grow w-5/12 pl-10">

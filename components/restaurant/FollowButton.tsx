@@ -28,7 +28,7 @@ export default function FollowButton(props: Props) {
   const isHoveringFollowButton = useHoverDirty(ref);
 
   return (
-    <div className="flex items-center h-full">
+    <div className="">
       {following ? (
         <InputGroup>
           <Button loading={followLoading} onClick={unfollow}>
@@ -51,7 +51,7 @@ export default function FollowButton(props: Props) {
                 <BellOutlined
                   className={clsx(
                     'duration-300 text-lg',
-                    notifications ? 'text-alt' : 'text-gray-200',
+                    notifications ? 'text-white' : 'text-gray-200',
                   )}
                 />
               </div>
@@ -59,18 +59,8 @@ export default function FollowButton(props: Props) {
           </Button>
         </InputGroup>
       ) : (
-        <Button
-          color={following ? 'primary' : 'neutral'}
-          onClick={following ? unfollow : follow}
-          loading={followLoading}
-        >
-          <Tooltip
-            theme="alt"
-            placement="top-right"
-            content={`Follow ${restaurant.name}`}
-          >
-            Follow
-          </Tooltip>
+        <Button color={'primary'} onClick={follow} loading={followLoading}>
+          <div className="text-white">Follow</div>
         </Button>
       )}
     </div>

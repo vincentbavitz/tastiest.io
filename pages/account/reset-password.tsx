@@ -2,7 +2,6 @@ import {
   IPasswordResetRequest,
   reportInternalError,
   TastiestInternalErrorCode,
-  UserData,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import { GetServerSideProps } from 'next';
@@ -49,9 +48,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   try {
     // Get password reset requests
     await userDataApi.initFromEmail(email);
-    const requests = await userDataApi.getUserField(
-      UserData.PASSWORD_RESET_REQUESTS,
-    );
+    const { passwordResetRequests: requests } = await userDataApi.getUserData();
 
     if (requests.length === 0) {
       await reportInternalError({

@@ -5,10 +5,6 @@ import { useAuth } from 'hooks/auth/useAuth';
 import { useFeedback } from 'hooks/useFeedback';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
-import {
-  SuggestRestaurantIllustration,
-  ThumbsUpIllustration,
-} from 'public/assets/illustrations';
 import React, { useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { Contained } from './Contained';
@@ -164,7 +160,7 @@ export function SuggestRestaurant() {
           isDesktop && 'space-x-10',
         )}
       >
-        {requestRecieved ? (
+        {/* {requestRecieved ? (
           <ThumbsUpIllustration
             style={{
               height: isSignedIn ? '16rem' : '20rem',
@@ -182,7 +178,7 @@ export function SuggestRestaurant() {
               marginLeft: svgDesktopMarginLeft,
             }}
           />
-        )}
+        )} */}
 
         <div
           style={{

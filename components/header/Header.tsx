@@ -1,15 +1,17 @@
-import { SearchIcon, TastiestIcon } from '@tastiest-io/tastiest-icons';
+import { HamburgerIcon } from '@tastiest-io/tastiest-icons';
 import clsx from 'clsx';
+import TastiestBrand from 'components/TastiestBrand';
+import { useHeaderTransparency } from 'hooks/useHeaderTransparency';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useToggle } from 'react-use';
 import { UI } from '../../constants';
 import { expandSearchOverlay } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Contained } from '../Contained';
 import { HeaderAvatar } from './HeaderAvatar';
-import { HeaderSearch } from './HeaderSearch';
 
 export function Header() {
   const { isDesktop } = useScreenSize();
@@ -43,29 +45,51 @@ function MobileHeader() {
     e.stopPropagation();
   };
 
+  const [isMobileMenuOpen, toggleIsMobileMenuOpen] = useToggle(false);
+  const { transparent } = useHeaderTransparency();
+
   return (
     <div
       style={{
-        paddingLeft: '5vw',
-        paddingRight: '5vw',
+        paddingLeft: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
+        paddingRight: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
         height: `${UI.HEADER_HEIGHT_MOBILE_REM}rem`,
         zIndex: UI.Z_INDEX_HEADER,
       }}
-      className="absolute top-0 left-0 right-0 w-full bg-white"
+      className={clsx(
+        'fixed top-0 left-0 right-0 w-full duration-500 shadow-xl',
+        transparent ? 'glass' : 'bg-white',
+      )}
     >
       <div className="relative flex items-center justify-between w-full h-full">
-        <div className="flex flex-shrink-0" onMouseDown={handleExpandSearch}>
-          <SearchIcon className="h-8 cursor-pointer fill-current text-secondary" />
-        </div>
-
         <Link href="/">
-          <a className="flex items-center flex-shrink-0">
-            <TastiestIcon className="h-8 fill-current text-primary" />
+          <a className="flex items-center flex-shrink-0 no-underline">
+            <TastiestBrand size={8} />
           </a>
         </Link>
 
-        <HeaderAvatar />
+        <HamburgerIcon
+          onClick={() => toggleIsMobileMenuOpen()}
+          className="h-8 cursor-pointer fill-current text-primary"
+        />
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen ? (
+        <div
+          style={{
+            top: `${UI.HEADER_HEIGHT_MOBILE_REM}rem`,
+            zIndex: UI.Z_INDEX_HEADER,
+            paddingLeft: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
+            paddingRight: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
+          }}
+          className="fixed left-0 right-0 flex flex-col py-3 space-y-3 bg-gray-100 shadow-lg"
+        >
+          <div className="flex items-center space-x-2">
+            <span>Profile</span>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -97,6 +121,7 @@ function DesktopHeader() {
   }, [location.pathname, searchBarPinnedToHeader]);
 
   const navBarRef = useRef(null);
+  const { transparent } = useHeaderTransparency();
 
   return (
     <div
@@ -108,27 +133,28 @@ function DesktopHeader() {
             : UI.Z_INDEX_HEADER,
         height: `${UI.HEADER_HEIGHT_DESKTOP_REM}rem`,
       }}
-      className="fixed top-0 left-0 right-0 flex items-center w-full bg-white"
+      className={clsx(
+        'fixed top-0 left-0 right-0 flex items-center duration-500 w-full shadow-xl',
+        transparent ? 'glass' : 'bg-white',
+      )}
     >
       <Contained>
         <div className="flex items-center w-full h-full">
           <div className="flex items-center justify-between w-full antialiased">
             <div className="flex flex-grow">
               <Link href="/">
-                <a className="flex items-center flex-shrink-0 text-4xl leading-none text-black no-underline font-primary">
-                  {/* <TastiestIcon className="h-8 fill-current text-primary" /> */}
-                  Tastiest
-                  <span className="text-primary">.</span>
+                <a className="no-underline">
+                  <TastiestBrand type="full" size={10} />
                 </a>
               </Link>
 
-              <HeaderSearch
+              {/* <HeaderSearch
                 isShown={searchIsShown}
                 innerOverlayStyle={{
                   // When pinned to header, limit height to vh and lock body scroll
                   maxHeight: searchIsShown ? '80vh' : 'unset',
                 }}
-              />
+              /> */}
             </div>
 
             {/* <HeaderSavedPlaces /> */}
@@ -154,7 +180,7 @@ function CheckoutHeader({ isDesktop }: { isDesktop: boolean }) {
       )}
     >
       <div className="flex items-center flex-shrink-0">
-        <TastiestIcon className="h-8 fill-current text-primary" />
+        <TastiestBrand type="full" />
       </div>
     </div>
   );

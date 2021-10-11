@@ -216,7 +216,7 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
             </p>
           </div>
           <div>
-            <h2 className="font-primary text-3xl text-center space-x-2">
+            <h2 className="space-x-2 text-3xl text-center font-primary">
               Why?
             </h2>
             <p className="text-center">

@@ -12,9 +12,8 @@ module.exports = {
     },
     fontFamily: {
       primary: ['Marmelad'],
+      secondary: ['Poppins'],
       mono: ['SourceCodePro'],
-      roboto: ['Roboto'],
-      robotoslab: ['RobotoSlab'],
     },
     fontSize: {
       '2xs': ['.66rem'],
@@ -33,32 +32,15 @@ module.exports = {
       '8xl': ['6rem'],
       '9xl': ['7rem'],
     },
-    filter: {
-      grayscale: 'grayscale(1)',
-    },
     extend: {
       colors: {
-        primary: '#60768C',
-        'primary-1': '#707e8c',
-        'primary-2': '#8697a8',
-        secondary: '#ffe0bf',
-        'secondary-1': '#ffd6aa',
-        'secondary-2': '#ffecd8',
-        alt: '#0c1d24',
-        'alt-1': '#1f3440',
-        'alt-2': '#57758f',
-        soft: '#ffeec4',
-        'soft-1': '#fff1d3',
-        'aux-orange': '#ffb200',
-        'aux-brown': '#dd8e00',
-        'aux-gray': '#8ee2d9',
-        'aux-blue': '#005d80',
-        'aux-green': '#97ca67',
+        primary: '#101D23',
+        secondary: '#57758F',
+        tertiary: '#9EB8CC',
+        dark: '#0D1E22',
+        light: '#FFFEF3',
       },
       display: ['huge', 'desktop', 'tablet', 'mobile'],
-      backgroundOpacity: {
-        '10': '0.1',
-      },
     },
   },
   variants: {
@@ -79,7 +61,6 @@ module.exports = {
   },
   plugins: [
     require('tailwindcss-children'),
-    require('tailwindcss-filters'),
     require('@tailwindcss/aspect-ratio'),
     // require('@tailwindcss/forms'),
   ],
