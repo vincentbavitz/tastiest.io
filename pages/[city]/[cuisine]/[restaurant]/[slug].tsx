@@ -139,7 +139,7 @@ function Post(post: IPost) {
 
       <div className="pb-20">
         <RecommendedPosts
-          label="You might also like"
+          label="See more from this restaurant"
           posts={recommendedPosts}
           rowLimit={1}
         />

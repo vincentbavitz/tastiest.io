@@ -1,6 +1,7 @@
+import Favicon from 'components/Favicon';
+import Fonts from 'components/Fonts';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
-import { Favicon } from '../components/Favicon';
 
 export default class CustomDocument extends Document<any> {
   private renderSegmentSnippet = () => {
@@ -25,15 +26,15 @@ export default class CustomDocument extends Document<any> {
 
   private renderTawkToSnippet = () => `
     <!--Start of Tawk.to Script-->
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/60cb997d65b7290ac63685ba/1f9t2cevc';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
+      var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+      (function(){
+      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+      s1.async=true;
+      s1.src='https://embed.tawk.to/60cb997d65b7290ac63685ba/1f8dkv4qa';
+      s1.charset='UTF-8';
+      s1.setAttribute('crossorigin','*');
+      s0.parentNode.insertBefore(s1,s0);
+      })();
     <!--End of Tawk.to Script-->
   `;
 
@@ -59,22 +60,7 @@ export default class CustomDocument extends Document<any> {
           {/* Inject Google Optimize */}
           <script src="https://www.googleoptimize.com/optimize.js?id=OPT-MNCSH5K"></script>
 
-          {/* Add Optimized Fonts */}
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
-            crossOrigin={(true as never) as string}
-          />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Marmelad&display=swap"
-            rel="stylesheet"
-          />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
-            rel="stylesheet"
-          />
-
+          <Fonts />
           <Favicon />
           {this.props?.styleTags}
         </Head>

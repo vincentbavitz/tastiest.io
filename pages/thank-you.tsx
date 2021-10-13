@@ -218,7 +218,7 @@ function ThankYou(
                   <div
                     key={uuid()}
                     style={{ minWidth: '3rem' }}
-                    className="flex items-center justify-center flex-1 h-16 text-3xl rounded-lg font-primary bg-tertiary text-light"
+                    className="flex items-center justify-center flex-1 h-16 text-3xl rounded-md font-primary bg-tertiary text-light"
                   >
                     {digit}
                   </div>

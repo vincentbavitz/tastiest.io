@@ -69,7 +69,7 @@ export function ArticleCard(props: Props): JSX.Element {
           ref={ref}
           className={classNames(
             'overflow-hidden w-full bg-primary no-underline',
-            isSmall || compact ? 'rounded-lg' : 'rounded-xl',
+            isSmall || compact ? 'rounded-md' : 'rounded-xl',
             isSmall ? 'pb-2' : 'pb-1',
           )}
         >
@@ -105,7 +105,7 @@ export function ArticleCard(props: Props): JSX.Element {
                   key={item}
                   style={{ width: 'fit-content' }}
                   className={clsx(
-                    'px-2 py-1 leading-4 bg-opacity-90 rounded-md bg-gray-900',
+                    'px-2 py-1 leading-4 bg-opacity-90 rounded-sm bg-gray-900',
                     compact ? 'text-xs' : 'text-sm',
                   )}
                 >
@@ -143,7 +143,7 @@ export function ArticleCard(props: Props): JSX.Element {
                 shouldStackButtons && 'flex-col',
               )}
             >
-              <div className="flex-1">
+              {/* <div className="flex-1">
                 <Button
                   wide
                   color="secondary"
@@ -151,7 +151,7 @@ export function ArticleCard(props: Props): JSX.Element {
                 >
                   Buy Now
                 </Button>
-              </div>
+              </div> */}
 
               <div className="flex-1">
                 <Button

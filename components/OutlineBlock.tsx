@@ -29,9 +29,9 @@ export function OutlineBlock(props: Props) {
         onClick={onClick}
         className={classNames(
           'duration-300',
-          theme === 'alt' && 'border-2 border-white rounded-md',
+          theme === 'alt' && 'border-2 border-white rounded-sm',
           theme === 'default' &&
-            'border-2 border-secondary hover:border-primary rounded-lg',
+            'border-2 border-secondary hover:border-primary rounded-md',
           size === 'tiny' && 'px-2 text-xs',
           size === 'small' && 'py-1 px-3 text-sm',
           size === 'medium' && 'py-2 px-3',

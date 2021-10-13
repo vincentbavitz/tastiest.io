@@ -76,7 +76,7 @@ export function ArticleSaveShareWidget(props: IPost) {
           <div className="z-10 flex justify-center w-full">
             <div
               style={{ width: 'fit-content' }}
-              className="relative flex my-4 rounded-md cursor-pointer bg-soft text-primary"
+              className="relative flex my-4 rounded-sm cursor-pointer bg-soft text-primary"
             >
               {/* <div
               onClick={() => toggleSaveArticle(props.slug)}
@@ -101,7 +101,7 @@ export function ArticleSaveShareWidget(props: IPost) {
             </div> */}
 
               <div
-                className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 rounded-md cursor-pointer hover:bg-white"
+                className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 rounded-sm cursor-pointer hover:bg-white"
                 onClick={() => share()}
               >
                 <ShareIcon

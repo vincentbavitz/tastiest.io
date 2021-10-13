@@ -266,7 +266,7 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
           </div>
 
           <textarea
-            className="h-32 px-4 py-2 duration-300 border-2 rounded-lg outline-none border-secondary hover:border-primary"
+            className="h-32 px-4 py-2 duration-300 border-2 rounded-md outline-none border-secondary hover:border-primary"
             placeholder={textareaPlaceholder}
             maxLength={500}
             value={message}

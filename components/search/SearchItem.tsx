@@ -32,7 +32,7 @@ export function SearchItem(props: IPost) {
             'search-item',
             'flex',
             'flex-col',
-            'rounded-lg',
+            'rounded-md',
             'overflow-hidden',
             'shadow-lg',
             'm-4',

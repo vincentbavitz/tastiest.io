@@ -60,7 +60,7 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
         style={{ paddingBottom: '80%' }}
         className={classNames(
           'relative w-full h-0 overflow-hidden bg-primary bg-opacity-10',
-          isSmall ? 'rounded-lg' : 'rounded-xl',
+          isSmall ? 'rounded-md' : 'rounded-xl',
         )}
       >
         {image.url && (

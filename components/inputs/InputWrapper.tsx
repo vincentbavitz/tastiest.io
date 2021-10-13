@@ -64,7 +64,7 @@ export function InputWrapper(props: Props) {
               ? `border-primary`
               : 'border-secondary',
             size === 'small' ? 'px-2' : 'px-4',
-            size === 'large' ? 'rounded-xl h-12' : 'rounded-lg',
+            size === 'large' ? 'rounded-xl h-12' : 'rounded-md',
             className,
           )}
         >

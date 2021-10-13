@@ -30,7 +30,7 @@ export function ArticleCardSearchResult(props: IPost): JSX.Element {
           ref={ref}
           className={clsx(
             'overflow-hidden w-full bg-secondary no-underline',
-            'rounded-md',
+            'rounded-sm',
           )}
         >
           <div

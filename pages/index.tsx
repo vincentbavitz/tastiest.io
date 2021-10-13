@@ -6,7 +6,6 @@ import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import React from 'react';
 import { Contained } from '../components/Contained';
-import { HomeMapSection } from '../components/home/HomeMapSection';
 import { HomeSearchSection } from '../components/home/HomeSearchSection';
 import { METADATA } from '../constants';
 
@@ -67,9 +66,7 @@ const Index: NextPage<Props> = ({ dishes = [] }) => {
       </div>
 
       <div className="flex flex-col space-y-16">
-        <Contained>
-          <HomeMapSection />
-        </Contained>
+        <Contained>{/* <HomeMapSection /> */}</Contained>
 
         <HomeTastiestDishes cards={cards} />
         <SuggestRestaurant />

@@ -80,13 +80,13 @@ const ArticlePreviewImage = ({
       width: !isDesktop ? '33%' : '10rem',
       height: !isDesktop ? '66%' : '6rem',
     }}
-    className="relative overflow-hidden rounded-lg bg-primary bg-opacity-10"
+    className="relative overflow-hidden rounded-md bg-primary bg-opacity-10"
   >
     {image?.url && (
       <img
         src={image?.url}
         alt={image?.description}
-        className="object-cover w-full h-full rounded-lg"
+        className="object-cover w-full h-full rounded-md"
       />
     )}
   </div>

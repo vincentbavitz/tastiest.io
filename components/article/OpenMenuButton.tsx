@@ -18,7 +18,7 @@ export default function OpenMenuButton(props: Props) {
         onClick={() => dispatch(toggleOfferMenu(true))}
         style={{ height: '59.42857%' }}
         className={clsx(
-          'relative pl-16 pr-4 text-white duration-200 flex items-center rounded-md cursor-pointer whitespace-nowrap',
+          'relative pl-16 pr-4 text-white duration-200 flex items-center rounded-sm cursor-pointer whitespace-nowrap',
           'bg-primary hover:bg-primary-1',
         )}
       >

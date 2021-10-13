@@ -72,7 +72,7 @@ export default function Layout({
           <ContentLoader router={router}>
             {/* If you'd like an element to stick to the footer in your page, simply wrap the */}
             {/* top <div> and the button <div> in <></> and they'll be split */}
-            <div className="relative flex flex-col justify-between flex-grow bg-white font-secondary">
+            <div className="relative flex flex-col justify-between flex-grow bg-light font-secondary">
               {/* All pages control when they are considered loaded */}
               <Component {...pageProps} />
             </div>

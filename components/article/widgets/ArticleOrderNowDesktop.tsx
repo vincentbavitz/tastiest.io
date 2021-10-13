@@ -51,7 +51,7 @@ const XScrollSelectItem = (props: XScrollSelectItemProps) => {
       onClick={onClick}
       className={clsx(
         'flex justify-center items-center flex-col border-2 space-y-1 leading-none',
-        'mx-1 py-1 px-2 text-sm text-center duration-300 rounded-md whitespace-nowrap',
+        'mx-1 py-1 px-2 text-sm text-center duration-300 rounded-sm whitespace-nowrap',
         disabled ? disabledStyles : activeStyles,
       )}
     >

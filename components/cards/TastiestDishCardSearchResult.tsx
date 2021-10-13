@@ -49,7 +49,7 @@ export default function TastiestDishCardSearchResult(props: Props) {
       <a className="no-underline">
         <div
           ref={ref}
-          className={clsx('overflow-hidden w-full no-underline', 'rounded-md')}
+          className={clsx('overflow-hidden w-full no-underline', 'rounded-sm')}
         >
           <div
             style={{ paddingBottom: '80%' }}

@@ -34,11 +34,13 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: '#101D23',
-        secondary: '#57758F',
+        primary: '#274f73',
+        secondary: '#3882bb',
         tertiary: '#9EB8CC',
-        dark: '#0D1E22',
-        light: '#FFFEF3',
+        dark: '#07151b',
+        light: '#fafafa',
+        danger: '#bc1818',
+        success: '#28c625',
       },
       display: ['huge', 'desktop', 'tablet', 'mobile'],
     },

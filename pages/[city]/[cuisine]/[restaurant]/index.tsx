@@ -232,8 +232,8 @@ const RestaurantPage = (
         </div>
 
         {/* White overlays */}
-        <div className="absolute inset-0 opacity-25 bg-tertiary"></div>
-        <div className="absolute bottom-0 left-0 right-0 top-1/2 bg-gradient-to-t from-tertiary"></div>
+        <div className="absolute inset-0 opacity-25 bg-light"></div>
+        <div className="absolute bottom-0 left-0 right-0 top-1/2 bg-gradient-to-t from-light"></div>
 
         <div className="absolute inset-0 flex flex-col items-center justify-end space-y-4">
           {/* Restaurant Name */}
@@ -292,7 +292,7 @@ const RestaurantPage = (
                       </div>
 
                       <div className="absolute inset-0 flex flex-col items-end justify-end leading-tight">
-                        <div className="px-4 py-2 bg-white bg-opacity-50 rounded-lg shadow-lg">
+                        <div className="px-4 py-2 bg-white bg-opacity-50 rounded-md shadow-lg">
                           <a
                             target="_blank"
                             rel="noreferrer"

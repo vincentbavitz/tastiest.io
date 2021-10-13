@@ -56,7 +56,7 @@ function RestaurantMapInner({ restaurant }: InnerProps) {
         maxHeight: '90vh',
         filter: 'drop-shadow(0px 0px 10px rgba(0,0,0,0.10))',
       }}
-      className="relative w-full overflow-hidden bg-opacity-25 rounded-md bg-secondary-2"
+      className="relative w-full overflow-hidden bg-opacity-25 rounded-sm bg-secondary-2"
     ></div>
   );
 }

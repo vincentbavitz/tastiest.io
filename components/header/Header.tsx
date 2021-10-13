@@ -134,7 +134,7 @@ function DesktopHeader() {
         height: `${UI.HEADER_HEIGHT_DESKTOP_REM}rem`,
       }}
       className={clsx(
-        'fixed top-0 left-0 right-0 flex items-center duration-500 w-full shadow-xl',
+        'fixed top-0 left-0 right-0 flex items-center duration-500 w-full',
         transparent ? 'glass' : 'bg-white',
       )}
     >

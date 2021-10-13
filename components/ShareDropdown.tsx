@@ -70,7 +70,7 @@ export const ShareDropdown = (props: IShareDropdownProps) => {
         onClickAway={() => setIsOpen(false)}
       >
         <div className="px-2 overflow-visible">
-          <div className="flex items-center w-full border rounded-md bg-soft border-soft">
+          <div className="flex items-center w-full border rounded-sm bg-soft border-soft">
             <input
               className="pl-3 border-l outline-none bg-soft border-soft rounded-l-md"
               style={{ minWidth: '20rem', maxWidth: '80vw' }}

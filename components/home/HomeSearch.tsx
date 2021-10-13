@@ -71,7 +71,7 @@ export function HomeSearch() {
           'border-primary border-t-2 border-l-2 border-r-2',
           searchOverlayExpanded && !searchBarPinnedToHeader && !!isDesktop
             ? 'rounded-t-lg'
-            : 'rounded-lg',
+            : 'rounded-md',
           searchOverlayExpanded && !searchBarPinnedToHeader && !!isDesktop
             ? 'border-b-0'
             : 'border-b-2',
