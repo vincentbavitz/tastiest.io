@@ -1,6 +1,6 @@
+import { TastiestBrand } from '@tastiest-io/tastiest-components';
 import { HamburgerIcon } from '@tastiest-io/tastiest-icons';
 import clsx from 'clsx';
-import TastiestBrand from 'components/TastiestBrand';
 import { useHeaderTransparency } from 'hooks/useHeaderTransparency';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';

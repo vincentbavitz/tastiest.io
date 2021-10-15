@@ -1,3 +1,4 @@
+import { TastiestBrand } from '@tastiest-io/tastiest-components';
 import {
   FacebookIcon,
   HeartIcon,
@@ -12,7 +13,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, ReactNode } from 'react';
 import { Contained } from './Contained';
-import TastiestBrand from './TastiestBrand';
 
 export function Footer() {
   const { isDesktop, isHuge } = useScreenSize();

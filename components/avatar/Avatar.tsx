@@ -1,5 +1,6 @@
+import { TastiestBrand } from '@tastiest-io/tastiest-components';
 import classNames from 'classnames';
-import TastiestBrand from 'components/TastiestBrand';
+import React from 'react';
 
 export interface AvatarProps {
   // Size is in the same units as Tailwind units

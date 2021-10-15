@@ -1,32 +1,32 @@
-import { CmsApi, ITastiestDish } from '@tastiest-io/tastiest-utils';
-import { HomeTastiestDishes } from 'components/home/HomeTastiestDishes';
+import { CmsApi, IPost } from '@tastiest-io/tastiest-utils';
+import HomeFeaturedExperiencesSection from 'components/home/HomeFeaturedExperiencesSection';
 import { SuggestRestaurant } from 'components/SuggestRestaurant';
 import { GetStaticProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import React from 'react';
-import { Contained } from '../components/Contained';
-import { HomeSearchSection } from '../components/home/HomeSearchSection';
+import { HomeHeroSection } from '../components/home/HomeHeroSection';
 import { METADATA } from '../constants';
 
 interface Props {
-  dishes: Array<ITastiestDish>;
+  posts: IPost[];
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   const cms = new CmsApi();
-  const { dishes = [] } = await cms.getTastiestDishes(20);
+  // const { dishes = [] } = await cms.getTastiestDishes(20);
+  const { posts = [] } = await cms.getTopPosts(10);
 
   return {
     props: {
-      dishes,
+      posts,
     },
     revalidate: 360,
   };
 };
 
-const Index: NextPage<Props> = ({ dishes = [] }) => {
-  const cards = dishes ? dishes.slice?.(0, 20) : [];
+const Index: NextPage<Props> = ({ posts = [] }) => {
+  const cards = posts ? posts.slice?.(0, 20) : [];
 
   return (
     <>
@@ -58,17 +58,13 @@ const Index: NextPage<Props> = ({ dishes = [] }) => {
       />
 
       <div className="flex flex-col mb-16 space-y-16">
-        <Contained>
-          <HomeSearchSection />
-        </Contained>
+        <HomeHeroSection />
+        <HomeFeaturedExperiencesSection cards={cards} />
 
         {/* <HomeRecentSearchesSection /> */}
       </div>
 
       <div className="flex flex-col space-y-16">
-        <Contained>{/* <HomeMapSection /> */}</Contained>
-
-        <HomeTastiestDishes cards={cards} />
         <SuggestRestaurant />
       </div>
     </>

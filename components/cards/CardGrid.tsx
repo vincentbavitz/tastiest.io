@@ -28,11 +28,11 @@ export function CardGrid(props: Props) {
   const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
 
   // prettier-ignore
-  const cols =
-    isHuge ? 5 : 
+  const cols = (
+    isHuge ? 4 : 
     isDesktop ? size === 'small' ? 4 : 3 : 
     isTablet ? size === 'small' ? 3 : 2 :
-    1;
+    1) as number;
 
   // Rows will be as little as possible, but never going over rowLimit
   const rows = Math.min(rowLimit, Math.ceil(children.length / cols));
@@ -66,14 +66,34 @@ export function CardGrid(props: Props) {
         <Contained>
           <div
             className={classNames(
-              `grid grid-rows-${rows}`,
-              `grid-cols-${cols}`,
-              isDesktop && (size === 'small' ? 'gap-4' : 'gap-6'),
-              isTablet && (size === 'small' ? 'gap-4' : 'gap-6'),
+              `grid`,
+              rows === 5
+                ? 'grid-rows-5'
+                : rows === 4
+                ? 'grid-rows-4'
+                : rows === 3
+                ? 'grid-rows-3'
+                : rows === 2
+                ? 'grid-rows-2'
+                : rows === 1
+                ? 'grid-rows-1'
+                : '',
+              cols === 1 ? 'gap-8' : cols > 3 ? 'gap-6' : 'gap-4',
+              cols === 5
+                ? 'grid-cols-5'
+                : cols === 4
+                ? 'grid-cols-4'
+                : cols === 3
+                ? 'grid-cols-3'
+                : cols === 2
+                ? 'grid-cols-2'
+                : cols === 1
+                ? 'grid-cols-1'
+                : '',
             )}
           >
             {cards.map(item => (
-              <div key={item.key} className="w-full">
+              <div key={item.key} className="flex justify-center w-full">
                 {item}
               </div>
             ))}

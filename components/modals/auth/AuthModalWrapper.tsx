@@ -1,5 +1,5 @@
+import { TastiestBrand } from '@tastiest-io/tastiest-components';
 import { SignInTosInfo } from 'components/SignInTosInfo';
-import TastiestBrand from 'components/TastiestBrand';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
 import React, { ReactNode, useEffect } from 'react';
