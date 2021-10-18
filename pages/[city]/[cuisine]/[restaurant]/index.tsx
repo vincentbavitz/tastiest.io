@@ -16,6 +16,7 @@ import TabbedContent from 'components/TabbedContent';
 import { useHeaderTransparency } from 'hooks/useHeaderTransparency';
 import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
+import { Layouts } from 'layouts/LayoutHandler';
 import {
   GetStaticPaths,
   GetStaticPropsContext,
@@ -197,6 +198,13 @@ const RestaurantPage = (
       className="object-cover w-full h-full bg-gray-400"
     />,
   );
+
+  // Prefetch the experiences page
+  useEffect(() => {
+    router.prefetch(
+      `/${restaurant.city}/${restaurant.cuisine}/${restaurant.uriName}/experiences`,
+    );
+  }, []);
 
   return (
     <div style={{ marginTop: `-${UI.HEADER_HEIGHT_DESKTOP_REM}rem` }}>
@@ -468,4 +476,5 @@ const RestaurantPage = (
   );
 };
 
+RestaurantPage.layout = Layouts.RESTAURANT;
 export default RestaurantPage;

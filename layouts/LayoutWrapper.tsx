@@ -1,41 +1,31 @@
 import clsx from 'clsx';
+import { Footer } from 'components/Footer';
+import { Header } from 'components/header/Header';
 import ContentLoader from 'components/loaders/ContentLoader';
 import PageLoader from 'components/loaders/PageLoader';
+import { AuthModal } from 'components/modals/auth/AuthModal';
+import { AcceptTrackingPopup } from 'components/popups/AcceptTrackingPopup';
+import { SearchOverlay } from 'components/search/SearchOverlay';
 import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { NextComponentType, NextPageContext } from 'next';
 import { Router } from 'next/router';
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { IState } from 'state/reducers';
-import { UI } from '../../constants';
-import { Footer } from '../Footer';
-import { Header } from '../header/Header';
-import { AuthModal } from '../modals/auth/AuthModal';
-import { AcceptTrackingPopup } from '../popups/AcceptTrackingPopup';
-import { SearchOverlay } from '../search/SearchOverlay';
+import React from 'react';
+import { UI } from '../constants';
 
-interface Props {
+export interface LayoutProps {
   pageProps: any;
-  children: NextComponentType<NextPageContext>;
   router: Router;
+  children: NextComponentType<NextPageContext>;
 }
 
-export default function Layout({
+export default function LayoutWrapper({
   router,
   pageProps,
   children: Component,
-}: Props) {
+}: LayoutProps) {
   const { isInitialLoading } = usePageLoader();
-  const { isContentLoading } = useSelector((state: IState) => state.navigation);
   const { isDesktop } = useScreenSize();
-
-  // Scroll to top on load
-  useEffect(() => {
-    if (isContentLoading && typeof window !== 'undefined') {
-      window.scrollTo(0, 0);
-    }
-  }, [isContentLoading]);
 
   return (
     <>

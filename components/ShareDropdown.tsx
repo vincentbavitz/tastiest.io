@@ -78,11 +78,7 @@ export const ShareDropdown = (props: IShareDropdownProps) => {
               value={tastiestUrl.toString()}
             />
 
-            <Button
-              className="rounded-l-none"
-              onClick={onClickCopyToClipboard}
-              color="primary"
-            >
+            <Button onClick={onClickCopyToClipboard} color="primary">
               <Tooltip
                 isOpen={Boolean(copied)}
                 content="Copied"

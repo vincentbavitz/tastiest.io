@@ -1,11 +1,11 @@
 import AmbianceProvider from 'contexts/ambiance';
 import 'firebase/firestore'; // <- needed if using firestore
 import { ScreenProvider } from 'hooks/useScreenSize';
+import LayoutHandler from 'layouts/LayoutHandler';
 import { DefaultSeo } from 'next-seo';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import React from 'react';
-import Layout from '../components/layout';
 import { METADATA } from '../constants';
 import { AuthProvider } from '../contexts/auth';
 import '../styles/style.scss';
@@ -43,9 +43,9 @@ function App({ Component, pageProps, router }: AppProps) {
             }}
           />
 
-          <Layout router={router} pageProps={pageProps}>
+          <LayoutHandler router={router} pageProps={pageProps}>
             {Component}
-          </Layout>
+          </LayoutHandler>
         </ScreenProvider>
       </AmbianceProvider>
     </AuthProvider>
