@@ -1,4 +1,5 @@
 import { EnvironmentOutlined } from '@ant-design/icons';
+import { Button } from '@tastiest-io/tastiest-components';
 import {
   CmsApi,
   dlog,
@@ -7,6 +8,7 @@ import {
   ITastiestDish,
   RestaurantDataApi,
 } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
 import { ArticleFeatureVideoWidget } from 'components/article/widgets/ArticleFeatureVideoWidget';
 import TastiestDishRow from 'components/cards/TastiestDishRow';
 import { Contained } from 'components/Contained';
@@ -14,7 +16,6 @@ import { RestaurantMap } from 'components/modals/RestaurantMap';
 import OpenTimes from 'components/restaurant/OpenTimes';
 import { RichBody } from 'components/RichBody';
 import { SectionTitle } from 'components/SectionTitle';
-import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { Layouts } from 'layouts/LayoutHandler';
 import {
@@ -25,12 +26,12 @@ import {
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { getGoogleMapLink } from 'utils/location';
 import { generateTitle } from 'utils/metadata';
+import { generateStaticURL } from 'utils/routing';
 
 export interface IRestaurantPath {
   params: {
@@ -138,9 +139,18 @@ const RestaurantPage = (
   const heroIllustrationHeightRem =
     (heroIllustrationH / heroIllustrationW) * heroIllustrationSizeRem;
 
-  const router = useRouter();
-  const [mapModalOpen, setMapModalOpen] = useState(false);
-  const { isPageLoading } = usePageLoader();
+  const experiencesPath = useMemo(() => {
+    const baseRestaurantPath = generateStaticURL({
+      city: restaurant.city,
+      cuisine: restaurant.cuisine,
+      restaurant: restaurant.uriName,
+    });
+
+    return {
+      href: `${baseRestaurantPath.href}/experiences`,
+      as: `${baseRestaurantPath.as}/experiences`,
+    };
+  }, [restaurant]);
 
   dlog('index ➡️ posts:', posts);
   dlog('index ➡️ tastiestDishes:', tastiestDishes);
@@ -232,29 +242,65 @@ const RestaurantPage = (
       </div>
 
       <Contained maxWidth={900}>
-        <h4 className="text-2xl font-primary mt-6 text-primary">
-          {restaurant.name}
-        </h4>
-
-        <a
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center space-x-1 no-underline opacity-75"
-          href={getGoogleMapLink(
-            restaurant.location.lat,
-            restaurant.location.lon,
+        <div
+          className={clsx(
+            isDesktop ? 'flex mt-6 items-end justify-between' : 'flex flex-col',
           )}
         >
-          <EnvironmentOutlined className="text-secondary text-lg" />{' '}
-          <p>{restaurant?.location?.address}</p>
-        </a>
+          <h4 className="text-2xl font-primary text-primary">
+            {restaurant.name}
+          </h4>
 
-        <div className="flex space-x-6 mt-6 w-full">
-          <OpenTimes openTimes={openTimes} />
+          <a
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center space-x-1 no-underline opacity-75"
+            href={getGoogleMapLink(
+              restaurant.location.lat,
+              restaurant.location.lon,
+            )}
+          >
+            <EnvironmentOutlined className="text-secondary text-lg" />{' '}
+            <p>{restaurant?.location?.address}</p>
+          </a>
+        </div>
 
-          <div style={{ minHeight: '12rem' }} className="flex-grow">
-            <RestaurantMap restaurant={restaurant} />
-          </div>
+        <div className="pt-4 pb-20">
+          {isMobile || isTablet ? (
+            <>
+              <div className="flex flex-col-reverse lg:flex-row space-x-0 lg:space-x-6 md:mt-3 mt-6 w-full">
+                <OpenTimes wide openTimes={openTimes} />
+
+                <div
+                  style={{ minHeight: '12rem' }}
+                  className="w-full h-64 lg:h-auto flex-grow mb-6 lg:mb-0"
+                >
+                  <RestaurantMap restaurant={restaurant} />
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex space-x-6">
+                <div
+                  style={{ minHeight: '12rem' }}
+                  className="w-full h-auto flex-grow"
+                >
+                  <RestaurantMap restaurant={restaurant} />
+                </div>
+
+                <div className="">
+                  <OpenTimes small openTimes={openTimes} />
+
+                  <div className="shadow-lg pt-4">
+                    <Button color="secondary" wide size="large">
+                      See experiences
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </Contained>
     </>

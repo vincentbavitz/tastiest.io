@@ -1,7 +1,6 @@
 import { Button, Select } from '@tastiest-io/tastiest-components';
 import { PoundIcon } from '@tastiest-io/tastiest-icons';
 import {
-  dlog,
   getMinsIntoDay,
   IDeal,
   minsIntoHumanTime,
@@ -186,11 +185,6 @@ export function ArticleOrderNowDesktop(props: Props) {
                       const disabled =
                         selectedDay.daysFromToday === 0 &&
                         getMinsIntoDay() > time;
-
-                      dlog(
-                        'ArticleOrderNowDesktop ➡️ getMinsIntoDay:',
-                        getMinsIntoDay(),
-                      );
 
                       return (
                         <XScrollSelectItem

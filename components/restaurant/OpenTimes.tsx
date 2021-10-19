@@ -7,10 +7,13 @@ import {
   titleCase,
   WeekOpenTimes,
 } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
 interface Props {
   openTimes: WeekOpenTimes;
+  wide?: boolean;
+  small?: boolean;
 }
 
 type OpenTimeRow = {
@@ -26,7 +29,7 @@ type HumanReadableOpenTimeRow = {
 };
 
 export default function OpenTimes(props: Props) {
-  const { openTimes } = props;
+  const { openTimes, wide, small } = props;
 
   // If we have successive openTimes that are the same,
   // starting from Monday, list them as (for example)...
@@ -149,23 +152,47 @@ export default function OpenTimes(props: Props) {
       return { label: 'Weekends', times };
     }
 
-    return { label: `${titleCase(startDay)} to ${titleCase(endDay)}`, times };
+    const shorthandDays = {
+      0: 'Sun',
+      1: 'Mon',
+      2: 'Tues',
+      3: 'Wed',
+      4: 'Thurs',
+      5: 'Fri',
+      6: 'Sat',
+    };
+
+    return {
+      label: `${shorthandDays[row.fromDay]} to ${shorthandDays[row.toDay]}`,
+      times,
+    };
   };
 
   return (
     <div
-      style={{ width: 'min-content', minWidth: '17rem' }}
-      className="whitespace-nowrap"
+      style={{
+        width: wide ? '100%' : 'min-content',
+        minWidth: small ? '14rem' : '17rem',
+      }}
+      className="whitespace-nowrap shadow-lg border duration-300 border-light hover:border-primary bg-light px-4 py-2 rounded-lg"
     >
-      <div className="border-b border-gray-300 w-full text-lg mb-2 pr-6">
+      <div className="border-b border-gray-300 w-full text-lg tracking-wide mb-2 pr-6">
         Open Times
       </div>
 
       {timeRows?.map((row, key) => {
         const { label, times } = transformRowIntoHumanLanguage(row);
+        const closed = times.toLowerCase() === 'closed';
 
         return (
-          <div key={key} className="flex space-x-4 justify-between">
+          <div
+            key={key}
+            className={clsx(
+              'flex space-x-4 py-1 justify-between',
+              closed ? 'opacity-50' : '',
+              small ? 'text-sm' : 'text-base',
+            )}
+          >
             <div>{label}</div>
             <div>{times}</div>
           </div>
