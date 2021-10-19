@@ -5,6 +5,7 @@ import {
   IPost,
   IRestaurant,
   ITastiestDish,
+  RestaurantDataApi,
 } from '@tastiest-io/tastiest-utils';
 import { ArticleFeatureVideoWidget } from 'components/article/widgets/ArticleFeatureVideoWidget';
 import TastiestDishRow from 'components/cards/TastiestDishRow';
@@ -27,6 +28,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useState } from 'react';
+import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { getGoogleMapLink } from 'utils/location';
 import { generateTitle } from 'utils/metadata';
 
@@ -96,6 +98,12 @@ export const getStaticProps = async (
     };
   }
 
+  // Get openTimes of restaurant. Don't worry about this adding to load times.
+  // It's cached ;)
+  const restaurantDataApi = new RestaurantDataApi(firebaseAdmin, restaurant.id);
+  const { metrics } = await restaurantDataApi.getRestaurantData();
+  const { openTimes } = metrics;
+
   // Get posts from restaurant
   const { posts } = await cms.getPostsOfRestaurant(restaurant.uriName, 100);
 
@@ -105,7 +113,7 @@ export const getStaticProps = async (
   );
 
   return {
-    props: { restaurant, tastiestDishes, posts },
+    props: { restaurant, tastiestDishes, posts, openTimes },
     revalidate: 360,
   };
 };
@@ -113,7 +121,7 @@ export const getStaticProps = async (
 const RestaurantPage = (
   props: InferGetStaticPropsType<typeof getStaticProps>,
 ) => {
-  const { restaurant, tastiestDishes, posts } = props;
+  const { restaurant, tastiestDishes, posts, openTimes } = props;
   const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
 
   // As a percentage
@@ -242,7 +250,7 @@ const RestaurantPage = (
         </a>
 
         <div className="flex space-x-6 mt-6 w-full">
-          <OpenTimes openTimes={null} />
+          <OpenTimes openTimes={openTimes} />
 
           <div style={{ minHeight: '12rem' }} className="flex-grow">
             <RestaurantMap restaurant={restaurant} />

@@ -1,19 +1,22 @@
 import {
+  dlog,
   minsIntoHumanTime,
+  OpenTimesMetricDay,
   TIME,
   TimeRange,
   titleCase,
   WeekOpenTimes,
 } from '@tastiest-io/tastiest-utils';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 interface Props {
   openTimes: WeekOpenTimes;
 }
 
 type OpenTimeRow = {
-  from: number;
-  to: number;
+  open: boolean;
+  fromDay: number | null;
+  toDay: number | null;
   range: TimeRange;
 };
 
@@ -29,29 +32,120 @@ export default function OpenTimes(props: Props) {
   // starting from Monday, list them as (for example)...
   // Monday to Wednesday: 9:00 AM --> 4:30 PM
 
-  const rows: OpenTimeRow[] = [
-    { from: 1, to: 3, range: [135, 1045] },
-    { from: 4, to: 5, range: [165, 900] },
-    { from: 4, to: 5, range: [165, 900] },
-    { from: 6, to: 0, range: [300, 900] },
-  ];
+  const timeRows = useMemo(() => {
+    // const rows: OpenTimeRow[] = [
+    //   { from: 1, to: 3, range: [135, 1045] },
+    //   { from: 4, to: 5, range: [165, 900] },
+    //   { from: 4, to: 5, range: [165, 900] },
+    //   { from: 6, to: 0, range: [300, 900] },
+    // ];
+
+    const rows: OpenTimeRow[] = [];
+    Object.entries(openTimes)
+      .sort((a, b) => Number(a[0]) - Number(b[0]))
+      .forEach(([day, openTimeItem]) => {
+        const isSunday = Number(day) === 0;
+
+        // Previous day where the first is Monday and Monday has no previous
+        const previousDay = Number(day) === 0 ? 6 : Number(day) - 1;
+        const previousMetricDay: OpenTimesMetricDay =
+          openTimes[String(previousDay)];
+
+        const lastEntry = rows[rows.length - 1];
+
+        if (isSunday) {
+          rows.push({
+            open: openTimeItem.open,
+            fromDay: 0,
+            toDay: 0,
+            range: openTimeItem.range,
+          } as OpenTimeRow);
+
+          return;
+        }
+
+        // Successive days with the same times.
+        // prettier-ignore
+        const successivelyClosed = openTimeItem.open === false && previousMetricDay.open === false;
+        const successivelyOpen =
+          openTimeItem.open === true && previousMetricDay.open === true;
+
+        if (
+          successivelyClosed ||
+          (successivelyOpen &&
+            openTimeItem.range[0] === previousMetricDay.range[0] &&
+            openTimeItem.range[1] === previousMetricDay.range[1])
+        ) {
+          rows[rows.length - 1] = {
+            open: lastEntry.open,
+            fromDay: lastEntry.fromDay,
+            toDay: Number(day),
+            range: lastEntry.range,
+          };
+
+          return;
+        }
+
+        rows.push({
+          open: openTimeItem.open,
+          fromDay: Number(day),
+          toDay: Number(day),
+          range: openTimeItem.range,
+        });
+      });
+
+    // Sort so that Sunday is last
+    const sortedRows = rows.sort((a, b) =>
+      b.fromDay === 0 ? -1 : a.fromDay - b.fromDay,
+    );
+
+    // Put Saturday and Sunday together if they're the same.
+    // This is so we can call it 'Weekends' on the frontend.
+    const sunday = sortedRows.find(r => r.fromDay === 0 && r.toDay === 0);
+    const saturday = sortedRows.find(r => r.fromDay === 6 && r.toDay === 6);
+
+    const bothExist = sunday && saturday;
+    const bothClosed = sunday.open === false && saturday.open === false;
+    const bothOpen = sunday.open === true && saturday.open === true;
+    const sameRange =
+      bothOpen &&
+      sunday.range[0] === saturday.range[0] &&
+      sunday.range[1] === saturday.range[1];
+
+    // Set from Saturday to Sunday as one row
+    if (bothExist && (bothClosed || (bothOpen && sameRange))) {
+      const finalRows = sortedRows.slice(0, sortedRows.length - 1);
+      finalRows[finalRows.length - 1] = {
+        open: bothClosed ? false : true,
+        fromDay: 6,
+        toDay: 0,
+        range: sunday.range,
+      };
+
+      return finalRows;
+    }
+
+    return sortedRows;
+  }, []);
+
+  dlog('OpenTimes ➡️ timeRows:', timeRows);
 
   const transformRowIntoHumanLanguage = (
     row: OpenTimeRow,
   ): HumanReadableOpenTimeRow => {
-    const startDay = TIME.DAYS_OF_THE_WEEK[row.from];
-    const endDay = TIME.DAYS_OF_THE_WEEK[row.to];
+    const startDay = TIME.DAYS_OF_THE_WEEK[row.fromDay];
+    const endDay = TIME.DAYS_OF_THE_WEEK[row.toDay];
 
-    const startTime = minsIntoHumanTime(row.range[0]);
-    const endTime = minsIntoHumanTime(row.range[1]);
-    const times = `${startTime} 🠒 ${endTime}`;
+    const startTime = row.open ? minsIntoHumanTime(row.range[0]) : null;
+    const endTime = row.open ? minsIntoHumanTime(row.range[1]) : null;
+    const times = row.open ? `${startTime} 🠒 ${endTime}` : 'Closed';
 
     if (startDay === endDay) {
       return { label: titleCase(startDay), times };
     }
 
     // For `Saturday to Sunday`, we say 'Weekends`.
-    if (row.from === 6 && row.to === 0) {
+    if (row.fromDay === 6 && row.toDay === 0) {
       return { label: 'Weekends', times };
     }
 
@@ -67,7 +161,7 @@ export default function OpenTimes(props: Props) {
         Open Times
       </div>
 
-      {rows.map((row, key) => {
+      {timeRows?.map((row, key) => {
         const { label, times } = transformRowIntoHumanLanguage(row);
 
         return (
