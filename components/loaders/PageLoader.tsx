@@ -1,4 +1,5 @@
 import { LoadingOutlined } from '@ant-design/icons';
+import { dlog } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { usePageLoader } from 'hooks/usePageLoader';
 import React, { useEffect, useState } from 'react';
@@ -38,6 +39,8 @@ export default function PageLoader() {
     dispatch(collapseSearchOverlay());
     dispatch(closeAuthModal());
   }, [isPageLoading]);
+
+  dlog('PageLoader ➡️ isPageLoading:', isPageLoading);
 
   return isDisplayed ? (
     <div

@@ -154,9 +154,9 @@ function ThankYou(
             style={{
               maxWidth: '40rem',
             }}
-            className="flex flex-col items-center w-full tablet:flex-row"
+            className="flex flex-col items-center w-full md:flex-row"
           >
-            <div className="flex justify-center order-last w-full tablet:justify-start tablet:order-first">
+            <div className="flex justify-center order-last w-full md:justify-start md:order-first">
               <ThankYouHero
                 style={{
                   maxWidth: '300px',
@@ -241,7 +241,7 @@ function ThankYou(
                 Your Order
               </h4>
 
-              <table className="w-full text-sm mobile:text-base">
+              <table className="w-full text-sm sm:text-base">
                 <thead className="font-semibold text-gray-500">
                   <td>AMOUNT</td>
                   <td>DATE</td>
@@ -263,13 +263,13 @@ function ThankYou(
                 </tbody>
               </table>
 
-              <h4 className="pt-6 mb-2 text-base font-semibold text-gray-500 border-b border-gray-300 mobile:text-lg">
+              <h4 className="pt-6 mb-2 text-base font-semibold text-gray-500 border-b border-gray-300 sm:text-lg">
                 ORDER SUMMARY
               </h4>
 
               {!isMobile && (
                 <table className="w-full">
-                  <thead className="text-sm font-semibold text-gray-500 mobile:text-base">
+                  <thead className="text-sm font-semibold text-gray-500 sm:text-base">
                     <td>Description</td>
                     <td>Qty.</td>
                     <td className="text-right">Price</td>
@@ -402,9 +402,7 @@ function ThankYou(
 
           <div className="flex justify-center w-full">
             <a href="/" className="no-underline">
-              <Button size="large" className="text-2xl font-primary" round>
-                Find more great food!
-              </Button>
+              <Button size="large">Find more great food!</Button>
             </a>
           </div>
         </div>
@@ -428,13 +426,13 @@ function BookingSection(props: BookingSectionProps) {
 
   return (
     <div className="">
-      <div className="flex flex-col items-center justify-center tablet:flex-row">
+      <div className="flex flex-col items-center justify-center md:flex-row">
         <div
           style={{
             width: isDesktop ? '16rem' : '13rem',
             minHeight: '8rem',
           }}
-          className="relative flex items-end justify-center w-full tablet:items-center"
+          className="relative flex items-end justify-center w-full md:items-center"
         >
           {figure}
 
@@ -446,19 +444,19 @@ function BookingSection(props: BookingSectionProps) {
         <div className={clsx('flex-grow', isDesktop && 'pl-10')}>
           <h2
             style={{ width: !isDesktop ? 'auto' : '11em' }}
-            className="pt-4 text-2xl leading-tight text-center tablet:pt-0 font-primary mobile:text-2xl tablet:text-left"
+            className="pt-4 text-2xl leading-tight text-center md:pt-0 font-primary sm:text-2xl md:text-left"
           >
             {title}
           </h2>
 
           {(promptText || children) && (
-            <div className="flex flex-col items-center tablet:items-start">
+            <div className="flex flex-col items-center md:items-start">
               {children ? <div className="pt-4 pb-2">{children}</div> : null}
 
               <div>
                 <p
                   style={{ maxWidth: isDesktop ? '17.5rem' : 'auto' }}
-                  className="pt-2 text-center opacity-75 tablet:text-left"
+                  className="pt-2 text-center opacity-75 md:text-left"
                 >
                   {promptText}
                 </p>

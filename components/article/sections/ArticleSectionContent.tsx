@@ -23,11 +23,11 @@ const MobileContent = (post: IPost) => (
   <Contained>
     <div className="flex items-center justify-between">
       <h3 className="text-xl font-medium">{post?.restaurant?.name}</h3>
-      <CovidAware className="block h-6 mobile:hidden" />
+      <CovidAware className="block h-6 sm:hidden" />
     </div>
 
-    <div className="flex items-center justify-center pb-4 mt-4 space-x-4 mobile:justify-between">
-      <CovidAware className="hidden h-10 mobile:block" />
+    <div className="flex items-center justify-center pb-4 mt-4 space-x-4 sm:justify-between">
+      <CovidAware className="hidden h-10 sm:block" />
       {post.menuImage && <OpenMenuButton>Open Menu</OpenMenuButton>}
     </div>
 
@@ -83,7 +83,7 @@ const DesktopContent = (post: IPost) => {
 };
 
 const AuxiliaryDivider = ({ url }: { url: string }) => (
-  <div className="flex items-center justify-center h-24 pt-6 pb-10 -mt-20 space-x-10 desktop:h-56 desktop:-mt-32">
+  <div className="flex items-center justify-center h-24 pt-6 pb-10 -mt-20 space-x-10 xl:h-56 xl:-mt-32">
     <div className="flex-1 border-b-2 border-secondary"></div>
     <img src={url} className="h-20" />
     <div className="flex-1 border-b-2 border-secondary"></div>

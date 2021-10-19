@@ -228,7 +228,7 @@ const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
   return (
     <div className="">
       {order?.promoCode ? (
-        <div className="flex items-center justify-between text-lg tablet:text-sm">
+        <div className="flex items-center justify-between text-lg md:text-sm">
           <p>
             Promo code:{' '}
             <span className="font-medium text-primary">{order.promoCode}</span>
@@ -252,12 +252,7 @@ const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
             regex={PAYMENTS.PROMO_CODE_REGEX}
             formatter={value => value.toUpperCase()}
           />
-          <Button
-            disabled={disabled}
-            type="solid"
-            className="h-10"
-            onClick={applyPromoCode}
-          >
+          <Button disabled={disabled} type="solid" onClick={applyPromoCode}>
             Apply
           </Button>
         </div>

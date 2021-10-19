@@ -37,12 +37,7 @@ export default function ArticleOrderNowMobile({ deal, slug }: Props) {
             }}
             className="overflow-y-auto"
           >
-            <Button
-              wide
-              size="large"
-              className="shadow-md"
-              onClick={() => setDisplayOverlay(true)}
-            >
+            <Button wide size="large" onClick={() => setDisplayOverlay(true)}>
               <div className="flex items-center justify-between w-full text-xl font-primary">
                 <div className="w-5"></div>
                 <div>Get the offer!</div>
@@ -212,7 +207,6 @@ const OverlayInnerAction = (props: OverlayInnerActionProps) => {
         <Button
           wide
           size="large"
-          className="text-2xl font-primary"
           loading={submitting}
           onClick={() => submit(bookedForTimestamp)}
         >

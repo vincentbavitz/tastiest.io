@@ -1,19 +1,18 @@
+import { EnvironmentOutlined } from '@ant-design/icons';
 import {
   CmsApi,
   dlog,
+  IPost,
   IRestaurant,
   ITastiestDish,
-  titleCase,
 } from '@tastiest-io/tastiest-utils';
 import { ArticleFeatureVideoWidget } from 'components/article/widgets/ArticleFeatureVideoWidget';
-import { ArticleCard } from 'components/cards/ArticleCard';
-import { CardGrid } from 'components/cards/CardGrid';
+import TastiestDishRow from 'components/cards/TastiestDishRow';
 import { Contained } from 'components/Contained';
-import { RestaurantMapModal } from 'components/modals/RestaurantMapModal';
-import FollowButton from 'components/restaurant/FollowButton';
+import { RestaurantMap } from 'components/modals/RestaurantMap';
+import OpenTimes from 'components/restaurant/OpenTimes';
 import { RichBody } from 'components/RichBody';
-import TabbedContent from 'components/TabbedContent';
-import { useHeaderTransparency } from 'hooks/useHeaderTransparency';
+import { SectionTitle } from 'components/SectionTitle';
 import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { Layouts } from 'layouts/LayoutHandler';
@@ -26,44 +25,12 @@ import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { TastiestAward } from 'public/assets/ui';
 import { ParsedUrlQuery } from 'querystring';
-import React, { useEffect, useState } from 'react';
-import { useVideo, useWindowScroll } from 'react-use';
+import React, { useState } from 'react';
 import { getGoogleMapLink } from 'utils/location';
 import { generateTitle } from 'utils/metadata';
-import { UI } from '../../../../constants';
 
-interface BestDishAwardProps {
-  bestDish: ITastiestDish;
-  fullWidth?: boolean;
-}
-
-const BestDishAward = (props: BestDishAwardProps) => {
-  const { bestDish, fullWidth } = props;
-
-  return (
-    <div
-      key={bestDish.id}
-      style={{ width: 'fit-content' }}
-      className="flex items-center"
-    >
-      <TastiestAward className="w-14" />
-      <div>
-        <div
-          style={{ maxWidth: fullWidth ? 'unset' : '13rem' }}
-          className="pl-4 text-xl leading-5 font-primary text-primary"
-        >
-          Best
-          <br />
-          {bestDish.name}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-interface IPath {
+export interface IRestaurantPath {
   params: {
     city: string;
     cuisine: string;
@@ -82,6 +49,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   while (!foundAllRestaurants) {
     const { restaurants: _restaurants } = await cms.getRestaurants(100, page);
 
+    dlog('index ➡️ restaurants:', restaurants);
     if (_restaurants.length === 0) {
       foundAllRestaurants = true;
       continue;
@@ -91,7 +59,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     page++;
   }
 
-  const paths: IPath[] = restaurants.map(restaurant => ({
+  const paths: IRestaurantPath[] = restaurants.map(restaurant => ({
     params: {
       city: restaurant.city.toLowerCase(),
       cuisine: restaurant.cuisine.toLowerCase(),
@@ -118,7 +86,12 @@ export const getStaticProps = async (
 
   if (!restaurant) {
     return {
-      props: { restaurant: null as IRestaurant },
+      // returning as such to keep the props types consistent
+      props: {
+        restaurant: null as IRestaurant,
+        tastiestDishes: null as ITastiestDish[],
+        posts: null as IPost[],
+      },
       notFound: true,
     };
   }
@@ -147,6 +120,7 @@ const RestaurantPage = (
   // prettier-ignore
   const heroIllustrationSizeRem = 
     isHuge ? 60 :
+    isDesktop ? 50 : 
     isTablet ? 40 :
     isMobile ? 30 :
     45;
@@ -163,51 +137,8 @@ const RestaurantPage = (
   dlog('index ➡️ posts:', posts);
   dlog('index ➡️ tastiestDishes:', tastiestDishes);
 
-  // Transparent header on first load
-  const { setTransparancy } = useHeaderTransparency();
-
-  // When page is loading, opaque.
-  useEffect(() => {
-    if (isPageLoading) {
-      setTransparancy(false);
-    } else {
-      setTransparancy(true);
-    }
-  }, [isPageLoading]);
-
-  // Remove transparency on scroll
-  const TRANSPARENCY_Y_CUTOFF_PX = 250;
-  const { y: scrollY } = useWindowScroll();
-
-  useEffect(() => {
-    if (scrollY > TRANSPARENCY_Y_CUTOFF_PX) {
-      setTransparancy(false);
-    } else {
-      setTransparancy(true);
-    }
-
-    return () => setTransparancy(false);
-  }, [scrollY]);
-
-  const [featureVideo] = useVideo(
-    <video
-      loop
-      muted
-      autoPlay
-      src={'/test.mp4'}
-      className="object-cover w-full h-full bg-gray-400"
-    />,
-  );
-
-  // Prefetch the experiences page
-  useEffect(() => {
-    router.prefetch(
-      `/${restaurant.city}/${restaurant.cuisine}/${restaurant.uriName}/experiences`,
-    );
-  }, []);
-
   return (
-    <div style={{ marginTop: `-${UI.HEADER_HEIGHT_DESKTOP_REM}rem` }}>
+    <>
       <Head>
         <title>{generateTitle(restaurant.name)}</title>
       </Head>
@@ -229,250 +160,96 @@ const RestaurantPage = (
         }}
       />
 
-      {/* Restaurant's Feature Video */}
-      <div
-        style={{ maxHeight: '28rem' }}
-        className="relative flex items-center overflow-hidden"
-      >
-        <div className="relative w-full aspect-w-10 mobile:aspect-w-12 tablet:aspect-w-16 aspect-h-9">
-          <Image src={'/test.png'} loading={'eager'} layout="fill" priority />
-          {featureVideo}
+      <Contained maxWidth={900}>
+        <div className="flex flex-col py-4 pb-10 space-y-10">
+          <div className="flex lg:flex-row flex-col lg:space-x-6">
+            <div className="flex-1">
+              <ArticleFeatureVideoWidget video={restaurant.video} />
+              <h4 className="pt-2 text-xl font-medium text-primary">
+                Interview with the owner of {restaurant.name}
+              </h4>
+            </div>
+
+            <div className="flex-1">
+              <h4 className="text-2xl pb-2 text-primary font-primary">
+                About {restaurant.name}
+              </h4>
+
+              <div className="">
+                <RichBody body={restaurant.description}></RichBody>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <SectionTitle>Award Winning Dishes</SectionTitle>
+
+            <div className="flex mt-6 space-x-3">
+              {[
+                ...tastiestDishes,
+                ...tastiestDishes,
+                ...tastiestDishes,
+                ...tastiestDishes,
+              ].map(dish => (
+                <TastiestDishRow key={dish.id} {...dish} />
+              ))}
+            </div>
+          </div>
         </div>
+      </Contained>
 
-        {/* White overlays */}
-        <div className="absolute inset-0 opacity-25 bg-light"></div>
-        <div className="absolute bottom-0 left-0 right-0 top-1/2 bg-gradient-to-t from-light"></div>
-
-        <div className="absolute inset-0 flex flex-col items-center justify-end space-y-4">
-          {/* Restaurant Name */}
-          <h1 className="text-3xl font-medium mobile:text-4xl text-primary font-primary">
-            {titleCase(restaurant.name)} -{' '}
-            {titleCase(restaurant.location.displayLocation)}
-          </h1>
-
-          {/* Follow and Notifications */}
-          <FollowButton restaurant={restaurant} />
+      {/* Image and map overlay */}
+      <div className="relative">
+        <div
+          className="flex justify-center pt-6 md:pt-20"
+          style={{ width: '200%', transform: `translateX(-25%)` }}
+        >
+          <div
+            style={{
+              width: `${heroIllustrationSizeRem}rem`,
+              height: `${heroIllustrationHeightRem}rem`,
+            }}
+            className="relative"
+          >
+            <Image
+              src={restaurant.heroIllustration.url}
+              priority={true}
+              objectFit="cover"
+              loading="eager"
+              layout="fill"
+              unoptimized
+            />
+          </div>
         </div>
-      </div>
-
-      <div className="pt-8 tablet:pt-12">
-        <TabbedContent contained>
-          {[
-            {
-              id: 'about',
-              label: 'About',
-              content: (
-                <Contained maxWidth={900}>
-                  <div className="flex flex-col py-4 pb-10 space-y-10">
-                    <div className="">
-                      <ArticleFeatureVideoWidget video={restaurant.video} />
-                      <h4 className="pt-2 text-xl font-medium">
-                        Interview with the owner of {restaurant.name}
-                      </h4>
-                    </div>
-
-                    <div>
-                      <RichBody body={restaurant.description}></RichBody>
-                    </div>
-
-                    {/* Image and map overlay */}
-                    <div className="relative">
-                      <div
-                        className="flex justify-center pt-6 tablet:pt-20"
-                        style={{ width: '200%', transform: `translateX(-25%)` }}
-                      >
-                        <div
-                          style={{
-                            width: `${heroIllustrationSizeRem}rem`,
-                            height: `${heroIllustrationHeightRem}rem`,
-                          }}
-                          className="relative"
-                        >
-                          <Image
-                            src={restaurant.heroIllustration.url}
-                            priority={true}
-                            objectFit="cover"
-                            loading="eager"
-                            layout="fill"
-                            unoptimized
-                          />
-                        </div>
-                      </div>
-
-                      <div className="absolute inset-0 flex flex-col items-end justify-end leading-tight">
-                        <div className="px-4 py-2 bg-white bg-opacity-50 rounded-md shadow-lg">
-                          <a
-                            target="_blank"
-                            rel="noreferrer"
-                            href={getGoogleMapLink(
-                              restaurant.location.lat,
-                              restaurant.location.lon,
-                            )}
-                          >
-                            {restaurant?.location?.address}
-                          </a>
-
-                          <div className="pt-1">
-                            <span
-                              onClick={() => setMapModalOpen(true)}
-                              className="font-medium underline cursor-pointer text-primary"
-                            >
-                              View Map
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Contained>
-              ),
-            },
-            {
-              id: 'experiences',
-              label: 'Experiences',
-              content: (
-                <div className="flex flex-col items-center pt-4 pb-10 space-y-4">
-                  {isMobile ? (
-                    posts.map(post => (
-                      <div
-                        key={post.id}
-                        style={{ maxWidth: '300px' }}
-                        className=""
-                      >
-                        <ArticleCard {...post} />
-                      </div>
-                    ))
-                  ) : (
-                    <CardGrid>
-                      {posts.map(post => (
-                        <ArticleCard key={post.id} {...post} />
-                      ))}
-                    </CardGrid>
-                  )}
-                </div>
-              ),
-            },
-          ]}
-        </TabbedContent>
       </div>
 
       <Contained maxWidth={900}>
-        {/* <div className="flex flex-col-reverse w-full pb-16 tablet:flex-row">
-          <div className="flex flex-col space-y-6">
-            <div className="pt-6 tablet:pt-0">
-              <ArticleFeatureVideoWidget video={restaurant.video} />
-            </div>
+        <h4 className="text-2xl font-primary mt-6 text-primary">
+          {restaurant.name}
+        </h4>
 
-            <div>
-              <RichBody body={restaurant.description}></RichBody>
-            </div>
+        <a
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center space-x-1 no-underline opacity-75"
+          href={getGoogleMapLink(
+            restaurant.location.lat,
+            restaurant.location.lon,
+          )}
+        >
+          <EnvironmentOutlined className="text-secondary text-lg" />{' '}
+          <p>{restaurant?.location?.address}</p>
+        </a>
+
+        <div className="flex space-x-6 mt-6 w-full">
+          <OpenTimes openTimes={null} />
+
+          <div style={{ minHeight: '12rem' }} className="flex-grow">
+            <RestaurantMap restaurant={restaurant} />
           </div>
-
-          <div className="flex flex-col pl-0 space-y-2 tablet:pl-8">
-            <div className="flex flex-wrap items-end justify-between">
-              <h2
-                style={{ minWidth: '10rem' }}
-                className="text-3xl text-primary font-primary whitespace-nowrap"
-              >
-                {restaurant?.name}
-              </h2>
-
-              {!isDesktop && restaurant.location.displayLocation && (
-                <div className="">
-                  <LocationIndictor
-                    location={restaurant.location.displayLocation}
-                  />
-                </div>
-              )}
-            </div>
-
-            {isDesktop && restaurant.location.displayLocation && (
-              <div className="">
-                <LocationIndictor
-                  location={restaurant.location.displayLocation}
-                />
-              </div>
-            )}
-
-            <div className="leading-tight">
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={getGoogleMapLink(
-                  restaurant.location.lat,
-                  restaurant.location.lon,
-                )}
-              >
-                {restaurant?.location?.address}
-              </a>
-
-              <div className="pt-1">
-                <span
-                  onClick={() => setMapModalOpen(true)}
-                  className="font-medium underline cursor-pointer text-primary"
-                >
-                  View Map
-                </span>
-              </div>
-            </div>
-
-            <div className="flex flex-col justify-between tablet:flex-col">
-              <div className="pt-6">
-                <p className="mb-1 font-medium border-b border-opacity-10 border-alt-1">
-                  Opening Times
-                </p>
-                <div className="text-sm leading-5 text-left">
-                  <RichBody
-                    paragraph={{ justify: false, margins: false }}
-                    body={restaurant.tradingHoursText}
-                  ></RichBody>
-                </div>
-              </div>
-
-              <div className="flex justify-center mobile:block">
-                {isDesktop && (
-                  <div className="flex flex-col py-6 space-y-4">
-                    {tastiestDishes.map((dish, key) => (
-                      <BestDishAward key={key} bestDish={dish} />
-                    ))}
-                  </div>
-                )}
-
-                {isTablet && (
-                  <div className="grid grid-cols-2 grid-gap-4">
-                    {tastiestDishes.map((dish, key) => (
-                      <div
-                        key={key}
-                        className={clsx(
-                          'flex',
-                          key % 2 === 0 ? 'justify-start' : 'justify-end',
-                        )}
-                      >
-                        <BestDishAward bestDish={dish} />
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {isMobile && (
-                  <div className="flex flex-col items-start w-full pt-6 space-y-6">
-                    {tastiestDishes.map((dish, key) => (
-                      <BestDishAward key={key} fullWidth bestDish={dish} />
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div> */}
+        </div>
       </Contained>
-
-      <RestaurantMapModal
-        restaurant={restaurant}
-        isOpen={mapModalOpen}
-        close={() => setMapModalOpen(false)}
-      />
-    </div>
+    </>
   );
 };
 

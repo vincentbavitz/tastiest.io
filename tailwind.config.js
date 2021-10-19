@@ -6,13 +6,14 @@ module.exports = {
       // Think of them as 'beyond this breakpoint' when using
       // mobile:my-class, for example.
       // -> @media (min-width: {}px) { ... }
-      mobile: '500px',
-      tablet: '715px',
-      desktop: '1100px',
+      sm: '500px',
+      md: '715px',
+      lg: '900px',
+      xl: '1100px',
     },
     fontFamily: {
       primary: ['Marmelad'],
-      secondary: ['Poppins'],
+      secondary: ['Ubuntu'],
       mono: ['SourceCodePro'],
     },
     fontSize: {
@@ -66,5 +67,9 @@ module.exports = {
     require('@tailwindcss/aspect-ratio'),
     // require('@tailwindcss/forms'),
   ],
-  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  purge: [
+    './pages/**/*.{js,ts,tsx}',
+    './components/**/*.{js,ts,tsx}',
+    './layouts/**/*.{js,ts,jsx,tsx}',
+  ],
 };

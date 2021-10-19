@@ -15,7 +15,6 @@ import {
   Text,
   UnorderedList,
 } from '@contentful/rich-text-types';
-import { dlog } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import React, { ReactNode } from 'react';
 import {
@@ -109,8 +108,6 @@ export function RichBody(props: Props) {
               </Paragraph>
             );
           }
-
-          dlog('RichBody ➡️ paragraph:', paragraph);
 
           return (
             <Paragraph margins={paragraph.margins} justify={paragraph.justify}>

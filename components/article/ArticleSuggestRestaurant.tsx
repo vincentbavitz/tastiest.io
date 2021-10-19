@@ -68,7 +68,7 @@ const ArticleSuggestRestaurantContent = ({
 
   return (
     <div>
-      <div className="mb-4 desktop:w-9/12">
+      <div className="mb-4 xl:w-9/12">
         <span className="text-xl leading-tight font-primary text-primary">
           {/* Ensure the plural case makes sense. */}
           {/* Eg. Do you know of better fries in London? */}

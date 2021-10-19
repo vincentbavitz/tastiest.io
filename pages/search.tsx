@@ -206,7 +206,7 @@ const Search = (
         </div>
 
         {showPagination && (
-          <div className="mt-8 mobile:mt-12">
+          <div className="mt-8 sm:mt-12">
             <ReactPaginate
               previousLabel={'<'}
               nextLabel={'>'}

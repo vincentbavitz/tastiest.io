@@ -46,7 +46,9 @@ export default function Tabs(props: Props) {
             }}
             className={clsx(
               'flex-1 px-2 py-2 text-center duration-300 cursor-pointer border-b-2 select-none',
-              selected ? 'font-medium border-primary' : 'border-transparent',
+              selected
+                ? 'font-medium border-primary text-primary'
+                : 'border-transparent opacity-75',
             )}
           >
             {tab.label}

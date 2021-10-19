@@ -40,7 +40,7 @@ export default function ContentLoader(props: Props) {
 
   // Reset content loading status on route change
   useEffect(() => {
-    router.events.on('routeChangeStart', () => {
+    router?.events?.on?.('routeChangeStart', () => {
       dispatch(setIsContentLoading(true));
     });
   }, [router, dispatch]);
@@ -48,7 +48,7 @@ export default function ContentLoader(props: Props) {
   // Set to manually trigger content loaded on certain pages
   useEffect(() => {
     const manual = NAVIGATION.MANUAL_LOADING_TRIGGER_FOR_PATHS.some(path =>
-      path.test(router.pathname),
+      path.test(router?.pathname),
     );
 
     if (!manual && !isPageLoading) {

@@ -1,13 +1,17 @@
+import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { IState } from 'state/reducers';
-import LayoutWrapper, { LayoutProps } from './LayoutWrapper';
+import { UI } from '../constants';
+import { LayoutProps } from './LayoutHandler';
+import LayoutWrapper from './LayoutWrapper';
 
 export default function LayoutDefault({
   router,
   pageProps,
   children,
 }: LayoutProps) {
+  const { isDesktop } = useScreenSize();
   const { isContentLoading } = useSelector((state: IState) => state.navigation);
 
   // Scroll to top on load
@@ -19,7 +23,23 @@ export default function LayoutDefault({
 
   return (
     <LayoutWrapper router={router} pageProps={pageProps}>
-      {children}
+      {/* Header Spacer */}
+      <div
+        style={{
+          paddingTop: `${
+            isDesktop
+              ? UI.HEADER_HEIGHT_DESKTOP_REM
+              : UI.HEADER_HEIGHT_MOBILE_REM
+          }rem`,
+        }}
+      ></div>
+
+      {/* If you'd like an element to stick to the footer in your page, simply wrap the */}
+      {/* top <div> and the button <div> in <></> and they'll be split */}
+      <div className="relative flex flex-col justify-between flex-grow bg-light text-dark font-secondary">
+        {/* All pages control when they are considered loaded */}
+        {children}
+      </div>
     </LayoutWrapper>
   );
 }

@@ -1,4 +1,6 @@
 import { dlog } from '@tastiest-io/tastiest-utils';
+import { NextComponentType, NextPageContext } from 'next';
+import { Router } from 'next/router';
 import LayoutDefault from './LayoutDefault';
 import LayoutRestaurant from './LayoutRestaurant';
 
@@ -12,7 +14,17 @@ const layouts = {
   [Layouts.RESTAURANT]: LayoutRestaurant,
 };
 
-const LayoutHandler = props => {
+type ChildrenWithLayout = { layout?: Layouts } & NextComponentType<
+  NextPageContext
+>;
+
+export type LayoutProps<T = any> = {
+  pageProps: T;
+  router: Router;
+  children: ChildrenWithLayout;
+};
+
+const LayoutHandler = (props: LayoutProps) => {
   dlog('LayoutHandler ➡️ props:', props);
 
   // to get the text value of the assigned layout of each component

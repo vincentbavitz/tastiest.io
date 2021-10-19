@@ -196,7 +196,7 @@ function Checkout(
 
             {isSignedIn === null ? (
               <div className="flex justify-between">
-                <div className="w-full pt-32 tablet:w-7/12">
+                <div className="w-full pt-32 md:w-7/12">
                   <CheckoutLoader />
                 </div>
               </div>
@@ -225,4 +225,5 @@ const CheckoutLoader = () => {
   );
 };
 
+3;
 export default Checkout;

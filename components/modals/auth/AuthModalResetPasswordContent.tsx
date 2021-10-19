@@ -31,7 +31,6 @@ export const AuthModalResetPasswordContent = ({
           <Button
             type="solid"
             color="primary"
-            className="px-8 py-3"
             onClick={() => setStep(LoginFlowStep.SIGN_IN)}
           >
             Sign In
@@ -55,7 +54,6 @@ export const AuthModalResetPasswordContent = ({
             size="large"
             type="solid"
             color="primary"
-            className="py-3"
             loading={submitting}
             disabled={submitting || success}
             onClick={() => resetPassword(email)}

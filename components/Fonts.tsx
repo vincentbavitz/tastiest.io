@@ -12,6 +12,10 @@ const Fonts: FC = () => {
         crossOrigin={'true'}
       />
       <link
+        href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap"
+        rel="stylesheet"
+      />
+      <link
         href="https://fonts.googleapis.com/css2?family=Marmelad&display=swap"
         rel="stylesheet"
       />

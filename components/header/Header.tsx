@@ -1,7 +1,7 @@
 import { TastiestBrand } from '@tastiest-io/tastiest-components';
 import { HamburgerIcon } from '@tastiest-io/tastiest-icons';
 import clsx from 'clsx';
-import { useHeaderTransparency } from 'hooks/useHeaderTransparency';
+import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
@@ -13,30 +13,17 @@ import { IState } from '../../state/reducers';
 import { Contained } from '../Contained';
 import { HeaderAvatar } from './HeaderAvatar';
 
-export function Header() {
-  const { isDesktop } = useScreenSize();
-  const { onCheckoutPage } = useSelector((state: IState) => state.checkout);
-
-  // Prevent clicking when things are loading
-  const { isContentLoading } = useSelector((state: IState) => state.navigation);
-
-  return (
-    <div
-      className={clsx(
-        'flex flex-col w-full',
-        isContentLoading && 'pointer-events-none',
-      )}
-    >
-      {onCheckoutPage ? (
-        <CheckoutHeader isDesktop={isDesktop} />
-      ) : (
-        <div>{!isDesktop ? <MobileHeader /> : <DesktopHeader />}</div>
-      )}
-    </div>
-  );
+export interface HeaderProps {
+  transparent?: boolean;
 }
 
-function MobileHeader() {
+export function Header(props: HeaderProps) {
+  const { isDesktop } = useScreenSize();
+  return isDesktop ? <DesktopHeader {...props} /> : <MobileHeader {...props} />;
+}
+
+function MobileHeader(props: HeaderProps) {
+  const { transparent } = props;
   const dispatch = useDispatch();
 
   const handleExpandSearch = (e: React.MouseEvent) => {
@@ -46,7 +33,9 @@ function MobileHeader() {
   };
 
   const [isMobileMenuOpen, toggleIsMobileMenuOpen] = useToggle(false);
-  const { transparent } = useHeaderTransparency();
+
+  // Prevent clicking when things are loading
+  const { isPageLoading } = usePageLoader();
 
   return (
     <div
@@ -59,6 +48,7 @@ function MobileHeader() {
       className={clsx(
         'fixed top-0 left-0 right-0 w-full duration-500 shadow-xl',
         transparent ? 'glass' : 'bg-white',
+        isPageLoading ? 'pointer-events-none' : 'pointer-events-auto',
       )}
     >
       <div className="relative flex items-center justify-between w-full h-full">
@@ -94,13 +84,18 @@ function MobileHeader() {
   );
 }
 
-function DesktopHeader() {
+function DesktopHeader(props: HeaderProps) {
+  const { transparent } = props;
+
   const { searchOverlayExpanded } = useSelector(
     (state: IState) => state.navigation,
   );
   const { searchBarPinnedToHeader } = useSelector(
     (state: IState) => state.search,
   );
+
+  // Prevent clicking when things are loading
+  const { isPageLoading } = usePageLoader();
 
   // We only wnat the searchbar to be invisible on the home page
   // and given that they have not scrolled past the main home search
@@ -121,7 +116,6 @@ function DesktopHeader() {
   }, [location.pathname, searchBarPinnedToHeader]);
 
   const navBarRef = useRef(null);
-  const { transparent } = useHeaderTransparency();
 
   return (
     <div
@@ -136,6 +130,7 @@ function DesktopHeader() {
       className={clsx(
         'fixed top-0 left-0 right-0 flex items-center duration-500 w-full',
         transparent ? 'glass' : 'bg-white',
+        isPageLoading ? 'pointer-events-none' : 'pointer-events-auto',
       )}
     >
       <Contained>

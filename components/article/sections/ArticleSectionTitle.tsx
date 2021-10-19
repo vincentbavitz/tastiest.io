@@ -38,12 +38,12 @@ export function ArticleSectionTitle(props: Props) {
 
   return (
     <Contained>
-      <div className={clsx('flex justify-center tablet:mt-6 space-y-4')}>
+      <div className={clsx('flex justify-center md:mt-6 space-y-4')}>
         {isDesktop && <CharcterEatingIllustration svg={svg} />}
 
         <div
           className={clsx(
-            'flex flex-col items-center justify-center space-y-6 mt-6 pb-0 tablet:pb-4 pt-6',
+            'flex flex-col items-center justify-center space-y-6 mt-6 pb-0 md:pb-4 pt-6',
           )}
         >
           <div
@@ -53,7 +53,7 @@ export function ArticleSectionTitle(props: Props) {
             }}
             className="flex items-end"
           >
-            <h1 className="text-3xl leading-none text-center mobile:text-4xl font-primary text-primary desktop:text-4xl">
+            <h1 className="text-3xl leading-none text-center sm:text-4xl font-primary text-primary xl:text-4xl">
               {title}
             </h1>
           </div>
@@ -164,7 +164,7 @@ const HowItWorksSpriteDesktop = () => {
           tabIndex={0}
           className={clsx(
             'flex justify-center px-2 py-2',
-            'font-medium desktop:text-lg font-primary text-white duration-300',
+            'font-medium xl:text-lg font-primary text-white duration-300',
             'rounded-md bg-primary hover:bg-primary-1',
             'outline-none',
           )}
@@ -194,7 +194,7 @@ const HowItWorksSpriteMobile = () => {
           tabIndex={0}
           className={clsx(
             'flex justify-center px-2 py-2',
-            'font-medium desktop:text-lg font-primary text-white duration-300',
+            'font-medium xl:text-lg font-primary text-white duration-300',
             'rounded-md bg-primary hover:bg-primary-1',
             'outline-none',
           )}

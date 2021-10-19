@@ -71,7 +71,7 @@ export function ArticleSaveShareWidget(props: IPost) {
         />
       )}
 
-      <div ref={ref} className="flex flex-col items-center pt-16 tablet:pt-0">
+      <div ref={ref} className="flex flex-col items-center pt-16 md:pt-0">
         <div>
           <div className="z-10 flex justify-center w-full">
             <div
@@ -164,7 +164,7 @@ function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
       className="fixed top-0 left-0 right-0"
     >
       <div className="flex items-center justify-between w-full h-12 px-6 bg-white shadow-lg">
-        <p className="text-lg tracking-wide whitespace-nowrap mobile:text-xl">
+        <p className="text-lg tracking-wide whitespace-nowrap sm:text-xl">
           {dishName.replace('*', '')}
         </p>
 

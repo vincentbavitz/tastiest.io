@@ -179,7 +179,7 @@ function Tastiest404() {
               !isDesktop ? '-mt-10' : 'mt-0',
             )}
           >
-            <div className="z-50 flex-col flex-grow pt-12 my-4 tablet:pt-0">
+            <div className="z-50 flex-col flex-grow pt-12 my-4 md:pt-0">
               <h2
                 className={classNames(
                   'text-primary leading-tight ml-1 mb-4 font-primary mt-6 text-2xl whitespace-no-wrap',
@@ -191,7 +191,7 @@ function Tastiest404() {
               {requestRecieved ? (
                 <div className="flex flex-col text-justify">
                   <p className="text-xl font-bold">Thanks for your feedback!</p>
-                  <p className="pt-0 pl-0 tablet:pt-20 tablet:pl-10">
+                  <p className="pt-0 pl-0 md:pt-20 md:pl-10">
                     We use your feedback to help make Tastiest easier to use, so
                     you can get back to finding great food.
                   </p>

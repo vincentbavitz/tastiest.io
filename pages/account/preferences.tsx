@@ -172,7 +172,7 @@ const Preferences = ({
       </div>
 
       <Contained maxWidth={UI.FORM_WIDTH_PX}>
-        <div className="flex flex-col space-y-8 tablet:space-y-12">
+        <div className="flex flex-col space-y-8 md:space-y-12">
           <PreferenceBlock
             title="Your favourite Cuisines"
             subtitle="So we know what to recommend."
@@ -253,11 +253,10 @@ const Preferences = ({
           </PreferenceBlock>
         </div>
 
-        <div className="flex justify-center w-full pb-16 mt-6 tablet:mt-10">
+        <div className="flex justify-center w-full pb-16 mt-6 md:mt-10">
           <Button
-            className="w-32 font-primary tablet:w-auto"
             size={isMobile || isTablet ? 'large' : 'medium'}
-            off={!savable}
+            disabled={!savable}
             onClick={submit}
             suffix={
               userHasSaved && !savable ? (
@@ -284,14 +283,14 @@ function PreferenceBlock({ title, subtitle, children }: PreferenceBlockProps) {
 
   return (
     <div>
-      <h2 className="text-3xl text-center tablet:text-left font-primary text-primary">
+      <h2 className="text-3xl text-center md:text-left font-primary text-primary">
         {title}
       </h2>
-      <p className="font-normal text-center tablet:text-left">{subtitle}</p>
+      <p className="font-normal text-center md:text-left">{subtitle}</p>
 
       <div
         style={{ maxWidth: isMobile || isTablet ? 'unset' : '25rem' }}
-        className="flex flex-col items-center mt-3 space-y-4 tablet:items-start"
+        className="flex flex-col items-center mt-3 space-y-4 md:items-start"
       >
         {children}
       </div>

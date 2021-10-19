@@ -252,7 +252,6 @@ export function ArticleOrderNowDesktop(props: Props) {
               type="solid"
               onClick={onClickBuyNow}
               loading={submitting}
-              className="text-base font-secondary"
             >
               <div className="flex items-center justify-center">
                 <PoundIcon

@@ -169,13 +169,13 @@ const NoSavedPlacesBackdrop = ({ isMobile, isTablet, isDesktop }: IScreen) => {
           }}
         />
         <div className="absolute inset-0 flex justify-center w-full">
-          <div className="flex items-center justify-start w-full h-full mobile:justify-center">
+          <div className="flex items-center justify-start w-full h-full sm:justify-center">
             <div
               style={{
                 width: 'max-content',
                 marginLeft: isMobile ? '5vw' : 'unset',
               }}
-              className="flex flex-col items-center space-y-3 transform mobile:-translate-x-16"
+              className="flex flex-col items-center space-y-3 transform sm:-translate-x-16"
             >
               <h2 className="text-2xl leading-none text-center font-primary text-primary">
                 You haven't saved

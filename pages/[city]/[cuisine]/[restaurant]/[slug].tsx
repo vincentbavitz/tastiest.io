@@ -72,7 +72,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 const cms = new CmsApi();
 
-function Post(post: IPost) {
+function Experience(post: IPost) {
   const { title } = post;
 
   // Get recommended posts
@@ -148,4 +148,4 @@ function Post(post: IPost) {
   );
 }
 
-export default Post;
+export default Experience;

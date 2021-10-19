@@ -33,7 +33,7 @@ export function CheckoutCard(props: Props) {
 
         <div
           className={clsx(
-            'flex overflow-hidden flex-col mobile:flex-row tablet:flex-col border-2 border-secondary tablet:border-0 rounded-b-xl tablet:rounded-b-none',
+            'flex overflow-hidden flex-col sm:flex-row md:flex-col border-2 border-secondary md:border-0 rounded-b-xl md:rounded-b-none',
           )}
         >
           <div
@@ -51,7 +51,7 @@ export function CheckoutCard(props: Props) {
             />
           </div>
 
-          <div className="flex flex-col justify-between flex-grow px-3 pt-3 pb-4 space-y-3 tablet:border-b-2 tablet:border-l-2 tablet:border-r-2 border-secondary rounded-b-xl">
+          <div className="flex flex-col justify-between flex-grow px-3 pt-3 pb-4 space-y-3 md:border-b-2 md:border-l-2 md:border-r-2 border-secondary rounded-b-xl">
             {children}
           </div>
         </div>

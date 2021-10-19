@@ -33,9 +33,9 @@ export function AcceptTrackingPopup() {
           filter: 'drop-shadow(0px 0px 5px rgba(0,0,0,0.15))',
           maxWidth: '95vw',
         }}
-        className="flex flex-col items-center px-3 py-2 mb-2 text-center text-gray-800 bg-white rounded-sm pointer-events-auto mobile:flex-row"
+        className="flex flex-col items-center px-3 py-2 mb-2 text-center text-gray-800 bg-white rounded-sm pointer-events-auto sm:flex-row"
       >
-        <p className="pl-2 pr-1 text-xs mobile:text-sm">
+        <p className="pl-2 pr-2 text-xs sm:text-sm">
           <CookieEmoji className="inline w-4 mr-1" />
           By using Tastiest, you agree to our{' '}
           <a
@@ -50,9 +50,9 @@ export function AcceptTrackingPopup() {
         </p>
 
         <Button
-          type="text"
           color="primary"
           size="small"
+          type="outline"
           onClick={acceptAnalytics}
         >
           OK

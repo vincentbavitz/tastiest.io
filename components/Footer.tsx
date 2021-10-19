@@ -22,7 +22,7 @@ export function Footer() {
   if (isCheckout) return <CheckoutFooter />;
 
   return (
-    <div className="py-4 font-normal text-center text-white mobile:py-8 bg-dark">
+    <div className="py-4 font-normal text-center text-white sm:py-8 bg-dark">
       <Contained>
         {!isDesktop && <MobileFooter />}
         {isDesktop && !isHuge && <DesktopFooter />}
@@ -39,7 +39,7 @@ const MobileFooter = () => {
     <div className="flex flex-col pb-10 space-y-6">
       {!isTablet && <TastiestBrand type="initial-ring" />}
 
-      <div className="flex flex-col w-full pt-4 mt-6 space-x-0 space-y-4 mobile:space-y-0 mobile:flex-row mobile:space-x-6">
+      <div className="flex flex-col w-full pt-4 mt-6 space-x-0 space-y-4 sm:space-y-0 sm:flex-row sm:space-x-6">
         <div className="flex-1">
           <p className="mb-3 text-lg font-medium uppercase border-b border-white opacity-75 text-secondary whitespace-nowrap">
             Quick Links
@@ -55,7 +55,7 @@ const MobileFooter = () => {
             Follow Us
           </p>
 
-          <div className="flex justify-center space-x-6 mobile:justify-between">
+          <div className="flex justify-center space-x-6 sm:justify-between">
             <SocialsBlock />
           </div>
         </div>
@@ -176,24 +176,23 @@ const ThanksForSupportMessage = ({
 }) => (
   <div
     className={clsx(
-      'flex flex-col items-center space-y-2 tablet:space-y-4 tablet:justify-between tablet:items-start tablet:border-white',
+      'flex flex-col items-center space-y-2 md:space-y-4 md:justify-between md:items-start md:border-white',
       wide ? 'w-full' : 'w-64',
     )}
   >
-    <p className="text-xl leading-none tracking-wide text-center text-secondary tablet:text-left">
+    <p className="text-xl leading-none tracking-wide text-center text-secondary md:text-left">
       THANK YOU FOR
       {!wide && <br />}
       YOUR SUPPORT!
     </p>
 
-    <p className="text-sm tracking-tight text-center tablet:text-left">
+    <p className="text-sm tracking-tight text-center md:text-left">
       We are a small team with big plans. We really appreciate your patience as
       we roll out new restaurants, features, bug fixes, etc.—and would love to
-      hear from you.{' '}
-      <HeartIcon className="hidden h-4 fill-current tablet:inline" />
+      hear from you. <HeartIcon className="hidden h-4 fill-current md:inline" />
     </p>
 
-    <HeartIcon className="block h-6 fill-current tablet:hidden" />
+    <HeartIcon className="block h-6 fill-current md:hidden" />
 
     {withLogo && <TastiestBrand type="initial-ring" />}
   </div>

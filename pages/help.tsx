@@ -178,7 +178,7 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
       <div className="relative flex flex-col items-center w-full mt-6 mb-12 space-y-4"></div>
 
       <Contained maxWidth={UI.FORM_WIDTH_PX}>
-        <div className="flex flex-col mb-20 space-y-8 tablet:space-y-8">
+        <div className="flex flex-col mb-20 space-y-8 md:space-y-8">
           {/* Only request name if the user isn't logged in or hasn't given it yet */}
           {!_name?.length && (
             <Input
@@ -200,8 +200,8 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
             />
           )}
 
-          <div className="flex flex-col w-full space-y-4 mobile:space-y-0 mobile:flex-row mobile:items-end mobile:space-x-4">
-            <div className="w-full mobile:w-1/2 tablet:w-4/12">
+          <div className="flex flex-col w-full space-y-4 sm:space-y-0 sm:flex-row sm:items-end sm:space-x-4">
+            <div className="w-full sm:w-1/2 md:w-4/12">
               <Select
                 label="Subject"
                 labelTheme="primary"
@@ -276,7 +276,6 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
           <div className="flex items-center space-x-4">
             <Button
               color="primary"
-              className="font-primary"
               wide={isMobile || isTablet}
               onClick={submit}
             >
@@ -295,9 +294,9 @@ const HelpSuccess = ({ setHasSent }: HelpSubProps) => {
   const heroTranslateX = isMobile ? '3rem' : isTablet ? '8rem' : '0';
 
   return (
-    <div className="w-full pt-6 pb-10 mobile:pb-24 mobile:pt-16">
+    <div className="w-full pt-6 pb-10 sm:pb-24 sm:pt-16">
       <Contained maxWidth={UI.FORM_WIDTH_PX}>
-        <div className="relative flex flex-col-reverse w-full mobile:flex-row mobile:justify-end">
+        <div className="relative flex flex-col-reverse w-full sm:flex-row sm:justify-end">
           <HelpHeroSuccess
             style={{
               width: isMobile ? '20rem' : '33rem',
@@ -307,7 +306,7 @@ const HelpSuccess = ({ setHasSent }: HelpSubProps) => {
 
           <div
             // style={{ marginLeft: '-15.5rem' }}
-            className="flex flex-col items-center justify-center w-full mb-10 space-y-4 mobile:mb-10 mobile:absolute mobile:inset-0 mobile:w-7/12 tablet:w-5/12"
+            className="flex flex-col items-center justify-center w-full mb-10 space-y-4 sm:mb-10 sm:absolute sm:inset-0 sm:w-7/12 md:w-5/12"
           >
             <h2 className="text-3xl text-center font-primary text-primary">
               Thank you for
@@ -323,7 +322,6 @@ const HelpSuccess = ({ setHasSent }: HelpSubProps) => {
                   <a>
                     <Button
                       color="primary"
-                      className=""
                       onClick={() => null}
                       prefix={
                         <LeftOutlined className="text-white fill-current" />
@@ -334,11 +332,7 @@ const HelpSuccess = ({ setHasSent }: HelpSubProps) => {
                   </a>
                 </Link>
 
-                <Button
-                  color="secondary"
-                  className=""
-                  onClick={() => setHasSent(false)}
-                >
+                <Button color="secondary" onClick={() => setHasSent(false)}>
                   New Request
                 </Button>
               </div>

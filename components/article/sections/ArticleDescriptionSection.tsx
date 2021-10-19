@@ -15,7 +15,7 @@ export function ArticleDescriptionSection({ description }: Props) {
           style={{
             maxWidth: isDesktop ? '700px' : 'unset',
           }}
-          className="w-full text-lg font-medium text-center text-gray-900 desktop:text-xl font-secondary"
+          className="w-full text-lg font-medium text-center text-gray-900 xl:text-xl font-secondary"
         >
           {description}
         </span>

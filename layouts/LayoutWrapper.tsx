@@ -1,35 +1,33 @@
 import clsx from 'clsx';
 import { Footer } from 'components/Footer';
-import { Header } from 'components/header/Header';
-import ContentLoader from 'components/loaders/ContentLoader';
+import { Header, HeaderProps } from 'components/header/Header';
 import PageLoader from 'components/loaders/PageLoader';
 import { AuthModal } from 'components/modals/auth/AuthModal';
 import { AcceptTrackingPopup } from 'components/popups/AcceptTrackingPopup';
-import { SearchOverlay } from 'components/search/SearchOverlay';
 import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
-import { NextComponentType, NextPageContext } from 'next';
-import { Router } from 'next/router';
 import React from 'react';
 import { UI } from '../constants';
+import { LayoutProps } from './LayoutHandler';
 
-export interface LayoutProps {
-  pageProps: any;
-  router: Router;
-  children: NextComponentType<NextPageContext>;
+interface LayoutWrapperProps extends LayoutProps {
+  children: any;
+  headerProps?: HeaderProps;
 }
 
 export default function LayoutWrapper({
   router,
   pageProps,
-  children: Component,
-}: LayoutProps) {
+  children,
+  headerProps,
+}: LayoutWrapperProps) {
   const { isInitialLoading } = usePageLoader();
   const { isDesktop } = useScreenSize();
 
   return (
     <>
       {/* Page Loader on initial load */}
+
       <PageLoader />
 
       {/* Modals (inside portal) */}
@@ -45,29 +43,11 @@ export default function LayoutWrapper({
         )}
       >
         <div className="relative flex flex-col flex-grow">
-          <Header />
-          {/* <CuisineBar /> */}
+          <div style={{ zIndex: UI.Z_INDEX_HEADER }}>
+            <Header {...headerProps} />
+          </div>
 
-          {/* Spacer */}
-          <div
-            style={{
-              paddingTop: `${
-                isDesktop
-                  ? UI.HEADER_HEIGHT_DESKTOP_REM
-                  : UI.HEADER_HEIGHT_MOBILE_REM
-              }rem`,
-            }}
-          ></div>
-
-          <ContentLoader router={router}>
-            {/* If you'd like an element to stick to the footer in your page, simply wrap the */}
-            {/* top <div> and the button <div> in <></> and they'll be split */}
-            <div className="relative flex flex-col justify-between flex-grow bg-light text-dark font-secondary">
-              {/* All pages control when they are considered loaded */}
-              <Component {...pageProps} />
-            </div>
-            <SearchOverlay />
-          </ContentLoader>
+          <div className="relative">{children}</div>
         </div>
 
         <div>

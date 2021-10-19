@@ -156,7 +156,7 @@ export function SuggestRestaurant() {
       <div
         className={clsx(
           'relative flex w-full pb-10 justify-center',
-          'tablet:flex-row flex-col-reverse',
+          'md:flex-row flex-col-reverse',
           isDesktop && 'space-x-10',
         )}
       >
@@ -187,10 +187,10 @@ export function SuggestRestaurant() {
             marginTop: isSignedIn ? '0' : '1rem',
           }}
           className={clsx(
-            'relative flex-1 tablet:mb-1 flex flex-col justify-center',
+            'relative flex-1 md:mb-1 flex flex-col justify-center',
           )}
         >
-          <h3 className="pb-4 text-3xl text-center text-primary tablet:text-left font-primary">
+          <h3 className="pb-4 text-3xl text-center text-primary md:text-left font-primary">
             Suggest a restaurant
           </h3>
 
@@ -203,7 +203,7 @@ export function SuggestRestaurant() {
               </p>
             </div>
           ) : (
-            <div className="flex flex-col mt-0 space-y-4 tablet:mt-6">
+            <div className="flex flex-col mt-0 space-y-4 md:mt-6">
               <Input
                 ref={restaurantNameRef}
                 {...restaurantNameFieldProps}
@@ -244,12 +244,8 @@ export function SuggestRestaurant() {
                 />
               )}
 
-              <div className="w-full tablet:w-24">
-                <Button
-                  wide
-                  className="tracking-wide"
-                  onClick={handleSubmit(submit)}
-                >
+              <div className="w-full md:w-24">
+                <Button wide onClick={handleSubmit(submit)}>
                   {isSubmitting ? (
                     <LoadingOutlined className="text-2xl" />
                   ) : (

@@ -130,7 +130,7 @@ export default function CuisinePage(props: Props) {
 
       <div>
         <div className="flex flex-col w-full space-y-10">
-          <div className="relative mt-6 tablet:mt-6">
+          <div className="relative mt-6 md:mt-6">
             <CuisineHero cuisineSymbol={cuisineSymbol} />
 
             <div className="absolute inset-0">
@@ -180,7 +180,7 @@ const NoPostsForCuisine = ({
   isMobile,
   cuisineName,
 }: NoPostsForCuisineProps) => (
-  <div className="pt-10 tablet:pt-16 tablet:flex tablet:justify-center tablet:w-full">
+  <div className="pt-10 md:pt-16 md:flex md:justify-center md:w-full">
     <div
       style={{ minWidth: isMobile ? 'unset' : '600px', maxWidth: '1100px' }}
       className={clsx(
@@ -190,11 +190,11 @@ const NoPostsForCuisine = ({
       )}
     >
       <div className="col-span-4">
-        <h4 className="mb-4 text-lg text-center mobile:text-left">
+        <h4 className="mb-4 text-lg text-center sm:text-left">
           Sorry! There are no offers {!isMobile && <br />} for {cuisineName}{' '}
           yet.
         </h4>
-        <h2 className="text-3xl leading-tight text-center mobile:text-left font-primary text-primary">
+        <h2 className="text-3xl leading-tight text-center sm:text-left font-primary text-primary">
           We are still {!isMobile && <br />}
           on the lookout {!isMobile && <br />} for the best dishes
           {!isMobile && <br />} near you!
@@ -341,14 +341,14 @@ const CuisineImage = (props: CuisineHeroProps) => {
   }, [cuisineSymbol]);
 
   return (
-    <div className="relative h-px mobile:mt-10" style={style}>
+    <div className="relative h-px sm:mt-10" style={style}>
       {isMobile && (
         <Image
           src={source.mobileSrc}
           layout="fill"
           objectFit="cover"
           priority
-          className="block w-full mobile:hidden"
+          className="block w-full sm:hidden"
           onLoadingComplete={() => manageLoadingComplete()}
         />
       )}
@@ -359,7 +359,7 @@ const CuisineImage = (props: CuisineHeroProps) => {
           layout="fill"
           objectFit="cover"
           priority
-          className="hidden w-full mobile:block"
+          className="hidden w-full sm:block"
           onLoadingComplete={() => manageLoadingComplete()}
         />
       )}

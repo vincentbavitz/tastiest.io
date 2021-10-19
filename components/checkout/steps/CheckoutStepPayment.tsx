@@ -56,7 +56,7 @@ interface Props {
 type FormData = {
   firstName: string;
   lastName: string;
-  mobile: string;
+  sm: string;
   cardPostcode: string;
   cardHolderName: string;
 };
@@ -205,13 +205,13 @@ export function CheckoutStepPayment(props: Props) {
   dlog('CheckoutStepPayment ➡️ errors:', errors);
 
   return (
-    <div className="flex flex-col-reverse w-full pb-24 tablet:pb-0 tablet:flex-row tablet:justify-between">
+    <div className="flex flex-col-reverse w-full pb-24 md:pb-0 md:flex-row md:justify-between">
       <div
         style={{
           minWidth:
             isMobile || isTablet ? 'unset' : `${UI.CHECKOUT_SPLIT_WIDTH_PX}px`,
         }}
-        className="flex flex-col w-full space-y-16 tablet:w-7/12"
+        className="flex flex-col w-full space-y-16 md:w-7/12"
       >
         <div>
           {isDesktop ? (
@@ -329,7 +329,7 @@ export function CheckoutStepPayment(props: Props) {
 
       <div
         className={clsx(
-          'w-full flex justify-center tablet:flex-grow tablet:w-5/12',
+          'w-full flex justify-center md:flex-grow md:w-5/12',
           isDesktop && 'pl-10',
         )}
       >

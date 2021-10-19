@@ -42,7 +42,7 @@ export default function FollowButton(props: Props) {
           </Button>
 
           <Button
-            color={notifications ? 'secondary' : 'neutral'}
+            color={notifications ? 'secondary' : 'light'}
             onClick={() => toggleNotifications(!notifications)}
             loading={notificationsLoading}
           >

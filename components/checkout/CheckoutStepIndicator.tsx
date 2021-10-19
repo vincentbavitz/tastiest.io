@@ -13,7 +13,7 @@ export function CheckoutStepIndicator({ step }: Props) {
 
   return (
     <div
-      className="w-full tablet:w-7/12"
+      className="w-full md:w-7/12"
       style={{
         minWidth: isDesktop ? `${UI.CHECKOUT_SPLIT_WIDTH_PX}px` : 'unset',
       }}
@@ -45,7 +45,7 @@ function CheckCircle({ label, complete }: CheckCircleProps) {
       <span
         className={classNames(
           complete ? 'text-primary' : 'text-gray-600',
-          'mt-1 text-sm mobile:text-base',
+          'mt-1 text-sm sm:text-base',
         )}
       >
         {label}

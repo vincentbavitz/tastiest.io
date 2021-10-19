@@ -89,7 +89,7 @@ const CheckoutStepAuthMobile = ({ order }: Props) => {
             <p className="text-xl font-medium">
               {order?.deal?.restaurant?.name}
             </p>
-            <p className="text-sm mobile:text-base">{order?.deal?.tagline}</p>
+            <p className="text-sm sm:text-base">{order?.deal?.tagline}</p>
           </div>
 
           <div>

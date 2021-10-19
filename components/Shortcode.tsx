@@ -1,5 +1,4 @@
 import { Button } from '@tastiest-io/tastiest-components';
-import { dlog } from '@tastiest-io/tastiest-utils';
 import { useDispatch } from 'react-redux';
 import { toggleOfferMenu } from 'state/navigation';
 import {
@@ -14,7 +13,6 @@ interface ShortCodeProps {
 
 const Shortcode = ({ children }: ShortCodeProps) => {
   const dispatch = useDispatch();
-  dlog('Shortcode ➡️ tg:', children);
 
   // shortcodes.forEach(shortcode =>
   //   paragraph.replace(
@@ -27,7 +25,6 @@ const Shortcode = ({ children }: ShortCodeProps) => {
   // Replace all the shortcodes with their respective elements.
 
   const p = extractShortcodeParameters(children);
-  dlog('Shortcode ➡️ p:', p);
 
   // Menu link
   if (ShortCodesRegex.MENU_LINK.test(children)) {

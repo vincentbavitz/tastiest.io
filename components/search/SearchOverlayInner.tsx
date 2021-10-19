@@ -86,17 +86,15 @@ function SearchOverlayInnerDefault() {
             onClick={() => router.push(category.href)}
             className="flex items-center px-2 py-1 text-lg font-medium rounded-md cursor-pointer text-primary font-secondary hover:bg-secondary-1 hover:bg-opacity-10"
           >
-            <category.svg className="w-6 h-6 mr-2 fill-current tablet:h-5 tablet:w-5" />
-            <p className="text-xl text-alt-1 mobile:text-base">
-              {category.name}
-            </p>
+            <category.svg className="w-6 h-6 mr-2 fill-current md:h-5 md:w-5" />
+            <p className="text-xl text-alt-1 sm:text-base">{category.name}</p>
           </div>
         ))}
       </div>
 
       {/* CUISINES */}
       <div className="flex flex-col mt-6">
-        <span className="ml-1 font-medium tracking-wide text-alt-1 tablet:text-sm">
+        <span className="ml-1 font-medium tracking-wide text-alt-1 md:text-sm">
           Find your next favourite dish!
         </span>
 
