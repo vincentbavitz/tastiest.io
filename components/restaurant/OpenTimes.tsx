@@ -14,6 +14,7 @@ interface Props {
   openTimes: WeekOpenTimes;
   wide?: boolean;
   small?: boolean;
+  buffHeight?: boolean;
 }
 
 type OpenTimeRow = {
@@ -29,7 +30,7 @@ type HumanReadableOpenTimeRow = {
 };
 
 export default function OpenTimes(props: Props) {
-  const { openTimes, wide, small } = props;
+  const { openTimes, wide, small, buffHeight } = props;
 
   // If we have successive openTimes that are the same,
   // starting from Monday, list them as (for example)...
@@ -173,8 +174,9 @@ export default function OpenTimes(props: Props) {
       style={{
         width: wide ? '100%' : 'min-content',
         minWidth: small ? '14rem' : '17rem',
+        minHeight: buffHeight ? '10rem' : 'unset',
       }}
-      className="whitespace-nowrap shadow-lg border duration-300 border-light hover:border-primary bg-light px-4 py-2 rounded-lg"
+      className="whitespace-nowrap shadow-lg border duration-300 border-light hover:border-secondary bg-light px-4 py-2 rounded-lg"
     >
       <div className="border-b border-gray-300 w-full text-lg tracking-wide mb-2 pr-6">
         Open Times

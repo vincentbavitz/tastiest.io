@@ -4,7 +4,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "now": "npm run now",
-    "dev": "TAILWIND_MODE=watch NODE_ENV=development next dev",
+    "dev": "NODE_ENV=development next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",

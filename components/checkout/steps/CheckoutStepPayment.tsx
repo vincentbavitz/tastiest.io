@@ -56,7 +56,7 @@ interface Props {
 type FormData = {
   firstName: string;
   lastName: string;
-  sm: string;
+  mobile: string;
   cardPostcode: string;
   cardHolderName: string;
 };

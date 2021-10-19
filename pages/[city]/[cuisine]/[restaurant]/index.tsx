@@ -1,5 +1,4 @@
 import { EnvironmentOutlined } from '@ant-design/icons';
-import { Button } from '@tastiest-io/tastiest-components';
 import {
   CmsApi,
   dlog,
@@ -14,6 +13,7 @@ import TastiestDishRow from 'components/cards/TastiestDishRow';
 import { Contained } from 'components/Contained';
 import { RestaurantMap } from 'components/modals/RestaurantMap';
 import OpenTimes from 'components/restaurant/OpenTimes';
+import SeeExperiencesButton from 'components/restaurant/SeeExperiencesButton';
 import { RichBody } from 'components/RichBody';
 import { SectionTitle } from 'components/SectionTitle';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -202,7 +202,7 @@ const RestaurantPage = (
           <div>
             <SectionTitle>Award Winning Dishes</SectionTitle>
 
-            <div className="flex mt-6 space-x-3">
+            <div className="grid  gap-7 mt-6 grid-rows-1 grid-cols-4">
               {[
                 ...tastiestDishes,
                 ...tastiestDishes,
@@ -254,7 +254,7 @@ const RestaurantPage = (
           <a
             target="_blank"
             rel="noreferrer"
-            className="flex items-center space-x-1 no-underline opacity-75"
+            className="flex items-center space-x-1 opacity-75"
             href={getGoogleMapLink(
               restaurant.location.lat,
               restaurant.location.lon,
@@ -265,23 +265,36 @@ const RestaurantPage = (
           </a>
         </div>
 
-        <div className="pt-4 pb-20">
+        <div className="pb-20">
           {isMobile || isTablet ? (
             <>
-              <div className="flex flex-col-reverse lg:flex-row space-x-0 lg:space-x-6 md:mt-3 mt-6 w-full">
-                <OpenTimes wide openTimes={openTimes} />
-
+              <div className="flex flex-col mt-6 w-full">
                 <div
                   style={{ minHeight: '12rem' }}
-                  className="w-full h-64 lg:h-auto flex-grow mb-6 lg:mb-0"
+                  className="w-full h-64 flex-grow mb-6"
                 >
                   <RestaurantMap restaurant={restaurant} />
+                </div>
+
+                <div
+                  className={clsx(
+                    'flex ',
+                    isMobile ? 'flex-col space-y-4' : 'flex-row space-x-4',
+                  )}
+                >
+                  <OpenTimes wide small={isTablet} openTimes={openTimes} />
+
+                  <SeeExperiencesButton
+                    autoHeight={isTablet}
+                    href={experiencesPath.href}
+                    as={experiencesPath.as}
+                  />
                 </div>
               </div>
             </>
           ) : (
             <>
-              <div className="flex space-x-6">
+              <div className="flex pt-4 space-x-6">
                 <div
                   style={{ minHeight: '12rem' }}
                   className="w-full h-auto flex-grow"
@@ -289,13 +302,14 @@ const RestaurantPage = (
                   <RestaurantMap restaurant={restaurant} />
                 </div>
 
-                <div className="">
-                  <OpenTimes small openTimes={openTimes} />
+                <div className="flex-grow">
+                  <OpenTimes small buffHeight openTimes={openTimes} />
 
-                  <div className="shadow-lg pt-4">
-                    <Button color="secondary" wide size="large">
-                      See experiences
-                    </Button>
+                  <div className="pt-4">
+                    <SeeExperiencesButton
+                      href={experiencesPath.href}
+                      as={experiencesPath.as}
+                    />
                   </div>
                 </div>
               </div>
