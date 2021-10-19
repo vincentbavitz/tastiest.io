@@ -103,7 +103,7 @@ export const getStaticProps = async (
   // It's cached ;)
   const restaurantDataApi = new RestaurantDataApi(firebaseAdmin, restaurant.id);
   const { metrics } = await restaurantDataApi.getRestaurantData();
-  const { openTimes } = metrics;
+  const { openTimes } = metrics ?? { openTimes: null };
 
   // Get posts from restaurant
   const { posts } = await cms.getPostsOfRestaurant(restaurant.uriName, 100);
@@ -202,15 +202,24 @@ const RestaurantPage = (
           <div>
             <SectionTitle>Award Winning Dishes</SectionTitle>
 
-            <div className="grid  gap-7 mt-6 grid-rows-1 grid-cols-4">
+            <div
+              className={clsx(
+                'grid gap-7 mt-6',
+                isMobile && 'grid-cols-2 grid-rows-2',
+                isTablet && 'grid-cols-3 grid-rows-1',
+                isDesktop && 'grid-cols-4 grid-rows-1',
+              )}
+            >
               {[
                 ...tastiestDishes,
                 ...tastiestDishes,
                 ...tastiestDishes,
                 ...tastiestDishes,
-              ].map(dish => (
-                <TastiestDishRow key={dish.id} {...dish} />
-              ))}
+              ]
+                .slice(0, isMobile ? 4 : isTablet ? 3 : 4)
+                .map(dish => (
+                  <TastiestDishRow key={dish.id} {...dish} />
+                ))}
             </div>
           </div>
         </div>

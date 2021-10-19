@@ -93,7 +93,7 @@ export const getStaticProps = async (
   // It's cached ;)
   const restaurantDataApi = new RestaurantDataApi(firebaseAdmin, restaurant.id);
   const { metrics } = await restaurantDataApi.getRestaurantData();
-  const { openTimes } = metrics;
+  const { openTimes } = metrics ?? { openTimes: null };
 
   // Get posts from restaurant
   const { posts } = await cms.getPostsOfRestaurant(restaurant.uriName, 100);

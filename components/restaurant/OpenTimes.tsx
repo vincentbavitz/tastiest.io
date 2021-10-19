@@ -169,6 +169,10 @@ export default function OpenTimes(props: Props) {
     };
   };
 
+  if (!openTimes) {
+    return null;
+  }
+
   return (
     <div
       style={{
