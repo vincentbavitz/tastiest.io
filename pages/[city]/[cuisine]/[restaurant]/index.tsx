@@ -170,9 +170,9 @@ const RestaurantPage = (
           <div className="flex lg:flex-row flex-col lg:space-x-6">
             <div className="flex-1">
               <ArticleFeatureVideoWidget video={restaurant.video} />
-              <h4 className="pt-2 text-xl font-medium text-primary">
+              {/* <h4 className="pt-2 text-xl font-medium text-primary">
                 Interview with the owner of {restaurant.name}
-              </h4>
+              </h4> */}
             </div>
 
             <div className="flex-1">
@@ -197,12 +197,7 @@ const RestaurantPage = (
                 isDesktop && 'grid-cols-4 grid-rows-1',
               )}
             >
-              {[
-                ...tastiestDishes,
-                ...tastiestDishes,
-                ...tastiestDishes,
-                ...tastiestDishes,
-              ]
+              {tastiestDishes
                 .slice(0, isMobile ? 4 : isTablet ? 3 : 4)
                 .map(dish => (
                   <TastiestDishRow key={dish.id} {...dish} />
