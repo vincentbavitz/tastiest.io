@@ -47,7 +47,7 @@ export const useMap = (container: string, params: UseMapParams) => {
         el.className = 'marker';
 
         // Depends on the aspect ratio of the image
-        el.style.width = `${size / 1.282608}px`;
+        el.style.width = `${size / 1.2205}px`;
         el.style.height = `${size}px`;
         el.style.cursor = 'pointer';
         el.style.backgroundSize = 'cover';
