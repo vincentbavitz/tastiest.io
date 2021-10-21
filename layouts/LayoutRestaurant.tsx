@@ -1,5 +1,6 @@
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import BlockButton from 'components/restaurant/BlockButton';
 import FollowButton from 'components/restaurant/FollowButton';
@@ -129,8 +130,15 @@ export default function LayoutRestaurant({
             loop
             muted
             autoPlay
-            src={'/test.mp4'}
-            className="object-cover w-full h-full bg-gray-400"
+            src={`/${
+              restaurant.name === 'El Vaquero'
+                ? 'el-vaquero-mill-hill'
+                : 'numa-mill-hill'
+            }.mp4`}
+            className={clsx(
+              'object-cover w-full h-full bg-gray-400',
+              restaurant.name === 'El Vaquero' && '-mt-10',
+            )}
           />
         </div>
 
