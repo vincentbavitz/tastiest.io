@@ -128,7 +128,7 @@ export function ArticleOrderNowDesktop(props: Props) {
               : '300px',
             maxWidth: isDesktop ? 'unset' : '75vw',
           }}
-          className="relative z-30 mt-10 bg-white border-4 pointer-events-auto last:pb-4 border-secondary-1 rounded-lg"
+          className="relative z-30 mt-12 bg-white border-4 pointer-events-auto last:pb-4 border-secondary-1 rounded-lg"
         >
           {/* <h3 className="mb-2 text-xl text-center font-primary text-primary">
             Get the offer!

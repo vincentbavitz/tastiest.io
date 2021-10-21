@@ -6817,11 +6817,6 @@ grid-index@^1.1.0:
   resolved "https://registry.npmjs.org/grid-index/-/grid-index-1.1.0.tgz"
   integrity sha512-HZRwumpOGUrHyxO5bqKZL0B0GlUpwtCAzZ42sgxUPniu33R1LSFH5yrIcBCHjkctCAh3mtWKcKd9J4vDDdeVHA==
 
-groq@^1.149.16:
-  version "1.149.16"
-  resolved "https://registry.npmjs.org/groq/-/groq-1.149.16.tgz"
-  integrity sha512-+3HQr0I3FtKzeSIlfHqhUJLFPFdsDNwqIVS28IBaCPF7FeGBVUBTGqtiEd8QQjVEK3PlZTxEtfy6A/nOAevb3Q==
-
 growly@^1.3.0:
   version "1.3.0"
   resolved "https://registry.npmjs.org/growly/-/growly-1.3.0.tgz"

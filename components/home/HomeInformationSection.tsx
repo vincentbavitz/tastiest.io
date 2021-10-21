@@ -1,7 +1,14 @@
+import { SVG } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import { SectionTitle } from 'components/SectionTitle';
 import { useScreenSize } from 'hooks/useScreenSize';
+import {
+  HomeInformationBook,
+  HomeInformationLove,
+  HomeInformationPage,
+  HomeInformationShare,
+} from 'public/assets/page/home';
 import React, { FC } from 'react';
 
 export default function HomeInformationSection() {
@@ -22,20 +29,36 @@ export default function HomeInformationSection() {
             isDesktop && 'grid-cols-4',
           )}
         >
-          <InformationBlock>Know what to expect</InformationBlock>
-          <InformationBlock>News from the kitchen</InformationBlock>
-          <InformationBlock>Last minute tables</InformationBlock>
-          <InformationBlock>Book directly</InformationBlock>
+          <InformationBlock illustration={HomeInformationPage}>
+            Know what to expect
+          </InformationBlock>
+          <InformationBlock illustration={HomeInformationShare}>
+            News from the kitchen
+          </InformationBlock>
+          <InformationBlock illustration={HomeInformationLove}>
+            Last minute tables
+          </InformationBlock>
+          <InformationBlock illustration={HomeInformationBook}>
+            Book directly
+          </InformationBlock>
         </div>
       </div>
     </Contained>
   );
 }
 
-const InformationBlock: FC = ({ children }) => {
+interface InformationBlockProps {
+  illustration: SVG;
+}
+
+const InformationBlock: FC<InformationBlockProps> = props => {
+  const { illustration: Illustration, children } = props;
+
   return (
     <div className="w-full">
-      <div className="bg-gray-200 w-full h-32 inline-block"></div>
+      <div className="flex justify-center items-center relative w-full h-32">
+        <Illustration className="h-full w-full object-contain" />
+      </div>
 
       <div className="pt-2 font-medium flex justify-center">{children}</div>
     </div>

@@ -6,12 +6,10 @@ import Sticky from 'react-stickynode';
 import { useWindowScroll } from 'react-use';
 import { UI } from '../../constants';
 import ArticleHowItWorksModal from './modals/ArticleHowItWorksModal';
-import ArticleMenuModal from './modals/ArticleMenuModal';
 import { ArticleSectionAbstract } from './sections/ArticleSectionAbstract';
 import { ArticleSectionContent } from './sections/ArticleSectionContent';
 import { ArticleSectionTitle } from './sections/ArticleSectionTitle';
 import { ArticleOrderNowDesktop } from './widgets/ArticleOrderNowDesktop';
-import { ArticleSaveShareWidget } from './widgets/ArticleSaveShareWidget';
 
 export function Article(post: IPost) {
   const { isDesktop } = useScreenSize();
@@ -25,13 +23,9 @@ function ArticleMobile(post: IPost) {
     <article>
       <div className="relative">
         {/* Backrop */}
-        <div className="absolute inset-0 inline-block bg-white"></div>
-
-        <ArticleSectionTitle
-          title={title}
-          svg={titleDivider}
-          location={location}
-        />
+        <div className="bg-white">
+          <ArticleSectionTitle {...post} />
+        </div>
       </div>
 
       <ArticleSectionAbstract {...post} />
@@ -64,18 +58,7 @@ function ArticleDesktop(post: IPost) {
   return (
     <div className="relative">
       <article>
-        <div className="relative">
-          {/* Backrop */}
-          <div className="absolute inset-0 inline-block bg-white"></div>
-
-          <ArticleSectionTitle
-            svg={titleDivider}
-            title={title}
-            location={location}
-          />
-
-          <ArticleSaveShareWidget {...post} />
-        </div>
+        <ArticleSectionTitle {...post} />
 
         {/* Floating deal */}
         <Sticky
@@ -104,7 +87,7 @@ function ArticleDesktop(post: IPost) {
 
         {/* Modals */}
         {/* <ArticleHowItWorksModal /> */}
-        <ArticleMenuModal menu={post.menuImage} />
+        {/* <ArticleMenuModal menu={post.menuImage} /> */}
       </article>
     </div>
   );

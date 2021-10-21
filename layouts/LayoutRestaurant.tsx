@@ -1,10 +1,5 @@
-import {
-  EnvironmentOutlined,
-  LeftOutlined,
-  RightOutlined,
-} from '@ant-design/icons';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
-import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import BlockButton from 'components/restaurant/BlockButton';
 import FollowButton from 'components/restaurant/FollowButton';
@@ -16,7 +11,6 @@ import Image from 'next/image';
 import { getStaticProps } from 'pages/[city]/[cuisine]/[restaurant]';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useWindowScroll } from 'react-use';
-import { getGoogleMapLink } from 'utils/location';
 import { generateStaticURL } from 'utils/routing';
 import { LayoutProps } from './LayoutHandler';
 import LayoutWrapper from './LayoutWrapper';
@@ -191,29 +185,6 @@ export default function LayoutRestaurant({
       </TabbedContent>
 
       <Contained maxWidth={900}>
-        <div
-          className={clsx(
-            isDesktop ? 'flex mt-6 items-end justify-between' : 'flex flex-col',
-          )}
-        >
-          <h4 className="text-2xl font-primary text-primary">
-            {restaurant.name}
-          </h4>
-
-          <a
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center space-x-1 opacity-75"
-            href={getGoogleMapLink(
-              restaurant.location.lat,
-              restaurant.location.lon,
-            )}
-          >
-            <EnvironmentOutlined className="text-secondary text-lg" />{' '}
-            <p>{restaurant?.location?.address}</p>
-          </a>
-        </div>
-
         <div className="pb-20">
           <RestaurantMapBlock restaurant={restaurant}>
             <>
