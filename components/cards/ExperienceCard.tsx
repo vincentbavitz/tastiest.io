@@ -65,7 +65,7 @@ export function ExperienceCard(props: Props): JSX.Element {
   const [video, , controls] = useVideo(
     <video
       loop
-      src={deal.dynamicImage.url}
+      src={deal?.dynamicImage?.url}
       className="object-cover w-full h-full"
     />,
   );
@@ -84,11 +84,11 @@ export function ExperienceCard(props: Props): JSX.Element {
           style={{ paddingBottom: '60%' }}
           className="relative w-full h-0 overflow-hidden bg-white bg-opacity-25"
         >
-          {deal.dynamicImage.url && (
+          {/* {deal.dynamicImage.url && (
             <div className="absolute inset-0 z-10 pointer-events-none">
               {video}
             </div>
-          )}
+          )} */}
 
           {deal.image.url && (
             <div className="absolute inset-0">
@@ -123,7 +123,7 @@ export function ExperienceCard(props: Props): JSX.Element {
           {/* Cuisine overlay */}
           <div className="absolute inset-0 select-none flex items-end justify-end pb-2 pr-2">
             <div className="px-2 py-1 leading-none z-10 text-sm font-medium bg-light bg-opacity-75 text-dark rounded-full">
-              <span className="">{titleCase(cuisine)}</span>
+              <span className="">{titleCase(cuisine.replace('_', ' '))}</span>
             </div>
           </div>
         </div>

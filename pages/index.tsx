@@ -14,7 +14,7 @@ interface Props {
   posts: IPost[];
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async context => {
   const cms = new CmsApi();
   // const { dishes = [] } = await cms.getTastiestDishes(20);
   const { posts = [] } = await cms.getTopPosts(10);

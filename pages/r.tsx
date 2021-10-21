@@ -1,9 +1,5 @@
 import { GetServerSideProps } from 'next';
-import {
-  BASE_URL,
-  getOfferDestination,
-  getRestaurantDestination,
-} from 'utils/redirects';
+import { getOfferDestination, getRestaurantDestination } from 'utils/redirects';
 
 /** Redirection takes two possible GET parameters
  * 1. ?offer=<offerId>
@@ -39,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   // No valid redirectsd found
   if (!url) {
-    return { props: {}, redirect: BASE_URL };
+    return { props: {}, redirect: '/' };
   }
 
   // Fill final URL with our incoming UTMS

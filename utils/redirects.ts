@@ -1,10 +1,15 @@
 import { CmsApi } from '@tastiest-io/tastiest-utils';
 import { generateStaticURL } from './routing';
 
-export const BASE_URL =
-  process.env.NODE_ENV === 'production'
-    ? 'https://tastiest.io'
+export const getBaseUrl = () => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  return process.env.NODE_ENV === 'production'
+    ? window.location.origin
     : 'http://localhost:3000';
+};
 
 /**
  *
@@ -28,7 +33,7 @@ export const getOfferDestination = async (
     restaurant: post.restaurant.uriName,
   });
 
-  const url = new URL(path.as, BASE_URL);
+  const url = new URL(path.as);
   return url;
 };
 
@@ -48,6 +53,6 @@ export const getRestaurantDestination = async (
     restaurant: restaurant.uriName,
   });
 
-  const url = new URL(path.as, BASE_URL);
+  const url = new URL(path.as, getBaseUrl());
   return url;
 };

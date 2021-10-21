@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { BASE_URL } from 'utils/redirects';
+import { getBaseUrl } from 'utils/redirects';
 import { generateStaticURL } from 'utils/routing';
 
 export interface IUseShareArticleParams {
@@ -28,10 +28,19 @@ const useShareArticle = (
   );
 
   // Expand to the format: https://tastiest.io/path/to/format
-  const tastiestUrl = new URL(path, BASE_URL);
-  tastiestUrl.searchParams.set('utm_source', 'tastiest');
-  tastiestUrl.searchParams.set('utm_medium', 'share');
-  tastiestUrl.searchParams.set('utm_content', slug);
+  const tastiestUrl = useMemo(() => {
+    const baseUrl = getBaseUrl();
+    if (!baseUrl) {
+      return new URL('/', 'https://tastiest.io');
+    }
+
+    const tastiestUrl = new URL(path, baseUrl);
+    tastiestUrl.searchParams.set('utm_source', 'tastiest');
+    tastiestUrl.searchParams.set('utm_medium', 'share');
+    tastiestUrl.searchParams.set('utm_content', slug);
+
+    return tastiestUrl;
+  }, []);
 
   const share = (open?: boolean) => {
     shareURL(title, tastiestUrl.toString(), { open });

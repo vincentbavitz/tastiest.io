@@ -1,5 +1,5 @@
 import { LocalEndpoint } from 'types/api';
-import { BASE_URL } from './redirects';
+import { getBaseUrl } from './redirects';
 
 interface IGenerateURLParams {
   city: string;
@@ -32,7 +32,11 @@ export const generateLocalEndpoint = (
   endpoint: LocalEndpoint,
   params?: Record<string, string>,
 ) => {
-  const url = new URL(BASE_URL + endpoint);
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const url = new URL(getBaseUrl() + endpoint);
   Object.entries(params ?? {}).forEach(([key, value]) => {
     url.searchParams.set(key, value);
   });

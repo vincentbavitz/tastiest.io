@@ -57,7 +57,7 @@ export function ArticleCard(props: Props): JSX.Element {
   const [video, , controls] = useVideo(
     <video
       loop
-      src={deal.dynamicImage.url}
+      src={deal.dynamicImage?.url}
       className="object-cover w-full h-full"
     />,
   );
@@ -77,7 +77,7 @@ export function ArticleCard(props: Props): JSX.Element {
             style={{ paddingBottom: '60%' }}
             className="relative w-full h-0 overflow-hidden bg-white bg-opacity-25"
           >
-            {deal.dynamicImage.url && (
+            {deal.dynamicImage?.url && (
               <div className="absolute inset-0 z-10 pointer-events-none">
                 {video}
               </div>
@@ -87,7 +87,7 @@ export function ArticleCard(props: Props): JSX.Element {
               <div className="absolute inset-0">
                 <img
                   className="object-cover w-full h-full"
-                  src={`${deal.image?.url}?w=400`}
+                  src={`${deal?.image?.url}?w=400`}
                   alt={deal.image?.description}
                 />
               </div>
