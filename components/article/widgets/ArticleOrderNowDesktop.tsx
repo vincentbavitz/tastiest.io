@@ -139,7 +139,7 @@ export function ArticleOrderNowDesktop(props: Props) {
               <img src={`${deal?.image?.url}?w=700`} className="object-cover" />
             </div> */}
 
-            <div className="flex flex-col justify-center px-2 pt-3 space-y-3">
+            <div className="flex flex-col justify-center px-2 pt-6 space-y-3">
               <p className="text-base leading-none text-center font-primary">
                 {deal?.tagline}
               </p>

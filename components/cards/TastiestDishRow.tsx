@@ -52,7 +52,7 @@ export default function TastiestDishRow(props: ITastiestDish) {
         <h4
           style={{
             letterSpacing: '0.20em',
-            fontSize: '1.5rem',
+            fontSize: '1.0rem',
             lineHeight: '1em',
           }}
           className="transform scale-y-125 font-bold text-center text-2xl text-light"
