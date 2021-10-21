@@ -1,3 +1,4 @@
+import { Button } from '@tastiest-io/tastiest-components';
 import { ShareIcon } from '@tastiest-io/tastiest-icons';
 import { IPost } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
@@ -100,18 +101,18 @@ export function ArticleSaveShareWidget(props: IPost) {
               <span>Save</span>
             </div> */}
 
-              <div
-                className="flex items-center flex-1 px-2 py-1 space-x-1 font-medium duration-150 rounded-sm cursor-pointer hover:bg-white"
+              <Button
+                color="secondary"
+                type="outline"
                 onClick={() => share()}
+                prefix={
+                  <ShareIcon
+                    className={clsx('fill-current', isDesktop ? 'h-5' : 'h-5')}
+                  />
+                }
               >
-                <ShareIcon
-                  className={clsx(
-                    'text-primary fill-current',
-                    isDesktop ? 'h-5' : 'h-5',
-                  )}
-                />
-                <span>Share</span>
-              </div>
+                Share
+              </Button>
             </div>
           </div>
 
@@ -130,7 +131,11 @@ export function ArticleSaveShareWidget(props: IPost) {
   );
 }
 
-interface ArticleSaveShareFixedProps extends IPost {
+interface ArticleSaveShareFixedProps
+  extends Pick<
+    IPost,
+    'title' | 'city' | 'cuisine' | 'slug' | 'deal' | 'restaurant'
+  > {
   isArticleSaved: boolean;
   isDesktop: boolean;
   toggleSaveArticle: (slug: string) => void;
@@ -142,8 +147,6 @@ function ArticleSaveShareFixed(props: ArticleSaveShareFixedProps) {
     city,
     cuisine,
     slug,
-    toggleSaveArticle,
-    isArticleSaved,
     deal: { dishName },
   } = props;
 

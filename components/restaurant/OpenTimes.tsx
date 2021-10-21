@@ -8,10 +8,14 @@ import {
   WeekOpenTimes,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
+import { GetOpenTimesReturn } from 'pages/api/restaurant/getOpenTimes';
 import React, { useMemo } from 'react';
+import useSWR from 'swr';
+import { LocalEndpoint } from 'types/api';
+import { generateLocalEndpoint } from 'utils/routing';
 
 interface Props {
-  openTimes: WeekOpenTimes;
+  restaurantId: string;
   wide?: boolean;
   small?: boolean;
   buffHeight?: boolean;
@@ -30,12 +34,62 @@ type HumanReadableOpenTimeRow = {
 };
 
 export default function OpenTimes(props: Props) {
-  const { openTimes, wide, small, buffHeight } = props;
+  const { restaurantId, wide, small, buffHeight } = props;
+
+  // Grab open times from SWR.
+  const swrURL = generateLocalEndpoint(LocalEndpoint.GET_OPEN_TIMES, {
+    restaurantId: restaurantId,
+  });
+
+  const { data: openTimes } = useSWR<GetOpenTimesReturn>(swrURL, {
+    refreshInterval: 60000,
+  });
+
+  dlog('OpenTimes ➡️ openTimes:', openTimes);
 
   // If we have successive openTimes that are the same,
   // starting from Monday, list them as (for example)...
   // Monday to Wednesday: 9:00 AM --> 4:30 PM
+  const { timeRows, transformRowIntoHumanLanguage } = useOpenTimes(openTimes);
 
+  return (
+    <div
+      style={{
+        width: wide ? '100%' : 'min-content',
+        minWidth: small ? '14rem' : '17rem',
+        minHeight: buffHeight ? '10rem' : 'unset',
+      }}
+      className="whitespace-nowrap shadow-lg border duration-300 border-light hover:border-secondary bg-light px-4 py-2 rounded-lg"
+    >
+      <div className="border-b border-gray-300 w-full text-lg tracking-wide mb-2 pr-6">
+        Open Times
+      </div>
+
+      {/* Shimmer while it's loading */}
+
+      {timeRows?.map((row, key) => {
+        const { label, times } = transformRowIntoHumanLanguage(row);
+        const closed = times.toLowerCase() === 'closed';
+
+        return (
+          <div
+            key={key}
+            className={clsx(
+              'flex space-x-4 py-1 justify-between',
+              closed ? 'opacity-50' : '',
+              small ? 'text-sm' : 'text-base',
+            )}
+          >
+            <div>{label}</div>
+            <div>{times}</div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+const useOpenTimes = (openTimes: WeekOpenTimes) => {
   const timeRows = useMemo(() => {
     // const rows: OpenTimeRow[] = [
     //   { from: 1, to: 3, range: [135, 1045] },
@@ -45,6 +99,10 @@ export default function OpenTimes(props: Props) {
     // ];
 
     const rows: OpenTimeRow[] = [];
+    if (!openTimes) {
+      return null;
+    }
+
     Object.entries(openTimes)
       .sort((a, b) => Number(a[0]) - Number(b[0]))
       .forEach(([day, openTimeItem]) => {
@@ -109,12 +167,12 @@ export default function OpenTimes(props: Props) {
     const saturday = sortedRows.find(r => r.fromDay === 6 && r.toDay === 6);
 
     const bothExist = sunday && saturday;
-    const bothClosed = sunday.open === false && saturday.open === false;
-    const bothOpen = sunday.open === true && saturday.open === true;
+    const bothClosed = sunday?.open === false && saturday?.open === false;
+    const bothOpen = sunday?.open === true && saturday?.open === true;
     const sameRange =
       bothOpen &&
-      sunday.range[0] === saturday.range[0] &&
-      sunday.range[1] === saturday.range[1];
+      sunday?.range[0] === saturday?.range[0] &&
+      sunday?.range[1] === saturday?.range[1];
 
     // Set from Saturday to Sunday as one row
     if (bothExist && (bothClosed || (bothOpen && sameRange))) {
@@ -130,9 +188,7 @@ export default function OpenTimes(props: Props) {
     }
 
     return sortedRows;
-  }, []);
-
-  dlog('OpenTimes ➡️ timeRows:', timeRows);
+  }, [openTimes]);
 
   const transformRowIntoHumanLanguage = (
     row: OpenTimeRow,
@@ -169,41 +225,5 @@ export default function OpenTimes(props: Props) {
     };
   };
 
-  if (!openTimes) {
-    return null;
-  }
-
-  return (
-    <div
-      style={{
-        width: wide ? '100%' : 'min-content',
-        minWidth: small ? '14rem' : '17rem',
-        minHeight: buffHeight ? '10rem' : 'unset',
-      }}
-      className="whitespace-nowrap shadow-lg border duration-300 border-light hover:border-secondary bg-light px-4 py-2 rounded-lg"
-    >
-      <div className="border-b border-gray-300 w-full text-lg tracking-wide mb-2 pr-6">
-        Open Times
-      </div>
-
-      {timeRows?.map((row, key) => {
-        const { label, times } = transformRowIntoHumanLanguage(row);
-        const closed = times.toLowerCase() === 'closed';
-
-        return (
-          <div
-            key={key}
-            className={clsx(
-              'flex space-x-4 py-1 justify-between',
-              closed ? 'opacity-50' : '',
-              small ? 'text-sm' : 'text-base',
-            )}
-          >
-            <div>{label}</div>
-            <div>{times}</div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
+  return { timeRows, transformRowIntoHumanLanguage };
+};

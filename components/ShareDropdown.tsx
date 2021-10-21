@@ -1,5 +1,5 @@
 import { CopyOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Tooltip } from '@tastiest-io/tastiest-components';
+import { Dropdown, Input } from '@tastiest-io/tastiest-components';
 import useShareArticle, {
   IUseShareArticleParams,
 } from 'hooks/article/useShareArticle';
@@ -69,8 +69,20 @@ export const ShareDropdown = (props: IShareDropdownProps) => {
         offsetY={offsetY}
         onClickAway={() => setIsOpen(false)}
       >
-        <div className="px-2 overflow-visible">
-          <div className="flex items-center w-full border rounded-sm bg-soft border-soft">
+        <div style={{ width: '25rem' }} className="px-2 overflow-visible">
+          <Input
+            readOnly
+            value={tastiestUrl.toString()}
+            inputClassName="!text-sm"
+            suffix={
+              <CopyOutlined
+                onClick={onClickCopyToClipboard}
+                className="-mt-1 text-xl text-secondary hover:text-primary duration-300"
+              />
+            }
+          />
+
+          {/* <div className="flex items-center w-full border rounded-sm bg-soft border-soft">
             <input
               className="pl-3 border-l outline-none bg-soft border-soft rounded-l-md"
               style={{ minWidth: '20rem', maxWidth: '80vw' }}
@@ -92,7 +104,7 @@ export const ShareDropdown = (props: IShareDropdownProps) => {
                 </div>
               </Tooltip>
             </Button>
-          </div>
+          </div> */}
         </div>
       </Dropdown>
     </div>

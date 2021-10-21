@@ -2,7 +2,6 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLockBodyScroll } from 'react-use';
 import {
   setIsInitialLoading,
   setIsPageLoading,
@@ -54,7 +53,7 @@ const LoadingProvider = ({ children }) => {
   }, [isPageLoading]);
 
   // Lock body when we're moving
-  useLockBodyScroll(isPageLoading);
+  // useLockBodyScroll(isPageLoading);
 
   // dlog('usePageLoader ➡️ isRouteLoading:', isRouteLoading);
   // dlog('usePageLoader ➡️ isPageLoading:', isPageLoading);

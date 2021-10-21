@@ -41,7 +41,7 @@ const Paragraph = ({
 }: ParagraphProps) => (
   <p
     className={clsx(
-      'tracking-wide font-secondary',
+      'font-secondary',
       margins && 'mb-3',
       justify && 'text-justify',
     )}

@@ -1,6 +1,7 @@
 // [slug].js
 import { CmsApi, dlog, IPost } from '@tastiest-io/tastiest-utils';
-import { ArticleSuggestRestaurant } from 'components/article/ArticleSuggestRestaurant';
+import { Contained } from 'components/Contained';
+import RestaurantMapBlock from 'components/RestaurantMapBlock';
 import RecommendedPosts from 'components/sections/RecommendedPosts';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { NextSeo, ProductJsonLd } from 'next-seo';
@@ -135,7 +136,20 @@ function Experience(post: IPost) {
       />
 
       <Article {...post} />
-      <ArticleSuggestRestaurant {...post} />
+      {/* <ArticleSuggestRestaurant {...post} /> */}
+
+      <Contained>
+        <RestaurantMapBlock restaurant={post.restaurant}>
+          {/* <BlockButton
+          autoHeight={isTablet}
+          href={baseRestaurantPath.href}
+          as={baseRestaurantPath.as}
+        >
+          <LeftOutlined className="pr-2" />
+          <span>See restaurant</span>
+        </BlockButton> */}
+        </RestaurantMapBlock>
+      </Contained>
 
       <div className="pb-20">
         <RecommendedPosts

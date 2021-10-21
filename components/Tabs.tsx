@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 export type Tab = {
   id: string;
   label: string;
+  href?: string;
+  as?: string;
 };
 
 interface Props {

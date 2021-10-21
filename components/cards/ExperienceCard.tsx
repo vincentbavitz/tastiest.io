@@ -123,7 +123,7 @@ export function ExperienceCard(props: Props): JSX.Element {
           {/* Cuisine overlay */}
           <div className="absolute inset-0 select-none flex items-end justify-end pb-2 pr-2">
             <div className="px-2 py-1 leading-none z-10 text-sm font-medium bg-light bg-opacity-75 text-dark rounded-full">
-              <span className="opacity-75">{titleCase(cuisine)}</span>
+              <span className="">{titleCase(cuisine)}</span>
             </div>
           </div>
         </div>

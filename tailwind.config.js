@@ -13,7 +13,7 @@ module.exports = {
     },
     fontFamily: {
       primary: ['Marmelad'],
-      secondary: ['Ubuntu'],
+      secondary: ['Montserrat'],
       mono: ['SourceCodePro'],
     },
     fontSize: {

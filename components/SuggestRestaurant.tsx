@@ -7,7 +7,6 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import React, { useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
-import { Contained } from './Contained';
 
 type FormData = {
   email: string;
@@ -152,15 +151,14 @@ export function SuggestRestaurant() {
   });
 
   return (
-    <Contained>
-      <div
-        className={clsx(
-          'relative flex w-full pb-10 justify-center',
-          'md:flex-row flex-col-reverse',
-          isDesktop && 'space-x-10',
-        )}
-      >
-        {/* {requestRecieved ? (
+    <div
+      className={clsx(
+        'relative flex w-full pb-10 justify-center',
+        'md:flex-row flex-col-reverse',
+        isDesktop && 'space-x-10',
+      )}
+    >
+      {/* {requestRecieved ? (
           <ThumbsUpIllustration
             style={{
               height: isSignedIn ? '16rem' : '20rem',
@@ -180,83 +178,80 @@ export function SuggestRestaurant() {
           />
         )} */}
 
-        <div
-          style={{
-            minWidth: '20rem',
-            maxWidth: isDesktop ? '30rem' : 'unset',
-            marginTop: isSignedIn ? '0' : '1rem',
-          }}
-          className={clsx(
-            'relative flex-1 md:mb-1 flex flex-col justify-center',
-          )}
-        >
-          <h3 className="pb-4 text-3xl text-center text-primary md:text-left font-primary">
+      <div
+        style={{
+          minWidth: '20rem',
+          maxWidth: isDesktop ? '30rem' : 'unset',
+          marginTop: isSignedIn ? '0' : '1rem',
+        }}
+        className={clsx('relative flex-1 md:mb-1 flex flex-col justify-center')}
+      >
+        {/* <h3 className="text-3xl text-center text-primary md:text-left font-primary">
             Suggest a restaurant
-          </h3>
+          </h3> */}
 
-          {requestRecieved ? (
-            <div className="">
-              <p className="text-lg font-bold">Thanks for your suggestion!</p>
-              <p>
-                We really value your input and will check out <br />
-                your suggestion shortly.
-              </p>
-            </div>
-          ) : (
-            <div className="flex flex-col mt-0 space-y-4 md:mt-6">
-              <Input
-                ref={restaurantNameRef}
-                {...restaurantNameFieldProps}
-                error={errors?.userGivenRestaurantName?.message}
-                label="Name of Restaurant"
-                labelTheme="primary"
-              />
+        {requestRecieved ? (
+          <div className="">
+            <p className="text-lg font-bold">Thanks for your suggestion!</p>
+            <p>
+              We really value your input and will check out <br />
+              your suggestion shortly.
+            </p>
+          </div>
+        ) : (
+          <div className="flex flex-col mt-0 space-y-4 md:mt-6">
+            <Input
+              ref={restaurantNameRef}
+              {...restaurantNameFieldProps}
+              error={errors?.userGivenRestaurantName?.message}
+              label="Name of Restaurant"
+              labelTheme="primary"
+            />
 
-              <div className="flex space-x-4">
-                <div className="flex-1">
-                  <Input
-                    ref={cuisineRef}
-                    {...cuisineFieldProps}
-                    error={errors?.userGivenCuisine?.message}
-                    label="Cuisine"
-                    labelTheme="primary"
-                  />
-                </div>
-
-                <div className="flex-1">
-                  <Input
-                    ref={dishRef}
-                    {...dishFieldProps}
-                    error={errors?.userGivenDish?.message}
-                    label="Your Favourite Dish"
-                    labelTheme="primary"
-                  />
-                </div>
-              </div>
-
-              {!isSignedIn && (
+            <div className="flex space-x-4">
+              <div className="flex-1">
                 <Input
-                  ref={emailRef}
-                  {...emailFieldProps}
-                  error={errors?.email?.message}
-                  label="Your Email Address"
+                  ref={cuisineRef}
+                  {...cuisineFieldProps}
+                  error={errors?.userGivenCuisine?.message}
+                  label="Cuisine"
                   labelTheme="primary"
                 />
-              )}
+              </div>
 
-              <div className="w-full md:w-24">
-                <Button wide onClick={handleSubmit(submit)}>
-                  {isSubmitting ? (
-                    <LoadingOutlined className="text-2xl" />
-                  ) : (
-                    'Send'
-                  )}
-                </Button>
+              <div className="flex-1">
+                <Input
+                  ref={dishRef}
+                  {...dishFieldProps}
+                  error={errors?.userGivenDish?.message}
+                  label="Your Favourite Dish"
+                  labelTheme="primary"
+                />
               </div>
             </div>
-          )}
-        </div>
+
+            {!isSignedIn && (
+              <Input
+                ref={emailRef}
+                {...emailFieldProps}
+                error={errors?.email?.message}
+                label="Your Email Address"
+                labelTheme="primary"
+              />
+            )}
+
+            <div className="w-full md:w-24">
+              <Button wide onClick={handleSubmit(submit)}>
+                {isSubmitting ? (
+                  <LoadingOutlined className="text-2xl" />
+                ) : (
+                  'Suggest'
+                )}
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
-    </Contained>
+    </div>
   );
 }

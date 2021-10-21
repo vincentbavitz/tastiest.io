@@ -128,16 +128,16 @@ export function ArticleOrderNowDesktop(props: Props) {
               : '300px',
             maxWidth: isDesktop ? 'unset' : '75vw',
           }}
-          className="relative z-30 pt-2 mt-16 bg-white border-4 pointer-events-auto last:pb-4 border-secondary-1 rounded-xl"
+          className="relative z-30 mt-10 bg-white border-4 pointer-events-auto last:pb-4 border-secondary-1 rounded-lg"
         >
-          <h3 className="mb-2 text-xl text-center font-primary text-primary">
+          {/* <h3 className="mb-2 text-xl text-center font-primary text-primary">
             Get the offer!
-          </h3>
+          </h3> */}
 
-          <div className="pb-4 mx-4 overflow-hidden bg-secondary-1 rounded-xl">
-            <div className="aspect-w-16 aspect-h-9">
+          <div className="pb-4 mx-2 overflow-hidden bg-secondary-1 rounded-xl">
+            {/* <div className="aspect-w-16 aspect-h-9">
               <img src={`${deal?.image?.url}?w=700`} className="object-cover" />
-            </div>
+            </div> */}
 
             <div className="flex flex-col justify-center px-2 pt-3 space-y-3">
               <p className="text-base leading-none text-center font-primary">

@@ -9,7 +9,7 @@ import LayoutWrapper from './LayoutWrapper';
 export default function LayoutDefault({
   router,
   pageProps,
-  children,
+  children: Component,
 }: LayoutProps) {
   const { isDesktop } = useScreenSize();
   const { isContentLoading } = useSelector((state: IState) => state.navigation);
@@ -38,7 +38,7 @@ export default function LayoutDefault({
       {/* top <div> and the button <div> in <></> and they'll be split */}
       <div className="relative flex flex-col justify-between flex-grow bg-light text-dark font-secondary">
         {/* All pages control when they are considered loaded */}
-        {children}
+        <Component {...pageProps} />
       </div>
     </LayoutWrapper>
   );

@@ -11,6 +11,7 @@ import { ArticleSectionAbstract } from './sections/ArticleSectionAbstract';
 import { ArticleSectionContent } from './sections/ArticleSectionContent';
 import { ArticleSectionTitle } from './sections/ArticleSectionTitle';
 import { ArticleOrderNowDesktop } from './widgets/ArticleOrderNowDesktop';
+import { ArticleSaveShareWidget } from './widgets/ArticleSaveShareWidget';
 
 export function Article(post: IPost) {
   const { isDesktop } = useScreenSize();
@@ -22,11 +23,16 @@ function ArticleMobile(post: IPost) {
 
   return (
     <article>
-      <ArticleSectionTitle
-        title={title}
-        svg={titleDivider}
-        location={location}
-      />
+      <div className="relative">
+        {/* Backrop */}
+        <div className="absolute inset-0 inline-block bg-white"></div>
+
+        <ArticleSectionTitle
+          title={title}
+          svg={titleDivider}
+          location={location}
+        />
+      </div>
 
       <ArticleSectionAbstract {...post} />
       <ArticleSectionContent {...post} />
@@ -58,11 +64,18 @@ function ArticleDesktop(post: IPost) {
   return (
     <div className="relative">
       <article>
-        <ArticleSectionTitle
-          svg={titleDivider}
-          title={title}
-          location={location}
-        />
+        <div className="relative">
+          {/* Backrop */}
+          <div className="absolute inset-0 inline-block bg-white"></div>
+
+          <ArticleSectionTitle
+            svg={titleDivider}
+            title={title}
+            location={location}
+          />
+
+          <ArticleSaveShareWidget {...post} />
+        </div>
 
         {/* Floating deal */}
         <Sticky
@@ -90,7 +103,7 @@ function ArticleDesktop(post: IPost) {
         </div>
 
         {/* Modals */}
-        <ArticleHowItWorksModal />
+        {/* <ArticleHowItWorksModal /> */}
         <ArticleMenuModal menu={post.menuImage} />
       </article>
     </div>

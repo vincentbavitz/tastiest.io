@@ -1,19 +1,17 @@
-import { RightOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
 import Link from 'next/link';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 interface SeeExperiencesButtonProps {
   href: string;
   as: string;
   autoHeight?: boolean;
+  children: ReactNode;
 }
 
-const SeeExperiencesButton = ({
-  href,
-  as,
-  autoHeight,
-}: SeeExperiencesButtonProps) => {
+const BlockButton = (props: SeeExperiencesButtonProps) => {
+  const { href, as, autoHeight, children } = props;
+
   return (
     <Link href={href} as={as}>
       <a className="no-underline">
@@ -24,12 +22,11 @@ const SeeExperiencesButton = ({
             autoHeight ? 'h-full' : 'h-16',
           )}
         >
-          <span>See experiences</span>
-          <RightOutlined className="pl-2" />
+          {children}
         </div>
       </a>
     </Link>
   );
 };
 
-export default SeeExperiencesButton;
+export default BlockButton;

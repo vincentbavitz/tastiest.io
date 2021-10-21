@@ -23,14 +23,8 @@ export function HomeHeroSection(): JSX.Element {
         {METADATA.TAGLINE}
       </h1>
 
-      <div className="relative w-full">
-        <div
-          style={{
-            width: '100%',
-          }}
-        >
-          <HomeHero />
-        </div>
+      <div style={{ maxWidth: '45rem' }} className="relative w-full">
+        <HomeHero className="z-10" />
       </div>
     </div>
   );

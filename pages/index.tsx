@@ -1,6 +1,8 @@
 import { CmsApi, IPost } from '@tastiest-io/tastiest-utils';
+import { Contained } from 'components/Contained';
 import HomeFeaturedExperiencesSection from 'components/home/HomeFeaturedExperiencesSection';
-import { SuggestRestaurant } from 'components/SuggestRestaurant';
+import HomeInformationSection from 'components/home/HomeInformationSection';
+import SuggestRestaurantPrompBox from 'components/SuggestRestaurantPrompBox';
 import { GetStaticProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
@@ -58,14 +60,18 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
       />
 
       <div className="flex flex-col mb-16 space-y-16">
-        <HomeHeroSection />
-        <HomeFeaturedExperiencesSection cards={cards} />
+        <div>
+          <HomeHeroSection />
+          <HomeFeaturedExperiencesSection cards={cards} />
+        </div>
+
+        <HomeInformationSection />
+
+        <Contained>
+          <SuggestRestaurantPrompBox />
+        </Contained>
 
         {/* <HomeRecentSearchesSection /> */}
-      </div>
-
-      <div className="flex flex-col space-y-16">
-        <SuggestRestaurant />
       </div>
     </>
   );

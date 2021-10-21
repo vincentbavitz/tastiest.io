@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="134.46" height="114.1" viewBox="0 0 134.46 114.1">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fafafa;
+        stroke: #3882bb;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .cls-2 {
+        font-size: 8px;
+        fill: #3882bb;
+        font-family: Poppins-Medium, Poppins;
+        font-weight: 500;
+      }
+    </style>
+  </defs>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1">
+      <g>
+        <path class="cls-1" d="M124.75,20.61c5.09,0,9.21,3.6,9.21,8V94.56c0,4.44-4.12,8-9.21,8H9.71c-5.09,0-9.21-3.61-9.21-8V28.65c0-4.44,4.12-8,9.21-8"/>
+        <text class="cls-2" transform="translate(13.03 63.87)">Numa have a table for 2 at <tspan x="-4.1" y="12">7:30pm. Grab it now before it </tspan><tspan x="27.4" y="24">gets booked!</tspan></text>
+        <circle class="cls-1" cx="66.31" cy="21.05" r="20.55"/>
+        <path class="cls-1" d="M41.59,33.92a16.66,16.66,0,0,1,.19-24.53"/>
+        <path class="cls-1" d="M32.71,40.43A25.34,25.34,0,0,1,33,3.13"/>
+        <path class="cls-1" d="M93.25,33.92a16.68,16.68,0,0,0-.19-24.53"/>
+        <path class="cls-1" d="M102.12,40.43a25.35,25.35,0,0,0-.28-37.3"/>
+        <g id="VHbADt.tif">
+          <g>
+            <path class="cls-1" d="M70.94,30.6a4.12,4.12,0,0,1-2.12,2.84,11.43,11.43,0,0,1-1.59.54h-.9a11.61,11.61,0,0,1-1.54-.52,4.11,4.11,0,0,1-2.1-2.64,1.17,1.17,0,0,1,0-.22"/>
+            <path class="cls-1" d="M63.12,11a7,7,0,0,1,2.13-.69c.15,0,.19-.08.19-.22q0-.48,0-1a1.13,1.13,0,1,1,2.26,0v1.07a15.84,15.84,0,0,1,2,.65A7.75,7.75,0,0,1,74.48,18c0,1,0,2,0,3a7.63,7.63,0,0,0,2.68,6.06,2,2,0,0,1-.2,3.18,2,2,0,0,1-1.13.32H57.32a2,2,0,0,1-1.91-1.26A1.92,1.92,0,0,1,56,27.07a7.63,7.63,0,0,0,2.58-4.59,10.39,10.39,0,0,0,.09-1.37c0-1.19,0-2.39.05-3.57A7.69,7.69,0,0,1,63.12,11"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -8,4 +8,5 @@ export enum LocalEndpoint {
   // Restaurant endpoints
   UPDATE_FOLLOW_STATUS = '/api/restaurant/updateFollowStatus',
   GET_BOOKING_SLOTS = '/api/restaurant/getBookingSlots',
+  GET_OPEN_TIMES = '/api/restaurant/getOpenTimes',
 }

@@ -85,6 +85,12 @@ const CUISINES = {
     name: 'Mediterranean',
     href: '/mediterranean',
     svg: MediterraneanIcon,
+    popularity: 2,
+  },
+  [CuisineSymbol.MIDDLE_EASTERN]: {
+    name: 'Middle Eastern',
+    href: '/middle-eastern',
+    svg: MediterraneanIcon,
     popularity: 1,
   },
 } as { [name: string]: ICuisine };

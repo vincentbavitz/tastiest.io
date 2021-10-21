@@ -4,7 +4,6 @@ import {
   IPost,
   IRestaurant,
   ITastiestDish,
-  RestaurantDataApi,
 } from '@tastiest-io/tastiest-utils';
 import { ArticleCard } from 'components/cards/ArticleCard';
 import { CardGrid } from 'components/cards/CardGrid';
@@ -18,7 +17,6 @@ import {
 } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import React from 'react';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { IRestaurantPath } from '.';
 // import {
 //   getStaticPaths as getRestaurantStaticPaths,
@@ -89,12 +87,6 @@ export const getStaticProps = async (
     };
   }
 
-  // Get openTimes of restaurant. Don't worry about this adding to load times.
-  // It's cached ;)
-  const restaurantDataApi = new RestaurantDataApi(firebaseAdmin, restaurant.id);
-  const { metrics } = await restaurantDataApi.getRestaurantData();
-  const { openTimes } = metrics ?? { openTimes: null };
-
   // Get posts from restaurant
   const { posts } = await cms.getPostsOfRestaurant(restaurant.uriName, 100);
 
@@ -104,7 +96,7 @@ export const getStaticProps = async (
   );
 
   return {
-    props: { restaurant, tastiestDishes, posts, openTimes },
+    props: { restaurant, tastiestDishes, posts },
     revalidate: 360,
   };
 };

@@ -1,7 +1,9 @@
 import { LeftOutlined } from '@ant-design/icons';
-import { Button, Input } from '@tastiest-io/tastiest-components';
+import { Button } from '@tastiest-io/tastiest-components';
 import { dlog, SupportRequestType } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
+import { SectionTitle } from 'components/SectionTitle';
+import { SuggestRestaurant } from 'components/SuggestRestaurant';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useSupport } from 'hooks/useSupport';
@@ -11,7 +13,6 @@ import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { SuggestRestaurantIllustration } from 'public/assets/illustrations';
 import { HelpHeroSuccess } from 'public/assets/page';
 import React, { useState } from 'react';
 import { generateTitle } from 'utils/metadata';
@@ -163,68 +164,13 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
       : '';
 
   return (
-    <div>
-      <Contained>
-        <div className="relative flex justify-center w-full mt-4">
-          <SuggestRestaurantIllustration
-            style={{ width: '11rem', marginLeft: '3.5rem' }}
-            className=""
-          />
-          <div
-            style={{ marginLeft: '-11.5rem' }}
-            className="absolute inset-0 flex items-end justify-center mb-2"
-          >
-            <h1 className="text-3xl text-center font-primary text-primary">
-              Suggest A Dish
-            </h1>
-          </div>
-        </div>
-      </Contained>
-      <div className="relative flex flex-col items-center w-full mt-4 mb-6 space-y-4"></div>
-      <Contained maxWidth={UI.FORM_WIDTH_PX}>
-        <div className="flex flex-col mb-10 space-y-4 md:space-y-8">
-          {/* Only request name if the user isn't logged in or hasn't given it yet */}
-          {!_name?.length && (
-            <Input
-              label="Your favourite restaurant"
-              labelTheme="primary"
-              value={name}
-              onValueChange={setName}
-              maxLength={120}
-            />
-          )}
-          {!_email?.length && (
-            <Input
-              label="Best dish"
-              labelTheme="primary"
-              value={email}
-              onValueChange={setEmail}
-              maxLength={120}
-            />
-          )}
-          <div className="flex items-center space-x-4">
-            <Button
-              color="primary"
-              wide={isMobile || isTablet}
-              onClick={submit}
-            >
-              Submit
-            </Button>
-            <p className="italic font-light">
-              - Get 5% off from. Thank you for improving the platform
-            </p>
-          </div>
-          <div>
-            <h2 className="space-x-2 text-3xl text-center font-primary">
-              Why?
-            </h2>
-            <p className="text-center">
-              We believe there is a better way to search for food.
-            </p>
-          </div>
-        </div>
-      </Contained>
-    </div>
+    <Contained>
+      <div className="py-16">
+        <SectionTitle>Suggest A Dish</SectionTitle>
+
+        <SuggestRestaurant />
+      </div>
+    </Contained>
   );
 };
 

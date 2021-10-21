@@ -14,7 +14,12 @@ export default function HomeFeaturedExperiencesSection(props: Props) {
   dlog('HomeFeaturedExperiencesSection ➡️ cards:', cards);
 
   return (
-    <div>
+    <div
+      style={{
+        boxShadow: 'inset 0px 50px 50px -30px #69b2d5',
+      }}
+      className="pt-20"
+    >
       <div className="pb-6">
         <SectionTitle>Featured Experiences</SectionTitle>
       </div>

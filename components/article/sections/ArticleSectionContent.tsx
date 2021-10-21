@@ -6,7 +6,6 @@ import { Contained } from '../../Contained';
 import { RichBody } from '../../RichBody';
 import ArticleContained from '../ArticleContained';
 import OpenMenuButton from '../OpenMenuButton';
-import { ArticleWidgetMap } from '../widgets/ArticleWidgetMap';
 import ArticleSectionNeedToKnow from './ArticleSectionNeedToKnow';
 import ArticleSectionOfferBreakdown from './ArticleSectionOfferBreakdown';
 
@@ -41,11 +40,6 @@ const MobileContent = (post: IPost) => (
 
       <ArticleSectionOfferBreakdown {...post.deal} />
 
-      <ArticleWidgetMap
-        location={post.displayLocation}
-        restaurant={post.restaurant}
-      />
-
       <ArticleSectionNeedToKnow body={post.needToKnow} />
     </div>
   </Contained>
@@ -54,14 +48,14 @@ const MobileContent = (post: IPost) => (
 const DesktopContent = (post: IPost) => {
   return (
     <ArticleContained>
-      <h3 className="text-xl font-medium border-b-2 border-secondary-2">
+      <h3 className="text-2xl font-medium font-primary border-b-2 border-secondary-2">
         {post?.restaurant?.name}
       </h3>
 
-      <div className="flex items-center justify-between mt-4 space-x-4">
+      {/* <div className="flex items-center justify-between mt-4 space-x-4">
         <CovidAware className="h-10" />
         {post.menuImage && <OpenMenuButton>Open Menu</OpenMenuButton>}
-      </div>
+      </div> */}
 
       <div className="flex flex-col mt-4 space-y-6">
         <div className="">{post?.description}</div>
@@ -70,11 +64,6 @@ const DesktopContent = (post: IPost) => {
 
         <ArticleSectionOfferBreakdown {...post.deal} />
         <AuxiliaryDivider url={post?.offerDivider?.url} />
-
-        <ArticleWidgetMap
-          location={post.displayLocation}
-          restaurant={post.restaurant}
-        />
 
         <ArticleSectionNeedToKnow body={post.needToKnow} />
       </div>

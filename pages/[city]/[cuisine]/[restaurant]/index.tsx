@@ -1,19 +1,14 @@
-import { EnvironmentOutlined } from '@ant-design/icons';
 import {
   CmsApi,
   dlog,
   IPost,
   IRestaurant,
   ITastiestDish,
-  RestaurantDataApi,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { ArticleFeatureVideoWidget } from 'components/article/widgets/ArticleFeatureVideoWidget';
 import TastiestDishRow from 'components/cards/TastiestDishRow';
 import { Contained } from 'components/Contained';
-import { RestaurantMap } from 'components/modals/RestaurantMap';
-import OpenTimes from 'components/restaurant/OpenTimes';
-import SeeExperiencesButton from 'components/restaurant/SeeExperiencesButton';
 import { RichBody } from 'components/RichBody';
 import { SectionTitle } from 'components/SectionTitle';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -28,8 +23,6 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useMemo } from 'react';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
-import { getGoogleMapLink } from 'utils/location';
 import { generateTitle } from 'utils/metadata';
 import { generateStaticURL } from 'utils/routing';
 
@@ -99,12 +92,6 @@ export const getStaticProps = async (
     };
   }
 
-  // Get openTimes of restaurant. Don't worry about this adding to load times.
-  // It's cached ;)
-  const restaurantDataApi = new RestaurantDataApi(firebaseAdmin, restaurant.id);
-  const { metrics } = await restaurantDataApi.getRestaurantData();
-  const { openTimes } = metrics ?? { openTimes: null };
-
   // Get posts from restaurant
   const { posts } = await cms.getPostsOfRestaurant(restaurant.uriName, 100);
 
@@ -114,7 +101,7 @@ export const getStaticProps = async (
   );
 
   return {
-    props: { restaurant, tastiestDishes, posts, openTimes },
+    props: { restaurant, tastiestDishes, posts },
     revalidate: 360,
   };
 };
@@ -122,7 +109,7 @@ export const getStaticProps = async (
 const RestaurantPage = (
   props: InferGetStaticPropsType<typeof getStaticProps>,
 ) => {
-  const { restaurant, tastiestDishes, posts, openTimes } = props;
+  const { restaurant, tastiestDishes, posts } = props;
   const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
 
   // As a percentage
@@ -249,83 +236,6 @@ const RestaurantPage = (
           </div>
         </div>
       </div>
-
-      <Contained maxWidth={900}>
-        <div
-          className={clsx(
-            isDesktop ? 'flex mt-6 items-end justify-between' : 'flex flex-col',
-          )}
-        >
-          <h4 className="text-2xl font-primary text-primary">
-            {restaurant.name}
-          </h4>
-
-          <a
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center space-x-1 opacity-75"
-            href={getGoogleMapLink(
-              restaurant.location.lat,
-              restaurant.location.lon,
-            )}
-          >
-            <EnvironmentOutlined className="text-secondary text-lg" />{' '}
-            <p>{restaurant?.location?.address}</p>
-          </a>
-        </div>
-
-        <div className="pb-20">
-          {isMobile || isTablet ? (
-            <>
-              <div className="flex flex-col mt-6 w-full">
-                <div
-                  style={{ minHeight: '12rem' }}
-                  className="w-full h-64 flex-grow mb-6"
-                >
-                  <RestaurantMap restaurant={restaurant} />
-                </div>
-
-                <div
-                  className={clsx(
-                    'flex ',
-                    isMobile ? 'flex-col space-y-4' : 'flex-row space-x-4',
-                  )}
-                >
-                  <OpenTimes wide small={isTablet} openTimes={openTimes} />
-
-                  <SeeExperiencesButton
-                    autoHeight={isTablet}
-                    href={experiencesPath.href}
-                    as={experiencesPath.as}
-                  />
-                </div>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="flex pt-4 space-x-6">
-                <div
-                  style={{ minHeight: '12rem' }}
-                  className="w-full h-auto flex-grow"
-                >
-                  <RestaurantMap restaurant={restaurant} />
-                </div>
-
-                <div className="flex-grow">
-                  <OpenTimes small buffHeight openTimes={openTimes} />
-
-                  <div className="pt-4">
-                    <SeeExperiencesButton
-                      href={experiencesPath.href}
-                      as={experiencesPath.as}
-                    />
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-      </Contained>
     </>
   );
 };

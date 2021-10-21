@@ -14,9 +14,6 @@ export default function ArticleMenuModal({ menu }: Props) {
   const { isOfferMenuOpen } = useSelector((state: IState) => state.navigation);
   const dispatch = useDispatch();
 
-  // Lock body scrolling when menu is open
-  // useLockBodyScroll(isOfferMenuOpen);
-
   return (
     <Modal
       id={ModalInstance.ARTICLE_MENU}

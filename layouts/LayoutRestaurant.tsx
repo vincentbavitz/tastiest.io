@@ -1,11 +1,22 @@
-import { titleCase } from '@tastiest-io/tastiest-utils';
+import {
+  EnvironmentOutlined,
+  LeftOutlined,
+  RightOutlined,
+} from '@ant-design/icons';
+import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
+import { Contained } from 'components/Contained';
+import BlockButton from 'components/restaurant/BlockButton';
 import FollowButton from 'components/restaurant/FollowButton';
+import RestaurantMapBlock from 'components/RestaurantMapBlock';
 import TabbedContent from 'components/TabbedContent';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetStaticPropsType } from 'next';
 import Image from 'next/image';
 import { getStaticProps } from 'pages/[city]/[cuisine]/[restaurant]';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useWindowScroll } from 'react-use';
+import { getGoogleMapLink } from 'utils/location';
 import { generateStaticURL } from 'utils/routing';
 import { LayoutProps } from './LayoutHandler';
 import LayoutWrapper from './LayoutWrapper';
@@ -24,6 +35,8 @@ export default function LayoutRestaurant({
   const { y: scrollY } = useWindowScroll();
   const [headerTransparent, setHeaderTransparent] = useState(true);
 
+  const { isMobile, isTablet, isDesktop } = useScreenSize();
+
   useEffect(() => {
     if (scrollY > TRANSPARENCY_Y_CUTOFF_PX) {
       setHeaderTransparent(false);
@@ -35,9 +48,16 @@ export default function LayoutRestaurant({
   }, [scrollY]);
 
   const isExperiencesPage = useMemo(
-    () => router.asPath.includes('experiences'),
-    [router.asPath],
+    () =>
+      router._inFlightRoute
+        ? router._inFlightRoute.includes('experiences')
+        : router.asPath.includes('experiences'),
+    [router._inFlightRoute],
   );
+
+  dlog('LayoutRestaurant ➡️ router.route:', router.route);
+  dlog('LayoutRestaurant ➡️ router.asPath:', router.asPath);
+  dlog('LayoutRestaurant ➡️ router._inFlightRoute:', router._inFlightRoute);
 
   const baseRestaurantPath = useMemo(
     () =>
@@ -61,6 +81,11 @@ export default function LayoutRestaurant({
     isExperiencesPage ? 'experiences' : 'about',
   );
 
+  // Stay up to date when tab changes outside of clicking context
+  useEffect(() => {
+    setSelectedTab(isExperiencesPage ? 'experiences' : 'about');
+  }, [isExperiencesPage]);
+
   // Prefetch the other tab
   useEffect(() => {
     const path = isExperiencesPage ? experiencesPath : baseRestaurantPath;
@@ -76,6 +101,7 @@ export default function LayoutRestaurant({
       if (goingToExperiences) {
         router.replace(experiencesPath.href, experiencesPath.as, {
           shallow: true,
+          scroll: false,
         });
 
         return;
@@ -84,6 +110,7 @@ export default function LayoutRestaurant({
       // Push to base restaurant page.
       router.replace(baseRestaurantPath.href, baseRestaurantPath.as, {
         shallow: true,
+        scroll: false,
       });
     },
     [isExperiencesPage],
@@ -162,6 +189,57 @@ export default function LayoutRestaurant({
           },
         ]}
       </TabbedContent>
+
+      <Contained maxWidth={900}>
+        <div
+          className={clsx(
+            isDesktop ? 'flex mt-6 items-end justify-between' : 'flex flex-col',
+          )}
+        >
+          <h4 className="text-2xl font-primary text-primary">
+            {restaurant.name}
+          </h4>
+
+          <a
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center space-x-1 opacity-75"
+            href={getGoogleMapLink(
+              restaurant.location.lat,
+              restaurant.location.lon,
+            )}
+          >
+            <EnvironmentOutlined className="text-secondary text-lg" />{' '}
+            <p>{restaurant?.location?.address}</p>
+          </a>
+        </div>
+
+        <div className="pb-20">
+          <RestaurantMapBlock restaurant={restaurant}>
+            <>
+              {isExperiencesPage ? (
+                <BlockButton
+                  autoHeight={isTablet}
+                  href={baseRestaurantPath.href}
+                  as={baseRestaurantPath.as}
+                >
+                  <LeftOutlined className="pr-2" />
+                  <span>Learn more</span>
+                </BlockButton>
+              ) : (
+                <BlockButton
+                  autoHeight={isTablet}
+                  href={experiencesPath.href}
+                  as={experiencesPath.as}
+                >
+                  <span>See experiences</span>
+                  <RightOutlined className="pl-2" />
+                </BlockButton>
+              )}
+            </>
+          </RestaurantMapBlock>
+        </div>
+      </Contained>
     </LayoutWrapper>
   );
 }
