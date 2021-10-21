@@ -72,6 +72,7 @@
     "stripe": "^8.134.0",
     "styled-components": "^5.3.0",
     "swr": "^0.3.9",
+    "tailwindcss": "2.1.4",
     "uuid": "^8.3.2",
     "vercel": "^20.1.2",
     "webpack": "^5.37.0"
@@ -112,7 +113,6 @@
     "postcss": "^8.3.9",
     "prettier": "^2.0.5",
     "react-addons-test-utils": "^15.6.2",
-    "tailwindcss": "2.1.4",
     "tailwindcss-children": "^2.1.0",
     "ts-jest": "^26.5.3",
     "typescript": "^4.3.5",
