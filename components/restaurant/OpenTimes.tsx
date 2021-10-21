@@ -198,7 +198,7 @@ const useOpenTimes = (openTimes: WeekOpenTimes) => {
 
     const startTime = row.open ? minsIntoHumanTime(row.range[0]) : null;
     const endTime = row.open ? minsIntoHumanTime(row.range[1]) : null;
-    const times = row.open ? `${startTime} 🠒 ${endTime}` : 'Closed';
+    const times = row.open ? `${startTime} > ${endTime}` : 'Closed';
 
     if (startDay === endDay) {
       return { label: titleCase(startDay), times };
