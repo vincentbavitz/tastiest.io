@@ -1,5 +1,4 @@
 import { Button, Select } from '@tastiest-io/tastiest-components';
-import { PoundIcon } from '@tastiest-io/tastiest-icons';
 import {
   getMinsIntoDay,
   IDeal,
@@ -248,15 +247,7 @@ export function ArticleOrderNowDesktop(props: Props) {
               loading={submitting}
             >
               <div className="flex items-center justify-center">
-                <PoundIcon
-                  style={{
-                    height: '0.78rem',
-                    marginTop: '-0.125rem',
-                    marginRight: '0.15rem',
-                  }}
-                  className="inline fill-current"
-                />
-                <p>{totalPrice} — Buy Now</p>
+                <p>£{totalPrice} — Buy Now</p>
               </div>
             </Button>
           </div>
