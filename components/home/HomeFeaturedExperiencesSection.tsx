@@ -12,12 +12,7 @@ export default function HomeFeaturedExperiencesSection(props: Props) {
   const { cards } = props;
 
   return (
-    <div
-      style={{
-        boxShadow: 'inset 0px 50px 50px -30px #69b2d5',
-      }}
-      className="pt-20"
-    >
+    <div className="relative overflow-hidden pt-20">
       <div className="pb-6">
         <SectionTitle>Featured Experiences</SectionTitle>
       </div>

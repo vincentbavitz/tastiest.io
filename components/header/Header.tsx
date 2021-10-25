@@ -46,7 +46,7 @@ function MobileHeader(props: HeaderProps) {
         zIndex: UI.Z_INDEX_HEADER,
       }}
       className={clsx(
-        'fixed top-0 left-0 right-0 w-full duration-500 shadow-xl',
+        'fixed top-0 left-0 right-0 w-full duration-500',
         transparent ? 'glass' : 'bg-white',
         isPageLoading ? 'pointer-events-none' : 'pointer-events-auto',
       )}
