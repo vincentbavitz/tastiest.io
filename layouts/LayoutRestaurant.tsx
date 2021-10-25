@@ -115,7 +115,7 @@ export default function LayoutRestaurant({
     <LayoutWrapper
       router={router}
       pageProps={pageProps}
-      headerProps={{ transparent: headerTransparent }}
+      headerProps={{ transparency: headerTransparent ? 'glass' : 'none' }}
     >
       {/* Restaurant's Feature Video */}
       <div

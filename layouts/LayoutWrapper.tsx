@@ -27,7 +27,6 @@ export default function LayoutWrapper({
   return (
     <>
       {/* Page Loader on initial load */}
-
       <PageLoader />
 
       {/* Modals (inside portal) */}

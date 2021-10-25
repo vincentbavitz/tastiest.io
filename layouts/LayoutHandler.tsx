@@ -1,15 +1,18 @@
 import { NextComponentType, NextPageContext } from 'next';
 import { Router } from 'next/router';
 import LayoutDefault from './LayoutDefault';
+import LayoutHome from './LayoutHome';
 import LayoutRestaurant from './LayoutRestaurant';
 
 export enum Layouts {
   DEFAULT = 'default',
+  HOME = 'home',
   RESTAURANT = 'restaurant',
 }
 
 const layouts = {
   [Layouts.DEFAULT]: LayoutDefault,
+  [Layouts.HOME]: LayoutHome,
   [Layouts.RESTAURANT]: LayoutRestaurant,
 };
 

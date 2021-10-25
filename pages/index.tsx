@@ -3,7 +3,8 @@ import { Contained } from 'components/Contained';
 import HomeFeaturedExperiencesSection from 'components/home/HomeFeaturedExperiencesSection';
 import HomeInformationSection from 'components/home/HomeInformationSection';
 import SuggestRestaurantPrompBox from 'components/SuggestRestaurantPrompBox';
-import { GetStaticProps, NextPage } from 'next';
+import { Layouts } from 'layouts/LayoutHandler';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import React from 'react';
@@ -27,7 +28,9 @@ export const getStaticProps: GetStaticProps = async context => {
   };
 };
 
-const Index: NextPage<Props> = ({ posts = [] }) => {
+const Index = ({
+  posts = [],
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const cards = posts ? posts.slice?.(0, 20) : [];
 
   return (
@@ -77,4 +80,5 @@ const Index: NextPage<Props> = ({ posts = [] }) => {
   );
 };
 
+Index.layout = Layouts.HOME;
 export default Index;

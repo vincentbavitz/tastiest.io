@@ -14,7 +14,8 @@ import { Contained } from '../Contained';
 import { HeaderAvatar } from './HeaderAvatar';
 
 export interface HeaderProps {
-  transparent?: boolean;
+  transparency?: 'glass' | 'full' | 'none';
+  theme?: 'light' | 'dark';
 }
 
 export function Header(props: HeaderProps) {
@@ -23,7 +24,7 @@ export function Header(props: HeaderProps) {
 }
 
 function MobileHeader(props: HeaderProps) {
-  const { transparent } = props;
+  const { transparency = 'none', theme = 'light' } = props;
   const dispatch = useDispatch();
 
   const handleExpandSearch = (e: React.MouseEvent) => {
@@ -47,14 +48,15 @@ function MobileHeader(props: HeaderProps) {
       }}
       className={clsx(
         'fixed top-0 left-0 right-0 w-full duration-500',
-        transparent ? 'glass' : 'bg-white',
+        transparency === 'glass' && 'glass',
+        transparency === 'none' ? 'bg-white' : 'bg-none',
         isPageLoading ? 'pointer-events-none' : 'pointer-events-auto',
       )}
     >
       <div className="relative flex items-center justify-between w-full h-full">
         <Link href="/">
           <a className="flex items-center flex-shrink-0 no-underline">
-            <TastiestBrand size={8} />
+            <TastiestBrand theme={theme} size={8} />
           </a>
         </Link>
 
@@ -85,7 +87,7 @@ function MobileHeader(props: HeaderProps) {
 }
 
 function DesktopHeader(props: HeaderProps) {
-  const { transparent } = props;
+  const { transparency = 'none', theme = 'light' } = props;
 
   const { searchOverlayExpanded } = useSelector(
     (state: IState) => state.navigation,
@@ -129,7 +131,8 @@ function DesktopHeader(props: HeaderProps) {
       }}
       className={clsx(
         'fixed top-0 left-0 right-0 flex items-center duration-500 w-full',
-        transparent ? 'glass' : 'bg-white',
+        transparency === 'glass' && 'glass',
+        transparency === 'none' ? 'bg-white' : 'bg-none',
         isPageLoading ? 'pointer-events-none' : 'pointer-events-auto',
       )}
     >
@@ -139,7 +142,7 @@ function DesktopHeader(props: HeaderProps) {
             <div className="flex flex-grow">
               <Link href="/">
                 <a className="no-underline">
-                  <TastiestBrand type="full" size={10} />
+                  <TastiestBrand theme={theme} type="full" size={10} />
                 </a>
               </Link>
 
