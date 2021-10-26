@@ -1,6 +1,6 @@
 import { IPost } from '@tastiest-io/tastiest-utils';
+import { AbstractExperienceCard } from 'components/cards/AbstractExperienceCard';
 import { CardGrid } from 'components/cards/CardGrid';
-import { ExperienceCard } from 'components/cards/ExperienceCard';
 import { SectionTitle } from 'components/SectionTitle';
 import React from 'react';
 
@@ -19,7 +19,7 @@ export default function HomeFeaturedExperiencesSection(props: Props) {
 
       <CardGrid>
         {cards.map(card => (
-          <ExperienceCard key={card.id} {...card} />
+          <AbstractExperienceCard key={card.id} {...card} />
         ))}
       </CardGrid>
     </div>

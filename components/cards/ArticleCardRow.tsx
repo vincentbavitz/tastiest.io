@@ -1,4 +1,4 @@
-import { IFigureImage, IPost } from '@tastiest-io/tastiest-utils';
+import { IPost, Media } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import React, { useMemo } from 'react';
@@ -72,7 +72,7 @@ const ArticlePreviewImage = ({
   image,
   isDesktop,
 }: {
-  image: IFigureImage;
+  image: Media;
   isDesktop: boolean;
 }) => (
   <div

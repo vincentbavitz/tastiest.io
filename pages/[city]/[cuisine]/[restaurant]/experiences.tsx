@@ -5,8 +5,8 @@ import {
   IRestaurant,
   ITastiestDish,
 } from '@tastiest-io/tastiest-utils';
-import { ArticleCard } from 'components/cards/ArticleCard';
 import { CardGrid } from 'components/cards/CardGrid';
+import { ExperienceCard } from 'components/cards/ExperienceCard';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { Layouts } from 'layouts/LayoutHandler';
 import {} from 'layouts/LayoutRestaurant';
@@ -112,13 +112,13 @@ const RestaurantExperiencesPage = (
       {isMobile ? (
         posts.map(post => (
           <div key={post.id} style={{ maxWidth: '300px' }} className="">
-            <ArticleCard {...post} />
+            <ExperienceCard {...post} />
           </div>
         ))
       ) : (
         <CardGrid>
           {posts.map(post => (
-            <ArticleCard key={post.id} {...post} />
+            <ExperienceCard key={post.id} {...post} />
           ))}
         </CardGrid>
       )}

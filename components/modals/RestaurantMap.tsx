@@ -10,6 +10,7 @@ export function RestaurantMap({ restaurant }: Props) {
   useMap('map', {
     lat: restaurant.location.lat,
     lng: restaurant.location.lon,
+    pitch: 0,
     zoom: 16,
     markers: [
       {

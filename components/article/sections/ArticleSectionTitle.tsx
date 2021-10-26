@@ -1,5 +1,6 @@
 import { IPost, titleCase } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
+import Image from 'next/image';
 import React from 'react';
 import { ArticleSaveShareWidget } from '../widgets/ArticleSaveShareWidget';
 
@@ -9,7 +10,7 @@ const TITLE_MAX_WIDTH_DESKTOP_REM = 20;
 const TITLE_MAX_WIDTH_HUGE_REM = 26;
 
 export function ArticleSectionTitle(props: IPost) {
-  const { title, titleDivider: svg } = props;
+  const { title, titleDivider: svg, restaurant } = props;
   const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
 
   const MAX_TITLE_WIDTH = React.useMemo(
@@ -34,17 +35,19 @@ export function ArticleSectionTitle(props: IPost) {
         className="relative flex items-center overflow-hidden"
       >
         <div className="relative -mt-20 w-full z-0 h-0 aspect-w-10 sm:aspect-w-12 md:aspect-w-16 aspect-h-9">
-          {/* <Image src={'/test.png'} loading={'eager'} layout="fill" priority /> */}
+          <Image
+            src={restaurant.backdropStillFrame.url}
+            loading={'eager'}
+            layout="fill"
+            priority
+          />
           <video
             loop
             muted
             autoPlay
-            src={`/${
-              title.includes('Rodizio')
-                ? 'el-vaquero-mill-hill'
-                : 'numa-mill-hill'
-            }.mp4`}
-            className="object-cover w-full h-full bg-gray-400"
+            playsInline // prevent fullscreen on iOS
+            src={restaurant.backdropVideo.url}
+            className="object-cover w-full h-full"
           />
         </div>
 

@@ -41,7 +41,7 @@ export const useMap = (container: string, params: UseMapParams) => {
     // Add marker(s) to the map
     if (params.markers) {
       params.markers.forEach(marker => {
-        const size = marker.size ?? 45;
+        const size = marker.size ?? 20;
 
         const el = document.createElement('div');
         el.className = 'marker';

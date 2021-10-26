@@ -1,4 +1,4 @@
-import { IFigureImage } from '@tastiest-io/tastiest-utils';
+import { Media } from '@tastiest-io/tastiest-utils';
 import { Modal } from 'components/Modal';
 import ResponsiveImage from 'components/ResponsiveImage';
 import React from 'react';
@@ -7,7 +7,7 @@ import { ModalInstance, toggleOfferMenu } from 'state/navigation';
 import { IState } from 'state/reducers';
 
 interface Props {
-  menu: IFigureImage;
+  menu: Media;
 }
 
 export default function ArticleMenuModal({ menu }: Props) {

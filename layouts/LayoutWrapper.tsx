@@ -13,6 +13,7 @@ import { LayoutProps } from './LayoutHandler';
 interface LayoutWrapperProps extends LayoutProps {
   children: any;
   headerProps?: HeaderProps;
+  withFooter?: boolean;
 }
 
 export default function LayoutWrapper({
@@ -20,6 +21,7 @@ export default function LayoutWrapper({
   pageProps,
   children,
   headerProps,
+  withFooter = true,
 }: LayoutWrapperProps) {
   const { isInitialLoading } = usePageLoader();
   const { isDesktop } = useScreenSize();
@@ -46,12 +48,14 @@ export default function LayoutWrapper({
             <Header {...headerProps} />
           </div>
 
-          <div className="relative">{children}</div>
+          <div className="relative font-secondary">{children}</div>
         </div>
 
-        <div>
-          <Footer />
-        </div>
+        {withFooter ? (
+          <div>
+            <Footer />
+          </div>
+        ) : null}
       </div>
 
       <AcceptTrackingPopup />

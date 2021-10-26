@@ -41,6 +41,7 @@ export default function TastiestDishCard(props: Props) {
       loop
       src={dynamicImage.url}
       className="object-cover w-full h-full"
+      playsInline // prevent fullscreen on iOS
     />,
   );
 

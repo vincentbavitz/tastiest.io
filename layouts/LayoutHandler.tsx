@@ -1,6 +1,7 @@
 import { NextComponentType, NextPageContext } from 'next';
 import { Router } from 'next/router';
 import LayoutDefault from './LayoutDefault';
+import LayoutExperience from './LayoutExperience';
 import LayoutHome from './LayoutHome';
 import LayoutRestaurant from './LayoutRestaurant';
 
@@ -8,12 +9,14 @@ export enum Layouts {
   DEFAULT = 'default',
   HOME = 'home',
   RESTAURANT = 'restaurant',
+  EXPERIENCE = 'experience',
 }
 
 const layouts = {
   [Layouts.DEFAULT]: LayoutDefault,
   [Layouts.HOME]: LayoutHome,
   [Layouts.RESTAURANT]: LayoutRestaurant,
+  [Layouts.EXPERIENCE]: LayoutExperience,
 };
 
 type ChildrenWithLayout = { layout?: Layouts } & NextComponentType<

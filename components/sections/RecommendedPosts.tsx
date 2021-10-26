@@ -1,6 +1,6 @@
 import { IPost } from '@tastiest-io/tastiest-utils';
-import { ArticleCard } from 'components/cards/ArticleCard';
 import { CardGrid } from 'components/cards/CardGrid';
+import { ExperienceCard } from 'components/cards/ExperienceCard';
 import { Contained } from 'components/Contained';
 import { SectionTitle } from 'components/SectionTitle';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -30,7 +30,7 @@ export default function RecommendedPosts(props: RecommendedPostsProps) {
         >
           {posts?.map(post => (
             <div key={post.id.toLowerCase()}>
-              <ArticleCard compact {...post} />
+              <ExperienceCard compact {...post} />
             </div>
           ))}
         </CardGrid>

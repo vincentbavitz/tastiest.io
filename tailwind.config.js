@@ -43,7 +43,7 @@ module.exports = {
         danger: '#bc1818',
         success: '#28c625',
       },
-      display: ['huge', 'desktop', 'tablet', 'mobile'],
+      display: ['xl', 'lg', 'md', 'sm'],
     },
   },
   variants: {

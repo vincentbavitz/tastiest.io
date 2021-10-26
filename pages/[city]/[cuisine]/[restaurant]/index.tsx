@@ -6,11 +6,11 @@ import {
   ITastiestDish,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
-import { ArticleFeatureVideoWidget } from 'components/article/widgets/ArticleFeatureVideoWidget';
 import TastiestDishRow from 'components/cards/TastiestDishRow';
 import { Contained } from 'components/Contained';
 import { RichBody } from 'components/RichBody';
 import { SectionTitle } from 'components/SectionTitle';
+import { YouTubeVideo } from 'components/YouTubeVideo';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { Layouts } from 'layouts/LayoutHandler';
 import {
@@ -20,7 +20,6 @@ import {
 } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
-import Image from 'next/image';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useMemo } from 'react';
 import { generateTitle } from 'utils/metadata';
@@ -141,6 +140,7 @@ const RestaurantPage = (
 
   dlog('index ➡️ posts:', posts);
   dlog('index ➡️ tastiestDishes:', tastiestDishes);
+  dlog('index ➡️ restaurant.video:', restaurant);
 
   return (
     <>
@@ -169,14 +169,17 @@ const RestaurantPage = (
         <div className="flex flex-col py-4 pb-10 space-y-10">
           <div className="flex lg:flex-row flex-col lg:space-x-6">
             <div className="flex-1">
-              <ArticleFeatureVideoWidget video={restaurant.video} />
-              {/* <h4 className="pt-2 text-xl font-medium text-primary">
-                Interview with the owner of {restaurant.name}
-              </h4> */}
+              <YouTubeVideo url={restaurant.video.url} />
+
+              {restaurant.video.displayTitle ? (
+                <h4 className="pt-2 text-xl font-medium text-primary">
+                  {restaurant.video.displayTitle}
+                </h4>
+              ) : null}
             </div>
 
             <div className="flex-1">
-              <h4 className="text-2xl pb-2 text-primary font-primary">
+              <h4 className="text-2xl pt-6 pb-2 text-primary font-primary">
                 About {restaurant.name}
               </h4>
 
@@ -208,29 +211,6 @@ const RestaurantPage = (
       </Contained>
 
       {/* Image and map overlay */}
-      <div className="relative">
-        <div
-          className="flex justify-center pt-6 md:pt-20"
-          style={{ width: '200%', transform: `translateX(-25%)` }}
-        >
-          <div
-            style={{
-              width: `${heroIllustrationSizeRem}rem`,
-              height: `${heroIllustrationHeightRem}rem`,
-            }}
-            className="relative"
-          >
-            <Image
-              src={restaurant.heroIllustration.url}
-              priority={true}
-              objectFit="cover"
-              loading="eager"
-              layout="fill"
-              unoptimized
-            />
-          </div>
-        </div>
-      </div>
     </>
   );
 };

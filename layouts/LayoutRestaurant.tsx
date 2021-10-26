@@ -33,12 +33,7 @@ export default function LayoutRestaurant({
   const { isMobile, isTablet, isDesktop } = useScreenSize();
 
   useEffect(() => {
-    if (scrollY > TRANSPARENCY_Y_CUTOFF_PX) {
-      setHeaderTransparent(false);
-    } else {
-      setHeaderTransparent(true);
-    }
-
+    setHeaderTransparent(scrollY < TRANSPARENCY_Y_CUTOFF_PX);
     return () => setHeaderTransparent(false);
   }, [scrollY]);
 
@@ -53,6 +48,8 @@ export default function LayoutRestaurant({
   dlog('LayoutRestaurant ➡️ router.route:', router.route);
   dlog('LayoutRestaurant ➡️ router.asPath:', router.asPath);
   dlog('LayoutRestaurant ➡️ router._inFlightRoute:', router._inFlightRoute);
+
+  dlog('LayoutRestaurant ➡️ restaurant:', restaurant);
 
   const baseRestaurantPath = useMemo(
     () =>
@@ -125,20 +122,19 @@ export default function LayoutRestaurant({
         className="relative flex items-center overflow-hidden"
       >
         <div className="relative w-full z-0 h-0 aspect-w-10 sm:aspect-w-12 md:aspect-w-16 aspect-h-9">
-          <Image src={'/test.png'} loading={'eager'} layout="fill" priority />
+          <Image
+            src={restaurant.backdropStillFrame.url}
+            loading={'eager'}
+            layout="fill"
+            priority
+          />
           <video
             loop
             muted
             autoPlay
-            src={`/${
-              restaurant.name === 'El Vaquero'
-                ? 'el-vaquero-mill-hill'
-                : 'numa-mill-hill'
-            }.mp4`}
-            className={clsx(
-              'object-cover w-full h-full bg-gray-400',
-              restaurant.name === 'El Vaquero' && '-mt-10',
-            )}
+            src={restaurant.backdropVideo.url}
+            className={clsx('object-cover w-full h-full')}
+            playsInline // prevent fullscreen on iOS
           />
         </div>
 

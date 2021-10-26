@@ -2,7 +2,6 @@ import { IPost } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
 import { Contained } from '../../Contained';
-import ArticleContained from '../ArticleContained';
 import ArticleSectionNeedToKnow from './ArticleSectionNeedToKnow';
 import ArticleSectionOfferBreakdown from './ArticleSectionOfferBreakdown';
 
@@ -42,7 +41,7 @@ const MobileContent = (post: IPost) => (
 
 const DesktopContent = (post: IPost) => {
   return (
-    <ArticleContained>
+    <div>
       <h3 className="text-2xl font-medium font-primary border-b-2 border-secondary-2">
         {post?.restaurant?.name}
       </h3>
@@ -62,7 +61,7 @@ const DesktopContent = (post: IPost) => {
 
         <ArticleSectionNeedToKnow body={post.needToKnow} />
       </div>
-    </ArticleContained>
+    </div>
   );
 };
 

@@ -1,13 +1,13 @@
 // [slug].js
 import { CmsApi, dlog, IPost } from '@tastiest-io/tastiest-utils';
-import { Contained } from 'components/Contained';
-import RestaurantMapBlock from 'components/RestaurantMapBlock';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { ArticleSectionAbstract } from 'components/article/sections/ArticleSectionAbstract';
+import { ArticleSectionContent } from 'components/article/sections/ArticleSectionContent';
+import { Layouts } from 'layouts/LayoutHandler';
+import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { NextSeo, ProductJsonLd } from 'next-seo';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { generateStaticURL } from 'utils/routing';
-import { Article } from '../../../../components/article/Article';
 import { generateTitle } from '../../../../utils/metadata';
 
 interface IPath {
@@ -52,19 +52,27 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths, fallback: 'blocking' };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps = async ({ params }) => {
   const cms = new CmsApi();
 
-  const post = await cms.getPostBySlug(String(params?.slug) ?? '');
-  dlog(`Building page: %c${params.slug}`, 'color: purple;');
+  // Get all deals from this restaurants
+  const { posts } = await cms.getPostsOfRestaurant(params.restaurant.uriName);
+  const post = posts.find(p => p.slug === params.slug);
 
   if (!post) {
-    return { notFound: true };
+    return {
+      props: {
+        post: (null as never) as IPost,
+        posts: (null as never) as IPost[],
+      },
+      notFound: true,
+    };
   }
 
   return {
     props: {
-      ...post,
+      post,
+      posts,
     },
     revalidate: 360,
   };
@@ -72,8 +80,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 const cms = new CmsApi();
 
-function Experience(post: IPost) {
-  const { title } = post;
+function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
+  const { post, posts } = props;
+  const { title, restaurant } = post;
 
   // Get recommended posts
   const [recommendedPosts, setRecommendedPosts] = useState([]);
@@ -110,8 +119,9 @@ function Experience(post: IPost) {
             priceCurrency: 'GBP',
             seller: { name: post.restaurant.name },
             url: generateStaticURL({
-              ...post,
-              restaurant: post.restaurant.uriName,
+              city: restaurant.city,
+              cuisine: restaurant.cuisine,
+              restaurant: restaurant.uriName,
             }).as,
           },
         ]}
@@ -134,33 +144,13 @@ function Experience(post: IPost) {
         }}
       />
 
-      <Article {...post} />
+      <ArticleSectionAbstract {...post} />
+      <ArticleSectionContent {...post} />
+
       {/* <ArticleSuggestRestaurant {...post} /> */}
-
-      <Contained>
-        <div className="pb-20">
-          <RestaurantMapBlock restaurant={post.restaurant}>
-            {/* <BlockButton
-          autoHeight={isTablet}
-          href={baseRestaurantPath.href}
-          as={baseRestaurantPath.as}
-        >
-          <LeftOutlined className="pr-2" />
-          <span>See restaurant</span>
-        </BlockButton> */}
-          </RestaurantMapBlock>
-        </div>
-      </Contained>
-
-      {/* <div className="pb-20">
-        <RecommendedPosts
-          label="See more from this restaurant"
-          posts={recommendedPosts}
-          rowLimit={1}
-        />
-      </div> */}
     </>
   );
 }
 
+Experience.layout = Layouts.EXPERIENCE;
 export default Experience;

@@ -62,7 +62,7 @@ export function ArticleSaveShareWidget(props: IPost) {
   }, [isFixedToTop]);
 
   return (
-    <>
+    <div className="relative">
       {isFixedToTop && (
         <ArticleSaveShareFixed
           isDesktop={isDesktop}
@@ -72,7 +72,7 @@ export function ArticleSaveShareWidget(props: IPost) {
         />
       )}
 
-      <div ref={ref} className="flex flex-col items-center pt-16 md:pt-0">
+      <div ref={ref} className="flex flex-col items-center">
         <div>
           <div className="z-10 flex justify-center w-full">
             <div
@@ -127,7 +127,7 @@ export function ArticleSaveShareWidget(props: IPost) {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -11,7 +11,6 @@ export default function SuggestRestaurantPrompBox() {
       <div className="flex justify-between bg-gradient-to-br from-purple-400 p-6 via-blue-300 to-blue-400 rounded-lg relative drop-shadow-lg">
         <div className="flex flex-col justify-between">
           <div>
-            {' '}
             <h4 className="text-3xl font-bold text-light filter drop-shadow-sm">
               Recommend a restaurant
             </h4>

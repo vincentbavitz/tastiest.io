@@ -1,5 +1,6 @@
 import { EnvironmentOutlined } from '@ant-design/icons';
 import { IRestaurant } from '@tastiest-io/tastiest-utils';
+import { IAddress } from '@tastiest-io/tastiest-utils/dist/types/geography';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { ReactNode } from 'react';
@@ -12,6 +13,24 @@ interface Props {
   children: ReactNode;
   layout?: 'titleFirst' | 'mapFirst';
 }
+
+type AddressProps = {
+  location: IAddress;
+};
+
+const Address = ({ location }: AddressProps) => {
+  return (
+    <a
+      target="_blank"
+      rel="noreferrer"
+      className="opacity-75"
+      href={getGoogleMapLink(location.lat, location.lon)}
+    >
+      <EnvironmentOutlined className="inline align-middle text-secondary text-lg" />{' '}
+      <span className="align-middle">{location?.address}</span>
+    </a>
+  );
+};
 
 /** Children of this component fill up the little gap. */
 export default function RestaurantMapBlock(props: Props) {
@@ -28,24 +47,13 @@ export default function RestaurantMapBlock(props: Props) {
         <h4 className="text-2xl font-primary text-primary">
           {restaurant.name}
         </h4>
-
-        <a
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center space-x-1 opacity-75"
-          href={getGoogleMapLink(
-            restaurant.location.lat,
-            restaurant.location.lon,
-          )}
-        >
-          <EnvironmentOutlined className="text-secondary text-lg" />{' '}
-          <p>{restaurant?.location?.address}</p>
-        </a>
       </div>
 
       {isMobile || isTablet ? (
         <>
-          <div className="flex flex-col mt-6 w-full">
+          <Address location={restaurant.location} />
+
+          <div className="flex flex-col mt-3 w-full">
             <div
               style={{ minHeight: '12rem' }}
               className="w-full h-64 flex-grow mb-6"
@@ -80,6 +88,10 @@ export default function RestaurantMapBlock(props: Props) {
 
               <div className="pt-4">{children}</div>
             </div>
+          </div>
+
+          <div className="pt-2">
+            <Address location={restaurant.location} />
           </div>
         </>
       )}

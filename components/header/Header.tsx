@@ -62,7 +62,10 @@ function MobileHeader(props: HeaderProps) {
 
         <HamburgerIcon
           onClick={() => toggleIsMobileMenuOpen()}
-          className="h-8 cursor-pointer fill-current text-primary"
+          className={clsx(
+            'h-8 cursor-pointer fill-current duration-500',
+            theme === 'light' ? 'text-primary' : 'text-light',
+          )}
         />
       </div>
 

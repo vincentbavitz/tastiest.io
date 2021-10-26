@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { Button } from '@tastiest-io/tastiest-components';
-import { dlog, IPost, titleCase } from '@tastiest-io/tastiest-utils';
+import { dlog, IPost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import clsx from 'clsx';
 import LineLimit from 'components/text/LineLimit';
@@ -19,6 +19,7 @@ export function ExperienceCard(props: Props): JSX.Element {
     compact,
     title,
     description,
+    tags,
     slug,
     city,
     cuisine,
@@ -28,25 +29,16 @@ export function ExperienceCard(props: Props): JSX.Element {
 
   const ref = useRef(null);
   const [contentRef, { width }] = useMeasure();
-  const isSmall = width < 240;
+  const shouldStackButtons = width < 250;
+  const isSmall = width < 170;
 
-  dlog('ExperienceCard ➡️ width:', width);
+  dlog('ArticleCard ➡️ width:', width);
 
-  const { href: experienceHref, as: experienceAs } = useMemo(
+  const { href, as } = useMemo(
     () =>
       generateStaticURL({
         city,
         slug,
-        cuisine,
-        restaurant: restaurant.uriName,
-      }),
-    [],
-  );
-
-  const { href: restaurantHref, as: restaurantAs } = useMemo(
-    () =>
-      generateStaticURL({
-        city,
         cuisine,
         restaurant: restaurant.uriName,
       }),
@@ -65,104 +57,116 @@ export function ExperienceCard(props: Props): JSX.Element {
   const [video, , controls] = useVideo(
     <video
       loop
-      src={deal?.dynamicImage?.url}
+      playsInline // prevent fullscreen on iOS
+      src={deal.dynamicImage?.url}
       className="object-cover w-full h-full"
     />,
   );
 
   return (
-    <div ref={ref}>
-      <div
-        ref={contentRef}
-        className={classNames(
-          'relative overflow-hidden bg-gray-100 filter drop-shadow-xl no-underline',
-          isSmall || compact ? 'rounded-md' : 'rounded-xl',
-        )}
-        style={{ maxWidth: '350px' }}
-      >
+    <Link href={href} as={as}>
+      <a className="no-underline">
         <div
-          style={{ paddingBottom: '60%' }}
-          className="relative w-full h-0 overflow-hidden bg-white bg-opacity-25"
-        >
-          {/* {deal.dynamicImage.url && (
-            <div className="absolute inset-0 z-10 pointer-events-none">
-              {video}
-            </div>
-          )} */}
-
-          {deal.image.url && (
-            <div className="absolute inset-0">
-              <img
-                className="object-cover w-full h-full"
-                src={`${deal.image?.url}?w=400`}
-                alt={deal.image?.description}
-              />
-            </div>
+          ref={ref}
+          className={classNames(
+            'overflow-hidden w-full bg-light shadow-lg no-underline',
+            isSmall || compact ? 'rounded-md' : 'rounded-xl',
+            isSmall ? 'pb-2' : 'pb-1',
           )}
+        >
+          <div
+            style={{ paddingBottom: '60%' }}
+            className="relative w-full h-0 overflow-hidden bg-white bg-opacity-25"
+          >
+            {deal.dynamicImage?.url && (
+              <div className="absolute inset-0 z-10 pointer-events-none">
+                {video}
+              </div>
+            )}
 
-          {/* Text overlay */}
-          <Link href={restaurantHref} as={restaurantAs}>
-            <a className="no-underline cursor-pointer">
-              <div className="absolute inset-0 z-10 bg-dark bg-opacity-50">
+            {deal.image.url && (
+              <div className="absolute inset-0">
+                <img
+                  className="object-cover w-full h-full"
+                  src={`${deal?.image?.url}?w=400`}
+                  alt={deal.image?.description}
+                />
+              </div>
+            )}
+
+            {/* Offer includes items */}
+            <div
+              className={clsx(
+                'absolute inset-0 z-50 flex flex-col px-3 py-3 text-white font-primary',
+                compact ? 'space-y-1' : 'space-y-2',
+              )}
+            >
+              {deal.includes.slice(0, 3).map(item => (
                 <div
+                  key={item}
+                  style={{ width: 'fit-content' }}
                   className={clsx(
-                    isSmall || compact ? 'text-lg' : 'text-xl',
-                    'w-full h-full flex justify-center items-center',
+                    'px-2 py-1 leading-4 bg-opacity-90 rounded bg-gray-900',
+                    compact ? 'text-xs' : 'text-sm',
                   )}
                 >
-                  <LineLimit lines={2} fit="tight">
-                    <h4 className="px-4 font-medium text-light text-center">
-                      {title}
-                    </h4>
-                  </LineLimit>
+                  {item}
                 </div>
-              </div>
-            </a>
-          </Link>
+              ))}
+            </div>
+          </div>
 
-          {/* Cuisine overlay */}
-          <div className="absolute inset-0 select-none flex items-end justify-end pb-2 pr-2">
-            <div className="px-2 py-1 leading-none z-10 text-sm font-medium bg-light bg-opacity-75 text-dark rounded-full">
-              <span className="">{titleCase(cuisine.replace('_', ' '))}</span>
+          <div
+            ref={contentRef}
+            className={clsx('text-dark', isSmall || compact ? 'px-3' : 'px-4')}
+          >
+            <div className={isSmall ? 'py-2' : 'py-3'}>
+              <div
+                className={clsx(
+                  isSmall || compact ? 'text-lg' : 'text-xl',
+                  'font-medium cursor-pointer hover:underline pb-2',
+                )}
+              >
+                <LineLimit lines={2} fit="tight">
+                  {title}
+                </LineLimit>
+              </div>
+
+              <LineLimit lines={3} fit="compact">
+                <p className="text-sm opacity-75">{description}</p>
+              </LineLimit>
+            </div>
+
+            <div
+              className={clsx(
+                'flex pb-2',
+                shouldStackButtons ? 'space-y-2' : 'space-x-2',
+                shouldStackButtons && 'flex-col',
+              )}
+            >
+              {/* <div className="flex-1">
+                <Button
+                  wide
+                  color="secondary"
+                  size={compact ? 'small' : 'medium'}
+                >
+                  Buy Now
+                </Button>
+              </div> */}
+
+              <div className="flex-1">
+                <Button
+                  wide
+                  color="secondary"
+                  size={compact ? 'small' : 'medium'}
+                >
+                  More Info
+                </Button>
+              </div>
             </div>
           </div>
         </div>
-
-        <div
-          className={clsx(
-            'flex flex-col text-dark pt-2 pb-3',
-            isSmall || compact ? 'px-3 space-y-2 ' : 'space-y-4 px-4',
-          )}
-        >
-          {/* Restaurant profile */}
-          <div className="flex items-center flex-wrap justify-between">
-            <Link href={restaurantHref} as={restaurantAs}>
-              <a className="cursor-pointer">
-                <div className="flex items-center space-x-2">
-                  <img
-                    className={clsx('rounded-full object-cover h-8 w-8')}
-                    src={restaurant.profilePicture.url}
-                  />
-
-                  <h4 className={clsx('font-medium')}>{restaurant.name}</h4>
-                </div>
-              </a>
-            </Link>
-          </div>
-          {/* Description */}
-          <LineLimit lines={3} fit="compact">
-            <p className="text-sm opacity-75">{description}</p>
-          </LineLimit>
-          {/* Call to action */}
-          <Link href={experienceHref} as={experienceAs}>
-            <a className="no-underline">
-              <Button wide size={compact ? 'small' : 'medium'}>
-                Learn more
-              </Button>
-            </a>
-          </Link>
-        </div>
-      </div>
-    </div>
+      </a>
+    </Link>
   );
 }

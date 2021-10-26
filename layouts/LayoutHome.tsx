@@ -11,18 +11,25 @@ export default function LayoutHome({
   children: Component,
 }: LayoutProps<InferGetStaticPropsType<typeof getStaticProps>>) {
   // Remove header transparency on scroll
-  const TRANSPARENCY_Y_CUTOFF_PX = 175;
+  const TRANSPARENCY_GLASS_CUTOFF_PX = 10;
+  const TRANSPARENCY_Y_CUTOFF_PX = 250;
   const { y: scrollY } = useWindowScroll();
-  const [headerTransparent, setHeaderTransparent] = useState(true);
+  const [headerTransparency, setHeaderTransparency] = useState<
+    'glass' | 'none' | 'full'
+  >('full');
 
   useEffect(() => {
-    if (scrollY > TRANSPARENCY_Y_CUTOFF_PX) {
-      setHeaderTransparent(false);
+    if (scrollY > TRANSPARENCY_GLASS_CUTOFF_PX) {
+      if (scrollY > TRANSPARENCY_Y_CUTOFF_PX) {
+        setHeaderTransparency('none');
+      } else {
+        setHeaderTransparency('glass');
+      }
     } else {
-      setHeaderTransparent(true);
+      setHeaderTransparency('full');
     }
 
-    return () => setHeaderTransparent(false);
+    return () => setHeaderTransparency('none');
   }, [scrollY]);
 
   return (
@@ -30,8 +37,8 @@ export default function LayoutHome({
       router={router}
       pageProps={pageProps}
       headerProps={{
-        transparency: headerTransparent ? 'full' : 'none',
-        theme: headerTransparent ? 'dark' : 'light',
+        transparency: headerTransparency,
+        theme: headerTransparency === 'none' ? 'light' : 'dark',
       }}
     >
       <Component {...(pageProps as any)} />

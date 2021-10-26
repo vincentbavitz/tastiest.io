@@ -1,7 +1,7 @@
-import { IFigureImage } from '@tastiest-io/tastiest-utils';
+import { Media } from '@tastiest-io/tastiest-utils';
 
 interface Props {
-  featureImage: IFigureImage;
+  featureImage: Media;
 }
 
 export function ArticleSectionFeatureImage({ featureImage }: Props) {

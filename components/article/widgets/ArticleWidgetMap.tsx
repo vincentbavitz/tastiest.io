@@ -1,5 +1,5 @@
 import { ArrowUpOutlined } from '@ant-design/icons';
-import { dlog, IRestaurant } from '@tastiest-io/tastiest-utils';
+import { IRestaurant } from '@tastiest-io/tastiest-utils';
 import { LocationIndictor } from 'components/LocationIndictor';
 import { useMap } from 'hooks/useMap';
 import React from 'react';
@@ -15,7 +15,7 @@ export function ArticleWidgetMap({ location, restaurant }: Props) {
     lat: restaurant.location.lat,
     lng: restaurant.location.lon,
     zoom: 16,
-    pitch: 10,
+    pitch: 0,
     markers: [
       {
         lat: restaurant.location.lat,
@@ -23,16 +23,6 @@ export function ArticleWidgetMap({ location, restaurant }: Props) {
       },
     ],
   });
-
-  dlog(
-    'ArticleWidgetMap ➡️ restaurant.location.lat;:',
-    restaurant.location.lat,
-  );
-
-  dlog(
-    'ArticleWidgetMap ➡️  restaurant.location.lon:',
-    restaurant.location.lon,
-  );
 
   return (
     <div className="flex flex-col w-full">

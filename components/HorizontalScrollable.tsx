@@ -119,7 +119,7 @@ function HorizontalScrollableInner(props: Props) {
           <ChevronLeftIcon
             onClick={handleLeftScroll}
             className={clsx(
-              'text-secondary-2 fill-current cursor-pointer',
+              'text-secondary fill-current cursor-pointer',
               `h-${chevronSize}`,
             )}
           />
@@ -137,7 +137,7 @@ function HorizontalScrollableInner(props: Props) {
           <ChevronRightIcon
             onClick={handleRightScroll}
             className={clsx(
-              'cursor-pointer fill-current text-secondary-2',
+              'cursor-pointer fill-current text-secondary',
               `h-${chevronSize}`,
             )}
           />
