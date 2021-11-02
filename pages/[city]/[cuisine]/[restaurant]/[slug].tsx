@@ -1,7 +1,7 @@
 // [slug].js
 import { CmsApi, dlog, IPost } from '@tastiest-io/tastiest-utils';
-import { ArticleSectionAbstract } from 'components/article/sections/ArticleSectionAbstract';
 import { ArticleSectionContent } from 'components/article/sections/ArticleSectionContent';
+import { YouTubeVideo } from 'components/YouTubeVideo';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { NextSeo, ProductJsonLd } from 'next-seo';
@@ -144,10 +144,16 @@ function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
         }}
       />
 
-      <ArticleSectionAbstract {...post} />
-      <ArticleSectionContent {...post} />
+      <div className="relative w-full">
+        <div className="pb-10">
+          <h4 className="pb-2 text-2xl">The Experience</h4>
+          <p className="">{post.description}</p>
+        </div>
 
-      {/* <ArticleSuggestRestaurant {...post} /> */}
+        <YouTubeVideo url={post.video} />
+      </div>
+
+      <ArticleSectionContent {...post} />
     </>
   );
 }

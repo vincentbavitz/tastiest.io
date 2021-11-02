@@ -48,9 +48,9 @@ body {
     @apply bg-primary bg-opacity-25;
   }
 
-  & > div {
-    overflow-x: hidden;
-  }
+  // & > div {
+  //   overflow-x: hidden;
+  // }
 }
 
 @tailwind utilities;
@@ -69,9 +69,9 @@ body {
   @apply bg-gray-200 bg-opacity-25;
 }
 
-.__next {
-  overflow-x: hidden;
-}
+// .__next {
+//   overflow-x: hidden;
+// }
 
 // Pagination
 .pagination {

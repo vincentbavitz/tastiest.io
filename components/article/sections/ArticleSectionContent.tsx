@@ -17,7 +17,9 @@ export function ArticleSectionContent(post: IPost) {
 const MobileContent = (post: IPost) => (
   <Contained>
     <div className="flex items-center justify-between">
-      <h3 className="text-xl font-medium">{post?.restaurant?.name}</h3>
+      <h3 className="text-xl text-primary font-medium">
+        {post?.restaurant?.name}
+      </h3>
       {/* <CovidAware className="block h-6 sm:hidden" /> */}
     </div>
 
@@ -42,14 +44,9 @@ const MobileContent = (post: IPost) => (
 const DesktopContent = (post: IPost) => {
   return (
     <div>
-      <h3 className="text-2xl font-medium font-primary border-b-2 border-secondary-2">
+      <h3 className="text-2xl mt-4 font-medium font-primary text-primary border-b-2 border-secondary-2">
         {post?.restaurant?.name}
       </h3>
-
-      {/* <div className="flex items-center justify-between mt-4 space-x-4">
-        <CovidAware className="h-10" />
-        {post.menuImage && <OpenMenuButton>Open Menu</OpenMenuButton>}
-      </div> */}
 
       <div className="flex flex-col mt-4 pb-10 space-y-6">
         <div className="">{post?.description}</div>
@@ -58,7 +55,6 @@ const DesktopContent = (post: IPost) => {
 
         <ArticleSectionOfferBreakdown {...post.deal} />
         <AuxiliaryDivider url={post?.offerDivider?.url} />
-
         <ArticleSectionNeedToKnow body={post.needToKnow} />
       </div>
     </div>
