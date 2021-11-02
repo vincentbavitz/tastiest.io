@@ -122,7 +122,9 @@ const LayoutExperienceMobile = ({
           <Component {...(pageProps as any)} />
         </div>
 
-        <RestaurantMapBlock restaurant={post.restaurant}>.</RestaurantMapBlock>
+        <RestaurantMapBlock layout="stacked" restaurant={post.restaurant}>
+          .
+        </RestaurantMapBlock>
       </Contained>
 
       <ExperienceOrderPanelMobile
@@ -154,7 +156,7 @@ const LayoutExperienceDesktop = ({
         />
       </div>
 
-      <div className="pb-14">
+      <div className="pt-10 pb-10">
         <RestaurantMapBlock restaurant={post.restaurant}>.</RestaurantMapBlock>
       </div>
     </Contained>

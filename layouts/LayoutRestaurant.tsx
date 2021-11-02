@@ -189,8 +189,11 @@ export default function LayoutRestaurant({
       </TabbedContent>
 
       <Contained maxWidth={900}>
-        <div className="pb-20">
-          <RestaurantMapBlock restaurant={restaurant}>
+        <div className="pb-10">
+          <RestaurantMapBlock
+            layout={isDesktop ? 'default' : 'stacked'}
+            restaurant={restaurant}
+          >
             <>
               {isExperiencesPage ? (
                 <BlockButton

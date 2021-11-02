@@ -11,7 +11,7 @@ import OpenTimes from './restaurant/OpenTimes';
 interface Props {
   restaurant: IRestaurant;
   children: ReactNode;
-  layout?: 'titleFirst' | 'mapFirst';
+  layout?: 'default' | 'stacked';
 }
 
 type AddressProps = {
@@ -27,74 +27,67 @@ const Address = ({ location }: AddressProps) => {
       href={getGoogleMapLink(location.lat, location.lon)}
     >
       <EnvironmentOutlined className="inline align-middle text-secondary text-lg" />{' '}
-      <span className="align-middle">{location?.address}</span>
+      <span className="align-bottom text-sm">{location?.address}</span>
     </a>
   );
 };
 
 /** Children of this component fill up the little gap. */
 export default function RestaurantMapBlock(props: Props) {
-  const { restaurant, children } = props;
-  const { isMobile, isTablet, isDesktop } = useScreenSize();
+  const { restaurant, layout = 'default', children } = props;
+  const { isMobile } = useScreenSize();
 
   return (
     <div>
       <div
         className={clsx(
-          isDesktop ? 'flex mt-6 items-end justify-between' : 'flex flex-col',
+          'flex pt-4',
+          layout === 'default' && 'space-x-6',
+          layout === 'stacked' && 'flex-col space-y-4',
         )}
       >
-        <h4 className="text-2xl font-primary text-primary">
-          {restaurant.name}
-        </h4>
-      </div>
-
-      {isMobile || isTablet ? (
-        <>
-          <Address location={restaurant.location} />
-
-          <div className="flex flex-col mt-3 w-full">
-            <div
-              style={{ minHeight: '12rem' }}
-              className="w-full h-64 flex-grow mb-6"
-            >
-              <RestaurantMap restaurant={restaurant} />
-            </div>
-
-            <div
-              className={clsx(
-                'flex ',
-                isMobile ? 'flex-col space-y-4' : 'flex-row space-x-4',
-              )}
-            >
-              <OpenTimes restaurantId={restaurant.id} wide small={isTablet} />
-
-              <div className="">{children}</div>
-            </div>
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="flex pt-4 space-x-6">
-            <div
-              style={{ minHeight: '12rem' }}
-              className="w-full h-auto flex-grow"
-            >
-              <RestaurantMap restaurant={restaurant} />
-            </div>
-
-            <div className="flex-grow">
-              <OpenTimes restaurantId={restaurant.id} small buffHeight />
-
-              <div className="pt-4">{children}</div>
-            </div>
+        <section
+          className={clsx(
+            'flex',
+            layout === 'default' ? 'flex-col flex-grow' : 'flex-col-reverse',
+          )}
+        >
+          <div style={{ minHeight: '12rem' }} className="w-full h-56">
+            <RestaurantMap restaurant={restaurant} />
           </div>
 
-          <div className="pt-2">
+          <div className="flex justify-end pt-1 pb-2">
             <Address location={restaurant.location} />
           </div>
-        </>
-      )}
+        </section>
+
+        <div
+          className={clsx(
+            layout === 'stacked'
+              ? 'flex items-stretch gap-4 flex-wrap'
+              : 'flex-col space-y-3',
+          )}
+        >
+          <div className={clsx('', layout === 'stacked' && 'flex-1 flex-grow')}>
+            <OpenTimes
+              restaurantId={restaurant.id}
+              wide={layout === 'stacked'}
+              buffHeight
+              small
+            />
+          </div>
+
+          <div
+            style={{ minHeight: '4rem' }}
+            className={clsx(
+              'relative',
+              layout === 'stacked' ? 'flex-1' : 'flex-grow',
+            )}
+          >
+            {children}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
