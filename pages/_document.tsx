@@ -72,14 +72,6 @@ export default class CustomDocument extends Document<any> {
             src={`https://www.googleoptimize.com/optimize.js?id=${process.env.NEXT_PUBLIC_GOOGLE_OPTIMIZE_ID}`}
           ></script>
 
-          <Fonts />
-          <Favicon />
-          {this.props?.styleTags}
-        </Head>
-        <body>
-          <Main />
-          <NextScript />
-
           {/* Google Analytics */}
           <script
             async
@@ -90,6 +82,14 @@ export default class CustomDocument extends Document<any> {
               __html: this.renderGoogleAnalyticsSnippet(),
             }}
           />
+
+          <Fonts />
+          <Favicon />
+          {this.props?.styleTags}
+        </Head>
+        <body>
+          <Main />
+          <NextScript />
         </body>
       </Html>
     );
