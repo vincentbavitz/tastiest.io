@@ -77,7 +77,7 @@ export function ArticleSaveShareWidget(props: IPost) {
           <div className="z-10 flex justify-center w-full">
             <div
               style={{ width: 'fit-content' }}
-              className="relative flex my-4 rounded-sm cursor-pointer bg-soft text-primary"
+              className="relative flex rounded-sm cursor-pointer bg-soft text-primary"
             >
               {/* <div
               onClick={() => toggleSaveArticle(props.slug)}

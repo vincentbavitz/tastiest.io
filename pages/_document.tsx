@@ -13,6 +13,16 @@ export default class CustomDocument extends Document<any> {
     `;
   };
 
+  private renderGoogleAnalyticsSnippet = () => {
+    return `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}');    
+    `;
+  };
+
   private renderHotJarSnippet = () => `
     (function(h,o,t,j,a,r){
       h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
@@ -58,7 +68,9 @@ export default class CustomDocument extends Document<any> {
           />
 
           {/* Inject Google Optimize */}
-          <script src="https://www.googleoptimize.com/optimize.js?id=OPT-MNCSH5K"></script>
+          <script
+            src={`https://www.googleoptimize.com/optimize.js?id=${process.env.NEXT_PUBLIC_GOOGLE_OPTIMIZE_ID}`}
+          ></script>
 
           <Fonts />
           <Favicon />
@@ -67,6 +79,17 @@ export default class CustomDocument extends Document<any> {
         <body>
           <Main />
           <NextScript />
+
+          {/* Google Analytics */}
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
+          ></script>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: this.renderGoogleAnalyticsSnippet(),
+            }}
+          />
         </body>
       </Html>
     );

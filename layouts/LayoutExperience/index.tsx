@@ -84,7 +84,7 @@ export default function LayoutExperience({
 
           <div className="absolute inset-0 z-20 bottom-2 flex flex-col items-center justify-end space-y-4">
             <Contained>
-              <h1 className="text-3xl text-center font-medium sm:text-3xl text-primary font-primary">
+              <h1 className="text-3xl leading-none text-center font-medium sm:text-3xl text-primary font-primary">
                 {titleCase(title)}
               </h1>
             </Contained>
