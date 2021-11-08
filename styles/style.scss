@@ -38,6 +38,11 @@ ul {
   }
 }
 
+// Google Tag Manager Anti-flicker
+.async-hide {
+  opacity: 0 !important
+}
+
 body {
   @apply bg-light text-dark font-secondary font-normal;
   font-smooth: antialiased;

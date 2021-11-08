@@ -18,8 +18,17 @@ export default class CustomDocument extends Document<any> {
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-    
       gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}');    
+    `;
+  };
+
+  private renderGTMAntiFlickerSnippet = () => {
+    return `
+      (function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
+      h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
+      (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
+      })(window,document.documentElement,'async-hide','dataLayer',4000,
+      {'${process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID}':true});
     `;
   };
 
@@ -72,11 +81,20 @@ export default class CustomDocument extends Document<any> {
             src={`https://www.googleoptimize.com/optimize.js?id=${process.env.NEXT_PUBLIC_GOOGLE_OPTIMIZE_ID}`}
           ></script>
 
-          {/* Google Analytics */}
+          {/* Google Tag Manager */}
           <script
             async
-            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID}`}
           ></script>
+
+          {/* Google Tag Manager anti-flicker */}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: this.renderGTMAntiFlickerSnippet(),
+            }}
+          ></script>
+
+          {/* Google Analytics */}
           <script
             dangerouslySetInnerHTML={{
               __html: this.renderGoogleAnalyticsSnippet(),
