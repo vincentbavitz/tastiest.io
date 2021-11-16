@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import BlockButton from 'components/restaurant/BlockButton';
 import FollowButton from 'components/restaurant/FollowButton';
+import OpenTimes from 'components/restaurant/OpenTimes';
 import RestaurantMapBlock from 'components/RestaurantMapBlock';
 import TabbedContent from 'components/TabbedContent';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -189,32 +190,49 @@ export default function LayoutRestaurant({
       </TabbedContent>
 
       <Contained maxWidth={900}>
-        <div className="pb-10">
+        <div className="pt-10 pb-10">
+          <div className="flex space-x-10 w-full">
+            <div style={{ height: '12.5rem' }} className="relative flex-grow">
+              <Image
+                src={restaurant.heroIllustration.url}
+                layout="fill"
+                objectFit="contain"
+                objectPosition="right bottom"
+              />
+            </div>
+
+            <div>
+              <OpenTimes restaurantId={restaurant.id} small buffHeight />
+            </div>
+          </div>
+
           <RestaurantMapBlock
             layout={isDesktop ? 'default' : 'stacked'}
             restaurant={restaurant}
           >
-            <>
-              {isExperiencesPage ? (
-                <BlockButton
-                  autoHeight={isTablet}
-                  href={baseRestaurantPath.href}
-                  as={baseRestaurantPath.as}
-                >
-                  <LeftOutlined className="pr-2" />
-                  <span>Learn more</span>
-                </BlockButton>
-              ) : (
-                <BlockButton
-                  autoHeight={isTablet}
-                  href={experiencesPath.href}
-                  as={experiencesPath.as}
-                >
-                  <span>See experiences</span>
-                  <RightOutlined className="pl-2" />
-                </BlockButton>
-              )}
-            </>
+            {isDesktop ? (
+              <>
+                {isExperiencesPage ? (
+                  <BlockButton
+                    autoHeight={isTablet}
+                    href={baseRestaurantPath.href}
+                    as={baseRestaurantPath.as}
+                  >
+                    <LeftOutlined className="pr-2" />
+                    <span>Learn more</span>
+                  </BlockButton>
+                ) : (
+                  <BlockButton
+                    autoHeight={isTablet}
+                    href={experiencesPath.href}
+                    as={experiencesPath.as}
+                  >
+                    <span>See experiences</span>
+                    <RightOutlined className="pl-2" />
+                  </BlockButton>
+                )}
+              </>
+            ) : null}
           </RestaurantMapBlock>
         </div>
       </Contained>

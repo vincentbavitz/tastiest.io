@@ -1,4 +1,4 @@
-import { Button } from '@tastiest-io/tastiest-components';
+import { Button } from '@tastiest-io/tastiest-ui';
 import { AuthError, AuthErrorMessageMap } from 'contexts/auth';
 import { useSignIn } from 'hooks/auth/useSignIn';
 import { useScreenSize } from 'hooks/useScreenSize';

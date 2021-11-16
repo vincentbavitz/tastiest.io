@@ -1,6 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import { Button, Input } from '@tastiest-io/tastiest-components';
 import { CheckIcon, HotIcon, TrendingIcon } from '@tastiest-io/tastiest-icons';
+import { Button, Input } from '@tastiest-io/tastiest-ui';
 import { dlog, SVG } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import clsx from 'clsx';

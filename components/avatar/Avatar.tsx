@@ -1,4 +1,4 @@
-import { TastiestBrand } from '@tastiest-io/tastiest-components';
+import { TastiestBrand } from '@tastiest-io/tastiest-ui';
 import classNames from 'classnames';
 import React from 'react';
 

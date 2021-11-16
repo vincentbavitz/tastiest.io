@@ -1,5 +1,5 @@
-import { Button, Input } from '@tastiest-io/tastiest-components';
 import { EmailIcon, LockIcon } from '@tastiest-io/tastiest-icons';
+import { Button, Input } from '@tastiest-io/tastiest-ui';
 import { dlog } from '@tastiest-io/tastiest-utils';
 import { useSignIn } from 'hooks/auth/useSignIn';
 import React from 'react';
@@ -29,7 +29,7 @@ export const AuthModalSignInContent = ({ setStep }: ContentElementProps) => {
     signIn(email, password);
   });
 
-  dlog('AuthModal ➡️ error:', error);
+  dlog('AuthModalSignInContent ➡️ error:', error);
 
   return (
     <AuthModalWrapper
@@ -52,15 +52,15 @@ export const AuthModalSignInContent = ({ setStep }: ContentElementProps) => {
         }}
         render={({ field, formState }) => (
           <Input
-            {...field}
-            size="large"
             type="text"
-            className="py-2"
-            placeholder="Email"
-            prefix={<EmailIcon className="w-8 h-8 fill-current text-primary" />}
+            label="Email"
+            prefix={
+              <EmailIcon className="w-full h-full fill-current text-primary" />
+            }
             error={formState.errors.email?.message}
-            onChange={e => field.onChange(cleanupInputValue(e.target.value))}
             value={field.value}
+            {...field}
+            onChange={e => field.onChange(cleanupInputValue(e.target.value))}
           ></Input>
         )}
       />
@@ -77,25 +77,18 @@ export const AuthModalSignInContent = ({ setStep }: ContentElementProps) => {
         }}
         render={({ field, formState }) => (
           <Input
-            {...field}
-            size="large"
             type="password"
-            className="py-2"
-            placeholder="Password"
-            prefix={<LockIcon className="w-8 h-8 fill-current text-primary" />}
+            label="Password"
+            prefix={
+              <LockIcon className="w-full h-full fill-current text-primary" />
+            }
             error={formState.errors.password?.message}
+            {...field}
           ></Input>
         )}
       />
 
-      <Button
-        wide
-        size="large"
-        type="solid"
-        color="primary"
-        loading={submitting}
-        onClick={onClickSignIn}
-      >
+      <Button wide size="large" loading={submitting} onClick={onClickSignIn}>
         Sign In
       </Button>
 

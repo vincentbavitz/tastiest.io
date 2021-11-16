@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { Button } from '@tastiest-io/tastiest-components';
+import { Button } from '@tastiest-io/tastiest-ui';
 import { dlog, IPost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import clsx from 'clsx';

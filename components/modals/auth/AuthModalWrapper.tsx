@@ -1,4 +1,4 @@
-import { TastiestBrand } from '@tastiest-io/tastiest-components';
+import { TastiestBrand } from '@tastiest-io/tastiest-ui';
 import { SignInTosInfo } from 'components/SignInTosInfo';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
@@ -44,7 +44,7 @@ export const AuthModalWrapper = (props: AuthModalWrapperProps) => {
       <div className="flex flex-col items-center flex-grow space-y-5">
         <TastiestBrand type="full" />
         <div className="w-full text-center">
-          <h1 className="text-3xl font-primary">{title}</h1>
+          <h1 className="text-2xl font-primary">{title}</h1>
           {subtitle && (
             <h3 className="font-secondary font-semiobld">{subtitle}</h3>
           )}

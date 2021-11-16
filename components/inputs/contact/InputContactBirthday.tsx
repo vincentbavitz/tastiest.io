@@ -1,4 +1,4 @@
-import { Input } from '@tastiest-io/tastiest-components';
+import { Input } from '@tastiest-io/tastiest-ui';
 import { dlog, IDateObject } from '@tastiest-io/tastiest-utils';
 import React, { useState } from 'react';
 import NumberFormat, { NumberFormatValues } from 'react-number-format';

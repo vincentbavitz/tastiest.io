@@ -1,4 +1,4 @@
-import { Input, Select } from '@tastiest-io/tastiest-components';
+import { Input, Select } from '@tastiest-io/tastiest-ui';
 import {
   CuisineSymbol,
   dlog,
@@ -9,21 +9,6 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 
 type CuisineKey = CuisineSymbol | 'ALL_FOOD' | 'OTHER';
-interface ICuisineOption {
-  key: CuisineKey;
-  label: string;
-}
-
-const options: ICuisineOption[] = [
-  ...Object.entries(CuisineSymbol).map(([k, v]) => ({
-    key: CuisineSymbol[k],
-    label: titleCase(v),
-  })),
-  { key: 'OTHER', label: 'Other (please specify)' },
-  { key: 'ALL_FOOD', label: 'I just love food!' },
-];
-
-dlog('CuisineSelect ➡️ options:', options);
 
 interface Props {
   initial: CuisineKey;
@@ -59,13 +44,28 @@ export default function CuisineSelect(props: Props) {
   dlog('CuisineSelect ➡️ initial:', initial);
   dlog('CuisineSelect ➡️ !initial?.length:', !initial?.length);
 
+  const onSelect = (id, value) => {
+    dlog('CuisineSelect ➡️ id:', id);
+    dlog('CuisineSelect ➡️ value:', value);
+  };
+
   return (
     <div className="w-64">
-      <Select
-        noDefault={!initial?.length}
-        defaultSelected={!initial?.length}
-        onChange={handleOnChange}
-      >
+      <Select onSelect={onSelect}>
+        <Select.Option id="none" value={'None'} />
+
+        {Object.entries(CuisineSymbol).map(([k, v]) => (
+          <Select.Option
+            id={v}
+            key={k}
+            value={titleCase(v.replace('_', ' '))}
+          />
+        ))}
+
+        <Select.Option id="other" value="Other (please specify)" />
+
+        {/* { key: 'OTHER', label: 'Other (please specify)' },
+  { key: 'ALL_FOOD', label: 'I just love food!' },
         {options.map(option => (
           <option
             key={option.key}
@@ -74,7 +74,7 @@ export default function CuisineSelect(props: Props) {
           >
             {option.label}
           </option>
-        ))}
+        ))} */}
       </Select>
       {selected === 'OTHER' && (
         <div className="w-full mt-4">

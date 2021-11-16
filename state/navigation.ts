@@ -1,18 +1,9 @@
-export enum ModalInstance {
-  LOGIN = 'LOGIN',
-  HOW_IT_WORKS = 'HOW_IT_WORKS',
-  ARTICLE_MENU = 'ARTICLE_MENU',
-  RESTAURANT_MAP = 'RESTAURANT_MAP',
-  CHECKOUT_PAYMENT_ISSUE = 'CHECKOUT_PAYMENT_ISSUE',
-}
-
 export interface INavigation {
   searchOverlayExpanded: boolean;
   isAuthModalOpen: boolean;
   isArticleHiwOpen: boolean;
   isOfferMenuOpen: boolean;
   cuisineBarScrollPos: number;
-  openedModal: ModalInstance | null;
 
   // Loading Stuff
   isPageLoading: boolean;
@@ -25,7 +16,6 @@ export interface INavigation {
 export const initialNavigationState: INavigation = {
   searchOverlayExpanded: false,
   cuisineBarScrollPos: 0,
-  openedModal: null,
   isOfferMenuOpen: false,
   isAuthModalOpen: false,
   isArticleHiwOpen: false,

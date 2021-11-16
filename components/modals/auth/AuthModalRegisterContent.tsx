@@ -1,5 +1,5 @@
-import { Button, Input } from '@tastiest-io/tastiest-components';
 import { EmailIcon, LockIcon, UserIcon } from '@tastiest-io/tastiest-icons';
+import { Button, Input } from '@tastiest-io/tastiest-ui';
 import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
 import { useRegister } from 'hooks/auth/useRegister';
 import React from 'react';
@@ -59,10 +59,8 @@ export const AuthModalRegisterContent = ({ setStep }: ContentElementProps) => {
         render={({ field, formState }) => (
           <Input
             {...field}
-            size="large"
             type="text"
-            className="py-2"
-            placeholder="First Name"
+            label="First Name"
             prefix={<UserIcon className="w-8 h-8 fill-current text-primary" />}
             error={formState.errors.firstName?.message}
             onChange={e => field.onChange(titleCase(e.target.value))}
@@ -88,10 +86,8 @@ export const AuthModalRegisterContent = ({ setStep }: ContentElementProps) => {
         render={({ field, formState }) => (
           <Input
             {...field}
-            size="large"
             type="text"
-            className="py-2"
-            placeholder="Email"
+            label="Email"
             prefix={<EmailIcon className="w-8 h-8 fill-current text-primary" />}
             error={formState.errors.email?.message}
             onChange={e => field.onChange(e.target.value.trim().toLowerCase())}
@@ -121,10 +117,8 @@ export const AuthModalRegisterContent = ({ setStep }: ContentElementProps) => {
         render={({ field, formState }) => (
           <Input
             {...field}
-            size="large"
             type="password"
-            className="py-2"
-            placeholder="Create a password"
+            label="Password"
             prefix={<LockIcon className="w-8 h-8 fill-current text-primary" />}
             error={formState.errors.password?.message}
           ></Input>

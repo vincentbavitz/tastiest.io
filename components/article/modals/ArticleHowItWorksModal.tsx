@@ -1,7 +1,7 @@
-import { Modal } from 'components/Modal';
+import { Modal } from '@tastiest-io/tastiest-ui';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ModalInstance, toggleHiwModal } from 'state/navigation';
+import { toggleHiwModal } from 'state/navigation';
 import { IState } from 'state/reducers';
 
 export default function ArticleHowItWorksModal() {
@@ -11,8 +11,7 @@ export default function ArticleHowItWorksModal() {
 
   return (
     <Modal
-      id={ModalInstance.HOW_IT_WORKS}
-      isOpen={isArticleHiwOpen}
+      show={isArticleHiwOpen}
       close={() => dispatch(toggleHiwModal(false))}
       noPadding
       preload

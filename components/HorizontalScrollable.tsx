@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useEffect, useRef, useState } from 'react';
 import { useScroll } from 'react-use';
-import { UI } from '../constants';
 import { useDevice } from '../hooks/useDevice';
 import { Contained } from './Contained';
 
@@ -42,11 +41,10 @@ export function HorizontalScrollable(props: Props) {
  * Intended for full width situations only
  */
 function HorizontalScrollableInner(props: Props) {
-  const { onItemClick, spacing = 3, chevronSize = 8, children } = props;
+  const { onItemClick, fit, spacing = 3, chevronSize = 8, children } = props;
 
   const {
     isDesktop,
-    isMobile,
     width: pageWidth,
     isLoading: screenSizeLoading,
   } = useScreenSize();
@@ -103,13 +101,13 @@ function HorizontalScrollableInner(props: Props) {
     <div className="relative flex w-full">
       <div
         className={clsx(
-          'absolute left-0 flex items-center justify-between h-full w-full',
+          'absolute left-0 right-0 flex items-center justify-between h-full w-full',
           isTouchDevice && 'hidden',
         )}
       >
         <div
           style={{
-            transform: `translateX(${isDesktop ? '-50%' : '50%'})`,
+            transform: `translateX(${isDesktop ? '50%' : '50%'})`,
           }}
           className={clsx(
             'flex flex-col justify-center h-full z-50 duration-300',
@@ -119,7 +117,7 @@ function HorizontalScrollableInner(props: Props) {
           <ChevronLeftIcon
             onClick={handleLeftScroll}
             className={clsx(
-              'text-secondary fill-current cursor-pointer',
+              'text-secondary fill-current cursor-pointer shadow-lg',
               `h-${chevronSize}`,
             )}
           />
@@ -127,7 +125,7 @@ function HorizontalScrollableInner(props: Props) {
 
         <div
           style={{
-            transform: `translateX(${isDesktop ? '50%' : '-50%'})`,
+            transform: `translateX(${isDesktop ? '-50%' : '-50%'})`,
           }}
           className={clsx(
             'flex flex-col justify-center h-full z-50 duration-300',
@@ -137,7 +135,7 @@ function HorizontalScrollableInner(props: Props) {
           <ChevronRightIcon
             onClick={handleRightScroll}
             className={clsx(
-              'cursor-pointer fill-current text-secondary',
+              'cursor-pointer fill-current text-secondary shadow-lg',
               `h-${chevronSize}`,
             )}
           />
@@ -146,39 +144,33 @@ function HorizontalScrollableInner(props: Props) {
 
       <div
         ref={scrollRef}
-        style={{ width: `calc(100% + ${spacing / 4}rem)` }}
         className={clsx(
+          'w-full',
           'relative',
           'hide_scroll',
           'scrolling-touch',
           'overflow-x-scroll',
-          isDesktop ? `-ml-${spacing}` : `-ml-${spacing}`,
         )}
       >
         <div
           ref={innerContentRef}
-          className={clsx('flex overflow-y-visible', `children:px-${spacing}`)}
+          className={clsx(
+            // fit
+            // ? `grid grid-rows-1 grid-cols-${fit} gap-${spacing}` :
+            `flex overflow-y-visible gap-${spacing}`,
+          )}
           style={{
-            width: 'min-content',
-            marginLeft: `${!isDesktop ? UI.PAGE_CONTAINED_PADDING_VW : 0}vw`,
+            width: 'fit-content',
           }}
         >
+          {/* Padding on either side of children */}
+          <div className="h-full w-2"></div>
+
           {/* Try to fit into a clean integer number across */}
-          {props.fit ? (
-            <>
-              {children?.map?.(child => (
-                <div
-                  key={child.key}
-                  style={{ width: itemWidth ? `${itemWidth}px` : 'auto' }}
-                  className=""
-                >
-                  {child}
-                </div>
-              ))}
-            </>
-          ) : (
-            <>{children}</>
-          )}
+          {children}
+
+          {/* Padding on either side of children */}
+          <div className="h-full w-2"></div>
         </div>
       </div>
     </div>

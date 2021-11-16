@@ -15,6 +15,7 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import nookies from 'nookies';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useEffect } from 'react';
@@ -52,7 +53,7 @@ export const getServerSideProps = async (
 
   const token = String(context.query.token);
 
-  // If no order exists in URI, redirect to home
+  // If no order exists in URI, redirect to home.
   if (!token) {
     dlog('no order token');
 
@@ -141,13 +142,18 @@ export const getServerSideProps = async (
 function Checkout(
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) {
+  const router = useRouter();
+
   const { isDesktop } = useScreenSize();
   const { order } = useOrder(props.order.token, props.order);
 
   // User sign in management needs to be very explicit here
   const { user, isSignedIn } = useAuth();
 
-  dlog('checkout ➡️ user:', user);
+  // Preload the thank-you page
+  useEffect(() => {
+    router.prefetch('/thank-you');
+  }, []);
 
   // Does this order really belong to the signed in user?
   useEffect(() => {

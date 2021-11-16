@@ -6,6 +6,7 @@ import { Layouts } from 'layouts/LayoutHandler';
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { NextSeo, ProductJsonLd } from 'next-seo';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { generateStaticURL } from 'utils/routing';
 import { generateTitle } from '../../../../utils/metadata';
@@ -56,7 +57,7 @@ export const getStaticProps = async ({ params }) => {
   const cms = new CmsApi();
 
   // Get all deals from this restaurants
-  const { posts } = await cms.getPostsOfRestaurant(params.restaurant.uriName);
+  const { posts } = await cms.getPostsOfRestaurant(params.restaurant);
   const post = posts.find(p => p.slug === params.slug);
 
   if (!post) {
@@ -84,11 +85,18 @@ function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const { post, posts } = props;
   const { title, restaurant } = post;
 
+  const router = useRouter();
+
   // Get recommended posts
   const [recommendedPosts, setRecommendedPosts] = useState([]);
   useEffect(() => {
     dlog('[slug] ➡️ recommendedPosts:', recommendedPosts);
     cms.getTopPosts(8).then(result => setRecommendedPosts(result?.posts));
+  }, []);
+
+  // Preload the checkout page
+  useEffect(() => {
+    router.prefetch('/checkout');
   }, []);
 
   // const segmentYouTubeSnippet = `
@@ -145,15 +153,16 @@ function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
       />
 
       <div className="relative w-full">
-        <div className="pb-10">
-          <h4 className="pb-2 text-2xl">The Experience</h4>
-          <p className="">{post.description}</p>
-        </div>
+        <div className="pb-6">
+          <h4 className="text-2xl">The Experience</h4>
 
-        <YouTubeVideo url={post.video} />
+          <p className="pt-2 text-justify">{post.description}</p>
+        </div>
       </div>
 
       <ArticleSectionContent {...post} />
+
+      <YouTubeVideo url={post.video} />
     </>
   );
 }

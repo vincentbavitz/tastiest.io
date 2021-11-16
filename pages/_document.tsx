@@ -105,6 +105,7 @@ export default class CustomDocument extends Document<any> {
           <Favicon />
           {this.props?.styleTags}
         </Head>
+
         <body>
           <Main />
           <NextScript />

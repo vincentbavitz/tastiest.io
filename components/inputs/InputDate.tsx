@@ -1,4 +1,4 @@
-import { Input } from '@tastiest-io/tastiest-components';
+import { Input } from '@tastiest-io/tastiest-ui';
 import { IDateObject } from '@tastiest-io/tastiest-utils';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -47,7 +47,7 @@ export function InputDate(props: Props) {
           type="text"
           inputMode="decimal"
           placeholder="MM/DD/YYYY"
-          className="py-2 font-mono"
+          className="font-mono"
           error={formState.errors.date?.message}
           onChange={e => field.onChange(e.target.value)}
           value={transformInput(field.value)}

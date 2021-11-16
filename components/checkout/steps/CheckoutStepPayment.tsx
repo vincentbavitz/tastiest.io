@@ -7,8 +7,8 @@ import {
   StripeCardExpiryElementChangeEvent,
   StripeCardNumberElementOptions,
 } from '@stripe/stripe-js';
-import { Tooltip } from '@tastiest-io/tastiest-components';
 import { HelpIcon } from '@tastiest-io/tastiest-icons';
+import { Tooltip } from '@tastiest-io/tastiest-ui';
 import {
   dlog,
   IDateObject,
@@ -35,7 +35,6 @@ import { UI } from '../../../constants';
 import { InputCardNumberWrapper } from '../../inputs/card/InputCardNumberWrapper';
 import { InputWrapper } from '../../inputs/InputWrapper';
 import { CheckoutPaymentPanel } from '../CheckoutPaymentPanel';
-import { CheckoutTabs } from '../CheckoutTabs';
 
 const CARD_ELEMENT_OPTIONS: StripeCardNumberElementOptions = {
   classes: {
@@ -214,13 +213,9 @@ export function CheckoutStepPayment(props: Props) {
         className="flex flex-col w-full space-y-16 md:w-7/12"
       >
         <div>
-          {isDesktop ? (
-            <CheckoutTabs tabs={[{ label: 'Contact Details' }]} />
-          ) : (
-            <div className="pt-4 mb-4 text-lg font-medium text-gray-600 border-b border-gray-400">
-              Contact details
-            </div>
-          )}
+          <div className="pt-4 mb-6 text-xl font-medium text-primary border-b-2 border-gray-200">
+            Contact details
+          </div>
 
           <div className="flex flex-col space-y-4">
             <InputName
@@ -259,13 +254,9 @@ export function CheckoutStepPayment(props: Props) {
         </div>
 
         <div>
-          {isDesktop ? (
-            <CheckoutTabs tabs={[{ label: 'Payment' }]} />
-          ) : (
-            <div className="pt-4 mb-4 text-lg font-medium text-gray-600 border-b border-gray-400">
-              Payment details
-            </div>
-          )}
+          <div className="pt-4 mb-6 text-xl font-medium text-primary border-b-2 border-gray-200">
+            Payment details
+          </div>
 
           <div className="flex flex-col space-y-4">
             <InputName
@@ -330,7 +321,7 @@ export function CheckoutStepPayment(props: Props) {
       <div
         className={clsx(
           'w-full flex justify-center md:flex-grow md:w-5/12',
-          isDesktop && 'pl-10',
+          isDesktop && 'pl-10 pt-10',
         )}
       >
         <CheckoutPaymentPanel

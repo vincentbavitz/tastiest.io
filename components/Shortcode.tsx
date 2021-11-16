@@ -1,4 +1,4 @@
-import { Button } from '@tastiest-io/tastiest-components';
+import { Button } from '@tastiest-io/tastiest-ui';
 import { useDispatch } from 'react-redux';
 import { toggleOfferMenu } from 'state/navigation';
 import {

@@ -1,5 +1,5 @@
-import { TastiestBrand } from '@tastiest-io/tastiest-components';
 import { HamburgerIcon } from '@tastiest-io/tastiest-icons';
+import { TastiestBrand } from '@tastiest-io/tastiest-ui';
 import clsx from 'clsx';
 import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';

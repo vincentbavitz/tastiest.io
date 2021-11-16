@@ -1,5 +1,5 @@
 import { LeftOutlined } from '@ant-design/icons';
-import { Button, Input, Select } from '@tastiest-io/tastiest-components';
+import { Button, Input, Select } from '@tastiest-io/tastiest-ui';
 import { dlog, SupportRequestType } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import { useAuth } from 'hooks/auth/useAuth';

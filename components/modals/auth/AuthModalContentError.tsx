@@ -1,5 +1,5 @@
 import { RightOutlined } from '@ant-design/icons';
-import { Tooltip } from '@tastiest-io/tastiest-components';
+import { Tooltip } from '@tastiest-io/tastiest-ui';
 import { AuthError } from 'contexts/auth';
 import React from 'react';
 

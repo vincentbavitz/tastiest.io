@@ -1,5 +1,9 @@
-import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button } from '@tastiest-io/tastiest-components';
+import {
+  LoadingOutlined,
+  MinusOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
+import { Button } from '@tastiest-io/tastiest-ui';
 import {
   dlog,
   formatCurrency,
@@ -62,6 +66,11 @@ const useOrderPanel = (deal: IDeal, slug: string) => {
     CreateNewOrderParams,
     CreateNewOrderReturn
   >(LocalEndpoint.CREATE_NEW_ORDER, { retries: 1 });
+
+  // Update selected day when when deal changes
+  useEffect(() => {
+    setSelectedDay(null);
+  }, [deal]);
 
   // Update the selected time when the day Changes
   useEffect(() => {
@@ -181,7 +190,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
   return (
     <div>
       <div className="flex flex-col space-y-3">
-        <div className="px-2">
+        <div className="-mx-2">
           <HorizontalScrollable noPadding chevronSize={sizes.chevronSize}>
             {posts?.map((_post, key) => {
               const selected = deal.id === _post.deal.id;
@@ -195,7 +204,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
               return (
                 <XScrollSelectItem key={key} selected={selected} link={link}>
                   <h4
-                    style={{ minWidth: '6rem' }}
+                    style={{ minWidth: '6rem', maxWidth: '7rem' }}
                     className="text-xs whitespace-pre-wrap"
                   >
                     {_post.deal.name}
@@ -206,7 +215,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
           </HorizontalScrollable>
         </div>
 
-        <div className="px-2 pt-3 border-t border-gray-100">
+        <div className="-mx-2 pt-3 border-t border-gray-100">
           <HorizontalScrollable noPadding chevronSize={sizes.chevronSize}>
             {slots?.map((slot, key) => {
               const datetime = DateTime.fromMillis(slot.timestamp);
@@ -236,7 +245,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
           </HorizontalScrollable>
         </div>
 
-        <div className="px-2 pt-3 border-t border-gray-100">
+        <div className="-mx-2 pt-3 border-t border-gray-100">
           <HorizontalScrollable noPadding chevronSize={sizes.chevronSize}>
             {selectedDay
               ? selectedDay.times.map((time, key) => {
@@ -309,13 +318,22 @@ export default function ExperienceOrderPanelInner(props: Props) {
               'bg-primary hover:bg-secondary duration-300 outline-none',
             )}
           >
-            £{formatCurrency(totalPrice)} — BUY NOW
+            {submitting ? (
+              <LoadingOutlined className="text-xl" />
+            ) : (
+              <>£{formatCurrency(totalPrice)} — BUY NOW</>
+            )}
           </button>
         ) : null}
 
         {/* Sidebar CTA button */}
         {layout === 'sidebar' ? (
-          <Button wide onClick={toCheckout}>
+          <Button
+            wide
+            disabled={!selectedTime || !selectedDay}
+            loading={submitting}
+            onClick={toCheckout}
+          >
             £{formatCurrency(totalPrice)} — BUY NOW
           </Button>
         ) : null}

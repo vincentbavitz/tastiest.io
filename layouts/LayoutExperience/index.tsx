@@ -1,9 +1,11 @@
+import { ArrowUpOutlined } from '@ant-design/icons';
 import { titleCase } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { ArticleSaveShareWidget } from 'components/article/widgets/ArticleSaveShareWidget';
 import { ExperienceOrderPanelDesktop } from 'components/article/widgets/ExperienceOrderPanelDesktop';
 import ExperienceOrderPanelMobile from 'components/article/widgets/ExperienceOrderPanelMobile';
 import { Contained } from 'components/Contained';
+import BlockButton from 'components/restaurant/BlockButton';
 import RestaurantMapBlock from 'components/RestaurantMapBlock';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetStaticPropsType } from 'next';
@@ -11,6 +13,7 @@ import Image from 'next/image';
 import { getStaticProps } from 'pages/[city]/[cuisine]/[restaurant]/[slug]';
 import React, { useEffect, useState } from 'react';
 import { useWindowScroll } from 'react-use';
+import { generateStaticURL } from 'utils/routing';
 import { LayoutProps } from '../LayoutHandler';
 import LayoutWrapper from '../LayoutWrapper';
 
@@ -49,40 +52,42 @@ export default function LayoutExperience({
         pageProps={pageProps}
         headerProps={{ transparency: headerTransparent ? 'glass' : 'none' }}
       >
-        {/* Restaurant's Feature Video */}
-        <div
-          style={{
-            maxHeight: '28rem',
-          }}
-          className="relative flex items-center overflow-hidden"
-        >
-          <div className="relative w-full z-0 h-0 aspect-w-10 sm:aspect-w-12 md:aspect-w-16 aspect-h-9">
-            <Image
-              src={restaurant.backdropStillFrame.url}
-              loading={'eager'}
-              layout="fill"
-              priority
-            />
-            <video
-              loop
-              muted
-              autoPlay
-              src={restaurant.backdropVideo.url}
-              className={clsx('object-cover w-full h-full')}
-              playsInline // prevent fullscreen on iOS
-            />
+        <div className="relative mb-24">
+          {/* Restaurant's Feature Video */}
+          <div
+            style={{
+              maxHeight: '22rem',
+            }}
+            className="relative flex items-center overflow-hidden"
+          >
+            <div className="relative w-full z-0 h-0  aspect-w-10 sm:aspect-w-12 md:aspect-w-16 aspect-h-9">
+              <Image
+                src={restaurant.backdropStillFrame.url}
+                loading={'eager'}
+                layout="fill"
+                priority
+              />
+              <video
+                loop
+                muted
+                autoPlay
+                src={restaurant.backdropVideo.url}
+                className={clsx('object-cover w-full h-full')}
+                playsInline // prevent fullscreen on iOS
+              />
+            </div>
+
+            {/* White overlays */}
+            {/* <div className="absolute inset-0 z-20 opacity-10 bg-light"></div> */}
+            <div className="absolute inset-0 flex items-end z-20">
+              <div className="inline-block w-full h-48 bg-gradient-to-t from-light"></div>
+            </div>
+            <div className="absolute inset-0 flex items-end z-20">
+              <div className="inline-block w-full h-32 bg-gradient-to-t from-light"></div>
+            </div>
           </div>
 
-          {/* White overlays */}
-          <div className="absolute inset-0 z-20 opacity-10 bg-light"></div>
-          <div className="absolute inset-0 flex items-end z-20">
-            <div className="inline-block w-full h-64 bg-gradient-to-t from-light"></div>
-          </div>
-          <div className="absolute inset-0 flex items-end z-20">
-            <div className="inline-block w-full h-64 bg-gradient-to-t from-light"></div>
-          </div>
-
-          <div className="absolute inset-0 z-20 bottom-2 flex flex-col items-center justify-end space-y-4">
+          <div className="absolute inset-0 z-20 -bottom-24 flex flex-col items-center justify-end space-y-4">
             <Contained>
               <h1 className="text-3xl leading-none text-center font-medium sm:text-3xl text-primary font-primary">
                 {titleCase(title)}
@@ -115,15 +120,21 @@ const LayoutExperienceMobile = ({
 }: LayoutProps<InferGetStaticPropsType<typeof getStaticProps>>) => {
   const { post, posts } = pageProps;
 
+  const restaurantPageUrl = generateStaticURL({
+    city: post.restaurant.city,
+    cuisine: post.restaurant.cuisine,
+    restaurant: post.restaurant.uriName,
+  });
+
   return (
     <div className="pb-16">
       <Contained maxWidth={ARTICLE_MAX_WIDTH_MOBILE_PX}>
-        <div className="pt-10">
+        <div className="pt-2">
           <Component {...(pageProps as any)} />
         </div>
 
         <RestaurantMapBlock layout="stacked" restaurant={post.restaurant}>
-          .
+          {' '}
         </RestaurantMapBlock>
       </Contained>
 
@@ -142,6 +153,12 @@ const LayoutExperienceDesktop = ({
 }: LayoutProps<InferGetStaticPropsType<typeof getStaticProps>>) => {
   const { post, posts } = pageProps;
 
+  const restaurantPageUrl = generateStaticURL({
+    city: post.restaurant.city,
+    cuisine: post.restaurant.cuisine,
+    restaurant: post.restaurant.uriName,
+  });
+
   return (
     <Contained tight maxWidth={ARTICLE_MAX_WIDTH_DESKTOP_PX}>
       <div className="flex space-x-8 pt-10">
@@ -157,7 +174,12 @@ const LayoutExperienceDesktop = ({
       </div>
 
       <div className="pt-10 pb-10">
-        <RestaurantMapBlock restaurant={post.restaurant}>.</RestaurantMapBlock>
+        <RestaurantMapBlock restaurant={post.restaurant}>
+          <BlockButton {...restaurantPageUrl}>
+            See restaurant{' '}
+            <ArrowUpOutlined className="ml-2 text-lg transform rotate-45" />
+          </BlockButton>
+        </RestaurantMapBlock>
       </div>
     </Contained>
   );

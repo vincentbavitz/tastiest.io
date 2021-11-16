@@ -1,5 +1,5 @@
-import { Button, Input } from '@tastiest-io/tastiest-components';
 import { UserIcon } from '@tastiest-io/tastiest-icons';
+import { Button, Input } from '@tastiest-io/tastiest-ui';
 import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
 import { AuthError, AuthErrorCode, AuthErrorMessageMap } from 'contexts/auth';
 import { useRegister } from 'hooks/auth/useRegister';
@@ -65,7 +65,7 @@ export function CheckoutSignUp() {
       <Input
         size="large"
         type="text"
-        placeholder="First Name"
+        label="First Name"
         prefix={<UserIcon className="w-8 h-6 fill-current text-primary" />}
         maxLength={20}
         value={signUpName}

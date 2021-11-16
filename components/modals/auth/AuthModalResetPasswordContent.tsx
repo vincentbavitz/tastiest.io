@@ -1,6 +1,6 @@
 import { CheckCircleOutlined } from '@ant-design/icons';
-import { Button, Input } from '@tastiest-io/tastiest-components';
 import { EmailIcon } from '@tastiest-io/tastiest-icons';
+import { Button, Input } from '@tastiest-io/tastiest-ui';
 import { useResetPassword } from 'hooks/auth/useResetPassword';
 import React, { useState } from 'react';
 import { cleanupInputValue } from 'utils/text';
@@ -39,10 +39,8 @@ export const AuthModalResetPasswordContent = ({
       ) : (
         <>
           <Input
-            size="large"
             type="email"
-            className="py-2"
-            placeholder="Email address"
+            label="Email"
             prefix={<EmailIcon className="w-8 h-8 fill-current text-primary" />}
             value={email}
             onValueChange={value => setEmail(cleanupInputValue(value))}

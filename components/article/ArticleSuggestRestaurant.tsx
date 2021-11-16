@@ -1,5 +1,5 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import { Button, Input } from '@tastiest-io/tastiest-components';
+import { Button, Input } from '@tastiest-io/tastiest-ui';
 import { IPost } from '@tastiest-io/tastiest-utils';
 import { useFeedback } from 'hooks/useFeedback';
 import { useScreenSize } from 'hooks/useScreenSize';

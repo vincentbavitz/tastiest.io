@@ -6,7 +6,6 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import React, { ReactNode } from 'react';
 import { getGoogleMapLink } from 'utils/location';
 import { RestaurantMap } from './modals/RestaurantMap';
-import OpenTimes from './restaurant/OpenTimes';
 
 interface Props {
   restaurant: IRestaurant;
@@ -41,7 +40,7 @@ export default function RestaurantMapBlock(props: Props) {
     <div>
       <div
         className={clsx(
-          'flex pt-4',
+          'flex pt-8',
           layout === 'default' && 'space-x-6',
           layout === 'stacked' && 'flex-col space-y-4',
         )}
@@ -61,7 +60,7 @@ export default function RestaurantMapBlock(props: Props) {
           </div>
         </section>
 
-        <div
+        {/* <div
           className={clsx(
             layout === 'stacked'
               ? 'flex items-stretch gap-4 flex-wrap'
@@ -86,7 +85,7 @@ export default function RestaurantMapBlock(props: Props) {
           >
             {children}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

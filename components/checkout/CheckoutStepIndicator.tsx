@@ -1,5 +1,6 @@
-import { CheckCircleIcon } from '@tastiest-io/tastiest-icons';
+import { CheckOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
+import { ReactNode } from 'hoist-non-react-statics/node_modules/@types/react';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { CheckoutStep } from 'state/checkout';
 import { UI } from '../../constants';
@@ -18,12 +19,11 @@ export function CheckoutStepIndicator({ step }: Props) {
         minWidth: isDesktop ? `${UI.CHECKOUT_SPLIT_WIDTH_PX}px` : 'unset',
       }}
     >
-      <div className="relative flex items-center justify-between w-full">
-        <ProgressBar step={step} />
+      <ProgressBar step={step}>
         <CheckCircle complete label="Log in" />
         <CheckCircle complete={step !== CheckoutStep.SIGN_IN} label="Details" />
         <CheckCircle complete={step === CheckoutStep.COMPLETE} label="Done!" />
-      </div>
+      </ProgressBar>
     </div>
   );
 }
@@ -35,17 +35,20 @@ interface CheckCircleProps {
 
 function CheckCircle({ label, complete }: CheckCircleProps) {
   return (
-    <div className="z-10 flex flex-col items-center">
+    <div className="relative z-10 h-10 flex flex-col justify-center items-center">
       {complete ? (
-        <CheckCircleIcon className="h-8 bg-white fill-current text-primary" />
+        <div className="w-8 h-8 flex items-center justify-center bg-white rounded-full border-success border-2">
+          <CheckOutlined className="text-lg text-success" />
+        </div>
       ) : (
-        <div className="w-8 h-8 bg-white border-2 border-gray-400 rounded-full"></div>
+        <div className="w-8 h-8 bg-light border-2 border-gray-300 rounded-full"></div>
       )}
 
       <span
         className={classNames(
-          complete ? 'text-primary' : 'text-gray-600',
-          'mt-1 text-sm sm:text-base',
+          'absolute -bottom-5 whitespace-nowrap',
+          complete ? 'text-primary opacity-50' : 'text-gray-300',
+          'mt-1 text-sm',
         )}
       >
         {label}
@@ -54,7 +57,11 @@ function CheckCircle({ label, complete }: CheckCircleProps) {
   );
 }
 
-function ProgressBar({ step }: Props) {
+interface ProgressBarProps extends Props {
+  children: ReactNode;
+}
+
+function ProgressBar({ step, children }: ProgressBarProps) {
   // prettier-ignore
   const transform = 
     step === CheckoutStep.SIGN_IN ? 'translateX(-100%)' :
@@ -63,22 +70,21 @@ function ProgressBar({ step }: Props) {
     undefined;
 
   return (
-    <>
-      <div
-        style={{
-          left: '10px',
-          right: '10px',
-        }}
-        className="absolute top-0 flex items-center justify-start h-10 overflow-hidden"
-      >
-        <div className="w-full h-0 duration-300 border-b-2 border-gray-400"></div>
+    <div className="relative h-10">
+      <div className="flex items-center justify-start h-10 overflow-hidden">
+        <div className="w-full h-0 duration-300 border-b-2 border-gray-300"></div>
       </div>
-      <div className="absolute top-0 flex items-center justify-start w-full h-10 mx-1 overflow-hidden">
+
+      <div className="absolute top-0 flex items-center justify-start w-full h-10 overflow-hidden">
         <div
           style={{ transform }}
-          className="w-full h-0 duration-300 border-b-2 border-primary"
+          className="w-full h-0 duration-300 border-b-2 border-success"
         ></div>
       </div>
-    </>
+
+      <div className="absolute inset-0 flex w-full h-10 justify-between items-center">
+        {children}
+      </div>
+    </div>
   );
 }

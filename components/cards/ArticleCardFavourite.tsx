@@ -6,7 +6,6 @@ import {
 import { IPost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import clsx from 'clsx';
-import { ShareDropdown } from 'components/ShareDropdown';
 import { useScreenSize } from 'hooks/useScreenSize';
 import router from 'next/dist/client/router';
 import Link from 'next/link';
@@ -121,17 +120,6 @@ export function ArticleCardFavourite(props: Props): JSX.Element {
             <ShareIcon className={clsx('pr-1', !isDesktop ? 'h-5' : 'h-5')} />
 
             {isDesktop && 'Share'}
-
-            <ShareDropdown
-              title={props.title}
-              city={props.city}
-              cuisine={props.cuisine}
-              restaurant={props.restaurant.uriName}
-              slug={props.slug}
-              isOpen={isShareDropdownOpen}
-              setIsOpen={setIsShareDropdownOpen}
-              offsetY={20}
-            />
           </div>
         </div>
       </div>

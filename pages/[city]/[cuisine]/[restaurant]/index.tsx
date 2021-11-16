@@ -8,6 +8,7 @@ import {
 import clsx from 'clsx';
 import TastiestDishRow from 'components/cards/TastiestDishRow';
 import { Contained } from 'components/Contained';
+import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { RichBody } from 'components/RichBody';
 import { SectionTitle } from 'components/SectionTitle';
 import { YouTubeVideo } from 'components/YouTubeVideo';
@@ -167,19 +168,19 @@ const RestaurantPage = (
 
       <Contained maxWidth={900}>
         <div className="flex flex-col py-4 pb-10 space-y-10">
-          <div className="flex lg:flex-row flex-col lg:space-x-6">
+          <div className="flex lg:flex-row flex-col gap-6">
             <div className="flex-1">
               <YouTubeVideo url={restaurant.video.url} />
 
               {restaurant.video.displayTitle ? (
-                <h4 className="pt-2 text-xl font-medium text-primary">
+                <h4 className="pt-2 text-xl font-medium text-gray-700">
                   {restaurant.video.displayTitle}
                 </h4>
               ) : null}
             </div>
 
             <div className="flex-1">
-              <h4 className="text-2xl pt-6 pb-2 text-primary font-primary">
+              <h4 className={clsx('text-2xl pb-2 text-primary font-primary')}>
                 About {restaurant.name}
               </h4>
 
@@ -188,27 +189,26 @@ const RestaurantPage = (
               </div>
             </div>
           </div>
-
-          <div>
-            <SectionTitle>Award Winning Dishes</SectionTitle>
-
-            <div
-              className={clsx(
-                'grid gap-7 mt-6',
-                isMobile && 'grid-cols-2 grid-rows-2',
-                isTablet && 'grid-cols-3 grid-rows-1',
-                isDesktop && 'grid-cols-4 grid-rows-1',
-              )}
-            >
-              {tastiestDishes
-                .slice(0, isMobile ? 4 : isTablet ? 3 : 4)
-                .map(dish => (
-                  <TastiestDishRow key={dish.id} {...dish} />
-                ))}
-            </div>
-          </div>
         </div>
       </Contained>
+
+      <div className="pb-10">
+        <Contained maxWidth={900}>
+          <div className="pb-6">
+            <SectionTitle>Award Winning Dishes</SectionTitle>
+          </div>
+        </Contained>
+
+        <HorizontalScrollable
+          noPadding
+          spacing={isDesktop ? 6 : isTablet ? 4 : 2}
+          fit={isDesktop ? 4 : isTablet ? 3 : null}
+        >
+          {tastiestDishes.map(dish => (
+            <TastiestDishRow key={dish.id} {...dish} />
+          ))}
+        </HorizontalScrollable>
+      </div>
 
       {/* Image and map overlay */}
     </>

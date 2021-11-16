@@ -1,5 +1,5 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import { Button, Input } from '@tastiest-io/tastiest-components';
+import { Button, Input } from '@tastiest-io/tastiest-ui';
 import clsx from 'clsx';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useFeedback } from 'hooks/useFeedback';
@@ -205,7 +205,6 @@ export function SuggestRestaurant() {
               {...restaurantNameFieldProps}
               error={errors?.userGivenRestaurantName?.message}
               label="Name of Restaurant"
-              labelTheme="primary"
             />
 
             <div className="flex space-x-4">
@@ -215,7 +214,6 @@ export function SuggestRestaurant() {
                   {...cuisineFieldProps}
                   error={errors?.userGivenCuisine?.message}
                   label="Cuisine"
-                  labelTheme="primary"
                 />
               </div>
 
@@ -225,7 +223,6 @@ export function SuggestRestaurant() {
                   {...dishFieldProps}
                   error={errors?.userGivenDish?.message}
                   label="Your Favourite Dish"
-                  labelTheme="primary"
                 />
               </div>
             </div>
@@ -236,7 +233,6 @@ export function SuggestRestaurant() {
                 {...emailFieldProps}
                 error={errors?.email?.message}
                 label="Your Email Address"
-                labelTheme="primary"
               />
             )}
 

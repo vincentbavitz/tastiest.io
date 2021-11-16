@@ -1,4 +1,4 @@
-import { Button } from '@tastiest-io/tastiest-components';
+import { Button } from '@tastiest-io/tastiest-ui';
 import React from 'react';
 
 type ButtonColor = 'primary' | 'secondary' | 'danger' | 'success' | 'light';

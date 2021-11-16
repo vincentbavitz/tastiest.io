@@ -1,6 +1,10 @@
-import { CloseOutlined, LoadingOutlined } from '@ant-design/icons';
-import { Button, Input } from '@tastiest-io/tastiest-components';
+import {
+  CheckOutlined,
+  CloseOutlined,
+  LoadingOutlined,
+} from '@ant-design/icons';
 import { LockIcon, SupportIcon } from '@tastiest-io/tastiest-icons';
+import { Button, Input, Modal } from '@tastiest-io/tastiest-ui';
 import {
   dlog,
   formatCurrency,
@@ -9,14 +13,12 @@ import {
   TastiestPaymentError,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
-import { Modal } from 'components/Modal';
 import { useOrder } from 'hooks/checkout/useOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { ModalInstance } from 'state/navigation';
 import { UI } from '../../constants';
 import { IState } from '../../state/reducers';
 import { CheckoutCard } from './CheckoutCard';
@@ -62,8 +64,8 @@ export function CheckoutPaymentPanel(props: Props) {
     >
       {isDesktop && <SecureTransactionText />}
 
-      <CheckoutCard title="Order Summary" order={order}>
-        <div>
+      <CheckoutCard order={order}>
+        <div className="">
           <div className="flex justify-between text-sm">
             <div>
               <div className="text-base font-medium">
@@ -79,7 +81,7 @@ export function CheckoutPaymentPanel(props: Props) {
           </div>
         </div>
 
-        <div className="flex items-center justify-between text-sm">
+        <div className="flex items-center justify-between leading-none text-sm">
           <p>
             Buy for {order.heads} {order.heads === 1 ? 'person' : 'people'}
           </p>
@@ -109,11 +111,11 @@ export function CheckoutPaymentPanel(props: Props) {
                 'Place Order'
               )}
             </Button>
-
-            <TermsAndConditions />
           </>
         )}
       </CheckoutCard>
+
+      <TermsAndConditions />
 
       {/* Payment error display */}
       {error?.code === 'general_payment_error' && (
@@ -168,7 +170,7 @@ const SecureTransactionText = () => (
 );
 
 const TermsAndConditions = () => (
-  <div className="text-2xs">
+  <div className="text-2xs pt-4 opacity-25 text-center">
     By placing this order, I agree to the{' '}
     <a
       href="/terms-of-use"
@@ -226,7 +228,7 @@ const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
   };
 
   return (
-    <div className="">
+    <div className="leading-none">
       {order?.promoCode ? (
         <div className="flex items-center justify-between text-lg md:text-sm">
           <p>
@@ -245,15 +247,16 @@ const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
       ) : (
         <div className="flex items-center justify-between space-x-2 text-xs">
           <Input
+            size="small"
             disabled={disabled}
-            placeholder="Promo Code"
+            label="Promo Code"
             value={promoCode}
             onValueChange={setPromoCode}
             regex={PAYMENTS.PROMO_CODE_REGEX}
             formatter={value => value.toUpperCase()}
           />
-          <Button disabled={disabled} type="solid" onClick={applyPromoCode}>
-            Apply
+          <Button disabled={disabled} onClick={applyPromoCode} size="small">
+            <CheckOutlined className="text-lg" />
           </Button>
         </div>
       )}
@@ -313,11 +316,7 @@ const PaymentErrorMessage = ({ order }: PaymentErrorMessageProps) => {
       <StillHavingTrouble />
     </div>
   ) : (
-    <Modal
-      id={ModalInstance.CHECKOUT_PAYMENT_ISSUE}
-      isOpen={isModalOpen}
-      close={() => setIsModalOpen(false)}
-    >
+    <Modal show={isModalOpen} close={() => setIsModalOpen(false)}>
       <div className="relative flex flex-col items-center text-center">
         <h4 className="mb-1 -mt-8 text-xl font-medium text-danger">
           {errorTitle}

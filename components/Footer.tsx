@@ -1,4 +1,3 @@
-import { TastiestBrand } from '@tastiest-io/tastiest-components';
 import {
   FacebookIcon,
   HeartIcon,
@@ -6,6 +5,7 @@ import {
   TwitterIcon,
   YoutubeIcon,
 } from '@tastiest-io/tastiest-icons';
+import { TastiestBrand } from '@tastiest-io/tastiest-ui';
 import { SupportRequestType } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -37,7 +37,11 @@ const MobileFooter = () => {
 
   return (
     <div className="flex flex-col pb-10 space-y-6">
-      {!isTablet && <TastiestBrand type="initial-ring" />}
+      {!isTablet && (
+        <div className="flex w-full pt-4 justify-center">
+          <TastiestBrand size={10} type="initial-ring" />
+        </div>
+      )}
 
       <div className="flex flex-col w-full pt-4 mt-6 space-x-0 space-y-4 sm:space-y-0 sm:flex-row sm:space-x-6">
         <div className="flex-1">
@@ -71,8 +75,8 @@ const MobileFooter = () => {
             <ImprovementPrompts />
           </div>
 
-          <div className="flex justify-center pt-2">
-            <TastiestBrand type="initial-ring" />
+          <div className="flex justify-center pt-4">
+            <TastiestBrand size={10} type="initial-ring" />
           </div>
         </>
       ) : (
@@ -194,7 +198,11 @@ const ThanksForSupportMessage = ({
 
     <HeartIcon className="block h-6 fill-current md:hidden" />
 
-    {withLogo && <TastiestBrand type="initial-ring" />}
+    {withLogo && (
+      <div className="pb-1">
+        <TastiestBrand theme="dark" type="full" />
+      </div>
+    )}
   </div>
 );
 

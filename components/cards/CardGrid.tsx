@@ -10,6 +10,9 @@ interface Props {
   children: JSX.Element[];
   size?: 'small' | 'medium' | 'large';
 
+  // Passed into Container
+  maxWidth?: number;
+
   // If you are paginating, do not set rowLimit
   paginate?: boolean;
   rowsPerPage?: number;
@@ -19,6 +22,7 @@ export function CardGrid(props: Props) {
   const {
     rowsPerPage,
     paginate,
+    maxWidth,
     children,
     horizontalScroll,
     rowLimit = 2,
@@ -63,7 +67,7 @@ export function CardGrid(props: Props) {
           </HorizontalScrollable>
         </div>
       ) : (
-        <Contained>
+        <Contained maxWidth={maxWidth}>
           <div
             className={classNames(
               `grid`,

@@ -1,5 +1,5 @@
-import { Input } from '@tastiest-io/tastiest-components';
 import { LockIcon } from '@tastiest-io/tastiest-icons';
+import { Input } from '@tastiest-io/tastiest-ui';
 import React from 'react';
 
 interface Props {
@@ -20,7 +20,6 @@ export function InputPassword(props: Props) {
 
   return (
     <Input
-      size="large"
       type={show ? 'text' : 'password'}
       placeholder={placeholder}
       prefix={<LockIcon className="w-8 h-6 fill-current text-primary" />}

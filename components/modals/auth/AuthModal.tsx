@@ -1,9 +1,9 @@
-import { Modal } from 'components/Modal';
+import { Modal } from '@tastiest-io/tastiest-ui';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth } from '../../../hooks/auth/useAuth';
-import { closeAuthModal, ModalInstance } from '../../../state/navigation';
+import { closeAuthModal } from '../../../state/navigation';
 import { IState } from '../../../state/reducers';
 import { AuthModalRegisterContent } from './AuthModalRegisterContent';
 import { AuthModalResetPasswordContent } from './AuthModalResetPasswordContent';
@@ -36,9 +36,9 @@ export function AuthModal() {
 
   return (
     <Modal
-      id={ModalInstance.LOGIN}
-      isOpen={isOpen}
-      onMobileFullscreen
+      show={isOpen}
+      fullscreen={isMobile}
+      title=" "
       close={() => dispatch(closeAuthModal())}
     >
       <div
@@ -47,7 +47,7 @@ export function AuthModal() {
           height: isMobile ? '100%' : '510px',
           minHeight: '500px',
         }}
-        className="relative flex flex-col justify-between"
+        className="relative flex flex-col -mt-8 justify-between"
       >
         {step === LoginFlowStep.SIGN_IN && (
           <AuthModalSignInContent setStep={setStep} />

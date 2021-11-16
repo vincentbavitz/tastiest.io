@@ -1,5 +1,5 @@
-import { Input } from '@tastiest-io/tastiest-components';
 import { EmailIcon } from '@tastiest-io/tastiest-icons';
+import { Input } from '@tastiest-io/tastiest-ui';
 import React from 'react';
 
 interface Props {

@@ -1,4 +1,4 @@
-import { Input } from '@tastiest-io/tastiest-components';
+import { Input } from '@tastiest-io/tastiest-ui';
 import React from 'react';
 import { Control, useController } from 'react-hook-form';
 
@@ -6,7 +6,6 @@ interface Props {
   name: string;
   label: string;
   size?: 'small' | 'medium' | 'large';
-  placeholder?: string;
   requiredText?: string;
 
   control: Control<any>;
@@ -19,7 +18,6 @@ export function InputName(props: Props) {
     name,
     label,
     size = 'medium',
-    placeholder,
     control,
     disabled,
     requiredText,
@@ -57,7 +55,6 @@ export function InputName(props: Props) {
       label={label}
       error={error?.message}
       disabled={disabled}
-      placeholder={placeholder}
       {...fieldProps}
     />
   );

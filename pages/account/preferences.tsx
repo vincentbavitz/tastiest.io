@@ -1,5 +1,5 @@
-import { Button, Input } from '@tastiest-io/tastiest-components';
 import { CheckIcon } from '@tastiest-io/tastiest-icons';
+import { Button, Input } from '@tastiest-io/tastiest-ui';
 import {
   dlog,
   IDateObject,
@@ -202,6 +202,7 @@ const Preferences = ({
               }}
             />
           </PreferenceBlock>
+
           <PreferenceBlock
             title="Birthday"
             subtitle="To give you something special."
@@ -218,8 +219,9 @@ const Preferences = ({
               />
             </div>
           </PreferenceBlock>
+
           <PreferenceBlock
-            title="Address"
+            title="Postcode"
             subtitle="So we can find the tastiest food near you."
           >
             {/* <div

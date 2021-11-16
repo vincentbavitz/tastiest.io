@@ -1,5 +1,5 @@
-import { Button } from '@tastiest-io/tastiest-components';
 import { CookieEmoji } from '@tastiest-io/tastiest-icons';
+import { Button } from '@tastiest-io/tastiest-ui';
 import { LocalStorageItem } from 'contexts/tracking';
 import { useAuth } from 'hooks/auth/useAuth';
 import React from 'react';

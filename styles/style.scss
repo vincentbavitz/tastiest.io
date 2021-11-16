@@ -13,7 +13,7 @@ a {
   }
 }
 
-ul {
+ul:not([role="listbox"]) {
   @apply list-none;
 
   li {
@@ -101,7 +101,7 @@ body {
     }
 
     &:hover {
-      background-color: #dfbb0a;
+      @apply bg-primary;
     }
 
     cursor: pointer;
@@ -109,7 +109,7 @@ body {
     width: max-content;
     font-weight: 500;
     border-radius: 0;
-    background-color: #ffd400;
+    @apply bg-secondary;
   }
 }
 

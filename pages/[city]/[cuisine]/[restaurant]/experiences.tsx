@@ -116,7 +116,7 @@ const RestaurantExperiencesPage = (
           </div>
         ))
       ) : (
-        <CardGrid>
+        <CardGrid maxWidth={900}>
           {posts.map(post => (
             <ExperienceCard key={post.id} {...post} />
           ))}

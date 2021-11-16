@@ -1,5 +1,5 @@
-import { BellOutlined } from '@ant-design/icons';
-import { Button, Tooltip } from '@tastiest-io/tastiest-components';
+import { BellOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button } from '@tastiest-io/tastiest-ui';
 import { IRestaurant } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { InputGroup } from 'components/inputs/InputGroup';
@@ -32,35 +32,32 @@ export default function FollowButton(props: Props) {
       {following ? (
         <InputGroup>
           <Button loading={followLoading} onClick={unfollow}>
-            <Tooltip
-              theme="alt"
-              placement="top-right"
-              content={`Unfollow ${restaurant.name}`}
-            >
-              Following
-            </Tooltip>
+            Following
           </Button>
 
           <Button
-            color={notifications ? 'secondary' : 'light'}
+            color={'secondary'}
             onClick={() => toggleNotifications(!notifications)}
             loading={notificationsLoading}
           >
-            <Tooltip theme="alt" placement="top-right" content="Get updates">
-              <div className="flex items-center h-full">
-                <BellOutlined
-                  className={clsx(
-                    'duration-300 text-lg',
-                    notifications ? 'text-white' : 'text-gray-200',
-                  )}
-                />
-              </div>
-            </Tooltip>
+            <div className="flex items-center">
+              <BellOutlined
+                className={clsx(
+                  'duration-300 text-lg',
+                  notifications ? 'text-white' : 'text-gray-200',
+                )}
+              />
+            </div>
           </Button>
         </InputGroup>
       ) : (
-        <Button color={'primary'} onClick={follow} loading={followLoading}>
-          <div className="text-white">Follow</div>
+        <Button
+          color={'light'}
+          onClick={follow}
+          prefix={<PlusOutlined />}
+          loading={followLoading}
+        >
+          Follow
         </Button>
       )}
     </div>
