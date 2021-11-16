@@ -29,7 +29,6 @@ export function ArticleSectionContent(post: IPost) {
       <div className="flex flex-col pb-10 space-y-6">
         <RichBody body={post.body} />
 
-        {/* <ArticleSectionOfferBreakdown {...post.deal} /> */}
         {/* <AuxiliaryDivider url={post?.offerDivider?.url} /> */}
         {/* <ArticleSectionNeedToKnow body={post.needToKnow} /> */}
       </div>

@@ -93,27 +93,6 @@ export function ExperienceCard(props: Props): JSX.Element {
                 />
               </div>
             )}
-
-            {/* Offer includes items */}
-            <div
-              className={clsx(
-                'absolute inset-0 z-50 flex flex-col px-3 py-3 text-white font-primary',
-                compact ? 'space-y-1' : 'space-y-2',
-              )}
-            >
-              {deal.includes.slice(0, 3).map(item => (
-                <div
-                  key={item}
-                  style={{ width: 'fit-content' }}
-                  className={clsx(
-                    'px-2 py-1 leading-4 bg-opacity-90 rounded bg-gray-900',
-                    compact ? 'text-xs' : 'text-sm',
-                  )}
-                >
-                  {item}
-                </div>
-              ))}
-            </div>
           </div>
 
           <div
