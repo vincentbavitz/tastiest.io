@@ -83,7 +83,7 @@ const ArticleSuggestRestaurantContent = ({
         disabled={requestRecieved}
         maxLength={80}
         size="large"
-        placeholder="Name of Restaurant"
+        label="Name of Restaurant"
       />
 
       <div className="w-32 mt-3">

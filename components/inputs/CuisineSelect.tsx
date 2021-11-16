@@ -49,32 +49,21 @@ export default function CuisineSelect(props: Props) {
     dlog('CuisineSelect ➡️ value:', value);
   };
 
+  const options = [
+    ['none', 'None'],
+    ...Object.entries(CuisineSymbol).map(([key, value]) => [
+      key,
+      titleCase(value.replace('_', ' ')),
+    ]),
+    ['other', 'Other (please specify)'],
+  ];
+
   return (
     <div className="w-64">
       <Select onSelect={onSelect}>
-        <Select.Option id="none" value={'None'} />
-
-        {Object.entries(CuisineSymbol).map(([k, v]) => (
-          <Select.Option
-            id={v}
-            key={k}
-            value={titleCase(v.replace('_', ' '))}
-          />
+        {options.map(([k, v]) => (
+          <Select.Option id={v} key={k} value={v} />
         ))}
-
-        <Select.Option id="other" value="Other (please specify)" />
-
-        {/* { key: 'OTHER', label: 'Other (please specify)' },
-  { key: 'ALL_FOOD', label: 'I just love food!' },
-        {options.map(option => (
-          <option
-            key={option.key}
-            value={option.key}
-            selected={initial === option.key}
-          >
-            {option.label}
-          </option>
-        ))} */}
       </Select>
       {selected === 'OTHER' && (
         <div className="w-full mt-4">

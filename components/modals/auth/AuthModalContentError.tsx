@@ -12,8 +12,8 @@ export const ContentError = ({ error }: { error: AuthError }) => {
     <div>
       <div className="flex justify-center w-full h-px -mt-4">
         <Tooltip
-          theme="alt"
-          isOpen={true}
+          show={true}
+          trigger="manual"
           placement="bottom"
           content={
             <div

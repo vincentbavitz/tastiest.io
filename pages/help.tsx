@@ -178,12 +178,11 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
       <div className="relative flex flex-col items-center w-full mt-6 mb-12 space-y-4"></div>
 
       <Contained maxWidth={UI.FORM_WIDTH_PX}>
-        <div className="flex flex-col mb-20 space-y-8 md:space-y-8">
+        <div className="flex flex-col mb-20 space-y-8 md:space-y-4">
           {/* Only request name if the user isn't logged in or hasn't given it yet */}
           {!_name?.length && (
             <Input
               label="Name"
-              labelTheme="primary"
               value={name}
               onValueChange={setName}
               maxLength={120}
@@ -193,35 +192,28 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
           {!_email?.length && (
             <Input
               label="Email"
-              labelTheme="primary"
               value={email}
               onValueChange={setEmail}
               maxLength={120}
             />
           )}
 
-          <div className="flex flex-col w-full space-y-4 sm:space-y-0 sm:flex-row sm:items-end sm:space-x-4">
+          <div className="flex flex-col w-full space-y-2 sm:space-y-0 sm:flex-row sm:items-end sm:space-x-4">
             <div className="w-full sm:w-1/2 md:w-4/12">
-              <Select
-                label="Subject"
-                labelTheme="primary"
-                onChange={handleOnSelect}
-              >
+              <Select onSelect={handleOnSelect}>
                 {helpOptions.map(option => (
-                  <option
+                  <Select.Option
                     key={option.key}
-                    value={option.key}
-                    selected={supportType === option.key}
-                  >
-                    {option.label}
-                  </option>
+                    id={option.key}
+                    value={option.label}
+                  />
                 ))}
               </Select>
             </div>
             <div className="flex-grow">
               {supportType === SupportRequestType.GENERAL && (
                 <Input
-                  placeholder="What's your request?"
+                  label="What's your request?"
                   value={subject}
                   onValueChange={setSubject}
                   maxLength={80}
@@ -230,7 +222,7 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
 
               {supportType === SupportRequestType.ORDER && (
                 <Input
-                  placeholder="Order #"
+                  label="Order #"
                   value={subject}
                   onValueChange={setSubject}
                   maxLength={80}
@@ -239,7 +231,7 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
 
               {supportType === SupportRequestType.FEATURE_REQUEST && (
                 <Input
-                  placeholder="What would you like to see?"
+                  label="What would you like to see?"
                   value={subject}
                   onValueChange={setSubject}
                   maxLength={80}
@@ -248,7 +240,7 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
 
               {supportType === SupportRequestType.BUG && (
                 <Input
-                  placeholder="What was the bug?"
+                  label="What was the bug?"
                   value={subject}
                   onValueChange={setSubject}
                   maxLength={80}
@@ -257,7 +249,7 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
 
               {supportType === SupportRequestType.OTHER && (
                 <Input
-                  placeholder="Please explain your issue"
+                  label="Please explain your issue"
                   value={subject}
                   onValueChange={setSubject}
                 />
@@ -275,7 +267,7 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
 
           <div className="flex items-center space-x-4">
             <Button
-              color="primary"
+              disabled={!subject?.length || !message?.length}
               wide={isMobile || isTablet}
               onClick={submit}
             >

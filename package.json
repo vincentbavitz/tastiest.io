@@ -13,7 +13,7 @@
     "lint:fix": "npm run lint -- --fix",
     "test": "clear && jest",
     "build-assets": "npm run convert-svg",
-    "convert-svg": "rm -r ./public/assets/*/*.tsx && svgr --typescript -d ./public/assets/article ./public/assets/article && svgr --typescript -d ./public/assets/page ./public/assets/page && svgr --typescript -d ./public/assets/illustrations ./public/assets/illustrations && svgr --typescript -d ./public/assets/ui ./public/assets/ui && yarn convert-cuisine-page-svg",
+    "convert-svg": "rm -r ./public/assets/*/*.tsx && svgr --typescript -d ./public/assets/article ./public/assets/article && svgr --typescript -d ./public/assets/page ./public/assets/page && svgr --typescript -d ./public/assets/illustrations ./public/assets/illustrations && svgr --typescript -d ./public/assets/ui ./public/assets/ui",
     "convert-cuisine-page-svg": "for f in ./public/assets/cuisine-pages/*.svg; do svgr --no-svgo --typescript $f > $f.tsx; done;"
   },
   "dependencies": {
