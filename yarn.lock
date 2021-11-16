@@ -1947,10 +1947,10 @@
     react-popper "^2.2.5"
     uuid "^8.3.2"
 
-"@tastiest-io/tastiest-utils@^1.12.0":
-  version "1.12.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.12.0/330e3ec753a5ed962e5fe5f29b02e06398873d97116dc12954c82b1c1d8ec765#01a1571b3d5f06e23c58a283a3f300a4cc9de05a"
-  integrity sha512-1uWGt7hHYkiBUH80W4Qlih5o78ARF8Xkk1CQjOqOk0759xWaviKB4JGFWdacsa8vjRmzKV57DAiq0IrOscEGMQ==
+"@tastiest-io/tastiest-utils@^1.20.0":
+  version "1.20.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.20.0/e2e3a749b25118ef3246109ff866770fa5ecd6890253ec7b74b6ee76364c9fa6#bcfcca3f4d921ccf4d688077f70e0589b3bccb09"
+  integrity sha512-q/b20KpT5Xnw6O8hNbXrIg3gsS3sTd+NZeLkecbJJwCvyBRhIo7ocRmJ8qbkrTrIx6uafaoWezC8AoebndTaFQ==
   dependencies:
     "@contentful/rich-text-types" "^14.1.2"
     "@shopify/shopify-api" "^1.4.0"

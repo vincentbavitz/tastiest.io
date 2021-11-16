@@ -10,7 +10,7 @@ const TITLE_MAX_WIDTH_DESKTOP_REM = 20;
 const TITLE_MAX_WIDTH_HUGE_REM = 26;
 
 export function ArticleSectionTitle(props: IPost) {
-  const { title, titleDivider: svg, restaurant } = props;
+  const { title, restaurant } = props;
   const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
 
   const MAX_TITLE_WIDTH = React.useMemo(

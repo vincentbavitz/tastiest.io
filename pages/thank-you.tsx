@@ -115,7 +115,7 @@ export const getServerSideProps = async context => {
 
   const assets = {
     restaurantHero: post.restaurant.heroIllustration,
-    dish: post.offerDivider ?? post.abstractDivider,
+    dish: post.plate,
   };
 
   return {

@@ -29,20 +29,11 @@ export function ArticleSectionContent(post: IPost) {
       <div className="flex flex-col pb-10 space-y-6">
         <RichBody body={post.body} />
 
-        {/* <AuxiliaryDivider url={post?.offerDivider?.url} /> */}
         {/* <ArticleSectionNeedToKnow body={post.needToKnow} /> */}
       </div>
     </div>
   );
 }
-
-const AuxiliaryDivider = ({ url }: { url: string }) => (
-  <div className="flex items-center justify-center h-24 pt-6 pb-10 -mt-20 space-x-10 xl:h-56 xl:-mt-32">
-    <div className="flex-1 border-b-2 border-secondary"></div>
-    <img src={url} className="h-20" />
-    <div className="flex-1 border-b-2 border-secondary"></div>
-  </div>
-);
 
 const CovidAwareBadge = () => {
   const height = 1.75; // in rem
