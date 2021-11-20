@@ -4,8 +4,7 @@ function SvgHomeInformationLove(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={276.02}
-      height={174.99}
+      viewBox="0 0 276.02 174.99"
       {...props}
     >
       <defs>

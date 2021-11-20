@@ -27,6 +27,8 @@ const useShareArticle = (
     [],
   );
 
+  const hasNativeSharing = navigator?.share;
+
   // Expand to the format: https://tastiest.io/path/to/format
   const tastiestUrl = useMemo(() => {
     const baseUrl = getBaseUrl();
@@ -99,6 +101,7 @@ const useShareArticle = (
     shareToTwitter,
     shareToWhatsApp,
     shareToReddit,
+    hasNativeSharing,
   };
 };
 

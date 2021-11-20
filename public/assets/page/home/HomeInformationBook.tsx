@@ -4,8 +4,7 @@ function SvgHomeInformationBook(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={181.36}
-      height={131.31}
+      viewBox="0 0 181.36 131.31"
       {...props}
     >
       <defs>

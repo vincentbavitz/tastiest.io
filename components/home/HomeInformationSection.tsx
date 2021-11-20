@@ -19,7 +19,7 @@ export default function HomeInformationSection() {
       <SectionTitle>Why book with Tastiest?</SectionTitle>
 
       <div className="flex flex-col py-6 space-y-6">
-        <div className="bg-gray-200 h-64 w-full inline-block"></div>
+        {/* <div className="bg-gray-200 h-64 w-full inline-block"></div> */}
 
         <div
           className={clsx(
@@ -60,7 +60,9 @@ const InformationBlock: FC<InformationBlockProps> = props => {
         <Illustration className="h-full w-full object-contain" />
       </div>
 
-      <div className="pt-2 font-medium flex justify-center">{children}</div>
+      <div className="pt-2 text-center leading-none font-medium flex justify-center">
+        {children}
+      </div>
     </div>
   );
 };

@@ -76,14 +76,17 @@ export function AbstractExperienceCard(props: Props): JSX.Element {
       <div
         ref={contentRef}
         className={classNames(
-          'relative overflow-hidden bg-gray-100 filter drop-shadow-xl no-underline',
+          'relative bg-gray-100 filter drop-shadow-xl no-underline',
           isSmall || compact ? 'rounded-md' : 'rounded-xl',
         )}
         style={{ maxWidth: '350px' }}
       >
         <div
           style={{ paddingBottom: '60%' }}
-          className="relative w-full h-0 overflow-hidden bg-white bg-opacity-25"
+          className={clsx(
+            'relative w-full h-0 overflow-hidden bg-white bg-opacity-25',
+            isSmall || compact ? 'rounded-t-md' : 'rounded-t-xl',
+          )}
         >
           {/* {deal.dynamicImage.url && (
             <div className="absolute inset-0 z-10 pointer-events-none">

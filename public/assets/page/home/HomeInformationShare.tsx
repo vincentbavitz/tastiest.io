@@ -4,8 +4,7 @@ function SvgHomeInformationShare(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={204.21}
-      height={221.44}
+      viewBox="0 0 204.21 221.44"
       {...props}
     >
       <defs>

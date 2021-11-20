@@ -56,7 +56,7 @@ function MobileHeader(props: HeaderProps) {
       <div className="relative flex items-center justify-between w-full h-full">
         <Link href="/">
           <a className="flex items-center flex-shrink-0 no-underline">
-            <TastiestBrand theme={theme} size={8} />
+            <TastiestBrand type="full" theme={theme} size={8} />
           </a>
         </Link>
 
