@@ -98,7 +98,7 @@ const DesktopFooter = () => (
   <div className="flex flex-col my-6 space-y-10">
     <div className="flex justify-between w-full">
       <FooterColumn title="Quick Links">
-        <div className="grid grid-cols-2 text-sm font-normal leading-tight children:pr-4 children:pb-2">
+        <div className="grid grid-cols-2 gap-3 text-sm font-normal leading-tight">
           <QuickLinksBlock flat />
         </div>
       </FooterColumn>
@@ -229,41 +229,41 @@ const SocialsBlock = () => (
 
 const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
   <>
-    <p>
+    <span>
       <a href="https://restaurants.tastiest.io">
         Tastiest For {!flat && <br />} Restaurants
       </a>
-    </p>
+    </span>
     {/* <p>
       <Link href="/how-it-works">
         <a>How It Works</a>
       </Link>
     </p> */}
-    <p>
+    <span>
       <Link href="/privacy">
         <a>Privacy & Cookies</a>
       </Link>
-    </p>
-    <p>
+    </span>
+    <span>
       <Link href="/terms-of-use">
         <a>Terms of Use</a>
       </Link>
-    </p>
-    <p>
+    </span>
+    <span>
       <Link href="/terms-of-sale">
         <a>Terms of Sale</a>
       </Link>
-    </p>
-    <p>
+    </span>
+    <span>
       <Link href="https://affiliate-program.tastiest.io/influencers">
         <a>Influencers Program</a>
       </Link>
-    </p>
-    <p>
+    </span>
+    <span>
       <Link href="https://affiliate-program.tastiest.io/">
         <a>Affiliate Program</a>
       </Link>
-    </p>
+    </span>
   </>
 );
 

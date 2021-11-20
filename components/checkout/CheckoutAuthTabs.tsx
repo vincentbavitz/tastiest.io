@@ -1,24 +1,31 @@
 import TabbedContent from 'components/TabbedContent';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  CheckoutSignInTabSelected,
-  setSignInTabSelected,
-} from 'state/checkout';
-import { IState } from 'state/reducers';
+import React, { useContext, useState } from 'react';
 import { CheckoutSignIn } from './CheckoutSignIn';
 import { CheckoutSignUp } from './CheckoutSignUp';
 
+export enum CheckoutSignInTabSelected {
+  HAS_ACCOUNT = 'HAS_ACCOUNT',
+  NEW_USER = 'NEW_USER',
+}
+
+export const AuthTabsContext = React.createContext(undefined);
+export const AuthTabsProvider = ({ children }) => {
+  const [tab, setTab] = useState(CheckoutSignInTabSelected.NEW_USER);
+
+  return (
+    <AuthTabsContext.Provider value={{ tab, setTab }}>
+      {children}
+    </AuthTabsContext.Provider>
+  );
+};
+
 export function CheckoutAuthTabs() {
-  const dispatch = useDispatch();
-  const { signInTabSelected } = useSelector((state: IState) => state.checkout);
+  const { tab, setTab } = useContext(AuthTabsContext);
 
   return (
     <TabbedContent
-      manualSelected={signInTabSelected}
-      setManualSelected={value =>
-        dispatch(setSignInTabSelected(value as CheckoutSignInTabSelected))
-      }
+      manualSelected={tab}
+      setManualSelected={value => setTab(value as CheckoutSignInTabSelected)}
     >
       {[
         {

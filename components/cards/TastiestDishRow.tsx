@@ -7,7 +7,7 @@ import { useHoverDirty } from 'react-use';
 import { generateStaticURL } from 'utils/routing';
 
 export default function TastiestDishRow(props: ITastiestDish) {
-  const { name, image, dynamicImage, restaurant } = props;
+  const { name, description, image, dynamicImage, restaurant } = props;
 
   const ref = useRef(null);
   const isHovering = useHoverDirty(ref);
@@ -23,13 +23,12 @@ export default function TastiestDishRow(props: ITastiestDish) {
   );
 
   return (
-    // <Link href={href} as={as}>
-    //   <a className="no-underline w-full">
     <div ref={ref} style={{ minWidth: '200px' }} className="relative w-full">
       <div className="relative w-full">
         <div
+          style={{ height: '20rem' }}
           className={clsx(
-            'relative transform duration-300 aspect-h-6 aspect-w-4 rounded-t-lg w-full overflow-hidden',
+            'relative transform duration-300 rounded-t-lg h-full w-full overflow-hidden',
           )}
         >
           {/* Image underlay */}
@@ -57,7 +56,7 @@ export default function TastiestDishRow(props: ITastiestDish) {
               fontSize: '1.0rem',
               lineHeight: '1em',
             }}
-            className="transform scale-y-125 font-bold text-center text-2xl text-light"
+            className="transform scale-y-125 font-bold text-center text-2xl text-light select-none"
           >
             {name.toUpperCase()}
           </h4>
@@ -71,12 +70,9 @@ export default function TastiestDishRow(props: ITastiestDish) {
 
       <div className="relative pb-4 px-4 w-full bg-gradient-to-tr from-primary via-dark to-dark rounded-b-lg">
         <p className="leading-4 opacity-75 text-light text-center text-sm">
-          The most delicious dish you will ever experience. Nothing will ever
-          come close.
+          {description}
         </p>
       </div>
     </div>
-    //   </a>
-    // </Link>
   );
 }

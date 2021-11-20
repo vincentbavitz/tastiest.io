@@ -80,16 +80,21 @@ const OrderNowOverlay = ({
     >
       <OverlayInnerHeader onClose={onClose} />
 
-      <div className="flex-grow overflow-auto">
+      <div className="relative flex-grow overflow-hidden mt-4 mb-4">
         <OverlayInnerCard deal={deal} slug={slug} />
       </div>
 
-      <ExperienceOrderPanelInner
-        layout="overlay"
-        posts={posts}
-        deal={deal}
-        slug={slug}
-      />
+      <div
+        className="pt-6"
+        style={{ boxShadow: 'inset 0px 15px 15px -15px rgba(0,0,0,0.08)' }}
+      >
+        <ExperienceOrderPanelInner
+          layout="overlay"
+          posts={posts}
+          deal={deal}
+          slug={slug}
+        />
+      </div>
     </div>
   );
 };
@@ -101,14 +106,15 @@ interface OverlayInnerCardProps {
 
 const OverlayInnerCard = ({ deal, slug }: OverlayInnerCardProps) => {
   return (
-    <div className="flex justify-center w-full py-6">
+    <div className="flex justify-center w-full">
       <div
-        style={{ width: '16rem' }}
-        className="pb-4 mx-4 overflow-hidden text-lg bg-secondary-1 rounded-xl"
+        style={{ width: '100%', maxHeight: '15rem', maxWidth: '33rem' }}
+        className="relative rounded-lg bg-transparent px-4 overflow-hidden"
       >
-        <div className="aspect-w-16 aspect-h-9">
-          <img src={`${deal?.image?.url}?w=700`} className="object-cover" />
-        </div>
+        <img
+          src={`${deal?.image?.url}?w=700`}
+          className="h-full w-full rounded-lg object-cover"
+        />
       </div>
     </div>
   );
@@ -123,8 +129,8 @@ const OverlayInnerHeader = ({ onClose }: OverlayInnerHeaderProps) => {
     <Contained>
       <div className="flex items-center justify-between py-2">
         <div className="w-6"></div>
-        <h3 className="text-3xl text-center font-primary text-primary">
-          Get the offer!
+        <h3 className="text-2xl font-medium text-center text-primary">
+          Get the offer
         </h3>
         <ExitIcon
           onClick={onClose}

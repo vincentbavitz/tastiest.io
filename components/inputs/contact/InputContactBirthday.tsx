@@ -65,3 +65,61 @@ export function InputContactBirthday(props: Props) {
     />
   );
 }
+
+// const DatePickerWrapper = styled.div`
+//   --rs-text-primary: ${tailwindConfig.theme.extend.colors.dark};
+//   --rs-picker-value: ${tailwindConfig.theme.extend.colors.secondary};
+//   --rs-border-primary: ${tailwindConfig.theme.extend.colors.secondary};
+//   --rs-input-focus-border: ${tailwindConfig.theme.extend.colors.secondary};
+//   --rs-bg-active: ${tailwindConfig.theme.extend.colors.secondary};
+
+//   position: relative;
+//   width: 100%;
+
+//   div[role='combobox'] {
+//     border-radius: 0.25rem;
+//   }
+// `;
+
+// export function InputContactBirthday(props: Props) {
+//   const { date } = props;
+
+//   const defaultValue = DateTime.now()
+//     .set({
+//       year: Number(date?.year ?? 2000),
+//       month: Number(date?.month ?? 1),
+//       day: Number(date?.day ?? 1),
+//     })
+//     .toJSDate();
+
+//   const disabledFn = (date: Date) => {
+//     const earliestDate = DateTime.now()
+//       .minus({
+//         years: 90,
+//       })
+//       .toJSDate();
+
+//     const latestDate = DateTime.now()
+//       .minus({
+//         years: 10,
+//       })
+//       .toJSDate();
+
+//     return isBefore(date, earliestDate) || isAfter(date, latestDate);
+//   };
+
+//   return (
+//     <DatePickerWrapper>
+//       <DatePicker
+//         oneTap
+//         defaultValue={defaultValue}
+//         calendarDefaultDate={defaultValue}
+//         defaultOpen={true}
+//         disabledDate={disabledFn}
+//         format="dd MMM yyyy"
+//         placeholder="DD MMM YYYY"
+//         ranges={[]}
+//       />
+//     </DatePickerWrapper>
+//   );
+// }

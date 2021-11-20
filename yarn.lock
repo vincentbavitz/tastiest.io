@@ -1933,10 +1933,10 @@
     "@tastiest-io/tastiest-icons" "^0.28.0"
     react-popper "^2.2.5"
 
-"@tastiest-io/tastiest-ui@^0.26.0":
-  version "0.26.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-ui/0.26.0/f2824f923b6ce8b7b181272b3720b83ca3debd265e31ff2fad6c9d2e241960ff#447714e17b3f9f8bdf49f7c22ff4a81932dd86f3"
-  integrity sha512-YtIYz3ytMpm926/qFQ1/gpzYPR3MgPgQxVy1AjYMrrFIWnEAz8kOaOue1OjOgdee3HoR45a41pPKaIepiUmC1Q==
+"@tastiest-io/tastiest-ui@^0.27.0":
+  version "0.27.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-ui/0.27.0/9a66e94cb898619dece283cc2e0e6e25b0c5a62ecccd1186384e068177d92f0f#e98f422c3007d60221dd70d1b94ac8445572651f"
+  integrity sha512-sXH8APn+k7LQ/FLi6sf+aegXFz7UDc3aBBoHDCD3i464y24U6wHlHecYo5ZX1zzNtGnF6VidqYlES+Q7AH3x0A==
   dependencies:
     "@headlessui/react" "^1.4.1"
     "@nivo/core" "^0.74.0"
@@ -1947,10 +1947,10 @@
     react-popper "^2.2.5"
     uuid "^8.3.2"
 
-"@tastiest-io/tastiest-utils@^1.20.0":
-  version "1.20.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.20.0/e2e3a749b25118ef3246109ff866770fa5ecd6890253ec7b74b6ee76364c9fa6#bcfcca3f4d921ccf4d688077f70e0589b3bccb09"
-  integrity sha512-q/b20KpT5Xnw6O8hNbXrIg3gsS3sTd+NZeLkecbJJwCvyBRhIo7ocRmJ8qbkrTrIx6uafaoWezC8AoebndTaFQ==
+"@tastiest-io/tastiest-utils@^1.21.0":
+  version "1.21.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.21.0/4d6baeb0271faf99fdfb94da4688c63bd77ca685c874d2dc1cabcb06cec4a938#e4e791187482af9ac2f7b2708bc4d4c3640bf42e"
+  integrity sha512-iZVXipbWgfRuLf1UokhT2OByKImbB5Se4zZYAu1tGEf5xeiaYkFeo7+FQvtAhE44mwqqfUB5w5foiwNIycXjPw==
   dependencies:
     "@contentful/rich-text-types" "^14.1.2"
     "@shopify/shopify-api" "^1.4.0"
@@ -5122,6 +5122,11 @@ date-fns@^2.13.0:
   version "2.25.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.25.0.tgz#8c5c8f1d958be3809a9a03f4b742eba894fc5680"
   integrity sha512-ovYRFnTrbGPD4nqaEqescPEv1mNwvt+UTqI3Ay9SzNtey9NZnYu6E2qCcBBgJ6/2VF1zGGygpyTDITqpQQ5e+w==
+
+date-fns@^2.26.0:
+  version "2.26.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.26.0.tgz#fa45305543c392c4f914e50775fd2a4461e60fbd"
+  integrity sha512-VQI812dRi3cusdY/fhoBKvc6l2W8BPWU1FNVnFH9Nttjx4AFBRzfSVb/Eyc7jBT6e9sg1XtAGsYpBQ6c/jygbg==
 
 debounce-promise@^3.1.0:
   version "3.1.2"

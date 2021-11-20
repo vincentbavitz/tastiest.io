@@ -5,8 +5,8 @@ import classNames from 'classnames';
 import clsx from 'clsx';
 import LineLimit from 'components/text/LineLimit';
 import Link from 'next/link';
-import React, { useEffect, useMemo, useRef } from 'react';
-import { useHoverDirty, useMeasure, useVideo } from 'react-use';
+import React, { useMemo, useRef } from 'react';
+import { useMeasure } from 'react-use';
 import { generateStaticURL } from 'utils/routing';
 
 interface Props extends IPost {
@@ -53,23 +53,23 @@ export function AbstractExperienceCard(props: Props): JSX.Element {
     [],
   );
 
-  const isHovering = useHoverDirty(ref);
-  useEffect(() => {
-    if (isHovering) {
-      controls.play();
-    } else {
-      controls.pause();
-    }
-  }, [isHovering]);
+  // const isHovering = useHoverDirty(ref);
+  // useEffect(() => {
+  //   if (isHovering) {
+  //     controls.play();
+  //   } else {
+  //     controls.pause();
+  //   }
+  // }, [isHovering]);
 
-  const [video, , controls] = useVideo(
-    <video
-      loop
-      playsInline // prevent fullscreen on iOS
-      src={deal?.dynamicImage?.url}
-      className="object-cover w-full h-full"
-    />,
-  );
+  // const [video, , controls] = useVideo(
+  //   <video
+  //     loop
+  //     playsInline // prevent fullscreen on iOS
+  //     src={deal?.dynamicImage?.url}
+  //     className="object-cover w-full h-full"
+  //   />,
+  // );
 
   return (
     <div ref={ref}>

@@ -1,14 +1,17 @@
+import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
 import { HamburgerIcon } from '@tastiest-io/tastiest-icons';
-import { TastiestBrand } from '@tastiest-io/tastiest-ui';
+import { Dropdown, TastiestBrand } from '@tastiest-io/tastiest-ui';
 import clsx from 'clsx';
+import { UserAvatar } from 'components/avatar/UserAvatar';
+import { useAuth } from 'hooks/auth/useAuth';
+import { useSignOut } from 'hooks/auth/useSignOut';
 import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useToggle } from 'react-use';
 import { UI } from '../../constants';
-import { expandSearchOverlay } from '../../state/navigation';
+import { openAuthModal } from '../../state/navigation';
 import { IState } from '../../state/reducers';
 import { Contained } from '../Contained';
 import { HeaderAvatar } from './HeaderAvatar';
@@ -24,16 +27,17 @@ export function Header(props: HeaderProps) {
 }
 
 function MobileHeader(props: HeaderProps) {
+  const { isSignedIn } = useAuth();
+  const { signOut } = useSignOut();
+
   const { transparency = 'none', theme = 'light' } = props;
   const dispatch = useDispatch();
 
-  const handleExpandSearch = (e: React.MouseEvent) => {
-    // Timeout to prevent action immediately firing on the elemnt under with onMouseUp
-    setTimeout(() => dispatch(expandSearchOverlay()), 50);
-    e.stopPropagation();
-  };
-
-  const [isMobileMenuOpen, toggleIsMobileMenuOpen] = useToggle(false);
+  // const handleExpandSearch = (e: React.MouseEvent) => {
+  //   // Timeout to prevent action immediately firing on the elemnt under with onMouseUp
+  //   setTimeout(() => dispatch(expandSearchOverlay()), 50);
+  //   e.stopPropagation();
+  // };
 
   // Prevent clicking when things are loading
   const { isPageLoading } = usePageLoader();
@@ -60,31 +64,44 @@ function MobileHeader(props: HeaderProps) {
           </a>
         </Link>
 
-        <HamburgerIcon
-          onClick={() => toggleIsMobileMenuOpen()}
-          className={clsx(
-            'h-8 cursor-pointer fill-current duration-500',
-            theme === 'light' ? 'text-primary' : 'text-light',
-          )}
-        />
-      </div>
+        <Dropdown offset={30}>
+          <Dropdown.Trigger>
+            <HamburgerIcon
+              className={clsx(
+                'h-8 cursor-pointer fill-current duration-500',
+                theme === 'light' ? 'text-primary' : 'text-light',
+              )}
+            />
+          </Dropdown.Trigger>
 
-      {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen ? (
-        <div
-          style={{
-            top: `${UI.HEADER_HEIGHT_MOBILE_REM}rem`,
-            zIndex: UI.Z_INDEX_HEADER,
-            paddingLeft: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
-            paddingRight: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
-          }}
-          className="fixed left-0 right-0 flex flex-col py-3 space-y-3 bg-gray-100 shadow-lg"
-        >
-          <div className="flex items-center space-x-2">
-            <span>Profile</span>
-          </div>
-        </div>
-      ) : null}
+          <Dropdown.Item
+            display={isSignedIn}
+            href="/account/preferences"
+            icon={<SettingOutlined />}
+          >
+            Preferences
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            display={isSignedIn}
+            icon={<LogoutOutlined />}
+            onClick={() => {
+              signOut();
+            }}
+          >
+            Sign out
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            display={!isSignedIn}
+            onClick={() => dispatch(openAuthModal())}
+          >
+            <div className="flex items-center gap-4">
+              <UserAvatar /> Sign in
+            </div>
+          </Dropdown.Item>
+        </Dropdown>
+      </div>
     </div>
   );
 }

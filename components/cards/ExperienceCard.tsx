@@ -29,8 +29,8 @@ export function ExperienceCard(props: Props): JSX.Element {
 
   const ref = useRef(null);
   const [contentRef, { width }] = useMeasure();
-  const shouldStackButtons = width < 250;
-  const isSmall = width < 170;
+  const shouldStackButtons = useMemo(() => width < 250, [width]);
+  const isSmall = useMemo(() => width < 170, [width]);
 
   dlog('ArticleCard ➡️ width:', width);
 

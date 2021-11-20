@@ -14,6 +14,7 @@ import {
   IDateObject,
   IOrder,
   TastiestPaymentError,
+  titleCase,
   UserData,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
@@ -222,7 +223,7 @@ export function CheckoutStepPayment(props: Props) {
               name="firstName"
               size="large"
               label="First Name"
-              defaultValue={userData?.details?.firstName}
+              defaultValue={titleCase(userData?.details?.firstName)}
               control={control}
               disabled={isPaymentProcessing}
             />

@@ -4,22 +4,18 @@ import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
 import { AuthError, AuthErrorCode, AuthErrorMessageMap } from 'contexts/auth';
 import { useRegister } from 'hooks/auth/useRegister';
 import { useScreenSize } from 'hooks/useScreenSize';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useContext, useEffect, useState } from 'react';
 import { useToggle } from 'react-use';
-import {
-  CheckoutSignInTabSelected,
-  setSignInTabSelected,
-} from 'state/checkout';
 import { InputEmail } from '../inputs/InputEmail';
 import { InputPassword } from '../inputs/InputPassword';
 import { SignInTosInfo } from '../SignInTosInfo';
+import { AuthTabsContext, CheckoutSignInTabSelected } from './CheckoutAuthTabs';
 
 export function CheckoutSignUp() {
   const { register, error: fetchError, submitting } = useRegister();
 
   const { isDesktop } = useScreenSize();
-  const dispatch = useDispatch();
+  const { setTab } = useContext(AuthTabsContext);
 
   const [signUpName, setSignUpName] = useState('');
   const [signUpEmail, setSignUpEmail] = useState('');
@@ -63,7 +59,6 @@ export function CheckoutSignUp() {
   return (
     <>
       <Input
-        size="large"
         type="text"
         label="First Name"
         prefix={<UserIcon className="w-8 h-6 fill-current text-primary" />}
@@ -82,7 +77,7 @@ export function CheckoutSignUp() {
         onValueChange={value => setSignUpPassword0(cleanupInputValue(value))}
       />
       <InputPassword
-        placeholder="Re-type password"
+        label="Re-type password"
         show={showPassword}
         toggleShow={toggleShowPassword}
         value={signUpPassword1}
@@ -100,11 +95,7 @@ export function CheckoutSignUp() {
           Already have an account?
           <a
             className="ml-1 font-semibold cursor-pointer"
-            onClick={() =>
-              dispatch(
-                setSignInTabSelected(CheckoutSignInTabSelected.HAS_ACCOUNT),
-              )
-            }
+            onClick={() => setTab(CheckoutSignInTabSelected.HAS_ACCOUNT)}
           >
             Sign in
           </a>
@@ -131,15 +122,6 @@ export function CheckoutSignUp() {
       >
         Sign up to Proceed to Checkout
       </Button>
-
-      {error && (
-        <div className="mb-1 -mt-1 text-sm text-center text-red-700">
-          {
-            AuthErrorMessageMap[((error as unknown) as AuthError).code]
-              ?.userFacingMessage
-          }
-        </div>
-      )}
     </>
   );
 }

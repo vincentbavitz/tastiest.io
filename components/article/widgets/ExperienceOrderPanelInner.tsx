@@ -152,7 +152,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
     const chevronSize = (layout === 'overlay' ? 8 : 6) as 6 | 8;
     const selectItemSize =
       layout === 'overlay'
-        ? 'large'
+        ? 'medium'
         : ('small' as 'small' | 'medium' | 'large');
 
     const experienceSelectSize = (layout === 'overlay' ? 'large' : 'medium') as
@@ -202,10 +202,24 @@ export default function ExperienceOrderPanelInner(props: Props) {
               });
 
               return (
-                <XScrollSelectItem key={key} selected={selected} link={link}>
+                <XScrollSelectItem
+                  key={key}
+                  selected={selected}
+                  link={link}
+                  size={sizes.selectItemSize}
+                >
                   <h4
-                    style={{ minWidth: '6rem', maxWidth: '7rem' }}
-                    className="text-xs whitespace-pre-wrap"
+                    style={{
+                      minWidth:
+                        sizes.selectItemSize === 'large' ? '7rem' : '6rem',
+                      maxWidth: '7rem',
+                    }}
+                    className={clsx(
+                      sizes.selectItemSize === 'large'
+                        ? 'text-base leading-4'
+                        : 'text-xs leading-3',
+                      'whitespace-pre-wrap',
+                    )}
                   >
                     {_post.deal.name}
                   </h4>
@@ -311,11 +325,15 @@ export default function ExperienceOrderPanelInner(props: Props) {
         {/* Overlay bottom-button */}
         {layout === 'overlay' ? (
           <button
+            disabled={!selectedTime || !selectedDay}
             onClick={toCheckout}
             className={clsx(
               'flex justify-center items-center h-14 w-full',
               'text-lg font-medium tracking-wide text-light',
-              'bg-primary hover:bg-secondary duration-300 outline-none',
+              'bg-primary duration-300 outline-none',
+              !selectedTime || !selectedDay
+                ? 'filter brightness-90'
+                : 'hover:bg-secondary',
             )}
           >
             {submitting ? (

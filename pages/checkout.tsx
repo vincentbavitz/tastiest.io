@@ -9,6 +9,7 @@ import {
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
+import { AuthTabsProvider } from 'components/checkout/CheckoutAuthTabs';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useOrder } from 'hooks/checkout/useOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -209,7 +210,9 @@ function Checkout(
             ) : (
               <>
                 {step === CheckoutStep.SIGN_IN && (
-                  <CheckoutStepAuth order={order} />
+                  <AuthTabsProvider>
+                    <CheckoutStepAuth order={order} />
+                  </AuthTabsProvider>
                 )}
                 {step === CheckoutStep.PAYMENT && (
                   <CheckoutStepPayment userId={user.uid} order={order} />

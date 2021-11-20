@@ -17,7 +17,7 @@ export default function LineLimit(props: Props) {
   // prettier-ignore
   const lineHeight = 
     fit === 'tight' ? 1.1 :
-    fit === 'compact' ? 1.2 :
+    fit === 'compact' ? 1.25 :
     fit === 'normal' ? 1.33 :
     fit === 'relaxed' ? 1.45 :
     fit === 'loose' ? 1.55 :

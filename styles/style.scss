@@ -6,10 +6,10 @@
 @tailwind components;
 
 a {
-  @apply cursor-pointer;
+  @apply cursor-pointer hover:underline hover:text-secondary;
 
-  &:not(.no-underline):hover {
-    @apply underline;
+  &.no-underline {
+    text-decoration: none !important;
   }
 }
 
@@ -24,7 +24,7 @@ ul:not([role="listbox"]) {
     }
   }
 
-  li::before {
+  li:not(.rs-carousel-label-wrapper)::before {
     content: "\2022";
     @apply text-primary font-bold inline-block w-4;
   }
@@ -127,4 +127,3 @@ body {
   -webkit-appearance: none;
   -webkit-border-radius: 0px;
 }
-

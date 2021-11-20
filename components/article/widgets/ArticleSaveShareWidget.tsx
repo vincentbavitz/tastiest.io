@@ -67,13 +67,13 @@ export function ArticleSaveShareWidget(props: IPost) {
                 />
               </div>
 
-              <div className="flex-grow">
+              <div style={{ minWidth: '6rem' }} className="flex-grow">
                 <Button
                   wide
                   color={copied ? 'success' : 'secondary'}
                   onClick={handleCopyToClipboard}
                 >
-                  <span className="w-16">{copied ? 'Copied' : 'Copy'}</span>
+                  {copied ? 'Copied' : 'Copy'}
                 </Button>
               </div>
             </div>

@@ -27,7 +27,10 @@ const useShareArticle = (
     [],
   );
 
-  const hasNativeSharing = navigator?.share;
+  const hasNativeSharing = useMemo(
+    () => typeof navigator !== 'undefined' && navigator?.share,
+    [typeof navigator],
+  );
 
   // Expand to the format: https://tastiest.io/path/to/format
   const tastiestUrl = useMemo(() => {
