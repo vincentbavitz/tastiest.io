@@ -32,9 +32,6 @@ export const navigationReducer = (
     case NavigationActions.CLOSE_SIGN_IN_MODAL: {
       return { ...state, isAuthModalOpen: false };
     }
-    case NavigationActions.SET_MODAL_IS_OPEN: {
-      return { ...state, modalIsOpen: action.payload };
-    }
     case NavigationActions.TOGGLE_OFFER_MENU_MODAL: {
       return { ...state, isOfferMenuOpen: action.payload };
     }

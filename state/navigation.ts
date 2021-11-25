@@ -75,11 +75,6 @@ export const closeAuthModal = () => ({
   type: NavigationActions.CLOSE_SIGN_IN_MODAL,
 });
 
-export const setCurrentOpenModal = (isOpen: boolean) => ({
-  type: NavigationActions.SET_MODAL_IS_OPEN,
-  payload: isOpen,
-});
-
 export const toggleOfferMenu = (isOpen: boolean) => ({
   type: NavigationActions.TOGGLE_OFFER_MENU_MODAL,
   payload: isOpen,

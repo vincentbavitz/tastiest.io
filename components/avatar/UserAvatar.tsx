@@ -1,7 +1,7 @@
+import { Avatar, AvatarProps } from '@tastiest-io/tastiest-ui';
 import { useUserData } from 'hooks/useUserData';
 import React from 'react';
 import { useAuth } from '../../hooks/auth/useAuth';
-import { Avatar, AvatarProps } from './Avatar';
 
 export function UserAvatar(props: Omit<AvatarProps, 'imageSrc'>) {
   const { user } = useAuth();
@@ -10,5 +10,5 @@ export function UserAvatar(props: Omit<AvatarProps, 'imageSrc'>) {
   const firstWord = userData?.details?.firstName;
   const initial = firstWord?.[0]?.toUpperCase();
 
-  return <Avatar {...props} initial={initial}></Avatar>;
+  return <Avatar {...props} initial={initial} />;
 }

@@ -1921,10 +1921,10 @@
   resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.28.0/f0df6da3cc0ac9aa8bf955aae481f263cf2fc22458b1c1e1fb0ead12856ba1ca#dacf6710ea830ff82f1547fc3e02c57e16299e8f"
   integrity sha512-b5oF17xayTZmTsAJDkdRuMXB6RqSaNs0iPKoBymOstOp2xSTIWu/hzN0nlEcGkwu8you86NtlWVYhi0ihFi59w==
 
-"@tastiest-io/tastiest-ui@^0.15.0":
-  version "0.15.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-ui/0.15.0/3c67daf21917ee49c2dbc9ea499e1d1a182ffc24f4a580273e7d0c1cfcd72cb1#0cdcb1a855d485810566203b98e6dd77ae0b2550"
-  integrity sha512-BPpsrnfApR0O3Rg/lY+oFEm/dV5meUgiOfPOWmMC87KaAOaxl1EapJpjNFZungWRNbCAMlvok0GRtuY5kKgPGQ==
+"@tastiest-io/tastiest-ui@^0.36.0":
+  version "0.36.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-ui/0.36.0/5fac6cc66a284187d00ab19cf97b09b8a65521fddc8ae469bd952095f4d0b2aa#62f10e67ad6ccf1fa5ae593d220deec35527c17c"
+  integrity sha512-ZICuqdENtwDRBjgFYv5QHUrQvak8rbjL3fW7pq74s7z1jCH4ibTkyKFwB/FIn2cbjEA2chIJYjdmb1NWImKqqQ==
   dependencies:
     "@headlessui/react" "^1.4.1"
     "@nivo/core" "^0.74.0"
@@ -1932,19 +1932,7 @@
     "@popperjs/core" "^2.10.2"
     "@tastiest-io/tastiest-icons" "^0.28.0"
     react-popper "^2.2.5"
-
-"@tastiest-io/tastiest-ui@^0.27.0":
-  version "0.27.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-ui/0.27.0/9a66e94cb898619dece283cc2e0e6e25b0c5a62ecccd1186384e068177d92f0f#e98f422c3007d60221dd70d1b94ac8445572651f"
-  integrity sha512-sXH8APn+k7LQ/FLi6sf+aegXFz7UDc3aBBoHDCD3i464y24U6wHlHecYo5ZX1zzNtGnF6VidqYlES+Q7AH3x0A==
-  dependencies:
-    "@headlessui/react" "^1.4.1"
-    "@nivo/core" "^0.74.0"
-    "@nivo/line" "^0.74.0"
-    "@popperjs/core" "^2.10.2"
-    "@tastiest-io/tastiest-icons" "^0.28.0"
-    "@tastiest-io/tastiest-ui" "^0.15.0"
-    react-popper "^2.2.5"
+    react-table "^7.7.0"
     uuid "^8.3.2"
 
 "@tastiest-io/tastiest-utils@^1.21.0":
@@ -6822,6 +6810,11 @@ google-gax@^2.9.2:
     protobufjs "^6.9.0"
     retry-request "^4.0.0"
 
+google-optimize-react-hooks@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/google-optimize-react-hooks/-/google-optimize-react-hooks-0.0.6.tgz#91eab9f8ed33d56e92abfa330fe8924f41f03bbc"
+  integrity sha512-IuJ0rWuE2RmMNSg7Og3uMjMD0/Cf9J8DpS+X30ULy8ekeWAWXb5P7SsOj+x9OE6d68U3WdLqChTEgdeto41kcQ==
+
 google-p12-pem@^3.0.3:
   version "3.0.3"
   resolved "https://registry.npmjs.org/google-p12-pem/-/google-p12-pem-3.0.3.tgz"
@@ -10582,6 +10575,11 @@ react-stickynode@^3.0.5:
     prop-types "^15.6.0"
     shallowequal "^1.0.0"
     subscribe-ui-event "^2.0.6"
+
+react-table@^7.7.0:
+  version "7.7.0"
+  resolved "https://registry.yarnpkg.com/react-table/-/react-table-7.7.0.tgz#e2ce14d7fe3a559f7444e9ecfe8231ea8373f912"
+  integrity sha512-jBlj70iBwOTvvImsU9t01LjFjy4sXEtclBovl3mTiqjz23Reu0DKnRza4zlLtOPACx6j2/7MrQIthIK1Wi+LIA==
 
 react-universal-interface@^0.6.2:
   version "0.6.2"
