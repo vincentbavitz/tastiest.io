@@ -2,9 +2,9 @@ import {
   CMS,
   CmsApi,
   dlog,
+  ExperiencePost,
   FirestoreCollection,
-  IOrder,
-  IPost,
+  Order,
 } from '@tastiest-io/tastiest-utils';
 import { ArticleCardRow } from 'components/cards/ArticleCardRow';
 import { Contained } from 'components/Contained';
@@ -23,12 +23,12 @@ import { METADATA, SEARCH } from '../constants';
 type ModifierKey = 'new' | 'nearby' | 'trending';
 
 interface Props {
-  posts: IPost[];
+  posts: ExperiencePost[];
   totalCount: number;
   currentPage: number;
 
   // Display at the bottom; 'You might also like'...
-  topPosts: IPost[];
+  topPosts: ExperiencePost[];
   modifier: ModifierKey | null;
 }
 
@@ -67,7 +67,7 @@ export const getServerSideProps = async (
       .limit(100)
       .get();
 
-    const orders = ordersSnapshot.docs?.map(doc => doc.data() as IOrder);
+    const orders = ordersSnapshot.docs?.map(doc => doc.data() as Order);
 
     // Tally orders by most to least popular from dealId
     const sortedDeals: { [dealId: string]: number } = {};

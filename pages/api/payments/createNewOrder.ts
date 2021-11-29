@@ -5,9 +5,9 @@ import {
   FirestoreCollection,
   FunctionsResponse,
   generateUserFacingId,
-  IOrder,
-  IOrderRequest,
-  IPromo,
+  Order,
+  OrderRequest,
+  Promo,
   reportInternalError,
   TastiestInternalErrorCode,
 } from '@tastiest-io/tastiest-utils';
@@ -17,7 +17,7 @@ import { db } from 'utils/firebaseAdmin';
 import { calculatePromoPrice, validatePromo } from 'utils/order';
 import { v4 as uuid } from 'uuid';
 
-export type CreateNewOrderParams = IOrderRequest & {
+export type CreateNewOrderParams = OrderRequest & {
   userAgent?: string;
 };
 
@@ -68,10 +68,10 @@ export default async function createNewOrder(
     anonymousId,
     userAgent,
     bookedForTimestamp,
-  } = body as Partial<IOrderRequest>;
+  } = body as Partial<OrderRequest>;
 
   const heads = Math.floor(_heads);
-  const orderRequest: IOrderRequest = {
+  const orderRequest: OrderRequest = {
     dealId,
     heads,
     fromSlug,
@@ -184,7 +184,7 @@ export default async function createNewOrder(
 /**
  * Ensure all the types and values from Firebase are valid in the order request
  */
-const validateOrderRequest = async (orderRequest: IOrderRequest) => {
+const validateOrderRequest = async (orderRequest: OrderRequest) => {
   // Expired order request
   if (
     Date.now() >
@@ -203,7 +203,10 @@ const validateOrderRequest = async (orderRequest: IOrderRequest) => {
   const deal = await cms.getDeal(orderRequest.dealId ?? '');
 
   if (!deal) {
-    return { success: false, error: 'Deal does not exist with this ID' };
+    return {
+      success: false,
+      error: 'ExperienceProduct does not exist with this ID',
+    };
   }
 
   // Valid number of heads?
@@ -221,7 +224,7 @@ const validateOrderRequest = async (orderRequest: IOrderRequest) => {
   return { success: true, error: null };
 };
 
-const buildOrder = async (orderRequest: IOrderRequest) => {
+const buildOrder = async (orderRequest: OrderRequest) => {
   // Get deal
   const cms = new CmsApi();
   const deal = await cms.getDeal(orderRequest.dealId ?? '');
@@ -233,21 +236,21 @@ const buildOrder = async (orderRequest: IOrderRequest) => {
   const heads = Math.floor(orderRequest.heads);
 
   // Is userId valid and is user online?
-  // Is promoCode valid? If so, calculate IPromo and final price
-  const promo: IPromo = await cms.getPromo(orderRequest.promoCode);
+  // Is promoCode valid? If so, calculate Promo and final price
+  const promo: Promo = await cms.getPromo(orderRequest.promoCode);
   const promoIsValid = validatePromo(deal, orderRequest?.userId, promo);
   if (promo?.validTo < Date.now()) {
     // Out of date
   }
 
   // Gross price
-  const gross = deal.pricePerHeadGBP * heads;
+  const subtotal = deal.pricePerHeadGBP * heads;
 
   // New order
   const orderId = uuid();
   const orderToken = uuid();
 
-  const order: IOrder = {
+  const order: Order = {
     id: orderId,
     userFacingOrderId: generateUserFacingId(),
     token: orderToken,
@@ -256,8 +259,8 @@ const buildOrder = async (orderRequest: IOrderRequest) => {
     heads: orderRequest.heads,
     fromSlug: orderRequest.fromSlug,
     price: {
-      gross,
-      final: calculatePromoPrice(gross, promo),
+      subtotal,
+      final: calculatePromoPrice(subtotal, promo),
       currency: 'GBP',
     },
     paymentMethod: null,

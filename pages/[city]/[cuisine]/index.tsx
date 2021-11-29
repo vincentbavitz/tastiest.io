@@ -1,7 +1,7 @@
 import {
   CmsApi,
   CuisineSymbol,
-  ITastiestDish,
+  TastiestDish,
   titleCase,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
@@ -52,7 +52,7 @@ interface IPath {
 
 interface Props {
   cuisineSymbol: CuisineSymbol;
-  tastiestDishes: ITastiestDish[];
+  tastiestDishes: TastiestDish[];
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

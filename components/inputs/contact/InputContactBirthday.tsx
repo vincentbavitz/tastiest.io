@@ -1,12 +1,12 @@
 import { Input } from '@tastiest-io/tastiest-ui';
-import { dlog, IDateObject } from '@tastiest-io/tastiest-utils';
+import { DateObject, dlog } from '@tastiest-io/tastiest-utils';
 import React, { useState } from 'react';
 import NumberFormat, { NumberFormatValues } from 'react-number-format';
 import { dateFormat, dateToString, stringToDate } from 'utils/text';
 
 interface Props {
-  onDateChange: (date: IDateObject) => void;
-  date: IDateObject;
+  onDateChange: (date: DateObject) => void;
+  date: DateObject;
   disabled?: boolean;
   error?: string;
   value?: string;

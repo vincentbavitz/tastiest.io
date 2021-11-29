@@ -1,6 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input } from '@tastiest-io/tastiest-ui';
-import { IPost } from '@tastiest-io/tastiest-utils';
+import { ExperiencePost } from '@tastiest-io/tastiest-utils';
 import { useFeedback } from 'hooks/useFeedback';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { SuggestRestaurantArticleIllustrationDesktop } from 'public/assets/illustrations';
@@ -9,7 +9,7 @@ import { Contained } from '../Contained';
 
 // Use klaviyo for emails
 
-export function ArticleSuggestRestaurant(props: IPost) {
+export function ArticleSuggestRestaurant(props: ExperiencePost) {
   const { isDesktop } = useScreenSize();
 
   return (
@@ -46,7 +46,7 @@ const ArticleSuggestRestaurantContent = ({
   cuisine,
   restaurant,
   deal: { dishName },
-}: IPost) => {
+}: ExperiencePost) => {
   const { makeRecommendation, isSubmitting } = useFeedback();
 
   const { isDesktop } = useScreenSize();

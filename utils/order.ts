@@ -1,9 +1,9 @@
-import { dlog, IDeal, IPromo } from '@tastiest-io/tastiest-utils';
+import { dlog, ExperienceProduct, Promo } from '@tastiest-io/tastiest-utils';
 
 /**
  * Calculate price after applying promocode.
  */
-export const calculatePromoPrice = (price: number, promo: IPromo): number => {
+export const calculatePromoPrice = (price: number, promo: Promo): number => {
   if (!promo || !promo.discount?.value) {
     return price;
   }
@@ -24,9 +24,9 @@ export const calculatePromoPrice = (price: number, promo: IPromo): number => {
  * Validate promo after you've pulled it from CMS
  */
 export const validatePromo = async (
-  deal: IDeal,
+  deal: ExperienceProduct,
   userId: string,
-  promo: IPromo,
+  promo: Promo,
 ) => {
   // Validate user is allowed to use this.
   // Validate maxiumum uses etc

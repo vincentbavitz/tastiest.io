@@ -1,10 +1,10 @@
-import { IOrder } from '@tastiest-io/tastiest-utils';
+import { Order } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { ReactNode } from 'hoist-non-react-statics/node_modules/@types/react';
 import { useScreenSize } from 'hooks/useScreenSize';
 
 interface CheckoutCardProps {
-  order: IOrder;
+  order: Order;
   children: ReactNode;
 }
 

@@ -1,11 +1,11 @@
-import { IPost } from '@tastiest-io/tastiest-utils';
+import { ExperiencePost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import React from 'react';
 import { generateStaticURL } from '../../utils/routing';
 
-export function SearchItem(props: IPost) {
+export function SearchItem(props: ExperiencePost) {
   const {
     title,
     city,

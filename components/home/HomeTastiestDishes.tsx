@@ -1,4 +1,4 @@
-import { dlog, ITastiestDish } from '@tastiest-io/tastiest-utils';
+import { dlog, TastiestDish } from '@tastiest-io/tastiest-utils';
 import TastiestDishCard from 'components/cards/TastiestDishCard';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -6,7 +6,7 @@ import React from 'react';
 import { SectionTitle } from '../SectionTitle';
 
 interface Props {
-  cards: ITastiestDish[];
+  cards: TastiestDish[];
 }
 
 export function HomeTastiestDishes(props: Props) {

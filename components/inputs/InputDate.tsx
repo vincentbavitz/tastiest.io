@@ -1,14 +1,14 @@
 import { Input } from '@tastiest-io/tastiest-ui';
-import { IDateObject } from '@tastiest-io/tastiest-utils';
+import { DateObject } from '@tastiest-io/tastiest-utils';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface Props {
   // Data
-  date: IDateObject;
+  date: DateObject;
   minYear?: string;
   maxYear?: string;
-  onDateChange: (date: IDateObject) => void;
+  onDateChange: (date: DateObject) => void;
 
   // Styling
   size?: 'large' | 'medium' | 'small';

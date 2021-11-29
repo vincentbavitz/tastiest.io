@@ -1,4 +1,4 @@
-import { IFirestore } from '@tastiest-io/tastiest-utils/dist/constants/firebase';
+import { Firestore } from '@tastiest-io/tastiest-utils/dist/constants/firebase';
 import 'firebase/firestore'; // <- needed if using firestore
 import { firebaseReducer } from 'react-redux-firebase';
 import { combineReducers } from 'redux';
@@ -14,7 +14,7 @@ export interface IState {
   navigation: INavigation;
   search: ISearch;
   checkout: ICheckout;
-  firestore: IFirestore;
+  firestore: Firestore;
 }
 
 export const rootReducer = combineReducers({

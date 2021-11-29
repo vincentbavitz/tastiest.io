@@ -1,4 +1,4 @@
-import { formatCurrency, IOrder } from '@tastiest-io/tastiest-utils';
+import { formatCurrency, Order } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
 import { UI } from '../../../constants';
@@ -6,7 +6,7 @@ import { CheckoutAuthTabs } from '../CheckoutAuthTabs';
 import { CheckoutCard } from '../CheckoutCard';
 
 interface Props {
-  order: IOrder;
+  order: Order;
 }
 
 export function CheckoutStepAuth(props: Props) {

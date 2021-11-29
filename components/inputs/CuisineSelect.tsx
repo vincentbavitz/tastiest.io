@@ -1,10 +1,6 @@
 import { Input, Select } from '@tastiest-io/tastiest-ui';
-import {
-  CuisineSymbol,
-  dlog,
-  TFavouriteCuisine,
-  titleCase,
-} from '@tastiest-io/tastiest-utils';
+import { CuisineSymbol, dlog, titleCase } from '@tastiest-io/tastiest-utils';
+import { FavouriteCuisine } from '@tastiest-io/tastiest-utils/dist/types/user';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 
@@ -13,7 +9,7 @@ type CuisineKey = CuisineSymbol | 'ALL_FOOD' | 'OTHER';
 interface Props {
   initial: CuisineKey;
   initialOther: string | null;
-  onChange: (value: TFavouriteCuisine) => void;
+  onChange: (value: FavouriteCuisine) => void;
 }
 
 export default function CuisineSelect(props: Props) {
@@ -23,7 +19,7 @@ export default function CuisineSelect(props: Props) {
   const [selected, setSelected] = useState<CuisineKey>(initial);
   const [other, setOther] = useState<string>(initialOther);
 
-  const mapToFavouriteCuisine = (option: string): TFavouriteCuisine => {
+  const mapToFavouriteCuisine = (option: string): FavouriteCuisine => {
     if (CuisineSymbol[option.toUpperCase()]) {
       return { existing: CuisineSymbol[option.toUpperCase()], other: null };
     }

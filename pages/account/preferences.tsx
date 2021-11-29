@@ -1,14 +1,14 @@
 import { CheckIcon } from '@tastiest-io/tastiest-icons';
 import { Button, Input } from '@tastiest-io/tastiest-ui';
 import {
+  DateObject,
   dlog,
-  IDateObject,
-  IUserDetails,
-  IUserPreferences,
-  TFavouriteCuisine,
+  FavouriteCuisine,
   USER,
-  UserData,
   UserDataApi,
+  UserDataKey,
+  UserDetails,
+  UserPreferences,
 } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import CuisineSelect from 'components/inputs/CuisineSelect';
@@ -61,16 +61,16 @@ const Preferences = ({
   const [postalCode, setPostalCode] = useState<string>(
     details?.postalCode ?? null,
   );
-  const [birthday, setBirthday] = useState<IDateObject>(
+  const [birthday, setBirthday] = useState<DateObject>(
     details?.birthday ?? null,
   );
-  const [cuisine_1, setCuisine_1] = useState<TFavouriteCuisine | null>(
+  const [cuisine_1, setCuisine_1] = useState<FavouriteCuisine | null>(
     preferences?.favouriteCuisines?.[0] ?? null,
   );
-  const [cuisine_2, setCuisine_2] = useState<TFavouriteCuisine | null>(
+  const [cuisine_2, setCuisine_2] = useState<FavouriteCuisine | null>(
     preferences?.favouriteCuisines?.[1] ?? null,
   );
-  const [cuisine_3, setCuisine_3] = useState<TFavouriteCuisine | null>(
+  const [cuisine_3, setCuisine_3] = useState<FavouriteCuisine | null>(
     preferences?.favouriteCuisines?.[2] ?? null,
   );
 
@@ -103,16 +103,16 @@ const Preferences = ({
       cuisine_2 ?? null,
       cuisine_3 ?? null,
     ].filter(c => Boolean(c)) as [
-      TFavouriteCuisine?,
-      TFavouriteCuisine?,
-      TFavouriteCuisine?,
+      FavouriteCuisine?,
+      FavouriteCuisine?,
+      FavouriteCuisine?,
     ];
 
-    const updatedPreferences: Partial<IUserPreferences> = {
+    const updatedPreferences: Partial<UserPreferences> = {
       favouriteCuisines,
     };
 
-    const updatedDetails: Partial<IUserDetails> = {
+    const updatedDetails: Partial<UserDetails> = {
       address: {
         lat: 0,
         lon: 0,
@@ -125,11 +125,11 @@ const Preferences = ({
     // TODO; ensure they are actually changing to avoid
     // overwriting anything with null
     const { success: preferencesSuccess } = await setUserData(
-      UserData.PREFERENCES,
+      UserDataKey.PREFERENCES,
       updatedPreferences,
     );
     const { success: detailsSuccess } = await setUserData(
-      UserData.DETAILS,
+      UserDataKey.DETAILS,
       updatedDetails,
     );
 

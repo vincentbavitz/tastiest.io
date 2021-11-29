@@ -1,5 +1,5 @@
 // [slug].js
-import { CmsApi, dlog, IPost } from '@tastiest-io/tastiest-utils';
+import { CmsApi, dlog, ExperiencePost } from '@tastiest-io/tastiest-utils';
 import { ArticleSectionContent } from 'components/article/sections/ArticleSectionContent';
 import { YouTubeVideo } from 'components/YouTubeVideo';
 import { Layouts } from 'layouts/LayoutHandler';
@@ -22,7 +22,7 @@ interface IPath {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const cms = new CmsApi();
-  let posts: IPost[] = [];
+  let posts: ExperiencePost[] = [];
   let page = 1;
   let foundAllPosts = false;
 
@@ -63,8 +63,8 @@ export const getStaticProps = async ({ params }) => {
   if (!post) {
     return {
       props: {
-        post: (null as never) as IPost,
-        posts: (null as never) as IPost[],
+        post: (null as never) as ExperiencePost,
+        posts: (null as never) as ExperiencePost[],
       },
       notFound: true,
     };

@@ -6,10 +6,10 @@ import {
 import { Button } from '@tastiest-io/tastiest-ui';
 import {
   dlog,
+  ExperienceProduct,
   getMinsIntoDay,
-  IDeal,
-  IOrderRequest,
   minsIntoHumanTime,
+  OrderRequest,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
@@ -32,7 +32,7 @@ import { LocalEndpoint } from 'types/api';
 import { generateLocalEndpoint, generateStaticURL } from 'utils/routing';
 import { ExperienceOrderPanelProps } from './ExperienceOrderPanelDesktop';
 
-const useOrderPanel = (deal: IDeal, slug: string) => {
+const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
   const { user } = useAuth();
   const router = useRouter();
 
@@ -84,7 +84,7 @@ const useOrderPanel = (deal: IDeal, slug: string) => {
       })
       .toMillis();
 
-    const orderRequest: IOrderRequest = {
+    const orderRequest: OrderRequest = {
       heads,
       fromSlug: slug,
       bookedForTimestamp,

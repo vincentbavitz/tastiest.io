@@ -1,11 +1,13 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { IRestaurant } from '@tastiest-io/tastiest-utils';
+import { RestaurantContentful } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import Link from 'next/link';
 import React, { useMemo, useRef } from 'react';
 import { generateStaticURL } from 'utils/routing';
 
-export default function RestaurantCardSearchResult(props: IRestaurant) {
+export default function RestaurantCardSearchResult(
+  props: RestaurantContentful,
+) {
   const { name, city, cuisine, uriName, profilePicture } = props;
 
   const ref = useRef(null);

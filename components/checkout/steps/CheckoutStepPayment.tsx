@@ -10,12 +10,12 @@ import {
 import { HelpIcon } from '@tastiest-io/tastiest-icons';
 import { Tooltip } from '@tastiest-io/tastiest-ui';
 import {
+  DateObject,
   dlog,
-  IDateObject,
-  IOrder,
+  Order,
   TastiestPaymentError,
   titleCase,
-  UserData,
+  UserDataKey,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { InputContactBirthday } from 'components/inputs/contact/InputContactBirthday';
@@ -50,7 +50,7 @@ const CARD_ELEMENT_OPTIONS: StripeCardNumberElementOptions = {
 
 interface Props {
   userId: string;
-  order: IOrder;
+  order: Order;
 }
 
 type FormData = {
@@ -75,7 +75,7 @@ export function CheckoutStepPayment(props: Props) {
   const { isMobile, isTablet, isDesktop } = useScreenSize();
 
   // Contact
-  const [birthday, setBirthday] = useState<IDateObject>(
+  const [birthday, setBirthday] = useState<DateObject>(
     userData?.details?.birthday ?? null,
   );
 
@@ -121,7 +121,7 @@ export function CheckoutStepPayment(props: Props) {
       cardPostcode?.length > 0 ||
       JSON.stringify(birthday) !== JSON.stringify(userData.details?.birthday)
     ) {
-      setUserData(UserData.DETAILS, {
+      setUserData(UserDataKey.DETAILS, {
         firstName,
         lastName,
         birthday,

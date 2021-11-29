@@ -1,7 +1,7 @@
 import {
   dlog,
-  RestaurantData,
   RestaurantDataApi,
+  RestaurantDataKey,
   TimeRange,
   toZeroIndexedDays,
   WeekOpenTimes,
@@ -70,7 +70,7 @@ export default async function getBookingSlots(
 
     // Days are dictated by open times.
     const metrics = await restaurantDataApi.getRestaurantField(
-      RestaurantData.METRICS,
+      RestaurantDataKey.METRICS,
     );
 
     const slots: Slot[] = [];

@@ -1,4 +1,4 @@
-import { IDeal, IPost } from '@tastiest-io/tastiest-utils';
+import { ExperiencePost, ExperienceProduct } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { DESKTOP_OFFER_WIDGET_WIDTH_PX } from 'layouts/LayoutExperience';
@@ -6,9 +6,9 @@ import React from 'react';
 import ExperienceOrderPanelInner from './ExperienceOrderPanelInner';
 
 export interface ExperienceOrderPanelProps {
-  deal: IDeal;
+  deal: ExperienceProduct;
   slug: string;
-  posts: IPost[];
+  posts: ExperiencePost[];
 }
 
 const OFFER_WIDGET_FLOAT_GAP_PX = 95;

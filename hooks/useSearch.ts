@@ -1,10 +1,10 @@
 import {
   CmsApi,
-  IPost,
-  IRecentSearch,
-  IRestaurant,
-  ITastiestDish,
-  UserData,
+  ExperiencePost,
+  RecentSearch,
+  RestaurantContentful,
+  TastiestDish,
+  UserDataKey,
 } from '@tastiest-io/tastiest-utils';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -59,9 +59,10 @@ export function useSearch() {
       restaurantsPromise,
     ]);
 
-    const posts = results[0].posts ?? ([] as IPost[]);
-    const dishes = results[1].dishes ?? ([] as ITastiestDish[]);
-    const restaurants = results[2].restaurants ?? ([] as IRestaurant[]);
+    const posts = results[0].posts ?? ([] as ExperiencePost[]);
+    const dishes = results[1].dishes ?? ([] as TastiestDish[]);
+    const restaurants =
+      results[2].restaurants ?? ([] as RestaurantContentful[]);
 
     const result = {
       posts,
@@ -78,15 +79,17 @@ export function useSearch() {
 
     // Save to user's file if logged in
     if (user?.uid) {
-      const recentSearch: IRecentSearch = {
+      const recentSearch: RecentSearch = {
         query,
         timestamp: Date.now(),
       };
 
-      setUserData(UserData.RECENT_SEARCHES, [
-        ...(userData?.recentSearches ?? []),
-        recentSearch,
-      ]);
+      setUserData(UserDataKey.METRICS, {
+        recentSearches: [
+          ...(userData?.metrics?.recentSearches ?? []),
+          recentSearch,
+        ],
+      });
     }
   };
 

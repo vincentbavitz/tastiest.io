@@ -1,9 +1,10 @@
 import {
   CmsApi,
   dlog,
-  IPost,
-  IRestaurant,
-  ITastiestDish,
+  ExperiencePost,
+  RestaurantContentful,
+  RestaurantDetails,
+  TastiestDish,
 } from '@tastiest-io/tastiest-utils';
 import { CardGrid } from 'components/cards/CardGrid';
 import { ExperienceCard } from 'components/cards/ExperienceCard';
@@ -34,7 +35,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   let page = 1;
   let foundAllRestaurants = false;
-  const restaurants: IRestaurant[] = [];
+  const restaurants: RestaurantContentful[] = [];
 
   // Contentful only allows 100 at a time
   while (!foundAllRestaurants) {
@@ -79,9 +80,9 @@ export const getStaticProps = async (
     return {
       // returning as such to keep the props types consistent
       props: {
-        restaurant: null as IRestaurant,
-        tastiestDishes: null as ITastiestDish[],
-        posts: null as IPost[],
+        restaurant: null as RestaurantDetails,
+        tastiestDishes: null as TastiestDish[],
+        posts: null as ExperiencePost[],
       },
       notFound: true,
     };

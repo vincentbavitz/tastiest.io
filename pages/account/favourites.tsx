@@ -3,7 +3,7 @@ import {
   BigBrain,
   CmsApi,
   dlog,
-  IPost,
+  ExperiencePost,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import { ArticleCardFavourite } from 'components/cards/ArticleCardFavourite';
@@ -56,8 +56,8 @@ export const getServerSideProps: GetServerSideProps = async context => {
 };
 
 interface Props {
-  savedPosts: IPost[];
-  recommendedPosts: IPost[];
+  savedPosts: ExperiencePost[];
+  recommendedPosts: ExperiencePost[];
 }
 
 function Favourites(props: Props) {

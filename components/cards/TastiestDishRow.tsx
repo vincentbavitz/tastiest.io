@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { ITastiestDish } from '@tastiest-io/tastiest-utils';
+import { TastiestDish } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import Image from 'next/image';
 import React, { useMemo, useRef } from 'react';
 import { useHoverDirty } from 'react-use';
 import { generateStaticURL } from 'utils/routing';
 
-export default function TastiestDishRow(props: ITastiestDish) {
+export default function TastiestDishRow(props: TastiestDish) {
   const { name, description, image, dynamicImage, restaurant } = props;
 
   const ref = useRef(null);

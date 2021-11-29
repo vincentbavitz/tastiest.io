@@ -1,5 +1,8 @@
-import { dlog, FirestoreCollection } from '@tastiest-io/tastiest-utils';
-import { IAddress } from '@tastiest-io/tastiest-utils/dist/types/geography';
+import {
+  Address,
+  dlog,
+  FirestoreCollection,
+} from '@tastiest-io/tastiest-utils';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useFirestore } from 'react-redux-firebase';
@@ -17,7 +20,7 @@ interface IRecommendationDetails {
   // For article page recommendation
   dish: string | null;
   cuisine: string | null;
-  location: IAddress | null;
+  location: Address | null;
   restaurantName: string | null;
 }
 

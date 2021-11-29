@@ -1,5 +1,5 @@
 import { ExitIcon } from '@tastiest-io/tastiest-icons';
-import { IDeal, IPost } from '@tastiest-io/tastiest-utils';
+import { ExperiencePost, ExperienceProduct } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
@@ -10,9 +10,9 @@ import { UI } from '../../../constants';
 import ExperienceOrderPanelInner from './ExperienceOrderPanelInner';
 
 interface Props {
-  deal: IDeal;
+  deal: ExperienceProduct;
   slug: string;
-  posts: IPost[];
+  posts: ExperiencePost[];
 }
 
 export default function ExperienceOrderPanelMobile({
@@ -100,7 +100,7 @@ const OrderNowOverlay = ({
 };
 
 interface OverlayInnerCardProps {
-  deal: IDeal;
+  deal: ExperienceProduct;
   slug: string;
 }
 

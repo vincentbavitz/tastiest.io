@@ -1,6 +1,6 @@
 import { LinkOutlined, ShareAltOutlined } from '@ant-design/icons';
 import { Button, Popover } from '@tastiest-io/tastiest-ui';
-import { IPost } from '@tastiest-io/tastiest-utils';
+import { ExperiencePost } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useFavouriteArticle } from 'hooks/article/useFavouriteArticle';
 import useShareArticle from 'hooks/article/useShareArticle';
@@ -8,7 +8,7 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
 
-export function ArticleSaveShareWidget(props: IPost) {
+export function ArticleSaveShareWidget(props: ExperiencePost) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { isDesktop } = useScreenSize();
 

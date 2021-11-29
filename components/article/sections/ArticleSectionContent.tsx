@@ -1,4 +1,4 @@
-import { IPost, Media } from '@tastiest-io/tastiest-utils';
+import { ExperiencePost, Media } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { RichBody } from 'components/RichBody';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -11,7 +11,7 @@ import ArticleMenuModal from '../modals/ArticleMenuModal';
 // TODO
 // Really want writers to be able to do {{CALL_TO_ACTION}} sorta things like Wordpress shortcodes
 // And that will then conditionally render our components
-export function ArticleSectionContent(post: IPost) {
+export function ArticleSectionContent(post: ExperiencePost) {
   const { isMobile } = useScreenSize();
 
   return (

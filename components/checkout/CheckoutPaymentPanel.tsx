@@ -8,7 +8,7 @@ import { Button, Input, Modal } from '@tastiest-io/tastiest-ui';
 import {
   dlog,
   formatCurrency,
-  IOrder,
+  Order,
   PAYMENTS,
   TastiestPaymentError,
 } from '@tastiest-io/tastiest-utils';
@@ -24,7 +24,7 @@ import { IState } from '../../state/reducers';
 import { CheckoutCard } from './CheckoutCard';
 
 interface Props {
-  order: IOrder;
+  order: Order;
   submit: () => void;
   error: TastiestPaymentError | null;
 }
@@ -202,7 +202,7 @@ const TermsAndConditions = () => (
 );
 
 interface PromoCodeInputProps {
-  initialOrder: IOrder;
+  initialOrder: Order;
 }
 
 const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
@@ -240,7 +240,7 @@ const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
             {promoCodeLoading ? (
               '— £--.--'
             ) : (
-              <>— £{formatCurrency(order.price.gross - order.price.final)}</>
+              <>— £{formatCurrency(order.price.subtotal - order.price.final)}</>
             )}
           </p>
         </div>
@@ -272,7 +272,7 @@ const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
 };
 
 interface PaymentErrorMessageProps {
-  order: IOrder;
+  order: Order;
 }
 
 const PaymentErrorMessage = ({ order }: PaymentErrorMessageProps) => {

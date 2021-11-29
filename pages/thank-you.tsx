@@ -1,12 +1,12 @@
 import { PhoneIcon } from '@tastiest-io/tastiest-icons';
 import { Button } from '@tastiest-io/tastiest-ui';
 import {
+  Booking,
   CmsApi,
   dlog,
   FirestoreCollection,
   formatCurrency,
-  IBooking,
-  IOrder,
+  Order,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
@@ -53,15 +53,15 @@ export const getServerSideProps = async context => {
     .limit(1)
     .get();
 
-  let order: IOrder;
-  orderSnapshot.docs.forEach(doc => (order = doc.data() as IOrder));
+  let order: Order;
+  orderSnapshot.docs.forEach(doc => (order = doc.data() as Order));
 
   // Get the corresponding booking
   const bookingSnapshot = await db(FirestoreCollection.BOOKINGS)
     .doc(order.id)
     .get();
 
-  const booking = bookingSnapshot.data() as IBooking;
+  const booking = bookingSnapshot.data() as Booking;
 
   // Redirect if user somehow got to this state of no order request.
   if (!order || !order.paidAt || !booking) {
@@ -393,7 +393,7 @@ const BookingSectionImage = (props: BookingSectionImageProps) => {
 };
 
 interface OrderSummaryProps {
-  order: IOrder;
+  order: Order;
   paymentCard: PaymentCard;
 }
 
@@ -430,12 +430,12 @@ const OrderSummary = ({ order, paymentCard }: OrderSummaryProps) => {
   const sumeraryPayment = [
     {
       label: 'Subtotal',
-      value: `£${formatCurrency(order.price.gross)}`,
+      value: `£${formatCurrency(order.price.subtotal)}`,
     },
     {
       label: 'Discount',
       value: `— £${formatCurrency(
-        Math.abs(order.price.final - order.price.gross),
+        Math.abs(order.price.final - order.price.subtotal),
       )}`,
     },
   ];

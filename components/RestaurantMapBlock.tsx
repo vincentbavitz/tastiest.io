@@ -1,6 +1,5 @@
 import { EnvironmentOutlined } from '@ant-design/icons';
-import { IRestaurant } from '@tastiest-io/tastiest-utils';
-import { IAddress } from '@tastiest-io/tastiest-utils/dist/types/geography';
+import { Address, RestaurantContentful } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { ReactNode } from 'react';
@@ -8,16 +7,16 @@ import { getGoogleMapLink } from 'utils/location';
 import { RestaurantMap } from './modals/RestaurantMap';
 
 interface Props {
-  restaurant: IRestaurant;
+  restaurant: RestaurantContentful;
   children: ReactNode;
   layout?: 'default' | 'stacked';
 }
 
 type AddressProps = {
-  location: IAddress;
+  location: Address;
 };
 
-const Address = ({ location }: AddressProps) => {
+const AddressBlock = ({ location }: AddressProps) => {
   return (
     <a
       target="_blank"
@@ -52,11 +51,11 @@ export default function RestaurantMapBlock(props: Props) {
           )}
         >
           <div style={{ minHeight: '12rem' }} className="w-full h-56">
-            <RestaurantMap restaurant={restaurant} />
+            <RestaurantMap location={restaurant.location} />
           </div>
 
           <div className="flex justify-end pt-1 pb-2">
-            <Address location={restaurant.location} />
+            <AddressBlock location={restaurant.location} />
           </div>
         </section>
 

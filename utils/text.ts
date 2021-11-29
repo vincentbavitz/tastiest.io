@@ -1,4 +1,4 @@
-import { IDateObject, TDay, TMonth, TYear } from '@tastiest-io/tastiest-utils';
+import { DateObject, TDay, TMonth, TYear } from '@tastiest-io/tastiest-utils';
 
 function limit(val: string, max: string) {
   if (val.length === 1 && val[0] > max[0]) {
@@ -36,10 +36,10 @@ export function limitYear(year: string, minYear: string, maxYear: string) {
   return year;
 }
 
-export const dateToString = (date: IDateObject) =>
+export const dateToString = (date: DateObject) =>
   date ? `${date.day}${date.month}${date.year}` : null;
 
-export const stringToDate = (value: string): IDateObject => {
+export const stringToDate = (value: string): DateObject => {
   const day = value.substring(0, 2) as TDay;
   const month = value.substring(2, 4) as TMonth;
   const year = value.substring(4, 8) as TYear;

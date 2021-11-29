@@ -1,11 +1,11 @@
 import {
   FirestoreCollection,
-  ISupportMessage,
-  IUserQuery,
-  IUserSupportRequest,
+  SupportMessage,
   SupportMessageDirection,
   SupportRequestType,
+  UserQuery,
   UserQueryType,
+  UserSupportRequest,
 } from '@tastiest-io/tastiest-utils';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -36,7 +36,7 @@ export function useSupport() {
     },
   ]);
 
-  const supportRequests: Partial<IUserSupportRequest> = useSelector(
+  const supportRequests: Partial<UserSupportRequest> = useSelector(
     ({ firestore: { data } }: IState) =>
       data?.[FirestoreCollection.SUPPORT_USERS],
   );
@@ -59,7 +59,7 @@ export function useSupport() {
       return { success: false, errors };
     }
 
-    const initialMessage: ISupportMessage = {
+    const initialMessage: SupportMessage = {
       name,
       message,
       timestamp: Date.now(),
@@ -69,7 +69,7 @@ export function useSupport() {
     };
 
     const requestId = uuid();
-    const supportRequest: IUserSupportRequest = {
+    const supportRequest: UserSupportRequest = {
       id: requestId,
       name,
       email,
@@ -122,7 +122,7 @@ export function useSupport() {
       return { success: false, errors };
     }
 
-    const query: IUserQuery = {
+    const query: UserQuery = {
       email: user?.email ?? email,
       userId: user?.uid ?? null,
       message,

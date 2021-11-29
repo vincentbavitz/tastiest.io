@@ -1,4 +1,4 @@
-import { IPost, titleCase } from '@tastiest-io/tastiest-utils';
+import { ExperiencePost, titleCase } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Image from 'next/image';
 import React from 'react';
@@ -9,7 +9,7 @@ const TITLE_MAX_WIDTH_TABLET_REM = 28;
 const TITLE_MAX_WIDTH_DESKTOP_REM = 20;
 const TITLE_MAX_WIDTH_HUGE_REM = 26;
 
-export function ArticleSectionTitle(props: IPost) {
+export function ArticleSectionTitle(props: ExperiencePost) {
   const { title, restaurant } = props;
   const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
 

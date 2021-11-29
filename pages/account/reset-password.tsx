@@ -1,5 +1,5 @@
 import {
-  IPasswordResetRequest,
+  PasswordResetRequest,
   reportInternalError,
   TastiestInternalErrorCode,
   UserDataApi,
@@ -14,7 +14,7 @@ import { useUserData } from '../../hooks/useUserData';
 
 interface Props {
   signInToken: string;
-  resetPasswordRequest: IPasswordResetRequest;
+  resetPasswordRequest: PasswordResetRequest;
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {

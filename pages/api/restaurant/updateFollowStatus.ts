@@ -1,10 +1,10 @@
 import {
   dlog,
   FunctionsResponse,
-  RestaurantData,
   RestaurantDataApi,
-  UserData,
+  RestaurantDataKey,
   UserDataApi,
+  UserDataKey,
 } from '@tastiest-io/tastiest-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
@@ -102,7 +102,7 @@ export default async function updateFollowStatus(
           notifications: Boolean(notifications),
         });
 
-        return userDataApi.setUserData(UserData.METRICS, {
+        return userDataApi.setUserData(UserDataKey.METRICS, {
           restaurantsFollowed,
         });
       };
@@ -122,7 +122,7 @@ export default async function updateFollowStatus(
         });
 
         // Set restaurant followers
-        return restaurantDataApi.setRestaurantData(RestaurantData.METRICS, {
+        return restaurantDataApi.setRestaurantData(RestaurantDataKey.METRICS, {
           followers,
         });
       };
@@ -158,7 +158,7 @@ export default async function updateFollowStatus(
       r => r.restaurantId !== restaurantId,
     );
 
-    userDataApi.setUserData(UserData.METRICS, { restaurantsFollowed });
+    userDataApi.setUserData(UserDataKey.METRICS, { restaurantsFollowed });
 
     // New followers array for restaurant
     const followers = (restaurant.metrics.followers ?? []).filter(
@@ -166,7 +166,7 @@ export default async function updateFollowStatus(
     );
 
     // Set restaurant followers
-    await restaurantDataApi.setRestaurantData(RestaurantData.METRICS, {
+    await restaurantDataApi.setRestaurantData(RestaurantDataKey.METRICS, {
       followers,
     });
 

@@ -1,4 +1,4 @@
-import { IPost } from '@tastiest-io/tastiest-utils';
+import { ExperiencePost } from '@tastiest-io/tastiest-utils';
 import { CardGrid } from 'components/cards/CardGrid';
 import { ExperienceCard } from 'components/cards/ExperienceCard';
 import { Contained } from 'components/Contained';
@@ -8,7 +8,7 @@ import React from 'react';
 
 interface RecommendedPostsProps {
   label: string;
-  posts: IPost[];
+  posts: ExperiencePost[];
   rowLimit?: number;
 }
 

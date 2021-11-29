@@ -1,4 +1,4 @@
-import { CmsApi, IPost } from '@tastiest-io/tastiest-utils';
+import { CmsApi, ExperiencePost } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import HomeFeaturedExperiencesSection from 'components/home/HomeFeaturedExperiencesSection';
 import HomeInformationSection from 'components/home/HomeInformationSection';
@@ -12,7 +12,7 @@ import { HomeHeroSection } from '../components/home/HomeHeroSection';
 import { METADATA } from '../constants';
 
 interface Props {
-  posts: IPost[];
+  posts: ExperiencePost[];
 }
 
 export const getStaticProps: GetStaticProps = async context => {

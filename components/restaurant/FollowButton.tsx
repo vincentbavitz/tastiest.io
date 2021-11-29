@@ -1,12 +1,12 @@
 import { BellOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, ButtonGroup } from '@tastiest-io/tastiest-ui';
-import { dlog, IRestaurant } from '@tastiest-io/tastiest-utils';
+import { dlog, RestaurantContentful } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import useFollow from 'hooks/useFollow';
 import React from 'react';
 
 interface Props {
-  restaurant: IRestaurant;
+  restaurant: RestaurantContentful;
 }
 
 export default function FollowButton(props: Props) {

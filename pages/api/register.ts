@@ -1,8 +1,8 @@
 import {
   dlog,
   FunctionsResponse,
-  UserData,
   UserDataApi,
+  UserDataKey,
   UserRole,
 } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
@@ -98,7 +98,7 @@ export default async function register(
       });
 
       // Set firstName if it was given
-      return userDataApi.setUserData(UserData.DETAILS, {
+      return userDataApi.setUserData(UserDataKey.DETAILS, {
         firstName: firstName ?? null,
         email,
       });

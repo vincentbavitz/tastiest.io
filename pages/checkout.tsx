@@ -4,7 +4,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import {
   dlog,
   FirestoreCollection,
-  IOrder,
+  Order,
   PAYMENTS,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
@@ -39,7 +39,7 @@ const stripePromise = loadStripe(
 const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
 
 interface Props {
-  order: IOrder;
+  order: Order;
   step: CheckoutStep;
   userId: string | null;
 }
@@ -74,8 +74,8 @@ export const getServerSideProps = async (
     .limit(1)
     .get();
 
-  let order: IOrder;
-  snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
+  let order: Order;
+  snapshot.docs.forEach(doc => (order = doc.data() as Order));
 
   // Redirect if user somehow got to this state given no order request
   if (!order) {

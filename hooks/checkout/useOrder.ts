@@ -1,4 +1,4 @@
-import { dlog, IOrder, postFetch } from '@tastiest-io/tastiest-utils';
+import { dlog, Order, postFetch } from '@tastiest-io/tastiest-utils';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useRouter } from 'next/router';
 import { PayParams, PayReturn } from 'pages/api/payments/pay';
@@ -10,11 +10,11 @@ import { useEffect } from 'react';
 import useSWR from 'swr';
 import { LocalEndpoint } from 'types/api';
 
-export function useOrder(token: string, initialOrder?: IOrder) {
+export function useOrder(token: string, initialOrder?: Order) {
   const { user } = useAuth();
   const router = useRouter();
 
-  const { data: order, isValidating: isOrderUpdating, mutate } = useSWR<IOrder>(
+  const { data: order, isValidating: isOrderUpdating, mutate } = useSWR<Order>(
     `${LocalEndpoint.GET_ORDER}/?token=${token}`,
     {
       initialData: initialOrder,

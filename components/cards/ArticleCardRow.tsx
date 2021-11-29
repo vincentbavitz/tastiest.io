@@ -1,10 +1,10 @@
-import { IPost, Media } from '@tastiest-io/tastiest-utils';
+import { ExperiencePost, Media } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import React, { useMemo } from 'react';
 import { generateStaticURL } from '../../utils/routing';
 
-export function ArticleCardRow(post: IPost) {
+export function ArticleCardRow(post: ExperiencePost) {
   const { isDesktop } = useScreenSize();
   const { city, slug, cuisine } = post;
 

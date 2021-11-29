@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { IPost } from '@tastiest-io/tastiest-utils';
+import { ExperiencePost } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import Link from 'next/link';
 import React, { useMemo, useRef } from 'react';
 import { useHoverDirty } from 'react-use';
 import { generateStaticURL } from 'utils/routing';
 
-export function ArticleCardSearchResult(props: IPost): JSX.Element {
+export function ArticleCardSearchResult(props: ExperiencePost): JSX.Element {
   const { title, slug, city, cuisine, restaurant, deal } = props;
 
   const ref = useRef(null);

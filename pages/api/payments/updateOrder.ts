@@ -3,7 +3,7 @@ import {
   dlog,
   FirestoreCollection,
   FunctionsResponse,
-  IOrder,
+  Order,
   PAYMENTS,
 } from '@tastiest-io/tastiest-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -20,7 +20,7 @@ export interface UpdateOrderParams {
 }
 
 export type UpdateOrderReturn = {
-  order: IOrder | null;
+  order: Order | null;
 };
 
 /**
@@ -80,8 +80,8 @@ export default async function updateOrder(
       .limit(1)
       .get();
 
-    let order: IOrder;
-    snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
+    let order: Order;
+    snapshot.docs.forEach(doc => (order = doc.data() as Order));
 
     // Does the order belong to this user?
     if (order.userId && order?.userId !== userId) {
@@ -108,7 +108,7 @@ export default async function updateOrder(
     }
 
     // Start updating
-    const updatedOrder: IOrder = {
+    const updatedOrder: Order = {
       ...order,
     };
 
@@ -130,7 +130,7 @@ export default async function updateOrder(
       if (promo && validatePromo(order.deal, order.userId, promo)) {
         updatedOrder.promoCode = promoCode;
         updatedOrder.price.final = calculatePromoPrice(
-          order.price.gross,
+          order.price.subtotal,
           promo,
         );
       } else {

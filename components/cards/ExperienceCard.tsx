@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { Button } from '@tastiest-io/tastiest-ui';
-import { dlog, IPost } from '@tastiest-io/tastiest-utils';
+import { dlog, ExperiencePost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import clsx from 'clsx';
 import LineLimit from 'components/text/LineLimit';
@@ -9,7 +9,7 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { useHoverDirty, useMeasure, useVideo } from 'react-use';
 import { generateStaticURL } from 'utils/routing';
 
-interface Props extends IPost {
+interface Props extends ExperiencePost {
   // Compact omits description
   compact?: boolean;
 }

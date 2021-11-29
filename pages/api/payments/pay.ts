@@ -1,12 +1,11 @@
 import {
+  Booking,
   dlog,
   FirestoreCollection,
   FunctionsResponse,
   generateConfirmationCode,
   generateUserFacingId,
-  IBooking,
-  IOrder,
-  IRestaurant,
+  Order,
   PAYMENTS,
   reportInternalError,
   RestaurantDataApi,
@@ -14,6 +13,7 @@ import {
   transformPriceForStripe,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
+import { RestaurantDetails } from '@tastiest-io/tastiest-utils/dist/types/restaurant';
 import Analytics from 'analytics-node';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
@@ -26,7 +26,7 @@ export type PayParams = {
 };
 
 export type PayReturn = {
-  order: IOrder | null;
+  order: Order | null;
 };
 
 const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
@@ -79,8 +79,8 @@ export default async function pay(
       .limit(1)
       .get();
 
-    let order: IOrder;
-    snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
+    let order: Order;
+    snapshot.docs.forEach(doc => (order = doc.data() as Order));
 
     const userDataApi = new UserDataApi(firebaseAdmin, order?.userId);
     const userData = await userDataApi.getUserData();
@@ -201,24 +201,24 @@ export default async function pay(
       : financial?.commission?.followersRestaurantCut ?? PAYMENTS.RESTAURANT_CUT_DEFAULT_PC;
 
     // Internal measurements
-    const calculateTastiestPortion = (gross: number, final: number) => {
+    const calculateTastiestPortion = (subtotal: number, final: number) => {
       const portion =
-        order.price.gross * (1 - restaurantPayoutPercentage / 100) -
-        (gross - final);
+        order.price.subtotal * (1 - restaurantPayoutPercentage / 100) -
+        (subtotal - final);
       return portion;
     };
 
     // Restaurant pays the Stripe fee.
     const STRIPE_PAYMENT_FEE_PC = 0.033;
     const restaurantPortion =
-      order.price.gross * (restaurantPayoutPercentage / 100) -
+      order.price.subtotal * (restaurantPayoutPercentage / 100) -
       STRIPE_PAYMENT_FEE_PC * order.price.final;
 
     dlog('pay ➡️ restaurantPayoutPercentage:', restaurantPayoutPercentage);
     dlog('pay ➡️ restaurantPortion:', restaurantPortion);
 
     const tastiestPortion = calculateTastiestPortion(
-      order.price.gross,
+      order.price.subtotal,
       order.price.final,
     );
 
@@ -267,9 +267,9 @@ export default async function pay(
       );
 
       // Add to bookings
-      const booking: IBooking = {
+      const booking: Booking = {
         userId: order.userId,
-        restaurant: restaurantDetails as IRestaurant,
+        restaurant: restaurantDetails as RestaurantDetails,
         restaurantId: order.deal.restaurant.id,
         orderId: order.id,
         userFacingBookingId: generateUserFacingId(),
@@ -286,8 +286,10 @@ export default async function pay(
         cancelledAt: null,
         confirmationCode: generateConfirmationCode(),
         bookedForTimestamp: order.bookedForTimestamp,
+
         isConfirmationCodeVerified: false,
         isTest: process.env.NODE_ENV === 'development',
+        isSyncedWithBookingSystem: false,
       };
 
       await firebaseAdmin
@@ -318,7 +320,7 @@ export default async function pay(
           order_id: order.id,
           affiliation: '',
           total: order.price.final,
-          subtotal: order.price.gross,
+          subtotal: order.price.subtotal,
           revenue: tastiestPortion,
           shipping: 0,
           tax: 0,

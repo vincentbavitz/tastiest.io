@@ -3,7 +3,7 @@ import {
   HeartIcon,
   ShareIcon,
 } from '@tastiest-io/tastiest-icons';
-import { IPost } from '@tastiest-io/tastiest-utils';
+import { ExperiencePost } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -13,7 +13,7 @@ import React, { SyntheticEvent, useState } from 'react';
 import { useMeasure } from 'react-use';
 import { generateStaticURL } from 'utils/routing';
 
-interface Props extends Partial<IPost> {
+interface Props extends Partial<ExperiencePost> {
   isFavourite: boolean;
   onToggleFavourite: () => void;
 }

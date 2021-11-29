@@ -1,4 +1,4 @@
-import { FirestoreCollection, IOrder } from '@tastiest-io/tastiest-utils';
+import { FirestoreCollection, Order } from '@tastiest-io/tastiest-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { db } from 'utils/firebaseAdmin';
 
@@ -9,7 +9,7 @@ import { db } from 'utils/firebaseAdmin';
  */
 export default async function getOrder(
   request: NextApiRequest,
-  response: NextApiResponse<IOrder | string>,
+  response: NextApiResponse<Order | string>,
 ) {
   // Only allow GET
   if (request.method !== 'GET') {
@@ -32,8 +32,8 @@ export default async function getOrder(
       .limit(1)
       .get();
 
-    let order: IOrder;
-    snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
+    let order: Order;
+    snapshot.docs.forEach(doc => (order = doc.data() as Order));
 
     response.json(order);
   } catch (error) {

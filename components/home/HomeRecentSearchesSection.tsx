@@ -9,7 +9,7 @@ export function HomeRecentSearchesSection() {
   // Get recent searches from session / account data
   const { user } = useAuth();
   const { userData } = useUserData(user);
-  const { recentSearches = [] } = userData ?? {};
+  const recentSearches = userData?.metrics?.recentSearches ?? [];
 
   return (
     <>
