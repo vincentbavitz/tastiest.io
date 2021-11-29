@@ -208,8 +208,11 @@ export default async function pay(
       return portion;
     };
 
+    // Restaurant pays the Stripe fee.
+    const STRIPE_PAYMENT_FEE_PC = 0.033;
     const restaurantPortion =
-      order.price.gross * (restaurantPayoutPercentage / 100);
+      order.price.gross * (restaurantPayoutPercentage / 100) -
+      STRIPE_PAYMENT_FEE_PC * order.price.final;
 
     dlog('pay ➡️ restaurantPayoutPercentage:', restaurantPayoutPercentage);
     dlog('pay ➡️ restaurantPortion:', restaurantPortion);
