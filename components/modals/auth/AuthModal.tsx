@@ -47,7 +47,7 @@ export function AuthModal() {
           height: isMobile ? '100%' : '510px',
           minHeight: '500px',
         }}
-        className="relative flex flex-col -mt-8 justify-between"
+        className="relative flex flex-col justify-between"
       >
         {step === LoginFlowStep.SIGN_IN && (
           <AuthModalSignInContent setStep={setStep} />

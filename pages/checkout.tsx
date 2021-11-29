@@ -79,6 +79,8 @@ export const getServerSideProps = async (
 
   // Redirect if user somehow got to this state given no order request
   if (!order) {
+    dlog('no order');
+
     return {
       redirect: {
         // TODO -> Destination should be /city/cuisine/restaurant/slug
@@ -88,8 +90,13 @@ export const getServerSideProps = async (
     };
   }
 
+  dlog('checkout ➡️ userId:', userId);
+  dlog('checkout ➡️ order:', order);
+
   // Order belongs to this user?
   if (userId && order?.userId && order.userId !== userId) {
+    dlog('bad user id');
+
     return {
       redirect: {
         destination: '/',
@@ -101,6 +108,8 @@ export const getServerSideProps = async (
   // Order expired?
   const isExpired = order.createdAt + PAYMENTS.ORDER_EXPIRY_MS < Date.now();
   if (isExpired) {
+    dlog('checkout ➡️ isExpired:', isExpired);
+
     return {
       redirect: {
         // TODO -> Destination should be /city/cuisine/slug
@@ -112,6 +121,8 @@ export const getServerSideProps = async (
 
   // Order already paid? Redirect to thank-you page
   if (order.paidAt !== null) {
+    dlog('checkout ➡️ order.paidAt:', order.paidAt);
+
     return {
       redirect: {
         destination: `/thank-you?token=${token}`,

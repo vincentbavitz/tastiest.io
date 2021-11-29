@@ -1,4 +1,5 @@
 import {
+  dlog,
   FirestoreCollection,
   FunctionsResponse,
   generateConfirmationCode,
@@ -82,7 +83,8 @@ export default async function pay(
     snapshot.docs.forEach(doc => (order = doc.data() as IOrder));
 
     const userDataApi = new UserDataApi(firebaseAdmin, order?.userId);
-    const { details, paymentDetails } = await userDataApi.getUserData();
+    const userData = await userDataApi.getUserData();
+    const { details, paymentDetails } = userData;
 
     // Verify that the payment method is valid for Stripe
     const customerId = paymentDetails?.stripeCustomerId;
@@ -178,29 +180,44 @@ export default async function pay(
       },
     );
 
-    const RESTAURANT_PAYOUT_PC = 0.75;
     const restaurantDataApi = new RestaurantDataApi(
       firebaseAdmin,
       order.deal.restaurant.id,
     );
 
+    const {
+      details: restaurantDetails,
+      financial,
+    } = await restaurantDataApi.getRestaurantData();
+
+    // Set the payment portion based on follower status
+    const isFollowingRestaurant = userData.metrics.restaurantsFollowed?.some(
+      item => item.restaurantId === order.deal.restaurant.id,
+    );
+
+    // prettier-ignore
+    const restaurantPayoutPercentage = isFollowingRestaurant
+      ? financial?.commission?.followersRestaurantCut ?? PAYMENTS.RESTAURANT_CUT_FOLLOWERS_PC
+      : financial?.commission?.followersRestaurantCut ?? PAYMENTS.RESTAURANT_CUT_DEFAULT_PC;
+
     // Internal measurements
     const calculateTastiestPortion = (gross: number, final: number) => {
       const portion =
-        order.price.gross * (1 - RESTAURANT_PAYOUT_PC) - (gross - final);
+        order.price.gross * (1 - restaurantPayoutPercentage / 100) -
+        (gross - final);
       return portion;
     };
 
-    const restaurantPortion = order.price.gross * RESTAURANT_PAYOUT_PC;
+    const restaurantPortion =
+      order.price.gross * (restaurantPayoutPercentage / 100);
+
+    dlog('pay ➡️ restaurantPayoutPercentage:', restaurantPayoutPercentage);
+    dlog('pay ➡️ restaurantPortion:', restaurantPortion);
+
     const tastiestPortion = calculateTastiestPortion(
       order.price.gross,
       order.price.final,
     );
-
-    const {
-      details: restaurantDetails,
-      financial: { stripeConnectedAccount },
-    } = await restaurantDataApi.getRestaurantData();
 
     // The `confirm` parameter attempts to pay immediately & automatically
     const paymentIntent = await stripe.paymentIntents.create({
@@ -216,7 +233,7 @@ export default async function pay(
         amount: transformPriceForStripe(restaurantPortion),
         destination:
           process.env.NODE_ENV === 'production'
-            ? stripeConnectedAccount.id
+            ? financial.stripeConnectedAccount.id
             : process.env.STRIPE_TEST_CONNECTED_ACCOUNT_ID,
       },
       // Used to manage Stripe Webhooks like `onPaymentSuccessWebhook`

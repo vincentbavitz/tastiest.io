@@ -151,8 +151,10 @@ export default function LayoutRestaurant({
         <div className="absolute inset-0 z-20 bottom-2 flex flex-col items-center justify-end space-y-4">
           {/* Restaurant Name */}
           <h1 className="text-3xl font-medium sm:text-4xl text-primary font-primary">
-            {titleCase(restaurant.name)} -{' '}
-            {titleCase(restaurant.location.displayLocation)}
+            {titleCase(restaurant.name)}
+            {restaurant.location.displayLocation
+              ? ` - ${titleCase(restaurant.location.displayLocation)}`
+              : null}
           </h1>
 
           {/* Follow and Notifications */}

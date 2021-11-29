@@ -1,11 +1,9 @@
 import { BellOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button } from '@tastiest-io/tastiest-ui';
-import { IRestaurant } from '@tastiest-io/tastiest-utils';
+import { Button, ButtonGroup } from '@tastiest-io/tastiest-ui';
+import { dlog, IRestaurant } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
-import { InputGroup } from 'components/inputs/InputGroup';
 import useFollow from 'hooks/useFollow';
-import React, { useRef } from 'react';
-import { useHoverDirty } from 'react-use';
+import React from 'react';
 
 interface Props {
   restaurant: IRestaurant;
@@ -24,13 +22,12 @@ export default function FollowButton(props: Props) {
     notificationsLoading,
   } = useFollow(restaurant.id);
 
-  const ref = useRef(null);
-  const isHoveringFollowButton = useHoverDirty(ref);
+  dlog('FollowButton ➡️ restaurant.id:', restaurant.id);
 
   return (
     <div className="">
       {following ? (
-        <InputGroup>
+        <ButtonGroup>
           <Button loading={followLoading} onClick={unfollow}>
             Following
           </Button>
@@ -49,7 +46,7 @@ export default function FollowButton(props: Props) {
               />
             </div>
           </Button>
-        </InputGroup>
+        </ButtonGroup>
       ) : (
         <Button
           color={'light'}

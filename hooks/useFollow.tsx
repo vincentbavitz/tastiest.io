@@ -76,6 +76,9 @@ export default function useFollow(restaurantId: string) {
       },
     );
 
+    dlog('useFollow ➡️ success:', success);
+    dlog('useFollow ➡️ error:', error);
+
     setFollowLoading(false);
 
     if (success) {

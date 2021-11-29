@@ -6,7 +6,6 @@ import {
 import { Button } from '@tastiest-io/tastiest-ui';
 import {
   dlog,
-  formatCurrency,
   getMinsIntoDay,
   IDeal,
   IOrderRequest,
@@ -339,7 +338,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
             {submitting ? (
               <LoadingOutlined className="text-xl" />
             ) : (
-              <>£{formatCurrency(totalPrice)} — BUY NOW</>
+              <>BUY NOW</>
             )}
           </button>
         ) : null}
@@ -352,7 +351,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
             loading={submitting}
             onClick={toCheckout}
           >
-            £{formatCurrency(totalPrice)} — BUY NOW
+            BUY NOW
           </Button>
         ) : null}
       </div>

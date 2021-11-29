@@ -404,8 +404,14 @@ const OrderSummary = ({ order, paymentCard }: OrderSummaryProps) => {
       value: order.deal.name,
     },
     {
-      label: 'Date',
+      label: 'Payment Date',
       value: DateTime.fromMillis(order.paidAt).toFormat('DDD'),
+    },
+    {
+      label: 'Booked For',
+      value: DateTime.fromMillis(order.bookedForTimestamp).toFormat(
+        'h:mm a - d MMMM',
+      ),
     },
     {
       label: 'Payment method',

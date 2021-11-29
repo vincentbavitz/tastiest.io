@@ -42,9 +42,12 @@ export const AuthModalWrapper = (props: AuthModalWrapperProps) => {
   return (
     <>
       <div className="flex flex-col items-center flex-grow space-y-5">
-        <TastiestBrand type="full" />
+        <div className="-mt-6">
+          <TastiestBrand type="full" />
+        </div>
+
         <div className="w-full text-center">
-          <h1 className="text-2xl font-primary">{title}</h1>
+          <h1 className="text-2xl pt-4 leading-none font-primary">{title}</h1>
           {subtitle && (
             <h3 className="font-secondary font-semiobld">{subtitle}</h3>
           )}

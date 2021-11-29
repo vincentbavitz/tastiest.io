@@ -83,18 +83,19 @@ export default async function updateFollowStatus(
 
       if (alreadyFollowing && !notificationsTogggled) {
         response.json({
-          success: true,
-          data: { message: 'Already following' },
-          error: null,
+          success: false,
+          data: null,
+          error: 'Already following',
         });
         return;
       }
 
       // Update their following restaurants
       const updateUserData = async () => {
-        const restaurantsFollowed = userData.metrics.restaurantsFollowed.filter(
-          r => r.restaurantId !== restaurantId,
-        );
+        const restaurantsFollowed =
+          userData.metrics?.restaurantsFollowed?.filter(
+            r => r.restaurantId !== restaurantId,
+          ) ?? [];
 
         restaurantsFollowed.push({
           restaurantId,
@@ -126,7 +127,7 @@ export default async function updateFollowStatus(
         });
       };
 
-      Promise.all([updateUserData(), updateRestaurantData()]);
+      await Promise.all([updateUserData(), updateRestaurantData()]);
 
       response.json({
         success: true,
@@ -179,8 +180,8 @@ export default async function updateFollowStatus(
 
     response.json({
       success: false,
-      data: { order: null },
-      error,
+      data: null,
+      error: String(error),
     });
   }
 }

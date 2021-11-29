@@ -1,7 +1,8 @@
 import { ArrowUpOutlined } from '@ant-design/icons';
+import { useMap } from '@tastiest-io/tastiest-ui';
 import { IRestaurant } from '@tastiest-io/tastiest-utils';
 import { LocationIndictor } from 'components/LocationIndictor';
-import { useMap } from 'hooks/useMap';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import React from 'react';
 import { getGoogleMapLink } from 'utils/location';
 
@@ -14,7 +15,7 @@ export function ArticleWidgetMap({ location, restaurant }: Props) {
   useMap('map', {
     lat: restaurant.location.lat,
     lng: restaurant.location.lon,
-    zoom: 16,
+    zoom: 12,
     pitch: 0,
     markers: [
       {

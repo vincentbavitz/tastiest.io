@@ -1,5 +1,4 @@
 import {
-  dlog,
   minsIntoHumanTime,
   OpenTimesMetricDay,
   TIME,
@@ -41,11 +40,7 @@ export default function OpenTimes(props: Props) {
     restaurantId: restaurantId,
   });
 
-  const { data: openTimes } = useSWR<GetOpenTimesReturn>(swrURL, {
-    refreshInterval: 60000,
-  });
-
-  dlog('OpenTimes ➡️ openTimes:', openTimes);
+  const { data: openTimes } = useSWR<GetOpenTimesReturn>(swrURL);
 
   // If we have successive openTimes that are the same,
   // starting from Monday, list them as (for example)...
