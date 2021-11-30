@@ -7,7 +7,6 @@ import { DefaultSeo } from 'next-seo';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import React from 'react';
-import 'rsuite/dist/rsuite.min.css';
 import { METADATA } from '../constants';
 import { AuthProvider } from '../contexts/auth';
 import '../styles/style.scss';
