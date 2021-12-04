@@ -1,5 +1,7 @@
 // [slug].js
+
 import { CmsApi, dlog, ExperiencePost } from '@tastiest-io/tastiest-utils';
+import Analytics from 'analytics-node';
 import { ArticleSectionContent } from 'components/article/sections/ArticleSectionContent';
 import { YouTubeVideo } from 'components/YouTubeVideo';
 import { Layouts } from 'layouts/LayoutHandler';
@@ -9,7 +11,10 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { generateStaticURL } from 'utils/routing';
+import { v4 as uuid } from 'uuid';
 import { generateTitle } from '../../../../utils/metadata';
+
+const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
 
 interface IPath {
   params: {
@@ -69,6 +74,16 @@ export const getStaticProps = async ({ params }) => {
       notFound: true,
     };
   }
+
+  analytics.track({
+    event: 'Product Viewed',
+    // context: {  },
+    // userId: ,
+    anonymousId: uuid(),
+    properties: {
+      test_event_code: 'TEST50236',
+    },
+  });
 
   return {
     props: {

@@ -76,6 +76,11 @@ body {
   @apply bg-gray-200 bg-opacity-25;
 }
 
+// HorizontalScrollable
+.scrolling-touch {
+  -webkit-overflow-scrolling: touch;
+}
+
 // .__next {
 //   overflow-x: hidden;
 // }

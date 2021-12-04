@@ -90,7 +90,8 @@ export function CheckoutPaymentPanel(props: Props) {
 
         {isDesktop && (
           <>
-            <PromoCodeInput initialOrder={order} />
+            {/* Promocodes are causing payment issues when our profit is <0.00. Disable for now. */}
+            {/* <PromoCodeInput initialOrder={order} /> */}
 
             <hr className="bg-primary border-primary text-primary" />
 
@@ -124,7 +125,8 @@ export function CheckoutPaymentPanel(props: Props) {
 
       {!isDesktop && (
         <div className="flex flex-col pt-4 mb-10 space-y-3">
-          <PromoCodeInput initialOrder={order} />
+          {/* Promocodes are causing payment issues when our profit is <0.00. Disable for now. */}
+          {/* <PromoCodeInput initialOrder={order} /> */}
           <div className="w-full h-px border-b border-gray-300"></div>
           <div className="flex justify-between text-xl font-medium">
             <p>Total</p>
@@ -290,7 +292,7 @@ const PaymentErrorMessage = ({ order }: PaymentErrorMessageProps) => {
         <SupportIcon className="inline h-5 pr-1 fill-current stroke-current text-danger" />
         Still having trouble?{' '}
         <Link
-          href={`https://offers.tastiest.io/help?type=ORDER&userFacingOrderId=${order.userFacingOrderId}`}
+          href={`https://tastiest.io/help?type=ORDER&userFacingOrderId=${order.userFacingOrderId}`}
         >
           <a className="font-medium hover:underline">Contact support</a>
         </Link>
