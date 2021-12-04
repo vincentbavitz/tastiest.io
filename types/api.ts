@@ -9,4 +9,8 @@ export enum LocalEndpoint {
   UPDATE_FOLLOW_STATUS = '/api/restaurant/updateFollowStatus',
   GET_BOOKING_SLOTS = '/api/restaurant/getBookingSlots',
   GET_OPEN_TIMES = '/api/restaurant/getOpenTimes',
+
+  // Invites
+  VERIFY_HAS_ACCESS = '/api/invite/verifyHasAccess',
+  SUBMIT_TO_ZAPIER = '/api/invite/submitToZapier',
 }

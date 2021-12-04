@@ -43,3 +43,8 @@ export default function LayoutDefault({
     </LayoutWrapper>
   );
 }
+
+/**
+ * Was the experience smooth on your device?
+ *
+ */
