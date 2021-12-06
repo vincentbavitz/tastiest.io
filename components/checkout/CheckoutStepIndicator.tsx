@@ -1,7 +1,7 @@
 import { CheckOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
-import { ReactNode } from 'hoist-non-react-statics/node_modules/@types/react';
 import { useScreenSize } from 'hooks/useScreenSize';
+import { ReactNode } from 'react';
 import { CheckoutStep } from 'state/checkout';
 import { UI } from '../../constants';
 

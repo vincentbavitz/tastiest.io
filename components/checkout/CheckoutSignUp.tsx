@@ -4,6 +4,7 @@ import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
 import { AuthError, AuthErrorCode, AuthErrorMessageMap } from 'contexts/auth';
 import { useRegister } from 'hooks/auth/useRegister';
 import { useScreenSize } from 'hooks/useScreenSize';
+import { useTrack } from 'hooks/useTrack';
 import React, { useContext, useEffect, useState } from 'react';
 import { useToggle } from 'react-use';
 import { InputEmail } from '../inputs/InputEmail';
@@ -12,6 +13,7 @@ import { SignInTosInfo } from '../SignInTosInfo';
 import { AuthTabsContext, CheckoutSignInTabSelected } from './CheckoutAuthTabs';
 
 export function CheckoutSignUp() {
+  const { track } = useTrack();
   const { register, error: fetchError, submitting } = useRegister();
 
   const { isDesktop } = useScreenSize();
@@ -46,8 +48,8 @@ export function CheckoutSignUp() {
 
     if (user?.uid) {
       // Track sign up from checkout
-      window.analytics.track('User Signed Up', {
-        userId: user.uid,
+      track('User Signed Up', {
+        ...user,
       });
 
       return;

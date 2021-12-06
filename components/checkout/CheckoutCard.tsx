@@ -1,7 +1,7 @@
 import { Order } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
-import { ReactNode } from 'hoist-non-react-statics/node_modules/@types/react';
 import { useScreenSize } from 'hooks/useScreenSize';
+import { ReactNode } from 'react';
 
 interface CheckoutCardProps {
   order: Order;

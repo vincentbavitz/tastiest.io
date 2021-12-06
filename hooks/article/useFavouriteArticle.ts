@@ -1,4 +1,5 @@
 import { UserDataKey } from '@tastiest-io/tastiest-utils';
+import { useTrack } from 'hooks/useTrack';
 import { useDispatch } from 'react-redux';
 import { openAuthModal } from 'state/navigation';
 import { useAuth } from '../auth/useAuth';
@@ -6,6 +7,7 @@ import { useUserData } from '../useUserData';
 
 export function useFavouriteArticle() {
   const { user } = useAuth();
+  const { track } = useTrack();
   const { userData = {}, setUserData } = useUserData(user);
   const { isSignedIn } = useAuth();
   const dispatch = useDispatch();
@@ -34,7 +36,7 @@ export function useFavouriteArticle() {
     const firstName = userData?.details?.firstName ?? 'User';
     const lastName = userData?.details?.lastName;
     const name = `${firstName}${lastName ? ' ' + lastName : ''}`;
-    window.analytics.track('User removed article to favourites', {
+    track('User Removed Article from Favourites', {
       name,
       slug,
     });
@@ -50,7 +52,7 @@ export function useFavouriteArticle() {
     const firstName = userData?.details?.firstName ?? 'User';
     const lastName = userData?.details?.lastName;
     const name = `${firstName}${lastName ? ' ' + lastName : ''}`;
-    window.analytics.track('User added article to favourites', {
+    track('User Added Article to Favourites', {
       name,
       slug,
     });

@@ -1,12 +1,14 @@
 import { UserCredential } from '@firebase/auth-types';
 import { AuthContext, AuthError, AuthErrorMessageMap } from 'contexts/auth';
 import { LocalStorageItem } from 'contexts/tracking';
+import { useTrack } from 'hooks/useTrack';
 import { useContext, useState } from 'react';
 import { useFirebase } from 'react-redux-firebase';
 
 export const useSignIn = () => {
   const firebase = useFirebase();
   const { user } = useContext(AuthContext);
+  const { track } = useTrack();
 
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -53,8 +55,8 @@ export const useSignIn = () => {
       });
 
       // Track user sign in
-      window.analytics.track('User Signed In', {
-        userId: user.uid,
+      track('User Signed In', {
+        ...user,
       });
 
       return credential;

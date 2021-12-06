@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useFirestore } from 'react-redux-firebase';
 import { v4 as uuid } from 'uuid';
 import { useAuth } from './auth/useAuth';
+import { useTrack } from './useTrack';
 import { useUserData } from './useUserData';
 
 interface IRecommendationDetails {
@@ -34,6 +35,7 @@ interface IRecommendation extends IRecommendationDetails {
 }
 
 export function useFeedback() {
+  const { track } = useTrack();
   const firestore = useFirestore();
   const { user } = useAuth();
   const { userData = {} } = useUserData(user);
@@ -89,7 +91,7 @@ export function useFeedback() {
         .doc(uuid())
         .set(recommendation);
 
-      window.analytics.track('User Made a Recommendation', {
+      track('User Made a Recommendation', {
         name,
         ...recommendation,
       });

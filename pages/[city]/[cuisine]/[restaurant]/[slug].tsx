@@ -1,9 +1,7 @@
-// [slug].js
-
 import { CmsApi, dlog, ExperiencePost } from '@tastiest-io/tastiest-utils';
-import Analytics from 'analytics-node';
 import { ArticleSectionContent } from 'components/article/sections/ArticleSectionContent';
 import { YouTubeVideo } from 'components/YouTubeVideo';
+import { useTrack } from 'hooks/useTrack';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { NextSeo, ProductJsonLd } from 'next-seo';
@@ -11,10 +9,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { generateStaticURL } from 'utils/routing';
-import { v4 as uuid } from 'uuid';
 import { generateTitle } from '../../../../utils/metadata';
-
-const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
 
 interface IPath {
   params: {
@@ -75,16 +70,6 @@ export const getStaticProps = async ({ params }) => {
     };
   }
 
-  analytics.track({
-    event: 'Product Viewed',
-    // context: {  },
-    // userId: ,
-    anonymousId: uuid(),
-    properties: {
-      test_event_code: 'TEST50236',
-    },
-  });
-
   return {
     props: {
       post,
@@ -101,6 +86,7 @@ function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const { title, restaurant } = post;
 
   const router = useRouter();
+  const { track } = useTrack();
 
   // Get recommended posts
   const [recommendedPosts, setRecommendedPosts] = useState([]);
@@ -112,6 +98,12 @@ function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
   // Preload the checkout page
   useEffect(() => {
     router.prefetch('/checkout');
+  }, []);
+
+  useEffect(() => {
+    track('Product Viewed', {
+      ...post,
+    });
   }, []);
 
   // const segmentYouTubeSnippet = `
