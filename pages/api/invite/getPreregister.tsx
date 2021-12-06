@@ -1,22 +1,27 @@
-import { FirestoreCollection } from '@tastiest-io/tastiest-utils';
+import { dlog, FirestoreCollection } from '@tastiest-io/tastiest-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { db } from 'utils/firebaseAdmin';
 
 export type Preregister = {
   email: string;
   position: number;
-  ref: string;
-  referredFrom: string | null;
   variant: string;
   hasAccess: boolean; // switch on from Admin Panel or Firestore.
+  ref: string;
+  referredFrom: string | null;
+};
+
+export type GetPreregisterReturn = {
+  preregister: Preregister;
+  numSignUps: number;
 };
 
 /**
  * Requires `email` as a parameter.
  */
-export default async function verifyHasAccess(
+export default async function getPreregister(
   request: NextApiRequest,
-  response: NextApiResponse<Preregister | string>,
+  response: NextApiResponse<GetPreregisterReturn>,
 ) {
   // Only allow GET
   if (request.method !== 'GET') {
@@ -24,11 +29,14 @@ export default async function verifyHasAccess(
     return;
   }
 
+  dlog('getPreregister ➡️ dsdf:');
+
   const email = String(request.query.email).replace('%40', '@');
 
   // Order token is required
   if (!email?.length) {
-    response.status(401).json('A valid email address is required.');
+    response.statusMessage = 'A valid email address is required.';
+    response.status(401).end();
     return;
   }
 
@@ -38,16 +46,28 @@ export default async function verifyHasAccess(
       .doc(emailPrefix)
       .get();
 
+    if (!snapshot.exists) {
+      response.json(null);
+      return null;
+    }
+
     const preregister = { hasAccess: false, ...snapshot.data() } as Preregister;
 
+    const numSignUpsSnapshot = await db('preregisters' as FirestoreCollection)
+      .where('referredFrom', '==', emailPrefix)
+      .get();
+
+    const numSignUps = await numSignUpsSnapshot.size;
+
     if (preregister) {
-      response.json(preregister);
+      response.json({ preregister, numSignUps });
       return;
     }
 
     response.json(null);
   } catch (error) {
-    response.status(401).json('Unknown error');
+    response.statusMessage = 'Unknown error';
+    response.status(401).end();
     return;
   }
 }

@@ -8,7 +8,6 @@ import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import nookies from 'nookies';
 import {
   HomeInformationBook,
   HomeInformationLove,
@@ -23,19 +22,6 @@ import HomeHero from '/public/assets/page/home.svg';
 export const getServerSideProps = async (
   context: GetServerSidePropsContext<ParsedUrlQuery>,
 ) => {
-  // Get user ID from cookie.
-  const token = nookies.get(context)?.token;
-
-  // If they're logged in, redirect them to the main site
-  if (token) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
-
   // Get the reference email from the URL.
   const positionInLine = 1337;
 
@@ -53,6 +39,13 @@ const Invite = () => {
   const [showAccessModal, setShowAccessModal] = useState(false);
 
   const { submitPreregister } = useContext(EarlyAccessContext);
+  const [loading, setLoading] = useState(false);
+
+  const submit = async () => {
+    setLoading(true);
+    await submitPreregister(email);
+    setLoading(false);
+  };
 
   return (
     <>
@@ -123,7 +116,8 @@ const Invite = () => {
               </div>
 
               <Button
-                onClick={() => submitPreregister(email)}
+                onClick={submit}
+                loading={loading}
                 color="primary"
                 size="medium"
               >
@@ -215,13 +209,13 @@ const GetAccessModal = (props: GetAccessModalProps) => {
     setLoading(true);
 
     const response = await fetch(
-      `${LocalEndpoint.VERIFY_HAS_ACCESS}?email=${email}`,
+      `${LocalEndpoint.GET_PREREGISTER}?email=${email}`,
     );
 
     const body = await response.json();
     setLoading(false);
 
-    if (body.hasAccess && body.email === email) {
+    if (body.preregister.hasAccess && body.preregister.email === email) {
       setHasAccess(true);
     } else {
       setError(`You haven't been granted access just yet.`);

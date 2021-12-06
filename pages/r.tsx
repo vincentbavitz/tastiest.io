@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   // No valid redirectsd found
   if (!url) {
-    return { props: {}, redirect: '/' };
+    return { props: {}, redirect: { destination: '/' } };
   }
 
   // Fill final URL with our incoming UTMS

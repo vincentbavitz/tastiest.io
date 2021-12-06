@@ -1,7 +1,13 @@
 import { dlog, postFetch } from '@tastiest-io/tastiest-utils';
 import { NextRouter } from 'next/router';
 import { SubmitToZapierParams } from 'pages/api/invite/submitToZapier';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useFirebase } from 'react-redux-firebase';
 import { useLocalStorage } from 'react-use';
 import { LocalEndpoint } from 'types/api';
@@ -23,24 +29,9 @@ export interface EarlyAccessParams {
   setHasAccess: Dispatch<SetStateAction<boolean>>;
   referrer: string | null;
 
+  totalMembers: number;
   submitPreregister: (email: string) => void;
-
-  // utmMedium: string | null;
-  // utmSource: string | null;
-  // utmCampaign: string | null;
-  // pageVariant: string | null;
-  // ip: string | null;
 }
-
-// {
-//   "email": "tester33@bavitz.org",
-//   "ref": "tester",
-//   "utm_medium": "test_medium",
-//   "utm_source": "test_source",
-//   "page_variant": "test_variant",
-//   "utm_campaign": "test_campaign",
-//   "ip": "test-ip"
-//  }
 
 export const EarlyAccessContext = React.createContext(undefined);
 
@@ -70,6 +61,17 @@ export const EarlyAccessProvider = (params: EarlyAccessProviderParams) => {
     getIP();
   }, []);
 
+  const calculatePosition = () => {
+    const daysSinceLaunch = (Date.now() - STARTING_DATE_TIMESTAMP) / MS_IN_DAY;
+    const position = continuousCompound(
+      WAITING_LIST_INITIAL_SIZE,
+      WAITING_LIST_DAY_MULTIPLER,
+      daysSinceLaunch,
+    );
+
+    return Math.ceil(position);
+  };
+
   const [email, setEmail] = useState<string | null>(null);
   const [hasAccess, setHasAccess] = useLocalStorage('hasAccessLocal', false);
 
@@ -95,6 +97,8 @@ export const EarlyAccessProvider = (params: EarlyAccessProviderParams) => {
 
   const [pageVariant, setPageVariant] = useLocalStorage('pageVariant', 'a');
   const [ip, setIp] = useLocalStorage<string>('ip');
+
+  const totalMembers = useMemo(calculatePosition, []);
 
   // When query params update, sync
   useEffect(() => {
@@ -124,17 +128,6 @@ export const EarlyAccessProvider = (params: EarlyAccessProviderParams) => {
       router.push(newEndpoint);
     }
   }, [hasAccess]);
-
-  const calculatePosition = () => {
-    const daysSinceLaunch = (Date.now() - STARTING_DATE_TIMESTAMP) / MS_IN_DAY;
-    const position = continuousCompound(
-      WAITING_LIST_INITIAL_SIZE,
-      WAITING_LIST_DAY_MULTIPLER,
-      daysSinceLaunch,
-    );
-
-    return Math.ceil(position);
-  };
 
   const submitPreregister = async (_email: string) => {
     dlog('submitPreregister ➡️ started');
@@ -176,6 +169,8 @@ export const EarlyAccessProvider = (params: EarlyAccessProviderParams) => {
       referrer,
       ip,
     });
+
+    router.push(`/invite/thank-you?ref=${emailPrefix}`);
   };
 
   const value: EarlyAccessParams = {
@@ -184,14 +179,20 @@ export const EarlyAccessProvider = (params: EarlyAccessProviderParams) => {
     referrer,
     hasAccess,
     setHasAccess,
+    totalMembers,
     submitPreregister,
   };
 
   const onInvitePage = router.pathname.includes('invite');
 
-  dlog('invite ➡️ router.query:', router.query);
-  dlog('invite ➡️ onInvitePage:', onInvitePage);
-  dlog('invite ➡️ hasAccess:', hasAccess);
+  useEffect(() => {
+    dlog('invite ➡️ hasAccess:', hasAccess);
+    dlog('invite ➡️ onInvitePage:', onInvitePage);
+
+    if (!hasAccess && !onInvitePage) {
+      router.push('/invite');
+    }
+  }, [router, hasAccess, onInvitePage]);
 
   if (!hasAccess && !onInvitePage) {
     return null;

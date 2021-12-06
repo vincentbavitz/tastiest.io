@@ -11,6 +11,6 @@ export enum LocalEndpoint {
   GET_OPEN_TIMES = '/api/restaurant/getOpenTimes',
 
   // Invites
-  VERIFY_HAS_ACCESS = '/api/invite/verifyHasAccess',
+  GET_PREREGISTER = '/api/invite/getPreregister',
   SUBMIT_TO_ZAPIER = '/api/invite/submitToZapier',
 }
