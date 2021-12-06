@@ -15,7 +15,7 @@ import '../styles/style.scss';
 function App({ Component, pageProps, router }: AppProps) {
   return (
     <AuthProvider>
-      <AmbianceProvider>
+      <AmbianceProvider router={router}>
         <EarlyAccessProvider router={router}>
           <ScreenProvider>
             <LoadingProvider>

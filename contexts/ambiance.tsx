@@ -1,4 +1,5 @@
-import { useRouter } from 'next/router';
+import Head from 'next/head';
+import { NextRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { Provider as StoreProvider } from 'react-redux';
 import {
@@ -27,9 +28,12 @@ const rrfProps: ReactReduxFirebaseProviderProps = {
   createFirestoreInstance,
 };
 
-const AmbianceProvider = ({ children }) => {
-  const router = useRouter();
+interface AmbianceProviderProps {
+  router: NextRouter;
+  children: any;
+}
 
+const AmbianceProvider = ({ router, children }: AmbianceProviderProps) => {
   const handleLocationChange = url => {
     // Open login modal from URL params
     if (METADATA.URL_SIGN_IN_REGEX.test(url)) {
@@ -49,12 +53,36 @@ const AmbianceProvider = ({ children }) => {
     return () => router.events.off('routeChangeComplete', handleLocationChange);
   }, []);
 
+  const renderTawkToSnippet = () =>
+    router.pathname.includes('invite')
+      ? null
+      : `
+    <!--Start of Tawk.to Script-->
+      var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+      (function(){
+      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+      s1.async=true;
+      s1.src='https://embed.tawk.to/60cb997d65b7290ac63685ba/1f8dkv4qa';
+      s1.charset='UTF-8';
+      s1.setAttribute('crossorigin','*');
+      s0.parentNode.insertBefore(s1,s0);
+      })();
+    <!--End of Tawk.to Script-->
+  `;
+
   return (
-    <StoreProvider store={store}>
-      <ReactReduxFirebaseProvider {...rrfProps}>
-        <TrackingProvider>{children}</TrackingProvider>
-      </ReactReduxFirebaseProvider>
-    </StoreProvider>
+    <>
+      <Head>
+        {/* Inject TawkTo */}
+        <script dangerouslySetInnerHTML={{ __html: renderTawkToSnippet() }} />
+      </Head>
+
+      <StoreProvider store={store}>
+        <ReactReduxFirebaseProvider {...rrfProps}>
+          <TrackingProvider>{children}</TrackingProvider>
+        </ReactReduxFirebaseProvider>
+      </StoreProvider>
+    </>
   );
 };
 

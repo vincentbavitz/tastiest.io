@@ -76,11 +76,11 @@ const Invite = () => {
 
       <div
         style={{ minHeight: '100vh' }}
-        className="relative bg-white text-primary pb-12 font-secondary"
+        className="relative bg-light text-primary pb-12 font-secondary"
       >
         <div className="absolute top-6 z-50 right-6">
           <Button onClick={() => setShowAccessModal(true)} color="light">
-            I have access - let me in
+            I have early access
           </Button>
         </div>
 
@@ -228,12 +228,16 @@ const GetAccessModal = (props: GetAccessModalProps) => {
         style={{ minWidth: '300px', maxWidth: '90vw' }}
         className="flex flex-col space-y-3 items-center"
       >
-        <h2 className="text-lg font-medium">Enter your early-access email</h2>
+        <TastiestBrand size={10} type="full" />
+        <h2 className="text-lg mt-3 font-medium">
+          Please enter the email address that has been given early access to
+          Tastiest
+        </h2>
 
         <Input value={email} onValueChange={setEmail} placeholder="Email" />
 
         <Button loading={loading} onClick={getAccess}>
-          Enter
+          Access Tastiest
         </Button>
 
         {error ? (

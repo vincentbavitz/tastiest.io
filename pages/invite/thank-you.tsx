@@ -117,7 +117,6 @@ const ThankYou = (
     <>
       <Head>
         {/* Facebook Pixel on Thank-You Submission */}
-
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -130,7 +129,8 @@ const ThankYou = (
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
             fbq('init', '2772804906283869');
-            fbq('track', 'PageView');   
+            fbq('track', 'PageView');
+            fbq('track', 'Lead');
             `,
           }}
         />
@@ -149,11 +149,19 @@ const ThankYou = (
             `,
           }}
         ></script>
+
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            gtag('event', 'conversion', {'send_to': 'AW-347511954/U-F6CNLc4P4CEJK52qUB'});        
+            `,
+          }}
+        />
       </Head>
 
       <div
         style={{ minHeight: '100vh' }}
-        className="relative bg-white text-primary pt-12 font-secondary flex flex-col justify-between"
+        className="relative bg-light text-primary pt-12 font-secondary flex flex-col justify-between"
       >
         <Contained>
           <div

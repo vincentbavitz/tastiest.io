@@ -1,7 +1,6 @@
 import {
   dlog,
   RestaurantDataApi,
-  RestaurantDataKey,
   TimeRange,
   toZeroIndexedDays,
   WeekOpenTimes,
@@ -23,6 +22,8 @@ export interface GetBookingSlotsReturn {
   slots: Slot[];
   openTimes: WeekOpenTimes;
   seatingDuration: number; // in minutes
+  availableBookingSlots: string[];
+  lastBookingSlotsSync: number;
 }
 
 /**
@@ -69,9 +70,7 @@ export default async function getBookingSlots(
     );
 
     // Days are dictated by open times.
-    const metrics = await restaurantDataApi.getRestaurantField(
-      RestaurantDataKey.METRICS,
-    );
+    const { metrics, realtime } = await restaurantDataApi.getRestaurantData();
 
     const slots: Slot[] = [];
     const seatingDuration = metrics?.seatingDuration ?? 60;
@@ -135,6 +134,8 @@ export default async function getBookingSlots(
       slots,
       seatingDuration,
       openTimes: metrics.openTimes,
+      availableBookingSlots: realtime.availableBookingSlots,
+      lastBookingSlotsSync: realtime.lastBookingSlotsSync,
     });
   } catch (error) {
     response.statusMessage = 'Unknown error';

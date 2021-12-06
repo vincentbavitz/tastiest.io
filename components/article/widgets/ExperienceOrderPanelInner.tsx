@@ -122,6 +122,8 @@ const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
     totalPrice,
     toCheckout,
     submitting,
+    availableBookingSlots: data.availableBookingSlots,
+    lastBookingSlotsSync: data.lastBookingSlotsSync,
   };
 };
 
@@ -145,6 +147,8 @@ export default function ExperienceOrderPanelInner(props: Props) {
     totalPrice,
     toCheckout,
     submitting,
+    availableBookingSlots,
+    lastBookingSlotsSync,
   } = useOrderPanel(deal, slug);
 
   const sizes = useMemo(() => {
@@ -264,6 +268,12 @@ export default function ExperienceOrderPanelInner(props: Props) {
               ? selectedDay.times.map((time, key) => {
                   const disabled =
                     selectedDay.daysFromToday === 0 && getMinsIntoDay() > time;
+
+                  // Or if the restaurant's booking system has already taken this slot.
+                  availableBookingSlots.forEach(datetime => {
+                    const time = DateTime.fromISO(datetime);
+                    time;
+                  });
 
                   return (
                     <XScrollSelectItem
