@@ -1,6 +1,7 @@
 import Favicon from 'components/Favicon';
 import Fonts from 'components/Fonts';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
+import Script from 'next/script';
 import React from 'react';
 
 export default class CustomDocument extends Document<any> {
@@ -48,35 +49,40 @@ export default class CustomDocument extends Document<any> {
       <Html lang="en">
         <Head>
           {/* Inject Segment */}
-          <script
+          <Script
+            strategy="afterInteractive"
             dangerouslySetInnerHTML={{ __html: this.renderSegmentSnippet() }}
           />
 
           {/* Inject HotJar */}
-          <script
+          <Script
+            strategy="afterInteractive"
             dangerouslySetInnerHTML={{ __html: this.renderHotJarSnippet() }}
           />
 
           {/* Inject Google Optimize */}
-          <script
+          <Script
+            strategy="afterInteractive"
             src={`https://www.googleoptimize.com/optimize.js?id=${process.env.NEXT_PUBLIC_GOOGLE_OPTIMIZE_ID}`}
-          ></script>
+          />
 
           {/* Google Tag Manager */}
-          <script
-            async
+          <Script
+            strategy="afterInteractive"
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID}`}
-          ></script>
+          />
 
           {/* Google Tag Manager anti-flicker */}
-          <script
+          <Script
+            strategy="afterInteractive"
             dangerouslySetInnerHTML={{
               __html: this.renderGTMAntiFlickerSnippet(),
             }}
-          ></script>
+          />
 
           {/* Google Analytics */}
-          <script
+          <Script
+            strategy="afterInteractive"
             dangerouslySetInnerHTML={{
               __html: this.renderGoogleAnalyticsSnippet(),
             }}

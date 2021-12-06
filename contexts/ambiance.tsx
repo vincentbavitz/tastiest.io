@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { NextRouter } from 'next/router';
+import Script from 'next/script';
 import React, { useEffect } from 'react';
 import { Provider as StoreProvider } from 'react-redux';
 import {
@@ -55,7 +56,7 @@ const AmbianceProvider = ({ router, children }: AmbianceProviderProps) => {
 
   const renderTawkToSnippet = () =>
     router.pathname.includes('invite')
-      ? null
+      ? ''
       : `
     <!--Start of Tawk.to Script-->
       var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
@@ -74,7 +75,10 @@ const AmbianceProvider = ({ router, children }: AmbianceProviderProps) => {
     <>
       <Head>
         {/* Inject TawkTo */}
-        <script dangerouslySetInnerHTML={{ __html: renderTawkToSnippet() }} />
+        <Script
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{ __html: renderTawkToSnippet() }}
+        />
       </Head>
 
       <StoreProvider store={store}>

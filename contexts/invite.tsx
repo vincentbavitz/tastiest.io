@@ -198,32 +198,35 @@ export const EarlyAccessProvider = (params: EarlyAccessProviderParams) => {
     return null;
   }
 
+  // <Head>
+  //       {/* <!-- Global site tag (gtag.js) - Google Ads: 347511954 --> */}
+  //       <Script
+  //         strategy="afterInteractive"
+  //         src="https://www.googletagmanager.com/gtag/js?id=AW-347511954"
+  //       />
+  //       <Script
+  //         strategy="afterInteractive"
+  //         dangerouslySetInnerHTML={{
+  //           __html: `
+  //         window.dataLayer = window.dataLayer || [];
+  //         function gtag(){dataLayer.push(arguments);}
+  //         gtag('js', new Date());
+  //         gtag('config', 'AW-347511954');
+  //       `,
+  //         }}
+  //       />
+
+  //       {/* Klaviyo */}
+  //       <Script
+  //         strategy="afterInteractive"
+  //         type="text/javascript"
+  //         src="//static.klaviyo.com/onsite/js/klaviyo.js?company_id=VRnHJC"
+  //       />
+  //     </Head>
+
   return (
     <EarlyAccessContext.Provider value={value}>
       {children}
-
-      {/* <!-- Global site tag (gtag.js) - Google Ads: 347511954 --> */}
-      <script
-        async
-        src="https://www.googletagmanager.com/gtag/js?id=AW-347511954"
-      ></script>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'AW-347511954');
-        `,
-        }}
-      />
-
-      {/* Klaviyo */}
-      <script
-        async
-        type="text/javascript"
-        src="//static.klaviyo.com/onsite/js/klaviyo.js?company_id=VRnHJC"
-      ></script>
     </EarlyAccessContext.Provider>
   );
 };

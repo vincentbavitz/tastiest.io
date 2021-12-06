@@ -13,6 +13,7 @@ import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import Script from 'next/script';
 import { Preregister } from 'pages/api/invite/getPreregister';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useContext, useMemo, useState } from 'react';
@@ -117,7 +118,8 @@ const ThankYou = (
     <>
       <Head>
         {/* Facebook Pixel on Thank-You Submission */}
-        <script
+        <Script
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
             !function(f,b,e,v,n,t,s)
@@ -135,11 +137,12 @@ const ThankYou = (
           }}
         />
 
-        <script
-          async
+        <Script
+          strategy="afterInteractive"
           src="https://www.googletagmanager.com/gtag/js?id=AW-347511954"
-        ></script>
-        <script
+        />
+        <Script
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
             window.dataLayer = window.dataLayer || [];
@@ -148,9 +151,10 @@ const ThankYou = (
             gtag('config', 'AW-347511954');
             `,
           }}
-        ></script>
+        />
 
-        <script
+        <Script
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
             gtag('event', 'conversion', {'send_to': 'AW-347511954/U-F6CNLc4P4CEJK52qUB'});        
