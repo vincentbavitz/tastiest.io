@@ -11,5 +11,6 @@ interface IAnalytics extends SegmentAnalytics.AnalyticsJS {
 declare global {
   interface Window {
     analytics: IAnalytics;
+    dataLayer: any;
   }
 }

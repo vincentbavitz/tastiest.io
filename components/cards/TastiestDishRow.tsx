@@ -38,7 +38,7 @@ export default function TastiestDishRow(props: TastiestDish) {
             objectFit="cover"
             objectPosition="top"
             className={clsx(
-              'transform duration-500',
+              'transform duration-500 rounded-lg',
               isHovering ? 'scale-105' : '',
             )}
           />

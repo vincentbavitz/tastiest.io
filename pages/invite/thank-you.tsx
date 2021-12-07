@@ -114,6 +114,8 @@ const ThankYou = (
     window.open(mailToUrl, '_blank');
   };
 
+  // fbq
+
   return (
     <>
       <Head>
@@ -133,7 +135,7 @@ const ThankYou = (
             fbq('init', '2772804906283869');
             fbq('track', 'PageView');
             fbq('track', 'Lead');
-            `,
+          `,
           }}
         />
 
@@ -149,7 +151,7 @@ const ThankYou = (
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'AW-347511954');
-            `,
+          `,
           }}
         />
 
@@ -157,8 +159,16 @@ const ThankYou = (
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
-            gtag('event', 'conversion', {'send_to': 'AW-347511954/U-F6CNLc4P4CEJK52qUB'});        
-            `,
+            gtag('event', 'conversion', {'send_to': 'AW-347511954/U-F6CNLc4P4CEJK52qUB'});
+          `,
+          }}
+        />
+
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            gtag('event', 'conversion', {'send_to': 'AW-347511954/U-F6CNLc4P4CEJK52qUB'});
+          `,
           }}
         />
       </Head>
@@ -265,14 +275,6 @@ const ThankYou = (
           />
         </div>
       </div>
-
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-          gtag('event', 'conversion', {'send_to': 'AW-347511954/U-F6CNLc4P4CEJK52qUB'});
-          `,
-        }}
-      />
     </>
   );
 };

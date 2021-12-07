@@ -1,5 +1,4 @@
 export interface ICheckout {
-  onCheckoutPage: boolean;
   isPaymentProcessing: boolean;
 }
 
@@ -10,7 +9,6 @@ export enum CheckoutStep {
 }
 
 export const initialCheckoutState: ICheckout = {
-  onCheckoutPage: false,
   isPaymentProcessing: false,
 };
 

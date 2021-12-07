@@ -151,16 +151,16 @@ const RestaurantPage = (
 
       <NextSeo
         title={generateTitle(restaurant.name)}
-        description={`The Tastiest deals at ${restaurant.name}`}
+        description={restaurant.meta.description}
         openGraph={{
           title: generateTitle(restaurant.name),
-          description: `The Tastiest deals at ${restaurant.name}`,
+          description: restaurant.meta.description,
           images: [
             {
               url: restaurant.meta?.image?.url,
               width: 1200,
               height: 630,
-              alt: `Tastiest's partner ${restaurant.name}`,
+              alt: restaurant.meta.description,
             },
           ],
         }}

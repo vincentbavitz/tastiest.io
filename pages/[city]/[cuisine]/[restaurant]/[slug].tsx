@@ -144,10 +144,10 @@ function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
 
       <NextSeo
         title={generateTitle(title)}
-        description={post.description}
+        description={post.meta.description}
         openGraph={{
           title: generateTitle(title),
-          description: post.description,
+          description: post.meta.description,
           images: [
             {
               url: post.meta?.image?.url,

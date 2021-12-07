@@ -23,6 +23,7 @@
     "@contentful/rich-text-types": "^14.1.2",
     "@headlessui/react": "^1.4.2",
     "@segment/analytics.js-core": "^4.1.11",
+    "@segment/snippet": "^4.15.3",
     "@stripe/react-stripe-js": "^1.2.2",
     "@stripe/stripe-js": "^1.12.1",
     "@svgr/cli": "^5.5.0",
