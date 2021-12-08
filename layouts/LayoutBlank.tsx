@@ -16,6 +16,12 @@ export default function LayoutBlank({
     }
   };
 
+  const handleOnGtagLoad = () => {
+    window.gtag('event', 'conversion', {
+      send_to: 'AW-347511954/U-F6CNLc4P4CEJK52qUB',
+    });
+  };
+
   return (
     <>
       <Head>
@@ -53,17 +59,10 @@ export default function LayoutBlank({
             gtag('config', 'AW-347511954');
           `,
           }}
-        />
-
-        <Script
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-            gtag('event', 'conversion', {'send_to': 'AW-347511954/U-F6CNLc4P4CEJK52qUB'});
-          `,
-          }}
+          onLoad={handleOnGtagLoad}
         />
       </Head>
+
       <div id="modal-root" className="absolute"></div>
       <Component {...pageProps} />
     </>

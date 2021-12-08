@@ -13,5 +13,6 @@ declare global {
     analytics: IAnalytics;
     dataLayer: any;
     fbq: any;
+    gtag: any;
   }
 }
