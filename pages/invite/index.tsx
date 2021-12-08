@@ -6,7 +6,9 @@ import { EarlyAccessContext } from 'contexts/invite';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSidePropsContext } from 'next';
+import Head from 'next/head';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import Script from 'next/script';
 import {
   HomeInformationBook,
@@ -15,7 +17,7 @@ import {
   HomeInformationShare,
 } from 'public/assets/page/home';
 import { ParsedUrlQuery } from 'querystring';
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { LocalEndpoint } from 'types/api';
 import HomeHero from '/public/assets/page/home.svg';
 
@@ -33,6 +35,7 @@ export const getServerSideProps = async (
 };
 
 const Invite = () => {
+  const router = useRouter();
   const { isMobile, isTablet, isDesktop } = useScreenSize();
 
   const [email, setEmail] = useState<string>(null);
@@ -47,26 +50,32 @@ const Invite = () => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    router.prefetch('/thank-you/invite');
+  }, []);
+
   return (
     <>
-      {/* Invite Facebook Pixel */}
-      <Script
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '2772804906283869');
-        fbq('track', 'PageView');
-      `,
-        }}
-      />
+      <Head>
+        {/* Invite Facebook Pixel */}
+        <Script
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '2772804906283869');
+            fbq('track', 'PageView');
+            `,
+          }}
+        />
+      </Head>
 
       <GetAccessModal
         show={showAccessModal}
@@ -86,7 +95,7 @@ const Invite = () => {
         <Contained>
           <div className="flex flex-col space-y-10 items-center text-center pt-20">
             <div>
-              <TastiestBrand type="initial" size={10} />
+              <TastiestBrand type="full" size={10} />
 
               <h2 className="text-xl tracking-wide mt-4 leading-none">
                 Exceptional food experiences in London.
@@ -228,7 +237,10 @@ const GetAccessModal = (props: GetAccessModalProps) => {
         style={{ minWidth: '300px', maxWidth: '90vw' }}
         className="flex flex-col space-y-3 items-center"
       >
-        <TastiestBrand size={10} type="full" />
+        <div className="pb-2">
+          <TastiestBrand size={10} type="initial-ring" />
+        </div>
+
         <h2 className="text-lg mt-3 font-medium">
           Please enter the email address that has been given early access to
           Tastiest

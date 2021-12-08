@@ -12,7 +12,7 @@ export function RestaurantMap({ location }: Props) {
     lat: location.lat,
     lng: location.lon,
     pitch: 0,
-    zoom: 12,
+    zoom: 14,
     markers: [
       {
         lat: location.lat,

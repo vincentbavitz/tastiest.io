@@ -114,8 +114,6 @@ const ThankYou = (
     window.open(mailToUrl, '_blank');
   };
 
-  // fbq
-
   return (
     <>
       <Head>
@@ -157,14 +155,6 @@ const ThankYou = (
 
         <Script
           strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-            gtag('event', 'conversion', {'send_to': 'AW-347511954/U-F6CNLc4P4CEJK52qUB'});
-          `,
-          }}
-        />
-
-        <script
           dangerouslySetInnerHTML={{
             __html: `
             gtag('event', 'conversion', {'send_to': 'AW-347511954/U-F6CNLc4P4CEJK52qUB'});
