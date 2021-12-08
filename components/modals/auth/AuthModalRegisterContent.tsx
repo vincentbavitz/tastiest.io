@@ -4,7 +4,7 @@ import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
 import { useRegister } from 'hooks/auth/useRegister';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { AUTH, METADATA } from '../../../constants';
+import { AUTH, METADATA, REGEX } from '../../../constants';
 import { ContentElementProps, LoginFlowStep } from './AuthModal';
 import { ContentError } from './AuthModalContentError';
 import { ContentSubtext } from './AuthModalContentSubtext';
@@ -79,7 +79,7 @@ export const AuthModalRegisterContent = ({ setStep }: ContentElementProps) => {
             message: 'Please enter your email',
           },
           pattern: {
-            value: /^[\w]{1,30}@[\w\-_]{1,30}\.[a-zA-Z]{2,10}(\.[a-zA-Z]{2,10})?$/,
+            value: REGEX.EMAIL,
             message: 'Please enter a valid email address',
           },
         }}

@@ -5,7 +5,7 @@ import fetch from 'node-fetch';
 
 const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
 
-export interface SubmitToZapierParams {
+export interface SubmitWaitlistToZapierParams {
   email: string;
   utm_medium: string;
   utm_source: string;
@@ -17,7 +17,7 @@ export interface SubmitToZapierParams {
 
 /**
  */
-export default async function submitToZapier(
+export default async function submitWaitlistToZapier(
   request: NextApiRequest,
   response: NextApiResponse<FunctionsResponse>,
 ) {
@@ -28,7 +28,7 @@ export default async function submitToZapier(
   }
 
   // Get body as JSON or raw
-  let body;
+  let body: SubmitWaitlistToZapierParams;
   try {
     body = JSON.parse(request.body);
   } catch (e) {

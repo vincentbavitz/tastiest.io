@@ -7,6 +7,7 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import React, { useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
+import { REGEX } from '../constants';
 
 type FormData = {
   email: string;
@@ -75,7 +76,7 @@ export function SuggestRestaurant() {
         message: 'Please enter your email',
       },
       pattern: {
-        value: /^[\w]{1,30}@[\w\-_]{1,30}\.[a-zA-Z]{2,10}(\.[a-zA-Z]{2,10})?$/,
+        value: REGEX.EMAIL,
         message: 'Please enter a valid email',
       },
     },

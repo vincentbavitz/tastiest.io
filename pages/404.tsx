@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { Page404Hero } from 'public/assets/page';
 import React, { useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
-import { UI } from '../constants';
+import { REGEX, UI } from '../constants';
 import { generateTitle } from '../utils/metadata';
 
 type FormData = {
@@ -103,7 +103,7 @@ function Tastiest404() {
         message: 'Please enter your email',
       },
       pattern: {
-        value: /^[\w]{1,30}@[\w\-_]{1,30}\.[a-zA-Z]{2,10}(\.[a-zA-Z]{2,10})?$/,
+        value: REGEX.EMAIL,
         message: 'Please enter a valid email',
       },
     },

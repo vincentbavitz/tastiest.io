@@ -1,6 +1,6 @@
 import { dlog, postFetch } from '@tastiest-io/tastiest-utils';
 import { useRouter } from 'next/router';
-import { SubmitToZapierParams } from 'pages/api/invite/submitToZapier';
+import { SubmitWaitlistToZapierParams } from 'pages/api/invite/submitWaitlistToZapier';
 import React, {
   Dispatch,
   SetStateAction,
@@ -28,6 +28,10 @@ export interface EarlyAccessParams {
   setEmail: React.Dispatch<React.SetStateAction<string>>;
   setHasAccess: Dispatch<SetStateAction<boolean>>;
   referrer: string | null;
+
+  utmMedium: string | null;
+  utmSource: string | null;
+  utmCampaign: string | null;
 
   totalMembers: number;
   submitPreregister: (email: string) => void;
@@ -121,9 +125,13 @@ export const EarlyAccessProvider = ({
       router.push('/');
     }
 
-    const newEndpoint = router.pathname.includes('invite/thank-you')
-      ? `/invite/thank-you${window.location.search}`
-      : `/invite${window.location.search}`;
+    // prettier-ignore
+    const subpath = 
+      router.pathname.includes('invite/thank-you') ? '/invite/thank-you' :
+      router.pathname.includes('recommend') ? '/recommend' : 
+      '/invite';
+
+    const newEndpoint = `${subpath}${window.location.search}`;
 
     if (!hasAccess) {
       router.push(newEndpoint);
@@ -161,15 +169,18 @@ export const EarlyAccessProvider = ({
     }
 
     // Send event to Zapier.
-    await postFetch<SubmitToZapierParams>(LocalEndpoint.SUBMIT_TO_ZAPIER, {
-      email: _email,
-      utm_medium: utmMedium,
-      utm_source: utmSource,
-      utm_campaign: utmCampaign,
-      page_variant: pageVariant,
-      referrer,
-      ip,
-    });
+    await postFetch<SubmitWaitlistToZapierParams>(
+      LocalEndpoint.SUBMIT_WAITLIST_TO_ZAPIER,
+      {
+        email: _email,
+        utm_medium: utmMedium,
+        utm_source: utmSource,
+        utm_campaign: utmCampaign,
+        page_variant: pageVariant,
+        referrer,
+        ip,
+      },
+    );
 
     router.push(`/invite/thank-you?ref=${emailPrefix}`);
   };
@@ -182,9 +193,13 @@ export const EarlyAccessProvider = ({
     setHasAccess,
     totalMembers,
     submitPreregister,
+    utmMedium,
+    utmSource,
+    utmCampaign,
   };
 
-  const onInvitePage = router.pathname.includes('invite');
+  const onInvitePage =
+    router.pathname.includes('invite') || router.pathname.includes('recommend');
 
   useEffect(() => {
     dlog('invite ➡️ hasAccess:', hasAccess);
