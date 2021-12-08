@@ -14,6 +14,7 @@ const nextConfig = {
     };
   },
   webpack5: true,
+  // swcMinify: true,
   experimental: {
     jsconfigPaths: true,
   },

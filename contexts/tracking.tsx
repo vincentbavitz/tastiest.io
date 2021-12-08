@@ -3,7 +3,6 @@ import { renderGTMAntiFlickerSnippet, renderGTMSnippet } from 'lib/gtm';
 import { renderHotJarSnippet } from 'lib/hotjar';
 import { renderSegmentSnippet } from 'lib/segment';
 import { renderTawkToSnippet } from 'lib/tawkto';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
 import React, { useEffect } from 'react';
@@ -35,60 +34,65 @@ const TrackingProvider = ({ children }: TrackingContextParams) => {
 
   return (
     <TrackingContext.Provider value={''}>
-      <Head>
-        {/* Inject Segment */}
-        <Script
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{ __html: renderSegmentSnippet() }}
-          onLoad={() => {
-            // Analytics is automatically opted in. They can leave otherwise.
-            window.analytics?.on();
-            handleLocationChange(router.route);
-          }}
-        />
+      {/* Inject Segment */}
+      <Script
+        id="segment-snippet"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: renderSegmentSnippet() }}
+        onLoad={() => {
+          // Analytics is automatically opted in. They can leave otherwise.
+          window.analytics?.on();
+          handleLocationChange(router.route);
+        }}
+      />
 
-        {/* Inject Google Tag Manager */}
-        <Script
-          strategy="afterInteractive"
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID}`}
-        />
-        <Script
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: renderGTMSnippet(),
-          }}
-        />
+      {/* Inject Google Tag Manager */}
+      <Script
+        id="gtm-loader-snippet"
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID}`}
+      />
+      <Script
+        id="gtm-snippet"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: renderGTMSnippet(),
+        }}
+      />
 
-        {/* Inject Google Tag Manager Anti-Flicker */}
-        <Script
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: renderGTMAntiFlickerSnippet(),
-          }}
-        />
+      {/* Inject Google Tag Manager Anti-Flicker */}
+      <Script
+        id="gtm-anti-flicker-snippet"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: renderGTMAntiFlickerSnippet(),
+        }}
+      />
 
-        {/* Inject Google Analytics */}
-        <Script
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: renderGoogleAnalyticsSnippet(),
-          }}
-        />
+      {/* Inject Google Analytics */}
+      <Script
+        id="ganalytics-snippet"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: renderGoogleAnalyticsSnippet(),
+        }}
+      />
 
-        {/* Inject HotJar */}
+      {/* Inject HotJar */}
+      <Script
+        id="hotjar-snippet"
+        strategy="lazyOnload"
+        dangerouslySetInnerHTML={{ __html: renderHotJarSnippet() }}
+      />
+
+      {/* Inject TawkTo */}
+      {router.pathname.includes('invite') ? null : (
         <Script
+          id="tawkto-snippet"
           strategy="lazyOnload"
-          dangerouslySetInnerHTML={{ __html: renderHotJarSnippet() }}
+          dangerouslySetInnerHTML={{ __html: renderTawkToSnippet() }}
         />
-
-        {/* Inject TawkTo */}
-        {router.pathname.includes('invite') ? null : (
-          <Script
-            strategy="lazyOnload"
-            dangerouslySetInnerHTML={{ __html: renderTawkToSnippet() }}
-          />
-        )}
-      </Head>
+      )}
 
       {/* Inject Google Optimize */}
       {/* <Script

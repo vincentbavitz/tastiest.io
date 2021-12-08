@@ -1,10 +1,6 @@
 module.exports = {
   // root: true,
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 2020, // Allows for ES8+
-    ecmaFeatures: { jsx: true },
-  },
   env: {
     browser: true,
     node: true,
@@ -15,10 +11,11 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:jsx-a11y/recommended',
-    // Prettier plugin and recommended rules
     'prettier/@typescript-eslint',
     'plugin:prettier/recommended',
+    'plugin:@next/next/recommended',
   ],
+
   rules: {
     // Include .prettierrc.js rules
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
@@ -30,6 +27,7 @@ module.exports = {
     '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
     'jsx-a11y/alt-text': 'off',
     'jsx-a11y/anchor-is-valid': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',

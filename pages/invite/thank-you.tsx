@@ -206,7 +206,7 @@ const ThankYou = (
 
               <section className="text-center">
                 <h4 className="text-4xl font-primary">
-                  {Intl.NumberFormat().format(totalMembers + 33)}
+                  {Intl.NumberFormat().format(totalMembers + 5)}
                 </h4>
                 <p>total waitlist members</p>
               </section>
@@ -233,5 +233,5 @@ const ThankYou = (
   );
 };
 
-ThankYou.layout = Layouts.BLANK;
+ThankYou.layout = Layouts.INVITE;
 export default ThankYou;

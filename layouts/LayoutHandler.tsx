@@ -1,14 +1,14 @@
 import { NextComponentType, NextPageContext } from 'next';
 import { Router } from 'next/router';
-import LayoutBlank from './LayoutBlank';
 import LayoutDefault from './LayoutDefault';
 import LayoutExperience from './LayoutExperience';
 import LayoutHome from './LayoutHome';
+import LayoutInvite from './LayoutInvite';
 import LayoutRestaurant from './LayoutRestaurant';
 
 export enum Layouts {
   DEFAULT = 'default',
-  BLANK = 'blank',
+  INVITE = 'invite',
   HOME = 'home',
   RESTAURANT = 'restaurant',
   EXPERIENCE = 'experience',
@@ -16,7 +16,7 @@ export enum Layouts {
 
 const layouts = {
   [Layouts.DEFAULT]: LayoutDefault,
-  [Layouts.BLANK]: LayoutBlank,
+  [Layouts.INVITE]: LayoutInvite,
   [Layouts.HOME]: LayoutHome,
   [Layouts.RESTAURANT]: LayoutRestaurant,
   [Layouts.EXPERIENCE]: LayoutExperience,

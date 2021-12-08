@@ -2,7 +2,7 @@ import Script from 'next/script';
 import React from 'react';
 import { LayoutProps } from './LayoutHandler';
 
-export default function LayoutBlank({
+export default function LayoutInvite({
   router,
   pageProps,
   children: Component,
@@ -11,6 +11,7 @@ export default function LayoutBlank({
     <>
       {/* Invite Facebook Pixel */}
       <Script
+        id="invite-pixel-snippet"
         strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: `
@@ -29,11 +30,13 @@ export default function LayoutBlank({
       />
 
       <Script
+        id="invite-gtm-snippet"
         strategy="beforeInteractive"
         src="https://www.googletagmanager.com/gtag/js?id=AW-347511954"
       />
 
       <Script
+        id="invite-gtm-config-snippet"
         strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: `

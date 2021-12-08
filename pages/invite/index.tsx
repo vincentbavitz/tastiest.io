@@ -97,7 +97,8 @@ const Invite = () => {
                 <Input
                   value={email}
                   onValueChange={setEmail}
-                  placeholder="Your best email"
+                  label="Your best email"
+                  size="large"
                 />
               </div>
 
@@ -214,18 +215,23 @@ const GetAccessModal = (props: GetAccessModalProps) => {
         style={{ minWidth: '300px', maxWidth: '90vw' }}
         className="flex flex-col space-y-3 items-center"
       >
-        <div className="pb-2">
+        <div className="pb-4">
           <TastiestBrand size={10} type="initial-ring" />
         </div>
 
-        <h2 className="text-lg mt-3 font-medium">
+        <h2 className="text-lg mt-3 pb-4 text-center font-medium">
           Please enter the email address that has been given early access to
           Tastiest
         </h2>
 
-        <Input value={email} onValueChange={setEmail} placeholder="Email" />
+        <Input
+          value={email}
+          onValueChange={setEmail}
+          size="large"
+          label="Email"
+        />
 
-        <Button loading={loading} onClick={getAccess}>
+        <Button loading={loading} size="large" onClick={getAccess}>
           Access Tastiest
         </Button>
 
@@ -239,5 +245,5 @@ const GetAccessModal = (props: GetAccessModalProps) => {
   );
 };
 
-Invite.layout = Layouts.BLANK;
+Invite.layout = Layouts.INVITE;
 export default Invite;

@@ -76,5 +76,6 @@ module.exports = {
     './components/**/*.{js,ts,tsx}',
     './layouts/**/*.{js,ts,jsx,tsx}',
     './contexts/**/*.{js,ts,tsx}',
+    './node_modules/@tastiest-io/tastiest-ui/dist/styles.min.css',
   ],
 };
