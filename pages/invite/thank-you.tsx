@@ -11,9 +11,7 @@ import { Contained } from 'components/Contained';
 import { EarlyAccessContext } from 'contexts/invite';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import Head from 'next/head';
 import Image from 'next/image';
-import Script from 'next/script';
 import { Preregister } from 'pages/api/invite/getPreregister';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useContext, useMemo, useState } from 'react';
@@ -116,53 +114,6 @@ const ThankYou = (
 
   return (
     <>
-      <Head>
-        {/* Facebook Pixel on Thank-You Submission */}
-        <Script
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-            !function(f,b,e,v,n,t,s)
-            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window, document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '2772804906283869');
-            fbq('track', 'PageView');
-            fbq('track', 'Lead');
-          `,
-          }}
-        />
-
-        <Script
-          strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=AW-347511954"
-        />
-        <Script
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'AW-347511954');
-          `,
-          }}
-        />
-
-        <Script
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-            gtag('event', 'conversion', {'send_to': 'AW-347511954/U-F6CNLc4P4CEJK52qUB'});
-          `,
-          }}
-        />
-      </Head>
-
       <div
         style={{ minHeight: '100vh' }}
         className="relative bg-light text-primary pt-12 font-secondary flex flex-col justify-between"

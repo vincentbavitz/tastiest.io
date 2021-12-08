@@ -12,5 +12,6 @@ declare global {
   interface Window {
     analytics: IAnalytics;
     dataLayer: any;
+    fbq: any;
   }
 }
