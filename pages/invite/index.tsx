@@ -49,7 +49,7 @@ const Invite = () => {
   };
 
   useEffect(() => {
-    router.prefetch('/thank-you/invite');
+    router.prefetch('/invite/thank-you');
   }, []);
 
   return (

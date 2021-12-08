@@ -1,5 +1,5 @@
 import { dlog, postFetch } from '@tastiest-io/tastiest-utils';
-import { NextRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { SubmitToZapierParams } from 'pages/api/invite/submitToZapier';
 import React, {
   Dispatch,
@@ -36,12 +36,13 @@ export interface EarlyAccessParams {
 export const EarlyAccessContext = React.createContext(undefined);
 
 interface EarlyAccessProviderParams {
-  router: NextRouter;
   children: any;
 }
 
-export const EarlyAccessProvider = (params: EarlyAccessProviderParams) => {
-  const { router, children } = params;
+export const EarlyAccessProvider = ({
+  children,
+}: EarlyAccessProviderParams) => {
+  const router = useRouter();
   const firebase = useFirebase();
 
   const getIP = async () => {

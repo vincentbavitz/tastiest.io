@@ -74,7 +74,7 @@ export default async function submitToZapier(
     });
 
     // Send off to Segment for Slack notifications
-    analytics.track({
+    await analytics.track({
       event: 'New Waitlist Submission',
       anonymousId: email,
       properties: body,

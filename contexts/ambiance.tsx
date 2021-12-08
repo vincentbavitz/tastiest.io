@@ -1,4 +1,4 @@
-import { NextRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { Provider as StoreProvider } from 'react-redux';
 import {
@@ -26,11 +26,12 @@ const rrfProps: ReactReduxFirebaseProviderProps = {
 };
 
 interface AmbianceProviderProps {
-  router: NextRouter;
   children: any;
 }
 
-const AmbianceProvider = ({ router, children }: AmbianceProviderProps) => {
+const AmbianceProvider = ({ children }: AmbianceProviderProps) => {
+  const router = useRouter();
+
   const handleLocationChange = url => {
     // Open login modal from URL params
     if (METADATA.URL_SIGN_IN_REGEX.test(url)) {

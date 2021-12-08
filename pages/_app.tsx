@@ -17,9 +17,9 @@ function App({ Component, pageProps, router }: AppProps) {
   return (
     <>
       <AuthProvider>
-        <TrackingProvider router={router}>
-          <AmbianceProvider router={router}>
-            <EarlyAccessProvider router={router}>
+        <TrackingProvider>
+          <AmbianceProvider>
+            <EarlyAccessProvider>
               <ScreenProvider>
                 <LoadingProvider>
                   <Head>

@@ -14,7 +14,7 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import { Preregister } from 'pages/api/invite/getPreregister';
 import { ParsedUrlQuery } from 'querystring';
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
 import { db } from 'utils/firebaseAdmin';
 import HomeHero from '/public/assets/page/home.svg';
@@ -86,6 +86,19 @@ const ThankYou = (
       setCopied(false);
     }, 1500);
   };
+
+  // Track as a lead
+  useEffect(() => {
+    console.log('thank-you ➡️ useEffect tracking lead!');
+    try {
+      window.fbq('track', 'Lead');
+      window.gtag('event', 'conversion', {
+        send_to: 'AW-347511954/U-F6CNLc4P4CEJK52qUB',
+      });
+    } catch {
+      null;
+    }
+  }, []);
 
   const shareTitle = `Help me get early access to Tastiest, the new platform where you can book exceptional food experiences in London by signing up through my link:`;
 
@@ -193,7 +206,7 @@ const ThankYou = (
 
               <section className="text-center">
                 <h4 className="text-4xl font-primary">
-                  {Intl.NumberFormat().format(totalMembers)}
+                  {Intl.NumberFormat().format(totalMembers + 33)}
                 </h4>
                 <p>total waitlist members</p>
               </section>

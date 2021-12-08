@@ -1,9 +1,10 @@
 import { AuthError, AuthErrorMessageMap } from 'contexts/auth';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useFirebase } from 'react-redux-firebase';
 
 export const useSignOut = () => {
+  const router = useRouter();
   const firebase = useFirebase();
 
   const [submitting, setSubmitting] = useState(false);

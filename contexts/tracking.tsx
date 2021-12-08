@@ -4,7 +4,7 @@ import { renderHotJarSnippet } from 'lib/hotjar';
 import { renderSegmentSnippet } from 'lib/segment';
 import { renderTawkToSnippet } from 'lib/tawkto';
 import Head from 'next/head';
-import { NextRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import Script from 'next/script';
 import React, { useEffect } from 'react';
 
@@ -15,12 +15,13 @@ export enum LocalStorageItem {
 export const TrackingContext = React.createContext(undefined);
 
 interface TrackingContextParams {
-  router: NextRouter;
   children: any;
 }
 
 // Tracking context for Segment
-const TrackingProvider = ({ router, children }: TrackingContextParams) => {
+const TrackingProvider = ({ children }: TrackingContextParams) => {
+  const router = useRouter();
+
   // Manange location changes with Segment
   const handleLocationChange = (url: string) => {
     window?.analytics?.page();

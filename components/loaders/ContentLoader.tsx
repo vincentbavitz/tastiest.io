@@ -1,7 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
 import { usePageLoader } from 'hooks/usePageLoader';
-import { Router } from 'next/router';
+import { useRouter } from 'next/router';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsContentLoading } from 'state/navigation';
@@ -9,14 +9,14 @@ import { IState } from 'state/reducers';
 import { NAVIGATION, UI } from '../../constants';
 
 interface Props {
-  router: Router;
   children: ReactNode;
   noSpinner?: boolean;
   spinnerAreaHeight?: number; // in px
 }
 
 export default function ContentLoader(props: Props) {
-  const { router, children, noSpinner = false, spinnerAreaHeight } = props;
+  const router = useRouter();
+  const { children, noSpinner = false, spinnerAreaHeight } = props;
 
   const dispatch = useDispatch();
   const { isPageLoading } = usePageLoader();
