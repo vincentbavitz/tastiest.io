@@ -26,7 +26,7 @@ export default function SuggestRestaurantPrompBox() {
             style={{ height: '5.5rem' }}
             className="relative flex items-end space-x-10"
           >
-            <Link href="/suggest">
+            <Link href="/recommend">
               <a className="no-underline">
                 <Button color="light" size="large">
                   Suggest

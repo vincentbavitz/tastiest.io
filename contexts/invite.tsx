@@ -198,10 +198,13 @@ export const EarlyAccessProvider = ({
     utmCampaign,
   };
 
-  const onInvitePage =
-    router.pathname.includes('invite') || router.pathname.includes('recommend');
+  const onInvitePage = router.pathname.includes('invite');
 
   useEffect(() => {
+    if (router.pathname.includes('recommend')) {
+      return;
+    }
+
     dlog('invite ➡️ hasAccess:', hasAccess);
     dlog('invite ➡️ onInvitePage:', onInvitePage);
 
