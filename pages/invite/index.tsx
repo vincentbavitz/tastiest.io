@@ -2,6 +2,7 @@ import { Button, Input, Modal, TastiestBrand } from '@tastiest-io/tastiest-ui';
 import { SVG } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
+import REGEX from 'constants/regex';
 import { EarlyAccessContext } from 'contexts/invite';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { Layouts } from 'layouts/LayoutHandler';
@@ -16,8 +17,17 @@ import {
 } from 'public/assets/page/home';
 import { ParsedUrlQuery } from 'querystring';
 import React, { FC, useContext, useEffect, useState } from 'react';
+import { useController, useForm } from 'react-hook-form';
 import { LocalEndpoint } from 'types/api';
 import HomeHero from '/public/assets/page/home.svg';
+
+type JoinWaitlistFormData = {
+  joinWaitlistEmail: string;
+};
+
+type HasAccessFormData = {
+  hasAccessEmail: string;
+};
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext<ParsedUrlQuery>,
@@ -52,6 +62,43 @@ const Invite = () => {
     router.prefetch('/invite/thank-you');
   }, []);
 
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<JoinWaitlistFormData>({
+    mode: 'onBlur',
+    reValidateMode: 'onBlur',
+    criteriaMode: 'all',
+    shouldFocusError: true,
+  });
+
+  const {
+    field: { ref: joinWaitlistEmailRef, ...joinWaitlistEmailProps },
+  } = useController({
+    name: 'joinWaitlistEmail',
+    defaultValue: '',
+    control,
+    rules: {
+      minLength: {
+        value: 2,
+        message: 'Please enter at least 2 characters',
+      },
+      maxLength: {
+        value: 30,
+        message: 'Please enter at most 30 characters',
+      },
+      required: {
+        value: true,
+        message: 'Please enter your email',
+      },
+      pattern: {
+        value: REGEX.EMAIL,
+        message: 'Please enter a valid email',
+      },
+    },
+  });
+
   return (
     <>
       <GetAccessModal
@@ -77,12 +124,12 @@ const Invite = () => {
               <h2 className="text-xl tracking-wide mt-4 leading-none">
                 Exceptional food experiences in London.
               </h2>
-              <h4 className="text-base mt-2">
+              <h4 className="text-base mt-4">
                 Partnering only with the best restaurants.
               </h4>
             </div>
 
-            <div style={{ minHeight: '12rem' }} className="relative w-full">
+            <div style={{ minHeight: '10rem' }} className="relative w-full">
               <Image
                 src={HomeHero}
                 layout="fill"
@@ -92,21 +139,29 @@ const Invite = () => {
               />
             </div>
 
-            <div className="flex flex-wrap justify-center gap-2">
+            <div
+              style={{ width: 'fit-content' }}
+              className={clsx(
+                'flex justify-center gap-2',
+                isMobile ? 'flex-col' : '',
+              )}
+            >
               <div style={{ minWidth: '16rem' }} className="">
                 <Input
-                  value={email}
-                  onValueChange={setEmail}
+                  ref={joinWaitlistEmailRef}
                   label="Your best email"
                   size="large"
+                  error={errors.joinWaitlistEmail?.message ?? null}
+                  {...joinWaitlistEmailProps}
                 />
               </div>
 
               <Button
-                onClick={submit}
-                loading={loading}
                 color="primary"
                 size="large"
+                wide={isMobile}
+                loading={loading}
+                onClick={handleSubmit(submit)}
               >
                 Get Early Access
               </Button>
@@ -185,29 +240,68 @@ interface GetAccessModalProps {
 }
 
 const GetAccessModal = (props: GetAccessModalProps) => {
-  const [email, setEmail] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const { hasAccess, setHasAccess } = useContext(EarlyAccessContext);
 
-  const getAccess = async () => {
+  const getAccess = async ({ hasAccessEmail }: HasAccessFormData) => {
     setError(null);
     setLoading(true);
 
     const response = await fetch(
-      `${LocalEndpoint.GET_PREREGISTER}?email=${email}`,
+      `${LocalEndpoint.GET_PREREGISTER}?email=${hasAccessEmail}`,
     );
 
     const body = await response.json();
     setLoading(false);
 
-    if (body.preregister.hasAccess && body.preregister.email === email) {
+    if (
+      body.preregister.hasAccess &&
+      body.preregister.email === hasAccessEmail
+    ) {
       setHasAccess(true);
     } else {
       setError(`You haven't been granted access just yet.`);
     }
   };
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<HasAccessFormData>({
+    mode: 'onBlur',
+    reValidateMode: 'onBlur',
+    criteriaMode: 'all',
+    shouldFocusError: true,
+  });
+
+  const {
+    field: { ref: hasAccessEmailRef, ...hasAccessEmailProps },
+  } = useController({
+    name: 'hasAccessEmail',
+    defaultValue: '',
+    control,
+    rules: {
+      minLength: {
+        value: 2,
+        message: 'Please enter at least 2 characters',
+      },
+      maxLength: {
+        value: 30,
+        message: 'Please enter at most 30 characters',
+      },
+      required: {
+        value: true,
+        message: 'Please enter your email',
+      },
+      pattern: {
+        value: REGEX.EMAIL,
+        message: 'Please enter a valid email',
+      },
+    },
+  });
 
   return (
     <Modal {...props}>
@@ -225,13 +319,18 @@ const GetAccessModal = (props: GetAccessModalProps) => {
         </h2>
 
         <Input
-          value={email}
-          onValueChange={setEmail}
+          ref={hasAccessEmailRef}
           size="large"
           label="Email"
+          error={errors.hasAccessEmail?.message ?? null}
+          {...hasAccessEmailProps}
         />
 
-        <Button loading={loading} size="large" onClick={getAccess}>
+        <Button
+          loading={loading}
+          size="large"
+          onClick={handleSubmit(getAccess)}
+        >
           Access Tastiest
         </Button>
 

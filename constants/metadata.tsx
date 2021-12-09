@@ -1,6 +1,6 @@
 const METADATA = {
   TAGLINE: 'Exceptional Food Experiences in London',
-  TITLE_SUFFIX: 'Tastiest - Discover. Eat. Smile',
+  TITLE_SUFFIX: 'Tastiest - Exceptional Food Experiences in London',
   URL_CHECKOUT_PAGE_REGEX: /^\/checkout[?/]?/,
   URL_SIGN_IN_REGEX: /[?]login=1/,
 };

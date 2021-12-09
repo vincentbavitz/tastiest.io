@@ -1,6 +1,6 @@
 import Image, { ImageProps } from 'next/image';
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 type Props = Omit<ImageProps, 'layout' | 'width' | 'height' | 'objectFit'>;
 
@@ -22,7 +22,8 @@ const ResponsiveImageContainer = styled.div`
   }
 `;
 
-/** A wrapper around next/image which allows an image to
+/**
+ * A wrapper around next/image which allows an image to
  * dynamically adjust its size to fit its parent.
  */
 export default function ResponsiveImage(props: Props) {

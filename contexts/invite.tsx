@@ -119,28 +119,7 @@ export const EarlyAccessProvider = ({
     setReferrer(router.query.ref ? String(router.query.ref) : null);
   }, [router.query]);
 
-  // Redirect if they're not verified
-  useEffect(() => {
-    if (hasAccess) {
-      router.push('/');
-    }
-
-    // prettier-ignore
-    const subpath = 
-      router.pathname.includes('invite/thank-you') ? '/invite/thank-you' :
-      router.pathname.includes('recommend') ? '/recommend' : 
-      '/invite';
-
-    const newEndpoint = `${subpath}${window.location.search}`;
-
-    if (!hasAccess) {
-      router.push(newEndpoint);
-    }
-  }, [hasAccess]);
-
   const submitPreregister = async (_email: string) => {
-    dlog('submitPreregister ➡️ started');
-
     const emailPrefix = _email?.split('@')?.[0];
 
     // Do we already exist in Firestore?
@@ -152,7 +131,7 @@ export const EarlyAccessProvider = ({
 
     // Take to thank-you page if already exists.
     if (existing.exists) {
-      router.push('/invite/thank-you');
+      router.push(`/invite/thank-you?ref=${emailPrefix}`);
       return;
     }
 
@@ -199,21 +178,28 @@ export const EarlyAccessProvider = ({
   };
 
   const onInvitePage = router.pathname.includes('invite');
+  const onRecommendPage = router.pathname.includes('recommend');
 
+  // Redirect if they're not verified
   useEffect(() => {
-    if (router.pathname.includes('recommend')) {
+    if (onRecommendPage) {
       return;
     }
 
-    dlog('invite ➡️ hasAccess:', hasAccess);
-    dlog('invite ➡️ onInvitePage:', onInvitePage);
-
-    if (!hasAccess && !onInvitePage) {
-      router.push('/invite');
+    if (hasAccess) {
+      router.push('/');
     }
-  }, [router, hasAccess, onInvitePage]);
 
-  if (!hasAccess && !onInvitePage) {
+    // prettier-ignore
+    const subpath = router.pathname.includes('invite/thank-you') ? '/thank-you' : '';
+    const newEndpoint = `/invite${subpath}${window.location.search}`;
+
+    if (!hasAccess) {
+      router.push(newEndpoint);
+    }
+  }, [hasAccess, onInvitePage, onRecommendPage]);
+
+  if (!hasAccess && !onInvitePage && !onRecommendPage) {
     return null;
   }
 

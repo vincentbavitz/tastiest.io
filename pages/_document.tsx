@@ -16,7 +16,7 @@ export default class CustomDocument extends Document<any> {
         </Head>
 
         <body>
-          {/* Google Tag Manager NoScript*/}
+          {/* Google Tag Manager Noscript */}
           <noscript>
             <iframe
               src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}

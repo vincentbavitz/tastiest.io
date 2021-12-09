@@ -2,34 +2,21 @@
 
 # dependencies
 /node_modules
-/.pnp
-.pnp.js
-package-lock.json
 
 # testing
 /coverage
 
 # next.js
 /.next/
-/out/
-!public/
-
-# production
-/build
 
 # misc
 .DS_Store
 
 # debug
-ui-debug.log*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
 # Secrets
 .env*
-.now
-.vercel
-.npmrc
-
 *.log
