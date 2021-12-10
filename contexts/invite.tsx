@@ -122,6 +122,8 @@ export const EarlyAccessProvider = ({
   const submitPreregister = async (_email: string) => {
     const emailPrefix = _email?.split('@')?.[0];
 
+    dlog('invite ➡️ _email:', _email);
+
     // Do we already exist in Firestore?
     const existing = await firebase
       .firestore()
@@ -131,6 +133,7 @@ export const EarlyAccessProvider = ({
 
     // Take to thank-you page if already exists.
     if (existing.exists) {
+      console.log('invite ➡️ exists:');
       router.push(`/invite/thank-you?ref=${emailPrefix}`);
       return;
     }

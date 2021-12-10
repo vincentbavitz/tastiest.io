@@ -29,8 +29,6 @@ const Recommend = () => {
   const submit = async (form: InviteRecommendFormData) => {
     setLoading(true);
 
-    dlog('recommend ➡️ form:', form);
-
     // Send event to Zapier.
     await postFetch<SubmitRecommendToZapierParams>(
       LocalEndpoint.SUBMIT_RECOMMEND_TO_ZAPIER,

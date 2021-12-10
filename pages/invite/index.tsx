@@ -46,15 +46,14 @@ const Invite = () => {
   const router = useRouter();
   const { isMobile, isTablet, isDesktop } = useScreenSize();
 
-  const [email, setEmail] = useState<string>(null);
   const [showAccessModal, setShowAccessModal] = useState(false);
 
   const { submitPreregister } = useContext(EarlyAccessContext);
   const [loading, setLoading] = useState(false);
 
-  const submit = async () => {
+  const submit = async ({ joinWaitlistEmail }: JoinWaitlistFormData) => {
     setLoading(true);
-    await submitPreregister(email);
+    await submitPreregister(joinWaitlistEmail);
     setLoading(false);
   };
 
