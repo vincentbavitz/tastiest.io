@@ -152,6 +152,7 @@ const Invite = () => {
                   label="Your best email"
                   size="large"
                   error={errors.joinWaitlistEmail?.message ?? null}
+                  onReturn={handleSubmit(submit)}
                   {...joinWaitlistEmailProps}
                 />
               </div>
@@ -167,7 +168,7 @@ const Invite = () => {
               </Button>
             </div>
 
-            <h4>Stop having disappointing experiences.</h4>
+            <h4 className="text-sm">Stop having disappointing experiences.</h4>
 
             <div
               className={clsx(
@@ -323,6 +324,7 @@ const GetAccessModal = (props: GetAccessModalProps) => {
           size="large"
           label="Email"
           error={errors.hasAccessEmail?.message ?? null}
+          onReturn={handleSubmit(getAccess)}
           {...hasAccessEmailProps}
         />
 

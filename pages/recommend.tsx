@@ -202,6 +202,7 @@ const Recommend = () => {
                 ref={userEmailRef}
                 label="Your best email"
                 error={errors?.userEmail?.message}
+                onReturn={handleSubmit(submit)}
                 {...userEmailProps}
               />
 

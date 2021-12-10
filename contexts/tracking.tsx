@@ -86,13 +86,13 @@ const TrackingProvider = ({ children }: TrackingContextParams) => {
       />
 
       {/* Inject TawkTo */}
-      {router.pathname.includes('invite') ? null : (
+      {/* {router.pathname.includes('invite') ? null : (
         <Script
           id="tawkto-snippet"
           strategy="lazyOnload"
           dangerouslySetInnerHTML={{ __html: renderTawkToSnippet() }}
         />
-      )}
+      )} */}
 
       {/* Inject Google Optimize */}
       {/* <Script
