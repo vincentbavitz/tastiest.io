@@ -1,4 +1,4 @@
-import '@tastiest-io/tastiest-ui/dist/styles.min.css';
+import { dlog } from '@tastiest-io/tastiest-utils';
 import AmbianceProvider from 'contexts/ambiance';
 import { EarlyAccessProvider } from 'contexts/invite';
 import LoadingProvider from 'contexts/loader';
@@ -10,11 +10,15 @@ import { DefaultSeo } from 'next-seo';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import React from 'react';
+import { useBattery } from 'react-use';
 import { METADATA } from '../constants';
 import { AuthProvider } from '../contexts/auth';
 import '../styles/style.scss';
 
 function App({ Component, pageProps, router }: AppProps) {
+  const batteryState = useBattery();
+  dlog('_app ➡️ batteryState:', batteryState);
+
   return (
     <AuthProvider>
       <TrackingProvider>
