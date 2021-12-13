@@ -11,12 +11,15 @@ import { Contained } from 'components/Contained';
 import { EarlyAccessContext } from 'contexts/invite';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { NextSeo } from 'next-seo';
+import Head from 'next/head';
 import Image from 'next/image';
 import { Preregister } from 'pages/api/invite/getPreregister';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
 import { db } from 'utils/firebaseAdmin';
+import { generateTitle } from 'utils/metadata';
 import HomeHero from '/public/assets/page/home.svg';
 
 export const getServerSideProps = async (
@@ -127,6 +130,55 @@ const ThankYou = (
 
   return (
     <>
+      <Head>
+        <title>{generateTitle('Thank-You')}</title>
+      </Head>
+
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://tastiest.io/" />
+      <meta
+        property="og:title"
+        content="Tastiest | Exceptional food experiences in London"
+      />
+      <meta
+        property="og:description"
+        content="Get early access. Partnering only with the best restaurants. Stop having disappointing experiences."
+      />
+      <meta
+        property="og:image"
+        content="https://images.ctfassets.net/tq39z0nxr0bv/5XtpoY1r5sEKItsF04V1oE/72ddac8e61018e2aad21fd094f56d4a2/Meta_img.png"
+      />
+      <meta property="twitter:card" content="summary_large_image" />
+      <meta property="twitter:url" content="https://tastiest.io/" />
+      <meta
+        property="twitter:title"
+        content="Tastiest | Exceptional food experiences in London"
+      />
+      <meta
+        property="twitter:description"
+        content="Get early access. Partnering only with the best restaurants. Stop having disappointing experiences."
+      />
+      <meta
+        property="twitter:image"
+        content="https://images.ctfassets.net/tq39z0nxr0bv/5XtpoY1r5sEKItsF04V1oE/72ddac8e61018e2aad21fd094f56d4a2/Meta_img.png"
+      />
+
+      <NextSeo
+        title="Thank-You | Tastiest | Exceptional food experiences"
+        description="Get early access. Partnering only with the best restaurants. Stop having disappointing experiences."
+        openGraph={{
+          title: 'Thank-You | Tastiest | Exceptional food experiences',
+          description:
+            'Get early access. Partnering only with the best restaurants. Stop having disappointing experiences.',
+          images: [
+            {
+              url:
+                'https://images.ctfassets.net/tq39z0nxr0bv/5XtpoY1r5sEKItsF04V1oE/72ddac8e61018e2aad21fd094f56d4a2/Meta_img.png',
+            },
+          ],
+        }}
+      />
+
       <div
         style={{ minHeight: '100vh' }}
         className="relative bg-light text-primary pt-12 font-secondary flex flex-col justify-between"

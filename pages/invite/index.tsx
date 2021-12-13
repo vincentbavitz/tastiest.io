@@ -7,6 +7,8 @@ import { EarlyAccessContext } from 'contexts/invite';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSidePropsContext } from 'next';
+import { NextSeo } from 'next-seo';
+import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import {
@@ -19,6 +21,7 @@ import { ParsedUrlQuery } from 'querystring';
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { LocalEndpoint } from 'types/api';
+import { generateTitle } from 'utils/metadata';
 import HomeHero from '/public/assets/page/home.svg';
 
 type JoinWaitlistFormData = {
@@ -101,6 +104,55 @@ const Invite = () => {
 
   return (
     <>
+      <Head>
+        <title>{generateTitle('Join our waitlist')}</title>
+      </Head>
+
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://tastiest.io/" />
+      <meta
+        property="og:title"
+        content="Tastiest | Exceptional food experiences in London"
+      />
+      <meta
+        property="og:description"
+        content="Get early access. Partnering only with the best restaurants. Stop having disappointing experiences."
+      />
+      <meta
+        property="og:image"
+        content="https://images.ctfassets.net/tq39z0nxr0bv/5XtpoY1r5sEKItsF04V1oE/72ddac8e61018e2aad21fd094f56d4a2/Meta_img.png"
+      />
+      <meta property="twitter:card" content="summary_large_image" />
+      <meta property="twitter:url" content="https://tastiest.io/" />
+      <meta
+        property="twitter:title"
+        content="Tastiest | Exceptional food experiences in London"
+      />
+      <meta
+        property="twitter:description"
+        content="Get early access. Partnering only with the best restaurants. Stop having disappointing experiences."
+      />
+      <meta
+        property="twitter:image"
+        content="https://images.ctfassets.net/tq39z0nxr0bv/5XtpoY1r5sEKItsF04V1oE/72ddac8e61018e2aad21fd094f56d4a2/Meta_img.png"
+      />
+
+      <NextSeo
+        title="Tastiest | Exceptional food experiences in London"
+        description="Get early access. Partnering only with the best restaurants. Stop having disappointing experiences."
+        openGraph={{
+          title: 'Tastiest | Exceptional food experiences in London',
+          description:
+            'Get early access. Partnering only with the best restaurants. Stop having disappointing experiences.',
+          images: [
+            {
+              url:
+                'https://images.ctfassets.net/tq39z0nxr0bv/5XtpoY1r5sEKItsF04V1oE/72ddac8e61018e2aad21fd094f56d4a2/Meta_img.png',
+            },
+          ],
+        }}
+      />
+
       <GetAccessModal
         show={showAccessModal}
         close={() => setShowAccessModal(false)}

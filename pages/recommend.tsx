@@ -3,10 +3,13 @@ import { postFetch } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import { EarlyAccessContext, EarlyAccessParams } from 'contexts/invite';
 import { Layouts } from 'layouts/LayoutHandler';
+import { NextSeo } from 'next-seo';
+import Head from 'next/head';
 import Image from 'next/image';
 import React, { useContext, useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { LocalEndpoint } from 'types/api';
+import { generateTitle } from 'utils/metadata';
 import { REGEX } from '../constants';
 import { SubmitRecommendToZapierParams } from './api/invite/submitRecommendToZapier';
 import HomeHero from '/public/assets/page/home.svg';
@@ -150,6 +153,54 @@ const Recommend = () => {
 
   return (
     <>
+      <Head>
+        <title>{generateTitle('Recommend a Restaurant')}</title>
+      </Head>
+
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://tastiest.io/" />
+      <meta
+        property="og:title"
+        content="Tastiest | Exceptional food experiences in London"
+      />
+      <meta
+        property="og:description"
+        content="Get early access. Partnering only with the best restaurants. Stop having disappointing experiences."
+      />
+      <meta
+        property="og:image"
+        content="https://images.ctfassets.net/tq39z0nxr0bv/5XtpoY1r5sEKItsF04V1oE/1cb46b8e135f791132fc0314c6e1ffa5/Hype-classy-meta.png"
+      />
+      <meta property="twitter:card" content="summary_large_image" />
+      <meta property="twitter:url" content="https://tastiest.io/" />
+      <meta
+        property="twitter:title"
+        content="Tastiest | Exceptional food experiences in London"
+      />
+      <meta
+        property="twitter:description"
+        content="Recommend a restaurant you want on Tastiest"
+      />
+      <meta
+        property="twitter:image"
+        content="https://images.ctfassets.net/tq39z0nxr0bv/5XtpoY1r5sEKItsF04V1oE/1cb46b8e135f791132fc0314c6e1ffa5/Hype-classy-meta.png"
+      />
+
+      <NextSeo
+        title="Tastiest | Recommend a restaurant"
+        description="Recommend a restaurant you want on Tastiest"
+        openGraph={{
+          title: 'Tastiest | Recommend a restaurant',
+          description: 'Recommend a restaurant you want on Tastiest',
+          images: [
+            {
+              url:
+                'https://images.ctfassets.net/tq39z0nxr0bv/5XtpoY1r5sEKItsF04V1oE/72ddac8e61018e2aad21fd094f56d4a2/Meta_img.png',
+            },
+          ],
+        }}
+      />
+
       <Modal
         size="small"
         show={showThankYouModal}
