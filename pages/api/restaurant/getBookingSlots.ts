@@ -134,8 +134,8 @@ export default async function getBookingSlots(
       slots,
       seatingDuration,
       openTimes: metrics.openTimes,
-      availableBookingSlots: realtime.availableBookingSlots,
-      lastBookingSlotsSync: realtime.lastBookingSlotsSync,
+      availableBookingSlots: realtime?.availableBookingSlots ?? null,
+      lastBookingSlotsSync: realtime?.lastBookingSlotsSync ?? null,
     });
   } catch (error) {
     response.statusMessage = 'Unknown error';

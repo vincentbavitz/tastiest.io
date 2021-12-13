@@ -18,6 +18,7 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useController, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { UI } from '../../constants';
 import { IState } from '../../state/reducers';
@@ -208,7 +209,32 @@ interface PromoCodeInputProps {
 }
 
 const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
-  const [promoCode, setPromoCode] = useState('');
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<{ promoCode: string }>({
+    mode: 'onBlur',
+    reValidateMode: 'onBlur',
+    criteriaMode: 'firstError',
+    shouldFocusError: true,
+  });
+
+  const {
+    field: { ref: promoCodeRef, ...promoCodeProps },
+  } = useController({
+    name: 'promoCode',
+    defaultValue: '',
+    control,
+    rules: {
+      pattern: {
+        value: PAYMENTS.PROMO_CODE_REGEX,
+        message: 'Please enter a valid email',
+      },
+    },
+  });
+
+  const [promoCode, se3tPromoCode] = useState('');
   const [error, setError] = useState('');
 
   // Realtime order information
@@ -249,13 +275,12 @@ const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
       ) : (
         <div className="flex items-center justify-between space-x-2 text-xs">
           <Input
+            ref={promoCodeRef}
             size="small"
-            disabled={disabled}
             label="Promo Code"
-            value={promoCode}
-            onValueChange={setPromoCode}
-            regex={PAYMENTS.PROMO_CODE_REGEX}
+            disabled={disabled}
             formatter={value => value.toUpperCase()}
+            {...promoCodeProps}
           />
           <Button disabled={disabled} onClick={applyPromoCode} size="small">
             <CheckOutlined className="text-lg" />

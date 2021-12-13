@@ -1,14 +1,14 @@
 import { Button, Input, Modal, TastiestBrand } from '@tastiest-io/tastiest-ui';
-import { dlog, postFetch } from '@tastiest-io/tastiest-utils';
+import { postFetch } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import { EarlyAccessContext, EarlyAccessParams } from 'contexts/invite';
 import { Layouts } from 'layouts/LayoutHandler';
 import Image from 'next/image';
-import { SubmitRecommendToZapierParams } from 'pages/api/invite/submitRecommendToZapier';
 import React, { useContext, useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { LocalEndpoint } from 'types/api';
 import { REGEX } from '../constants';
+import { SubmitRecommendToZapierParams } from './api/invite/submitRecommendToZapier';
 import HomeHero from '/public/assets/page/home.svg';
 
 export type InviteRecommendFormData = {
@@ -26,27 +26,10 @@ const Recommend = () => {
     EarlyAccessContext,
   );
 
-  const submit = async (form: InviteRecommendFormData) => {
-    setLoading(true);
-
-    // Send event to Zapier.
-    await postFetch<SubmitRecommendToZapierParams>(
-      LocalEndpoint.SUBMIT_RECOMMEND_TO_ZAPIER,
-      {
-        ...form,
-        utm_medium: utmMedium,
-        utm_source: utmSource,
-        utm_campaign: utmCampaign,
-      },
-    );
-
-    setLoading(false);
-    setShowThankYouModal(true);
-  };
-
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<InviteRecommendFormData>({
     mode: 'onBlur',
@@ -145,6 +128,25 @@ const Recommend = () => {
       },
     },
   });
+
+  const submit = async (form: InviteRecommendFormData) => {
+    setLoading(true);
+
+    // Send event to Zapier.
+    await postFetch<SubmitRecommendToZapierParams>(
+      LocalEndpoint.SUBMIT_RECOMMEND_TO_ZAPIER,
+      {
+        ...form,
+        utm_medium: utmMedium,
+        utm_source: utmSource,
+        utm_campaign: utmCampaign,
+      },
+    );
+
+    reset();
+    setLoading(false);
+    setShowThankYouModal(true);
+  };
 
   return (
     <>
