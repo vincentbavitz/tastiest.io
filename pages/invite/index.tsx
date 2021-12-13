@@ -54,6 +54,7 @@ const Invite = () => {
   const submit = async ({ joinWaitlistEmail }: JoinWaitlistFormData) => {
     setLoading(true);
     await submitPreregister(joinWaitlistEmail);
+    router.push('/');
     setLoading(false);
   };
 

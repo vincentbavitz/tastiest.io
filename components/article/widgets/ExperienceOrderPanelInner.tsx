@@ -111,6 +111,8 @@ const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
     }
   };
 
+  dlog('ExperienceOrderPanelInner ➡️ data:', data);
+
   return {
     slots,
     heads,
@@ -122,8 +124,8 @@ const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
     totalPrice,
     toCheckout,
     submitting,
-    availableBookingSlots: data.availableBookingSlots,
-    lastBookingSlotsSync: data.lastBookingSlotsSync,
+    availableBookingSlots: data?.availableBookingSlots,
+    lastBookingSlotsSync: data?.lastBookingSlotsSync,
   };
 };
 

@@ -6,9 +6,9 @@ import {
   TastiestDish,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
-import { CardGrid } from 'components/cards/CardGrid';
 import TastiestDishRow from 'components/cards/TastiestDishRow';
 import { Contained } from 'components/Contained';
+import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { RichBody } from 'components/RichBody';
 import { SectionTitle } from 'components/SectionTitle';
 import { YouTubeVideo } from 'components/YouTubeVideo';
@@ -199,11 +199,13 @@ const RestaurantPage = (
           </div>
         </Contained>
 
-        <CardGrid horizontalScroll rowLimit={1}>
+        <HorizontalScrollable noPadding spacing={6}>
           {tastiestDishes.map(dish => (
-            <TastiestDishRow key={dish.id} {...dish} />
+            <div key={dish.id} style={{ width: '250px' }}>
+              <TastiestDishRow {...dish} />
+            </div>
           ))}
-        </CardGrid>
+        </HorizontalScrollable>
       </div>
 
       {/* Image and map overlay */}

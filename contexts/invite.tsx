@@ -189,10 +189,6 @@ export const EarlyAccessProvider = ({
       return;
     }
 
-    if (hasAccess) {
-      router.push('/');
-    }
-
     // prettier-ignore
     const subpath = router.pathname.includes('invite/thank-you') ? '/thank-you' : '';
     const newEndpoint = `/invite${subpath}${window.location.search}`;

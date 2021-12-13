@@ -23,10 +23,14 @@ export default function TastiestDishRow(props: TastiestDish) {
   );
 
   return (
-    <div ref={ref} style={{ minWidth: '200px' }} className="relative w-full">
-      <div className="relative w-full">
+    <div
+      ref={ref}
+      style={{ minWidth: '200px' }}
+      className="flex flex-col relative h-full w-full"
+    >
+      <div className="relative flex-grow w-full">
         <div
-          style={{ height: '20rem' }}
+          style={{ minHeight: '20rem' }}
           className={clsx(
             'relative transform duration-300 rounded-t-lg h-full w-full overflow-hidden',
           )}

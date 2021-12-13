@@ -126,7 +126,7 @@ const HugeFooter = () => (
   <div className="flex justify-between mt-6">
     <div className="flex justify-start pr-20 space-x-12">
       <FooterColumn title="Quick Links">
-        <div className="space-y-4 text-sm font-normal leading-tight">
+        <div className="grid grid-cols-2 pb-4 text-sm leading-none place-items-center gap-y-4 gap-x-6 justify-items-stretch">
           <QuickLinksBlock />
         </div>
       </FooterColumn>

@@ -193,18 +193,23 @@ export default function LayoutRestaurant({
 
       <Contained maxWidth={900}>
         <div className="pt-10 pb-10">
-          <div className="flex space-x-10 w-full">
-            <div style={{ height: '12.5rem' }} className="relative flex-grow">
+          <div className="flex flex-wrap gap-10 w-full">
+            <div
+              style={{ height: '12.5rem', minWidth: '19rem' }}
+              className="relative flex-grow"
+            >
               <Image
                 src={restaurant.heroIllustration.url}
                 layout="fill"
                 objectFit="contain"
-                objectPosition="right bottom"
+                objectPosition="bottom"
               />
             </div>
 
-            <div>
-              <OpenTimes restaurantId={restaurant.id} small buffHeight />
+            <div
+              className={clsx('flex items-end', !isDesktop ? 'flex-grow' : '')}
+            >
+              <OpenTimes restaurantId={restaurant.id} wide small />
             </div>
           </div>
 

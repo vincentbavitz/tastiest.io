@@ -1985,10 +1985,10 @@
   resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.28.0/f0df6da3cc0ac9aa8bf955aae481f263cf2fc22458b1c1e1fb0ead12856ba1ca#dacf6710ea830ff82f1547fc3e02c57e16299e8f"
   integrity sha512-b5oF17xayTZmTsAJDkdRuMXB6RqSaNs0iPKoBymOstOp2xSTIWu/hzN0nlEcGkwu8you86NtlWVYhi0ihFi59w==
 
-"@tastiest-io/tastiest-ui@^0.55.0":
-  version "0.55.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-ui/0.55.0/5829b53b2387416d9fc4bcf7daaf4903d6514dd90785d00ac7158ab2c6b96a95#88dbfabff46575501dc345c25059c730e81ae1a6"
-  integrity sha512-niD0wbuV2XuMgibr2kn49BxJPPTxmyDhuszTa7K7ZUldxDfJFGgHpwrHCS17zobdGYOnV3eA7okGihdOObjq1g==
+"@tastiest-io/tastiest-ui@^0.58.0":
+  version "0.58.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-ui/0.58.0/83f726ade7e96efd0b03bea340d0dc581a4deb7ec4ebeabc3fe07bbc1cc3ed1a#da3d7698a71769f6ed997b740b6748652f82cb5a"
+  integrity sha512-Og3wTbzFsuS1IUCINFyrI6YonRIgBp/6s/DzE83zC8hPdrqaSMqp1Zh2wFtBjRLu5jqXHmXU898txITt961bXA==
   dependencies:
     "@headlessui/react" "^1.4.1"
     "@nivo/core" "^0.74.0"

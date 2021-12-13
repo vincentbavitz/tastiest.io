@@ -56,7 +56,7 @@ export default function OpenTimes(props: Props) {
       }}
       className="whitespace-nowrap shadow-lg border duration-300 border-light hover:border-secondary bg-light px-4 py-2 rounded-lg"
     >
-      <div className="border-b border-gray-300 w-full text-lg tracking-wide mb-2 pr-6">
+      <div className="text-primary border-b border-gray-300 w-full text-lg tracking-wide mb-2 pr-6">
         Open Times
       </div>
 
@@ -75,8 +75,8 @@ export default function OpenTimes(props: Props) {
               small ? 'text-sm' : 'text-base',
             )}
           >
-            <div>{label}</div>
-            <div>{times}</div>
+            <div className="font-medium">{label}</div>
+            <div className="font-light">{times}</div>
           </div>
         );
       })}
