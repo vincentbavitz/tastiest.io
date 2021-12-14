@@ -11,7 +11,6 @@ import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { HelpHero, HelpHeroSuccess } from 'public/assets/page';
 import React, { useState } from 'react';
 import { generateTitle } from 'utils/metadata';
 import { UI } from '../constants';
@@ -161,21 +160,14 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
   return (
     <div>
       <Contained>
-        <div className="relative flex justify-center w-full mt-10">
-          <HelpHero style={{ width: '20rem' }} className="" />
-
-          <div
-            style={{ marginLeft: '-15.5rem' }}
-            className="absolute inset-0 flex items-end justify-center mb-10"
-          >
+        <div className="relative flex justify-center w-full py-20">
+          <div>
             <h1 className="text-3xl text-center font-primary text-primary">
-              Help
+              We're here to help.
             </h1>
           </div>
         </div>
       </Contained>
-
-      <div className="relative flex flex-col items-center w-full mt-6 mb-12 space-y-4"></div>
 
       <Contained maxWidth={UI.FORM_WIDTH_PX}>
         <div className="flex flex-col mb-20 space-y-8 md:space-y-4">
@@ -283,23 +275,11 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
 const HelpSuccess = ({ setHasSent }: HelpSubProps) => {
   const { isMobile, isTablet, isDesktop } = useScreenSize();
 
-  const heroTranslateX = isMobile ? '3rem' : isTablet ? '8rem' : '0';
-
   return (
     <div className="w-full pt-6 pb-10 sm:pb-24 sm:pt-16">
       <Contained maxWidth={UI.FORM_WIDTH_PX}>
         <div className="relative flex flex-col-reverse w-full sm:flex-row sm:justify-end">
-          <HelpHeroSuccess
-            style={{
-              width: isMobile ? '20rem' : '33rem',
-              transform: `translateX(${heroTranslateX})`,
-            }}
-          />
-
-          <div
-            // style={{ marginLeft: '-15.5rem' }}
-            className="flex flex-col items-center justify-center w-full mb-10 space-y-4 sm:mb-10 sm:absolute sm:inset-0 sm:w-7/12 md:w-5/12"
-          >
+          <div className="flex flex-col items-center justify-center w-full mb-10 space-y-4 sm:mb-10 sm:absolute sm:inset-0 sm:w-7/12 md:w-5/12">
             <h2 className="text-3xl text-center font-primary text-primary">
               Thank you for
               <br /> your request...
