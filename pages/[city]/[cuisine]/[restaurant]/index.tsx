@@ -192,20 +192,22 @@ const RestaurantPage = (
         </div>
       </Contained>
 
-      <div className="pb-10">
+      <div className="flex flex-col items-center pb-10">
         <Contained maxWidth={900}>
           <div className="pb-6">
             <SectionTitle>Award Winning Dishes</SectionTitle>
           </div>
         </Contained>
 
-        <HorizontalScrollable noPadding spacing={6}>
-          {tastiestDishes.map(dish => (
-            <div key={dish.id} style={{ width: '250px' }}>
-              <TastiestDishRow {...dish} />
-            </div>
-          ))}
-        </HorizontalScrollable>
+        <div style={{ maxWidth: '900px' }}>
+          <HorizontalScrollable noPadding spacing={6}>
+            {tastiestDishes.map(dish => (
+              <div key={dish.id} style={{ width: '250px' }}>
+                <TastiestDishRow {...dish} />
+              </div>
+            ))}
+          </HorizontalScrollable>
+        </div>
       </div>
 
       {/* Image and map overlay */}
