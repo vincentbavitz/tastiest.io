@@ -71,7 +71,9 @@ const Index = ({
         <HomeInformationSection />
 
         <Contained>
-          <SuggestRestaurantPrompBox />
+          <div className="flex justify-center w-full">
+            <SuggestRestaurantPrompBox />
+          </div>
         </Contained>
 
         {/* <HomeRecentSearchesSection /> */}

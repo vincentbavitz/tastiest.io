@@ -150,11 +150,11 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
 
   // prettier-ignore
   const textareaPlaceholder = 
-    supportType === SupportRequestType.GENERAL ? 'How can we help you?' : 
-    supportType === SupportRequestType.ORDER ? 'Please explain what went wrong with your order' : 
+    supportType === SupportRequestType.GENERAL         ? 'How can we help you?' : 
+    supportType === SupportRequestType.ORDER           ? 'Please explain what went wrong with your order' : 
     supportType === SupportRequestType.FEATURE_REQUEST ? "Describe the feature you'd like to see" : 
-    supportType === SupportRequestType.BUG ? 'Please describe the bug you encountered' : 
-    supportType === SupportRequestType.OTHER ? 'Please describe your issue' : 
+    supportType === SupportRequestType.BUG             ? 'Please describe the bug you encountered' : 
+    supportType === SupportRequestType.OTHER           ? 'Please describe your issue' : 
     ''
 
   return (

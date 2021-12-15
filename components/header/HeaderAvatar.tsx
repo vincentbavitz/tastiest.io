@@ -64,7 +64,7 @@ export function HeaderAvatar() {
           </Dropdown.Item>
         </Dropdown>
       ) : (
-        <UserAvatar onClick={() => dispatch(openAuthModal())} />
+        <UserAvatar initial="T" onClick={() => dispatch(openAuthModal())} />
       )}
     </div>
   );

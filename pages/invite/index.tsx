@@ -293,10 +293,12 @@ interface GetAccessModalProps {
 }
 
 const GetAccessModal = (props: GetAccessModalProps) => {
+  const router = useRouter();
+
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const { hasAccess, setHasAccess } = useContext(EarlyAccessContext);
+  const { setHasAccess } = useContext(EarlyAccessContext);
 
   const getAccess = async ({ hasAccessEmail }: HasAccessFormData) => {
     setError(null);
@@ -314,6 +316,7 @@ const GetAccessModal = (props: GetAccessModalProps) => {
       body.preregister.email === hasAccessEmail
     ) {
       setHasAccess(true);
+      router.push('/');
     } else {
       setError(`You haven't been granted access just yet.`);
     }
