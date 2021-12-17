@@ -199,7 +199,7 @@ const RestaurantPage = (
           </div>
         </Contained>
 
-        <div style={{ maxWidth: '900px' }}>
+        <div style={{ width: '100%', maxWidth: '900px' }}>
           <HorizontalScrollable noPadding spacing={6}>
             {tastiestDishes.map(dish => (
               <div key={dish.id} style={{ width: '250px' }}>

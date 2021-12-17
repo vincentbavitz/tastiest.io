@@ -97,7 +97,10 @@ export function AbstractExperienceCard(props: Props): JSX.Element {
           {deal.image.url && (
             <div className="absolute inset-0">
               <img
-                className="object-cover w-full h-full"
+                className={clsx(
+                  'object-cover w-full h-full',
+                  isSmall || compact ? 'rounded-t-md' : 'rounded-t-xl',
+                )}
                 src={`${deal.image?.url}?w=400`}
                 alt={deal.image?.description}
               />

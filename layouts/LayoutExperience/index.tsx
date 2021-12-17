@@ -1,4 +1,5 @@
 import { ArrowUpOutlined } from '@ant-design/icons';
+import { CrumbProps } from '@tastiest-io/tastiest-ui';
 import { titleCase } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { ArticleSaveShareWidget } from 'components/article/widgets/ArticleSaveShareWidget';
@@ -11,7 +12,7 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetStaticPropsType } from 'next';
 import Image from 'next/image';
 import { getStaticProps } from 'pages/[city]/[cuisine]/[restaurant]/[slug]';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useWindowScroll } from 'react-use';
 import { generateStaticURL } from 'utils/routing';
 import { LayoutProps } from '../LayoutHandler';
@@ -45,12 +46,32 @@ export default function LayoutExperience({
     return () => setHeaderTransparent(false);
   }, [scrollY]);
 
+  const breadcrumbs: CrumbProps[] = useMemo(() => {
+    const restaurantPath = generateStaticURL({
+      city: restaurant.city,
+      cuisine: restaurant.cuisine,
+      restaurant: restaurant.uriName,
+    }).as;
+
+    return [
+      { label: restaurant.name, href: restaurantPath },
+      { label: 'Experiences', href: `${restaurantPath}/experiences` },
+      {
+        label: post.title.slice(0, 30),
+        href: `${restaurantPath}/${post.slug}`,
+      },
+    ];
+  }, [post.slug]);
+
   return (
     <div className={isDesktopLayout ? null : 'pb-14'}>
       <LayoutWrapper
         router={router}
         pageProps={pageProps}
-        headerProps={{ transparency: headerTransparent ? 'glass' : 'none' }}
+        headerProps={{
+          breadcrumbs,
+          transparency: headerTransparent ? 'glass' : 'none',
+        }}
       >
         <div className="relative mb-24">
           {/* Restaurant's Feature Video */}

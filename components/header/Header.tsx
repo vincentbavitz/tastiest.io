@@ -1,6 +1,11 @@
 import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
 import { HamburgerIcon } from '@tastiest-io/tastiest-icons';
-import { Dropdown, TastiestBrand } from '@tastiest-io/tastiest-ui';
+import {
+  Breadcrumbs,
+  CrumbProps,
+  Dropdown,
+  TastiestBrand,
+} from '@tastiest-io/tastiest-ui';
 import clsx from 'clsx';
 import { UserAvatar } from 'components/avatar/UserAvatar';
 import { useAuth } from 'hooks/auth/useAuth';
@@ -19,6 +24,7 @@ import { HeaderAvatar } from './HeaderAvatar';
 export interface HeaderProps {
   transparency?: 'glass' | 'full' | 'none';
   theme?: 'light' | 'dark';
+  breadcrumbs?: Omit<CrumbProps, 'selected'>[];
 }
 
 export function Header(props: HeaderProps) {
@@ -30,7 +36,7 @@ function MobileHeader(props: HeaderProps) {
   const { isSignedIn } = useAuth();
   const { signOut } = useSignOut();
 
-  const { transparency = 'none', theme = 'light' } = props;
+  const { transparency = 'none', breadcrumbs, theme = 'light' } = props;
   const dispatch = useDispatch();
 
   // const handleExpandSearch = (e: React.MouseEvent) => {
@@ -43,71 +49,89 @@ function MobileHeader(props: HeaderProps) {
   const { isPageLoading } = usePageLoader();
 
   return (
-    <div
-      style={{
-        paddingLeft: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
-        paddingRight: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
-        height: `${UI.HEADER_HEIGHT_MOBILE_REM}rem`,
-        zIndex: UI.Z_INDEX_HEADER,
-      }}
-      className={clsx(
-        'fixed top-0 left-0 right-0 w-full duration-500',
-        transparency === 'glass' && 'glass',
-        transparency === 'none' ? 'bg-white' : 'bg-none',
-        isPageLoading ? 'pointer-events-none' : 'pointer-events-auto',
-      )}
-    >
-      <div className="relative flex items-center justify-between w-full h-full">
-        <Link href="/">
-          <a className="flex items-center flex-shrink-0 no-underline">
-            <TastiestBrand type="full" theme={theme} size={8} />
-          </a>
-        </Link>
+    <>
+      <div
+        style={{
+          paddingLeft: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
+          paddingRight: `${UI.PAGE_CONTAINED_PADDING_VW}vw`,
+          height: `${UI.HEADER_HEIGHT_MOBILE_REM}rem`,
+          zIndex: UI.Z_INDEX_HEADER,
+        }}
+        className={clsx(
+          'fixed left-0 right-0 w-full duration-500',
+          breadcrumbs ? 'top-9' : 'top-0',
+          transparency === 'glass' && 'glass',
+          transparency === 'none' ? 'bg-white' : 'bg-none',
+          isPageLoading ? 'pointer-events-none' : 'pointer-events-auto',
+        )}
+      >
+        <div className="relative flex items-center justify-between w-full h-full">
+          <Link href="/">
+            <a className="flex items-center flex-shrink-0 no-underline">
+              <TastiestBrand type="full" theme={theme} size={8} />
+            </a>
+          </Link>
 
-        <Dropdown offset={30}>
-          <Dropdown.Trigger>
-            <HamburgerIcon
-              className={clsx(
-                'h-8 cursor-pointer fill-current duration-500',
-                theme === 'light' ? 'text-primary' : 'text-light',
-              )}
-            />
-          </Dropdown.Trigger>
+          <Dropdown offset={20}>
+            <Dropdown.Trigger>
+              <HamburgerIcon
+                className={clsx(
+                  'h-8 cursor-pointer fill-current duration-500',
+                  theme === 'light' ? 'text-primary' : 'text-light',
+                )}
+              />
+            </Dropdown.Trigger>
 
-          <Dropdown.Item
-            display={isSignedIn}
-            href="/account/preferences"
-            icon={<SettingOutlined />}
-          >
-            Preferences
-          </Dropdown.Item>
+            <Dropdown.Item
+              display={isSignedIn}
+              href="/account/preferences"
+              icon={<SettingOutlined />}
+            >
+              Preferences
+            </Dropdown.Item>
 
-          <Dropdown.Item
-            display={isSignedIn}
-            icon={<LogoutOutlined />}
-            onClick={() => {
-              signOut();
-            }}
-          >
-            Sign out
-          </Dropdown.Item>
+            <Dropdown.Item
+              display={isSignedIn}
+              icon={<LogoutOutlined />}
+              onClick={() => {
+                signOut();
+              }}
+            >
+              Sign out
+            </Dropdown.Item>
 
-          <Dropdown.Item
-            display={!isSignedIn}
-            onClick={() => dispatch(openAuthModal())}
-          >
-            <div className="flex items-center gap-4">
-              <UserAvatar /> Sign in
-            </div>
-          </Dropdown.Item>
-        </Dropdown>
+            <Dropdown.Item
+              display={!isSignedIn}
+              onClick={() => dispatch(openAuthModal())}
+            >
+              <div className="flex items-center gap-4">
+                <UserAvatar initial="T" /> Sign in
+              </div>
+            </Dropdown.Item>
+          </Dropdown>
+        </div>
       </div>
-    </div>
+
+      {breadcrumbs ? (
+        <div
+          style={{ zIndex: 999 }}
+          className="fixed top-0 left-0 right-0 h-9 bg-white flex items-center"
+        >
+          <Contained>
+            <Breadcrumbs>
+              {breadcrumbs.map((crumb, key) => (
+                <Breadcrumbs.Crumb key={key} {...crumb} />
+              ))}
+            </Breadcrumbs>
+          </Contained>
+        </div>
+      ) : null}
+    </>
   );
 }
 
 function DesktopHeader(props: HeaderProps) {
-  const { transparency = 'none', theme = 'light' } = props;
+  const { transparency = 'none', breadcrumbs, theme = 'light' } = props;
 
   const { searchOverlayExpanded } = useSelector(
     (state: IState) => state.navigation,
@@ -140,47 +164,65 @@ function DesktopHeader(props: HeaderProps) {
   const navBarRef = useRef(null);
 
   return (
-    <div
-      ref={navBarRef}
-      style={{
-        zIndex:
-          searchOverlayExpanded && searchIsShown
-            ? UI.Z_INDEX_HEADER_SEARCH
-            : UI.Z_INDEX_HEADER,
-        height: `${UI.HEADER_HEIGHT_DESKTOP_REM}rem`,
-      }}
-      className={clsx(
-        'fixed top-0 left-0 right-0 flex items-center duration-500 w-full',
-        transparency === 'glass' && 'glass',
-        transparency === 'none' ? 'bg-white' : 'bg-none',
-        isPageLoading ? 'pointer-events-none' : 'pointer-events-auto',
-      )}
-    >
-      <Contained>
-        <div className="flex items-center w-full h-full">
-          <div className="flex items-center justify-between w-full antialiased">
-            <div className="flex flex-grow">
-              <Link href="/">
-                <a className="no-underline">
-                  <TastiestBrand theme={theme} type="full" size={10} />
-                </a>
-              </Link>
+    <>
+      <div
+        ref={navBarRef}
+        style={{
+          zIndex:
+            searchOverlayExpanded && searchIsShown
+              ? UI.Z_INDEX_HEADER_SEARCH
+              : UI.Z_INDEX_HEADER,
+          height: `${UI.HEADER_HEIGHT_DESKTOP_REM}rem`,
+        }}
+        className={clsx(
+          'fixed left-0 right-0 flex items-center duration-500 w-full',
+          breadcrumbs ? 'top-9' : 'top-0',
+          transparency === 'glass' && 'glass',
+          transparency === 'none' ? 'bg-white' : 'bg-none',
+          isPageLoading ? 'pointer-events-none' : 'pointer-events-auto',
+        )}
+      >
+        <Contained>
+          <div className="flex items-center w-full h-full">
+            <div className="flex items-center justify-between w-full antialiased">
+              <div className="flex flex-grow">
+                <Link href="/">
+                  <a className="no-underline">
+                    <TastiestBrand theme={theme} type="full" size={10} />
+                  </a>
+                </Link>
 
-              {/* <HeaderSearch
+                {/* <HeaderSearch
                 isShown={searchIsShown}
                 innerOverlayStyle={{
                   // When pinned to header, limit height to vh and lock body scroll
                   maxHeight: searchIsShown ? '80vh' : 'unset',
                 }}
               /> */}
-            </div>
+              </div>
 
-            {/* <HeaderSavedPlaces /> */}
-            <HeaderAvatar />
+              {/* <HeaderSavedPlaces /> */}
+              <HeaderAvatar />
+            </div>
           </div>
+        </Contained>
+      </div>
+
+      {breadcrumbs ? (
+        <div
+          style={{ zIndex: 999 }}
+          className="fixed top-0 left-0 right-0 h-9 bg-white flex items-center"
+        >
+          <Contained>
+            <Breadcrumbs>
+              {breadcrumbs.map((crumb, key) => (
+                <Breadcrumbs.Crumb key={key} {...crumb} />
+              ))}
+            </Breadcrumbs>
+          </Contained>
         </div>
-      </Contained>
-    </div>
+      ) : null}
+    </>
   );
 }
 

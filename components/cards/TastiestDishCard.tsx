@@ -39,7 +39,7 @@ export default function TastiestDishCard(props: Props) {
   const [video, state, controls] = useVideo(
     <video
       loop
-      src={dynamicImage.url}
+      src={dynamicImage?.url}
       className="object-cover w-full h-full"
       playsInline // prevent fullscreen on iOS
     />,

@@ -7,7 +7,6 @@ import { AcceptTrackingPopup } from 'components/popups/AcceptTrackingPopup';
 import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
-import { UI } from '../constants';
 import { LayoutProps } from './LayoutHandler';
 
 interface LayoutWrapperProps extends LayoutProps {
@@ -44,9 +43,7 @@ export default function LayoutWrapper({
         )}
       >
         <div className="relative flex flex-col flex-grow">
-          <div style={{ zIndex: UI.Z_INDEX_HEADER }}>
-            <Header {...headerProps} />
-          </div>
+          <Header {...headerProps} />
 
           <div className="relative font-secondary">{children}</div>
         </div>

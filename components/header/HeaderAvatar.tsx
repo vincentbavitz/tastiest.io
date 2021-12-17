@@ -43,7 +43,7 @@ export function HeaderAvatar() {
   return (
     <div className="relative w-8">
       {isSignedIn ? (
-        <Dropdown>
+        <Dropdown offset={25}>
           <Dropdown.Trigger>
             <UserAvatar onClick={() => dispatch(openAuthModal())} />
           </Dropdown.Trigger>

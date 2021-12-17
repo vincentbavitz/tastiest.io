@@ -8,6 +8,7 @@
 @tailwind components;
 
 
+
 a {
   @apply cursor-pointer hover:underline hover:text-secondary;
 
@@ -56,9 +57,9 @@ body {
     @apply bg-primary bg-opacity-25;
   }
 
-  // & > div {
-  //   overflow-x: hidden;
-  // }
+  & > div {
+    overflow-x: hidden;
+  }
 }
 
 

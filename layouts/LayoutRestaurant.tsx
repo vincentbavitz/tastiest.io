@@ -1,4 +1,5 @@
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { CrumbProps } from '@tastiest-io/tastiest-ui';
 import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
@@ -109,11 +110,30 @@ export default function LayoutRestaurant({
     [isExperiencesPage],
   );
 
+  const breadcrumbs: CrumbProps[] = useMemo(() => {
+    const currentPath = generateStaticURL({
+      city: restaurant.city,
+      cuisine: restaurant.cuisine,
+      restaurant: restaurant.uriName,
+    }).as;
+
+    const crumbs = [{ label: restaurant.name, href: currentPath }];
+
+    if (isExperiencesPage) {
+      crumbs.push({ label: 'Experiences', href: `${currentPath}/experiences` });
+    }
+
+    return crumbs;
+  }, [isExperiencesPage]);
+
   return (
     <LayoutWrapper
       router={router}
       pageProps={pageProps}
-      headerProps={{ transparency: headerTransparent ? 'glass' : 'none' }}
+      headerProps={{
+        breadcrumbs,
+        transparency: headerTransparent ? 'glass' : 'none',
+      }}
     >
       {/* Restaurant's Feature Video */}
       <div
