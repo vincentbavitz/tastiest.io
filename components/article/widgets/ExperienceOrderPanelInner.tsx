@@ -207,28 +207,29 @@ export default function ExperienceOrderPanelInner(props: Props) {
               });
 
               return (
-                <XScrollSelectItem
-                  key={key}
-                  selected={selected}
-                  link={link}
-                  size={sizes.selectItemSize}
-                >
-                  <h4
-                    style={{
-                      minWidth:
-                        sizes.selectItemSize === 'large' ? '7rem' : '6rem',
-                      maxWidth: '7rem',
-                    }}
-                    className={clsx(
-                      sizes.selectItemSize === 'large'
-                        ? 'text-base leading-4'
-                        : 'text-xs leading-3',
-                      'whitespace-pre-wrap',
-                    )}
+                <div key={key}>
+                  <XScrollSelectItem
+                    selected={selected}
+                    link={link}
+                    size={sizes.selectItemSize}
                   >
-                    {_post.deal.name}
-                  </h4>
-                </XScrollSelectItem>
+                    <h4
+                      style={{
+                        minWidth:
+                          sizes.selectItemSize === 'large' ? '7rem' : '6rem',
+                        maxWidth: '7rem',
+                      }}
+                      className={clsx(
+                        sizes.selectItemSize === 'large'
+                          ? 'text-base leading-4'
+                          : 'text-xs leading-3',
+                        'whitespace-pre-wrap',
+                      )}
+                    >
+                      {_post.deal.name}
+                    </h4>
+                  </XScrollSelectItem>
+                </div>
               );
             })}
           </HorizontalScrollable>
@@ -247,18 +248,19 @@ export default function ExperienceOrderPanelInner(props: Props) {
               const disabled = !slot.open;
 
               return isTodayUnavailable ? null : (
-                <XScrollSelectItem
-                  key={key}
-                  selected={selectedDay?.ordinal === slot.ordinal}
-                  disabled={disabled}
-                  size={sizes.selectItemSize}
-                  onClick={disabled ? undefined : () => setSelectedDay(slot)}
-                >
-                  <p className="leading-none">{datetime.weekdayShort}</p>
-                  <p className="text-xs opacity-75">
-                    {datetime.toFormat('d MMM')}
-                  </p>
-                </XScrollSelectItem>
+                <div key={key}>
+                  <XScrollSelectItem
+                    selected={selectedDay?.ordinal === slot.ordinal}
+                    disabled={disabled}
+                    size={sizes.selectItemSize}
+                    onClick={disabled ? undefined : () => setSelectedDay(slot)}
+                  >
+                    <p className="leading-none">{datetime.weekdayShort}</p>
+                    <p className="text-xs opacity-75">
+                      {datetime.toFormat('d MMM')}
+                    </p>
+                  </XScrollSelectItem>
+                </div>
               );
             })}
           </HorizontalScrollable>
@@ -278,17 +280,18 @@ export default function ExperienceOrderPanelInner(props: Props) {
                   });
 
                   return (
-                    <XScrollSelectItem
-                      key={key}
-                      selected={selectedTime === time}
-                      disabled={disabled}
-                      size={sizes.selectItemSize}
-                      onClick={
-                        disabled ? undefined : () => setSelectedTime(time)
-                      }
-                    >
-                      <p className="text-xs">{minsIntoHumanTime(time)}</p>
-                    </XScrollSelectItem>
+                    <div key={key}>
+                      <XScrollSelectItem
+                        selected={selectedTime === time}
+                        disabled={disabled}
+                        size={sizes.selectItemSize}
+                        onClick={
+                          disabled ? undefined : () => setSelectedTime(time)
+                        }
+                      >
+                        <p className="text-xs">{minsIntoHumanTime(time)}</p>
+                      </XScrollSelectItem>
+                    </div>
                   );
                 })
               : ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM'].map(
