@@ -118,7 +118,7 @@ function MobileHeader(props: HeaderProps) {
           className="fixed top-0 left-0 right-0 h-9 bg-white flex items-center"
         >
           <Contained>
-            <Breadcrumbs>
+            <Breadcrumbs size="small">
               {breadcrumbs.map((crumb, key) => (
                 <Breadcrumbs.Crumb key={key} {...crumb} />
               ))}

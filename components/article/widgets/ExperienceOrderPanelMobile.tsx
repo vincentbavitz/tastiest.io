@@ -1,11 +1,8 @@
-import { ExitIcon } from '@tastiest-io/tastiest-icons';
+import { Modal } from '@tastiest-io/tastiest-ui';
 import { ExperiencePost, ExperienceProduct } from '@tastiest-io/tastiest-utils';
-import classNames from 'classnames';
 import clsx from 'clsx';
-import { Contained } from 'components/Contained';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { useLockBodyScroll } from 'react-use';
 import { UI } from '../../../constants';
 import ExperienceOrderPanelInner from './ExperienceOrderPanelInner';
 
@@ -21,7 +18,6 @@ export default function ExperienceOrderPanelMobile({
   posts,
 }: Props) {
   const [displayOverlay, setDisplayOverlay] = useState(false);
-  useLockBodyScroll(displayOverlay);
 
   // Close mobile overlay once we move to /checkout
   const router = useRouter();
@@ -47,57 +43,31 @@ export default function ExperienceOrderPanelMobile({
         </button>
       </div>
 
-      {displayOverlay && (
-        <OrderNowOverlay
-          deal={deal}
-          slug={slug}
-          posts={posts}
-          onClose={() => setDisplayOverlay(false)}
-        />
-      )}
+      <Modal
+        title="Get the offer"
+        show={displayOverlay}
+        close={() => setDisplayOverlay(false)}
+        fullscreen
+      >
+        <div className="relative flex-grow overflow-hidden mt-4 mb-4 -mx-6">
+          <OverlayInnerCard deal={deal} slug={slug} />
+        </div>
+
+        <div
+          className="-mx-6 pt-6"
+          style={{ boxShadow: 'inset 0px 15px 15px -15px rgba(0,0,0,0.08)' }}
+        >
+          <ExperienceOrderPanelInner
+            layout="overlay"
+            posts={posts}
+            deal={deal}
+            slug={slug}
+          />
+        </div>
+      </Modal>
     </>
   );
 }
-
-interface OrderNowOverlayProps extends Props {
-  onClose: () => void;
-}
-
-const OrderNowOverlay = ({
-  deal,
-  posts,
-  slug,
-  onClose,
-}: OrderNowOverlayProps) => {
-  return (
-    <div
-      style={{
-        zIndex: UI.Z_INDEX_FLOATING_COMPONENTS + 1,
-      }}
-      className={classNames(
-        'fixed flex flex-col justify-between inset-0 bg-white w-full h-full',
-      )}
-    >
-      <OverlayInnerHeader onClose={onClose} />
-
-      <div className="relative flex-grow overflow-hidden mt-4 mb-4">
-        <OverlayInnerCard deal={deal} slug={slug} />
-      </div>
-
-      <div
-        className="pt-6"
-        style={{ boxShadow: 'inset 0px 15px 15px -15px rgba(0,0,0,0.08)' }}
-      >
-        <ExperienceOrderPanelInner
-          layout="overlay"
-          posts={posts}
-          deal={deal}
-          slug={slug}
-        />
-      </div>
-    </div>
-  );
-};
 
 interface OverlayInnerCardProps {
   deal: ExperienceProduct;
@@ -117,28 +87,5 @@ const OverlayInnerCard = ({ deal, slug }: OverlayInnerCardProps) => {
         />
       </div>
     </div>
-  );
-};
-
-interface OverlayInnerHeaderProps {
-  onClose: () => void;
-}
-
-const OverlayInnerHeader = ({ onClose }: OverlayInnerHeaderProps) => {
-  return (
-    <Contained>
-      <div className="flex items-center justify-between py-2">
-        <div className="w-6"></div>
-        <h3 className="text-2xl font-medium text-center text-primary">
-          Get the offer
-        </h3>
-        <ExitIcon
-          onClick={onClose}
-          className="w-6 text-gray-300 fill-current"
-        />
-      </div>
-
-      <div className="-mx-2 border-b border-gray-500 border-opacity-25"></div>
-    </Contained>
   );
 };

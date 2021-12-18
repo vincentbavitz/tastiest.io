@@ -1,6 +1,5 @@
 import { CmsApi, dlog, ExperiencePost } from '@tastiest-io/tastiest-utils';
 import { ArticleSectionContent } from 'components/article/sections/ArticleSectionContent';
-import ExperienceOrderPanelInner from 'components/article/widgets/ExperienceOrderPanelInner';
 import { YouTubeVideo } from 'components/YouTubeVideo';
 import { useTrack } from 'hooks/useTrack';
 import { Layouts } from 'layouts/LayoutHandler';
@@ -158,13 +157,6 @@ function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
             },
           ],
         }}
-      />
-
-      <ExperienceOrderPanelInner
-        posts={posts}
-        deal={post.deal}
-        slug={post.slug}
-        layout="overlay"
       />
 
       <div className="relative w-full">
