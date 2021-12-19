@@ -15,6 +15,7 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import { RestaurantDetails } from '@tastiest-io/tastiest-utils/dist/types/restaurant';
 import Analytics from 'analytics-node';
+import { DateTime } from 'luxon';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { db, firebaseAdmin } from 'utils/firebaseAdmin';
@@ -286,10 +287,13 @@ export default async function pay(
         cancelledAt: null,
         confirmationCode: generateConfirmationCode(),
         bookedForTimestamp: order.bookedForTimestamp,
+        bookedForHumanDate: DateTime.fromMillis(
+          order.bookedForTimestamp,
+        ).toFormat('h:mm DDD'),
 
         isConfirmationCodeVerified: false,
-        isTest: process.env.NODE_ENV === 'development',
         isSyncedWithBookingSystem: false,
+        isTest: process.env.NODE_ENV === 'development',
       };
 
       await firebaseAdmin

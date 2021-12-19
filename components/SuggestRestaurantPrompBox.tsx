@@ -15,10 +15,9 @@ export default function SuggestRestaurantPrompBox() {
               Recommend a restaurant
             </h4>
             <div className="pt-2 text-lg text-gray-800">
-              <p className="font-medium">Tastiest runs on your suggestions!</p>
-              <p>
-                We'd love to hear about your favourite restaurants and dishes.
-              </p>
+              All our restaurant partners are recommended by you, our foodie
+              community.
+              <span className="font-medium"> Only the best make it. </span>
             </div>
           </div>
 
@@ -29,7 +28,7 @@ export default function SuggestRestaurantPrompBox() {
             <Link href="/recommend">
               <a className="no-underline">
                 <Button color="light" size="large">
-                  Suggest
+                  Recommend
                 </Button>
               </a>
             </Link>

@@ -3,6 +3,7 @@ import { ExperiencePost, ExperienceProduct } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { useLockBodyScroll } from 'react-use';
 import { UI } from '../../../constants';
 import ExperienceOrderPanelInner from './ExperienceOrderPanelInner';
 
@@ -18,6 +19,7 @@ export default function ExperienceOrderPanelMobile({
   posts,
 }: Props) {
   const [displayOverlay, setDisplayOverlay] = useState(false);
+  useLockBodyScroll(displayOverlay);
 
   // Close mobile overlay once we move to /checkout
   const router = useRouter();
@@ -29,7 +31,7 @@ export default function ExperienceOrderPanelMobile({
     <>
       <div
         style={{ zIndex: UI.Z_INDEX_FLOATING_COMPONENTS }}
-        className="fixed bottom-0 left-0 right-0 pb-6"
+        className="fixed bottom-0 left-0 right-0"
       >
         <button
           onClick={() => setDisplayOverlay(true)}
@@ -49,20 +51,22 @@ export default function ExperienceOrderPanelMobile({
         close={() => setDisplayOverlay(false)}
         fullscreen
       >
-        <div className="relative flex-grow overflow-hidden mt-4 mb-4 -mx-6">
-          <OverlayInnerCard deal={deal} slug={slug} />
-        </div>
+        <div className="flex flex-col absolute top-0 -bottom-5 -left-6 -right-6">
+          <div className="relative flex-grow overflow-hidden mt-4 mb-4">
+            <OverlayInnerCard deal={deal} slug={slug} />
+          </div>
 
-        <div
-          className="-mx-6 pt-6"
-          style={{ boxShadow: 'inset 0px 15px 15px -15px rgba(0,0,0,0.08)' }}
-        >
-          <ExperienceOrderPanelInner
-            layout="overlay"
-            posts={posts}
-            deal={deal}
-            slug={slug}
-          />
+          <div
+            className="pt-6"
+            style={{ boxShadow: 'inset 0px 15px 15px -15px rgba(0,0,0,0.08)' }}
+          >
+            <ExperienceOrderPanelInner
+              layout="overlay"
+              posts={posts}
+              deal={deal}
+              slug={slug}
+            />
+          </div>
         </div>
       </Modal>
     </>

@@ -57,7 +57,7 @@ export default function LayoutExperience({
       { label: restaurant.name, href: restaurantPath },
       { label: 'Experiences', href: `${restaurantPath}/experiences` },
       {
-        label: post.title.slice(0, 30),
+        label: post.title.slice(0, 40),
         href: `${restaurantPath}/${post.slug}`,
       },
     ];

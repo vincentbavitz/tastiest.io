@@ -108,7 +108,7 @@ export function AbstractExperienceCard(props: Props): JSX.Element {
           )}
 
           {/* Text overlay */}
-          <Link href={restaurantHref} as={restaurantAs}>
+          <Link href={experienceHref} as={experienceAs}>
             <a className="no-underline cursor-pointer">
               <div className="absolute inset-0 z-10 bg-dark bg-opacity-50">
                 <div
@@ -156,15 +156,17 @@ export function AbstractExperienceCard(props: Props): JSX.Element {
               </a>
             </Link>
           </div>
+
           {/* Description */}
           <LineLimit lines={3} fit="compact">
-            <p className="text-sm opacity-75">{description}</p>
+            <p className="text-sm text-justify opacity-75">{description}</p>
           </LineLimit>
+
           {/* Call to action */}
           <Link href={experienceHref} as={experienceAs}>
             <a className="no-underline">
               <Button wide size={compact ? 'small' : 'medium'}>
-                Learn more
+                See experience
               </Button>
             </a>
           </Link>

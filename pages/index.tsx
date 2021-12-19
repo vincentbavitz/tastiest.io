@@ -7,6 +7,7 @@ import { Layouts } from 'layouts/LayoutHandler';
 import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
+import Link from 'next/link';
 import React from 'react';
 import { HomeHeroSection } from '../components/home/HomeHeroSection';
 import { METADATA } from '../constants';
@@ -69,6 +70,31 @@ const Index = ({
         </div>
 
         <HomeInformationSection />
+
+        <Contained>
+          <div className="flex flex-col text-center space-y-4 text-lg px-6 py-8 shadow-lg bg-white rounded-xl">
+            <p className="font-medium">
+              Tastiest was established with one mission in mind: revolutionise
+              how you discover exceptional food online.
+            </p>
+
+            <p>
+              All our restaurant partners are recommended by you, our foodie
+              community, via{' '}
+              <Link href="/recommend">
+                <a className="text-secondary">this page</a>
+              </Link>{' '}
+              - only the best make it. We interview chefs to understand their
+              culinary creations, and uncover their stories so you see more than
+              just a menu.
+            </p>
+
+            <p>
+              Book, discover and stay up to date with must-try dishes and
+              restaurants by following on Tastiest.
+            </p>
+          </div>
+        </Contained>
 
         <Contained>
           <div className="flex justify-center w-full">

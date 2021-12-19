@@ -273,7 +273,7 @@ const ImprovementPrompts = () => (
       <p className="text-secondary font-medium">
         Don't See Your Favourite Restaurant?
       </p>
-      <Link href={`/help?type=${SupportRequestType.GENERAL}`}>
+      <Link href={'/recommend'}>
         <a className="text-sm opacity-75 hover:underline">
           Help our sales team sign them
         </a>

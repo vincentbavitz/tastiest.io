@@ -10,6 +10,7 @@ import {
   getMinsIntoDay,
   minsIntoHumanTime,
   OrderRequest,
+  TIME,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
@@ -47,7 +48,8 @@ const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
   const swrURL = generateLocalEndpoint(LocalEndpoint.GET_BOOKING_SLOTS, {
     restaurantId: deal.restaurant.id,
     offerId: deal.id,
-    timezone: DateTime.local().zoneName,
+    // timezone: DateTime.local().zoneName,
+    timezone: TIME.LOCALES.LONDON,
   });
 
   const { data } = useSWR<GetBookingSlotsReturn>(swrURL, {
@@ -124,8 +126,6 @@ const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
     totalPrice,
     toCheckout,
     submitting,
-    availableBookingSlots: data?.availableBookingSlots,
-    lastBookingSlotsSync: data?.lastBookingSlotsSync,
   };
 };
 
@@ -149,8 +149,6 @@ export default function ExperienceOrderPanelInner(props: Props) {
     totalPrice,
     toCheckout,
     submitting,
-    availableBookingSlots,
-    lastBookingSlotsSync,
   } = useOrderPanel(deal, slug);
 
   const sizes = useMemo(() => {
@@ -196,7 +194,11 @@ export default function ExperienceOrderPanelInner(props: Props) {
     <div>
       <div className="flex flex-col space-y-3">
         <div className="-mx-2">
-          <HorizontalScrollable noPadding chevronSize={sizes.chevronSize}>
+          <HorizontalScrollable
+            noPadding
+            spacing={1}
+            chevronSize={sizes.chevronSize}
+          >
             {posts?.map((_post, key) => {
               const selected = deal.id === _post.deal.id;
               const link = generateStaticURL({
@@ -236,9 +238,15 @@ export default function ExperienceOrderPanelInner(props: Props) {
         </div>
 
         <div className="-mx-2 pt-3 border-t border-gray-100">
-          <HorizontalScrollable noPadding chevronSize={sizes.chevronSize}>
+          <HorizontalScrollable
+            noPadding
+            spacing={1}
+            chevronSize={sizes.chevronSize}
+          >
             {slots?.map((slot, key) => {
-              const datetime = DateTime.fromMillis(slot.timestamp);
+              const datetime = DateTime.fromMillis(slot.timestamp).setZone(
+                TIME.LOCALES.LONDON,
+              );
 
               // Is it too late for all the times in today?
               const isTodayUnavailable =
@@ -267,17 +275,16 @@ export default function ExperienceOrderPanelInner(props: Props) {
         </div>
 
         <div className="-mx-2 pt-3 border-t border-gray-100">
-          <HorizontalScrollable noPadding chevronSize={sizes.chevronSize}>
+          <HorizontalScrollable
+            noPadding
+            spacing={0}
+            chevronSize={sizes.chevronSize}
+          >
             {selectedDay
               ? selectedDay.times.map((time, key) => {
                   const disabled =
-                    selectedDay.daysFromToday === 0 && getMinsIntoDay() > time;
-
-                  // Or if the restaurant's booking system has already taken this slot.
-                  availableBookingSlots.forEach(datetime => {
-                    const time = DateTime.fromISO(datetime);
-                    time;
-                  });
+                    selectedDay.daysFromToday === 0 &&
+                    getMinsIntoDay(TIME.LOCALES.LONDON) > time;
 
                   return (
                     <div key={key}>
