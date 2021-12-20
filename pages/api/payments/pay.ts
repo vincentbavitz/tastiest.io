@@ -347,7 +347,7 @@ export default async function pay(
             firstName: details.firstName,
             lastName: details.lastName,
             email: details.email,
-            phone: details.mobile,
+            phone: details.mobile.replace(/[\s]/g, '-'),
             birthday: JSON.stringify(details.birthday),
             postalCode: details.postalCode,
 

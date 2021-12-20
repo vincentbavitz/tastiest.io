@@ -1,12 +1,11 @@
 import { EmailIcon, LockIcon, UserIcon } from '@tastiest-io/tastiest-icons';
-import { Button, Input } from '@tastiest-io/tastiest-ui';
+import { Button, Input, Tooltip } from '@tastiest-io/tastiest-ui';
 import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
 import { useRegister } from 'hooks/auth/useRegister';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { AUTH, METADATA, REGEX } from '../../../constants';
 import { ContentElementProps, LoginFlowStep } from './AuthModal';
-import { ContentError } from './AuthModalContentError';
 import { ContentSubtext } from './AuthModalContentSubtext';
 import { AuthModalWrapper } from './AuthModalWrapper';
 
@@ -125,18 +124,30 @@ export const AuthModalRegisterContent = ({ setStep }: ContentElementProps) => {
         )}
       />
 
-      <Button
-        wide
-        size="large"
-        type="solid"
-        color="primary"
-        loading={submitting}
-        onClick={onClickRegister}
+      <Tooltip
+        show={Boolean(error)}
+        trigger="manual"
+        placement="bottom"
+        content={
+          <div
+            style={{ maxWidth: '260px' }}
+            className="flex items-center text-dark"
+          >
+            {error.userFacingMessage ?? error.message}
+          </div>
+        }
       >
-        Join
-      </Button>
-
-      <ContentError error={error} />
+        <Button
+          wide
+          size="large"
+          type="solid"
+          color="primary"
+          loading={submitting}
+          onClick={onClickRegister}
+        >
+          Join
+        </Button>
+      </Tooltip>
 
       <ContentSubtext>
         <p>

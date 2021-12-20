@@ -125,7 +125,7 @@ export function CheckoutStepPayment(props: Props) {
         firstName,
         lastName,
         birthday,
-        mobile,
+        mobile: mobile.replace(/[\s]/g, '-'),
         postalCode: cardPostcode,
       });
     }

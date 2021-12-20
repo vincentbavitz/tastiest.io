@@ -1,5 +1,5 @@
 import { EmailIcon, LockIcon } from '@tastiest-io/tastiest-icons';
-import { Button, Input } from '@tastiest-io/tastiest-ui';
+import { Button, Input, Tooltip } from '@tastiest-io/tastiest-ui';
 import { dlog } from '@tastiest-io/tastiest-utils';
 import { useSignIn } from 'hooks/auth/useSignIn';
 import React from 'react';
@@ -7,7 +7,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { cleanupInputValue } from 'utils/text';
 import { REGEX } from '../../../constants';
 import { ContentElementProps, LoginFlowStep } from './AuthModal';
-import { ContentError } from './AuthModalContentError';
 import { ContentSubtext } from './AuthModalContentSubtext';
 import { AuthModalWrapper } from './AuthModalWrapper';
 
@@ -89,11 +88,20 @@ export const AuthModalSignInContent = ({ setStep }: ContentElementProps) => {
         )}
       />
 
-      <Button wide size="large" loading={submitting} onClick={onClickSignIn}>
-        Sign In
-      </Button>
-
-      <ContentError error={error} />
+      <Tooltip
+        show={Boolean(error)}
+        trigger="manual"
+        placement="bottom"
+        content={
+          <div style={{ maxWidth: '260px' }}>
+            {error?.userFacingMessage ?? error?.message}
+          </div>
+        }
+      >
+        <Button wide size="large" loading={submitting} onClick={onClickSignIn}>
+          Sign In
+        </Button>
+      </Tooltip>
 
       <ContentSubtext>
         <p>

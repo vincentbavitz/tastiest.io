@@ -1,11 +1,10 @@
 import { CheckCircleOutlined } from '@ant-design/icons';
 import { EmailIcon } from '@tastiest-io/tastiest-icons';
-import { Button, Input } from '@tastiest-io/tastiest-ui';
+import { Button, Input, Tooltip } from '@tastiest-io/tastiest-ui';
 import { useResetPassword } from 'hooks/auth/useResetPassword';
 import React, { useState } from 'react';
 import { cleanupInputValue } from 'utils/text';
 import { ContentElementProps, LoginFlowStep } from './AuthModal';
-import { ContentError } from './AuthModalContentError';
 import { ContentSubtext } from './AuthModalContentSubtext';
 import { AuthModalWrapper } from './AuthModalWrapper';
 
@@ -47,21 +46,33 @@ export const AuthModalResetPasswordContent = ({
             disabled={success}
           ></Input>
 
-          <Button
-            wide
-            size="large"
-            type="solid"
-            color="primary"
-            loading={submitting}
-            disabled={submitting || success}
-            onClick={() => resetPassword(email)}
+          <Tooltip
+            show={Boolean(error)}
+            trigger="manual"
+            placement="bottom"
+            content={
+              <div
+                style={{ maxWidth: '260px' }}
+                className="flex items-center text-dark"
+              >
+                {error.userFacingMessage ?? error.message}
+              </div>
+            }
           >
-            Reset
-          </Button>
+            <Button
+              wide
+              size="large"
+              type="solid"
+              color="primary"
+              loading={submitting}
+              disabled={submitting || success}
+              onClick={() => resetPassword(email)}
+            >
+              Reset
+            </Button>
+          </Tooltip>
         </>
       )}
-
-      <ContentError error={error} />
 
       {success ? null : (
         <ContentSubtext>
