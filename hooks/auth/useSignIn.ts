@@ -1,12 +1,19 @@
-import { UserCredential } from '@firebase/auth-types';
+import { dlog } from '@tastiest-io/tastiest-utils';
 import { AuthContext, AuthError, AuthErrorMessageMap } from 'contexts/auth';
 import { LocalStorageItem } from 'contexts/tracking';
 import { useTrack } from 'hooks/useTrack';
-import { useContext, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFirebase } from 'react-redux-firebase';
+import { closeAuthModal } from 'state/navigation';
+import { IState } from 'state/reducers';
 
 export const useSignIn = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const firebase = useFirebase();
+
   const { user } = useContext(AuthContext);
   const { track } = useTrack();
 
@@ -14,25 +21,29 @@ export const useSignIn = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<AuthError | null>(null);
 
+  const navigation = useSelector((state: IState) => state.navigation);
+  useEffect(() => {
+    dlog(
+      'useSignIn ➡️ navigation.isAuthModalOpen:',
+      navigation.isAuthModalOpen,
+    );
+  }, [navigation]);
+
   const signIn = async (email: string, password: string) => {
+    setError(null);
+
     if (!email?.length || !password?.length) {
       return;
     }
 
     const anonymousId = window.analytics?.user?.()?.anonymousId?.();
     const attemptSignIn = async () => {
-      let credential: UserCredential;
-
       try {
         setSubmitting(true);
-        credential = await firebase
-          .auth()
-          .signInWithEmailAndPassword(email, password);
+        return firebase.auth().signInWithEmailAndPassword(email, password);
       } catch (error) {
         setError(AuthErrorMessageMap[(error as AuthError).code]);
-
         setSubmitting(false);
-        return credential;
       }
     };
 
@@ -40,7 +51,7 @@ export const useSignIn = () => {
 
     if (credential) {
       setSuccess(true);
-      setError(null);
+      dispatch(closeAuthModal());
 
       // User has accepted cookies by logging in
       localStorage.setItem(LocalStorageItem.HAS_ACCEPTED_COOKIES, '1');
@@ -48,7 +59,7 @@ export const useSignIn = () => {
       // Identify user with Segment
       window.analytics.identify(anonymousId, {
         userId: credential.user.uid,
-        email: user.email,
+        email: credential.user.email,
         context: {
           userAgent: navigator?.userAgent,
         },
@@ -61,8 +72,6 @@ export const useSignIn = () => {
 
       return credential;
     }
-
-    // setError(AuthErrorMessageMap[AuthErrorCode.INTERNAL_ERROR]);
   };
 
   return { signIn, success, submitting, error };

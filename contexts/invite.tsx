@@ -196,6 +196,10 @@ export const EarlyAccessProvider = ({
     if (!hasAccess) {
       router.push(newEndpoint);
     }
+
+    if (hasAccess && onInvitePage) {
+      router.push('/');
+    }
   }, [hasAccess, onInvitePage, onRecommendPage]);
 
   if (!hasAccess && !onInvitePage && !onRecommendPage) {

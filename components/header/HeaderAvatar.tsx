@@ -45,7 +45,7 @@ export function HeaderAvatar() {
       {isSignedIn ? (
         <Dropdown offset={25}>
           <Dropdown.Trigger>
-            <UserAvatar onClick={() => dispatch(openAuthModal())} />
+            <UserAvatar />
           </Dropdown.Trigger>
 
           <Dropdown.Item href="/account/preferences" icon={<SettingOutlined />}>

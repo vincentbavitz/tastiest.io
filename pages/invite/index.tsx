@@ -6,7 +6,6 @@ import REGEX from 'constants/regex';
 import { EarlyAccessContext } from 'contexts/invite';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { Layouts } from 'layouts/LayoutHandler';
-import { GetServerSidePropsContext } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -17,7 +16,6 @@ import {
   HomeInformationPage,
   HomeInformationShare,
 } from 'public/assets/page/home';
-import { ParsedUrlQuery } from 'querystring';
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { LocalEndpoint } from 'types/api';
@@ -30,19 +28,6 @@ type JoinWaitlistFormData = {
 
 type HasAccessFormData = {
   hasAccessEmail: string;
-};
-
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext<ParsedUrlQuery>,
-) => {
-  // Get the reference email from the URL.
-  const positionInLine = 1337;
-
-  return {
-    props: {
-      positionInLine,
-    },
-  };
 };
 
 const Invite = () => {

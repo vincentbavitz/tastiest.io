@@ -1,14 +1,12 @@
 import { LockIcon } from '@tastiest-io/tastiest-icons';
-import { Input } from '@tastiest-io/tastiest-ui';
+import { Input, InputProps } from '@tastiest-io/tastiest-ui';
 import React from 'react';
 
-interface Props {
-  value: string;
-  label?: string;
+interface Props extends InputProps {
   show?: boolean;
   toggleShow?: () => void;
-  onValueChange?(value: string): any;
 }
+
 export function InputPassword(props: Props) {
   const {
     value,
@@ -21,7 +19,7 @@ export function InputPassword(props: Props) {
   return (
     <Input
       type={show ? 'text' : 'password'}
-      label={label}
+      label={'Password'}
       prefix={<LockIcon className="w-8 h-6 fill-current text-primary" />}
       suffix={
         toggleShow ? (
@@ -32,6 +30,7 @@ export function InputPassword(props: Props) {
       }
       value={value}
       onValueChange={onValueChange}
+      {...props}
     ></Input>
   );
 }

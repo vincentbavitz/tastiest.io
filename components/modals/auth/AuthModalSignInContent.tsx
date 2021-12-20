@@ -92,6 +92,8 @@ export const AuthModalSignInContent = ({ setStep }: ContentElementProps) => {
         show={Boolean(error)}
         trigger="manual"
         placement="bottom"
+        hideDelay={2500}
+        resetHideDeps={[error]}
         content={
           <div style={{ maxWidth: '260px' }}>
             {error?.userFacingMessage ?? error?.message}
