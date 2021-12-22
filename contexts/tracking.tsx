@@ -2,7 +2,6 @@ import { renderGoogleAnalyticsSnippet } from 'lib/ganalytics';
 import { renderGTMAntiFlickerSnippet, renderGTMSnippet } from 'lib/gtm';
 import { renderHotJarSnippet } from 'lib/hotjar';
 import { renderSegmentSnippet } from 'lib/segment';
-import { renderTawkToSnippet } from 'lib/tawkto';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
 import React, { useEffect } from 'react';
@@ -30,7 +29,7 @@ const TrackingProvider = ({ children }: TrackingContextParams) => {
   useEffect(() => {
     router.events.on('routeChangeComplete', handleLocationChange);
     return () => router.events.off('routeChangeComplete', handleLocationChange);
-  }, [router.events]);
+  }, []);
 
   return (
     <TrackingContext.Provider value={''}>

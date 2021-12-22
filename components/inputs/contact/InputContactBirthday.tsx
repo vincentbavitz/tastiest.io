@@ -62,6 +62,7 @@ export function InputContactBirthday(props: Props) {
       customInput={InputCustom}
       value={dateToString(props.date)}
       onValueChange={handleOnChange}
+      autocomplete="off"
     />
   );
 }

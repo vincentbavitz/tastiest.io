@@ -16,6 +16,7 @@ import { InferGetServerSidePropsType } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ThankYouHero } from 'public/assets/page';
 import React, { ReactNode } from 'react';
 import Stripe from 'stripe';
@@ -221,7 +222,10 @@ function ThankYou(
                   </p>
 
                   <a
-                    href={`tel:${order.deal.restaurant?.publicPhoneNumber}`}
+                    href={`tel:${order.deal.restaurant?.publicPhoneNumber.replace(
+                      /[\s]/g,
+                      '-',
+                    )}`}
                     className="no-underline"
                   >
                     <Button
@@ -282,6 +286,14 @@ function ThankYou(
         </Contained>
 
         <Contained maxWidth={800}>
+          <div className="shadow-md bg-secondary bg-opacity-10 mb-10 py-6 px-8 rounded-lg text-center">
+            If you have any questions or suggestions, please reach out to{' '}
+            <Link href="/help">
+              <a className="text-secondary">our support team</a>
+            </Link>
+            .
+          </div>
+
           <div className="w-full h-0 border-b-2"></div>
 
           <OrderSummary order={order} paymentCard={paymentCard} />
