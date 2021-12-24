@@ -199,7 +199,12 @@ const validateOrderRequest = async (orderRequest: OrderRequest) => {
   // Get deal and restaurant from Contentful
   // If deal does not exist on Contentful, there was a clientside mismatch.
   // This could be an innocent error, or the user is sending nefarious requests.
-  const cms = new CmsApi();
+  const cms = new CmsApi(
+    undefined,
+    undefined,
+    process.env.NODE_ENV as 'production' | 'development',
+  );
+
   const deal = await cms.getDeal(orderRequest.dealId ?? '');
 
   if (!deal) {
@@ -226,7 +231,12 @@ const validateOrderRequest = async (orderRequest: OrderRequest) => {
 
 const buildOrder = async (orderRequest: OrderRequest) => {
   // Get deal
-  const cms = new CmsApi();
+  const cms = new CmsApi(
+    undefined,
+    undefined,
+    process.env.NODE_ENV as 'production' | 'development',
+  );
+
   const deal = await cms.getDeal(orderRequest.dealId ?? '');
 
   // Validate deal and slug, validate that deal is still available

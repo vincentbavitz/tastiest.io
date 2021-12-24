@@ -57,6 +57,16 @@ export const getServerSideProps = async context => {
   let order: Order;
   orderSnapshot.docs.forEach(doc => (order = doc.data() as Order));
 
+  // Redirect if user somehow got to this state of no order request.
+  if (!order || !order.paidAt) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
   // Get the corresponding booking
   const bookingSnapshot = await db(FirestoreCollection.BOOKINGS)
     .doc(order.id)
@@ -64,23 +74,10 @@ export const getServerSideProps = async context => {
 
   const booking = bookingSnapshot.data() as Booking;
 
-  // Redirect if user somehow got to this state of no order request.
-  if (!order || !order.paidAt || !booking) {
-    if (!booking) {
-      dlog('No booking!');
-    }
-
-    if (!order) {
-      dlog('No order!');
-    }
-
-    if (!order.paidAt) {
-      dlog('Order not paid!');
-    }
-
+  // Redirect if invalid booking.
+  if (!booking) {
     return {
       redirect: {
-        // TODO -> Destination should be /city/cuisine/slug
         destination: '/',
         permanent: false,
       },
@@ -111,7 +108,12 @@ export const getServerSideProps = async context => {
 
   // Get post's images
   // Don't worry about speed, this page is pre-fetched on checkout.
-  const cmsApi = new CmsApi();
+  const cmsApi = new CmsApi(
+    undefined,
+    undefined,
+    process.env.NODE_ENV as 'production' | 'development',
+  );
+
   const post = await cmsApi.getPostBySlug(order.fromSlug);
 
   const assets = {
@@ -302,9 +304,11 @@ function ThankYou(
         </Contained>
 
         <div className="flex justify-center py-10 w-full">
-          <a href="/" className="no-underline">
-            <Button size="large">Find more great food!</Button>
-          </a>
+          <Link href="/">
+            <a className="no-underline">
+              <Button size="large">Find more great food!</Button>
+            </a>
+          </Link>
         </div>
       </div>
     </>

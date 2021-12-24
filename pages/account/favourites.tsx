@@ -43,7 +43,12 @@ export const getServerSideProps: GetServerSideProps = async context => {
   dlog('favourites ➡️ savedPostSlugs:', savedPostSlugs);
 
   // Given ids of saved articles from firestore, get articles of these ids
-  const cms = new CmsApi();
+  const cms = new CmsApi(
+    undefined,
+    undefined,
+    process.env.NODE_ENV as 'production' | 'development',
+  );
+
   const { posts: savedPosts } = await cms.getPostsOfSlugs(savedPostSlugs);
 
   // Get recommended posts for the user

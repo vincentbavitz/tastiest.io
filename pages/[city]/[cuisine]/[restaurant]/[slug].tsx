@@ -7,7 +7,7 @@ import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { NextSeo, ProductJsonLd } from 'next-seo';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { generateStaticURL } from 'utils/routing';
 import { generateTitle } from '../../../../utils/metadata';
 
@@ -21,7 +21,12 @@ interface IPath {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const cms = new CmsApi();
+  const cms = new CmsApi(
+    undefined,
+    undefined,
+    process.env.NODE_ENV as 'production' | 'development',
+  );
+
   let posts: ExperiencePost[] = [];
   let page = 1;
   let foundAllPosts = false;
@@ -54,7 +59,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params }) => {
-  const cms = new CmsApi();
+  const cms = new CmsApi(
+    undefined,
+    undefined,
+    process.env.NODE_ENV as 'production' | 'development',
+  );
 
   // Get all deals from this restaurants
   const { posts } = await cms.getPostsOfRestaurant(params.restaurant);
@@ -79,9 +88,17 @@ export const getStaticProps = async ({ params }) => {
   };
 };
 
-const cms = new CmsApi();
-
 function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
+  const cms = useMemo(
+    () =>
+      new CmsApi(
+        undefined,
+        undefined,
+        process.env.NODE_ENV as 'production' | 'development',
+      ),
+    [],
+  );
+
   const { post, posts } = props;
   const { title, restaurant } = post;
 

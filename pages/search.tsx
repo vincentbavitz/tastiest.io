@@ -36,7 +36,12 @@ interface Props {
 export const getServerSideProps = async (
   context: GetServerSidePropsContext<ParsedUrlQuery>,
 ) => {
-  const cms = new CmsApi();
+  const cms = new CmsApi(
+    undefined,
+    undefined,
+    process.env.NODE_ENV as 'production' | 'development',
+  );
+
   const page = Number(context.query.page ?? 1);
   const modifier = context.query.m as ModifierKey | undefined;
 

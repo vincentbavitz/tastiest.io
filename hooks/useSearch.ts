@@ -19,7 +19,15 @@ export function useSearch() {
   const { userData, setUserData } = useUserData(user);
   const searchState = useSelector((state: IState) => state.search);
   const dispatch = useDispatch();
-  const cms = React.useMemo(() => new CmsApi(), [process]);
+  const cms = React.useMemo(
+    () =>
+      new CmsApi(
+        undefined,
+        undefined,
+        process.env.NODE_ENV as 'production' | 'development',
+      ),
+    [process],
+  );
 
   const query = searchState.searchQuery ?? '';
   const results = searchState?.searchResult ?? null;

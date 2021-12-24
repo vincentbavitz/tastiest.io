@@ -19,7 +19,12 @@ export const getOfferDestination = async (
   offerId: string,
 ): Promise<URL | null> => {
   // Offer redirection
-  const cmsApi = new CmsApi();
+  const cmsApi = new CmsApi(
+    undefined,
+    undefined,
+    process.env.NODE_ENV as 'production' | 'development',
+  );
+
   const post = await cmsApi.getPostByDealId(offerId);
 
   if (!post) {
@@ -40,7 +45,12 @@ export const getOfferDestination = async (
 export const getRestaurantDestination = async (
   restaurantUriName: string,
 ): Promise<URL | null> => {
-  const cmsApi = new CmsApi();
+  const cmsApi = new CmsApi(
+    undefined,
+    undefined,
+    process.env.NODE_ENV as 'production' | 'development',
+  );
+
   const restaurant = await cmsApi.getRestaurantFromUriName(restaurantUriName);
 
   if (!restaurant) {

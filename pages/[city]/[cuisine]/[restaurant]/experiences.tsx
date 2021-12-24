@@ -31,7 +31,11 @@ import { IRestaurantPath } from '.';
 //   getRestaurantStaticProps(context);
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const cms = new CmsApi();
+  const cms = new CmsApi(
+    undefined,
+    undefined,
+    process.env.NODE_ENV as 'production' | 'development',
+  );
 
   let page = 1;
   let foundAllRestaurants = false;
@@ -67,7 +71,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps = async (
   context: GetStaticPropsContext<ParsedUrlQuery>,
 ) => {
-  const cms = new CmsApi();
+  const cms = new CmsApi(
+    undefined,
+    undefined,
+    process.env.NODE_ENV as 'production' | 'development',
+  );
 
   const restaurantUriName = context.params?.restaurant;
   const restaurant = await cms.getRestaurantFromUriName(

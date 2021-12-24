@@ -80,7 +80,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     };
   }
 
-  const cmsApi = new CmsApi();
+  const cmsApi = new CmsApi(
+    undefined,
+    undefined,
+    process.env.NODE_ENV as 'production' | 'development',
+  );
+
   const {
     dishes: tastiestDishes = [],
   } = await cmsApi.getTastiestDishesOfCuisine(cuisineSymbol);
