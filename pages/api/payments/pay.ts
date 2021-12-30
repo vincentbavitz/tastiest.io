@@ -1,5 +1,6 @@
 import {
   Booking,
+  Currency,
   dlog,
   FirestoreCollection,
   FunctionsResponse,
@@ -188,6 +189,7 @@ export default async function pay(
 
     const {
       details: restaurantDetails,
+      metrics,
       financial,
     } = await restaurantDataApi.getRestaurantData();
 
@@ -257,11 +259,26 @@ export default async function pay(
       await stripe.paymentIntents.confirm(paymentIntent.id);
     }
 
+    // Values for Order and Booking
+    // prettier-ignore
+    const restaurantCut = { amount: restaurantPortion, currency: 'GBP' as Currency };
+    const tastiestCut = {
+      amount: tastiestPortion,
+      currency: 'GBP' as Currency,
+    };
+
+    const isUserFollowing = metrics?.followers?.some(
+      follower => follower.userId === order.userId,
+    );
+
     // Payment success
     if (paymentIntent.status === 'succeeded') {
       // Update order
       await db(FirestoreCollection.ORDERS).doc(order.id).set(
         {
+          tastiestCut,
+          restaurantCut,
+          isUserFollowing,
           paidAt: Date.now(),
         },
         { merge: true },
@@ -291,6 +308,8 @@ export default async function pay(
           order.bookedForTimestamp,
         ).toFormat('h:mm DDD'),
 
+        restaurantCut,
+        isUserFollowing,
         isConfirmationCodeVerified: false,
         isSyncedWithBookingSystem: false,
         isTest: process.env.NODE_ENV === 'development',

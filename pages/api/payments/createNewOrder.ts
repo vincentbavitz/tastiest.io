@@ -230,13 +230,13 @@ const validateOrderRequest = async (orderRequest: OrderRequest) => {
 };
 
 const buildOrder = async (orderRequest: OrderRequest) => {
-  // Get deal
   const cms = new CmsApi(
     undefined,
     undefined,
     process.env.NODE_ENV as 'production' | 'development',
   );
 
+  // Get deal
   const deal = await cms.getDeal(orderRequest.dealId ?? '');
 
   // Validate deal and slug, validate that deal is still available

@@ -151,6 +151,8 @@ export default function ExperienceOrderPanelInner(props: Props) {
     submitting,
   } = useOrderPanel(deal, slug);
 
+  dlog('ExperienceOrderPanelInner ➡️ slots:', slots);
+
   const sizes = useMemo(() => {
     const chevronSize = (layout === 'overlay' ? 8 : 6) as 6 | 8;
     const selectItemSize =

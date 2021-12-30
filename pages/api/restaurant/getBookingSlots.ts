@@ -71,7 +71,11 @@ export default async function getBookingSlots(
     );
 
     // Days are dictated by open times.
-    const { metrics, realtime } = await restaurantDataApi.getRestaurantData();
+    const {
+      settings,
+      metrics,
+      realtime,
+    } = await restaurantDataApi.getRestaurantData();
 
     // const slots: Slot[] = [];
     const seatingDuration = metrics?.seatingDuration ?? 60;
@@ -119,7 +123,7 @@ export default async function getBookingSlots(
 
     // NO REALTIME INFORMATION AVAILABLE
     // Should we default to open times?
-    if (metrics.shouldFallbackToOpenTimes === false) {
+    if (settings?.shouldFallbackToOpenTimes === false) {
       const DAYS_IN_WEEK = 7;
 
       const slots: Slot[] = [];
@@ -198,6 +202,7 @@ export default async function getBookingSlots(
   } catch (error) {
     response.statusMessage = 'Unknown error';
     response.status(401);
+    response.end();
     return;
   }
 }

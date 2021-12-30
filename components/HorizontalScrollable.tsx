@@ -1,8 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@tastiest-io/tastiest-icons';
-import { convertRemToPixels } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useScroll } from 'react-use';
 import { useDevice } from '../hooks/useDevice';
 import { Contained } from './Contained';
@@ -45,20 +44,23 @@ function HorizontalScrollableInner(props: Props) {
 
   const {
     isDesktop,
-    width: pageWidth,
+    width: screenWidth,
     isLoading: screenSizeLoading,
   } = useScreenSize();
 
-  const scrollRef = useRef(null);
+  const { isTouchDevice } = useDevice();
+
+  const scrollRef = useRef<HTMLDivElement>(null);
   const innerContentRef = useRef(null);
   const { x } = useScroll(scrollRef);
 
-  const scrollDistance = pageWidth > 1400 ? 450 : pageWidth / 2;
+  const scrollElementWidth = useMemo(() => {
+    const rect = scrollRef.current?.getBoundingClientRect();
+    return rect?.width ?? 200;
+  }, [scrollRef, screenWidth]);
 
-  const [itemWidth, setItemWidth] = useState<number>();
+  const scrollDistance = scrollElementWidth / 3;
   const [rightScrollHidden, setRightScrollHidden] = useState(false);
-
-  const { isTouchDevice } = useDevice();
 
   const handleLeftScroll = () => {
     scrollRef.current.scrollBy({
@@ -74,12 +76,6 @@ function HorizontalScrollableInner(props: Props) {
     });
   };
 
-  function handleItemClick() {
-    if (onItemClick) {
-      onItemClick();
-    }
-  }
-
   useEffect(() => {
     const isFullRight =
       scrollRef.current.scrollWidth - scrollRef.current.clientWidth ===
@@ -88,14 +84,8 @@ function HorizontalScrollableInner(props: Props) {
     const tooSmallToScroll =
       innerContentRef.current.clientWidth < scrollRef.current.clientWidth;
 
-    const spacingPx = convertRemToPixels(spacing / 4) / props.fit;
-    const _itemWidth = props.fit
-      ? Math.floor(scrollRef.current.clientWidth / props.fit + spacingPx)
-      : undefined;
-
-    setItemWidth(_itemWidth);
     setRightScrollHidden(tooSmallToScroll || isFullRight);
-  }, [scrollRef, x, pageWidth, screenSizeLoading, children]);
+  }, [scrollRef, x, scrollElementWidth, screenSizeLoading, children]);
 
   return (
     <div className="relative flex w-full">
