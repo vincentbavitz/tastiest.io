@@ -279,6 +279,10 @@ const buildOrder = async (orderRequest: OrderRequest) => {
     createdAt: Date.now(),
     bookedForTimestamp: orderRequest.bookedForTimestamp,
 
+    tastiestCut: null,
+    restaurantCut: null,
+    isUserFollowing: null,
+
     // Timestamps
     // Null denotes not paid yet; not done yet.
     paidAt: null,

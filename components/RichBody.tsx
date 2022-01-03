@@ -15,6 +15,7 @@ import {
   Text,
   UnorderedList,
 } from '@contentful/rich-text-types';
+import { dlog } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import React, { ReactNode } from 'react';
 import {
@@ -23,6 +24,7 @@ import {
 } from 'utils/shortcodes';
 import { ArticleCallout } from './article/ArticleCallout';
 import Shortcode from './Shortcode';
+import { YouTubeVideo } from './YouTubeVideo';
 
 const Bold = ({ children }) => (
   <span className="font-semibold">{children}</span>
@@ -117,7 +119,7 @@ export function RichBody(props: Props) {
         },
         [BLOCKS.HEADING_1]: (_, chilren: JSX.Element[]) => {
           return (
-            <h1 className="mt-8 mb-4 text-4xl font-semibold font-prompt">
+            <h1 className="mt-8 mb-4 text-3xl font-semibold font-prompt">
               {chilren}
             </h1>
           );
@@ -125,7 +127,7 @@ export function RichBody(props: Props) {
         [BLOCKS.HEADING_2]: (node: Heading2) => {
           const content = (node.content[0] as Text)?.value;
           return (
-            <h2 className="mt-8 mb-2 text-3xl font-semibold tracking-wide font-secondary">
+            <h2 className="mt-8 mb-2 text-2xl font-semibold tracking-wide font-secondary">
               {content}
             </h2>
           );
@@ -133,7 +135,7 @@ export function RichBody(props: Props) {
         [BLOCKS.HEADING_3]: (node: Heading3) => {
           const content = (node.content[0] as Text)?.value;
           return (
-            <h2 className="mt-6 mb-2 text-xl font-semibold font-secondary">
+            <h2 className="mt-6 mb-2 text-xl font-primary text-primary font-semibold">
               {content}
             </h2>
           );
@@ -141,12 +143,12 @@ export function RichBody(props: Props) {
         [BLOCKS.HEADING_4]: (node: Heading4) => {
           const content = (node.content[0] as Text)?.value;
           return (
-            <h2 className="mt-6 mb-2 text-lg font-bold font-secondary">
+            <h2 className="mt-6 mb-2 text-lg font-medium font-secondary">
               {content}
             </h2>
           );
         },
-        [BLOCKS.QUOTE]: (_node, children: ReactNode) => {
+        [BLOCKS.QUOTE]: (_, children: ReactNode) => {
           return (
             <div className="mt-6">
               <ArticleCallout bold indent>
@@ -154,6 +156,24 @@ export function RichBody(props: Props) {
               </ArticleCallout>
             </div>
           );
+        },
+        [BLOCKS.EMBEDDED_ENTRY]: (node: AssetLinkBlock) => {
+          const isYouTubeVideo =
+            (node as any).data?.target?.sys?.contentType?.sys?.id ===
+            'youTubeVideo';
+
+          const description = (node as any).data?.target?.fields?.displayTitle;
+
+          return isYouTubeVideo ? (
+            <div className="flex flex-col w-full my-6">
+              <YouTubeVideo url={(node as any).data.target.fields.url} />
+              {description ? (
+                <h4 className="text-lg mt-2 text-primary font-medium">
+                  {description}
+                </h4>
+              ) : null}
+            </div>
+          ) : null;
         },
         [BLOCKS.EMBEDDED_ASSET]: (node: AssetLinkBlock) => {
           const link = (node.data.target as any).fields.file.url.replace(
@@ -190,9 +210,8 @@ export function RichBody(props: Props) {
 
           return (
             <>
-              {' '}
               <a
-                className="cursor-pointer text-blue hover:underline"
+                className="cursor-pointer text-secondary filter hover:brightness-125 hover:underline"
                 href={node.data.uri}
                 target="_blank"
                 rel="noreferrer"
@@ -206,6 +225,8 @@ export function RichBody(props: Props) {
     }),
     [],
   );
+
+  dlog('RichBody ➡️ body:', body);
 
   const RichBody = documentToReactComponents(body, options);
 

@@ -115,7 +115,6 @@ export const getServerSideProps = async context => {
   );
 
   const post = await cmsApi.getPostBySlug(order.fromSlug);
-
   const assets = {
     restaurantHero: post.restaurant.heroIllustration,
     dish: post.plate,

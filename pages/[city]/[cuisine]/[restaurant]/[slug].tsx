@@ -1,6 +1,5 @@
 import { CmsApi, dlog, ExperiencePost } from '@tastiest-io/tastiest-utils';
 import { ArticleSectionContent } from 'components/article/sections/ArticleSectionContent';
-import { YouTubeVideo } from 'components/YouTubeVideo';
 import { useTrack } from 'hooks/useTrack';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
@@ -176,17 +175,7 @@ function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
         }}
       />
 
-      <div className="relative w-full">
-        <div className="pb-6">
-          <h4 className="text-2xl">The Experience</h4>
-
-          <p className="pt-2 text-justify">{post.description}</p>
-        </div>
-      </div>
-
       <ArticleSectionContent {...post} />
-
-      <YouTubeVideo url={post.video} />
     </>
   );
 }

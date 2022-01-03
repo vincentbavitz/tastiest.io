@@ -18,7 +18,7 @@ export function ArticleSectionContent(post: ExperiencePost) {
     <div>
       <div
         className={clsx(
-          'flex items-center pb-4',
+          'flex items-center mt-6 pb-10',
           isMobile ? 'flex-col' : 'justify-between gap-2',
         )}
       >
@@ -28,8 +28,6 @@ export function ArticleSectionContent(post: ExperiencePost) {
 
       <div className="flex flex-col pb-10 space-y-6">
         <RichBody body={post.body} />
-
-        {/* <ArticleSectionNeedToKnow body={post.needToKnow} /> */}
       </div>
     </div>
   );
