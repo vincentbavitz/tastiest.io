@@ -41,9 +41,12 @@ const Invite = () => {
 
   const submit = async ({ joinWaitlistEmail }: JoinWaitlistFormData) => {
     setLoading(true);
-    await submitPreregister(joinWaitlistEmail);
-    router.push('/');
-    setLoading(false);
+
+    try {
+      await submitPreregister(joinWaitlistEmail);
+    } catch {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -294,7 +297,10 @@ const GetAccessModal = (props: GetAccessModalProps) => {
     );
 
     const body = await response.json();
-    setLoading(false);
+
+    if (!body.preregister) {
+      setLoading(false);
+    }
 
     if (
       body.preregister.hasAccess &&

@@ -82,7 +82,6 @@ export default async function createNewOrder(
   };
 
   dlog('createNewOrder ➡️ body:', body);
-  dlog('createNewOrder ➡️ dealId:', dealId);
   dlog('createNewOrder ➡️ orderRequest:', orderRequest);
 
   const { success, error } = await validateOrderRequest(orderRequest);
