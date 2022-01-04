@@ -55,6 +55,13 @@ export default async function submitWaitlistToZapier(
     return;
   }
 
+  // Send off to Segment for Slack notifications
+  await analytics.track({
+    event: 'New Waitlist Submission',
+    anonymousId: email,
+    properties: body,
+  });
+
   try {
     const zapierWebhookEndpoint = `https://hooks.zapier.com/hooks/catch/8960376/bmy7cmt`;
     await fetch(zapierWebhookEndpoint, {
@@ -71,13 +78,6 @@ export default async function submitWaitlistToZapier(
       headers: {
         'Content-Type': 'application/json',
       },
-    });
-
-    // Send off to Segment for Slack notifications
-    await analytics.track({
-      event: 'New Waitlist Submission',
-      anonymousId: email,
-      properties: body,
     });
 
     response.json({ success: true, data: null, error: null });
