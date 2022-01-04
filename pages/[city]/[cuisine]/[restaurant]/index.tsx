@@ -5,13 +5,11 @@ import {
   RestaurantContentful,
   TastiestDish,
 } from '@tastiest-io/tastiest-utils';
-import clsx from 'clsx';
 import TastiestDishRow from 'components/cards/TastiestDishRow';
 import { Contained } from 'components/Contained';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { RichBody } from 'components/RichBody';
 import { SectionTitle } from 'components/SectionTitle';
-import { YouTubeVideo } from 'components/YouTubeVideo';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { Layouts } from 'layouts/LayoutHandler';
 import {
@@ -176,27 +174,7 @@ const RestaurantPage = (
 
       <Contained maxWidth={900}>
         <div className="flex flex-col py-4 pb-10 space-y-10">
-          <div className="flex lg:flex-row flex-col gap-6">
-            <div className="flex-1">
-              <YouTubeVideo url={restaurant.video.url} />
-
-              {restaurant.video.displayTitle ? (
-                <h4 className="pt-2 text-xl font-medium text-gray-700">
-                  {restaurant.video.displayTitle}
-                </h4>
-              ) : null}
-            </div>
-
-            <div className="flex-1">
-              <h4 className={clsx('text-2xl pb-2 text-primary font-primary')}>
-                About {restaurant.name}
-              </h4>
-
-              <div className="">
-                <RichBody body={restaurant.description}></RichBody>
-              </div>
-            </div>
-          </div>
+          <RichBody body={restaurant.description}></RichBody>
         </div>
       </Contained>
 

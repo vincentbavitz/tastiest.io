@@ -286,8 +286,8 @@ const buildOrder = async (orderRequest: OrderRequest) => {
     // Timestamps
     // Null denotes not paid yet; not done yet.
     paidAt: null,
-    abandonedAt: null,
     refund: null,
+    abandonedAt: null,
     isTest: process.env.NODE_ENV === 'development',
   };
 
