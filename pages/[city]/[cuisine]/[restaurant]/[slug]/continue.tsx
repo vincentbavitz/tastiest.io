@@ -1,5 +1,5 @@
 import { CloseOutlined } from '@ant-design/icons';
-import { CmsApi, ExperiencePost } from '@tastiest-io/tastiest-utils';
+import { CmsApi, dlog, ExperiencePost } from '@tastiest-io/tastiest-utils';
 import ExperienceOrderPanelInner from 'components/article/widgets/ExperienceOrderPanelInner';
 import { Contained } from 'components/Contained';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -95,7 +95,7 @@ function Continue(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const { post, posts } = props;
   const { title, restaurant } = post;
 
-  const { isDesktop } = useScreenSize();
+  const { isMobile, isTablet, isDesktop } = useScreenSize();
   const router = useRouter();
 
   const experienceHref = useMemo(
@@ -114,6 +114,8 @@ function Continue(props: InferGetStaticPropsType<typeof getStaticProps>) {
     router.prefetch('/checkout');
     router.prefetch(experienceHref);
   }, []);
+
+  dlog('continue ➡️ isDesktop:', isTablet, isMobile);
 
   // If on desktop, this page shouldn't exist.
   useEffect(() => {

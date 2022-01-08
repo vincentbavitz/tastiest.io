@@ -158,8 +158,8 @@ export function AbstractExperienceCard(props: Props): JSX.Element {
           </div>
 
           {/* Description */}
-          <LineLimit lines={3} fit="compact">
-            <p className="text-sm text-justify opacity-75">{description}</p>
+          <LineLimit lines={3} fit="tight">
+            <p className="text-sm opacity-75">{description}</p>
           </LineLimit>
 
           {/* Call to action */}

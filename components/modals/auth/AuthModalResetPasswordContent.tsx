@@ -55,7 +55,7 @@ export const AuthModalResetPasswordContent = ({
                 style={{ maxWidth: '260px' }}
                 className="flex items-center text-dark"
               >
-                {error.userFacingMessage ?? error.message}
+                {error?.userFacingMessage ?? error?.message}
               </div>
             }
           >
