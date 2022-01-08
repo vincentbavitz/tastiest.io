@@ -155,7 +155,7 @@ const Preferences = ({
 
   return (
     <div>
-      <div className="relative flex flex-col items-center w-full pb-12 mt-6 space-y-4">
+      <div className="relative flex flex-col items-center w-full pb-12 mt-10 space-y-4">
         <h1 className="text-3xl text-center font-primary text-primary">
           Set your preferences
         </h1>

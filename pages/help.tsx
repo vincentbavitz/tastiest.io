@@ -16,10 +16,12 @@ import { generateTitle } from 'utils/metadata';
 import { UI } from '../constants';
 
 export const getServerSideProps = async context => {
+  dlog('help ➡️ context.query:', context.query);
+
   // Setting a default subject from query parameters
   const initialSubject =
-    context?.query?.type ===
-    (SupportRequestType.ORDER && context?.query?.userFacingOrderId)
+    context?.query?.type === SupportRequestType.ORDER &&
+    context?.query?.userFacingOrderId
       ? `Order Issue (Order #${String(
           context?.query?.userFacingOrderId ?? '',
         )})`
@@ -49,6 +51,8 @@ const Help = ({
   initialSubject,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [sent, setHasSent] = useState(false);
+
+  dlog('help ➡️ initialSubject:', initialSubject);
 
   return (
     <>
@@ -96,8 +100,6 @@ interface HelpSubProps {
 const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
   const router = useRouter();
   const { isMobile, isTablet } = useScreenSize();
-
-  dlog('help ➡️ initialSubject:', initialSubject);
 
   // Update user data
   const { user } = useAuth();

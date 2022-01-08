@@ -169,7 +169,7 @@ function Continue(props: InferGetStaticPropsType<typeof getStaticProps>) {
           <div className="flex justify-between items-center h-14">
             <div className="flex-1"></div>
 
-            <div className="flex-1 flex justify-center font-medium text-dark text-2xl">
+            <div className="flex-1 flex justify-center font-medium text-dark text-2xl whitespace-nowrap">
               Get the offer
             </div>
 

@@ -1,4 +1,8 @@
-import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
+import {
+  CalendarOutlined,
+  LogoutOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
 import { Dropdown } from '@tastiest-io/tastiest-ui';
 import { titleCase } from '@tastiest-io/tastiest-utils';
 import { useSignOut } from 'hooks/auth/useSignOut';
@@ -47,6 +51,10 @@ export function HeaderAvatar() {
           <Dropdown.Trigger>
             <UserAvatar />
           </Dropdown.Trigger>
+
+          <Dropdown.Item href="/account/bookings" icon={<CalendarOutlined />}>
+            Bookings
+          </Dropdown.Item>
 
           <Dropdown.Item href="/account/preferences" icon={<SettingOutlined />}>
             Preferences
