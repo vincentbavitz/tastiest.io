@@ -103,17 +103,11 @@ const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
       error,
     } = await execute(orderRequest);
 
-    dlog('useArticleOrder ➡️ orderRequest:', orderRequest);
-    dlog('useArticleOrder ➡️ token:', token);
-    dlog('useArticleOrder ➡️ error:', error);
-
     if (token) {
       router.push(`/checkout/?token=${token}`);
       return;
     }
   };
-
-  dlog('ExperienceOrderPanelInner ➡️ data:', data);
 
   return {
     slots,
@@ -199,6 +193,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
           <HorizontalScrollable
             noPadding
             spacing={1}
+            forceButtons
             chevronSize={sizes.chevronSize}
           >
             {posts?.map((_post, key) => {
@@ -243,6 +238,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
           <HorizontalScrollable
             noPadding
             spacing={1}
+            forceButtons
             chevronSize={sizes.chevronSize}
           >
             {slots?.map((slot, key) => {
@@ -280,6 +276,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
           <HorizontalScrollable
             noPadding
             spacing={0}
+            forceButtons
             chevronSize={sizes.chevronSize}
           >
             {selectedDay
@@ -362,7 +359,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
             {submitting ? (
               <LoadingOutlined className="text-xl" />
             ) : (
-              <>BUY NOW</>
+              <>Buy Now</>
             )}
           </button>
         ) : null}

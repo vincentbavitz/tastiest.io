@@ -18,7 +18,9 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ThankYouHero } from 'public/assets/page';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setIsPaymentProcessing } from 'state/checkout';
 import Stripe from 'stripe';
 import { db, firebaseAdmin } from 'utils/firebaseAdmin';
 import { generateTitle } from 'utils/metadata';
@@ -135,13 +137,17 @@ function ThankYou(
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) {
   const { firstName, order, booking, paymentCard, assets } = props;
-  const { isMobile, isDesktop } = useScreenSize();
 
-  dlog('thank-you ➡️ order:', order);
+  const dispatch = useDispatch();
+  const { isMobile, isDesktop } = useScreenSize();
 
   const humanBookedForDate = DateTime.fromMillis(
     order.bookedForTimestamp,
   ).toRelativeCalendar();
+
+  useEffect(() => {
+    dispatch(setIsPaymentProcessing(false));
+  }, []);
 
   return (
     <>

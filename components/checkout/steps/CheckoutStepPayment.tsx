@@ -171,7 +171,6 @@ export function CheckoutStepPayment(props: Props) {
     }
 
     const { success, error } = await pay();
-    dlog('CheckoutStepPayment ➡️ error:', error);
 
     // Uh-oh - a general payment error!
     // This usually means the card declined.
@@ -182,9 +181,9 @@ export function CheckoutStepPayment(props: Props) {
         message:
           'There was an error processing your payment. Please try using another card.',
       });
-    }
 
-    dispatch(setIsPaymentProcessing(false));
+      dispatch(setIsPaymentProcessing(false));
+    }
   };
 
   useEffect(() => {
@@ -202,10 +201,8 @@ export function CheckoutStepPayment(props: Props) {
     shouldFocusError: true,
   });
 
-  dlog('CheckoutStepPayment ➡️ errors:', errors);
-
   return (
-    <div className="flex flex-col-reverse w-full pb-24 md:pb-0 md:flex-row md:justify-between">
+    <div className="flex flex-col-reverse w-full pb-4 md:pb-0 md:flex-row md:justify-between">
       <div
         style={{
           minWidth:

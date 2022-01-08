@@ -53,18 +53,18 @@ export function InputWrapper(props: Props) {
             'flex',
             'items-center',
             'appearance-none',
-            'w-full',
+            'w-full rounded',
             'text-gray-700',
             'leading-tight',
             'duration-300',
-            border !== 'none' && 'border-2',
+            border !== 'none' && 'border',
             disabled && 'opacity-50 cursor-not-allowed',
             border === 'primary' && 'border-primary',
             border === 'secondary' && hasFocus
               ? `border-primary`
               : 'border-secondary',
             size === 'small' ? 'px-2' : 'px-4',
-            size === 'large' ? 'rounded-xl h-12' : 'rounded-md',
+            size === 'large' ? 'h-12' : '',
             className,
           )}
         >

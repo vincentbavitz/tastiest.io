@@ -322,67 +322,70 @@ export default async function pay(
         .set(booking);
 
       // Track using Segment's Payment Success schema
+      // Don't send test orders to Pixel.
       // https://segment.com/docs/connections/spec/ecommerce/v2/#order-completed
-      await analytics.track({
-        event: 'Order Completed',
-        userId: order.userId,
-        context: {
-          userAgent,
-          page: {
-            url: 'https://tastiest.io/checkout',
-          },
-        },
-        integrations: {
-          All: false,
-          'Facebook Pixel': true,
-          'Facebook Conversions API': true,
-          'Google Analytics': true,
-        },
-        properties: {
-          checkout_id: order.token,
-          order_id: order.id,
-          affiliation: '',
-          total: order.price.final,
-          subtotal: order.price.subtotal,
-          revenue: tastiestPortion,
-          shipping: 0,
-          tax: 0,
-          discount: 0,
-          coupon: order.promoCode,
-          currency: order.price.currency,
-          products: [
-            {
-              product_id: order.deal.id,
-              sku: order.deal.id,
-              name: order.deal.name,
-              price: order.deal.pricePerHeadGBP,
-              quantity: order.heads,
-              category: '',
-              url: `https://tastiest.io/r?offer=${order.deal.id}`,
-              image_url: order.deal.image.url,
-            },
-          ],
-          traits: {
-            firstName: details.firstName,
-            lastName: details.lastName,
-            email: details.email,
-            phone: details.mobile.replace(/[\s]/g, '-'),
-            birthday: JSON.stringify(details.birthday),
-            postalCode: details.postalCode,
-
-            address: {
-              city: 'London',
+      if (!order.isTest) {
+        await analytics.track({
+          event: 'Order Completed',
+          userId: order.userId,
+          context: {
+            userAgent,
+            page: {
+              url: 'https://tastiest.io/checkout',
             },
           },
+          integrations: {
+            All: false,
+            'Facebook Pixel': true,
+            'Facebook Conversions API': true,
+            'Google Analytics': true,
+          },
+          properties: {
+            checkout_id: order.token,
+            order_id: order.id,
+            affiliation: '',
+            total: order.price.final,
+            subtotal: order.price.subtotal,
+            revenue: tastiestPortion,
+            shipping: 0,
+            tax: 0,
+            discount: 0,
+            coupon: order.promoCode,
+            currency: order.price.currency,
+            products: [
+              {
+                product_id: order.deal.id,
+                sku: order.deal.id,
+                name: order.deal.name,
+                price: order.deal.pricePerHeadGBP,
+                quantity: order.heads,
+                category: '',
+                url: `https://tastiest.io/r?offer=${order.deal.id}`,
+                image_url: order.deal.image.url,
+              },
+            ],
+            traits: {
+              firstName: details.firstName,
+              lastName: details.lastName,
+              email: details.email,
+              phone: details.mobile.replace(/[\s]/g, '-'),
+              birthday: JSON.stringify(details.birthday),
+              postalCode: details.postalCode,
 
-          // Internal measurements
-          tastiestPortion,
-          restaurantPortion,
+              address: {
+                city: 'London',
+              },
+            },
 
-          // For Pixel
-          action_source: 'website',
-        },
-      });
+            // Internal measurements
+            tastiestPortion,
+            restaurantPortion,
+
+            // For Pixel
+            action_source: 'website',
+          },
+        });
+      }
 
       response.json({
         success: true,

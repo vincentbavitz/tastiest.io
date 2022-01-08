@@ -11,6 +11,10 @@ interface Props {
   onItemClick?: () => void;
   children: JSX.Element[];
 
+  // Force buttons even on touch devices.
+  // Essentially covers the case where iOS Safari screws it up.
+  forceButtons?: boolean;
+
   // Number of items to fit in the available width
   // when not on touch device
   fit?: number;
@@ -40,7 +44,14 @@ export function HorizontalScrollable(props: Props) {
  * Intended for full width situations only
  */
 function HorizontalScrollableInner(props: Props) {
-  const { onItemClick, fit, spacing = 3, chevronSize = 8, children } = props;
+  const {
+    onItemClick,
+    fit,
+    forceButtons = false,
+    spacing = 3,
+    chevronSize = 8,
+    children,
+  } = props;
 
   const {
     isDesktop,
@@ -92,7 +103,7 @@ function HorizontalScrollableInner(props: Props) {
       <div
         className={clsx(
           'absolute left-0 right-0 flex items-center justify-between h-full w-full',
-          isTouchDevice && 'hidden',
+          forceButtons ? 'flex' : isTouchDevice && 'hidden',
         )}
       >
         <div

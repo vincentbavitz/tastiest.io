@@ -6,7 +6,6 @@ import {
 import { LockIcon, SupportIcon } from '@tastiest-io/tastiest-icons';
 import { Button, Input, Modal } from '@tastiest-io/tastiest-ui';
 import {
-  dlog,
   formatCurrency,
   Order,
   PAYMENTS,
@@ -17,7 +16,7 @@ import { useOrder } from 'hooks/checkout/useOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { UI } from '../../constants';
@@ -44,10 +43,6 @@ export function CheckoutPaymentPanel(props: Props) {
   const totalPrice = formatCurrency(
     Math.floor(order.heads) * order.deal.pricePerHeadGBP,
   );
-
-  useEffect(() => {
-    dlog('CheckoutPaymentPanel ➡️ isPaymentProcessing:', isPaymentProcessing);
-  }, [isPaymentProcessing]);
 
   if (!props.order) {
     // Return home if order is somehow invalid
@@ -104,14 +99,11 @@ export function CheckoutPaymentPanel(props: Props) {
             <Button
               wide
               type="solid"
-              onClick={() => submit()}
+              onClick={submit}
               disabled={isPaymentProcessing}
+              loading={isPaymentProcessing}
             >
-              {isPaymentProcessing ? (
-                <LoadingOutlined className="text-2xl" />
-              ) : (
-                'Place Order'
-              )}
+              Place Order
             </Button>
           </>
         )}
@@ -142,23 +134,26 @@ export function CheckoutPaymentPanel(props: Props) {
             filter: 'drop-shadow(0px 0px 10px rgba(0,0,0,0.33))',
             zIndex: UI.Z_INDEX_FLOATING_COMPONENTS,
           }}
-          className="fixed bottom-0 left-0 right-0 flex flex-col items-center px-6 py-6 space-y-2 bg-white"
+          className="fixed bottom-0 left-0 right-0 flex flex-col items-center"
         >
-          <TermsAndConditions />
-
-          <Button
-            wide
-            type="solid"
-            size="large"
-            onClick={() => submit()}
+          <button
             disabled={isPaymentProcessing}
+            onClick={submit}
+            className={clsx(
+              'flex justify-center items-center h-14 w-full',
+              'text-lg font-medium tracking-wide text-light',
+              'bg-primary duration-300 outline-none',
+              isPaymentProcessing
+                ? 'filter brightness-90'
+                : 'hover:bg-secondary',
+            )}
           >
             {isPaymentProcessing ? (
-              <LoadingOutlined className="text-2xl" />
+              <LoadingOutlined className="text-xl" />
             ) : (
-              'Place Order'
+              <>Place Order</>
             )}
-          </Button>
+          </button>
         </div>
       )}
     </div>
@@ -328,7 +323,7 @@ const PaymentErrorMessage = ({ order }: PaymentErrorMessageProps) => {
 
   const errorTitle = 'Payment Failed';
   const errorMessage =
-    "We're havong trouble processing your payment. Please try using another card.";
+    "We're having trouble processing your payment. Please try using another card.";
 
   return isDesktop ? (
     <div

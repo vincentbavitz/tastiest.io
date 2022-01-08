@@ -1,14 +1,17 @@
-import { CmsApi, dlog, ExperiencePost } from '@tastiest-io/tastiest-utils';
-import { ArticleSectionContent } from 'components/article/sections/ArticleSectionContent';
-import { useTrack } from 'hooks/useTrack';
+import { CloseOutlined } from '@ant-design/icons';
+import { CmsApi, ExperiencePost } from '@tastiest-io/tastiest-utils';
+import ExperienceOrderPanelInner from 'components/article/widgets/ExperienceOrderPanelInner';
+import { Contained } from 'components/Contained';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { NextSeo, ProductJsonLd } from 'next-seo';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
+import { generateTitle } from 'utils/metadata';
 import { generateStaticURL } from 'utils/routing';
-import { generateTitle } from '../../../../utils/metadata';
 
 interface IPath {
   params: {
@@ -87,51 +90,37 @@ export const getStaticProps = async ({ params }) => {
   };
 };
 
-function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
-  const cms = useMemo(
-    () =>
-      new CmsApi(
-        undefined,
-        undefined,
-        process.env.NODE_ENV as 'production' | 'development',
-      ),
-    [],
-  );
-
+/** Used as a mobile overlay when they click 'GET IT' */
+function Continue(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const { post, posts } = props;
   const { title, restaurant } = post;
 
+  const { isDesktop } = useScreenSize();
   const router = useRouter();
-  const { track } = useTrack();
 
-  // Get recommended posts
-  const [recommendedPosts, setRecommendedPosts] = useState([]);
-  useEffect(() => {
-    dlog('[slug] ➡️ recommendedPosts:', recommendedPosts);
-    cms.getTopPosts(8).then(result => setRecommendedPosts(result?.posts));
-  }, []);
+  const experienceHref = useMemo(
+    () =>
+      generateStaticURL({
+        city: restaurant.city,
+        cuisine: restaurant.cuisine,
+        restaurant: restaurant.uriName,
+        slug: post.slug,
+      }).as,
+    [],
+  );
 
-  // Preload the checkout page
+  // Preload the experience page
   useEffect(() => {
     router.prefetch('/checkout');
+    router.prefetch(experienceHref);
   }, []);
 
+  // If on desktop, this page shouldn't exist.
   useEffect(() => {
-    track('Product Viewed', {
-      ...post,
-    });
-  }, []);
-
-  // const segmentYouTubeSnippet = `
-  //     var player;
-  //   function onYouTubeIframeAPIReady() {
-  //     player = new YT.Player('player', {
-  //       videoId: '${post.video}'
-  //     });
-  //     var ytAnalytics = new window.analyticsPlugins.YT(player, 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX0365');
-  //     ytAnalytics.initialize();
-  //   }
-  // `;
+    if (isDesktop) {
+      router.push(experienceHref);
+    }
+  }, [isDesktop]);
 
   return (
     <>
@@ -175,10 +164,57 @@ function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
         }}
       />
 
-      <ArticleSectionContent {...post} />
+      <div className="fixed inset-0 flex flex-col justify-between">
+        <Contained>
+          <div className="flex justify-between items-center h-14">
+            <div className="flex-1"></div>
+
+            <div className="flex-1 flex justify-center font-medium text-dark text-2xl">
+              Get the offer
+            </div>
+
+            <div className="flex-1 flex items-center justify-end">
+              <Link href={experienceHref}>
+                <a>
+                  <CloseOutlined className="text-2xl" />
+                </a>
+              </Link>
+            </div>
+          </div>
+        </Contained>
+
+        <div className="relative flex-grow overflow-hidden mt-4 mb-4">
+          <div className="flex justify-center w-full">
+            <div
+              style={{ width: '100%', maxWidth: '33rem' }}
+              className="relative rounded-lg bg-transparent px-4 overflow-hidden"
+            >
+              <img
+                src={`${post.deal?.image?.url}?w=700`}
+                style={{ maxHeight: '15rem' }}
+                className="h-full w-full rounded-lg object-cover"
+              />
+
+              <h3 className="font-medium text-lg pt-3">{post.title}</h3>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="pt-6"
+          style={{ boxShadow: 'inset 0px 15px 15px -15px rgba(0,0,0,0.08)' }}
+        >
+          <ExperienceOrderPanelInner
+            layout="overlay"
+            posts={posts}
+            deal={post.deal}
+            slug={post.slug}
+          />
+        </div>
+      </div>
     </>
   );
 }
 
-Experience.layout = Layouts.EXPERIENCE;
-export default Experience;
+Continue.layout = Layouts.BLANK;
+export default Continue;
