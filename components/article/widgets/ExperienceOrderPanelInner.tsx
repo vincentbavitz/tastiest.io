@@ -359,7 +359,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
             {submitting ? (
               <LoadingOutlined className="text-xl" />
             ) : (
-              <>Buy Now</>
+              <>Book Now</>
             )}
           </button>
         ) : null}
@@ -372,7 +372,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
             loading={submitting}
             onClick={toCheckout}
           >
-            BUY NOW
+            Book Now
           </Button>
         ) : null}
       </div>

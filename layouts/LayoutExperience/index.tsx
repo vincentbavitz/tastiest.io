@@ -175,7 +175,7 @@ const LayoutExperienceMobile = ({
                 'text-light text-lg outline-none font-medium tracking-wide',
               )}
             >
-              GET IT
+              Book Now
             </button>
           </a>
         </Link>

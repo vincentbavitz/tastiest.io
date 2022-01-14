@@ -3,66 +3,57 @@ import * as React from 'react';
 function SvgHomeInformationPage(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
+      id="home-information-page_svg__Layer_1"
+      data-name="Layer 1"
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 191.33 165.85"
+      viewBox="0 0 1024 1024"
       {...props}
     >
       <defs>
         <style>
           {
-            '.home-information-page_svg__cls-1,.home-information-page_svg__cls-2{fill:#fafafa;stroke:#3882bb;stroke-linecap:round;stroke-linejoin:round}.home-information-page_svg__cls-2{fill:none}'
+            '.home-information-page_svg__cls-1{fill:#fafafa;stroke:#3882bb;stroke-linecap:round;stroke-linejoin:round;stroke-width:5px}'
           }
         </style>
       </defs>
-      <g id="home-information-page_svg__Layer_2" data-name="Layer 2">
-        <g id="home-information-page_svg__Layer_1-2" data-name="Layer 1">
-          <g id="home-information-page_svg__Layer_2-2" data-name="Layer 2">
-            <g
-              id="home-information-page_svg__Layer_1-2-2"
-              data-name="Layer 1-2"
-            >
-              <path
-                className="home-information-page_svg__cls-1"
-                d="M13.67 3.14A24.11 24.11 0 00.5 24.64a25.06 25.06 0 0025.06 25h25.79"
-              />
-              <path
-                className="home-information-page_svg__cls-1"
-                d="M51.35 49.69h72V.5H24.64a23.89 23.89 0 00-11 2.64"
-              />
-              <path
-                className="home-information-page_svg__cls-1"
-                d="M34.49 29.71l-.12.39c0-23.17-11-29.6-11-29.6h104.7A32.88 32.88 0 01161 33.36v131.36H53a18.46 18.46 0 01-18.44-18.46z"
-              />
-              <path
-                className="home-information-page_svg__cls-1"
-                d="M16.09 45.37s9.38-8.37 1.35-23.75h16.18M122.68 125.22h-59v.09c10.91.23 14.31 14.07 14.19 20.09a20.32 20.32 0 01-17.56 19.95h111.23a20 20 0 000-40.07h-48.86"
-              />
-              <path
-                className="home-information-page_svg__cls-1"
-                d="M63.69 125.22S43.62 123.41 43 144.63s24.85 15.8 25.5.83h9.43"
-              />
-              <path
-                className="home-information-page_svg__cls-2"
-                d="M51.68 90.33h83.91M51.68 103.83h76.92"
-              />
-              <path
-                className="home-information-page_svg__cls-1"
-                d="M52.5 25.19h89.82v49.36H52.5z"
-              />
-              <circle
-                className="home-information-page_svg__cls-1"
-                cx={99.03}
-                cy={50.09}
-                r={13.34}
-              />
-              <path
-                className="home-information-page_svg__cls-1"
-                d="M95.47 57.17l11.16-7.63-11-7.42a.68.68 0 00-.93.19.64.64 0 00-.11.36v14.06a.55.55 0 00.55.54.5.5 0 00.33-.1z"
-              />
-            </g>
-          </g>
-        </g>
-      </g>
+      <path
+        className="home-information-page_svg__cls-1"
+        d="M124.67 139.51a113 113 0 00-61.61 100.68 117.33 117.33 0 00117.33 117.33h120.75"
+      />
+      <path
+        className="home-information-page_svg__cls-1"
+        d="M301.14 357.52h337.32V127.17H176.08a112.56 112.56 0 00-51.41 12.34"
+      />
+      <path
+        className="home-information-page_svg__cls-1"
+        d="M221.68 265.77c0-108.52-51.57-138.6-51.57-138.6h490.23a153.89 153.89 0 01153.89 153.89V896H308.54a86.36 86.36 0 01-86.36-86.36z"
+      />
+      <path
+        className="home-information-page_svg__cls-1"
+        d="M130.25 344.73s49.55-46.73 12-118.37h75.69M635.09 707.86H358.91v.36c51 1.16 67 65.89 66.42 94.14-1 47.94-35.84 87.45-82.18 93.38h520.76a93.92 93.92 0 000-187.83H635.09"
+      />
+      <path
+        d="M358.91 707.86s-94-8.47-97.06 90.91 116.32 74 119.4 3.85h44.08"
+        fill="none"
+        stroke="#3882bb"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={5}
+      />
+      <path
+        className="home-information-page_svg__cls-1"
+        d="M302.68 547.8h392.88M302.68 610.97h360.14M306.53 242.73h420.51v231.11H306.53z"
+      />
+      <circle
+        className="home-information-page_svg__cls-1"
+        cx={524.38}
+        cy={359.32}
+        r={62.48}
+      />
+      <path
+        className="home-information-page_svg__cls-1"
+        d="M507.67 392.53l52.48-35.72L508.78 322a3.14 3.14 0 00-4.89 2.58l-.31 65.82a2.61 2.61 0 004.09 2.13z"
+      />
     </svg>
   );
 }

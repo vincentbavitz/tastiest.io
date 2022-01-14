@@ -38,7 +38,7 @@ export function ExperienceOrderPanelDesktop(props: ExperienceOrderPanelProps) {
             <div className="pb-4 mx-2 overflow-hidden bg-secondary-1 rounded-xl">
               <div className="flex flex-col justify-center px-2 pt-6 space-y-3">
                 <p className="text-lg leading-none text-center font-primary">
-                  Buy the experience
+                  Book the experience
                 </p>
               </div>
             </div>

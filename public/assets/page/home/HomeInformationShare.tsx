@@ -3,79 +3,70 @@ import * as React from 'react';
 function SvgHomeInformationShare(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
+      id="home-information-share_svg__Layer_1"
+      data-name="Layer 1"
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 204.21 221.44"
+      viewBox="0 0 1024 1024"
       {...props}
     >
       <defs>
         <style>
           {
-            '.home-information-share_svg__cls-1,.home-information-share_svg__cls-2{fill:#fafafa;stroke:#3882bb;stroke-linecap:round;stroke-linejoin:round}.home-information-share_svg__cls-2{fill:none}'
+            '.home-information-share_svg__cls-1{fill:#fafafa;stroke:#3882bb;stroke-linecap:round;stroke-linejoin:round;stroke-width:5px}'
           }
         </style>
       </defs>
-      <g id="home-information-share_svg__Layer_2" data-name="Layer 2">
-        <g id="home-information-share_svg__Layer_1-2" data-name="Layer 1">
-          <g id="home-information-share_svg__Layer_2-2" data-name="Layer 2">
-            <g
-              id="home-information-share_svg__Layer_1-2-2"
-              data-name="Layer 1-2"
-            >
-              <path
-                className="home-information-share_svg__cls-1"
-                d="M156.1 164.87v44.89a11.2 11.2 0 01-11.2 11.18H61.18A11.2 11.2 0 0150 209.76V47.13a11.2 11.2 0 0111.2-11.19h83.7a11.19 11.19 0 0111.2 11.19v117.74"
-              />
-              <path
-                className="home-information-share_svg__cls-2"
-                d="M50 197.51h105.79"
-              />
-              <path
-                className="home-information-share_svg__cls-1"
-                d="M87.75 205.83h28.58a3 3 0 013 3 3.05 3.05 0 01-3 3.06H87.75a3.06 3.06 0 01-3.06-3.06 3.05 3.05 0 013.06-3zM203.71 97.09v-21a5.26 5.26 0 00-5.25-5.26h-83.88a5.26 5.26 0 00-5.24 5.26v52.71a5.24 5.24 0 005.24 5.2h28.48l-5.83 13.93a.79.79 0 00.45 1 .8.8 0 00.75-.09L158.49 134h40a5.25 5.25 0 005.25-5.25V97.09"
-              />
-              <path
-                className="home-information-share_svg__cls-1"
-                d="M109.17 123.61l28.11-21.54 47.38 30.37"
-              />
-              <path
-                className="home-information-share_svg__cls-1"
-                d="M160.18 117.04l25.16-25.63 16.55 11.57"
-              />
-              <circle
-                className="home-information-share_svg__cls-1"
-                cx={154.34}
-                cy={93.17}
-                r={6.29}
-              />
-              <g>
-                <path
-                  className="home-information-share_svg__cls-1"
-                  d="M9.4 26.79v-21A5.24 5.24 0 0114.63.5h83.85a5.26 5.26 0 015.26 5.24v52.77a5.26 5.26 0 01-5.26 5.24H70l5.86 13.9a.79.79 0 01-.45 1 .78.78 0 01-.75-.09L54.71 63.75h-40a5.24 5.24 0 01-5.31-5.21V26.79"
-                />
-                <circle
-                  className="home-information-share_svg__cls-1"
-                  cx={54.08}
-                  cy={32.01}
-                  r={19.27}
-                />
-                <path
-                  className="home-information-share_svg__cls-1"
-                  d="M48.93 42.26l16.18-11-15.84-10.78a1 1 0 00-1.33.23.91.91 0 00-.17.57l-.1 20.3a.8.8 0 00.8.82.78.78 0 00.46-.14z"
-                />
-              </g>
-              <g>
-                <path
-                  className="home-information-share_svg__cls-1"
-                  d="M.5 143.59v-21a5.25 5.25 0 015.24-5.25h83.82a5.25 5.25 0 015.25 5.25v40.56a5.26 5.26 0 01-5.25 5.26H61.08l5.86 13.89a.79.79 0 01-.41 1 .8.8 0 01-.79-.09l-20-14.84h-40a5.26 5.26 0 01-5.24-5.25v-31.73"
-                />
-                <path
-                  className="home-information-share_svg__cls-2"
-                  d="M12.07 131.47h70.87M12.07 143.25h70.87M12.07 155.5h50.34"
-                />
-              </g>
-            </g>
-          </g>
-        </g>
+      <path
+        className="home-information-share_svg__cls-1"
+        d="M733.87 732v181.31a45.21 45.21 0 01-45.21 45.21H350.45a45.21 45.21 0 01-45.2-45.21V256.39a45.21 45.21 0 0145.2-45.21h338.21a45.21 45.21 0 0145.21 45.21V732M305.25 863.88h427.4"
+      />
+      <rect
+        className="home-information-share_svg__cls-1"
+        x={445.37}
+        y={897.46}
+        width={140.13}
+        height={24.73}
+        rx={1.89}
+      />
+      <path
+        className="home-information-share_svg__cls-1"
+        d="M926.2 458.16v-85a21.21 21.21 0 00-21.2-21.24H566.41a21.21 21.21 0 00-21.21 21.2v213.11a21.21 21.21 0 0021.21 21.21h115l-23.65 56.14a3.18 3.18 0 004.83 3.8l80.94-59.94H905a21.21 21.21 0 0021.21-21.21V458.16"
+      />
+      <path
+        className="home-information-share_svg__cls-1"
+        d="M544.28 565.31l113.57-87 191.42 122.72"
+      />
+      <path
+        className="home-information-share_svg__cls-1"
+        d="M750.35 538.75l101.66-103.49 66.86 46.71"
+      />
+      <circle
+        className="home-information-share_svg__cls-1"
+        cx={726.77}
+        cy={442.36}
+        r={25.42}
+      />
+      <g>
+        <path
+          className="home-information-share_svg__cls-1"
+          d="M141.31 174.24v-85A21.21 21.21 0 01162.51 68H501.1a21.21 21.21 0 0121.2 21.21v213.11a21.2 21.2 0 01-21.2 21.2h-115l23.65 56.15a3.18 3.18 0 01-4.83 3.79l-80.95-59.94H162.51a21.2 21.2 0 01-21.2-21.2V174.24"
+        />
+        <circle
+          className="home-information-share_svg__cls-1"
+          cx={321.73}
+          cy={195.3}
+          r={77.85}
+        />
+        <path
+          className="home-information-share_svg__cls-1"
+          d="M300.92 236.69l65.38-44.51-64-43.44a3.91 3.91 0 00-6.1 3.21l-.39 82a3.27 3.27 0 005.11 2.74z"
+        />
+      </g>
+      <g>
+        <path
+          className="home-information-share_svg__cls-1"
+          d="M105.28 646.07V561a21.21 21.21 0 0121.21-21.21h338.58A21.2 21.2 0 01486.28 561v163.83A21.2 21.2 0 01465.07 746H350l23.65 56.14a3.18 3.18 0 01-4.83 3.8L287.92 746H126.49a21.21 21.21 0 01-21.21-21.21V596.76M151.99 597.06h286.36M151.99 644.69h286.36M151.99 694.14h203.4"
+        />
       </g>
     </svg>
   );

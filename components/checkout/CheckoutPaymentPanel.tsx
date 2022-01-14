@@ -103,7 +103,7 @@ export function CheckoutPaymentPanel(props: Props) {
               disabled={isPaymentProcessing}
               loading={isPaymentProcessing}
             >
-              Place Order
+              Book Now
             </Button>
           </>
         )}
@@ -151,7 +151,7 @@ export function CheckoutPaymentPanel(props: Props) {
             {isPaymentProcessing ? (
               <LoadingOutlined className="text-xl" />
             ) : (
-              <>Place Order</>
+              <></>
             )}
           </button>
         </div>

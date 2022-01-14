@@ -212,10 +212,10 @@ export default function LayoutRestaurant({
       </TabbedContent>
 
       <Contained maxWidth={900}>
-        <div className="pt-10 pb-10">
+        <div className="flex flex-col space-y-12 pt-10 pb-10">
           <div className="flex flex-wrap gap-10 w-full">
             <div
-              style={{ height: '12.5rem', minWidth: '19rem' }}
+              style={{ height: '15rem', minWidth: '19rem' }}
               className="relative flex-grow"
             >
               <Image
@@ -233,34 +233,64 @@ export default function LayoutRestaurant({
             </div>
           </div>
 
+          <div>
+            {isExperiencesPage ? (
+              <BlockButton
+                href={baseRestaurantPath.href}
+                as={baseRestaurantPath.as}
+                autoHeight
+              >
+                <div className="flex items-center justify-between relative py-4 leading-normal w-full">
+                  <LeftOutlined className="text-2xl" />
+
+                  <div className="flex space-x-4 items-center">
+                    <div className="text-right">
+                      Learn more about <br />
+                      <span className="font-medium">{restaurant.name}</span>
+                    </div>
+
+                    <div className="relative w-14 h-14 mx-2">
+                      <Image
+                        src={restaurant.profilePicture.url}
+                        layout="fill"
+                        className="rounded-full"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </BlockButton>
+            ) : (
+              <BlockButton
+                autoHeight
+                href={experiencesPath.href}
+                as={experiencesPath.as}
+              >
+                <div className="flex items-center justify-between relative py-4 leading-normal w-full">
+                  <div className="flex space-x-2 items-center">
+                    <div className="relative w-14 h-14 mx-2">
+                      <Image
+                        src={restaurant.profilePicture.url}
+                        layout="fill"
+                        className="rounded-full"
+                      />
+                    </div>
+
+                    <div className="">
+                      See experiences at <br />
+                      <span className="font-medium">{restaurant.name}</span>
+                    </div>
+                  </div>
+
+                  <RightOutlined className="text-2xl" />
+                </div>
+              </BlockButton>
+            )}
+          </div>
+
           <RestaurantMapBlock
             layout={isDesktop ? 'default' : 'stacked'}
             restaurant={restaurant}
-          >
-            {isDesktop ? (
-              <>
-                {isExperiencesPage ? (
-                  <BlockButton
-                    autoHeight={isTablet}
-                    href={baseRestaurantPath.href}
-                    as={baseRestaurantPath.as}
-                  >
-                    <LeftOutlined className="pr-2" />
-                    <span>Learn more</span>
-                  </BlockButton>
-                ) : (
-                  <BlockButton
-                    autoHeight={isTablet}
-                    href={experiencesPath.href}
-                    as={experiencesPath.as}
-                  >
-                    <span>See experiences</span>
-                    <RightOutlined className="pl-2" />
-                  </BlockButton>
-                )}
-              </>
-            ) : null}
-          </RestaurantMapBlock>
+          />
         </div>
       </Contained>
     </LayoutWrapper>

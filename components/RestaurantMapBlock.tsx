@@ -2,13 +2,12 @@ import { EnvironmentOutlined } from '@ant-design/icons';
 import { Address, RestaurantContentful } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { getGoogleMapLink } from 'utils/location';
 import { RestaurantMap } from './modals/RestaurantMap';
 
 interface Props {
   restaurant: RestaurantContentful;
-  children: ReactNode;
   layout?: 'default' | 'stacked';
 }
 
@@ -32,14 +31,14 @@ const AddressBlock = ({ location }: AddressProps) => {
 
 /** Children of this component fill up the little gap. */
 export default function RestaurantMapBlock(props: Props) {
-  const { restaurant, layout = 'default', children } = props;
+  const { restaurant, layout = 'default' } = props;
   const { isMobile } = useScreenSize();
 
   return (
     <div>
       <div
         className={clsx(
-          'flex pt-8',
+          'flex',
           layout === 'default' && 'space-x-6',
           layout === 'stacked' && 'flex-col space-y-4',
         )}
@@ -58,33 +57,6 @@ export default function RestaurantMapBlock(props: Props) {
             <AddressBlock location={restaurant.location} />
           </div>
         </section>
-
-        {/* <div
-          className={clsx(
-            layout === 'stacked'
-              ? 'flex items-stretch gap-4 flex-wrap'
-              : 'flex-col space-y-3',
-          )}
-        >
-          <div className={clsx('', layout === 'stacked' && 'flex-1 flex-grow')}>
-            <OpenTimes
-              restaurantId={restaurant.id}
-              wide={layout === 'stacked'}
-              buffHeight
-              small
-            />
-          </div>
-
-          <div
-            style={{ minHeight: '4rem' }}
-            className={clsx(
-              'relative',
-              layout === 'stacked' ? 'flex-1' : 'flex-grow',
-            )}
-          >
-            {children}
-          </div>
-        </div> */}
       </div>
     </div>
   );

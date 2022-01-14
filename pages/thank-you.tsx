@@ -69,6 +69,16 @@ export const getServerSideProps = async context => {
     };
   }
 
+  // Wrong user?
+  if (!order.userId) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
   // Get the corresponding booking
   const bookingSnapshot = await db(FirestoreCollection.BOOKINGS)
     .doc(order.id)
@@ -195,7 +205,7 @@ function ThankYou(
             </div>
 
             <h2 className="text-2xl text-center font-primary text-light opacity-75 pt-3">
-              Thanks{firstName ? ` ${firstName}` : ''}!{' '}
+              Thanks, {firstName ? ` ${firstName}` : ''}!{' '}
               {isDesktop ? null : <br />} You're going to love it
             </h2>
           </Contained>
@@ -233,6 +243,8 @@ function ThankYou(
                       /[\s]/g,
                       '-',
                     )}`}
+                    target="_blank"
+                    rel="noreferrer"
                     className="no-underline"
                   >
                     <Button
@@ -296,7 +308,9 @@ function ThankYou(
           <div className="shadow-md bg-secondary bg-opacity-10 mb-10 py-6 px-8 rounded-lg text-center">
             If you have any questions or suggestions, please reach out to{' '}
             <Link href="/help">
-              <a className="text-secondary">our support team</a>
+              <a target="_blank" rel="noreferrer" className="text-secondary">
+                our support team
+              </a>
             </Link>
             .
           </div>
@@ -305,16 +319,16 @@ function ThankYou(
 
           <OrderSummary order={order} paymentCard={paymentCard} />
 
-          <div className="w-full pt-10 border-b-2 border-dashed border-primary"></div>
+          <div className="pb-10"></div>
         </Contained>
 
-        <div className="flex justify-center py-10 w-full">
+        {/* <div className="flex justify-center py-10 w-full">
           <Link href="/">
             <a className="no-underline">
               <Button size="large">Find more great food!</Button>
             </a>
           </Link>
-        </div>
+        </div> */}
       </div>
     </>
   );
@@ -464,7 +478,7 @@ const OrderSummary = ({ order, paymentCard }: OrderSummaryProps) => {
   return (
     <div className="flex flex-col items-center w-full text-sm sm:text-base">
       <h4 className="pt-6 pb-8 text-2xl text-center font-primary text-primary">
-        Order Summary
+        Booking Summary
       </h4>
 
       <div

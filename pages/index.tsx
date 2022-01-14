@@ -68,7 +68,7 @@ const Index = ({
         }}
       />
 
-      <div className="flex flex-col mb-16 space-y-16">
+      <div className="flex flex-col mb-24 space-y-24">
         <div>
           <HomeHeroSection />
           <HomeFeaturedExperiencesSection cards={cards} />
@@ -77,13 +77,16 @@ const Index = ({
         <HomeInformationSection />
 
         <Contained>
-          <div className="flex flex-col text-center space-y-4 text-lg px-6 py-8 shadow-lg bg-white rounded-xl">
-            <p className="font-medium">
+          <div className="relative flex flex-col overflow-hidden text-center space-y-4 text-lg px-6 py-8 shadow-lg bg-white rounded-xl">
+            <div className="absolute -top-24 -left-24 z-0 bg-blue-300 bg-opacity-10 filter blur-2xl rounded-full w-64 h-64"></div>
+            <div className="absolute -bottom-624 -right-24 z-0 bg-alt-1 bg-opacity-5 filter blur-2xl rounded-full w-64 h-64"></div>
+
+            <p className="font-medium z-10">
               Tastiest was established with one mission in mind: revolutionise
               how you discover exceptional food online.
             </p>
 
-            <p>
+            <p className="z-10">
               All our restaurant partners are recommended by you, our foodie
               community, via{' '}
               <Link href="/recommend">
