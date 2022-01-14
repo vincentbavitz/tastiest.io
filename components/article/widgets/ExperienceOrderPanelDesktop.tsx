@@ -11,7 +11,7 @@ export interface ExperienceOrderPanelProps {
   posts: ExperiencePost[];
 }
 
-const OFFER_WIDGET_FLOAT_GAP_PX = 95;
+const OFFER_WIDGET_FLOAT_GAP_PX = 120;
 
 export function ExperienceOrderPanelDesktop(props: ExperienceOrderPanelProps) {
   const { deal, posts, slug: fromSlug } = props;

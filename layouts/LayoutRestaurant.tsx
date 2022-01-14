@@ -287,10 +287,7 @@ export default function LayoutRestaurant({
             )}
           </div>
 
-          <RestaurantMapBlock
-            layout={isDesktop ? 'default' : 'stacked'}
-            restaurant={restaurant}
-          />
+          <RestaurantMapBlock restaurant={restaurant} />
         </div>
       </Contained>
     </LayoutWrapper>

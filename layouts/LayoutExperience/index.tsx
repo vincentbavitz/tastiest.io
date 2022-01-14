@@ -157,9 +157,14 @@ const LayoutExperienceMobile = ({
           <Component {...(pageProps as any)} />
         </div>
 
-        <RestaurantMapBlock layout="stacked" restaurant={post.restaurant}>
-          {' '}
-        </RestaurantMapBlock>
+        <div className="flex flex-col space-y-10">
+          <BlockButton {...restaurantPageUrl}>
+            See more form {post.restaurant.name}
+            <ArrowUpOutlined className="ml-2 text-lg transform rotate-45" />
+          </BlockButton>
+
+          <RestaurantMapBlock restaurant={post.restaurant} />
+        </div>
       </Contained>
 
       <div
@@ -210,13 +215,13 @@ const LayoutExperienceDesktop = ({
         />
       </div>
 
-      <div className="pt-10 pb-10">
-        <RestaurantMapBlock restaurant={post.restaurant}>
-          <BlockButton {...restaurantPageUrl}>
-            See restaurant{' '}
-            <ArrowUpOutlined className="ml-2 text-lg transform rotate-45" />
-          </BlockButton>
-        </RestaurantMapBlock>
+      <div className="flex flex-col space-y-10 pt-10 pb-10">
+        <BlockButton {...restaurantPageUrl}>
+          See more form {post.restaurant.name}
+          <ArrowUpOutlined className="ml-2 text-lg transform rotate-45" />
+        </BlockButton>
+
+        <RestaurantMapBlock restaurant={post.restaurant} />
       </div>
     </Contained>
   );
