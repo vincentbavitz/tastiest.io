@@ -6,8 +6,8 @@ import {
   RestaurantDetails,
   TastiestDish,
 } from '@tastiest-io/tastiest-utils';
-import { CardGrid } from 'components/cards/CardGrid';
 import { ExperienceCard } from 'components/cards/ExperienceCard';
+import { Contained } from 'components/Contained';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { Layouts } from 'layouts/LayoutHandler';
 import {} from 'layouts/LayoutRestaurant';
@@ -117,21 +117,23 @@ const RestaurantExperiencesPage = (
   const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
 
   return (
-    <div className="flex flex-col items-center pt-4 pb-10 space-y-4">
-      {isMobile ? (
-        posts.map(post => (
-          <div key={post.id} style={{ maxWidth: '300px' }} className="">
-            <ExperienceCard {...post} />
+    <Contained maxWidth={900}>
+      <div className="flex flex-col items-center pt-4 pb-10 space-y-4">
+        {isMobile ? (
+          posts.map(post => (
+            <div key={post.id} style={{ maxWidth: '350px' }} className="">
+              <ExperienceCard {...post} />
+            </div>
+          ))
+        ) : (
+          <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
+            {posts.map(post => (
+              <ExperienceCard key={post.id} {...post} />
+            ))}
           </div>
-        ))
-      ) : (
-        <CardGrid maxWidth={900}>
-          {posts.map(post => (
-            <ExperienceCard key={post.id} {...post} />
-          ))}
-        </CardGrid>
-      )}
-    </div>
+        )}
+      </div>
+    </Contained>
   );
 };
 

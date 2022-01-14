@@ -249,7 +249,12 @@ export default function LayoutRestaurant({
                       <span className="font-medium">{restaurant.name}</span>
                     </div>
 
-                    <div className="relative w-14 h-14 mx-2">
+                    <div
+                      style={{
+                        filter: 'drop-shadow(0 0 3px rgba(255, 255, 255, 0.5))',
+                      }}
+                      className="relative w-14 h-14 mx-2"
+                    >
                       <Image
                         src={restaurant.profilePicture.url}
                         layout="fill"
@@ -267,11 +272,16 @@ export default function LayoutRestaurant({
               >
                 <div className="flex items-center justify-between relative py-4 leading-normal w-full">
                   <div className="flex space-x-2 items-center">
-                    <div className="relative w-14 h-14 mx-2">
+                    <div
+                      style={{
+                        filter: 'drop-shadow(0 0 3px rgba(255, 255, 255, 0.5))',
+                      }}
+                      className="relative w-14 h-14 mx-2"
+                    >
                       <Image
                         src={restaurant.profilePicture.url}
                         layout="fill"
-                        className="rounded-full ring-light ring-2"
+                        className="rounded-full"
                       />
                     </div>
 
