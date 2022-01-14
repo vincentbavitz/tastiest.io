@@ -38,7 +38,7 @@ export default function LayoutHome({
       pageProps={pageProps}
       headerProps={{
         transparency: headerTransparency,
-        theme: headerTransparency === 'none' ? 'light' : 'dark',
+        theme: headerTransparency === 'none' ? 'light' : 'light',
       }}
     >
       <Component {...(pageProps as any)} />

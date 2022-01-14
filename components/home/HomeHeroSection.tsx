@@ -36,13 +36,13 @@ export function HomeHeroSection(): JSX.Element {
           isMobile ? UI.HEADER_HEIGHT_MOBILE_REM : UI.HEADER_HEIGHT_DESKTOP_REM
         }rem`,
       }}
-      className="relative flex flex-col items-center justify-evenly bg-gradient-to-b from-primary to-blue-400"
+      className="relative flex flex-col items-center justify-evenly bg-light"
     >
       <div className="z-10">
         <Contained>
           <h1
             style={{ maxWidth: '33rem' }}
-            className="mb-1 text-4xl text-center text-light filter drop-shadow-lg font-primary"
+            className="mb-1 text-4xl text-center text-primary filter drop-shadow-lg font-primary"
           >
             {METADATA.TAGLINE}
           </h1>
@@ -53,7 +53,7 @@ export function HomeHeroSection(): JSX.Element {
         <Contained>
           <div
             style={{
-              filter: 'drop-shadow(2px 2px 20px rgba(255, 255, 255, 0.15))',
+              filter: 'drop-shadow(-5px 5px 15px rgba(0, 0, 0, 0.10))',
               width: '100%',
               height: '0px',
               paddingBottom: '12%',
@@ -86,7 +86,8 @@ export function HomeHeroSection(): JSX.Element {
         </div>
       )}
 
-      <div className="absolute inset-0 opacity-50 bg-gradient-to-bl from-secondary via-primary to-primary"></div>
+      {/* Blue bloom */}
+      <div className="absolute h-64 w-64 flex top-10 left-2 rounded-full bg-blue-200 opacity-50 z-0 filter blur-3xl"></div>
     </div>
   );
 }
