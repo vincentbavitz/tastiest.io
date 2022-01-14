@@ -20,7 +20,6 @@ import React, { FC, useContext, useEffect, useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { LocalEndpoint } from 'types/api';
 import { generateTitle } from 'utils/metadata';
-import HomeHero from '/public/assets/page/home.svg';
 
 type JoinWaitlistFormData = {
   joinWaitlistEmail: string;
@@ -171,7 +170,7 @@ const Invite = () => {
 
             <div style={{ minHeight: '10rem' }} className="relative w-full">
               <Image
-                src={HomeHero}
+                src={'/assets/illustrations/bridge.svg'}
                 layout="fill"
                 objectFit="contain"
                 objectPosition="bottom"

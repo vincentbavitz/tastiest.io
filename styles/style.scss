@@ -57,9 +57,7 @@ body {
     @apply bg-primary bg-opacity-25;
   }
 
-  & > div {
-    // overflow-x: hidden;
-  }
+  overflow-x: hidden;
 }
 
 

@@ -36,7 +36,7 @@ export function HomeHeroSection(): JSX.Element {
           isMobile ? UI.HEADER_HEIGHT_MOBILE_REM : UI.HEADER_HEIGHT_DESKTOP_REM
         }rem`,
       }}
-      className="relative flex flex-col items-center justify-evenly bg-light"
+      className="relative flex flex-col items-center justify-evenly bg-light w-full overflow-x-hidden"
     >
       <div className="z-10">
         <Contained>

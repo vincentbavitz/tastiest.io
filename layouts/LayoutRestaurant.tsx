@@ -271,7 +271,7 @@ export default function LayoutRestaurant({
                       <Image
                         src={restaurant.profilePicture.url}
                         layout="fill"
-                        className="rounded-full"
+                        className="rounded-full ring-light ring-2"
                       />
                     </div>
 

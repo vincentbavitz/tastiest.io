@@ -20,7 +20,6 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
 import { db } from 'utils/firebaseAdmin';
 import { generateTitle } from 'utils/metadata';
-import HomeHero from '/public/assets/page/home.svg';
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext<ParsedUrlQuery>,
@@ -273,7 +272,7 @@ const ThankYou = (
 
         <div className="relative mt-12 h-48 z-0">
           <Image
-            src={HomeHero}
+            src={'/assets/illustrations/bridge.svg'}
             layout="fill"
             objectFit="contain"
             objectPosition="bottom"

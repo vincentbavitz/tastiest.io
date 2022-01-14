@@ -217,7 +217,7 @@ const LayoutExperienceDesktop = ({
 
       <div className="flex flex-col space-y-10 pt-10 pb-10">
         <BlockButton {...restaurantPageUrl}>
-          See more form {post.restaurant.name}
+          See more from {post.restaurant.name}
           <ArrowUpOutlined className="ml-2 text-lg transform rotate-45" />
         </BlockButton>
 
