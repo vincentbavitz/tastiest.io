@@ -120,11 +120,7 @@ export const getServerSideProps = async context => {
 
   // Get post's images
   // Don't worry about speed, this page is pre-fetched on checkout.
-  const cmsApi = new CmsApi(
-    undefined,
-    undefined,
-    process.env.NODE_ENV as 'production' | 'development',
-  );
+  const cmsApi = new CmsApi();
 
   const post = await cmsApi.getPostBySlug(order.fromSlug);
   const assets = {

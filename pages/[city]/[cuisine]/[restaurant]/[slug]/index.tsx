@@ -20,11 +20,7 @@ interface IPath {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const cms = new CmsApi(
-    undefined,
-    undefined,
-    process.env.NODE_ENV as 'production' | 'development',
-  );
+  const cms = new CmsApi();
 
   let posts: ExperiencePost[] = [];
   let page = 1;
@@ -58,11 +54,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params }) => {
-  const cms = new CmsApi(
-    undefined,
-    undefined,
-    process.env.NODE_ENV as 'production' | 'development',
-  );
+  const cms = new CmsApi();
 
   // Get all deals from this restaurants
   const { posts } = await cms.getPostsOfRestaurant(params.restaurant);
@@ -88,15 +80,7 @@ export const getStaticProps = async ({ params }) => {
 };
 
 function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
-  const cms = useMemo(
-    () =>
-      new CmsApi(
-        undefined,
-        undefined,
-        process.env.NODE_ENV as 'production' | 'development',
-      ),
-    [],
-  );
+  const cms = useMemo(() => new CmsApi(), []);
 
   const { post, posts } = props;
   const { title, restaurant } = post;

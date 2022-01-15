@@ -30,7 +30,7 @@ export function ExperienceCard(props: Props): JSX.Element {
   const ref = useRef(null);
   const [contentRef, { width }] = useMeasure();
   const shouldStackButtons = useMemo(() => width < 250, [width]);
-  const isSmall = useMemo(() => width < 170, [width]);
+  const isSmall = useMemo(() => width < 230, [width]);
 
   dlog('ArticleCard ➡️ width:', width);
 
@@ -102,13 +102,11 @@ export function ExperienceCard(props: Props): JSX.Element {
             <div className={isSmall ? 'py-2' : 'py-3'}>
               <div
                 className={clsx(
-                  isSmall || compact ? 'text-lg' : 'text-xl',
-                  'font-medium cursor-pointer hover:underline pb-2',
+                  isSmall || compact ? 'text-base' : 'text-lg',
+                  'font-medium cursor-pointer hover:underline pb-2 leading-tight',
                 )}
               >
-                <LineLimit lines={2} fit="tight">
-                  {title}
-                </LineLimit>
+                {title}
               </div>
 
               <LineLimit lines={3} fit="compact">
@@ -123,16 +121,6 @@ export function ExperienceCard(props: Props): JSX.Element {
                 shouldStackButtons && 'flex-col',
               )}
             >
-              {/* <div className="flex-1">
-                <Button
-                  wide
-                  color="secondary"
-                  size={compact ? 'small' : 'medium'}
-                >
-                  Buy Now
-                </Button>
-              </div> */}
-
               <div className="flex-1">
                 <Button
                   wide

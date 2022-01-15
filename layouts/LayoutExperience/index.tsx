@@ -1,6 +1,6 @@
 import { ArrowUpOutlined } from '@ant-design/icons';
 import { CrumbProps } from '@tastiest-io/tastiest-ui';
-import { titleCase } from '@tastiest-io/tastiest-utils';
+import { Media, titleCase } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { ArticleSaveShareWidget } from 'components/article/widgets/ArticleSaveShareWidget';
 import { ExperienceOrderPanelDesktop } from 'components/article/widgets/ExperienceOrderPanelDesktop';
@@ -23,6 +23,8 @@ export const DESKTOP_OFFER_WIDGET_WIDTH_PX = 325;
 const ARTICLE_MAX_WIDTH_DESKTOP_PX = 1000;
 const ARTICLE_MAX_WIDTH_MOBILE_PX = 650;
 
+export const DESKTOP_LAYOUT_BREAKPOINT_PX = 833;
+
 export default function LayoutExperience({
   router,
   pageProps,
@@ -37,7 +39,6 @@ export default function LayoutExperience({
   const [headerTransparent, setHeaderTransparent] = useState(true);
 
   // Desktop layout with floating order panel on custom breakpoint.
-  const DESKTOP_LAYOUT_BREAKPOINT_PX = 833;
   const { width: pageWidth, isLoading } = useScreenSize();
   const isDesktopLayout =
     !isLoading && pageWidth > DESKTOP_LAYOUT_BREAKPOINT_PX;
@@ -158,10 +159,12 @@ const LayoutExperienceMobile = ({
         </div>
 
         <div className="flex flex-col space-y-10">
-          <BlockButton {...restaurantPageUrl}>
-            See more form {post.restaurant.name}
-            <ArrowUpOutlined className="ml-2 text-lg transform rotate-45" />
-          </BlockButton>
+          <RestaurautLinkBlockButton
+            {...restaurantPageUrl}
+            restaurantName={post.restaurant.name}
+            seeRestaurantButton={post.seeRestaurantButton}
+            restaurantProfileProfile={post.restaurant.profilePicture}
+          />
 
           <RestaurantMapBlock restaurant={post.restaurant} />
         </div>
@@ -216,13 +219,61 @@ const LayoutExperienceDesktop = ({
       </div>
 
       <div className="flex flex-col space-y-10 pt-10 pb-10">
-        <BlockButton {...restaurantPageUrl}>
-          See more from {post.restaurant.name}
-          <ArrowUpOutlined className="ml-2 text-lg transform rotate-45" />
-        </BlockButton>
+        <RestaurautLinkBlockButton
+          {...restaurantPageUrl}
+          restaurantName={post.restaurant.name}
+          seeRestaurantButton={post.seeRestaurantButton}
+          restaurantProfileProfile={post.restaurant.profilePicture}
+        />
 
         <RestaurantMapBlock restaurant={post.restaurant} />
       </div>
     </Contained>
+  );
+};
+
+interface RestaurautLinkBlockButtonProps {
+  href: string;
+  as: string;
+  restaurantName: string;
+  seeRestaurantButton?: string;
+  restaurantProfileProfile: Media;
+}
+
+const RestaurautLinkBlockButton = (props: RestaurautLinkBlockButtonProps) => {
+  const {
+    href,
+    as,
+    restaurantName,
+    restaurantProfileProfile,
+    seeRestaurantButton,
+  } = props;
+
+  return (
+    <BlockButton autoHeight href={href} as={as}>
+      <div className="flex items-center justify-between relative py-4 leading-normal w-full">
+        <div className="flex items-center space-x-2">
+          <div
+            style={{
+              minWidth: '3.5rem',
+              filter: 'drop-shadow(0 0 3px rgba(255, 255, 255, 0.5))',
+            }}
+            className="relative w-14 h-14 mx-2"
+          >
+            <Image
+              src={restaurantProfileProfile.url}
+              layout="fill"
+              className="rounded-full"
+            />
+          </div>
+
+          <span className="whitespace-pre-wrap">
+            {seeRestaurantButton ?? <>See more from {restaurantName}</>}
+          </span>
+        </div>
+
+        <ArrowUpOutlined className="ml-2 text-2xl opacity-75 transform rotate-45" />
+      </div>
+    </BlockButton>
   );
 };

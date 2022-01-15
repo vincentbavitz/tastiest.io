@@ -124,11 +124,7 @@ export default async function updateOrder(
 
     // Validate discount if required
     if (promoCode && promoCode.length > 0) {
-      const cms = new CmsApi(
-        undefined,
-        undefined,
-        process.env.NODE_ENV as 'production' | 'development',
-      );
+      const cms = new CmsApi();
 
       const promo = await cms.getPromo(promoCode);
 

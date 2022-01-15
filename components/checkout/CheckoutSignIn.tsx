@@ -11,15 +11,26 @@ import { AuthTabsContext, CheckoutSignInTabSelected } from './CheckoutAuthTabs';
 export function CheckoutSignIn() {
   const { isDesktop } = useScreenSize();
 
-  const { signIn, submitting, error } = useSignIn();
+  const { signIn, error } = useSignIn();
   const { setTab } = useContext(AuthTabsContext);
 
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
   const [showPassword, toggleShowPassword] = useToggle(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const cleanupInputValue = (value: string | number) =>
     String(value).toLowerCase().trim();
+
+  const submitSignIn = async () => {
+    setSubmitting(true);
+
+    try {
+      await signIn(signInEmail, signInPassword);
+    } catch {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <>
@@ -38,7 +49,8 @@ export function CheckoutSignIn() {
         size="large"
         type="solid"
         color="primary"
-        onClick={() => signIn(signInEmail, signInPassword)}
+        loading={submitting}
+        onClick={submitSignIn}
       >
         Sign in to Proceed to Checkout
       </Button>

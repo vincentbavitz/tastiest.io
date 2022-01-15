@@ -94,8 +94,10 @@ export const getServerSideProps = async (
   dlog('checkout ➡️ order:', order);
 
   // Order belongs to this user?
-  if (userId && order?.userId && order.userId !== userId) {
-    dlog('bad user id');
+  if (userId && order.userId && order.userId !== userId) {
+    // Destroy cookie if it's invalid.
+    nookies.destroy(context, 'token');
+    dlog('Bad user ID', order.userId, userId);
 
     return {
       redirect: {

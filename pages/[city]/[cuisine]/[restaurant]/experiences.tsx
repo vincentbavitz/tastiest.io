@@ -31,11 +31,7 @@ import { IRestaurantPath } from '.';
 //   getRestaurantStaticProps(context);
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const cms = new CmsApi(
-    undefined,
-    undefined,
-    process.env.NODE_ENV as 'production' | 'development',
-  );
+  const cms = new CmsApi();
 
   let page = 1;
   let foundAllRestaurants = false;
@@ -45,7 +41,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   while (!foundAllRestaurants) {
     const { restaurants: _restaurants } = await cms.getRestaurants(100, page);
 
-    dlog('index ➡️ restaurants:', restaurants);
     if (_restaurants.length === 0) {
       foundAllRestaurants = true;
       continue;
@@ -71,11 +66,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps = async (
   context: GetStaticPropsContext<ParsedUrlQuery>,
 ) => {
-  const cms = new CmsApi(
-    undefined,
-    undefined,
-    process.env.NODE_ENV as 'production' | 'development',
-  );
+  const cms = new CmsApi();
 
   const restaurantUriName = context.params?.restaurant;
   const restaurant = await cms.getRestaurantFromUriName(

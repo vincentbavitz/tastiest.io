@@ -1,8 +1,9 @@
 import { CloseOutlined } from '@ant-design/icons';
-import { CmsApi, dlog, ExperiencePost } from '@tastiest-io/tastiest-utils';
+import { CmsApi, ExperiencePost } from '@tastiest-io/tastiest-utils';
 import ExperienceOrderPanelInner from 'components/article/widgets/ExperienceOrderPanelInner';
 import { Contained } from 'components/Contained';
 import { useScreenSize } from 'hooks/useScreenSize';
+import { DESKTOP_LAYOUT_BREAKPOINT_PX } from 'layouts/LayoutExperience';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { NextSeo, ProductJsonLd } from 'next-seo';
@@ -23,11 +24,7 @@ interface IPath {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const cms = new CmsApi(
-    undefined,
-    undefined,
-    process.env.NODE_ENV as 'production' | 'development',
-  );
+  const cms = new CmsApi();
 
   let posts: ExperiencePost[] = [];
   let page = 1;
@@ -61,11 +58,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params }) => {
-  const cms = new CmsApi(
-    undefined,
-    undefined,
-    process.env.NODE_ENV as 'production' | 'development',
-  );
+  const cms = new CmsApi();
 
   // Get all deals from this restaurants
   const { posts } = await cms.getPostsOfRestaurant(params.restaurant);
@@ -95,7 +88,7 @@ function Continue(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const { post, posts } = props;
   const { title, restaurant } = post;
 
-  const { isMobile, isTablet, isDesktop } = useScreenSize();
+  const { width: screenWidth } = useScreenSize();
   const router = useRouter();
 
   const experienceHref = useMemo(
@@ -115,14 +108,12 @@ function Continue(props: InferGetStaticPropsType<typeof getStaticProps>) {
     router.prefetch(experienceHref);
   }, []);
 
-  dlog('continue ➡️ isDesktop:', isTablet, isMobile);
-
   // If on desktop, this page shouldn't exist.
   useEffect(() => {
-    if (isDesktop) {
+    if (screenWidth > DESKTOP_LAYOUT_BREAKPOINT_PX) {
       router.push(experienceHref);
     }
-  }, [isDesktop]);
+  }, [screenWidth]);
 
   return (
     <>

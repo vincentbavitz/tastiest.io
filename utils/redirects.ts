@@ -19,11 +19,7 @@ export const getOfferDestination = async (
   offerId: string,
 ): Promise<URL | null> => {
   // Offer redirection
-  const cmsApi = new CmsApi(
-    undefined,
-    undefined,
-    process.env.NODE_ENV as 'production' | 'development',
-  );
+  const cmsApi = new CmsApi();
 
   const post = await cmsApi.getPostByDealId(offerId);
 
@@ -45,11 +41,7 @@ export const getOfferDestination = async (
 export const getRestaurantDestination = async (
   restaurantUriName: string,
 ): Promise<URL | null> => {
-  const cmsApi = new CmsApi(
-    undefined,
-    undefined,
-    process.env.NODE_ENV as 'production' | 'development',
-  );
+  const cmsApi = new CmsApi();
 
   const restaurant = await cmsApi.getRestaurantFromUriName(restaurantUriName);
 

@@ -53,7 +53,7 @@ const sections: ILegalSection[] = [
         Tastiest.
       </>,
       <>
-        By clicking on the “Buy Now” button you submit an offer to Tastiest to
+        By clicking on the “Book Now” button you submit an offer to Tastiest to
         purchase the Offer. However, the purchase of the Offer is not complete
         until you receive an email from Tastiest confirming acceptance of your
         offer. Tastiest expressly reserves the right to reject your order. In

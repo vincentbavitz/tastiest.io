@@ -17,11 +17,7 @@ interface Props {
 }
 
 export const getStaticProps: GetStaticProps = async context => {
-  const cms = new CmsApi(
-    undefined,
-    undefined,
-    process.env.NODE_ENV as 'production' | 'development',
-  );
+  const cms = new CmsApi();
 
   // const { dishes = [] } = await cms.getTastiestDishes(20);
   const { posts = [] } = await cms.getTopPosts(10);

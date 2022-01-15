@@ -52,6 +52,8 @@ function App({ Component, pageProps, router }: AppProps) {
                 <LayoutHandler router={router} pageProps={pageProps}>
                   {Component}
                 </LayoutHandler>
+
+                {/* {process.env.NODE_ENV === 'development' ? <DevToggles /> : null} */}
               </LoadingProvider>
             </ScreenProvider>
           </EarlyAccessProvider>

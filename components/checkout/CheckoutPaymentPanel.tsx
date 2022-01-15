@@ -79,7 +79,7 @@ export function CheckoutPaymentPanel(props: Props) {
 
         <div className="flex items-center justify-between leading-none text-sm">
           <p>
-            Buy for {order.heads} {order.heads === 1 ? 'person' : 'people'}
+            Book for {order.heads} {order.heads === 1 ? 'person' : 'people'}
           </p>
           <p className="font-medium">£{totalPrice}</p>
         </div>
