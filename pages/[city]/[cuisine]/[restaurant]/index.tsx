@@ -193,8 +193,6 @@ const RestaurantPage = (
           </HorizontalScrollable>
         </div>
       </div>
-
-      {/* Image and map overlay */}
     </>
   );
 };
