@@ -13,7 +13,7 @@ export default function HomeFeaturedRestaurantsSection(props: Props) {
   const { restaurants } = props;
 
   return (
-    <div className="relative pt-16">
+    <div className="relative">
       <div className="pb-10">
         <SectionTitle>Featured Restaurants</SectionTitle>
       </div>
@@ -33,7 +33,7 @@ export default function HomeFeaturedRestaurantsSection(props: Props) {
             });
 
             return (
-              <div key={key} style={{ width: '350px' }}>
+              <div key={key} style={{ width: '350px', maxWidth: '80vw' }}>
                 <DisplayCard
                   header={restaurant.name}
                   headerFont="primary"

@@ -74,7 +74,7 @@ const Index = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         }}
       />
 
-      <div className="flex flex-col mb-24 space-y-24">
+      <div className="flex flex-col mb-10 space-y-10">
         <div>
           <HomeHeroSection />
 

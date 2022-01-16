@@ -57,7 +57,7 @@ export function HomeHeroSection(): JSX.Element {
               filter: 'drop-shadow(-5px 5px 15px rgba(0, 0, 0, 0.10))',
               width: '100%',
               height: '0px',
-              paddingBottom: '12%',
+              paddingBottom: '30%',
             }}
             className="z-10 relative"
           >
@@ -73,8 +73,9 @@ export function HomeHeroSection(): JSX.Element {
         <div
           style={{
             filter: 'drop-shadow(2px 2px 20px rgba(255, 255, 255, 0.15))',
-            width: isMobile ? '100rem' : '100rem',
-            height: isMobile ? '12rem' : '13rem',
+            width: isMobile ? '100%' : '100rem',
+            height: '0',
+            paddingBottom: '38%',
           }}
           className="z-10 relative"
         >
