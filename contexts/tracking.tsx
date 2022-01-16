@@ -2,6 +2,7 @@ import { renderGoogleAnalyticsSnippet } from 'lib/ganalytics';
 import { renderGTMAntiFlickerSnippet, renderGTMSnippet } from 'lib/gtm';
 import { renderHotJarSnippet } from 'lib/hotjar';
 import { renderSegmentSnippet } from 'lib/segment';
+import { renderTawkToSnippet } from 'lib/tawkto';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
 import React, { useEffect } from 'react';
@@ -85,13 +86,11 @@ const TrackingProvider = ({ children }: TrackingContextParams) => {
       />
 
       {/* Inject TawkTo */}
-      {/* {router.pathname.includes('invite') ? null : (
-        <Script
-          id="tawkto-snippet"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{ __html: renderTawkToSnippet() }}
-        />
-      )} */}
+      <Script
+        id="tawkto-snippet"
+        strategy="lazyOnload"
+        dangerouslySetInnerHTML={{ __html: renderTawkToSnippet() }}
+      />
 
       {/* Inject Google Optimize */}
       {/* <Script

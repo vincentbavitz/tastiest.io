@@ -15,11 +15,11 @@ import {
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import { RestaurantDetails } from '@tastiest-io/tastiest-utils/dist/types/restaurant';
-import Analytics from 'analytics-node';
 import { DateTime } from 'luxon';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { db, firebaseAdmin } from 'utils/firebaseAdmin';
+const Analytics = require('analytics-node');
 
 export type PayParams = {
   token: string;

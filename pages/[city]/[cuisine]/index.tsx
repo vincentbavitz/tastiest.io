@@ -5,7 +5,7 @@ import {
   titleCase,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
-import TastiestDishCard from 'components/cards/TastiestDishCard';
+import AwardWinningDishCard from 'components/cards/AwardWinningDishCard';
 import { SuggestRestaurant } from 'components/SuggestRestaurant';
 import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -101,7 +101,7 @@ export default function CuisinePage(props: Props) {
   const cuisine = CUISINES[cuisineSymbol];
   const cuisineName = titleCase(String(cuisine?.name));
   const cards = tastiestDishes.map(dish => (
-    <TastiestDishCard key={dish.id} compact {...dish} />
+    <AwardWinningDishCard key={dish.id} compact {...dish} />
   ));
 
   const { isMobile, isTablet, isDesktop } = useScreenSize();

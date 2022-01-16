@@ -1,5 +1,5 @@
 import { dlog, TastiestDish } from '@tastiest-io/tastiest-utils';
-import TastiestDishCard from 'components/cards/TastiestDishCard';
+import AwardWinningDishCard from 'components/cards/AwardWinningDishCard';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
@@ -25,7 +25,7 @@ export function HomeTastiestDishes(props: Props) {
       >
         {[...cards, ...cards].map(dish => (
           <div key={dish.id} style={{ minWidth: '200px' }}>
-            <TastiestDishCard compact {...dish} />
+            <AwardWinningDishCard compact {...dish} />
           </div>
         ))}
       </HorizontalScrollable>

@@ -8,7 +8,6 @@ import {
   PAYMENTS,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
-import Analytics from 'analytics-node';
 import { AuthTabsProvider } from 'components/checkout/CheckoutAuthTabs';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useOrder } from 'hooks/checkout/useOrder';
@@ -36,6 +35,7 @@ const stripePromise = loadStripe(
     : process.env.NEXT_PUBLIC_STRIPE_LIVE_PUBLISHABLE_KEY,
 );
 
+const Analytics = require('analytics-node');
 const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
 
 interface Props {

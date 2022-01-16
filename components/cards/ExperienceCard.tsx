@@ -109,7 +109,7 @@ export function ExperienceCard(props: Props): JSX.Element {
                 {title}
               </div>
 
-              <LineLimit lines={3} fit="compact">
+              <LineLimit lines={4} fit="compact">
                 <p className="text-sm opacity-75">{description}</p>
               </LineLimit>
             </div>

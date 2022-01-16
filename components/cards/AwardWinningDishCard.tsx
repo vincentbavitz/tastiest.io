@@ -10,7 +10,7 @@ interface Props extends TastiestDish {
   compact?: boolean;
 }
 
-export default function TastiestDishCard(props: Props) {
+export default function AwardWinningDishCard(props: Props) {
   const { compact, name, image, dynamicImage, restaurant } = props;
 
   const ref = useRef(null);

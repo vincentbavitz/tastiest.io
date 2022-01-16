@@ -5,10 +5,11 @@ import {
   UserDataKey,
   UserRole,
 } from '@tastiest-io/tastiest-utils';
-import Analytics from 'analytics-node';
 import { AuthError, AuthErrorCode, AuthErrorMessageMap } from 'contexts/auth';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { firebaseAdmin } from 'utils/firebaseAdmin';
+
+const Analytics = require('analytics-node');
 
 export interface RegisterParams {
   email: string;

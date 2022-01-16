@@ -1,3 +1,4 @@
+import { Avatar } from '@tastiest-io/tastiest-ui';
 import {
   CmsApi,
   dlog,
@@ -5,7 +6,7 @@ import {
   RestaurantContentful,
   TastiestDish,
 } from '@tastiest-io/tastiest-utils';
-import TastiestDishRow from 'components/cards/TastiestDishRow';
+import DisplayCard from 'components/cards/DisplayCard';
 import { Contained } from 'components/Contained';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { RichBody } from 'components/RichBody';
@@ -177,13 +178,29 @@ const RestaurantPage = (
           </div>
         </Contained>
 
-        <div style={{ width: '100%', maxWidth: '900px' }}>
-          <HorizontalScrollable noPadding spacing={6}>
-            {tastiestDishes.map(dish => (
-              <div key={dish.id} style={{ width: '250px' }}>
-                <TastiestDishRow {...dish} />
-              </div>
-            ))}
+        <div style={{ width: '100%', maxWidth: '900px' }} className="-mt-6">
+          <HorizontalScrollable noPadding verticalBuffer={6} spacing={6}>
+            {tastiestDishes.map(dish => {
+              return (
+                <div key={dish.id} style={{ width: '250px' }}>
+                  <DisplayCard
+                    header={dish.name}
+                    description={dish.description}
+                    image={dish.image}
+                  >
+                    <div className="flex items-center space-x-4">
+                      <Avatar
+                        size={10}
+                        imageSrc={dish.restaurant.profilePicture.url}
+                      />
+                      <span className="text-lg font-medium">
+                        {dish.restaurant.name}
+                      </span>
+                    </div>
+                  </DisplayCard>
+                </div>
+              );
+            })}
           </HorizontalScrollable>
         </div>
       </div>

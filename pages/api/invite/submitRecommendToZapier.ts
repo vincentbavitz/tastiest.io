@@ -1,9 +1,9 @@
 import { FunctionsResponse } from '@tastiest-io/tastiest-utils';
-import Analytics from 'analytics-node';
 import { NextApiRequest, NextApiResponse } from 'next';
 import fetch from 'node-fetch';
 import { InviteRecommendFormData } from 'pages/recommend';
 
+const Analytics = require('analytics-node');
 const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
 
 export interface SubmitRecommendToZapierParams extends InviteRecommendFormData {

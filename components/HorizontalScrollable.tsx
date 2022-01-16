@@ -15,6 +15,10 @@ interface Props {
   // Essentially covers the case where iOS Safari screws it up.
   forceButtons?: boolean;
 
+  // The vertical buffer. Used to prevent shadows clipping etc.
+  // Uses Tailwind sizes; eg 4 = 1rem.
+  verticalBuffer?: 2 | 4 | 6 | 8 | 10;
+
   // Number of items to fit in the available width
   // when not on touch device
   fit?: number;
@@ -50,6 +54,7 @@ function HorizontalScrollableInner(props: Props) {
     forceButtons = false,
     spacing = 3,
     chevronSize = 8,
+    verticalBuffer,
     children,
   } = props;
 
@@ -151,6 +156,7 @@ function HorizontalScrollableInner(props: Props) {
           'hide_scroll',
           'scrolling-touch',
           'overflow-x-scroll',
+          `py-${verticalBuffer ?? 0}`,
         )}
       >
         <div

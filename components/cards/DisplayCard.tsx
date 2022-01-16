@@ -1,32 +1,65 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { TastiestDish } from '@tastiest-io/tastiest-utils';
+import { Media } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import Image from 'next/image';
-import React, { useMemo, useRef } from 'react';
+import Link from 'next/link';
+import React, { ReactNode, useRef } from 'react';
 import { useHoverDirty } from 'react-use';
-import { generateStaticURL } from 'utils/routing';
 
-export default function TastiestDishRow(props: TastiestDish) {
-  const { name, description, image, dynamicImage, restaurant } = props;
+interface DisplayCardProps {
+  header: string;
+  headerFont?: 'primary' | 'secondary';
+
+  description: string;
+  image: Media;
+
+  // The underlay card at the bottom.
+  children?: ReactNode;
+
+  // For next/link
+  href?: string;
+  as?: string;
+}
+
+// const { href, as } = useMemo(
+//   () =>
+//     generateStaticURL({
+//       city: restaurant.city,
+//       cuisine: restaurant.cuisine,
+//       restaurant: restaurant.uriName,
+//     }),
+//   [],
+// );
+
+export default function DisplayCard(props: DisplayCardProps) {
+  return props.href ? (
+    <Link href={props.href} as={props.as}>
+      <a className="no-underline">
+        <DisplayCardInner {...props} />
+      </a>
+    </Link>
+  ) : (
+    <DisplayCardInner {...props} />
+  );
+}
+
+function DisplayCardInner(props: DisplayCardProps) {
+  const {
+    header,
+    headerFont = 'secondary',
+    description,
+    image,
+    children,
+  } = props;
 
   const ref = useRef(null);
   const isHovering = useHoverDirty(ref);
-
-  const { href, as } = useMemo(
-    () =>
-      generateStaticURL({
-        city: restaurant.city,
-        cuisine: restaurant.cuisine,
-        restaurant: restaurant.uriName,
-      }),
-    [],
-  );
 
   return (
     <div
       ref={ref}
       style={{ minWidth: '200px' }}
-      className="flex flex-col relative h-full w-full"
+      className="flex flex-col relative h-full w-full select-none rounded-b-lg shadow-lg"
     >
       <div className="relative flex-grow w-full">
         <div
@@ -38,6 +71,7 @@ export default function TastiestDishRow(props: TastiestDish) {
           {/* Image underlay */}
           <Image
             src={image.url}
+            alt={image.description}
             layout="fill"
             objectFit="cover"
             objectPosition="top"
@@ -57,12 +91,15 @@ export default function TastiestDishRow(props: TastiestDish) {
           <h4
             style={{
               letterSpacing: '0.20em',
-              fontSize: '1.0rem',
+              fontSize: '1.25rem',
               lineHeight: '1em',
             }}
-            className="transform scale-y-125 font-bold text-center text-2xl text-light select-none"
+            className={clsx(
+              'transform scale-y-125 font-bold text-center text-light select-none',
+              `font-${headerFont}`,
+            )}
           >
-            {name.toUpperCase()}
+            {header.toUpperCase()}
           </h4>
 
           <div
@@ -77,6 +114,12 @@ export default function TastiestDishRow(props: TastiestDish) {
           {description}
         </p>
       </div>
+
+      {children ? (
+        <div className="pt-4 pb-2 px-2 bg-white rounded-b-lg w-full -mt-2 duration-300">
+          {children}
+        </div>
+      ) : null}
     </div>
   );
 }

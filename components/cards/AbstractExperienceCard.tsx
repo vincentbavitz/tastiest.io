@@ -117,8 +117,8 @@ export function AbstractExperienceCard(props: Props): JSX.Element {
                     'w-full h-full flex justify-center items-center',
                   )}
                 >
-                  <LineLimit lines={2} fit="tight">
-                    <h4 className="px-4 font-medium text-light text-center">
+                  <LineLimit lines={4} fit="tight">
+                    <h4 className="px-4 text-light text-base font-bold text-center">
                       {title}
                     </h4>
                   </LineLimit>
@@ -158,7 +158,7 @@ export function AbstractExperienceCard(props: Props): JSX.Element {
           </div>
 
           {/* Description */}
-          <LineLimit lines={3} fit="tight">
+          <LineLimit lines={4} fit="tight">
             <p className="text-sm opacity-75">{description}</p>
           </LineLimit>
 
