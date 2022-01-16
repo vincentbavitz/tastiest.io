@@ -23,7 +23,12 @@ export default function HomeAwardWinningDishesSection(
       </div>
 
       <div className="-mt-6">
-        <HorizontalScrollable noPadding verticalBuffer={6} spacing={6}>
+        <HorizontalScrollable
+          noPadding
+          forceButtons
+          verticalBuffer={6}
+          spacing={6}
+        >
           {dishes.map(dish => {
             const link = generateStaticURL({
               restaurant: dish.restaurant.uriName,

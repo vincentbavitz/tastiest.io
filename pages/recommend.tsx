@@ -6,13 +6,14 @@ import { Layouts } from 'layouts/LayoutHandler';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useContext, useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { LocalEndpoint } from 'types/api';
 import { generateTitle } from 'utils/metadata';
 import { REGEX } from '../constants';
 import { SubmitRecommendToZapierParams } from './api/invite/submitRecommendToZapier';
-import HomeHero from '/public/assets/page/home.svg';
+import HomeHero from '/public/assets/illustrations/bridge.svg';
 
 export type InviteRecommendFormData = {
   favouriteRestaurantName: string;
@@ -224,7 +225,11 @@ const Recommend = () => {
               style={{ maxWidth: '300px' }}
               className="flex flex-col space-y-6 items-center"
             >
-              <TastiestBrand type="full" size={10} />
+              <Link href="/">
+                <a className="no-underline">
+                  <TastiestBrand type="full" size={10} />
+                </a>
+              </Link>
 
               <h1 className="text-xl pb-6">Recommend a restaurant</h1>
 

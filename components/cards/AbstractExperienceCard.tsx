@@ -1,12 +1,15 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { Button } from '@tastiest-io/tastiest-ui';
-import { dlog, ExperiencePost, titleCase } from '@tastiest-io/tastiest-utils';
+import {
+  dlog,
+  ExperiencePost,
+  formatCurrency,
+} from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import clsx from 'clsx';
-import LineLimit from 'components/text/LineLimit';
+import Image from 'next/image';
 import Link from 'next/link';
 import React, { useMemo, useRef } from 'react';
-import { useMeasure } from 'react-use';
+import { useHoverDirty } from 'react-use';
 import { generateStaticURL } from 'utils/routing';
 
 interface Props extends ExperiencePost {
@@ -27,10 +30,7 @@ export function AbstractExperienceCard(props: Props): JSX.Element {
   } = props;
 
   const ref = useRef(null);
-  const [contentRef, { width }] = useMeasure();
-  const isSmall = width < 240;
-
-  dlog('ExperienceCard ➡️ width:', width);
+  const isHovering = useHoverDirty(ref);
 
   const { href: experienceHref, as: experienceAs } = useMemo(
     () =>
@@ -53,125 +53,80 @@ export function AbstractExperienceCard(props: Props): JSX.Element {
     [],
   );
 
-  // const isHovering = useHoverDirty(ref);
-  // useEffect(() => {
-  //   if (isHovering) {
-  //     controls.play();
-  //   } else {
-  //     controls.pause();
-  //   }
-  // }, [isHovering]);
-
-  // const [video, , controls] = useVideo(
-  //   <video
-  //     loop
-  //     playsInline // prevent fullscreen on iOS
-  //     src={deal?.dynamicImage?.url}
-  //     className="object-cover w-full h-full"
-  //   />,
-  // );
+  dlog('AbstractExperienceCard ➡️ isHovering:', isHovering);
 
   return (
-    <div ref={ref}>
-      <div
-        ref={contentRef}
-        className={classNames(
-          'relative bg-gray-100 filter drop-shadow-xl no-underline',
-          isSmall || compact ? 'rounded-md' : 'rounded-xl',
-        )}
-        style={{ maxWidth: '350px' }}
-      >
-        <div
-          style={{ paddingBottom: '60%' }}
-          className={clsx(
-            'relative w-full h-0 overflow-hidden bg-white bg-opacity-25',
-            isSmall || compact ? 'rounded-t-md' : 'rounded-t-xl',
-          )}
-        >
-          {/* {deal.dynamicImage.url && (
-            <div className="absolute inset-0 z-10 pointer-events-none">
-              {video}
-            </div>
-          )} */}
-
-          {deal.image.url && (
-            <div className="absolute inset-0">
-              <img
+    <div ref={ref} className="w-full">
+      <Link href={restaurantHref} as={restaurantAs}>
+        <a className="no-underline">
+          <div
+            className={classNames(
+              'relative no-underline rounded-lg cursor-pointer',
+            )}
+            style={{ maxWidth: '350px' }}
+          >
+            <div
+              style={{ paddingBottom: '100%' }}
+              className={clsx(
+                'relative w-full h-0 shadow-lg rounded-lg overflow-hidden',
+              )}
+            >
+              <Image
+                layout="fill"
                 className={clsx(
-                  'object-cover w-full h-full',
-                  isSmall || compact ? 'rounded-t-md' : 'rounded-t-xl',
+                  'object-cover w-full h-full rounded-lg transform duration-300',
+                  isHovering && 'scale-105',
                 )}
                 src={`${deal.image?.url}?w=400`}
                 alt={deal.image?.description}
               />
-            </div>
-          )}
 
-          {/* Text overlay */}
-          <Link href={experienceHref} as={experienceAs}>
-            <a className="no-underline cursor-pointer">
-              <div className="absolute inset-0 z-10 bg-dark bg-opacity-50">
-                <div
-                  className={clsx(
-                    isSmall || compact ? 'text-lg' : 'text-xl',
-                    'w-full h-full flex justify-center items-center',
-                  )}
-                >
-                  <LineLimit lines={4} fit="tight">
-                    <h4 className="px-4 text-light text-base font-bold text-center">
-                      {title}
-                    </h4>
-                  </LineLimit>
+              {/* Restaurant profile */}
+              <div className="absolute bottom-0 left-0 right-0 flex items-end pb-2 h-20 z-50 px-2 bg-gradient-to-t from-primary rounded-lg">
+                <div className="flex items-center space-x-2">
+                  <div
+                    style={{
+                      filter: 'drop-shadow(0 0 3px rgba(255, 255, 255, 0.33))',
+                    }}
+                    className="relative h-8 w-8"
+                  >
+                    <Image
+                      layout="fill"
+                      objectFit="cover"
+                      className={clsx('rounded-full transform')}
+                      src={restaurant.profilePicture.url}
+                    />
+                  </div>
+
+                  <h4 className={clsx('text-light font-medium')}>
+                    {restaurant.name}
+                  </h4>
                 </div>
               </div>
-            </a>
-          </Link>
+            </div>
 
-          {/* Cuisine overlay */}
-          <div className="absolute inset-0 select-none flex items-end justify-end pb-2 pr-2">
-            <div className="px-2 py-1 leading-none z-10 text-sm font-medium bg-light bg-opacity-75 text-dark rounded-full">
-              <span className="">{titleCase(cuisine.replace('_', ' '))}</span>
+            <div className={clsx('text-dark pt-2 pb-3')}>
+              {/* Title */}
+              <h4 className="text-base leading-tight font-medium pb-2">
+                {deal.name}
+              </h4>
+
+              {/* Description */}
+              {/* <LineLimit lines={4} fit="tight">
+                <p className="text-sm opacity-75">{description}</p>
+              </LineLimit> */}
+
+              {/* Price */}
+              <span className="font-thin">
+                <span className="font-medium">
+                  £{formatCurrency(deal.pricePerHeadGBP)}
+                </span>{' '}
+                / person
+              </span>
             </div>
           </div>
-        </div>
-
-        <div
-          className={clsx(
-            'flex flex-col text-dark pt-2 pb-3',
-            isSmall || compact ? 'px-3 space-y-2 ' : 'space-y-4 px-4',
-          )}
-        >
-          {/* Restaurant profile */}
-          <div className="flex items-center flex-wrap justify-between">
-            <Link href={restaurantHref} as={restaurantAs}>
-              <a className="cursor-pointer">
-                <div className="flex items-center space-x-2">
-                  <img
-                    className={clsx('rounded-full object-cover h-8 w-8')}
-                    src={restaurant.profilePicture.url}
-                  />
-
-                  <h4 className={clsx('font-medium')}>{restaurant.name}</h4>
-                </div>
-              </a>
-            </Link>
-          </div>
-
-          {/* Description */}
-          <LineLimit lines={4} fit="tight">
-            <p className="text-sm opacity-75">{description}</p>
-          </LineLimit>
-
-          {/* Call to action */}
-          <Link href={experienceHref} as={experienceAs}>
-            <a className="no-underline">
-              <Button wide size={compact ? 'small' : 'medium'}>
-                See experience
-              </Button>
-            </a>
-          </Link>
-        </div>
-      </div>
+        </a>
+      </Link>
     </div>
   );
 }

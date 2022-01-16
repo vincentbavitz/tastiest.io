@@ -5,7 +5,8 @@ import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { METADATA, UI } from '../../constants';
 import { IState } from '../../state/reducers';
-import HomeHero from '/public/assets/page/home.svg';
+// import HomeHero from '/public/assets/page/home.svg';
+import HomeHero from '/public/assets/page/home-stacked.svg';
 
 export function HomeHeroSection(): JSX.Element {
   const navigationState = useSelector((state: IState) => state.navigation);
@@ -73,7 +74,7 @@ export function HomeHeroSection(): JSX.Element {
           style={{
             filter: 'drop-shadow(2px 2px 20px rgba(255, 255, 255, 0.15))',
             width: isMobile ? '100rem' : '100rem',
-            height: isMobile ? '7rem' : '8rem',
+            height: isMobile ? '12rem' : '13rem',
           }}
           className="z-10 relative"
         >

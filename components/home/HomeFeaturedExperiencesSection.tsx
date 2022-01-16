@@ -1,6 +1,6 @@
 import { ExperiencePost } from '@tastiest-io/tastiest-utils';
 import { AbstractExperienceCard } from 'components/cards/AbstractExperienceCard';
-import { CardGrid } from 'components/cards/CardGrid';
+import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { SectionTitle } from 'components/SectionTitle';
 import React from 'react';
 
@@ -17,11 +17,18 @@ export default function HomeFeaturedExperiencesSection(props: Props) {
         <SectionTitle>Featured Experiences</SectionTitle>
       </div>
 
-      <CardGrid>
-        {cards.map(card => (
-          <AbstractExperienceCard key={card.id} {...card} />
+      <HorizontalScrollable
+        noPadding
+        forceButtons
+        verticalBuffer={6}
+        spacing={6}
+      >
+        {cards.map((card, key) => (
+          <div key={key} style={{ width: '250px' }}>
+            <AbstractExperienceCard key={card.id} {...card} />
+          </div>
         ))}
-      </CardGrid>
+      </HorizontalScrollable>
     </div>
   );
 }

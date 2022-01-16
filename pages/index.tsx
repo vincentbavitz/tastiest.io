@@ -90,9 +90,12 @@ const Index = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
             <div className="absolute -top-24 -left-24 z-0 bg-blue-300 bg-opacity-10 filter blur-2xl rounded-full w-64 h-64"></div>
             <div className="absolute -bottom-624 -right-24 z-0 bg-alt-1 bg-opacity-5 filter blur-2xl rounded-full w-64 h-64"></div>
 
-            <p className="font-medium z-10">
-              Tastiest was established with one mission in mind: revolutionise
-              how you discover exceptional food online.
+            <p className="text-xl font-medium z-10">
+              Tastiest was established with one mission in mind:
+              <br />{' '}
+              <span className="italic">
+                revolutionise how you discover exceptional food online.
+              </span>
             </p>
 
             <p className="z-10">

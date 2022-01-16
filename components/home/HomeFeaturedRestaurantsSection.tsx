@@ -19,7 +19,12 @@ export default function HomeFeaturedRestaurantsSection(props: Props) {
       </div>
 
       <div className="-mt-6">
-        <HorizontalScrollable noPadding verticalBuffer={6} spacing={6}>
+        <HorizontalScrollable
+          noPadding
+          forceButtons
+          verticalBuffer={6}
+          spacing={6}
+        >
           {restaurants.map((restaurant, key) => {
             const link = generateStaticURL({
               city: restaurant.city,
