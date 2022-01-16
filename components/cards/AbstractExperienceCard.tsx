@@ -1,9 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import {
-  dlog,
-  ExperiencePost,
-  formatCurrency,
-} from '@tastiest-io/tastiest-utils';
+import { ExperiencePost, formatCurrency } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import clsx from 'clsx';
 import Image from 'next/image';
@@ -12,22 +8,8 @@ import React, { useMemo, useRef } from 'react';
 import { useHoverDirty } from 'react-use';
 import { generateStaticURL } from 'utils/routing';
 
-interface Props extends ExperiencePost {
-  // Compact omits description
-  compact?: boolean;
-}
-
-export function AbstractExperienceCard(props: Props): JSX.Element {
-  const {
-    compact,
-    title,
-    description,
-    slug,
-    city,
-    cuisine,
-    restaurant,
-    deal,
-  } = props;
+export function AbstractExperienceCard(props: ExperiencePost): JSX.Element {
+  const { slug, city, cuisine, restaurant, deal } = props;
 
   const ref = useRef(null);
   const isHovering = useHoverDirty(ref);
@@ -43,21 +25,9 @@ export function AbstractExperienceCard(props: Props): JSX.Element {
     [],
   );
 
-  const { href: restaurantHref, as: restaurantAs } = useMemo(
-    () =>
-      generateStaticURL({
-        city,
-        cuisine,
-        restaurant: restaurant.uriName,
-      }),
-    [],
-  );
-
-  dlog('AbstractExperienceCard ➡️ isHovering:', isHovering);
-
   return (
     <div ref={ref} className="w-full">
-      <Link href={restaurantHref} as={restaurantAs}>
+      <Link href={experienceHref} as={experienceAs}>
         <a className="no-underline">
           <div
             className={classNames(
