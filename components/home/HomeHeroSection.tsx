@@ -32,14 +32,13 @@ export function HomeHeroSection(): JSX.Element {
   return (
     <div
       style={{
-        height: '30rem',
         paddingTop: `${
           isMobile ? UI.HEADER_HEIGHT_MOBILE_REM : UI.HEADER_HEIGHT_DESKTOP_REM
         }rem`,
       }}
       className="relative flex flex-col items-center justify-evenly bg-light w-full overflow-x-hidden"
     >
-      <div className="z-10">
+      <div className="z-10 mb-6">
         <Contained>
           <h1
             style={{ maxWidth: '33rem' }}
