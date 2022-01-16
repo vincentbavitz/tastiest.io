@@ -1,4 +1,3 @@
-import { Avatar } from '@tastiest-io/tastiest-ui';
 import {
   CmsApi,
   dlog,
@@ -171,7 +170,7 @@ const RestaurantPage = (
         </div>
       </Contained>
 
-      <div className="flex flex-col items-center pb-10">
+      <div className="flex flex-col items-center">
         <Contained maxWidth={900}>
           <div className="pb-6">
             <SectionTitle>Award Winning Dishes</SectionTitle>
@@ -187,17 +186,7 @@ const RestaurantPage = (
                     header={dish.name}
                     description={dish.description}
                     image={dish.image}
-                  >
-                    <div className="flex items-center space-x-4">
-                      <Avatar
-                        size={10}
-                        imageSrc={dish.restaurant.profilePicture.url}
-                      />
-                      <span className="text-lg font-medium">
-                        {dish.restaurant.name}
-                      </span>
-                    </div>
-                  </DisplayCard>
+                  />
                 </div>
               );
             })}
