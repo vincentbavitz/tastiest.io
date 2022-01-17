@@ -1,4 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons';
+import { keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import {
@@ -19,7 +21,10 @@ import { useRouter } from 'next/router';
 import nookies from 'nookies';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useLockBodyScroll } from 'react-use';
 import { CheckoutStep } from 'state/checkout';
+import { IState } from 'state/reducers';
 import { db, firebaseAdmin } from 'utils/firebaseAdmin';
 import { CheckoutStepIndicator } from '../components/checkout/CheckoutStepIndicator';
 import { CheckoutStepAuth } from '../components/checkout/steps/CheckoutStepAuth';
@@ -150,6 +155,19 @@ export const getServerSideProps = async (
   return { props };
 };
 
+const fadeInBackground = keyframes`
+     0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+`;
+
+const PaymentLoadingOverlay = styled.div`
+  animation: ${fadeInBackground} 0.25s;
+`;
+
 /** Parent component takes initial values from props
  *  and feeds dynamic values into children
  */
@@ -160,6 +178,12 @@ function Checkout(
 
   const { isDesktop } = useScreenSize();
   const { order } = useOrder(props.order.token, props.order);
+
+  const { isPaymentProcessing } = useSelector(
+    (state: IState) => state.checkout,
+  );
+
+  useLockBodyScroll(isPaymentProcessing);
 
   // User sign in management needs to be very explicit here
   const { user, isSignedIn } = useAuth();
@@ -209,6 +233,12 @@ function Checkout(
         }}
       />
 
+      {isPaymentProcessing ? (
+        <PaymentLoadingOverlay className="fixed inset-0 z-50 flex justify-center items-center bg-light">
+          <CheckoutLoader />
+        </PaymentLoadingOverlay>
+      ) : null}
+
       <Elements stripe={stripePromise}>
         <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
           <div className="relative flex flex-col w-full mt-12 space-y-10">
@@ -247,5 +277,4 @@ const CheckoutLoader = () => {
   );
 };
 
-3;
 export default Checkout;
