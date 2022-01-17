@@ -8,8 +8,21 @@ import React, { useMemo, useRef } from 'react';
 import { useHoverDirty } from 'react-use';
 import { generateStaticURL } from 'utils/routing';
 
-export function AbstractExperienceCard(props: ExperiencePost): JSX.Element {
-  const { slug, city, cuisine, restaurant, deal } = props;
+interface AbstractExperienceCardProps extends ExperiencePost {
+  withRestaurantName?: boolean;
+}
+
+export function AbstractExperienceCard(
+  props: AbstractExperienceCardProps,
+): JSX.Element {
+  const {
+    slug,
+    city,
+    cuisine,
+    restaurant,
+    deal,
+    withRestaurantName = true,
+  } = props;
 
   const ref = useRef(null);
   const isHovering = useHoverDirty(ref);
@@ -53,25 +66,28 @@ export function AbstractExperienceCard(props: ExperiencePost): JSX.Element {
 
               {/* Restaurant profile */}
               <div className="absolute bottom-0 left-0 right-0 flex items-end pb-2 h-20 z-50 px-2 bg-gradient-to-t from-primary rounded-lg">
-                <div className="flex items-center space-x-2">
-                  <div
-                    style={{
-                      filter: 'drop-shadow(0 0 3px rgba(255, 255, 255, 0.33))',
-                    }}
-                    className="relative h-8 w-8"
-                  >
-                    <Image
-                      layout="fill"
-                      objectFit="cover"
-                      className={clsx('rounded-full transform')}
-                      src={restaurant.profilePicture.url}
-                    />
-                  </div>
+                {withRestaurantName ? (
+                  <div className="flex items-center space-x-2">
+                    <div
+                      style={{
+                        filter:
+                          'drop-shadow(0 0 3px rgba(255, 255, 255, 0.33))',
+                      }}
+                      className="relative h-8 w-8"
+                    >
+                      <Image
+                        layout="fill"
+                        objectFit="cover"
+                        className={clsx('rounded-full transform')}
+                        src={restaurant.profilePicture.url}
+                      />
+                    </div>
 
-                  <h4 className={clsx('text-light font-medium')}>
-                    {restaurant.name}
-                  </h4>
-                </div>
+                    <h4 className={clsx('text-light font-medium')}>
+                      {restaurant.name}
+                    </h4>
+                  </div>
+                ) : null}
               </div>
             </div>
 
