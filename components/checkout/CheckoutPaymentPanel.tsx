@@ -14,6 +14,7 @@ import {
 import clsx from 'clsx';
 import { useOrder } from 'hooks/checkout/useOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
+import { DateTime } from 'luxon';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -82,6 +83,15 @@ export function CheckoutPaymentPanel(props: Props) {
             Book for {order.heads} {order.heads === 1 ? 'person' : 'people'}
           </p>
           <p className="font-medium">£{totalPrice}</p>
+        </div>
+
+        <div className="flex items-center justify-between leading-none text-sm">
+          <p className="">Date</p>
+          <p className="font-medium">
+            {DateTime.fromMillis(order.bookedForTimestamp).toFormat(
+              'h:mm a, DD',
+            )}
+          </p>
         </div>
 
         {isDesktop && (
