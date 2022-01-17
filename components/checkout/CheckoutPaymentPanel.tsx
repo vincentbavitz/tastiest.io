@@ -78,6 +78,11 @@ export function CheckoutPaymentPanel(props: Props) {
           </div>
         </div>
 
+        {/* <div className="flex items-center justify-between leading-none text-sm">
+          <p>Fees</p>
+          <p className="font-medium">£{totalPrice}</p>
+        </div> */}
+
         <div className="flex items-center justify-between leading-none text-sm">
           <p>
             Book for {order.heads} {order.heads === 1 ? 'person' : 'people'}
@@ -161,7 +166,7 @@ export function CheckoutPaymentPanel(props: Props) {
             {isPaymentProcessing ? (
               <LoadingOutlined className="text-xl" />
             ) : (
-              <></>
+              <>Book now</>
             )}
           </button>
         </div>
