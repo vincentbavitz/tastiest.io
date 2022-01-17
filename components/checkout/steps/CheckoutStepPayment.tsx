@@ -152,8 +152,6 @@ export function CheckoutStepPayment(props: Props) {
       return;
     }
 
-    dlog('CheckoutStepPayment ➡️ order:', order);
-
     const { error: updateOrderError } = await updateOrder({
       paymentMethodId: paymentMethod.id,
     });
