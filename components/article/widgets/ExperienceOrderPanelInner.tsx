@@ -68,6 +68,17 @@ const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
     CreateNewOrderReturn
   >(LocalEndpoint.CREATE_NEW_ORDER, { retries: 1 });
 
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (submitting) {
+      setLoading(true);
+    }
+
+    if (error) {
+      setLoading(false);
+    }
+  }, [submitting, error]);
+
   // Update selected day when when deal changes
   useEffect(() => {
     setSelectedDay(null);
@@ -119,7 +130,7 @@ const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
     setSelectedTime,
     totalPrice,
     toCheckout,
-    submitting,
+    loading,
   };
 };
 
@@ -142,7 +153,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
     setSelectedTime,
     totalPrice,
     toCheckout,
-    submitting,
+    loading,
   } = useOrderPanel(deal, slug);
 
   dlog('ExperienceOrderPanelInner ➡️ slots:', rawSlots[0]?.ordinal);
@@ -359,11 +370,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
                 : 'hover:bg-secondary',
             )}
           >
-            {submitting ? (
-              <LoadingOutlined className="text-xl" />
-            ) : (
-              <>Book Now</>
-            )}
+            {loading ? <LoadingOutlined className="text-xl" /> : <>Book Now</>}
           </button>
         ) : null}
 
@@ -372,7 +379,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
           <Button
             wide
             disabled={!selectedTime || !selectedDay}
-            loading={submitting}
+            loading={loading}
             onClick={toCheckout}
           >
             Book Now

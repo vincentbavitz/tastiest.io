@@ -84,18 +84,18 @@ export default async function createNewOrder(
   dlog('createNewOrder ➡️ body:', body);
   dlog('createNewOrder ➡️ orderRequest:', orderRequest);
 
-  const { success, error } = await validateOrderRequest(orderRequest);
+  // const { success, error } = await validateOrderRequest(orderRequest);
 
-  if (!success) {
-    dlog('createNewOrder ➡️ error:', error);
+  // if (!success) {
+  //   dlog('createNewOrder ➡️ error:', error);
 
-    response.json({
-      success: false,
-      data: { token: null },
-      error,
-    });
-    return;
-  }
+  //   response.json({
+  //     success: false,
+  //     data: { token: null },
+  //     error,
+  //   });
+  //   return;
+  // }
 
   const order = await buildOrder(orderRequest);
 
