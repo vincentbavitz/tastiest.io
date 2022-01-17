@@ -133,7 +133,7 @@ export default function ExperienceOrderPanelInner(props: Props) {
   const { deal, posts, slug, layout } = props;
 
   const {
-    slots,
+    slots: rawSlots,
     heads,
     setHeads,
     selectedDay,
@@ -145,7 +145,10 @@ export default function ExperienceOrderPanelInner(props: Props) {
     submitting,
   } = useOrderPanel(deal, slug);
 
-  dlog('ExperienceOrderPanelInner ➡️ slots:', slots);
+  dlog('ExperienceOrderPanelInner ➡️ slots:', rawSlots[0]?.ordinal);
+
+  // Only allow dates less than Feb 16 for Alpha. (47 ordinal date)
+  const slots = rawSlots?.filter(slot => slot?.ordinal < 47) ?? [];
 
   const sizes = useMemo(() => {
     const chevronSize = (layout === 'overlay' ? 8 : 6) as 6 | 8;
