@@ -13,6 +13,7 @@ import {
   TastiestInternalErrorCode,
 } from '@tastiest-io/tastiest-utils';
 import Analytics from 'analytics-node';
+import { ANONYMOUS_USER_ID } from 'contexts/tracking';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { db } from 'utils/firebaseAdmin';
 import { calculatePromoPrice, validatePromo } from 'utils/order';
@@ -113,7 +114,7 @@ export default async function createNewOrder(
     // Use anonymousId for Pixel deduplication
     analytics.track({
       event: 'Checkout Started',
-      userId: anonymousId ?? userId,
+      userId: anonymousId ?? userId ?? ANONYMOUS_USER_ID,
       context: {
         userAgent,
         page: {
@@ -154,6 +155,8 @@ export default async function createNewOrder(
       },
     });
   } catch (error) {
+    console.log('Error', error);
+
     await reportInternalError({
       code: TastiestInternalErrorCode.PAYMENT_ERROR,
       message: 'Payment Failure - Caught error',
