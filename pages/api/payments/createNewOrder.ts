@@ -1,4 +1,5 @@
 import {
+  calculatePaymentFees,
   CmsApi,
   dlog,
   FIREBASE,
@@ -250,6 +251,9 @@ const buildOrder = async (orderRequest: OrderRequest) => {
   const orderId = uuid();
   const orderToken = uuid();
 
+  const priceAfterPromo = calculatePromoPrice(subtotal, promo);
+  const { total: final, fees } = calculatePaymentFees(priceAfterPromo);
+
   const order: Order = {
     id: orderId,
     userFacingOrderId: generateUserFacingId(),
@@ -260,7 +264,8 @@ const buildOrder = async (orderRequest: OrderRequest) => {
     fromSlug: orderRequest.fromSlug,
     price: {
       subtotal,
-      final: calculatePromoPrice(subtotal, promo),
+      fees,
+      final,
       currency: 'GBP',
     },
     paymentMethod: null,

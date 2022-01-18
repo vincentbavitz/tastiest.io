@@ -1,4 +1,5 @@
 import {
+  calculatePaymentFees,
   CmsApi,
   dlog,
   FirestoreCollection,
@@ -125,15 +126,19 @@ export default async function updateOrder(
     // Validate discount if required
     if (promoCode && promoCode.length > 0) {
       const cms = new CmsApi();
-
       const promo = await cms.getPromo(promoCode);
 
       if (promo && validatePromo(order.deal, order.userId, promo)) {
         updatedOrder.promoCode = promoCode;
-        updatedOrder.price.final = calculatePromoPrice(
+
+        const priceAfterPromo = calculatePromoPrice(
           order.price.subtotal,
           promo,
         );
+
+        const { total: final, fees } = calculatePaymentFees(priceAfterPromo);
+        updatedOrder.price.final = final;
+        updatedOrder.price.fees = fees;
       } else {
         response.json({
           success: false,

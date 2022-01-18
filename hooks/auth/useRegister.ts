@@ -31,7 +31,8 @@ export const useRegister = () => {
       password,
       firstName,
       userAgent: navigator?.userAgent ?? null,
-      anonymousId: window?.analytics?.user()?.anonymousId(),
+      anonymousId:
+        window?.analytics?.user?.()?.anonymousId() ?? 'anonymous-user',
     });
 
     if (!success || !token || error) {

@@ -4,7 +4,7 @@ import {
   LoadingOutlined,
 } from '@ant-design/icons';
 import { LockIcon, SupportIcon } from '@tastiest-io/tastiest-icons';
-import { Button, Input, Modal } from '@tastiest-io/tastiest-ui';
+import { Button, Input, Modal, Tooltip } from '@tastiest-io/tastiest-ui';
 import {
   formatCurrency,
   Order,
@@ -78,25 +78,32 @@ export function CheckoutPaymentPanel(props: Props) {
           </div>
         </div>
 
-        {/* <div className="flex items-center justify-between leading-none text-sm">
-          <p>Fees</p>
-          <p className="font-medium">£{totalPrice}</p>
-        </div> */}
-
-        <div className="flex items-center justify-between leading-none text-sm">
-          <p>
-            Book for {order.heads} {order.heads === 1 ? 'person' : 'people'}
-          </p>
-          <p className="font-medium">£{totalPrice}</p>
-        </div>
-
-        <div className="flex items-center justify-between leading-none text-sm">
+        <div className="flex items-center justify-between leading-none text-sm text-gray-600">
           <p className="">Date</p>
           <p className="font-medium">
             {DateTime.fromMillis(order.bookedForTimestamp).toFormat(
               'h:mm a, DD',
             )}
           </p>
+        </div>
+
+        <div className="flex items-center justify-between leading-none text-sm text-gray-600">
+          <p>
+            Book for {order.heads} {order.heads === 1 ? 'person' : 'people'}
+          </p>
+          <p className="font-medium">£{totalPrice}</p>
+        </div>
+
+        <div className="flex items-center justify-between leading-none text-sm text-gray-600">
+          <div className="flex items-center gap-1">
+            <p>Fees</p>
+            <Tooltip content="Card processing fees are 2.9% + 20p.">
+              <div className="flex items-center justify-center w-4 h-4 rounded-full bg-gray-200 font-primary cursor-pointer">
+                i
+              </div>
+            </Tooltip>
+          </div>
+          <p className="font-medium">£{formatCurrency(order.price.fees)}</p>
         </div>
 
         {isDesktop && (
@@ -244,7 +251,7 @@ const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
     },
   });
 
-  const [promoCode, se3tPromoCode] = useState('');
+  const [promoCode, setPromoCode] = useState('');
   const [error, setError] = useState('');
 
   // Realtime order information
