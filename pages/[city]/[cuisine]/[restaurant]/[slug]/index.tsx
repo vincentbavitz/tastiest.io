@@ -7,6 +7,8 @@ import { NextSeo, ProductJsonLd } from 'next-seo';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { toggleOfferMenu } from 'state/navigation';
 import { generateTitle } from 'utils/metadata';
 import { generateStaticURL } from 'utils/routing';
 
@@ -81,6 +83,7 @@ export const getStaticProps = async ({ params }) => {
 
 function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const cms = useMemo(() => new CmsApi(), []);
+  const dispatch = useDispatch();
 
   const { post, posts } = props;
   const { title, restaurant } = post;
@@ -93,6 +96,11 @@ function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
   useEffect(() => {
     dlog('[slug] ➡️ recommendedPosts:', recommendedPosts);
     cms.getTopPosts(8).then(result => setRecommendedPosts(result?.posts));
+  }, []);
+
+  // Close menu from native back button presses on mobile
+  useEffect(() => {
+    dispatch(toggleOfferMenu(false));
   }, []);
 
   // Preload the checkout and continue page
