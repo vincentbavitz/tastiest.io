@@ -1,7 +1,6 @@
 import {
   Booking,
   Currency,
-  dlog,
   FirestoreCollection,
   FunctionsResponse,
   generateConfirmationCode,
@@ -204,26 +203,18 @@ export default async function pay(
       : financial?.commission?.followersRestaurantCut ?? PAYMENTS.RESTAURANT_CUT_DEFAULT_PC;
 
     // Internal measurements
-    const calculateTastiestPortion = (subtotal: number, final: number) => {
-      const portion =
-        order.price.subtotal * (1 - restaurantPayoutPercentage / 100) -
-        (subtotal - final);
-      return portion;
-    };
+    // const calculateTastiestPortion = (subtotal: number, final: number) => {
+    //   const portion =
+    //     order.price.subtotal * (1 - restaurantPayoutPercentage / 100) -
+    //     (subtotal - final);
+    //   return portion;
+    // };
 
-    // Restaurant pays the Stripe fee.
-    const STRIPE_PAYMENT_FEE_PC = 0.033;
     const restaurantPortion =
-      order.price.subtotal * (restaurantPayoutPercentage / 100) -
-      STRIPE_PAYMENT_FEE_PC * order.price.final;
+      order.price.subtotal * (restaurantPayoutPercentage / 100);
 
-    dlog('pay ➡️ restaurantPayoutPercentage:', restaurantPayoutPercentage);
-    dlog('pay ➡️ restaurantPortion:', restaurantPortion);
-
-    const tastiestPortion = calculateTastiestPortion(
-      order.price.subtotal,
-      order.price.final,
-    );
+    // Eater pays card fees.
+    const tastiestPortion = order.price.final - restaurantPortion;
 
     // The `confirm` parameter attempts to pay immediately & automatically
     const paymentIntent = await stripe.paymentIntents.create({

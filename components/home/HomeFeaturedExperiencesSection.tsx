@@ -17,18 +17,20 @@ export default function HomeFeaturedExperiencesSection(props: Props) {
         <SectionTitle>Featured Experiences</SectionTitle>
       </div>
 
-      <HorizontalScrollable
-        noPadding
-        forceButtons
-        verticalBuffer={6}
-        spacing={6}
-      >
-        {cards.map((card, key) => (
-          <div key={key} style={{ width: '250px' }}>
-            <AbstractExperienceCard key={card.id} {...card} />
-          </div>
-        ))}
-      </HorizontalScrollable>
+      <div className="-mt-6">
+        <HorizontalScrollable
+          noPadding
+          forceButtons
+          verticalBuffer={6}
+          spacing={6}
+        >
+          {cards.map((card, key) => (
+            <div key={key} style={{ width: '250px' }}>
+              <AbstractExperienceCard key={card.id} {...card} />
+            </div>
+          ))}
+        </HorizontalScrollable>
+      </div>
     </div>
   );
 }

@@ -22,7 +22,7 @@ export function useOrder(token: string, initialOrder?: Order) {
     },
   );
 
-  dlog('useOrder ➡️ order:', order.price);
+  dlog('useOrder ➡️ order:', order);
 
   // Set userId as soon as they sign in
   useEffect(() => {
