@@ -1,5 +1,5 @@
 import { AuthContext, AuthError } from 'contexts/auth';
-import { LocalStorageItem } from 'contexts/tracking';
+import { ANONYMOUS_USER_ID, LocalStorageItem } from 'contexts/tracking';
 import usePostFetch from 'hooks/usePostFetch';
 import { RegisterParams, RegisterReturn } from 'pages/api/register';
 import { useContext } from 'react';
@@ -32,7 +32,7 @@ export const useRegister = () => {
       firstName,
       userAgent: navigator?.userAgent ?? null,
       anonymousId:
-        window?.analytics?.user?.()?.anonymousId() ?? 'anonymous-user',
+        window?.analytics?.user?.()?.anonymousId() ?? ANONYMOUS_USER_ID,
     });
 
     if (!success || !token || error) {

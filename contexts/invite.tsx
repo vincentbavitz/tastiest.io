@@ -50,15 +50,20 @@ export const EarlyAccessProvider = ({
   const firebase = useFirebase();
 
   const getIP = async () => {
-    const _ip = await fetch('https://www.cloudflare.com/cdn-cgi/trace').then(
-      response =>
+    const _ip = await fetch('https://www.cloudflare.com/cdn-cgi/trace')
+      .then(response =>
         response.text().then(data => {
           const ipRegex = /[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}/;
           return data.match(ipRegex)[0];
         }),
-    );
+      )
+      .catch(() => {
+        null;
+      });
 
-    setIp(_ip);
+    if (_ip) {
+      setIp(_ip);
+    }
   };
 
   // Set IP on first initialization
