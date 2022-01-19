@@ -97,7 +97,7 @@ export function CheckoutPaymentPanel(props: Props) {
         <div className="flex items-center justify-between leading-none text-sm text-gray-600">
           <div className="flex items-center gap-1">
             <p>Fees</p>
-            <Tooltip content="Card processing fees are 2.9% + 20p.">
+            <Tooltip content="Card processing fees are 2.9% + 30p.">
               <div className="flex items-center justify-center w-4 h-4 rounded-full bg-gray-200 font-primary cursor-pointer">
                 i
               </div>

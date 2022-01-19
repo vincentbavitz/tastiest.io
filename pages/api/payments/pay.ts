@@ -297,7 +297,7 @@ export default async function pay(
         bookedForTimestamp: order.bookedForTimestamp,
         bookedForHumanDate: DateTime.fromMillis(
           order.bookedForTimestamp,
-        ).toFormat('h:mm DDD'),
+        ).toFormat('h:mm a DDD'),
 
         restaurantCut,
         isUserFollowing,
