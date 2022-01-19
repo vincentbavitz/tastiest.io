@@ -30,7 +30,7 @@
     "@stripe/stripe-js": "^1.12.1",
     "@svgr/cli": "^5.5.0",
     "@tastiest-io/tastiest-icons": "^0.28.0",
-    "@tastiest-io/tastiest-ui": "^0.75.0",
+    "@tastiest-io/tastiest-ui": "^0.78.0",
     "@tastiest-io/tastiest-utils": "^1.51.0",
     "D": "^1.0.0",
     "analytics-node": "^4.0.1",
