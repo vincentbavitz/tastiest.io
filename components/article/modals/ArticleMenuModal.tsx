@@ -4,6 +4,7 @@ import ResponsiveImage from 'components/ResponsiveImage';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLockBodyScroll } from 'react-use';
 import { toggleOfferMenu } from 'state/navigation';
 import { IState } from 'state/reducers';
 
@@ -16,6 +17,7 @@ export default function ArticleMenuModal({ menu }: Props) {
   const dispatch = useDispatch();
 
   const { isMobile } = useScreenSize();
+  useLockBodyScroll(isOfferMenuOpen);
 
   return (
     <Modal
@@ -25,7 +27,7 @@ export default function ArticleMenuModal({ menu }: Props) {
       noPadding
       preload
     >
-      <div className="">
+      <div className="flex justify-center">
         <div
           style={{
             width: '450px',
