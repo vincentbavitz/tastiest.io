@@ -109,13 +109,15 @@ const RestaurantExperiencesPage = (
 
   return (
     <Contained maxWidth={900}>
-      <div className="flex flex-col items-center pt-4 pb-10 space-y-4">
+      <div className="pt-4 pb-10">
         {isMobile ? (
-          posts.map(post => (
-            <div key={post.id} style={{ maxWidth: '350px' }} className="">
-              <AbstractExperienceCard withRestaurantName={false} {...post} />
-            </div>
-          ))
+          <div className="grid grid-cols-1 gap-4 justify-items-center">
+            {posts.map(post => (
+              <div key={post.id} style={{ width: '300px', maxWidth: '80vw' }}>
+                <AbstractExperienceCard withRestaurantName={false} {...post} />
+              </div>
+            ))}
+          </div>
         ) : (
           <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
             {posts.map(post => (
