@@ -1,6 +1,7 @@
 import { Input } from '@tastiest-io/tastiest-ui';
 import React from 'react';
 import { Control, useController } from 'react-hook-form';
+import { REGEX } from '../../../constants';
 
 interface Props {
   name: string;
@@ -39,7 +40,7 @@ export default function InputPostcode(props: Props) {
         message: requiredText ?? 'Postal code is required',
       },
       pattern: {
-        value: /^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z])))) [0-9][A-Za-z]{2})$/,
+        value: REGEX.POSTCODE_UK,
         message: 'Please enter a UK postal code',
       },
     },

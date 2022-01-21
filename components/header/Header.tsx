@@ -1,8 +1,4 @@
-import {
-  CalendarOutlined,
-  LogoutOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
+import { CalendarOutlined, LogoutOutlined } from '@ant-design/icons';
 import { HamburgerIcon } from '@tastiest-io/tastiest-icons';
 import {
   Breadcrumbs,
@@ -94,13 +90,13 @@ function MobileHeader(props: HeaderProps) {
               Bookings
             </Dropdown.Item>
 
-            <Dropdown.Item
+            {/* <Dropdown.Item
               display={isSignedIn}
               href="/account/preferences"
               icon={<SettingOutlined />}
             >
               Preferences
-            </Dropdown.Item>
+            </Dropdown.Item> */}
 
             <Dropdown.Item
               display={isSignedIn}

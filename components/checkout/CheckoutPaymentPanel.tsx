@@ -2,8 +2,9 @@ import {
   CheckOutlined,
   CloseOutlined,
   LoadingOutlined,
+  LockOutlined,
 } from '@ant-design/icons';
-import { LockIcon, SupportIcon } from '@tastiest-io/tastiest-icons';
+import { SupportIcon } from '@tastiest-io/tastiest-icons';
 import { Button, Input, Modal, Tooltip } from '@tastiest-io/tastiest-ui';
 import {
   formatCurrency,
@@ -59,7 +60,15 @@ export function CheckoutPaymentPanel(props: Props) {
       }}
       className="relative"
     >
-      {isDesktop && <SecureTransactionText />}
+      {isDesktop ? (
+        <div className="absolute top-0 flex justify-center w-full -mt-6 ">
+          <SecureTransactionText />
+        </div>
+      ) : (
+        <div className="flex justify-center filter drop-shadow-md mt-3 mb-3">
+          <SecureTransactionText />
+        </div>
+      )}
 
       <CheckoutCard order={order}>
         <div className="">
@@ -97,7 +106,7 @@ export function CheckoutPaymentPanel(props: Props) {
         <div className="flex items-center justify-between leading-none text-sm text-gray-600">
           <div className="flex items-center gap-1">
             <p>Fees</p>
-            <Tooltip content="Card processing fees are 2.9% + 20p.">
+            <Tooltip content="Card processing fees are 2.9% + 30p.">
               <div className="flex items-center justify-center w-4 h-4 rounded-full bg-gray-200 font-primary cursor-pointer">
                 i
               </div>
@@ -183,9 +192,12 @@ export function CheckoutPaymentPanel(props: Props) {
 }
 
 const SecureTransactionText = () => (
-  <div className="absolute top-0 flex justify-center w-full -mt-6 text-gray-300">
-    <LockIcon className="h-4 mr-2 fill-current" />
-    <span className="text-sm">Secure transaction</span>
+  <div className="flex space-x-1 text-gray-600 leading-none">
+    <LockOutlined
+      style={{ marginTop: '-0.08rem' }}
+      className="text-green-500 text-base"
+    />
+    <p className="text-sm">Secure transaction</p>
   </div>
 );
 
