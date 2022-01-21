@@ -53,10 +53,10 @@ const Index = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
       <NextSeo
         title="Tastiest - Home"
-        description="Tastiest food no matter where you are"
+        description={METADATA.TITLE_SUFFIX}
         openGraph={{
           title: 'Tastiest - Home',
-          description: 'Tastiest food no matter where you are',
+          description: METADATA.TITLE_SUFFIX,
           images: [
             {
               url: 'https://tastiest.io/assets/seo/page/home-800x600.png',
