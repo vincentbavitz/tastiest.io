@@ -1,8 +1,4 @@
-import {
-  LoadingOutlined,
-  MinusOutlined,
-  PlusOutlined,
-} from '@ant-design/icons';
+import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button } from '@tastiest-io/tastiest-ui';
 import {
   dlog,
@@ -14,6 +10,7 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
+import MobileBottomButton from 'components/MobileBottomButton';
 import XScrollSelectItem from 'components/XScrollSelectItem';
 import { useAuth } from 'hooks/auth/useAuth';
 import usePostFetch from 'hooks/usePostFetch';
@@ -358,20 +355,13 @@ export default function ExperienceOrderPanelInner(props: Props) {
 
         {/* Overlay bottom-button */}
         {layout === 'overlay' ? (
-          <button
+          <MobileBottomButton
             disabled={!selectedTime || !selectedDay}
             onClick={toCheckout}
-            className={clsx(
-              'flex justify-center items-center h-14 w-full',
-              'text-lg font-medium tracking-wide text-light',
-              'bg-primary duration-300 outline-none',
-              !selectedTime || !selectedDay
-                ? 'filter brightness-90'
-                : 'hover:bg-secondary',
-            )}
+            loading={loading}
           >
-            {loading ? <LoadingOutlined className="text-xl" /> : <>Book Now</>}
-          </button>
+            Book now
+          </MobileBottomButton>
         ) : null}
 
         {/* Sidebar CTA button */}

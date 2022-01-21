@@ -5,17 +5,16 @@ import clsx from 'clsx';
 import { ArticleSaveShareWidget } from 'components/article/widgets/ArticleSaveShareWidget';
 import { ExperienceOrderPanelDesktop } from 'components/article/widgets/ExperienceOrderPanelDesktop';
 import { Contained } from 'components/Contained';
+import MobileBottomButton from 'components/MobileBottomButton';
 import BlockButton from 'components/restaurant/BlockButton';
 import RestaurantMapBlock from 'components/RestaurantMapBlock';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetStaticPropsType } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
 import { getStaticProps } from 'pages/[city]/[cuisine]/[restaurant]/[slug]';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useWindowScroll } from 'react-use';
 import { generateStaticURL } from 'utils/routing';
-import { UI } from '../../constants';
 import { LayoutProps } from '../LayoutHandler';
 import LayoutWrapper from '../LayoutWrapper';
 
@@ -149,6 +148,7 @@ const LayoutExperienceMobile = ({
     restaurant: post.restaurant.uriName,
   });
 
+  const [continuePageLoading, setContinuePageLoading] = useState(false);
   const continueUrl = restaurantPageUrl.as + '/' + post.slug + '/continue';
 
   return (
@@ -170,24 +170,13 @@ const LayoutExperienceMobile = ({
         </div>
       </Contained>
 
-      <div
-        style={{ zIndex: UI.Z_INDEX_FLOATING_COMPONENTS }}
-        className="fixed bottom-0 left-0 right-0"
+      <MobileBottomButton
+        href={continueUrl}
+        loading={continuePageLoading}
+        onClick={() => setContinuePageLoading(true)}
       >
-        <Link href={continueUrl}>
-          <a>
-            <button
-              className={clsx(
-                'fixed bottom-0 left-0 right-0 w-full h-14 flex items-center justify-center',
-                'bg-primary hover:bg-secondary duration-300',
-                'text-light text-lg outline-none font-medium tracking-wide',
-              )}
-            >
-              Book Now
-            </button>
-          </a>
-        </Link>
-      </div>
+        Book now
+      </MobileBottomButton>
     </div>
   );
 };

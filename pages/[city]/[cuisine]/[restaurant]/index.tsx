@@ -8,6 +8,7 @@ import {
 import DisplayCard from 'components/cards/DisplayCard';
 import { Contained } from 'components/Contained';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
+import MobileBottomButton from 'components/MobileBottomButton';
 import { RichBody } from 'components/RichBody';
 import { SectionTitle } from 'components/SectionTitle';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -193,6 +194,12 @@ const RestaurantPage = (
           </HorizontalScrollable>
         </div>
       </div>
+
+      {!isDesktop ? (
+        <MobileBottomButton href={experiencesPath.as}>
+          See Experiences
+        </MobileBottomButton>
+      ) : null}
     </>
   );
 };
