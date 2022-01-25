@@ -4,6 +4,7 @@ import { useSignIn } from 'hooks/auth/useSignIn';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useContext, useState } from 'react';
 import { useToggle } from 'react-use';
+import { cleanupInputValue } from 'utils/text';
 import { InputEmail } from '../inputs/InputEmail';
 import { InputPassword } from '../inputs/InputPassword';
 import { AuthTabsContext, CheckoutSignInTabSelected } from './CheckoutAuthTabs';
@@ -19,9 +20,6 @@ export function CheckoutSignIn() {
   const [showPassword, toggleShowPassword] = useToggle(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const cleanupInputValue = (value: string | number) =>
-    String(value).toLowerCase().trim();
-
   const submitSignIn = async () => {
     setSubmitting(true);
 
@@ -36,7 +34,7 @@ export function CheckoutSignIn() {
     <>
       <InputEmail
         value={signInEmail}
-        onValueChange={value => setSignInEmail(cleanupInputValue(value))}
+        onValueChange={value => setSignInEmail(cleanupInputValue(value, true))}
       />
       <InputPassword
         show={showPassword}

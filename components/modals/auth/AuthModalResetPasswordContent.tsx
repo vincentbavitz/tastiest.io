@@ -42,7 +42,7 @@ export const AuthModalResetPasswordContent = ({
             label="Email"
             prefix={<EmailIcon className="w-8 h-8 fill-current text-primary" />}
             value={email}
-            onValueChange={value => setEmail(cleanupInputValue(value))}
+            onValueChange={value => setEmail(cleanupInputValue(value, true))}
             disabled={success}
           ></Input>
 

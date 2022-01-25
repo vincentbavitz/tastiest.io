@@ -60,7 +60,9 @@ export const AuthModalSignInContent = ({ setStep }: ContentElementProps) => {
             error={formState.errors.email?.message}
             value={field.value}
             {...field}
-            onChange={e => field.onChange(cleanupInputValue(e.target.value))}
+            onChange={e =>
+              field.onChange(cleanupInputValue(e.target.value, true))
+            }
           ></Input>
         )}
       />

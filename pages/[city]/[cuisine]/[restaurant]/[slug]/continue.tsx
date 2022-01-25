@@ -188,7 +188,9 @@ function Continue(props: InferGetStaticPropsType<typeof getStaticProps>) {
                 className="h-full w-full rounded-lg object-cover"
               />
 
-              <h3 className="font-medium text-lg pt-3">{post.title}</h3>
+              <h3 className="font-medium text-lg pt-3 leading-7">
+                {post.title}
+              </h3>
             </div>
           </div>
         </div>
