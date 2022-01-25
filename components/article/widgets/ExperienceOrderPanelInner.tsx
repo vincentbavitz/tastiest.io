@@ -210,12 +210,21 @@ function ExperienceOrderPanelInner(props: Props) {
           >
             {posts?.map((_post, key) => {
               const selected = deal.id === _post.deal.id;
-              const link = generateStaticURL({
+              const basicLink = generateStaticURL({
                 restaurant: _post.restaurant.uriName,
                 cuisine: _post.restaurant.cuisine,
                 city: _post.restaurant.city,
                 slug: _post.slug,
               });
+
+              // Overlay is on [slug]/continue
+              const link =
+                layout === 'overlay'
+                  ? {
+                      href: `${basicLink.href}/continue`,
+                      as: `${basicLink.as}/continue`,
+                    }
+                  : basicLink;
 
               return (
                 <div key={key}>

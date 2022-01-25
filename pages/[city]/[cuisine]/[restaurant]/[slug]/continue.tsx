@@ -1,5 +1,6 @@
 import { CloseOutlined } from '@ant-design/icons';
 import { CmsApi, ExperiencePost } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
 import ExperienceOrderPanelInner from 'components/article/widgets/ExperienceOrderPanelInner';
 import { Contained } from 'components/Contained';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -8,6 +9,7 @@ import { Layouts } from 'layouts/LayoutHandler';
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { NextSeo, ProductJsonLd } from 'next-seo';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo } from 'react';
@@ -88,7 +90,7 @@ function Continue(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const { post, posts } = props;
   const { title, restaurant } = post;
 
-  const { width: screenWidth } = useScreenSize();
+  const { width: screenWidth, isMobile } = useScreenSize();
   const router = useRouter();
 
   const experienceHref = useMemo(
@@ -176,27 +178,40 @@ function Continue(props: InferGetStaticPropsType<typeof getStaticProps>) {
           </div>
         </Contained>
 
-        <div className="relative flex-grow overflow-hidden mt-4 mb-4">
-          <div className="flex justify-center w-full">
-            <div
-              style={{ width: '100%', maxWidth: '33rem' }}
-              className="relative rounded-lg bg-transparent px-4 overflow-hidden"
-            >
-              <img
-                src={`${post.deal?.image?.url}?w=700`}
-                style={{ maxHeight: '15rem' }}
-                className="h-full w-full rounded-lg object-cover"
-              />
-
-              <h3 className="font-medium text-lg pt-3 leading-7">
-                {post.title}
-              </h3>
-            </div>
+        <div
+          className={clsx(
+            'relative flex justify-center flex-grow overflow-hidden mb-4',
+            !isMobile && 'mt-4',
+          )}
+        >
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '33rem',
+              minHeight: isMobile ? '100%' : 'unset',
+              height: isMobile ? 'unset' : '15rem',
+            }}
+            className={clsx(
+              'relative bg-transparent px-4 overflow-hidden',
+              isMobile ? '-mx-1' : 'rounded-lg',
+            )}
+          >
+            <Image
+              layout="fill"
+              objectFit="cover"
+              src={`${post.deal?.image?.url}?w=700`}
+            />
           </div>
         </div>
 
+        <Contained>
+          <h3 className="text-center font-medium text-lg mb-2 leading-7">
+            {post.title}
+          </h3>
+        </Contained>
+
         <div
-          className="pt-6"
+          className="pt-6 pb-16"
           style={{ boxShadow: 'inset 0px 15px 15px -15px rgba(0,0,0,0.08)' }}
         >
           <ExperienceOrderPanelInner
