@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://tastiest.io
+
+# Sitemaps
+Sitemap: https://tastiest.io/sitemap.xml
+Sitemap: https://tastiest.io/sitemap-0.xml

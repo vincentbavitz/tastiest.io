@@ -9,7 +9,7 @@ import React, {
   useState,
 } from 'react';
 import { useFirebase } from 'react-redux-firebase';
-import { useLocalStorage } from 'react-use';
+import { useCookie, useLocalStorage } from 'react-use';
 import { LocalEndpoint } from 'types/api';
 
 const WAITING_LIST_INITIAL_SIZE = 108730;
@@ -84,6 +84,13 @@ export const EarlyAccessProvider = ({
 
   const [email, setEmail] = useState<string | null>(null);
   const [hasAccess, setHasAccess] = useLocalStorage('hasAccessLocal', false);
+
+  const [hasAccessCookie, setHasAccessCookie] = useCookie('hasAccess');
+
+  // Update the cookie any time we have access;
+  useEffect(() => {
+    setHasAccessCookie(String(hasAccess));
+  }, [hasAccess]);
 
   const [referrer, setReferrer] = useLocalStorage(
     'referrer',
