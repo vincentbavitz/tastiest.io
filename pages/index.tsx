@@ -63,10 +63,8 @@ const Index = () => {
     fetchContent().then(({ posts, dishes, restaurants }) => {
       setPosts(posts);
       setRestaurants(restaurants);
-      setDishes(dishes);
+      setDishes(shuffleArray(dishes));
     });
-
-    const shuffledDishes = shuffleArray(dishes);
   }, []);
 
   const cards = posts.slice(0, 20);

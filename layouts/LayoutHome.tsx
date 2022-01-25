@@ -1,5 +1,5 @@
-import { InferGetStaticPropsType } from 'next';
-import { getStaticProps } from 'pages';
+import { InferGetServerSidePropsType } from 'next';
+import { getServerSideProps } from 'pages';
 import React, { useEffect, useState } from 'react';
 import { useWindowScroll } from 'react-use';
 import { LayoutProps } from './LayoutHandler';
@@ -9,7 +9,7 @@ export default function LayoutHome({
   router,
   pageProps,
   children: Component,
-}: LayoutProps<InferGetStaticPropsType<typeof getStaticProps>>) {
+}: LayoutProps<InferGetServerSidePropsType<typeof getServerSideProps>>) {
   // Remove header transparency on scroll
   const TRANSPARENCY_GLASS_CUTOFF_PX = 10;
   const TRANSPARENCY_Y_CUTOFF_PX = 250;
