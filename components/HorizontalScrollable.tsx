@@ -14,6 +14,7 @@ interface Props {
   // Force buttons even on touch devices.
   // Essentially covers the case where iOS Safari screws it up.
   forceButtons?: boolean;
+  buttonsOffset?: number;
 
   // The vertical buffer. Used to prevent shadows clipping etc.
   // Uses Tailwind sizes; eg 4 = 1rem.
@@ -24,6 +25,7 @@ interface Props {
   fit?: number;
   spacing?: 0 | 1 | 2 | 3 | 4 | 6 | 8;
   chevronSize?: 6 | 8 | 10 | 12;
+
   noPadding?: boolean;
 }
 
@@ -54,6 +56,7 @@ function HorizontalScrollableInner(props: Props) {
     forceButtons = false,
     spacing = 3,
     chevronSize = 8,
+    buttonsOffset = 0,
     verticalBuffer,
     children,
   } = props;
@@ -113,7 +116,9 @@ function HorizontalScrollableInner(props: Props) {
       >
         <div
           style={{
-            transform: `translateX(${isDesktop ? '50%' : '50%'})`,
+            transform: `translateX(${
+              isDesktop ? '50%' : '50%'
+            }) translateY(${buttonsOffset}px)`,
           }}
           className={clsx(
             'flex flex-col justify-center h-full z-50 duration-300',
@@ -131,7 +136,9 @@ function HorizontalScrollableInner(props: Props) {
 
         <div
           style={{
-            transform: `translateX(${isDesktop ? '-50%' : '-50%'})`,
+            transform: `translateX(${
+              isDesktop ? '-50%' : '-50%'
+            }) translateY(${buttonsOffset}px)`,
           }}
           className={clsx(
             'flex flex-col justify-center h-full z-50 duration-300',
