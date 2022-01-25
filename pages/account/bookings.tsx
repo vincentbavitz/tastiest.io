@@ -241,7 +241,7 @@ const BookingRow: FC<BookingRowProps> = ({ order }) => {
 
                   <span
                     onClick={() => setShowModifyModal(true)}
-                    className="font-medium text-secondary"
+                    className="cursor-pointer ont-medium text-secondary"
                   >
                     Modify
                   </span>

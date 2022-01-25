@@ -34,7 +34,7 @@ const XScrollSelectItem = (props: XScrollSelectItemProps) => {
       style={{ minHeight: '1.75rem' }}
       className={clsx(
         'relative border-2 space-y-1 leading-none select-none',
-        'text-center duration-300 whitespace-nowrap',
+        'text-center duration-300 whitespace-nowrap h-full',
         disabled ? disabledStyles : activeStyles,
         size === 'small' && 'mx-1 rounded',
         size === 'medium' && 'mx-2 rounded',

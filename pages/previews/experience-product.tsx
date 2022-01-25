@@ -1,7 +1,5 @@
-import { CmsApi, ExperiencePost } from '@tastiest-io/tastiest-utils';
-import { Layouts } from 'layouts/LayoutHandler';
+import { CmsApi, ExperienceProduct } from '@tastiest-io/tastiest-utils';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import Experience from 'pages/[city]/[cuisine]/[restaurant]/[slug]';
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,
@@ -10,11 +8,11 @@ export const getServerSideProps = async (
   const mappedEnvironment =
     environment === 'master' ? 'production' : environment;
 
-  const slug = context.query.slug as string;
+  const id = context.query.id as string;
 
-  if (!environment || !slug) {
+  if (!environment || !id) {
     return {
-      props: {},
+      props: { experienceProduct: null as ExperienceProduct },
       redirect: {
         destination: '/',
       },
@@ -22,11 +20,11 @@ export const getServerSideProps = async (
   }
 
   const cms = new CmsApi(undefined, undefined, mappedEnvironment);
-  const post = await cms.getPostBySlug(slug);
+  const experienceProduct = await cms.getDeal(id);
 
-  if (!post) {
+  if (!experienceProduct) {
     return {
-      props: {},
+      props: { experienceProduct: null as ExperienceProduct },
       redirect: {
         destination: '/',
       },
@@ -35,18 +33,17 @@ export const getServerSideProps = async (
 
   return {
     props: {
-      post,
+      experienceProduct,
     },
   };
 };
 
-const PostPreview = (
+const ExperienceProductPreview = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
-  const { post } = props;
+  const { experienceProduct } = props;
 
-  return <Experience post={post} posts={[{}] as ExperiencePost[]} />;
+  return <div>{experienceProduct}</div>;
 };
 
-PostPreview.layout = Layouts.EXPERIENCE;
-export default PostPreview;
+export default ExperienceProductPreview;
