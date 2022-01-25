@@ -1,4 +1,9 @@
-import { CmsApi } from '@tastiest-io/tastiest-utils';
+import {
+  CmsApi,
+  ExperiencePost,
+  RestaurantContentful,
+  TastiestDish,
+} from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import HomeAwardWinningDishesSection from 'components/home/HomeAwardWinningDishesSection';
 import HomeFeaturedExperiencesSection from 'components/home/HomeFeaturedExperiencesSection';
@@ -6,11 +11,12 @@ import HomeFeaturedRestaurantsSection from 'components/home/HomeFeaturedRestaura
 import HomeInformationSection from 'components/home/HomeInformationSection';
 import SuggestRestaurantPrompBox from 'components/SuggestRestaurantPrompBox';
 import { Layouts } from 'layouts/LayoutHandler';
-import { GetStaticProps, InferGetStaticPropsType } from 'next';
+import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Link from 'next/link';
-import React from 'react';
+import nookies from 'nookies';
+import React, { useEffect, useState } from 'react';
 import { HomeHeroSection } from '../components/home/HomeHeroSection';
 import { METADATA } from '../constants';
 
@@ -21,28 +27,46 @@ function shuffleArray(array) {
     .map(({ value }) => value);
 }
 
-export const getStaticProps: GetStaticProps = async context => {
-  const cms = new CmsApi();
+export const getServerSideProps: GetServerSideProps = async context => {
+  const hasAccess = nookies.get(context).hasAccess;
 
-  // const { dishes = [] } = await cms.getTastiestDishes(20);
-  const { posts = [] } = await cms.getTopPosts(10);
-  const { dishes } = await cms.getTastiestDishes(15);
-  const { restaurants } = await cms.getRestaurants(10);
-
-  const shuffledDishes = shuffleArray(dishes);
+  if (!hasAccess || hasAccess !== 'true') {
+    return {
+      props: {},
+      redirect: {
+        destination: '/invite',
+      },
+    };
+  }
 
   return {
-    props: {
-      posts,
-      restaurants,
-      dishes: shuffledDishes,
-    },
-    revalidate: 360,
+    props: {},
   };
 };
 
-const Index = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const { posts = [], restaurants = [], dishes = [] } = props;
+const Index = () => {
+  const [posts, setPosts] = useState<ExperiencePost[]>([]);
+  const [dishes, setDishes] = useState<TastiestDish[]>([]);
+  const [restaurants, setRestaurants] = useState<RestaurantContentful[]>([]);
+
+  useEffect(() => {
+    const cms = new CmsApi();
+
+    const fetchContent = async () => {
+      const { posts: _posts = [] } = await cms.getTopPosts(10);
+      const { dishes: _dishes } = await cms.getTastiestDishes(15);
+      const { restaurants: _restaurants } = await cms.getRestaurants(10);
+
+      return { posts: _posts, dishes: _dishes, restaurants: _restaurants };
+    };
+
+    fetchContent().then(({ posts, dishes, restaurants }) => {
+      setPosts(posts);
+      setRestaurants(restaurants);
+      setDishes(shuffleArray(dishes));
+    });
+  }, []);
+
   const cards = posts.slice(0, 20);
 
   return (
