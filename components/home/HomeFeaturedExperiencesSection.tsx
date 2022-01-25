@@ -21,8 +21,9 @@ export default function HomeFeaturedExperiencesSection(props: Props) {
         <HorizontalScrollable
           noPadding
           forceButtons
-          verticalBuffer={6}
           spacing={6}
+          verticalBuffer={6}
+          buttonsOffset={-50}
         >
           {cards.map((card, key) => (
             <div key={key} style={{ width: '250px' }}>

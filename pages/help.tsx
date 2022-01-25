@@ -1,10 +1,6 @@
 import { LeftOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Button, Input, Select } from '@tastiest-io/tastiest-ui';
-import {
-  dlog,
-  SupportRequestType,
-  UserDataApi,
-} from '@tastiest-io/tastiest-utils';
+import { SupportRequestType, UserDataApi } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import { useAuth } from 'hooks/auth/useAuth';
@@ -191,9 +187,6 @@ const HelpForm = (props: HelpSubProps) => {
       setMessage('');
       setHasSent(true);
     }
-
-    dlog('help ➡️ success:', success);
-    dlog('help ➡️ errors:', errors);
   };
 
   // prettier-ignore
