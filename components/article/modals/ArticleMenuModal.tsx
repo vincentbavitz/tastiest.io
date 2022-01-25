@@ -17,7 +17,7 @@ export default function ArticleMenuModal({ menu }: Props) {
   const dispatch = useDispatch();
 
   const { isMobile } = useScreenSize();
-  useLockBodyScroll(isOfferMenuOpen);
+  useLockBodyScroll(isMobile && isOfferMenuOpen);
 
   return (
     <Modal
@@ -27,13 +27,13 @@ export default function ArticleMenuModal({ menu }: Props) {
       noPadding
       preload
     >
-      <div className="flex justify-center">
+      <div className="relative flex justify-center h-full">
         <div
           style={{
-            width: '450px',
-            maxWidth: '80vw',
-            maxHeight: '90vh',
-            minHeight: '500px',
+            width: isMobile ? '100vw' : '450px',
+            maxWidth: isMobile ? '100vw' : '80vw',
+            maxHeight: isMobile ? '100%' : '90vh',
+            minHeight: isMobile ? '100%' : '500px',
           }}
           className="relative overflow-auto"
         >
