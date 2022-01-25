@@ -33,29 +33,28 @@ export const getServerSideProps = async (
         )})`
       : '';
 
-  const referringUrl = context.req.headers.referer;
+  const referringUrl = context.req.headers?.referer ?? null;
 
   // Get user ID from cookie.
   const cookieToken = nookies.get(context)?.token;
 
   if (cookieToken) {
     const userDataApi = new UserDataApi(firebaseAdmin);
-    await userDataApi.initFromCookieToken(cookieToken);
+    const { userId } = await userDataApi.initFromCookieToken(cookieToken);
 
-    const { details } = await userDataApi.getUserData();
+    if (userId) {
+      const { details } = await userDataApi.getUserData();
 
-    return {
-      props: {
-        initialSubject,
-        userName: details.firstName,
-        userEmail: details.email,
-        referringUrl,
-      },
-    };
+      return {
+        props: {
+          initialSubject,
+          userName: details.firstName,
+          userEmail: details.email,
+          referringUrl,
+        },
+      };
+    }
   }
-
-  // TEMPORARY SHUFFLING OF INVITES TO LOWERCASE EMAILS
-  // db('preregisters' as FirestoreCollection)
 
   return {
     props: {

@@ -192,6 +192,7 @@ const Invite = () => {
                   size="large"
                   error={errors.joinWaitlistEmail?.message ?? null}
                   onReturn={handleSubmit(submit)}
+                  formatter={value => value.toLowerCase()}
                   {...joinWaitlistEmailProps}
                 />
               </div>
@@ -292,18 +293,18 @@ const GetAccessModal = (props: GetAccessModalProps) => {
     setLoading(true);
 
     const response = await fetch(
-      `${LocalEndpoint.GET_PREREGISTER}?email=${hasAccessEmail}`,
+      `${LocalEndpoint.GET_PREREGISTER}?email=${hasAccessEmail.toLowerCase()}`,
     );
 
     const body = await response.json();
 
-    if (!body.preregister) {
+    if (!body.preregister || !body.preregister?.hasAccess) {
       setLoading(false);
     }
 
     if (
       body.preregister.hasAccess &&
-      body.preregister.email === hasAccessEmail
+      body.preregister.email === hasAccessEmail.toLowerCase()
     ) {
       setHasAccess(true);
       router.push('/');
@@ -359,7 +360,7 @@ const GetAccessModal = (props: GetAccessModalProps) => {
           <TastiestBrand size={10} type="initial-ring" />
         </div>
 
-        <h2 className="text-lg mt-3 pb-4 text-center font-medium">
+        <h2 className="text-lg mt-3 pb-4 text-center font-medium leading-7">
           Please enter the email address that has been given early access to
           Tastiest
         </h2>
@@ -368,8 +369,9 @@ const GetAccessModal = (props: GetAccessModalProps) => {
           ref={hasAccessEmailRef}
           size="large"
           label="Email"
-          error={errors.hasAccessEmail?.message ?? null}
           onReturn={handleSubmit(getAccess)}
+          formatter={value => value.toLowerCase()}
+          error={errors.hasAccessEmail?.message ?? null}
           {...hasAccessEmailProps}
         />
 
