@@ -85,7 +85,7 @@ function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const cms = useMemo(() => new CmsApi(), []);
   const dispatch = useDispatch();
 
-  const { post, posts } = props;
+  const { post } = props;
   const { title, restaurant } = post;
 
   const router = useRouter();
