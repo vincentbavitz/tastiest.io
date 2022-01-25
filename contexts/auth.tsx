@@ -176,11 +176,13 @@ export const AuthErrorMessageMap = {
 type AuthContextShape = {
   user: firebaseClient.User | null;
   isSignedIn: null | boolean;
+  token: string | null;
 };
 
 // Example taken from  https://github1s.com/colinhacks/next-firebase-ssr/blob/HEAD/auth.tsx
 export const AuthContext = createContext<AuthContextShape>({
   user: null,
+  token: null,
   isSignedIn: null,
 });
 
@@ -189,6 +191,8 @@ export function AuthProvider({ children }: any) {
   const [user, setUser] = useState<firebaseClient.User | null | undefined>(
     undefined,
   );
+
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -199,18 +203,21 @@ export function AuthProvider({ children }: any) {
       dlog(`Token changed!`);
       if (!user) {
         dlog(`No token found...`);
-        setUser(null);
+
         nookies.destroy(null, 'token');
         nookies.set(null, 'token', '', { path: '/' });
+        setUser(null);
+        setToken(null);
         return;
       }
 
-      const token = await user.getIdToken();
-      dlog(`Updating token...`, token);
+      const _token = await user.getIdToken();
+      dlog(`Updating token...`, _token);
 
-      setUser(user);
       nookies.destroy(null, 'token');
-      nookies.set(null, 'token', token, { path: '/' });
+      nookies.set(null, 'token', _token, { path: '/' });
+      setUser(user);
+      setToken(_token);
     });
   }, []);
 
@@ -233,7 +240,7 @@ export function AuthProvider({ children }: any) {
   const isSignedIn = user === undefined ? null : Boolean(user?.uid);
 
   return (
-    <AuthContext.Provider value={{ user, isSignedIn }}>
+    <AuthContext.Provider value={{ user, token, isSignedIn }}>
       {children}
     </AuthContext.Provider>
   );

@@ -42,7 +42,7 @@ const Invite = () => {
     setLoading(true);
 
     try {
-      await submitPreregister(joinWaitlistEmail);
+      await submitPreregister(joinWaitlistEmail.toLowerCase());
     } catch {
       setLoading(false);
     }

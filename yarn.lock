@@ -1220,6 +1220,11 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
+"@juggle/resize-observer@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@juggle/resize-observer/-/resize-observer-3.3.1.tgz#b50a781709c81e10701004214340f25475a171a0"
+  integrity sha512-zMM9Ds+SawiUkakS7y94Ymqx+S0ORzpG3frZirN3l+UlXUmSUR7hF4wxCVqW+ei94JzV5kt0uXBcoOEAuiydrw==
+
 "@mapbox/geojson-rewind@^0.5.0":
   version "0.5.1"
   resolved "https://registry.npmjs.org/@mapbox/geojson-rewind/-/geojson-rewind-0.5.1.tgz"
@@ -1985,10 +1990,10 @@
   resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.28.0/f0df6da3cc0ac9aa8bf955aae481f263cf2fc22458b1c1e1fb0ead12856ba1ca#dacf6710ea830ff82f1547fc3e02c57e16299e8f"
   integrity sha512-b5oF17xayTZmTsAJDkdRuMXB6RqSaNs0iPKoBymOstOp2xSTIWu/hzN0nlEcGkwu8you86NtlWVYhi0ihFi59w==
 
-"@tastiest-io/tastiest-ui@^0.78.0":
-  version "0.78.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-ui/0.78.0/00467044c482835575e2717d816d3b32463c7e269e14f5f50c9aaac4de8ddd42#fbf44550eedef5b90433eb2af2ad642a4c948b45"
-  integrity sha512-IM2ksmZyGSqg52oNjpGozAHwLPCD5HHY0wJ8dUCQtWS/eJ8Yrdox2CKqvC6/ukr1azi60fbh9qB+kePaMged3g==
+"@tastiest-io/tastiest-ui@^0.80.0":
+  version "0.80.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-ui/0.80.0/2de1b7ef81c4e91ef450cffc9f2282e9d664f8da33f1d7951acb6498fe321e7f#ab6384672bae818ec1e2bfb4f17cfbdfad87a16d"
+  integrity sha512-UGYfUNITTOqNKrPUL/9ir8khQP0JY4bGgc3FXDy1U81leMN9/k4PU5sTodrYe2Y0ps9JEq1e9e+iv1tw9Bd8XA==
   dependencies:
     "@headlessui/react" "^1.4.1"
     "@nivo/core" "^0.74.0"
@@ -1999,10 +2004,10 @@
     react-table "^7.7.0"
     uuid "^8.3.2"
 
-"@tastiest-io/tastiest-utils@^1.54.0":
-  version "1.54.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.54.0/b0c9fcb4af475889a15ddd780376396fc772ecf7ea47ffbefd9e2c7b0e59ae2c#fdfecc38a798bc4dad02cc5ce5fa49e0327a71f5"
-  integrity sha512-5tFcDW/hOUNeh/5647mur7qz0aTB3IkrYvbXfzzXXTPEF6tQXN+dAWxauBD2QDnpWD1vyWc+4gElsRz4wNSRAQ==
+"@tastiest-io/tastiest-utils@^1.55.0":
+  version "1.55.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.55.0/01cc0c3138dca55803e8476f2346999cf56cdc2705b302d63132397e6496078a#f504f1907e9c37ecba4b9903da155e1002554a28"
+  integrity sha512-MEiUnyuDMlBBNawE0r2U82AKJPrEI06AY5BxztUlyekGRK/+87xMf027A7L7b+BuC8IXz2S8aIGZ0x9GbOC9QA==
   dependencies:
     "@contentful/rich-text-types" "^14.1.2"
     "@shopify/shopify-api" "^1.4.0"
@@ -2328,7 +2333,7 @@
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.3.tgz"
   integrity sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
 
-"@types/prop-types@^15.7.1":
+"@types/prop-types@^15.7.4":
   version "15.7.4"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.4.tgz#fcf7205c25dff795ee79af1e30da2c9790808f11"
   integrity sha512-rZ5drC/jWjrArrS8BR6SIr4cWpW09RNTYt9AMZo3Jwwif+iacXAqgVjm0B0Bv/S1jhDXKHqRVNCbACkJ89RAnQ==
@@ -5524,11 +5529,6 @@ electron-to-chromium@^1.3.867:
   version "1.3.872"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.872.tgz#2311a82f344d828bab6904818adc4afb57b35369"
   integrity sha512-qG96atLFY0agKyEETiBFNhpRLSXGSXOBuhXWpbkYqrLKKASpRyRBUtfkn0ZjIf/yXfA7FA4nScVOMpXSHFlUCQ==
-
-element-resize-event@^3.0.6:
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/element-resize-event/-/element-resize-event-3.0.6.tgz#3a18efd4879ad615e979fd8bbf173b014987eb9a"
-  integrity sha512-sSeXY9rNDp86bJODW68pxLcy3A5FrPZfIgOrJHzqgYzX513Zq6/ytdBigp7KeJEpZZopBBSiO1cVuiRkZpNxLw==
 
 elliptic@^6.0.0, elliptic@^6.5.2:
   version "6.5.3"
@@ -10532,7 +10532,7 @@ react-hook-form@^7.3.2:
   resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.3.2.tgz"
   integrity sha512-dRxi0U/3bNpxldDpkr1SdQkghU2Rap6LXpzato17xCeBJuQO5BMHk7rTU5OrErL5StcoOtx2+/EFWQXKnnYTag==
 
-react-is@17.0.2:
+react-is@17.0.2, react-is@^17.0.2:
   version "17.0.2"
   resolved "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
@@ -11110,37 +11110,38 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rsuite-table@^5.0.3:
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/rsuite-table/-/rsuite-table-5.0.3.tgz#9bcd4a6cb18f2157b905f7b30ecce17a09e024df"
-  integrity sha512-91bufUgj8nZeJ6idaxPv1qM9oWr/2zWzoH2WBiOeAPJvvOur38be59WKqz25jG9DG+iJ1tnDqDDPm2KWLXj0sA==
+rsuite-table@^5.3.2:
+  version "5.3.2"
+  resolved "https://registry.yarnpkg.com/rsuite-table/-/rsuite-table-5.3.2.tgz#648813700d1c487e54bf4490bed143affc0b2de4"
+  integrity sha512-4ZAxHLdKt9UojE7UqDzUxbzPBwYNMRsrwwJSmrwq18Afqk83HX/7UFCXPhxLX3wu49SVX6pnkAE9I5K1EB2/ug==
   dependencies:
     "@babel/runtime" "^7.12.5"
+    "@juggle/resize-observer" "^3.3.1"
     "@rsuite/icons" "^1.0.0"
     classnames "^2.2.5"
     dom-lib "^3.0.0"
-    element-resize-event "^3.0.6"
     lodash "^4.17.21"
+    react-is "^17.0.2"
 
-rsuite@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/rsuite/-/rsuite-5.2.0.tgz#ba23c9ebc94cf20f222af77f82d58d030b5a3544"
-  integrity sha512-0WUMjEsx3i5y4wCwNtcNDxlsfB3hYR5ZLyPoBijk40L1tB60uUMCO+HOjSlayDU0Cp51NUN1p3YkkLORAuhmoQ==
+rsuite@^5.5.1:
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/rsuite/-/rsuite-5.5.1.tgz#01ad59a21f981a642c81681fa50b9b749641e026"
+  integrity sha512-Xx8tjUCk4fC13IPs64nKVWyYV6mS1X9rybvpDxBiS7BSvaB4IbNrbsom+HmDqT9iFMvjyco6LWtsnVAQs8TTiw==
   dependencies:
     "@babel/runtime" "^7.8.4"
+    "@juggle/resize-observer" "^3.3.1"
     "@rsuite/icons" "^1.0.2"
     "@types/chai" "^4.2.18"
     "@types/lodash" "^4.14.134"
-    "@types/prop-types" "^15.7.1"
+    "@types/prop-types" "^15.7.4"
     "@types/react-virtualized" "^9.21.11"
     classnames "^2.3.1"
     date-fns "^2.13.0"
     dom-lib "^3.0.0"
-    element-resize-event "^3.0.6"
     lodash "^4.17.11"
     prop-types "^15.7.2"
     react-virtualized "^9.22.3"
-    rsuite-table "^5.0.3"
+    rsuite-table "^5.3.2"
     schema-typed "^2.0.2"
 
 rsvp@^4.8.4:

@@ -1,23 +1,29 @@
-import { LeftOutlined } from '@ant-design/icons';
+import { LeftOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Button, Input, Select } from '@tastiest-io/tastiest-ui';
-import { dlog, SupportRequestType } from '@tastiest-io/tastiest-utils';
+import {
+  dlog,
+  SupportRequestType,
+  UserDataApi,
+} from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useSupport } from 'hooks/useSupport';
-import { useUserData } from 'hooks/useUserData';
-import { InferGetServerSidePropsType } from 'next';
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import nookies from 'nookies';
 import React, { useState } from 'react';
+import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { generateTitle } from 'utils/metadata';
 import { UI } from '../constants';
 
-export const getServerSideProps = async context => {
-  dlog('help ➡️ context.query:', context.query);
-
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
   // Setting a default subject from query parameters
   const initialSubject =
     context?.query?.type === SupportRequestType.ORDER &&
@@ -27,9 +33,36 @@ export const getServerSideProps = async context => {
         )})`
       : '';
 
+  const referringUrl = context.req.headers.referer;
+
+  // Get user ID from cookie.
+  const cookieToken = nookies.get(context)?.token;
+
+  if (cookieToken) {
+    const userDataApi = new UserDataApi(firebaseAdmin);
+    await userDataApi.initFromCookieToken(cookieToken);
+
+    const { details } = await userDataApi.getUserData();
+
+    return {
+      props: {
+        initialSubject,
+        userName: details.firstName,
+        userEmail: details.email,
+        referringUrl,
+      },
+    };
+  }
+
+  // TEMPORARY SHUFFLING OF INVITES TO LOWERCASE EMAILS
+  // db('preregisters' as FirestoreCollection)
+
   return {
     props: {
       initialSubject,
+      userName: null,
+      userEmail: null,
+      referringUrl,
     },
   };
 };
@@ -47,12 +80,11 @@ const helpOptions: IHelpOption[] = [
   { key: SupportRequestType.OTHER, label: 'Something else' },
 ];
 
-const Help = ({
-  initialSubject,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Help = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>,
+) => {
+  const { userName, userEmail, initialSubject, referringUrl } = props;
   const [sent, setHasSent] = useState(false);
-
-  dlog('help ➡️ initialSubject:', initialSubject);
 
   return (
     <>
@@ -84,38 +116,49 @@ const Help = ({
       />
 
       {sent ? (
-        <HelpSuccess setHasSent={setHasSent} />
+        <HelpSuccess
+          userName={userName}
+          userEmail={userEmail}
+          setHasSent={setHasSent}
+          referringUrl={referringUrl}
+        />
       ) : (
-        <HelpForm initialSubject={initialSubject} setHasSent={setHasSent} />
+        <HelpForm
+          userName={userName}
+          userEmail={userEmail}
+          initialSubject={initialSubject}
+          setHasSent={setHasSent}
+        />
       )}
     </>
   );
 };
 
 interface HelpSubProps {
+  userName: string | null;
+  userEmail: string | null;
   setHasSent: (value: boolean) => void;
   initialSubject?: string;
+  referringUrl?: string;
 }
 
-const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
+const HelpForm = (props: HelpSubProps) => {
+  const { userName, userEmail, setHasSent, initialSubject } = props;
+
   const router = useRouter();
-  const { isMobile, isTablet } = useScreenSize();
+  const { isMobile, isTablet, isDesktop } = useScreenSize();
 
   // Update user data
-  const { user } = useAuth();
-  const { userData, setUserData } = useUserData(user);
+  const { user, isSignedIn } = useAuth();
 
-  const _email = userData?.details?.email;
-  const _name = [userData?.details?.firstName, userData?.details?.lastName]
-    .join(' ')
-    .trim();
-
-  const [name, setName] = useState<string>(_name ?? '');
-  const [email, setEmail] = useState<string>(_email ?? '');
+  const [name, setName] = useState<string>(userName ?? '');
+  const [email, setEmail] = useState<string>(userEmail ?? '');
 
   const initialSupportType =
     SupportRequestType[String(router.query?.type)] ??
     SupportRequestType.GENERAL;
+
+  const [submitting, setSubmitting] = useState(false);
 
   const [subject, setSubject] = useState(initialSubject);
   const [message, setMessage] = useState('');
@@ -131,6 +174,8 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
   };
 
   const submit = async () => {
+    setSubmitting(true);
+
     const { success, errors } = await makeSupportRequest(
       name,
       email,
@@ -139,6 +184,8 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
       message,
       user?.uid,
     );
+
+    setSubmitting(false);
 
     if (success) {
       setSubject('');
@@ -171,147 +218,163 @@ const HelpForm = ({ setHasSent, initialSubject }: HelpSubProps) => {
         </div>
       </Contained>
 
-      <Contained maxWidth={UI.FORM_WIDTH_PX}>
-        <div className="flex flex-col mb-20 space-y-8 md:space-y-4">
-          {/* Only request name if the user isn't logged in or hasn't given it yet */}
-          {!_name?.length && (
-            <Input
-              label="Name"
-              value={name}
-              onValueChange={setName}
-              maxLength={120}
-            />
-          )}
-
-          {!_email?.length && (
-            <Input
-              label="Email"
-              value={email}
-              onValueChange={setEmail}
-              maxLength={120}
-            />
-          )}
-
-          <div className="flex flex-col w-full space-y-2 sm:space-y-0 sm:flex-row sm:items-end sm:space-x-4">
-            <div className="w-full sm:w-1/2 md:w-4/12">
-              <Select onSelect={handleOnSelect}>
-                {helpOptions.map(option => (
-                  <Select.Option
-                    key={option.key}
-                    id={option.key}
-                    value={option.label}
-                  />
-                ))}
-              </Select>
-            </div>
-            <div className="flex-grow">
-              {supportType === SupportRequestType.GENERAL && (
-                <Input
-                  label="What's your request?"
-                  value={subject}
-                  onValueChange={setSubject}
-                  maxLength={80}
-                />
-              )}
-
-              {supportType === SupportRequestType.ORDER && (
-                <Input
-                  label="Order #"
-                  value={subject}
-                  onValueChange={setSubject}
-                  maxLength={80}
-                />
-              )}
-
-              {supportType === SupportRequestType.FEATURE_REQUEST && (
-                <Input
-                  label="What would you like to see?"
-                  value={subject}
-                  onValueChange={setSubject}
-                  maxLength={80}
-                />
-              )}
-
-              {supportType === SupportRequestType.BUG && (
-                <Input
-                  label="What was the bug?"
-                  value={subject}
-                  onValueChange={setSubject}
-                  maxLength={80}
-                />
-              )}
-
-              {supportType === SupportRequestType.OTHER && (
-                <Input
-                  label="Please explain your issue"
-                  value={subject}
-                  onValueChange={setSubject}
-                />
-              )}
-            </div>
-          </div>
-
-          <textarea
-            className="h-32 px-4 py-2 duration-300 border-2 rounded-md outline-none border-secondary hover:border-primary"
-            placeholder={textareaPlaceholder}
-            maxLength={500}
-            value={message}
-            onChange={e => setMessage(e.target.value)}
-          />
-
-          <div className="flex items-center space-x-4">
-            <Button
-              disabled={!subject?.length || !message?.length}
-              wide={isMobile || isTablet}
-              onClick={submit}
-            >
-              Send
-            </Button>
-          </div>
+      {isSignedIn === null ? (
+        <div className="flex items-center justify-center h-64 pb-24 w-full">
+          <LoadingOutlined className="text-6xl text-primary" />
         </div>
-      </Contained>
+      ) : (
+        <Contained maxWidth={UI.FORM_WIDTH_PX}>
+          <div className="flex flex-col mb-20 space-y-4 md:space-y-4">
+            {/* Only request name if the user isn't logged in or hasn't given it yet */}
+            {!userName?.length && (
+              <Input
+                label="Name"
+                value={name}
+                onValueChange={setName}
+                maxLength={120}
+              />
+            )}
+
+            {!userEmail?.length && (
+              <Input
+                label="Email"
+                value={email}
+                onValueChange={setEmail}
+                maxLength={120}
+              />
+            )}
+
+            <div
+              className={clsx(
+                'flex',
+                isDesktop
+                  ? 'items-center space-x-4'
+                  : 'flex-col items-end space-y-4',
+              )}
+            >
+              <div className="w-64">
+                <Select initialSelected={supportType} onSelect={handleOnSelect}>
+                  {helpOptions.map(option => (
+                    <Select.Option
+                      id={option.key}
+                      key={option.key}
+                      value={option.label}
+                    />
+                  ))}
+                </Select>
+              </div>
+
+              <div className="w-full">
+                {supportType === SupportRequestType.GENERAL && (
+                  <Input
+                    label="What's your request?"
+                    value={subject}
+                    onValueChange={setSubject}
+                    maxLength={80}
+                  />
+                )}
+
+                {supportType === SupportRequestType.ORDER && (
+                  <Input
+                    label="Order #"
+                    value={subject}
+                    onValueChange={setSubject}
+                    maxLength={80}
+                  />
+                )}
+
+                {supportType === SupportRequestType.FEATURE_REQUEST && (
+                  <Input
+                    label="What would you like to see?"
+                    value={subject}
+                    onValueChange={setSubject}
+                    maxLength={80}
+                  />
+                )}
+
+                {supportType === SupportRequestType.BUG && (
+                  <Input
+                    label="What was the bug?"
+                    value={subject}
+                    onValueChange={setSubject}
+                    maxLength={80}
+                  />
+                )}
+
+                {supportType === SupportRequestType.OTHER && (
+                  <Input
+                    label="Please explain your issue"
+                    value={subject}
+                    onValueChange={setSubject}
+                  />
+                )}
+              </div>
+            </div>
+
+            <textarea
+              className="h-32 px-4 py-2 duration-300 border-2 rounded-md outline-none border-secondary hover:border-primary"
+              placeholder={textareaPlaceholder}
+              maxLength={500}
+              value={message}
+              onChange={e => setMessage(e.target.value)}
+            />
+
+            <div className="flex items-center space-x-4">
+              <Button
+                size={isDesktop ? 'medium' : 'large'}
+                wide={isMobile || isTablet}
+                loading={submitting}
+                disabled={submitting || !subject?.length || !message?.length}
+                onClick={submit}
+              >
+                Send
+              </Button>
+            </div>
+          </div>
+        </Contained>
+      )}
     </div>
   );
 };
 
-const HelpSuccess = ({ setHasSent }: HelpSubProps) => {
-  const { isMobile, isTablet, isDesktop } = useScreenSize();
-
+const HelpSuccess = ({
+  setHasSent,
+  userName,
+  referringUrl = '/',
+}: HelpSubProps) => {
   return (
-    <div className="w-full pt-6 pb-10 sm:pb-24 sm:pt-16">
+    <div className="w-full py-32">
       <Contained maxWidth={UI.FORM_WIDTH_PX}>
-        <div className="relative flex flex-col-reverse w-full sm:flex-row sm:justify-end">
-          <div className="flex flex-col items-center justify-center w-full mb-10 space-y-4 sm:mb-10 sm:absolute sm:inset-0 sm:w-7/12 md:w-5/12">
-            <h2 className="text-3xl text-center font-primary text-primary">
-              Thank you for
-              <br /> your request...
-              <br />
-              we'll get back
-              <br /> to you shortly.
-            </h2>
+        <h2 className="text-3xl text-center font-primary text-primary leading-tight">
+          Thanks for your request{userName ? `, ${userName}` : null}.
+          <br />
+        </h2>
 
-            <div>
-              <div className="flex items-center space-x-4">
-                <Link href="/">
-                  <a>
-                    <Button
-                      color="primary"
-                      onClick={() => null}
-                      prefix={
-                        <LeftOutlined className="text-white fill-current" />
-                      }
-                    >
-                      Back
-                    </Button>
-                  </a>
-                </Link>
+        <h3 className="text-lg text-center mt-2">
+          We'll get back to you shortly.
+        </h3>
 
-                <Button color="secondary" onClick={() => setHasSent(false)}>
-                  New Request
-                </Button>
-              </div>
-            </div>
-          </div>
+        <div className="flex justify-center space-x-4 pt-10">
+          <Link href={referringUrl}>
+            <a className="no-underline">
+              <Button
+                size="large"
+                color="light"
+                onClick={() => null}
+                prefix={<LeftOutlined className="" />}
+              >
+                Back
+              </Button>
+            </a>
+          </Link>
+
+          <Button
+            size="large"
+            color="secondary"
+            onClick={() => setHasSent(false)}
+          >
+            New Request
+          </Button>
         </div>
       </Contained>
 

@@ -1,27 +1,37 @@
 import {
+  CalendarOutlined,
   EnvironmentOutlined,
   QuestionOutlined,
   RightOutlined,
 } from '@ant-design/icons';
-import { Button } from '@tastiest-io/tastiest-ui';
+import { Button, Modal } from '@tastiest-io/tastiest-ui';
 import {
   Booking,
   dlog,
   FirestoreCollection,
   formatCurrency,
+  Horus,
   Order,
   SupportRequestType,
+  TIME,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
+import ExperienceOrderPanelInner, {
+  useOrderPanel,
+} from 'components/article/widgets/ExperienceOrderPanelInner';
 import { Contained } from 'components/Contained';
+import { AuthContext } from 'contexts/auth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { DateTime } from 'luxon';
 import { InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import nookies from 'nookies';
-import React, { FC, useMemo } from 'react';
+import React, { FC, useContext, useMemo, useState } from 'react';
+import { useLockBodyScroll } from 'react-use';
 import { db, firebaseAdmin } from 'utils/firebaseAdmin';
+import { getGoogleMapLink } from 'utils/location';
 import { generateStaticURL } from 'utils/routing';
 
 const RESTULTS_PER_PAGE = 5;
@@ -139,6 +149,10 @@ interface BookingRowProps {
 }
 
 const BookingRow: FC<BookingRowProps> = ({ order }) => {
+  const { isMobile } = useScreenSize();
+
+  const [showModifyModal, setShowModifyModal] = useState(false);
+
   const restaurantPageUrl = useMemo(
     () =>
       generateStaticURL({
@@ -150,79 +164,392 @@ const BookingRow: FC<BookingRowProps> = ({ order }) => {
   );
 
   return (
-    <div className="bg-white filter drop-shadow-md pt-4 rounded-lg">
+    <div className="relative bg-white filter drop-shadow-md pt-4 rounded-lg">
+      {isMobile ? (
+        <div className="relative h-40 mx-4">
+          <Image
+            src={order.deal.image.url}
+            layout="fill"
+            objectFit="cover"
+            className="rounded"
+          />
+        </div>
+      ) : null}
+
       <div className="flex justify-between px-6 pb-4">
-        <div className="flex space-x-6">
-          <div className="w-20 h-20">
-            <Image
-              src={order.deal.image.url}
-              width="100"
-              height="100"
-              className="rounded"
-            />
-          </div>
+        <div className="flex space-x-4 w-full">
+          {!isMobile ? (
+            <div style={{ minWidth: '6rem' }} className="relative h-24">
+              <Image
+                src={order.deal.image.url}
+                layout="fill"
+                objectFit="cover"
+                className="rounded"
+              />
+            </div>
+          ) : null}
 
-          <div className="flex flex-col justify-between">
-            <h4 className="font-medium">{order.deal.name}</h4>
-
-            <p className="text-sm opacity-75">
-              Booked for{' '}
-              {DateTime.fromMillis(order.bookedForTimestamp).toFormat(
-                'hh:mm a, DDD',
-              )}{' '}
-              —{' '}
+          <div
+            className={clsx(
+              'flex flex-col justify-between flex-grow',
+              isMobile ? 'space-y-2' : 'space-y-2',
+            )}
+          >
+            <div
+              className={clsx(
+                'font-medium leading-5 w-full',
+                isMobile ? 'mt-4 pb-3' : 'pb-1',
+              )}
+            >
               <Link href={restaurantPageUrl}>
-                <a className="no-underline font-medium text-secondary">
-                  {order.deal.restaurant.name}
+                <a
+                  className={clsx(
+                    'no-underline font-medium text-primary text-base',
+                  )}
+                >
+                  {order.deal.name}
                 </a>
               </Link>
-            </p>
 
-            <div className="flex items-center text-sm">
-              <span>Confirmation Code:</span>
-              <span className="bg-green-300 ml-2 rounded bg-opacity-50 px-2 font-medium">
-                {order.booking.confirmationCode}
-              </span>
+              <div
+                className={clsx('flex justify-between', isMobile ? 'pt-2' : '')}
+              >
+                <Link href={restaurantPageUrl}>
+                  <a className="no-underline font-medium text-secondary">
+                    {order.deal.restaurant.name}
+                  </a>
+                </Link>
+
+                <div className="text-base font-light text-gray-800">
+                  £{formatCurrency(order.price.final)}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-2 text-sm opacity-75">
+              <CalendarOutlined className="text-secondary text-base" />
+
+              <p className="leading-none">
+                {DateTime.fromMillis(order.bookedForTimestamp).toFormat(
+                  'hh:mm a, DDD',
+                )}
+              </p>
+
+              {!(order.booking.hasArrived || order.booking.hasCancelled) ? (
+                <>
+                  <span className="text-gray-400">|</span>
+
+                  <span
+                    onClick={() => setShowModifyModal(true)}
+                    className="font-medium text-secondary"
+                  >
+                    Modify
+                  </span>
+                </>
+              ) : null}
             </div>
           </div>
         </div>
+      </div>
 
-        <div>
-          <span className="font-medium">
-            £{formatCurrency(order.price.final)}
+      {/* Confirmation code and heads rows */}
+      <div className="w-full px-6 pb-2">
+        <div className="flex items-center justify-between text-sm border-gray-100 border-t border-b h-12">
+          <div className="font-medium pb-1">Confirmation Code</div>
+          <span className="bg-green-300 rounded bg-opacity-50 px-2 text-base tracking-widest font-medium">
+            {order.booking.confirmationCode}
           </span>
+        </div>
+
+        <div className="flex items-center justify-between text-sm h-10">
+          <div className="font-medium pb-1">Heads</div>
+          <span className="text-base">{order.booking.heads}</span>
         </div>
       </div>
 
       <div className="flex flex-col">
-        <Link href={restaurantPageUrl}>
-          <a className="no-underline">
-            <div className="flex items-center justify-between py-3 px-6 border-t text-primary duration-300 hover:bg-secondary hover:text-white">
-              <div className="flex items-center space-x-2">
-                <EnvironmentOutlined className="text-lg" />{' '}
-                <span>View restaurant</span>
-              </div>
+        <BookingOptionRow
+          label="Get directions"
+          icon={EnvironmentOutlined}
+          href={getGoogleMapLink(
+            order.deal.restaurant.location.lat,
+            order.deal.restaurant.location.lon,
+          )}
+          newTab
+        />
 
-              <RightOutlined />
-            </div>
-          </a>
-        </Link>
-
-        <Link
+        <BookingOptionRow
+          label="Get help"
+          icon={QuestionOutlined}
           href={`/help?type=${SupportRequestType.ORDER}&userFacingOrderId=${order.userFacingOrderId}`}
-        >
-          <a className="no-underline">
-            <div className="flex items-center justify-between py-3 px-6 border-t text-primary duration-300 hover:bg-secondary hover:text-white rounded-b-lg">
-              <div className="flex items-center space-x-2">
-                <QuestionOutlined className="text-lg" /> <span>Get help</span>
+          isLast
+        />
+      </div>
+
+      <ModifyBookingModal
+        order={order}
+        show={showModifyModal}
+        close={() => setShowModifyModal(false)}
+      />
+    </div>
+  );
+};
+
+interface BookingOptionRowProps {
+  label: string;
+  icon: React.ForwardRefExoticComponent<any>;
+  href?: string;
+  newTab?: boolean;
+  onClick?: () => void;
+
+  // Is last in the row.
+  isLast?: boolean;
+}
+
+const BookingOptionRow = (props: BookingOptionRowProps) => {
+  return props.href ? (
+    <Link href={props.href}>
+      <a target={props.newTab ? '_blank' : undefined} className="no-underline">
+        <BookingOptionRowInner {...props} />
+      </a>
+    </Link>
+  ) : (
+    <BookingOptionRowInner {...props} />
+  );
+};
+
+const BookingOptionRowInner = (props: BookingOptionRowProps) => {
+  const { label, icon: Icon, isLast, onClick } = props;
+
+  return (
+    <div
+      onClick={onClick}
+      className={clsx(
+        'flex items-center justify-between py-3 px-6 border-t text-primary duration-300 hover:bg-secondary hover:text-white',
+        isLast && 'rounded-b-lg',
+      )}
+    >
+      <div className="flex items-center space-x-2">
+        <Icon className="text-lg" /> <span>{label}</span>
+      </div>
+
+      <RightOutlined />
+    </div>
+  );
+};
+
+interface ModifyBookingModalProps {
+  order: MappedOrder;
+  show: boolean;
+  close: () => void;
+}
+
+const ModifyBookingModal = (props: ModifyBookingModalProps) => {
+  const { order, show, close } = props;
+  const { token } = useContext(AuthContext);
+
+  const { isMobile } = useScreenSize();
+  useLockBodyScroll(isMobile && show);
+
+  const {
+    slots,
+    // heads,
+    // setHeads,
+    selectedDay,
+    selectedTime,
+    setSelectedDay,
+    setSelectedTime,
+  } = useOrderPanel(order.deal, order.fromSlug);
+
+  const [submitting, setSubmitting] = useState(false);
+
+  const selectedDateTime = useMemo<DateTime | null>(() => {
+    if (!selectedTime || !selectedDay) {
+      return null;
+    }
+
+    return DateTime.fromMillis(selectedDay.timestamp)
+      .setZone(TIME.LOCALES.LONDON)
+      .set({
+        minute: selectedTime,
+      });
+  }, [selectedTime, selectedDay]);
+
+  const setNewBookingDate = async () => {
+    if (!token || !selectedDateTime) {
+      return;
+    }
+
+    setSubmitting(true);
+
+    const horus = new Horus(token);
+    const { data, error } = await horus.post('/bookings/update', {
+      bookingId: order.id,
+      bookedForTimestamp: selectedDateTime.toMillis(),
+    });
+
+    setSubmitting(false);
+
+    if (error) {
+      return;
+    }
+
+    close();
+  };
+
+  return (
+    <Modal
+      title="Update booking date"
+      fullscreen={isMobile}
+      close={close}
+      show={show}
+    >
+      <div
+        className={clsx(isMobile ? 'flex flex-col h-full justify-between' : '')}
+      >
+        <div>
+          <div
+            style={{ minWidth: isMobile ? 'unset' : '400px' }}
+            className={clsx(
+              'text-base border-b pb-2 mb-2',
+              isMobile ? 'mt-4' : '',
+            )}
+          >
+            <div
+              className={clsx(
+                'flex text-base',
+                isMobile
+                  ? 'flex-col mb-3 border-b'
+                  : 'items-center justify-between space-x-2',
+              )}
+            >
+              <h4
+                className={clsx(
+                  'font-medium text-primary text-lg',
+                  isMobile ? 'leading-5' : '',
+                )}
+              >
+                Restaurant
+              </h4>
+              <span>{order.deal.restaurant.name}</span>
+            </div>
+
+            <div
+              className={clsx(
+                'flex text-base',
+                isMobile
+                  ? 'flex-col mb-3 border-b'
+                  : 'items-center justify-between space-x-2',
+              )}
+            >
+              <h4
+                className={clsx(
+                  'font-medium text-primary text-lg',
+                  isMobile ? 'leading-5' : '',
+                )}
+              >
+                Experience
+              </h4>
+
+              <span>{order.deal.name}</span>
+            </div>
+
+            <div
+              className={clsx(
+                'flex text-base',
+                isMobile
+                  ? 'flex-col mb-3'
+                  : 'items-center justify-between space-x-2',
+              )}
+            >
+              <h4
+                className={clsx(
+                  'font-medium text-primary text-lg',
+                  isMobile ? 'leading-5' : '',
+                )}
+              >
+                Current Booking Date
+              </h4>
+
+              <span>
+                {DateTime.fromMillis(order.booking.bookedForTimestamp).toFormat(
+                  'h:mm a dd LLL yyyy',
+                )}
+              </span>
+            </div>
+          </div>
+          <div className="border-b pb-6">
+            <p className="pt-4 mb-2 text-base">
+              Please enter a new time and date for your booking.
+            </p>
+
+            <div className="flex flex-col space-y-4 mt-4">
+              <div className={clsx(isMobile ? '-mx-6' : '-mx-2')}>
+                <ExperienceOrderPanelInner.DaySelector
+                  slots={slots}
+                  selectedDay={selectedDay}
+                  setSelectedDay={setSelectedDay}
+                  selectItemSize={'medium'}
+                  chevronSize={6}
+                />
               </div>
 
-              <RightOutlined />
+              <div className={clsx(isMobile ? '-mx-5' : '-mx-1')}>
+                <ExperienceOrderPanelInner.TimeSelector
+                  selectedDay={selectedDay}
+                  selectedTime={selectedTime}
+                  setSelectedTime={setSelectedTime}
+                  selectItemSize={'medium'}
+                  chevronSize={6}
+                />
+              </div>
             </div>
-          </a>
-        </Link>
+          </div>
+          <div
+            style={{ minWidth: '400px' }}
+            className={clsx(
+              'flex items-center justify-between space-x-2 text-base mt-4',
+              selectedDateTime ? 'opacity-100' : 'opacity-50',
+            )}
+          >
+            <h4 className="">
+              New booking date set for <br />
+              {selectedDay && selectedTime ? (
+                <span className="font-medium">
+                  {selectedDateTime.toFormat('h:mm a - DDDD')}
+                </span>
+              ) : (
+                <div className="w-64 h-7 bg-gray-100"></div>
+              )}
+            </h4>
+          </div>
+        </div>
+
+        <div
+          className={clsx(
+            'flex justify-end space-x-2 mt-6',
+            isMobile &&
+              'bg-gray-100 py-4 px-4 absolute -bottom-6 -left-6 -right-6',
+          )}
+        >
+          <Button
+            loading={submitting}
+            disabled={!selectedDay || !selectedTime}
+            size={isMobile ? 'large' : 'medium'}
+            onClick={setNewBookingDate}
+          >
+            Confirm
+          </Button>
+          <Button
+            color="light"
+            size={isMobile ? 'large' : 'medium'}
+            onClick={close}
+          >
+            Close
+          </Button>
+        </div>
       </div>
-    </div>
+    </Modal>
   );
 };
 

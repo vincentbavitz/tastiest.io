@@ -30,7 +30,7 @@ import { LocalEndpoint } from 'types/api';
 import { generateLocalEndpoint, generateStaticURL } from 'utils/routing';
 import { ExperienceOrderPanelProps } from './ExperienceOrderPanelDesktop';
 
-const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
+export const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
   const { user } = useAuth();
   const router = useRouter();
 
@@ -111,14 +111,20 @@ const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
       error,
     } = await execute(orderRequest);
 
+    dlog('ExperienceOrderPanelInner ➡️ token:', token);
+    dlog('ExperienceOrderPanelInner ➡️ error:', error);
+
     if (token) {
       router.push(`/checkout/?token=${token}`);
       return;
     }
   };
 
+  // Only allow dates less than Feb 16 for Alpha. (47 ordinal date)
+  const filteredSlots = slots?.filter(slot => slot?.ordinal < 47) ?? [];
+
   return {
-    slots,
+    slots: filteredSlots,
     heads,
     setHeads,
     selectedDay,
@@ -137,11 +143,11 @@ interface Props extends ExperienceOrderPanelProps {
   layout: 'overlay' | 'sidebar';
 }
 
-export default function ExperienceOrderPanelInner(props: Props) {
+function ExperienceOrderPanelInner(props: Props) {
   const { deal, posts, slug, layout } = props;
 
   const {
-    slots: rawSlots,
+    slots,
     heads,
     setHeads,
     selectedDay,
@@ -152,11 +158,6 @@ export default function ExperienceOrderPanelInner(props: Props) {
     toCheckout,
     loading,
   } = useOrderPanel(deal, slug);
-
-  dlog('ExperienceOrderPanelInner ➡️ slots:', rawSlots[0]?.ordinal);
-
-  // Only allow dates less than Feb 16 for Alpha. (47 ordinal date)
-  const slots = rawSlots?.filter(slot => slot?.ordinal < 47) ?? [];
 
   const sizes = useMemo(() => {
     const chevronSize = (layout === 'overlay' ? 8 : 6) as 6 | 8;
@@ -246,83 +247,23 @@ export default function ExperienceOrderPanelInner(props: Props) {
         </div>
 
         <div className="-mx-2 pt-3 border-t border-gray-100">
-          <HorizontalScrollable
-            noPadding
-            spacing={1}
-            forceButtons
+          <DaySelector
+            slots={slots}
+            selectedDay={selectedDay}
+            setSelectedDay={setSelectedDay}
             chevronSize={sizes.chevronSize}
-          >
-            {slots?.map((slot, key) => {
-              const datetime = DateTime.fromMillis(slot.timestamp).setZone(
-                TIME.LOCALES.LONDON,
-              );
-
-              // Is it too late for all the times in today?
-              const isTodayUnavailable =
-                slot.daysFromToday === 0 &&
-                !selectedDay?.times.some(time => getMinsIntoDay() < time);
-
-              const disabled = !slot.open;
-
-              return isTodayUnavailable ? null : (
-                <div key={key}>
-                  <XScrollSelectItem
-                    selected={selectedDay?.ordinal === slot.ordinal}
-                    disabled={disabled}
-                    size={sizes.selectItemSize}
-                    onClick={disabled ? undefined : () => setSelectedDay(slot)}
-                  >
-                    <p className="leading-none">{datetime.weekdayShort}</p>
-                    <p className="text-xs opacity-75">
-                      {datetime.toFormat('d MMM')}
-                    </p>
-                  </XScrollSelectItem>
-                </div>
-              );
-            })}
-          </HorizontalScrollable>
+            selectItemSize={sizes.selectItemSize}
+          />
         </div>
 
-        <div className="-mx-2 pt-3 border-t border-gray-100">
-          <HorizontalScrollable
-            noPadding
-            spacing={0}
-            forceButtons
+        <div className="-mx-1 pt-3 border-t border-gray-100">
+          <TimeSelector
+            selectedDay={selectedDay}
+            selectedTime={selectedTime}
+            setSelectedTime={setSelectedTime}
             chevronSize={sizes.chevronSize}
-          >
-            {selectedDay
-              ? selectedDay.times.map((time, key) => {
-                  const disabled =
-                    selectedDay.daysFromToday === 0 &&
-                    getMinsIntoDay(TIME.LOCALES.LONDON) > time;
-
-                  return (
-                    <div key={key}>
-                      <XScrollSelectItem
-                        selected={selectedTime === time}
-                        disabled={disabled}
-                        size={sizes.selectItemSize}
-                        onClick={
-                          disabled ? undefined : () => setSelectedTime(time)
-                        }
-                      >
-                        <p className="text-xs">{minsIntoHumanTime(time)}</p>
-                      </XScrollSelectItem>
-                    </div>
-                  );
-                })
-              : ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM'].map(
-                  (time, key) => (
-                    <XScrollSelectItem
-                      key={key}
-                      disabled
-                      size={sizes.selectItemSize}
-                    >
-                      <p className="text-xs">{time}</p>
-                    </XScrollSelectItem>
-                  ),
-                )}
-          </HorizontalScrollable>
+            selectItemSize={sizes.selectItemSize}
+          />
         </div>
 
         <div className="flex justify-center pt-3 pb-1 border-t border-gray-100">
@@ -352,7 +293,6 @@ export default function ExperienceOrderPanelInner(props: Props) {
             </div>
           </div>
         </div>
-
         {/* Overlay bottom-button */}
         {layout === 'overlay' ? (
           <MobileBottomButton
@@ -360,10 +300,9 @@ export default function ExperienceOrderPanelInner(props: Props) {
             onClick={toCheckout}
             loading={loading}
           >
-            Book now
+            Book Now
           </MobileBottomButton>
         ) : null}
-
         {/* Sidebar CTA button */}
         {layout === 'sidebar' ? (
           <Button
@@ -379,3 +318,117 @@ export default function ExperienceOrderPanelInner(props: Props) {
     </div>
   );
 }
+
+interface TimeSelectorProps {
+  selectedDay: Slot;
+  selectedTime: number;
+  setSelectedTime: (value: number) => void;
+  chevronSize: 6 | 8;
+  selectItemSize: 'small' | 'medium' | 'large';
+}
+
+const TimeSelector = (props: TimeSelectorProps) => {
+  const {
+    selectedTime,
+    setSelectedTime,
+    selectedDay,
+    chevronSize,
+    selectItemSize,
+  } = props;
+
+  return (
+    <HorizontalScrollable
+      noPadding
+      spacing={0}
+      forceButtons
+      chevronSize={chevronSize}
+    >
+      {selectedDay
+        ? selectedDay.times.map((time, key) => {
+            const disabled =
+              selectedDay.daysFromToday === 0 &&
+              getMinsIntoDay(TIME.LOCALES.LONDON) > time;
+
+            return (
+              <div key={key}>
+                <XScrollSelectItem
+                  selected={selectedTime === time}
+                  disabled={disabled}
+                  size={selectItemSize}
+                  onClick={disabled ? undefined : () => setSelectedTime(time)}
+                >
+                  <p className="text-xs">{minsIntoHumanTime(time)}</p>
+                </XScrollSelectItem>
+              </div>
+            );
+          })
+        : ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM'].map(
+            (time, key) => (
+              <XScrollSelectItem key={key} disabled size={selectItemSize}>
+                <p className="text-xs">{time}</p>
+              </XScrollSelectItem>
+            ),
+          )}
+    </HorizontalScrollable>
+  );
+};
+
+interface DaySelectorProps {
+  slots: Slot[];
+  selectedDay: Slot;
+  setSelectedDay: (slot: Slot) => void;
+  chevronSize: 6 | 8;
+  selectItemSize: 'small' | 'medium' | 'large';
+}
+
+const DaySelector = (props: DaySelectorProps) => {
+  const {
+    slots,
+    selectedDay,
+    setSelectedDay,
+    chevronSize,
+    selectItemSize,
+  } = props;
+
+  return (
+    <HorizontalScrollable
+      noPadding
+      spacing={1}
+      forceButtons
+      chevronSize={chevronSize}
+    >
+      {slots?.map((slot, key) => {
+        const datetime = DateTime.fromMillis(slot.timestamp).setZone(
+          TIME.LOCALES.LONDON,
+        );
+
+        // Is it too late for all the times in today?
+        const isTodayUnavailable =
+          slot.daysFromToday === 0 &&
+          !selectedDay?.times.some(time => getMinsIntoDay() < time);
+
+        const disabled = !slot.open;
+
+        return isTodayUnavailable ? null : (
+          <div key={key}>
+            <XScrollSelectItem
+              selected={selectedDay?.ordinal === slot.ordinal}
+              disabled={disabled}
+              size={selectItemSize}
+              onClick={disabled ? undefined : () => setSelectedDay(slot)}
+            >
+              <p className="leading-none">{datetime.weekdayShort}</p>
+              <p className="text-xs opacity-75 mt-1">
+                {datetime.toFormat('d MMM')}
+              </p>
+            </XScrollSelectItem>
+          </div>
+        );
+      })}
+    </HorizontalScrollable>
+  );
+};
+
+export default ExperienceOrderPanelInner;
+ExperienceOrderPanelInner.DaySelector = DaySelector;
+ExperienceOrderPanelInner.TimeSelector = TimeSelector;

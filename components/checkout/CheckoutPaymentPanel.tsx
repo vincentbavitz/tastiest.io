@@ -1,9 +1,4 @@
-import {
-  CheckOutlined,
-  CloseOutlined,
-  LoadingOutlined,
-  LockOutlined,
-} from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined, LockOutlined } from '@ant-design/icons';
 import { SupportIcon } from '@tastiest-io/tastiest-icons';
 import { Button, Input, Modal, Tooltip } from '@tastiest-io/tastiest-ui';
 import {
@@ -13,6 +8,7 @@ import {
   TastiestPaymentError,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
+import MobileBottomButton from 'components/MobileBottomButton';
 import { useOrder } from 'hooks/checkout/useOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { DateTime } from 'luxon';
@@ -21,7 +17,6 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
-import { UI } from '../../constants';
 import { IState } from '../../state/reducers';
 import { CheckoutCard } from './CheckoutCard';
 
@@ -160,32 +155,13 @@ export function CheckoutPaymentPanel(props: Props) {
       )}
 
       {!isDesktop && (
-        <div
-          style={{
-            filter: 'drop-shadow(0px 0px 10px rgba(0,0,0,0.33))',
-            zIndex: UI.Z_INDEX_FLOATING_COMPONENTS,
-          }}
-          className="fixed bottom-0 left-0 right-0 flex flex-col items-center"
+        <MobileBottomButton
+          onClick={submit}
+          loading={isPaymentProcessing}
+          disabled={isPaymentProcessing}
         >
-          <button
-            disabled={isPaymentProcessing}
-            onClick={submit}
-            className={clsx(
-              'flex justify-center items-center h-14 w-full',
-              'text-lg font-medium tracking-wide text-light',
-              'bg-primary duration-300 outline-none',
-              isPaymentProcessing
-                ? 'filter brightness-90'
-                : 'hover:bg-secondary',
-            )}
-          >
-            {isPaymentProcessing ? (
-              <LoadingOutlined className="text-xl" />
-            ) : (
-              <>Book now</>
-            )}
-          </button>
-        </div>
+          Book Now
+        </MobileBottomButton>
       )}
     </div>
   );
