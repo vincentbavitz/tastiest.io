@@ -7,6 +7,7 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import { useTrack } from 'hooks/useTrack';
 import React, { useContext, useEffect, useState } from 'react';
 import { useToggle } from 'react-use';
+import { cleanupInputValue } from 'utils/text';
 import { InputEmail } from '../inputs/InputEmail';
 import { InputPassword } from '../inputs/InputPassword';
 import { SignInTosInfo } from '../SignInTosInfo';
@@ -31,9 +32,6 @@ export function CheckoutSignUp() {
       setError(fetchError);
     }
   }, [fetchError]);
-
-  const cleanupInputValue = (value: string | number) =>
-    String(value).toLowerCase().trim();
 
   // TODO -> Abstract this away so it's not just copying SignUpModal
   const [showPassword, toggleShowPassword] = useToggle(false);
@@ -70,7 +68,7 @@ export function CheckoutSignUp() {
       />
       <InputEmail
         value={signUpEmail}
-        onValueChange={value => setSignUpEmail(cleanupInputValue(value))}
+        onValueChange={value => setSignUpEmail(cleanupInputValue(value, true))}
       />
       <InputPassword
         show={showPassword}

@@ -54,5 +54,13 @@ export function dateFormat(value: string) {
   );
 }
 
-export const cleanupInputValue = (value: string | number) =>
-  String(value).toLowerCase().trim();
+export const cleanupInputValue = (
+  value: string | number,
+  lowercase = false,
+) => {
+  if (lowercase) {
+    return String(value).toLowerCase().trim();
+  }
+
+  return String(value).trim();
+};
