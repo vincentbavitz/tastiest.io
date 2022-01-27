@@ -1,7 +1,15 @@
-import { CmsApi, ExperiencePost } from '@tastiest-io/tastiest-utils';
+import {
+  CmsApi,
+  ExperiencePost,
+  RestaurantContentful,
+  TastiestDish,
+} from '@tastiest-io/tastiest-utils';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import Experience from 'pages/[city]/[cuisine]/[restaurant]/[slug]';
+import Restaurant from 'pages/[city]/[cuisine]/[restaurant]';
+
+// Contentful preview URL structure...
+// https://tastiest.io/previews/restaurant?env={env_id}&uri={entry.fields.uriName}
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,
@@ -10,11 +18,15 @@ export const getServerSideProps = async (
   const mappedEnvironment =
     environment === 'master' ? 'production' : environment;
 
-  const slug = context.query.slug as string;
+  const restaurantUriName = context.query.uri as string;
 
-  if (!environment || !slug) {
+  if (!environment || !restaurantUriName) {
     return {
-      props: {},
+      props: {
+        restaurant: null as RestaurantContentful,
+        tastiestDishes: null as TastiestDish[],
+        posts: null as ExperiencePost[],
+      },
       redirect: {
         destination: '/',
       },
@@ -22,11 +34,21 @@ export const getServerSideProps = async (
   }
 
   const cms = new CmsApi(undefined, undefined, mappedEnvironment);
-  const post = await cms.getPostBySlug(slug);
+  const restaurant = await cms.getRestaurantFromUriName(restaurantUriName);
+  const { posts } = await cms.getPostsOfRestaurant(restaurantUriName);
+  const { dishes: tastiestDishes } = await cms.getTastiestDishesOfRestaurant(
+    restaurantUriName,
+  );
 
-  if (!post) {
+  // const { restaurant, tastiestDishes, posts } = props;
+
+  if (!restaurant) {
     return {
-      props: {},
+      props: {
+        restaurant,
+        tastiestDishes,
+        posts,
+      },
       redirect: {
         destination: '/',
       },
@@ -35,19 +57,21 @@ export const getServerSideProps = async (
 
   return {
     props: {
-      post,
+      restaurant,
+      tastiestDishes,
+      posts,
     },
   };
 };
 
-const PostPreview = (
+const RestaurantPreview = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) => {
-  const { post } = props;
+  // const { restaurant, tastiestDishes, posts } = props;
 
   return (
     <div className="relative">
-      <Experience post={post} posts={[{}] as ExperiencePost[]} />
+      <Restaurant {...props} />
 
       {/* Overlay to prevent mouse events. */}
       <div style={{ zIndex: 100000 }} className="fixed inset-0"></div>
@@ -65,5 +89,5 @@ const PostPreview = (
   );
 };
 
-PostPreview.layout = Layouts.EXPERIENCE;
-export default PostPreview;
+RestaurantPreview.layout = Layouts.RESTAURANT;
+export default RestaurantPreview;
