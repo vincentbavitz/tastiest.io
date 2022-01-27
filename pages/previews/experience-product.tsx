@@ -95,104 +95,119 @@ const ExperienceProductPreview = (
   };
 
   return (
-    <Contained>
-      <div className="flex flex-wrap justify-evenly gap-20 py-16">
-        <div>
-          <h2 className="text-center text-2xl font-medium font-primary pb-10">
-            Experience Page Sidebar
-          </h2>
+    <div className="relative">
+      <Contained>
+        <div className="flex flex-wrap justify-evenly gap-20 py-16">
+          <div>
+            <h2 className="text-center text-2xl font-medium font-primary pb-10">
+              Experience Page Sidebar
+            </h2>
 
-          <ExperienceOrderPanelDesktop
-            deal={experienceProduct}
-            posts={posts}
-            slug={slug}
-          />
-        </div>
-
-        <div>
-          <h2 className="text-center text-2xl font-medium font-primary pb-10">
-            Mobile Continue Page
-          </h2>
-          <div
-            style={{ width: '20rem', height: '40rem' }}
-            className="relative flex justify-center h-auto"
-          >
-            <Image
-              layout="fill"
-              objectFit="fill"
-              src={'/assets/iphone-frame.png'}
-              className="z-50"
-            />
-
-            <iframe
-              title="Mobile continue page"
-              src={
-                generateStaticURL({
-                  city: posts[0].restaurant.city,
-                  cuisine: posts[0].restaurant.cuisine,
-                  restaurant: posts[0].restaurant.uriName,
-                  slug: posts[0].slug,
-                }).as + '/continue'
-              }
-              className="absolute top-10 left-0 right-0 bottom-0 origin-top-left z-0 pointer-events-none"
-              style={{
-                WebkitTransform: 'scale(0.85) translateX(1.6rem)',
-                width: '20.75rem',
-                height: '42.75rem',
-                marginLeft: '-0.1rem',
-              }}
+            <ExperienceOrderPanelDesktop
+              deal={experienceProduct}
+              posts={posts}
+              slug={slug}
             />
           </div>
+
+          <div>
+            <h2 className="text-center text-2xl font-medium font-primary pb-10">
+              Mobile Continue Page
+            </h2>
+            <div
+              style={{ width: '20rem', height: '40rem' }}
+              className="relative flex justify-center h-auto"
+            >
+              <Image
+                layout="fill"
+                objectFit="fill"
+                src={'/assets/iphone-frame.png'}
+                className="z-50"
+              />
+
+              <iframe
+                title="Mobile continue page"
+                src={
+                  generateStaticURL({
+                    city: posts[0].restaurant.city,
+                    cuisine: posts[0].restaurant.cuisine,
+                    restaurant: posts[0].restaurant.uriName,
+                    slug: posts[0].slug,
+                  }).as + '/continue'
+                }
+                className="absolute top-10 left-0 right-0 bottom-0 origin-top-left z-0 pointer-events-none"
+                style={{
+                  WebkitTransform: 'scale(0.85) translateX(1.6rem)',
+                  width: '20.75rem',
+                  height: '42.75rem',
+                  marginLeft: '-0.1rem',
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="border-4 border-b"></div>
+
+        <div className="flex flex-wrap justify-evenly gap-20 py-16">
+          <div>
+            <h2 className="text-center text-2xl font-medium font-primary pb-10">
+              Desktop Checkout Sidebar
+            </h2>
+
+            <div style={{ width: '18rem' }} className="pt-6">
+              <CheckoutPaymentPanel
+                order={order}
+                submit={() => null}
+                error={null}
+              />
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-center text-2xl font-medium font-primary pb-10">
+              Mobile Checkout Page
+            </h2>
+            <div
+              style={{ width: '20rem', height: '40rem' }}
+              className="relative flex justify-center h-auto"
+            >
+              <Image
+                layout="fill"
+                objectFit="fill"
+                src={'/assets/iphone-frame.png'}
+                className="z-50"
+              />
+
+              <iframe
+                title="Mobile checkout page"
+                src={`/checkout?token=${order.token}`}
+                className="absolute top-10 left-0 right-0 bottom-0 origin-top-left z-0"
+                style={{
+                  WebkitTransform: 'scale(0.75) translateX(1.6rem)',
+                  width: '23.5rem',
+                  height: '48.25rem',
+                  marginLeft: '-0.1rem',
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </Contained>
+
+      {/* Overlay to prevent mouse events. */}
+      <div style={{ zIndex: 100000 }} className="fixed inset-0"></div>
+
+      {/* Preview overlay */}
+      <div
+        style={{ zIndex: 100000 }}
+        className="fixed bottom-10 left-0 right-0 flex justify-center"
+      >
+        <div className="bg-primary rounded-lg shadow-lg px-6 py-2 text-3xl text-light font-medium font-primary tracking-widest opacity-75">
+          PREVIEW
         </div>
       </div>
-
-      <div className="border-4 border-b"></div>
-
-      <div className="flex flex-wrap justify-evenly gap-20 py-16">
-        <div>
-          <h2 className="text-center text-2xl font-medium font-primary pb-10">
-            Desktop Checkout Sidebar
-          </h2>
-
-          <div style={{ width: '18rem' }} className="pt-6">
-            <CheckoutPaymentPanel
-              order={order}
-              submit={() => null}
-              error={null}
-            />
-          </div>
-        </div>
-
-        <div>
-          <h2 className="text-center text-2xl font-medium font-primary pb-10">
-            Mobile Checkout Page
-          </h2>
-          <div
-            style={{ width: '20rem', height: '40rem' }}
-            className="relative flex justify-center h-auto"
-          >
-            <Image
-              layout="fill"
-              objectFit="fill"
-              src={'/assets/iphone-frame.png'}
-              className="z-50"
-            />
-
-            <iframe
-              title="Mobile checkout page"
-              src={`/checkout?token=${order.token}`}
-              className="absolute top-10 left-0 right-0 bottom-0 origin-top-left z-0"
-              style={{
-                WebkitTransform: 'scale(0.75) translateX(1.6rem)',
-                width: '23.5rem',
-                height: '48.25rem',
-                marginLeft: '-0.1rem',
-              }}
-            />
-          </div>
-        </div>
-      </div>
-    </Contained>
+    </div>
   );
 };
 
