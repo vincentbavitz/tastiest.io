@@ -98,7 +98,7 @@ const Index = () => {
         }}
       />
 
-      <div className="flex flex-col mt-10 mb-10 space-y-10">
+      <div className="flex flex-col mb-10 space-y-10">
         <div>
           <HomeHeroSection />
 

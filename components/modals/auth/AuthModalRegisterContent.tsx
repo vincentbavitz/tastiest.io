@@ -1,10 +1,10 @@
 import { EmailIcon, LockIcon, UserIcon } from '@tastiest-io/tastiest-icons';
 import { Button, Input, Tooltip } from '@tastiest-io/tastiest-ui';
-import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
+import { AUTH, dlog, titleCase } from '@tastiest-io/tastiest-utils';
 import { useRegister } from 'hooks/auth/useRegister';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { AUTH, METADATA, REGEX } from '../../../constants';
+import { METADATA, REGEX } from '../../../constants';
 import { ContentElementProps, LoginFlowStep } from './AuthModal';
 import { ContentSubtext } from './AuthModalContentSubtext';
 import { AuthModalWrapper } from './AuthModalWrapper';
