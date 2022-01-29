@@ -26,11 +26,14 @@ export const navigationReducer = (
     case NavigationActions.TOGGLE_SEARCH_OVERLAY: {
       return { ...state, searchOverlayExpanded: !state.searchOverlayExpanded };
     }
-    case NavigationActions.OPEN_SIGN_IN_MODAL: {
+    case NavigationActions.OPEN_AUTH_MODAL: {
       return { ...state, isAuthModalOpen: true };
     }
-    case NavigationActions.CLOSE_SIGN_IN_MODAL: {
+    case NavigationActions.CLOSE_AUTH_MODAL: {
       return { ...state, isAuthModalOpen: false };
+    }
+    case NavigationActions.SET_AUTH_MODAL_STEP: {
+      return { ...state, authModalStep: action.payload };
     }
     case NavigationActions.TOGGLE_OFFER_MENU_MODAL: {
       return { ...state, isOfferMenuOpen: action.payload };

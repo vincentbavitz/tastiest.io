@@ -2009,14 +2009,31 @@
     react-table "^7.7.0"
     uuid "^8.3.2"
 
-"@tastiest-io/tastiest-utils@^1.57.0":
-  version "1.57.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.57.0/cf2275d8f88597366f5cda41d1817a400e9d3576fe5573fd0d62475d861cdbd0#e883595a712a3feee6e34ec51ae98e8d77bea1ad"
-  integrity sha512-qJ26CZIj35HZeH2gThCGiBfzwgJC3BHv4KOFCayAgpTzZCTNS8kDwd0c4UfL6eRHoFCY8/5AWPy/rU4QqbQfGA==
+"@tastiest-io/tastiest-utils@^1.58.0":
+  version "1.58.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.58.0/d32e8847bd2d21b1aea653e28b63ee4db09157e62a19fdf30cf8a970a944b3e7#f7f43c4eadf3c36fdb8cfb2e332a58a07066b33a"
+  integrity sha512-Tt23+nejqCoiKQYMteXUWoDEeYn/o1wOwsLuMXQ6kN3Ale59YTvjOASV1E8yk+piZiH8IyALUit3bkdzkq48/g==
   dependencies:
     "@contentful/rich-text-types" "^14.1.2"
     "@shopify/shopify-api" "^1.4.0"
     "@stripe/stripe-js" "^1.13.2"
+    "@types/react" "^17.0.3"
+    contentful "^8.2.1"
+    crypto-hash "^1.3.0"
+    firebase-admin "^9.6.0"
+    luxon "^2.0.2"
+    moment "^2.29.1"
+    stripe "^8.143.0"
+
+"@tastiest-io/tastiest-utils@^1.59.0":
+  version "1.59.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.59.0/7c27c2c38941427a7012fb247130f89a82157d6a2bfcf6a7c4a154ab127d8f54#0c835695fcb6f63e54e32536f622b1c8120370f3"
+  integrity sha512-aJ9DFyvxuHlefnqe6LkVVS5V28xraylLErX9Rf4KQiOQZuencsW/xzd4e6M/A+nmc0LALfGdrUw6+V7v5q64Ww==
+  dependencies:
+    "@contentful/rich-text-types" "^14.1.2"
+    "@shopify/shopify-api" "^1.4.0"
+    "@stripe/stripe-js" "^1.13.2"
+    "@tastiest-io/tastiest-utils" "^1.58.0"
     "@types/react" "^17.0.3"
     contentful "^8.2.1"
     crypto-hash "^1.3.0"

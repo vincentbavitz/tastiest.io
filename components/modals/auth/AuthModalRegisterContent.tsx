@@ -5,7 +5,7 @@ import { useRegister } from 'hooks/auth/useRegister';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { METADATA, REGEX } from '../../../constants';
-import { ContentElementProps, LoginFlowStep } from './AuthModal';
+import { AuthFlowStep, ContentElementProps } from './AuthModal';
 import { ContentSubtext } from './AuthModalContentSubtext';
 import { AuthModalWrapper } from './AuthModalWrapper';
 
@@ -154,7 +154,7 @@ export const AuthModalRegisterContent = ({ setStep }: ContentElementProps) => {
           Already have an account?{' '}
           <a
             className="font-semibold cursor-pointer"
-            onClick={() => setStep(LoginFlowStep.SIGN_IN)}
+            onClick={() => setStep(AuthFlowStep.SIGN_IN)}
           >
             Sign In
           </a>

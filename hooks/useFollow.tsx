@@ -1,6 +1,11 @@
-import { dlog, postFetch } from '@tastiest-io/tastiest-utils';
+import {
+  dlog,
+  FollowerNotificationPreferences,
+  FOLLOWER_NOTIFICATION_TYPE,
+  postFetch,
+} from '@tastiest-io/tastiest-utils';
 import { UpdateFollowParams } from 'pages/api/restaurant/updateFollowStatus';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { openAuthModal } from 'state/navigation';
 import { LocalEndpoint } from 'types/api';
@@ -11,18 +16,21 @@ import { useUserData } from './useUserData';
  * Managed following and setting notifications for a specific restaurant.
  */
 export default function useFollow(restaurantId: string) {
-  const { user } = useAuth();
+  const { user, isSignedIn } = useAuth();
   const { userData } = useUserData(user);
   const dispatch = useDispatch();
 
   const [following, setFollowing] = useState<boolean | null>(null);
   const [followLoading, setFollowLoading] = useState(false);
 
-  const [notifications, setNotifications] = useState<boolean | null>(null);
+  const [
+    notifications,
+    setNotifications,
+  ] = useState<FollowerNotificationPreferences | null>(null);
   const [notificationsLoading, setNotificationsLoading] = useState(false);
 
   /** `null` indicates that the user isn't logged in */
-  const isFollowing = (restaurantId: string) => {
+  const isFollowing = useMemo(() => {
     if (!userData) {
       return null;
     }
@@ -32,35 +40,27 @@ export default function useFollow(restaurantId: string) {
         r => r.restaurantId === restaurantId,
       ),
     );
-  };
-
-  const hasNotifications = (restaurantId: string) => {
-    if (!isFollowing(restaurantId)) {
-      return null;
-    }
-
-    return Boolean(
-      userData?.metrics?.restaurantsFollowed?.find(
-        r => r.restaurantId === restaurantId,
-      )?.notifications,
-    );
-  };
+  }, [restaurantId, user, isSignedIn]);
 
   // Set initial values
   useEffect(() => {
-    const _following = isFollowing(restaurantId);
+    const _following = isFollowing;
 
     if (_following !== null) {
       setFollowing(_following);
-      setNotifications(hasNotifications(restaurantId));
+      setNotifications({
+        [FOLLOWER_NOTIFICATION_TYPE.LIMITED_TIME_DISHES]: true,
+        [FOLLOWER_NOTIFICATION_TYPE.SPECIAL_EXPERIENCES]: true,
+        [FOLLOWER_NOTIFICATION_TYPE.LAST_MINUTE_TABLES]: true,
+        [FOLLOWER_NOTIFICATION_TYPE.GENERAL_INFO]: true,
+        [FOLLOWER_NOTIFICATION_TYPE.NEW_MENU]: true,
+      });
     }
   }, [userData]);
 
   // Set the following status on Firestore when following changes.
-  const follow = async () => {
-    // Request user to sign in
-    if (isFollowing(restaurantId) === null) {
-      dispatch(openAuthModal());
+  const follow = async (notifications?: FollowerNotificationPreferences) => {
+    if (isFollowing === null) {
       return;
     }
 
@@ -72,7 +72,7 @@ export default function useFollow(restaurantId: string) {
         userId: user.uid,
         restaurantId,
         following: true,
-        notifications: false,
+        notifications,
       },
     );
 
@@ -90,7 +90,7 @@ export default function useFollow(restaurantId: string) {
 
   const unfollow = async () => {
     // Request user to sign in
-    if (isFollowing(restaurantId) === null) {
+    if (isFollowing === null) {
       dispatch(openAuthModal());
       return;
     }
@@ -110,22 +110,24 @@ export default function useFollow(restaurantId: string) {
 
     if (success) {
       setFollowing(false);
-      setNotifications(false);
+      setNotifications(null);
     } else if (error) {
       dlog('useFollow ➡️ error:', error);
     }
   };
 
   // Set notifications for the restaurant.
-  const toggleNotifications = async (on: boolean) => {
+  const toggleNotifications = async (
+    notificationPreferences: FollowerNotificationPreferences,
+  ) => {
     // Request user to sign in
-    if (isFollowing(restaurantId) === null) {
+    if (isFollowing === null) {
       dispatch(openAuthModal());
       return;
     }
 
     // Turning on notifications should only be possible if they're following.
-    if (!userData || !isFollowing(restaurantId)) {
+    if (!userData || !isFollowing) {
       return;
     }
 
@@ -137,14 +139,14 @@ export default function useFollow(restaurantId: string) {
         userId: user.uid,
         restaurantId,
         following: true,
-        notifications: on,
+        notifications: notificationPreferences,
       },
     );
 
     setNotificationsLoading(false);
 
     if (success) {
-      setNotifications(on);
+      setNotifications(notificationPreferences);
     } else if (error) {
       dlog('useFollow ➡️ error:', error);
     }

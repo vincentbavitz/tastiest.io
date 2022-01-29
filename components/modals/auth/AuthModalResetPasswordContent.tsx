@@ -4,7 +4,7 @@ import { Button, Input, Tooltip } from '@tastiest-io/tastiest-ui';
 import { useResetPassword } from 'hooks/auth/useResetPassword';
 import React, { useState } from 'react';
 import { cleanupInputValue } from 'utils/text';
-import { ContentElementProps, LoginFlowStep } from './AuthModal';
+import { AuthFlowStep, ContentElementProps } from './AuthModal';
 import { ContentSubtext } from './AuthModalContentSubtext';
 import { AuthModalWrapper } from './AuthModalWrapper';
 
@@ -30,7 +30,7 @@ export const AuthModalResetPasswordContent = ({
           <Button
             type="solid"
             color="primary"
-            onClick={() => setStep(LoginFlowStep.SIGN_IN)}
+            onClick={() => setStep(AuthFlowStep.SIGN_IN)}
           >
             Sign In
           </Button>
@@ -80,7 +80,7 @@ export const AuthModalResetPasswordContent = ({
             Found your account?{' '}
             <a
               className="font-semibold cursor-pointer hover:underline"
-              onClick={() => setStep(LoginFlowStep.SIGN_IN)}
+              onClick={() => setStep(AuthFlowStep.SIGN_IN)}
             >
               Sign In
             </a>
@@ -89,7 +89,7 @@ export const AuthModalResetPasswordContent = ({
             Otherwise, you can sign up{' '}
             <a
               className="font-semibold cursor-pointer hover:underline"
-              onClick={() => setStep(LoginFlowStep.REGISTER)}
+              onClick={() => setStep(AuthFlowStep.REGISTER)}
             >
               here
             </a>

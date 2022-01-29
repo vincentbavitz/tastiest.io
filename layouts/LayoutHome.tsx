@@ -11,8 +11,8 @@ export default function LayoutHome({
   children: Component,
 }: LayoutProps<InferGetServerSidePropsType<typeof getServerSideProps>>) {
   // Remove header transparency on scroll
-  const TRANSPARENCY_GLASS_CUTOFF_PX = 10;
-  const TRANSPARENCY_Y_CUTOFF_PX = 250;
+  const TRANSPARENCY_GLASS_CUTOFF_PX = 0;
+  const TRANSPARENCY_Y_CUTOFF_PX = 325;
   const { y: scrollY } = useWindowScroll();
   const [headerTransparency, setHeaderTransparency] = useState<
     'glass' | 'none' | 'full'

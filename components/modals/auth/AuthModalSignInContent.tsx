@@ -6,7 +6,7 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { cleanupInputValue } from 'utils/text';
 import { REGEX } from '../../../constants';
-import { ContentElementProps, LoginFlowStep } from './AuthModal';
+import { AuthFlowStep, ContentElementProps } from './AuthModal';
 import { ContentSubtext } from './AuthModalContentSubtext';
 import { AuthModalWrapper } from './AuthModalWrapper';
 
@@ -112,7 +112,7 @@ export const AuthModalSignInContent = ({ setStep }: ContentElementProps) => {
           Forgot password?{' '}
           <a
             className="font-semibold cursor-pointer"
-            onClick={() => setStep(LoginFlowStep.RESET_PASSWORD)}
+            onClick={() => setStep(AuthFlowStep.RESET_PASSWORD)}
           >
             Reset
           </a>
@@ -121,7 +121,7 @@ export const AuthModalSignInContent = ({ setStep }: ContentElementProps) => {
           Don't have an account?{' '}
           <a
             className="font-semibold cursor-pointer"
-            onClick={() => setStep(LoginFlowStep.REGISTER)}
+            onClick={() => setStep(AuthFlowStep.REGISTER)}
           >
             Sign Up
           </a>
