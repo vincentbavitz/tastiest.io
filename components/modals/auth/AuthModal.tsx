@@ -1,15 +1,15 @@
 import { Modal } from '@tastiest-io/tastiest-ui';
 import { useScreenSize } from 'hooks/useScreenSize';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth } from '../../../hooks/auth/useAuth';
-import { closeAuthModal } from '../../../state/navigation';
+import { closeAuthModal, setAuthModalStep } from '../../../state/navigation';
 import { IState } from '../../../state/reducers';
 import { AuthModalRegisterContent } from './AuthModalRegisterContent';
 import { AuthModalResetPasswordContent } from './AuthModalResetPasswordContent';
 import { AuthModalSignInContent } from './AuthModalSignInContent';
 
-export enum LoginFlowStep {
+export enum AuthFlowStep {
   CONTINUE = 'CONTINUE',
   SIGN_IN = 'SIGN_IN',
   REGISTER = 'REGISTER',
@@ -17,18 +17,26 @@ export enum LoginFlowStep {
 }
 
 export interface ContentElementProps {
-  setStep: React.Dispatch<React.SetStateAction<LoginFlowStep>>;
+  setStep: React.Dispatch<React.SetStateAction<AuthFlowStep>>;
 }
 
 export function AuthModal() {
-  const { isSignedIn } = useAuth();
-  const [step, setStep] = useState<LoginFlowStep>(LoginFlowStep.SIGN_IN);
-
-  const { isAuthModalOpen } = useSelector((state: IState) => state.navigation);
-  const isOpen = isAuthModalOpen && isSignedIn === false;
-
   const dispatch = useDispatch();
+  const { isSignedIn } = useAuth();
+
+  const { isAuthModalOpen, authModalStep } = useSelector(
+    (state: IState) => state.navigation,
+  );
+
+  const isOpen = isAuthModalOpen && isSignedIn === false;
+  const setStep = (step: AuthFlowStep) => dispatch(setAuthModalStep(step));
+
   const { isMobile } = useScreenSize();
+
+  // If not signed in, close the modal
+  useEffect(() => {
+    dispatch(closeAuthModal());
+  }, [isSignedIn]);
 
   if (isSignedIn) {
     return null;
@@ -49,15 +57,15 @@ export function AuthModal() {
         }}
         className="relative flex flex-col justify-between"
       >
-        {step === LoginFlowStep.SIGN_IN && (
+        {authModalStep === AuthFlowStep.SIGN_IN && (
           <AuthModalSignInContent setStep={setStep} />
         )}
 
-        {step === LoginFlowStep.REGISTER && (
+        {authModalStep === AuthFlowStep.REGISTER && (
           <AuthModalRegisterContent setStep={setStep} />
         )}
 
-        {step === LoginFlowStep.RESET_PASSWORD && (
+        {authModalStep === AuthFlowStep.RESET_PASSWORD && (
           <AuthModalResetPasswordContent setStep={setStep} />
         )}
       </div>

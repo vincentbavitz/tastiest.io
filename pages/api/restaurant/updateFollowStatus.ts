@@ -1,5 +1,7 @@
 import {
   dlog,
+  FollowerNotificationPreferences,
+  FOLLOWER_NOTIFICATION_TYPE,
   FunctionsResponse,
   RestaurantDataApi,
   RestaurantDataKey,
@@ -13,7 +15,7 @@ export interface UpdateFollowParams {
   userId: string;
   restaurantId: string;
   following: boolean;
-  notifications?: boolean;
+  notifications?: FollowerNotificationPreferences;
 }
 
 /**
@@ -22,7 +24,7 @@ export interface UpdateFollowParams {
  *    userId: string;
  *    restaurantId: string;
  *    following: boolean;
- *    notifications?: boolean;
+ *    notifications?: FollowerNotificationPreferences;
  *  ```
  */
 export default async function updateFollowStatus(
@@ -73,15 +75,16 @@ export default async function updateFollowStatus(
 
     // Add follower or toggle notifications
     if (following) {
-      const alreadyFollowing = userData.metrics.restaurantsFollowed?.find(
+      const alreadyFollowing = userData?.metrics?.restaurantsFollowed?.find(
         r => r.restaurantId === restaurantId,
       );
 
-      const notificationsTogggled =
-        Boolean(alreadyFollowing) &&
-        alreadyFollowing.notifications !== notifications;
+      // If the user has just been created, alreadyFollowing might not exist.
+      // So just update user data premptively.
+      const isUpdatingNotifications =
+        alreadyFollowing?.notifications !== notifications;
 
-      if (alreadyFollowing && !notificationsTogggled) {
+      if (alreadyFollowing && !isUpdatingNotifications) {
         response.json({
           success: false,
           data: null,
@@ -89,6 +92,20 @@ export default async function updateFollowStatus(
         });
         return;
       }
+
+      const updatedNotifications = {
+        ...{
+          [FOLLOWER_NOTIFICATION_TYPE.LIMITED_TIME_DISHES]: true,
+          [FOLLOWER_NOTIFICATION_TYPE.SPECIAL_EXPERIENCES]: true,
+          [FOLLOWER_NOTIFICATION_TYPE.LAST_MINUTE_TABLES]: true,
+          [FOLLOWER_NOTIFICATION_TYPE.GENERAL_INFO]: true,
+          [FOLLOWER_NOTIFICATION_TYPE.NEW_MENU]: true,
+        },
+        ...alreadyFollowing?.notifications,
+        ...notifications,
+      };
+
+      dlog('updateFollowStatus ➡️ updatedNotifications:', updatedNotifications);
 
       // Update their following restaurants
       const updateUserData = async () => {
@@ -99,7 +116,7 @@ export default async function updateFollowStatus(
 
         restaurantsFollowed.push({
           restaurantId,
-          notifications: Boolean(notifications),
+          notifications: updatedNotifications,
         });
 
         return userDataApi.setUserData(UserDataKey.METRICS, {
@@ -117,7 +134,7 @@ export default async function updateFollowStatus(
           userId,
           name: userData.details?.firstName as string,
           email: userData.details?.email as string,
-          notifications: Boolean(notifications),
+          notifications: updatedNotifications,
           followedAt: Date.now(),
         });
 

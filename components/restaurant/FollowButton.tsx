@@ -7,10 +7,17 @@ import {
   Switch,
   Tooltip,
 } from '@tastiest-io/tastiest-ui';
-import { RestaurantContentful } from '@tastiest-io/tastiest-utils';
+import {
+  FollowerNotificationPreferences,
+  FOLLOWER_NOTIFICATION_TYPE,
+  RestaurantContentful,
+} from '@tastiest-io/tastiest-utils';
+import { AuthFlowStep } from 'components/modals/auth/AuthModal';
 import { AuthContext } from 'contexts/auth';
 import useFollow from 'hooks/useFollow';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { openAuthModal, setAuthModalStep } from 'state/navigation';
 
 interface Props {
   restaurant: RestaurantContentful;
@@ -19,6 +26,7 @@ interface Props {
 export default function FollowButton(props: Props) {
   const { restaurant } = props;
   const { isSignedIn } = useContext(AuthContext);
+  const dispatch = useDispatch();
 
   const {
     follow,
@@ -30,9 +38,9 @@ export default function FollowButton(props: Props) {
     notificationsLoading,
   } = useFollow(restaurant.id);
 
-  const [showExplanationModal, setShowExplanationModal] = useState(false);
+  const [showFollowModal, setShowFollowModal] = useState(false);
   const toggleFollowRestaurant = (shouldFollow: boolean) => {
-    setShowExplanationModal(false);
+    setShowFollowModal(false);
 
     if (shouldFollow) {
       follow();
@@ -41,16 +49,60 @@ export default function FollowButton(props: Props) {
     }
   };
 
-  // Fetch from their profile also
-  const [enableNewMenu, setenableNewMenu] = useState(true);
-  const [enableSpecialExp, setEnableSpecialExp] = useState(true);
-  const [enableLastMinute, setEnableLastMinute] = useState(true);
-  const [enableLimitedTime, setEnableLimitedTime] = useState(true);
-  const [enableGeneralInfo, setEnableGeneralInfo] = useState(true);
+  const followAsSignedOut = () => {
+    setHasSignedInFromFlow(true);
+    dispatch(setAuthModalStep(AuthFlowStep.REGISTER));
+    dispatch(openAuthModal());
+  };
+
+  // Only available if signed in and already following.
+  const saveNotifications = async () => {
+    if (!isSignedIn) {
+      return;
+    }
+
+    await follow(unsavedNotifications);
+    setShowFollowModal(false);
+  };
+
+  // Post sign-in actions
+  const [hasSignedInFromFlow, setHasSignedInFromFlow] = useState(false);
+  useEffect(() => {
+    if (hasSignedInFromFlow && isSignedIn) {
+      setShowFollowModal(false);
+      follow(unsavedNotifications);
+    }
+  }, [hasSignedInFromFlow, isSignedIn]);
+
+  const [unsavedNotifications, setUnsavedNotifications] = useState<
+    FollowerNotificationPreferences
+  >(
+    notifications ?? {
+      [FOLLOWER_NOTIFICATION_TYPE.LIMITED_TIME_DISHES]: true,
+      [FOLLOWER_NOTIFICATION_TYPE.SPECIAL_EXPERIENCES]: true,
+      [FOLLOWER_NOTIFICATION_TYPE.LAST_MINUTE_TABLES]: true,
+      [FOLLOWER_NOTIFICATION_TYPE.GENERAL_INFO]: true,
+      [FOLLOWER_NOTIFICATION_TYPE.NEW_MENU]: true,
+    },
+  );
+
+  // const [enableNewMenu, setenableNewMenu] = useState(notifications.NEW_MENU);
+  // const [enableSpecialExp, setEnableSpecialExp] = useState(
+  //   notifications.SPECIAL_EXPERIENCES,
+  // );
+  // const [enableLastMinute, setEnableLastMinute] = useState(
+  //   notifications.LAST_MINUTE_TABLES,
+  // );
+  // const [enableLimitedTime, setEnableLimitedTime] = useState(
+  //   notifications.LIMITED_TIME_DISHES,
+  // );
+  // const [enableGeneralInfo, setEnableGeneralInfo] = useState(
+  //   notifications.GENERAL_INFO,
+  // );
 
   return (
     <>
-      <Modal show={showExplanationModal}>
+      <Modal show={showFollowModal}>
         <div className="flex items-center space-x-2 -mt-10 pb-6">
           <Avatar size={10} imageSrc={restaurant.profilePicture.url} />
           <span className="font-medium font-primary text-2xl">
@@ -64,32 +116,66 @@ export default function FollowButton(props: Props) {
 
         <div className="flex flex-col space-y-2 mt-6">
           <div className="flex items-center text-base space-x-2">
-            <Switch checked={enableSpecialExp} onChange={setEnableSpecialExp} />
+            <Switch
+              checked={unsavedNotifications.SPECIAL_EXPERIENCES}
+              onChange={on =>
+                setUnsavedNotifications({
+                  ...unsavedNotifications,
+                  [FOLLOWER_NOTIFICATION_TYPE.SPECIAL_EXPERIENCES]: on,
+                })
+              }
+            />
             <span>Special experiences</span>
           </div>
 
           <div className="flex items-center text-base space-x-2">
-            <Switch checked={enableNewMenu} onChange={setenableNewMenu} />
+            <Switch
+              checked={unsavedNotifications.NEW_MENU}
+              onChange={on =>
+                setUnsavedNotifications({
+                  ...unsavedNotifications,
+                  [FOLLOWER_NOTIFICATION_TYPE.NEW_MENU]: on,
+                })
+              }
+            />
             <span>New menu</span>
           </div>
 
           <div className="flex items-center text-base space-x-2">
             <Switch
-              checked={enableLimitedTime}
-              onChange={setEnableLimitedTime}
+              checked={unsavedNotifications.LIMITED_TIME_DISHES}
+              onChange={on =>
+                setUnsavedNotifications({
+                  ...unsavedNotifications,
+                  [FOLLOWER_NOTIFICATION_TYPE.LIMITED_TIME_DISHES]: on,
+                })
+              }
             />
             <span>Limited time dishes</span>
           </div>
 
           <div className="flex items-center text-base space-x-2">
-            <Switch checked={enableLastMinute} onChange={setEnableLastMinute} />
+            <Switch
+              checked={unsavedNotifications.LAST_MINUTE_TABLES}
+              onChange={on =>
+                setUnsavedNotifications({
+                  ...unsavedNotifications,
+                  [FOLLOWER_NOTIFICATION_TYPE.LAST_MINUTE_TABLES]: on,
+                })
+              }
+            />
             <span>Last minute tables</span>
           </div>
 
           <div className="flex items-center text-base space-x-2">
             <Switch
-              checked={enableGeneralInfo}
-              onChange={setEnableGeneralInfo}
+              checked={unsavedNotifications.GENERAL_INFO}
+              onChange={on =>
+                setUnsavedNotifications({
+                  ...unsavedNotifications,
+                  [FOLLOWER_NOTIFICATION_TYPE.GENERAL_INFO]: on,
+                })
+              }
             />
             <span>General info</span>
           </div>
@@ -99,26 +185,42 @@ export default function FollowButton(props: Props) {
           <Button
             size="large"
             color="light"
-            onClick={() => setShowExplanationModal(false)}
+            onClick={() => setShowFollowModal(false)}
           >
             {isSignedIn === false ? 'Close' : 'Back'}
           </Button>
 
-          <Button
-            size="large"
-            onClick={() => toggleFollowRestaurant(!following)}
-            loading={followLoading}
-          >
-            {isSignedIn === false ? 'Next' : following ? 'Unfollow' : 'Follow'}
-          </Button>
+          {/*  */}
+
+          {isSignedIn ? (
+            <Button
+              size="large"
+              onClick={() => {
+                if (following) {
+                  saveNotifications();
+                } else {
+                  follow();
+                  setShowFollowModal(false);
+                }
+              }}
+              loading={followLoading}
+            >
+              {following ? 'Save' : 'Follow'}
+            </Button>
+          ) : (
+            <Button
+              size="large"
+              onClick={followAsSignedOut}
+              loading={followLoading}
+            >
+              Next
+            </Button>
+          )}
         </div>
       </Modal>
 
       <div className="flex items-center -mr-7 space-x-2">
         {following ? (
-          // <Button loading={followLoading} onClick={unfollow}>
-          // Following
-          // </Button>
           <div className="filter drop-shadow-md">
             <ButtonGroup>
               <Button
@@ -133,7 +235,7 @@ export default function FollowButton(props: Props) {
                 </span>
               </Button>
 
-              <Button color="light">
+              <Button color="light" onClick={() => setShowFollowModal(true)}>
                 <div className="flex items-center">
                   <BellOutlined className="text-secondary text-xl" />
                 </div>
@@ -144,7 +246,7 @@ export default function FollowButton(props: Props) {
           <div className="flex space-x-1 items-center filter drop-shadow-md">
             <Button
               color={'light'}
-              onClick={() => setShowExplanationModal(true)}
+              onClick={() => setShowFollowModal(true)}
               loading={followLoading}
               size="large"
             >
@@ -157,7 +259,7 @@ export default function FollowButton(props: Props) {
               content={
                 <>
                   Following restaurants gives you <br /> access to exclusive
-                  experiences
+                  experiences.
                 </>
               }
             >

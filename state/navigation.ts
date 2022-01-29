@@ -1,6 +1,10 @@
+import { AuthFlowStep } from 'components/modals/auth/AuthModal';
+
 export interface INavigation {
-  searchOverlayExpanded: boolean;
   isAuthModalOpen: boolean;
+  authModalStep: AuthFlowStep;
+
+  searchOverlayExpanded: boolean;
   isArticleHiwOpen: boolean;
   isOfferMenuOpen: boolean;
   cuisineBarScrollPos: number;
@@ -14,10 +18,12 @@ export interface INavigation {
 }
 
 export const initialNavigationState: INavigation = {
+  isAuthModalOpen: false,
+  authModalStep: AuthFlowStep.SIGN_IN,
+
   searchOverlayExpanded: false,
   cuisineBarScrollPos: 0,
   isOfferMenuOpen: false,
-  isAuthModalOpen: false,
   isArticleHiwOpen: false,
 
   // Loader properties
@@ -29,9 +35,11 @@ export const initialNavigationState: INavigation = {
 };
 
 export enum NavigationActions {
+  OPEN_AUTH_MODAL = 'OPEN_AUTH_MODAL',
+  CLOSE_AUTH_MODAL = 'CLOSE_AUTH_MODAL',
+  SET_AUTH_MODAL_STEP = 'SET_AUTH_MODAL_STEP',
+
   EXPAND_SEARCH_OVERLAY = 'EXPAND_SEARCH_OVERLAY',
-  OPEN_SIGN_IN_MODAL = 'OPEN_SIGN_IN_MODAL',
-  CLOSE_SIGN_IN_MODAL = 'CLOSE_SIGN_IN_MODAL',
   COLLAPSE_SEARCH_OVERLAY = 'COLLAPSE_SEARCH_OVERLAY',
   TOGGLE_SEARCH_OVERLAY = 'TOGGLE_SEARCH_OVERLAY',
   SAVE_CUISINE_BAR_SCROLL_POS = 'SAVE_CUISINE_BAR_SCROLL_POS',
@@ -68,11 +76,16 @@ export const toggleSearchOverlay = () => ({
 });
 
 export const openAuthModal = () => ({
-  type: NavigationActions.OPEN_SIGN_IN_MODAL,
+  type: NavigationActions.OPEN_AUTH_MODAL,
 });
 
 export const closeAuthModal = () => ({
-  type: NavigationActions.CLOSE_SIGN_IN_MODAL,
+  type: NavigationActions.CLOSE_AUTH_MODAL,
+});
+
+export const setAuthModalStep = (step: AuthFlowStep) => ({
+  type: NavigationActions.SET_AUTH_MODAL_STEP,
+  payload: step,
 });
 
 export const toggleOfferMenu = (isOpen: boolean) => ({
