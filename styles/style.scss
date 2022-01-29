@@ -18,7 +18,7 @@ a {
   }
 }
 
-ul:not([role="listbox"]) {
+ul:not([role="listbox"]):not(.slider) {
   @apply list-none;
 
   li {

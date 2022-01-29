@@ -1995,10 +1995,10 @@
   resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-icons/0.28.0/f0df6da3cc0ac9aa8bf955aae481f263cf2fc22458b1c1e1fb0ead12856ba1ca#dacf6710ea830ff82f1547fc3e02c57e16299e8f"
   integrity sha512-b5oF17xayTZmTsAJDkdRuMXB6RqSaNs0iPKoBymOstOp2xSTIWu/hzN0nlEcGkwu8you86NtlWVYhi0ihFi59w==
 
-"@tastiest-io/tastiest-ui@^0.80.0":
-  version "0.80.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-ui/0.80.0/2de1b7ef81c4e91ef450cffc9f2282e9d664f8da33f1d7951acb6498fe321e7f#ab6384672bae818ec1e2bfb4f17cfbdfad87a16d"
-  integrity sha512-UGYfUNITTOqNKrPUL/9ir8khQP0JY4bGgc3FXDy1U81leMN9/k4PU5sTodrYe2Y0ps9JEq1e9e+iv1tw9Bd8XA==
+"@tastiest-io/tastiest-ui@^0.82.0":
+  version "0.82.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-ui/0.82.0/5965a6a36cfe73b1f820fc240e2872c67ed2905cbeeabedd488afdf1ed7a8b8d#326a9ca89fbfd86c1fe794050c45c6a8a02b1d4d"
+  integrity sha512-2cfwcZffSqbWwm/+XlR2Rv+5ZAjnetc9k5vJdo2mnTTEuRTVH7/5by6rMXyNU4lwT1QgKC+jzqMr8oI341Pb1w==
   dependencies:
     "@headlessui/react" "^1.4.1"
     "@nivo/core" "^0.74.0"
@@ -2009,10 +2009,10 @@
     react-table "^7.7.0"
     uuid "^8.3.2"
 
-"@tastiest-io/tastiest-utils@^1.56.0":
-  version "1.56.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.56.0/1348b26a1b6b23f5f80dcdf66c6cf53ca3134f7f2c4888766d7562b667875757#6892fcf04c02a6ead5adcfcddd4bfbf7055b308f"
-  integrity sha512-CJTnvi8tVxXmQfEewcvYUArJiKDAtnJXXJgyxpY8LXJlmc+9HLm6WUblHIv56YfPeRgCbBGhEqT2SVRn6/wDXA==
+"@tastiest-io/tastiest-utils@^1.57.0":
+  version "1.57.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.57.0/cf2275d8f88597366f5cda41d1817a400e9d3576fe5573fd0d62475d861cdbd0#e883595a712a3feee6e34ec51ae98e8d77bea1ad"
+  integrity sha512-qJ26CZIj35HZeH2gThCGiBfzwgJC3BHv4KOFCayAgpTzZCTNS8kDwd0c4UfL6eRHoFCY8/5AWPy/rU4QqbQfGA==
   dependencies:
     "@contentful/rich-text-types" "^14.1.2"
     "@shopify/shopify-api" "^1.4.0"
@@ -10527,6 +10527,13 @@ react-dom@^17.0.0:
     object-assign "^4.1.1"
     scheduler "^0.20.0"
 
+react-easy-swipe@^0.0.21:
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/react-easy-swipe/-/react-easy-swipe-0.0.21.tgz#ce9384d576f7a8529dc2ca377c1bf03920bac8eb"
+  integrity sha512-OeR2jAxdoqUMHIn/nS9fgreI5hSpgGoL5ezdal4+oO7YSSgJR8ga+PkYGJrSrJ9MKlPcQjMQXnketrD7WNmNsg==
+  dependencies:
+    prop-types "^15.5.8"
+
 react-fast-compare@^3.0.1:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
@@ -10620,6 +10627,15 @@ react-refresh@0.8.3:
   version "0.8.3"
   resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.8.3.tgz"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
+
+react-responsive-carousel@^3.2.22:
+  version "3.2.22"
+  resolved "https://registry.yarnpkg.com/react-responsive-carousel/-/react-responsive-carousel-3.2.22.tgz#6281603daa33656940d01e207f511b83c0093c70"
+  integrity sha512-/r7dsIaN+l417IYIS0Fr7Z5VlpK3KYnTIIsdVCWSqtuJRIZNM+qdBIA4RIbzQtuW/ZBTnQanBecblCxg0HCqLQ==
+  dependencies:
+    classnames "^2.2.5"
+    prop-types "^15.5.8"
+    react-easy-swipe "^0.0.21"
 
 react-stickynode@^3.0.5:
   version "3.0.5"
