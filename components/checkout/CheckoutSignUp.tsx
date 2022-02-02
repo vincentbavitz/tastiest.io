@@ -2,10 +2,10 @@ import { UserIcon } from '@tastiest-io/tastiest-icons';
 import { Button, Input } from '@tastiest-io/tastiest-ui';
 import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
 import { AuthError, AuthErrorCode, AuthErrorMessageMap } from 'contexts/auth';
-import { useRegister } from 'hooks/auth/useRegister';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useTrack } from 'hooks/useTrack';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useToggle } from 'react-use';
 import { cleanupInputValue } from 'utils/text';
 import { InputEmail } from '../inputs/InputEmail';
@@ -15,7 +15,7 @@ import { AuthTabsContext, CheckoutSignInTabSelected } from './CheckoutAuthTabs';
 
 export function CheckoutSignUp() {
   const { track } = useTrack();
-  const { register, error: fetchError, submitting } = useRegister();
+  const { register } = useAuth();
 
   const { isDesktop } = useScreenSize();
   const { setTab } = useContext(AuthTabsContext);
@@ -24,14 +24,9 @@ export function CheckoutSignUp() {
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPassword0, setSignUpPassword0] = useState('');
   const [signUpPassword1, setSignUpPassword1] = useState('');
-  const [error, setError] = useState<AuthError | null>(null);
 
-  // Sync local errors with fetchError
-  useEffect(() => {
-    if (fetchError) {
-      setError(fetchError);
-    }
-  }, [fetchError]);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<AuthError | null>(null);
 
   // TODO -> Abstract this away so it's not just copying SignUpModal
   const [showPassword, toggleShowPassword] = useToggle(false);
@@ -42,16 +37,15 @@ export function CheckoutSignUp() {
       return;
     }
 
-    const { user } = await register(signUpEmail, signUpPassword0, signUpName);
+    setSubmitting(true);
 
-    if (user?.uid) {
-      // Track sign up from checkout
-      track('User Signed Up', {
-        ...user,
-      });
+    const { success } = await register(
+      signUpEmail,
+      signUpPassword0,
+      signUpName,
+    );
 
-      return;
-    }
+    setSubmitting(false);
   };
 
   dlog('CheckoutSignUp ➡️ error:', error);

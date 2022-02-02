@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useFeedback } from 'hooks/useFeedback';
 import { useScreenSize } from 'hooks/useScreenSize';
-import { useUserData } from 'hooks/useUserData';
 import React, { useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { REGEX } from '../constants';
@@ -18,7 +17,6 @@ type FormData = {
 
 export function SuggestRestaurant() {
   const { user, isSignedIn } = useAuth();
-  const { userData } = useUserData(user);
   const { isMobile, isDesktop, isHuge } = useScreenSize();
 
   // Form values

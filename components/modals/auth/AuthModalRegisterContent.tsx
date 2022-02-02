@@ -1,8 +1,8 @@
 import { EmailIcon, LockIcon, UserIcon } from '@tastiest-io/tastiest-icons';
 import { Button, Input, Tooltip } from '@tastiest-io/tastiest-ui';
 import { AUTH, dlog, titleCase } from '@tastiest-io/tastiest-utils';
-import { useRegister } from 'hooks/auth/useRegister';
-import React from 'react';
+import { useAuth } from 'hooks/auth/useAuth';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { METADATA, REGEX } from '../../../constants';
 import { AuthFlowStep, ContentElementProps } from './AuthModal';
@@ -16,7 +16,7 @@ type RegisterFormData = {
 };
 
 export const AuthModalRegisterContent = ({ setStep }: ContentElementProps) => {
-  const { register, submitting, error } = useRegister();
+  const { register } = useAuth();
 
   const { handleSubmit, control } = useForm<RegisterFormData>({
     mode: 'onBlur',
@@ -25,9 +25,27 @@ export const AuthModalRegisterContent = ({ setStep }: ContentElementProps) => {
     shouldFocusError: true,
   });
 
-  const onClickRegister = handleSubmit(({ email, password, firstName }) => {
-    register(email, password, firstName.trim());
-  });
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const onClickRegister = handleSubmit(
+    async ({ email, password, firstName }) => {
+      setSubmitting(true);
+      setError(null);
+
+      const { success, error } = await register(
+        email,
+        password,
+        firstName.trim(),
+      );
+
+      if (error) {
+        setError(error);
+      }
+
+      setSubmitting(false);
+    },
+  );
 
   dlog('AuthModal ➡️ error:', error);
 
@@ -133,7 +151,8 @@ export const AuthModalRegisterContent = ({ setStep }: ContentElementProps) => {
             style={{ maxWidth: '260px' }}
             className="flex items-center text-dark"
           >
-            {error?.userFacingMessage ?? error?.message}
+            {/* {error?.userFacingMessage ?? error?.message} */}
+            {error ?? null}
           </div>
         }
       >

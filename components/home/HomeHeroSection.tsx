@@ -30,7 +30,7 @@ export function HomeHeroSection(): JSX.Element {
   );
 
   return (
-    <div className="relative flex flex-col items-center justify-evenly bg-dark w-full overflow-x-hidden mb-10">
+    <div className="relative flex flex-col items-center justify-evenly bg-dark w-full overflow-x-hidden mb-16">
       <div
         style={{
           width: '100%',
