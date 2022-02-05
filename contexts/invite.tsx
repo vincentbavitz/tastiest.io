@@ -83,14 +83,17 @@ export const EarlyAccessProvider = ({
   };
 
   const [email, setEmail] = useState<string | null>(null);
-  const [hasAccess, setHasAccess] = useLocalStorage('hasAccessLocal', false);
-
   const [hasAccessCookie, setHasAccessCookie] = useCookie('hasAccess');
 
-  // Update the cookie any time we have access;
-  useEffect(() => {
+  const [hasAccess, setHasAccess] = useState<boolean | null>(
+    hasAccessCookie === 'true' ? true : false,
+  );
+
+  // Abstract this away to modify both values at once.
+  const _setHasAcccess = (hasAccess: boolean) => {
     setHasAccessCookie(String(hasAccess));
-  }, [hasAccess]);
+    setHasAccess(hasAccess);
+  };
 
   const [referrer, setReferrer] = useLocalStorage(
     'referrer',
@@ -184,7 +187,7 @@ export const EarlyAccessProvider = ({
     setEmail,
     referrer,
     hasAccess,
-    setHasAccess,
+    setHasAccess: _setHasAcccess,
     totalMembers,
     submitPreregister,
     utmMedium,

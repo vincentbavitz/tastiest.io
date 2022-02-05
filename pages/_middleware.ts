@@ -9,7 +9,7 @@ const restaurantRedirectMap = [
   },
   {
     regex: /^\/el-vaquero(\?.*)?/,
-    redirectTo: '/london/brazilian/el-vaquero-mill-hill/',
+    redirectTo: '/london/brazilian/el-vaquero-mill-hill',
   },
 ];
 
@@ -22,8 +22,15 @@ export function middleware(request: NextRequest) {
     }
   });
 
+  // We should also take into account the ?notifications=true
+  // parameter which brings up the follow modal.
+  // and forward this info to the redirect
   if (redirect) {
-    return NextResponse.redirect(redirect);
+    // Add hasAccess=true to cookies.
+    return NextResponse.redirect(redirect + request.nextUrl.search).cookie(
+      'hasAccess',
+      'true',
+    );
   }
 
   // Beware loops when redirecting to the same directory

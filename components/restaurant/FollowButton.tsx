@@ -15,6 +15,7 @@ import {
 import { AuthFlowStep } from 'components/modals/auth/AuthModal';
 import { AuthContext } from 'contexts/auth';
 import useFollow from 'hooks/useFollow';
+import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { openAuthModal, setAuthModalStep } from 'state/navigation';
@@ -26,6 +27,8 @@ interface Props {
 export default function FollowButton(props: Props) {
   const { restaurant } = props;
   const { isSignedIn } = useContext(AuthContext);
+
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const {
@@ -48,6 +51,20 @@ export default function FollowButton(props: Props) {
       unfollow();
     }
   };
+
+  // Popup modal when we've got the ?notifcations parameter
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const url = new URL(window.location.href);
+    const notifcations = url.searchParams.get('notifications') === 'true';
+
+    if (notifcations) {
+      setShowFollowModal(true);
+    }
+  }, []);
 
   const followAsSignedOut = () => {
     setHasSignedInFromFlow(true);
