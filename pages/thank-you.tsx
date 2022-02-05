@@ -27,6 +27,8 @@ import { generateTitle } from 'utils/metadata';
 import { v4 as uuid } from 'uuid';
 import { Contained } from '../components/Contained';
 
+const TASTIEAT_AIR_CALL_NUMBER = '0203-868-2972';
+
 type PaymentCard = {
   brand: string;
   last4: string;
@@ -86,8 +88,8 @@ export const getServerSideProps = async context => {
 
   const booking = bookingSnapshot.data() as Booking;
 
-  // Redirect if invalid booking.
-  if (!booking) {
+  // Redirect if invalid booking or they've already arrived.
+  if (!booking || booking.hasArrived) {
     return {
       redirect: {
         destination: '/',
@@ -202,7 +204,7 @@ function ThankYou(
 
             <h2 className="text-2xl text-center font-primary text-light opacity-75 pt-3">
               Thanks, {firstName ? ` ${firstName}` : ''}!{' '}
-              {isDesktop ? null : <br />} You're going to love it
+              {isDesktop ? null : <br />} You're going to love it.
             </h2>
           </Contained>
         </div>
@@ -229,16 +231,11 @@ function ThankYou(
               promptText={
                 <div className="flex flex-col items-center md:items-start">
                   <p className={isDesktop ? 'pb-2' : 'pb-3'}>
-                    Call them up and mention{' '}
-                    <span className="font-normal">Tastiest</span> if you have
-                    any questions.
+                    If you have any questions, please call us.
                   </p>
 
                   <a
-                    href={`tel:${order.deal.restaurant?.publicPhoneNumber.replace(
-                      /[\s]/g,
-                      '-',
-                    )}`}
+                    href={`tel:${TASTIEAT_AIR_CALL_NUMBER}`}
                     target="_blank"
                     rel="noreferrer"
                     className="no-underline"
@@ -259,7 +256,7 @@ function ThankYou(
             />
 
             <BookingSection
-              title="Redeem with your booking code"
+              title="Give your waiter your code on arrival"
               step={2}
               promptText={
                 <p>
@@ -286,7 +283,7 @@ function ThankYou(
               title={`Enjoy your food!`}
               step={3}
               promptText={
-                <p>Enjoy your meal, and don't forget to leave a review!</p>
+                'A discretionary service charge bill will be presented at the end of your meal.'
               }
               figure={
                 <div

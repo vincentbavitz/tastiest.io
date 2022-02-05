@@ -172,7 +172,10 @@ export function CheckoutStepPayment(props: Props) {
           'There was an error processing your payment. Please try using another card.',
       });
 
+      alert(error);
+
       dispatch(setIsPaymentProcessing(false));
+      return;
     }
   };
 
