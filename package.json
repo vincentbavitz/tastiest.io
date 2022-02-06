@@ -24,7 +24,7 @@
     "@contentful/rich-text-types": "^14.1.2",
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
-    "@headlessui/react": "^1.4.2",
+    "@headlessui/react": "^1.4.3",
     "@segment/analytics.js-core": "^4.1.11",
     "@segment/snippet": "^4.15.3",
     "@stripe/react-stripe-js": "^1.2.2",

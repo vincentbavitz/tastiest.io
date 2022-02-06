@@ -13,7 +13,7 @@ import { useSignOut } from 'hooks/auth/useSignOut';
 import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { UI } from '../../constants';
 import { openAuthModal } from '../../state/navigation';
@@ -25,6 +25,7 @@ export interface HeaderProps {
   transparency?: 'glass' | 'full' | 'none';
   theme?: 'light' | 'dark';
   breadcrumbs?: Omit<CrumbProps, 'selected'>[];
+  children?: ReactNode;
 }
 
 export function Header(props: HeaderProps) {
@@ -61,16 +62,22 @@ function MobileHeader(props: HeaderProps) {
           'fixed left-0 right-0 w-full duration-500',
           breadcrumbs ? 'top-9' : 'top-0',
           transparency === 'glass' && 'glass',
-          transparency === 'none' ? 'bg-white' : 'bg-none',
+          transparency === 'none'
+            ? theme === 'light'
+              ? 'bg-white'
+              : 'bg-dark'
+            : 'bg-none',
           isPageLoading ? 'pointer-events-none' : 'pointer-events-auto',
         )}
       >
         <div className="relative flex items-center justify-between w-full h-full">
-          <Link href="/">
-            <a className="flex items-center flex-shrink-0 no-underline">
-              <TastiestBrand type="full" theme={theme} size={8} />
-            </a>
-          </Link>
+          <div className="flex flex-grow space-x-4">
+            <Link href="/">
+              <a className="flex items-center flex-shrink-0 no-underline">
+                <TastiestBrand type="full" theme={theme} size={8} />
+              </a>
+            </Link>
+          </div>
 
           <Dropdown offset={20}>
             <Dropdown.Trigger>
@@ -139,7 +146,12 @@ function MobileHeader(props: HeaderProps) {
 }
 
 function DesktopHeader(props: HeaderProps) {
-  const { transparency = 'none', breadcrumbs, theme = 'light' } = props;
+  const {
+    transparency = 'none',
+    breadcrumbs,
+    theme = 'light',
+    children,
+  } = props;
 
   const { searchOverlayExpanded } = useSelector(
     (state: IState) => state.navigation,
@@ -186,19 +198,25 @@ function DesktopHeader(props: HeaderProps) {
           'fixed left-0 right-0 flex items-center duration-500 w-full',
           breadcrumbs ? 'top-9' : 'top-0',
           transparency === 'glass' && 'glass',
-          transparency === 'none' ? 'bg-white' : 'bg-none',
+          transparency === 'none'
+            ? theme === 'light'
+              ? 'bg-white'
+              : 'bg-dark'
+            : 'bg-none',
           isPageLoading ? 'pointer-events-none' : 'pointer-events-auto',
         )}
       >
         <Contained>
           <div className="flex items-center w-full h-full">
             <div className="flex items-center justify-between w-full antialiased">
-              <div className="flex flex-grow">
+              <div className="flex space-x-4 flex-grow">
                 <Link href="/">
                   <a className="no-underline">
                     <TastiestBrand theme={theme} type="full" size={10} />
                   </a>
                 </Link>
+
+                {children}
 
                 {/* <HeaderSearch
                 isShown={searchIsShown}
