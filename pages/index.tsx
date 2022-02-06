@@ -101,7 +101,6 @@ const Index = () => {
       <div className="flex flex-col mb-10 space-y-10">
         <div>
           <HomeHeroSection />
-
           <HomeFeaturedRestaurantsSection restaurants={restaurants} />
           <HomeAwardWinningDishesSection dishes={dishes} />
           <HomeFeaturedExperiencesSection cards={cards} />

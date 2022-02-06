@@ -1,7 +1,168 @@
-import { dlog } from '@tastiest-io/tastiest-utils';
+import {
+  dlog,
+  Horus,
+  UserMetrics,
+  UserPreferences,
+} from '@tastiest-io/tastiest-utils';
 import nookies from 'nookies';
 import React, { createContext, useEffect, useState } from 'react';
 import { firebaseClient } from '../utils/firebaseClient';
+import { ANONYMOUS_USER_ID, LocalStorageItem } from './tracking';
+
+type AuthContextShape = {
+  user: firebaseClient.User | null;
+  userData: UserData | null;
+  isSignedIn: null | boolean;
+  token: string | null;
+  register?: (
+    email: string,
+    password: string,
+    firstName: string,
+  ) => Promise<{ success: boolean; error: string | null }>;
+};
+
+// Example taken from  https://github1s.com/colinhacks/next-firebase-ssr/blob/HEAD/auth.tsx
+export const AuthContext = createContext<AuthContextShape>({
+  user: null,
+  userData: null,
+  token: null,
+  isSignedIn: null,
+});
+
+/** Updated UserData based on Horus response. */
+interface UserData {
+  uid: string;
+  email: string;
+  firstName: string;
+  lastName?: string;
+  mobile?: string;
+
+  isTestAccont: boolean;
+  lastActive: Date | null;
+
+  location?: {
+    lat: number | null;
+    lon: number | null;
+    address: string | null;
+    display: string | null;
+  };
+
+  metrics?: UserMetrics | null;
+  preferences?: UserPreferences | null;
+}
+
+export function AuthProvider({ children }: any) {
+  // Undefined while loading, null if not logged in
+  const [user, setUser] = useState<firebaseClient.User | null | undefined>(
+    undefined,
+  );
+
+  const [token, setToken] = useState<string | null>(null);
+  const [userData, setUserData] = useState<UserData>(null);
+
+  // Null if the user information has not been loaded yet -- else boolean
+  const isSignedIn = user === undefined ? null : Boolean(user?.uid);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      (window as any).nookies = nookies;
+    }
+
+    return firebaseClient.auth().onIdTokenChanged(async user => {
+      dlog(`Token changed!`);
+      if (!user) {
+        dlog(`No token found...`);
+
+        nookies.destroy(null, 'token');
+        nookies.set(null, 'token', '', { path: '/' });
+        setUser(null);
+        setToken(null);
+        return;
+      }
+
+      const _token = await user.getIdToken();
+      dlog(`Updating token...`, _token);
+
+      nookies.destroy(null, 'token');
+      nookies.set(null, 'token', _token, { path: '/' });
+      setUser(user);
+      setToken(_token);
+    });
+  }, []);
+
+  // Force refresh the token every 10 minutes
+  useEffect(() => {
+    const handle = setInterval(async () => {
+      dlog(`Refreshing token...`);
+      const user = firebaseClient.auth().currentUser;
+      if (user) await user.getIdToken(true);
+    }, 10 * 60 * 1000);
+
+    return () => clearInterval(handle);
+  }, []);
+
+  useEffect(() => {
+    dlog('User', user);
+  }, [user]);
+
+  // Fetch user data when signed in.
+  useEffect(() => {
+    if (!token || !user?.uid) {
+      return;
+    }
+
+    const horus = new Horus(token);
+    horus.get(`/users/${user.uid}`).then(({ data }) => {
+      if (data) {
+        dlog('auth ➡️ data:', data);
+        setUserData(data);
+      }
+    });
+  }, [user, token, isSignedIn]);
+
+  const register = async (
+    email: string,
+    password: string,
+    firstName: string,
+  ) => {
+    if (isSignedIn) {
+      return;
+    }
+
+    const horus = new Horus(null);
+    const { data, error } = await horus.post('/auth/public/register', {
+      email,
+      password,
+      firstName,
+      userAgent: navigator?.userAgent ?? null,
+      anonymousId:
+        window?.analytics?.user?.()?.anonymousId() ?? ANONYMOUS_USER_ID,
+    });
+
+    if (error) {
+      return { success: false, error };
+    }
+
+    // User has accepted cookies implicitly
+    localStorage.setItem(LocalStorageItem.HAS_ACCEPTED_COOKIES, '1');
+    setToken(data.token);
+
+    // Sign user in.
+    const { user: _user } = await window?.firebase
+      .auth()
+      .signInWithCustomToken(data.token);
+
+    return { success: true, error: null };
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{ user, userData, token, isSignedIn, register }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
 
 // Firebase Auth Error codes
 // Ref: https://firebase.google.com/docs/auth/admin/errors
@@ -172,76 +333,3 @@ export const AuthErrorMessageMap = {
     userFacingMessage: 'Passwords do not match.',
   },
 } as { [key: string]: AuthError };
-
-type AuthContextShape = {
-  user: firebaseClient.User | null;
-  isSignedIn: null | boolean;
-  token: string | null;
-};
-
-// Example taken from  https://github1s.com/colinhacks/next-firebase-ssr/blob/HEAD/auth.tsx
-export const AuthContext = createContext<AuthContextShape>({
-  user: null,
-  token: null,
-  isSignedIn: null,
-});
-
-export function AuthProvider({ children }: any) {
-  // Undefined while loading, null if not logged in
-  const [user, setUser] = useState<firebaseClient.User | null | undefined>(
-    undefined,
-  );
-
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      (window as any).nookies = nookies;
-    }
-
-    return firebaseClient.auth().onIdTokenChanged(async user => {
-      dlog(`Token changed!`);
-      if (!user) {
-        dlog(`No token found...`);
-
-        nookies.destroy(null, 'token');
-        nookies.set(null, 'token', '', { path: '/' });
-        setUser(null);
-        setToken(null);
-        return;
-      }
-
-      const _token = await user.getIdToken();
-      dlog(`Updating token...`, _token);
-
-      nookies.destroy(null, 'token');
-      nookies.set(null, 'token', _token, { path: '/' });
-      setUser(user);
-      setToken(_token);
-    });
-  }, []);
-
-  // Force refresh the token every 10 minutes
-  useEffect(() => {
-    const handle = setInterval(async () => {
-      dlog(`Refreshing token...`);
-      const user = firebaseClient.auth().currentUser;
-      if (user) await user.getIdToken(true);
-    }, 10 * 60 * 1000);
-
-    return () => clearInterval(handle);
-  }, []);
-
-  useEffect(() => {
-    dlog('User', user);
-  }, [user]);
-
-  // Null if the user information has not been loaded yet -- else boolean
-  const isSignedIn = user === undefined ? null : Boolean(user?.uid);
-
-  return (
-    <AuthContext.Provider value={{ user, token, isSignedIn }}>
-      {children}
-    </AuthContext.Provider>
-  );
-}

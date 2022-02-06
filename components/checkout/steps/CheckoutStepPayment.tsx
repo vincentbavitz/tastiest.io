@@ -97,6 +97,7 @@ export function CheckoutStepPayment(props: Props) {
     event;
   };
 
+  /** MOVE ME TO TASTIEST-BACKEND */
   const makePayment = async ({
     firstName,
     lastName,
@@ -104,15 +105,6 @@ export function CheckoutStepPayment(props: Props) {
     cardPostcode,
     cardHolderName,
   }: FormData) => {
-    // Validate birthday (input itself already does user facing error message)
-    if (
-      birthday?.day.length !== 2 ||
-      birthday?.month.length !== 2 ||
-      birthday?.year.length !== 4
-    ) {
-      return;
-    }
-
     // Set user data, only if it differs from current data
     if (
       firstName?.length > 0 ||
@@ -180,7 +172,10 @@ export function CheckoutStepPayment(props: Props) {
           'There was an error processing your payment. Please try using another card.',
       });
 
+      alert(error);
+
       dispatch(setIsPaymentProcessing(false));
+      return;
     }
   };
 

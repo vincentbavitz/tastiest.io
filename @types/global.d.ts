@@ -11,6 +11,7 @@ interface IAnalytics extends SegmentAnalytics.AnalyticsJS {
 declare global {
   interface Window {
     analytics: IAnalytics;
+    firebase: ExtendedFirebaseInstance;
     dataLayer: any;
     fbq: any;
     gtag: any;

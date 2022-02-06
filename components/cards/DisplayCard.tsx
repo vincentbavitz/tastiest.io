@@ -7,11 +7,11 @@ import React, { ReactNode, useRef } from 'react';
 import { useHoverDirty } from 'react-use';
 
 interface DisplayCardProps {
-  header: string;
+  header?: string;
   headerFont?: 'primary' | 'secondary';
 
-  description: string;
-  image: Media;
+  description?: string;
+  image?: Media;
 
   // The underlay card at the bottom.
   children?: ReactNode;
@@ -19,6 +19,8 @@ interface DisplayCardProps {
   // For next/link
   href?: string;
   as?: string;
+
+  loading?: boolean;
 }
 
 // const { href, as } = useMemo(
@@ -49,6 +51,7 @@ function DisplayCardInner(props: DisplayCardProps) {
     headerFont = 'secondary',
     description,
     image,
+    loading,
     children,
   } = props;
 
@@ -119,6 +122,11 @@ function DisplayCardInner(props: DisplayCardProps) {
         <div className="pt-4 pb-2 px-2 bg-white rounded-b-lg w-full -mt-2 duration-300">
           {children}
         </div>
+      ) : null}
+
+      {/* Loading overlay */}
+      {loading ? (
+        <div className="absolute inset-0 bg-gray-100 z-50 rounded-lg"></div>
       ) : null}
     </div>
   );
