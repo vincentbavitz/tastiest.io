@@ -1,6 +1,7 @@
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { Transition } from '@headlessui/react';
 import { Button, Input, Select, TastiestBrand } from '@tastiest-io/tastiest-ui';
+import { Horus } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -345,6 +346,8 @@ type SocialInputFormData = {
 
 const CallToActionSection = (props: any) => {
   const { isDesktop } = useScreenSize();
+
+  const [submitting, setSubmitting] = useState(false);
   const [step, setStep] = useState<CallToActionStep>(CallToActionStep.INITIAL);
 
   const socialsOptions: SocialOption[] = [
@@ -415,6 +418,7 @@ const CallToActionSection = (props: any) => {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<SocialInputFormData>({
     mode: 'onBlur',
@@ -448,9 +452,21 @@ const CallToActionSection = (props: any) => {
     },
   });
 
-  const submit = handleSubmit(({ socialReference }) => {
-    const socialType = socialsOption.id;
-    socialReference;
+  const submit = handleSubmit(async ({ socialReference }) => {
+    setSubmitting(true);
+
+    const horus = new Horus(null);
+    const { error } = await horus.post('/public/affiliates/new-submission', {
+      platform: socialsOption.id,
+      reference: socialReference,
+    });
+
+    setSubmitting(false);
+
+    if (!error) {
+      reset({ socialReference: '' });
+      setStep(CallToActionStep.FINAL);
+    }
   });
 
   return (
@@ -530,7 +546,8 @@ const CallToActionSection = (props: any) => {
               wide
               size="large"
               suffix={<RightOutlined />}
-              onClick={() => setStep(CallToActionStep.FINAL)}
+              loading={submitting}
+              onClick={submit}
             >
               Sign up
             </Button>
