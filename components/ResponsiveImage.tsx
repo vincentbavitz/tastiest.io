@@ -1,8 +1,10 @@
+import styled from '@emotion/styled';
 import Image, { ImageProps } from 'next/image';
 import React from 'react';
-import styled from '@emotion/styled';
 
-type Props = Omit<ImageProps, 'layout' | 'width' | 'height' | 'objectFit'>;
+type Props = Omit<ImageProps, 'layout' | 'width' | 'height'> & {
+  fillHeight?: boolean;
+};
 
 const ResponsiveImageContainer = styled.div`
   width: 100%;
@@ -27,14 +29,18 @@ const ResponsiveImageContainer = styled.div`
  * dynamically adjust its size to fit its parent.
  */
 export default function ResponsiveImage(props: Props) {
+  const { fillHeight } = props;
+
   const _props = {
-    ...props,
     layout: 'fill',
     objectFit: 'cover',
+    ...props,
   } as ImageProps;
 
   return (
-    <ResponsiveImageContainer>
+    <ResponsiveImageContainer
+      style={{ height: fillHeight ? 'inherit' : 'unset' }}
+    >
       <Image {..._props} />
     </ResponsiveImageContainer>
   );
