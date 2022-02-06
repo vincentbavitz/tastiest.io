@@ -1,3 +1,4 @@
+import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetServerSidePropsType } from 'next';
 import { getServerSideProps } from 'pages';
 import React, { useEffect, useState } from 'react';
@@ -10,9 +11,10 @@ export default function LayoutHome({
   pageProps,
   children: Component,
 }: LayoutProps<InferGetServerSidePropsType<typeof getServerSideProps>>) {
+  const { isDesktop } = useScreenSize();
+
   // Remove header transparency on scroll
-  const TRANSPARENCY_GLASS_CUTOFF_PX = 0;
-  const TRANSPARENCY_Y_CUTOFF_PX = 325;
+  const TRANSPARENCY_GLASS_CUTOFF_PX = 150;
   const { y: scrollY } = useWindowScroll();
   const [headerTransparency, setHeaderTransparency] = useState<
     'glass' | 'none' | 'full'
@@ -20,13 +22,9 @@ export default function LayoutHome({
 
   useEffect(() => {
     if (scrollY > TRANSPARENCY_GLASS_CUTOFF_PX) {
-      if (scrollY > TRANSPARENCY_Y_CUTOFF_PX) {
-        setHeaderTransparency('none');
-      } else {
-        setHeaderTransparency('glass');
-      }
+      setHeaderTransparency('none');
     } else {
-      setHeaderTransparency('full');
+      setHeaderTransparency('glass');
     }
 
     return () => setHeaderTransparency('none');
@@ -37,8 +35,12 @@ export default function LayoutHome({
       router={router}
       pageProps={pageProps}
       headerProps={{
-        transparency: headerTransparency,
-        theme: headerTransparency === 'none' ? 'light' : 'dark',
+        transparency: isDesktop ? 'none' : headerTransparency,
+        theme: isDesktop
+          ? 'light'
+          : headerTransparency === 'glass'
+          ? 'dark'
+          : 'light',
       }}
     >
       <Component {...(pageProps as any)} />

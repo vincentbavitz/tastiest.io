@@ -1,9 +1,10 @@
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { Transition } from '@headlessui/react';
 import { Button, Input, Select, TastiestBrand } from '@tastiest-io/tastiest-ui';
-import { Horus } from '@tastiest-io/tastiest-utils';
+import { dlog, Horus } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { Layouts } from 'layouts/LayoutHandler';
 import Image from 'next/image';
@@ -286,6 +287,7 @@ interface CallToActionSlideProps {
 
 const CallToActionSlide = (props: CallToActionSlideProps) => {
   const { heading, subheading, children } = props;
+
   const { isDesktop } = useScreenSize();
 
   return (
@@ -345,7 +347,10 @@ type SocialInputFormData = {
 };
 
 const CallToActionSection = (props: any) => {
+  const { userData } = useAuth();
   const { isDesktop } = useScreenSize();
+
+  dlog('affiliate-program ➡️ userData:', userData);
 
   const [submitting, setSubmitting] = useState(false);
   const [step, setStep] = useState<CallToActionStep>(CallToActionStep.INITIAL);
@@ -459,6 +464,8 @@ const CallToActionSection = (props: any) => {
     const { error } = await horus.post('/public/affiliates/new-submission', {
       platform: socialsOption.id,
       reference: socialReference,
+      userId: userData.uid,
+      anonymousId: window.analytics?.user?.().anonymousId,
     });
 
     setSubmitting(false);
