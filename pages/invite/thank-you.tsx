@@ -250,17 +250,21 @@ const ThankYou = (
             <div className="flex flex-wrap justify-center gap-10 pt-6 text-dark">
               <section className="text-center">
                 <h4 className="text-4xl font-primary">
-                  {Intl.NumberFormat().format(updatedPlaceInLine)}
+                  {Intl.NumberFormat().format(
+                    updatedPlaceInLine > 200000
+                      ? updatedPlaceInLine - 140000
+                      : updatedPlaceInLine,
+                  )}
                 </h4>
                 <p>your place in line</p>
               </section>
 
-              <section className="text-center">
+              {/* <section className="text-center">
                 <h4 className="text-4xl font-primary">
                   {Intl.NumberFormat().format(totalMembers + 5)}
                 </h4>
                 <p>total waitlist members</p>
-              </section>
+              </section> */}
 
               <section className="text-center">
                 <h4 className="text-4xl font-primary">{numSignUps}</h4>

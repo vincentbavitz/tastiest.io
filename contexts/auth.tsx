@@ -107,7 +107,7 @@ export function AuthProvider({ children }: any) {
 
   // Fetch user data when signed in.
   useEffect(() => {
-    if (!token) {
+    if (!token || !user?.uid) {
       return;
     }
 
