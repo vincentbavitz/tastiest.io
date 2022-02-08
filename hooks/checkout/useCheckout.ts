@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { useAuth } from '../auth/useAuth';
 import { useUserData } from '../useUserData';
 
+// DELETE MEEEE
 export function useCheckout() {
   // const firebase = useFirebase();
   // dlog('useCheckout ➡️ firebase:', firebase);

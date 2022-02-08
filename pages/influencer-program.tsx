@@ -19,7 +19,7 @@ enum CallToActionStep {
   FINAL = 'FINAL',
 }
 
-function AffiliateProgram() {
+function InfluencerProgram() {
   const { isDesktop } = useScreenSize();
 
   const scrollToCta = () => {
@@ -55,7 +55,7 @@ function AffiliateProgram() {
                     layout="fill"
                     objectFit="contain"
                     objectPosition="middle"
-                    src="https://images.ctfassets.net/tq39z0nxr0bv/1tVKO982YDrpTZEMIcMeZF/b394ed7676e37b6d2ec44e84848f19c1/Affiliate-HERO.svg"
+                    src="https://images.ctfassets.net/tq39z0nxr0bv/2csm2xNKVh16bkF5OhKhwi/87d40a24cda4c3a73d6637ee2d04c530/asd.svg"
                   />
                 </div>
               </div>
@@ -67,24 +67,24 @@ function AffiliateProgram() {
       <Contained maxWidth={900}>
         <div className="mt-20">
           <h1 className="text-2xl font-medium leading-none">
-            <span className="text-primary">Tastiest Associates</span>{' '}
-            <span className="text-gray-300">|</span> Tastiest's affiliate
-            marketing program
+            <span className="text-primary">Tastiest Influencers</span>{' '}
+            <span className="text-gray-300 ">|</span>{' '}
+            <span className="bg-yellow-400">
+              Tastiest's affiliate marketing program
+            </span>
           </h1>
         </div>
 
         <div className="text-base mt-4">
-          <p className="">
+          <p className="bg-yellow-400">
             Welcome to one of the most exciting affiliate marketing programs in
             the world.
           </p>
 
           <p>
-            The Tastiest Associate Program helps content creators, publishers
-            and bloggers monetise their traffic. With a growing list of food
-            experiences available on Tastiest, affiliates use easy link-building
-            tools to direct their audience to products they recommend, and earn
-            from qualifying experiences.
+            As a Tastiest Influencer, we give you the tools you need to select
+            the best of Tastiest's experiences, easily recommend them to your
+            followers and earn commissions on qualifying purchases.
           </p>
         </div>
 
@@ -97,15 +97,13 @@ function AffiliateProgram() {
           <InfoColumn
             step={1}
             label="Sign up"
-            description="Join creators, publishers and bloggers who are earning with the Tastiest Associates Program."
             iconSrc="https://images.ctfassets.net/tq39z0nxr0bv/3NEKQOUGAdGmOmtYNuhoBl/1366da711a94c74666d79d24a0ef8d9d/SignUp.svg"
             compact={!isDesktop}
           />
 
           <InfoColumn
             step={2}
-            label="Recommend"
-            description="Share food experiences with your audience. We have customised linking tools for large publishers, individual bloggers and social media influencers."
+            label="Create"
             iconSrc="https://images.ctfassets.net/tq39z0nxr0bv/2NCXeBYa128B2DLWSt4rJA/48345057f7c0244c99951370a8879c0c/Recommend.svg"
             compact={!isDesktop}
           />
@@ -113,13 +111,12 @@ function AffiliateProgram() {
           <InfoColumn
             step={3}
             label="Earn"
-            description="Earn up to 12% in commissions income from qualifying purchases and programs. Our competitive conversion rates help maximise earnings."
             iconSrc="https://images.ctfassets.net/tq39z0nxr0bv/6WpCzjLH3Hrrt9P0Xv4D1K/3adeef34c1e5390cd160dd2bed40adea/Earn.svg"
             compact={!isDesktop}
           />
         </div>
 
-        <div className="mt-16">
+        <div className="mt-16 bg-yellow-400 bg-opacity-25">
           <h3 className="text-primary text-2xl font-medium w-full border-b mb-8">
             Frequently Asked Questions
           </h3>
@@ -177,8 +174,8 @@ function AffiliateProgram() {
         <div className="mt-16 text-center text-base">
           <h4 className="text-xl font-medium">Any other questions?</h4>
           Email us at{' '}
-          <Link href="mailto:affiliate@tastiest.io">
-            <a className="text-primary">affiliate@tastiest.io</a>
+          <Link href="mailto:influencers@tastiest.io">
+            <a className="text-primary">influencers@tastiest.io</a>
           </Link>
           .
         </div>
@@ -189,15 +186,17 @@ function AffiliateProgram() {
           <div className="flex items-center justify-center gap-2">
             <TastiestBrand type="full" theme="dark" />{' '}
             <span className="border-l border-light border-opacity-50 pl-2 font-primary text-light text-2xl mt-1">
-              associates
+              influencers
             </span>
           </div>
 
           <div className="flex flex-col items-center mt-6 text-base opacity-75">
-            <h4 className="font-medium leading-tight">
+            <h4 className="font-medium leading-tight bg-yellow-400">
               Recommend Restaurants.
             </h4>
-            <h4 className="font-medium leading-tight">Earn Commissions.</h4>
+            <h4 className="font-medium leading-tight bg-yellow-400">
+              Earn Commissions.
+            </h4>
 
             <div className="w-32 mt-6">
               <Button wide color="light" size="large" onClick={scrollToCta}>
@@ -215,7 +214,7 @@ interface InfoColumnProps {
   label: string;
   step: number;
   iconSrc: string;
-  description: string;
+  description?: string;
   compact?: boolean;
 }
 
@@ -251,12 +250,17 @@ const InfoColumn = (props: InfoColumnProps) => {
         <div className={clsx('flex flex-col', compact ? '' : 'items-center')}>
           <span className="text-xl font-medium mt-3">{label}</span>
 
-          <p
-            style={{ maxWidth: compact ? '250px' : '300px' }}
-            className={clsx('text-gray-600 mt-2', compact ? '' : 'text-center')}
-          >
-            {description}
-          </p>
+          {description ? (
+            <p
+              style={{ maxWidth: compact ? '250px' : '300px' }}
+              className={clsx(
+                'text-gray-600 mt-2',
+                compact ? '' : 'text-center',
+              )}
+            >
+              {description}
+            </p>
+          ) : null}
         </div>
       </div>
     </div>
@@ -464,7 +468,7 @@ const CallToActionSection = (props: any) => {
     const { error } = await horus.post('/public/affiliates/new-submission', {
       platform: socialsOption.id,
       reference: socialReference,
-      affiliateType: 'general',
+      affiliateType: 'influencer',
       userId: userData?.id,
       anonymousId: window.analytics?.user?.().anonymousId,
     });
@@ -499,10 +503,10 @@ const CallToActionSection = (props: any) => {
                 />
               </div>
 
-              <h1 className="text-2xl font-primary leading-none">
+              <h1 className="text-2xl font-primary leading-none bg-yellow-400">
                 Recommend Restaurants.
               </h1>
-              <h2 className="text-2xl font-primary text-primary">
+              <h2 className="text-2xl font-primary text-primary  bg-yellow-400">
                 Earn Commissions.
               </h2>
             </div>
@@ -520,7 +524,7 @@ const CallToActionSection = (props: any) => {
       ) : null}
 
       {step === CallToActionStep.FORM ? (
-        <CallToActionSlide heading="Become an affiliate">
+        <CallToActionSlide heading="Become a Tastiest influencer">
           <div className="flex flex-col h-full">
             <div className="flex flex-col space-y-6 justify-center flex-grow">
               <div className="">
@@ -594,5 +598,5 @@ const CallToActionSection = (props: any) => {
   );
 };
 
-AffiliateProgram.layout = Layouts.ASSOCIATES_INFLUENCERS;
-export default AffiliateProgram;
+InfluencerProgram.layout = Layouts.ASSOCIATES_INFLUENCERS;
+export default InfluencerProgram;

@@ -1,3 +1,5 @@
+// DELETE ME ENTIRE FILE
+
 export interface ICheckout {
   isPaymentProcessing: boolean;
 }

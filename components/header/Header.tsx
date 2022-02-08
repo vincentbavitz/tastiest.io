@@ -23,8 +23,8 @@ import { HeaderAvatar } from './HeaderAvatar';
 
 export interface HeaderProps {
   transparency?: 'glass' | 'full' | 'none';
-  theme?: 'light' | 'dark';
   breadcrumbs?: Omit<CrumbProps, 'selected'>[];
+  theme?: 'light' | 'dark';
   children?: ReactNode;
 }
 

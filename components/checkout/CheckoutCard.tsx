@@ -1,10 +1,10 @@
-import { Order } from '@tastiest-io/tastiest-utils';
+import { HorusOrderEntity } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { ReactNode } from 'react';
 
 interface CheckoutCardProps {
-  order: Order;
+  order: HorusOrderEntity;
   children: ReactNode;
 }
 
@@ -35,7 +35,7 @@ export const CheckoutCard = (props: CheckoutCardProps) => {
           >
             <img
               className="absolute inset-0 object-cover w-full h-full"
-              src={`${order?.deal?.image?.url}?w=700`}
+              src={`${order?.experience?.image?.url}?w=700`}
             />
           </div>
 
