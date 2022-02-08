@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Image from 'next/image';
 import React, { useMemo } from 'react';
@@ -22,7 +23,6 @@ export function HomeHeroSection(): JSX.Element {
       'https://images.ctfassets.net/tq39z0nxr0bv/3MLr8OlH3p3UUy55pbKQxD/c26d6988bf1e9fb965a90d19f183576a/El_Vaquero_Carousel_2.png',
       'https://images.ctfassets.net/tq39z0nxr0bv/JiGui6bDzBAZK5yIXU1OA/7e4e47e0e3e1b943a8a06dbabf874602/Numa_carousel_4.png',
       'https://images.ctfassets.net/tq39z0nxr0bv/XQka1BkBn4kNm7hKIUT07/5fbf514504a2078d803a93d9e9898615/Numa_carousel_3.png',
-      'https://images.ctfassets.net/tq39z0nxr0bv/5LxeQlTf89GCYg1dk97gg5/c8033f6d8a7ecffb65b8e1f3e40a2b78/El_Vaquero_Carousel_3.png',
       'https://images.ctfassets.net/tq39z0nxr0bv/77Wfdy9wIFpEOQGnhxQFxG/c76a226e2a74692a0836e2c2e409f55e/El_Vaquero_Carousel_4.png',
       'https://images.ctfassets.net/tq39z0nxr0bv/4Y27rbFUi3zkIKqf5f3UYe/c7eba5701b19157bf14ad03d9d6444a4/El_Vaquero_Carousel.png',
     ],
@@ -30,10 +30,16 @@ export function HomeHeroSection(): JSX.Element {
   );
 
   return (
-    <div className="relative flex flex-col items-center justify-evenly bg-dark w-full overflow-x-hidden mb-16">
+    <div
+      className={clsx(
+        'relative flex flex-col items-center justify-evenly w-full overflow-x-hidden mb-10',
+        isDesktop ? 'mt-28' : '',
+      )}
+    >
       <div
         style={{
           width: '100%',
+          maxWidth: isDesktop ? 'min(700px, 90vw)' : 'unset',
         }}
         className="z-10 relative"
       >
@@ -43,6 +49,7 @@ export function HomeHeroSection(): JSX.Element {
           showArrows={false}
           showStatus={false}
           showThumbs={false}
+          infiniteLoop={true}
           showIndicators={false}
           transitionTime={1500}
           animationHandler={'fade'}
@@ -50,22 +57,32 @@ export function HomeHeroSection(): JSX.Element {
           {carouselImages.map((image, key) => (
             <div
               key={key}
-              style={{ minHeight: isMobile ? '400px' : '400px' }}
-              className="relative w-full h-full"
+              style={{
+                minHeight: isMobile ? '300px' : '300px',
+              }}
+              className="relative h-full"
             >
               <Image
                 src={image}
                 layout="fill"
                 objectFit="cover"
                 priority={key === 0}
-                className="w-full z-10"
+                className={clsx('w-full z-10', isDesktop ? 'rounded-xl' : '')}
               />
+
+              {/* Blue tint */}
+              <div
+                className={clsx(
+                  'absolute inset-0 bg-gradient-to-b opacity-75 from-primary z-50',
+                  isDesktop ? 'rounded-lg' : '',
+                )}
+              ></div>
             </div>
           ))}
         </Carousel>
       </div>
 
-      <div className="absolute inset-0 flex items-center justify-center bg-dark bg-opacity-25 z-10">
+      <div className="absolute inset-0 flex items-center justify-center z-10">
         <div style={{ maxWidth: '33rem' }} className="px-10">
           <h1
             style={{ filter: 'drop-shadow(0 0 15px black)' }}

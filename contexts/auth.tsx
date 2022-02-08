@@ -1,6 +1,7 @@
 import {
   dlog,
   Horus,
+  useHorusSWR,
   UserMetrics,
   UserPreferences,
 } from '@tastiest-io/tastiest-utils';
@@ -11,7 +12,7 @@ import { ANONYMOUS_USER_ID, LocalStorageItem } from './tracking';
 
 type AuthContextShape = {
   user: firebaseClient.User | null;
-  userData: UserData | null;
+  userData: any | null;
   isSignedIn: null | boolean;
   token: string | null;
   register?: (
@@ -58,7 +59,9 @@ export function AuthProvider({ children }: any) {
   );
 
   const [token, setToken] = useState<string | null>(null);
-  const [userData, setUserData] = useState<UserData>(null);
+
+  // Works like an async setter method
+  const setUserData = () => null;
 
   // Null if the user information has not been loaded yet -- else boolean
   const isSignedIn = user === undefined ? null : Boolean(user?.uid);
@@ -105,20 +108,16 @@ export function AuthProvider({ children }: any) {
     dlog('User', user);
   }, [user]);
 
-  // Fetch user data when signed in.
-  useEffect(() => {
-    if (!token || !user?.uid) {
-      return;
-    }
+  // Store user data in the provider.
+  const { data: userData } = useHorusSWR(
+    user?.uid ? `/users/${user?.uid}` : null,
+    token,
+    {
+      refreshInterval: 30000,
+    },
+  );
 
-    const horus = new Horus(token);
-    horus.get(`/users/${user.uid}`).then(({ data }) => {
-      if (data) {
-        dlog('auth ➡️ data:', data);
-        setUserData(data);
-      }
-    });
-  }, [user, token, isSignedIn]);
+  dlog('auth ➡️ data:', userData);
 
   const register = async (
     email: string,

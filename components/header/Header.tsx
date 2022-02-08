@@ -23,8 +23,9 @@ import { HeaderAvatar } from './HeaderAvatar';
 
 export interface HeaderProps {
   transparency?: 'glass' | 'full' | 'none';
-  theme?: 'light' | 'dark';
   breadcrumbs?: Omit<CrumbProps, 'selected'>[];
+  theme?: 'light' | 'dark';
+  blank?: boolean;
   children?: ReactNode;
 }
 
@@ -37,14 +38,8 @@ function MobileHeader(props: HeaderProps) {
   const { isSignedIn } = useAuth();
   const { signOut } = useSignOut();
 
-  const { transparency = 'none', breadcrumbs, theme = 'light' } = props;
+  const { transparency = 'none', breadcrumbs, theme = 'light', blank } = props;
   const dispatch = useDispatch();
-
-  // const handleExpandSearch = (e: React.MouseEvent) => {
-  //   // Timeout to prevent action immediately firing on the elemnt under with onMouseUp
-  //   setTimeout(() => dispatch(expandSearchOverlay()), 50);
-  //   e.stopPropagation();
-  // };
 
   // Prevent clicking when things are loading
   const { isPageLoading } = usePageLoader();
@@ -79,25 +74,26 @@ function MobileHeader(props: HeaderProps) {
             </Link>
           </div>
 
-          <Dropdown offset={20}>
-            <Dropdown.Trigger>
-              <HamburgerIcon
-                className={clsx(
-                  'h-8 cursor-pointer fill-current duration-500',
-                  theme === 'light' ? 'text-primary' : 'text-light',
-                )}
-              />
-            </Dropdown.Trigger>
+          {blank ? null : (
+            <Dropdown offset={20}>
+              <Dropdown.Trigger>
+                <HamburgerIcon
+                  className={clsx(
+                    'h-8 cursor-pointer fill-current duration-500',
+                    theme === 'light' ? 'text-primary' : 'text-light',
+                  )}
+                />
+              </Dropdown.Trigger>
 
-            <Dropdown.Item
-              display={isSignedIn}
-              href="/account/bookings"
-              icon={<CalendarOutlined />}
-            >
-              Bookings
-            </Dropdown.Item>
+              <Dropdown.Item
+                display={isSignedIn}
+                href="/account/bookings"
+                icon={<CalendarOutlined />}
+              >
+                Bookings
+              </Dropdown.Item>
 
-            {/* <Dropdown.Item
+              {/* <Dropdown.Item
               display={isSignedIn}
               href="/account/preferences"
               icon={<SettingOutlined />}
@@ -105,25 +101,26 @@ function MobileHeader(props: HeaderProps) {
               Preferences
             </Dropdown.Item> */}
 
-            <Dropdown.Item
-              display={isSignedIn}
-              icon={<LogoutOutlined />}
-              onClick={() => {
-                signOut();
-              }}
-            >
-              Sign out
-            </Dropdown.Item>
+              <Dropdown.Item
+                display={isSignedIn}
+                icon={<LogoutOutlined />}
+                onClick={() => {
+                  signOut();
+                }}
+              >
+                Sign out
+              </Dropdown.Item>
 
-            <Dropdown.Item
-              display={!isSignedIn}
-              onClick={() => dispatch(openAuthModal())}
-            >
-              <div className="flex items-center gap-4">
-                <UserAvatar initial="T" /> Sign in
-              </div>
-            </Dropdown.Item>
-          </Dropdown>
+              <Dropdown.Item
+                display={!isSignedIn}
+                onClick={() => dispatch(openAuthModal())}
+              >
+                <div className="flex items-center gap-4">
+                  <UserAvatar initial="T" /> Sign in
+                </div>
+              </Dropdown.Item>
+            </Dropdown>
+          )}
         </div>
       </div>
 
@@ -150,6 +147,7 @@ function DesktopHeader(props: HeaderProps) {
     transparency = 'none',
     breadcrumbs,
     theme = 'light',
+    blank,
     children,
   } = props;
 
@@ -217,18 +215,9 @@ function DesktopHeader(props: HeaderProps) {
                 </Link>
 
                 {children}
-
-                {/* <HeaderSearch
-                isShown={searchIsShown}
-                innerOverlayStyle={{
-                  // When pinned to header, limit height to vh and lock body scroll
-                  maxHeight: searchIsShown ? '80vh' : 'unset',
-                }}
-              /> */}
               </div>
 
-              {/* <HeaderSavedPlaces /> */}
-              <HeaderAvatar />
+              {blank ? null : <HeaderAvatar />}
             </div>
           </div>
         </Contained>

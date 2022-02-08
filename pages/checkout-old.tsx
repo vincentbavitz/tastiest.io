@@ -1,7 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import {
   dlog,
@@ -10,9 +9,7 @@ import {
   PAYMENTS,
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
-import { AuthTabsProvider } from 'components/checkout/CheckoutAuthTabs';
 import { useAuth } from 'hooks/auth/useAuth';
-import { useOrder } from 'hooks/checkout/useOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { NextSeo } from 'next-seo';
@@ -27,8 +24,6 @@ import { CheckoutStep } from 'state/checkout';
 import { IState } from 'state/reducers';
 import { db, firebaseAdmin } from 'utils/firebaseAdmin';
 import { CheckoutStepIndicator } from '../components/checkout/CheckoutStepIndicator';
-import { CheckoutStepAuth } from '../components/checkout/steps/CheckoutStepAuth';
-import { CheckoutStepPayment } from '../components/checkout/steps/CheckoutStepPayment';
 import { Contained } from '../components/Contained';
 import { UI } from '../constants';
 
@@ -177,7 +172,7 @@ function Checkout(
   const router = useRouter();
 
   const { isDesktop } = useScreenSize();
-  const { order } = useOrder(props.order.token, props.order);
+  // const { order } = useOrder(props.order.token, props.order);
 
   const { isPaymentProcessing } = useSelector(
     (state: IState) => state.checkout,
@@ -193,12 +188,12 @@ function Checkout(
     router.prefetch('/thank-you');
   }, []);
 
-  // Does this order really belong to the signed in user?
-  useEffect(() => {
-    if (user?.uid && order?.userId && user.uid !== order?.userId) {
-      window.location.href = '/';
-    }
-  }, [user]);
+  // // Does this order really belong to the signed in user?
+  // useEffect(() => {
+  //   if (user?.uid && order?.userId && user.uid !== order?.userId) {
+  //     window.location.href = '/';
+  //   }
+  // }, [user]);
 
   const step: CheckoutStep = user?.uid
     ? CheckoutStep.PAYMENT
@@ -239,32 +234,32 @@ function Checkout(
         </PaymentLoadingOverlay>
       ) : null}
 
-      <Elements stripe={stripePromise}>
-        <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
-          <div className="relative flex flex-col w-full mt-12 space-y-10">
-            <CheckoutStepIndicator step={step} />
+      <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
+        <div className="relative flex flex-col w-full mt-12 space-y-10">
+          <CheckoutStepIndicator step={step} />
 
-            {isSignedIn === null ? (
-              <div className="flex justify-between">
-                <div className="w-full pt-32 md:w-7/12">
-                  <CheckoutLoader />
-                </div>
+          {isSignedIn === null ? (
+            <div className="flex justify-between">
+              <div className="w-full pt-32 md:w-7/12">
+                <CheckoutLoader />
               </div>
-            ) : (
-              <>
-                {step === CheckoutStep.SIGN_IN && (
-                  <AuthTabsProvider>
-                    <CheckoutStepAuth order={order} />
-                  </AuthTabsProvider>
-                )}
+            </div>
+          ) : (
+            <>
+              {/* {step === CheckoutStep.SIGN_IN && (
+                <AuthTabsProvider>
+                  <CheckoutStepAuth order={order} />
+                </AuthTabsProvider>
+              )}
+              <Elements stripe={stripePromise}>
                 {step === CheckoutStep.PAYMENT && (
                   <CheckoutStepPayment userId={user.uid} order={order} />
                 )}
-              </>
-            )}
-          </div>
-        </Contained>
-      </Elements>
+              </Elements> */}
+            </>
+          )}
+        </div>
+      </Contained>
     </div>
   );
 }

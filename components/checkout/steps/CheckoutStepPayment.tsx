@@ -1,18 +1,11 @@
 import {
-  CardCvcElement,
-  CardExpiryElement,
-  CardNumberElement,
-} from '@stripe/react-stripe-js';
-import {
   StripeCardExpiryElementChangeEvent,
   StripeCardNumberElementOptions,
 } from '@stripe/stripe-js';
-import { HelpIcon } from '@tastiest-io/tastiest-icons';
-import { Tooltip } from '@tastiest-io/tastiest-ui';
 import {
   DateObject,
   dlog,
-  Order,
+  HorusOrderEntity,
   TastiestPaymentError,
   titleCase,
   UserDataKey,
@@ -24,7 +17,6 @@ import { InputName } from 'components/inputs/contact/InputName';
 import InputPostcode from 'components/inputs/contact/InputPostcode';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useCheckout } from 'hooks/checkout/useCheckout';
-import { useOrder } from 'hooks/checkout/useOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { useUserData } from 'hooks/useUserData';
 import React, { useEffect, useState } from 'react';
@@ -33,8 +25,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setIsPaymentProcessing } from 'state/checkout';
 import { IState } from 'state/reducers';
 import { UI } from '../../../constants';
-import { InputCardNumberWrapper } from '../../inputs/card/InputCardNumberWrapper';
-import { InputWrapper } from '../../inputs/InputWrapper';
 import { CheckoutPaymentPanel } from '../CheckoutPaymentPanel';
 
 const CARD_ELEMENT_OPTIONS: StripeCardNumberElementOptions = {
@@ -50,7 +40,7 @@ const CARD_ELEMENT_OPTIONS: StripeCardNumberElementOptions = {
 
 interface Props {
   userId: string;
-  order: Order;
+  order: HorusOrderEntity;
 }
 
 type FormData = {
@@ -61,6 +51,7 @@ type FormData = {
   cardHolderName: string;
 };
 
+// DELETE ME
 export function CheckoutStepPayment(props: Props) {
   const { order: initialOrder, userId } = props;
 
@@ -81,10 +72,10 @@ export function CheckoutStepPayment(props: Props) {
 
   // Checkout and order hooks
   const { cardBrand, addCard, onCardNumberChange } = useCheckout();
-  const { order, pay, updateOrder } = useOrder(
-    initialOrder?.token,
-    initialOrder,
-  );
+  // const { order, pay, updateOrder } = useOrder(
+  //   initialOrder?.token,
+  //   initialOrder,
+  // );
 
   // For when cards are declined, etc
   const [error, setError] = useState<TastiestPaymentError | null>(null);
@@ -144,23 +135,23 @@ export function CheckoutStepPayment(props: Props) {
       return;
     }
 
-    const { error: updateOrderError } = await updateOrder({
-      paymentMethodId: paymentMethod.id,
-    });
+    // const { error: updateOrderError } = await updateOrder({
+    //   paymentMethodId: paymentMethod.id,
+    // });
 
-    if (updateOrderError) {
-      dlog('CheckoutStepPayment ➡️ updateOrderError:', updateOrderError);
-      dispatch(setIsPaymentProcessing(false));
-      setError({
-        code: 'update_order_error',
-        type: 'api_error',
-        message: 'There was an error updating your order.',
-      });
+    // if (updateOrderError) {
+    //   dlog('CheckoutStepPayment ➡️ updateOrderError:', updateOrderError);
+    //   dispatch(setIsPaymentProcessing(false));
+    //   setError({
+    //     code: 'update_order_error',
+    //     type: 'api_error',
+    //     message: 'There was an error updating your order.',
+    //   });
 
-      return { success: false, error: updateOrderError };
-    }
+    //   return { success: false, error: updateOrderError };
+    // }
 
-    const { success, error } = await pay();
+    // const { success, error } = await pay();
 
     // Uh-oh - a general payment error!
     // This usually means the card declined.
@@ -179,9 +170,9 @@ export function CheckoutStepPayment(props: Props) {
     }
   };
 
-  useEffect(() => {
-    dlog('CheckoutStepPayment ➡️ order:', order);
-  }, [order]);
+  // useEffect(() => {
+  //   dlog('CheckoutStepPayment ➡️ order:', order);
+  // }, [order]);
 
   const {
     handleSubmit,
@@ -259,7 +250,7 @@ export function CheckoutStepPayment(props: Props) {
               disabled={isPaymentProcessing}
             />
 
-            <InputCardNumberWrapper
+            {/* <InputCardNumberWrapper
               brand={cardBrand}
               disabled={isPaymentProcessing}
             >
@@ -267,10 +258,10 @@ export function CheckoutStepPayment(props: Props) {
                 onChange={onCardNumberChange}
                 options={CARD_ELEMENT_OPTIONS}
               />
-            </InputCardNumberWrapper>
+            </InputCardNumberWrapper> */}
 
             <div className="flex w-full space-x-3">
-              <InputWrapper
+              {/* <InputWrapper
                 size="large"
                 label="Expiration Date"
                 className="py-1"
@@ -294,7 +285,7 @@ export function CheckoutStepPayment(props: Props) {
                 }
               >
                 <CardCvcElement options={CARD_ELEMENT_OPTIONS} />
-              </InputWrapper>
+              </InputWrapper> */}
             </div>
 
             <InputPostcode
@@ -316,7 +307,7 @@ export function CheckoutStepPayment(props: Props) {
         )}
       >
         <CheckoutPaymentPanel
-          order={order}
+          order={props.order}
           error={error}
           submit={handleSubmit(makePayment)}
         />

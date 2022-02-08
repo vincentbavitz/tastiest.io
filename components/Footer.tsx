@@ -255,7 +255,7 @@ const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
       </Link>
     </span>
     <span>
-      <Link href="https://affiliate-program.tastiest.io/influencers">
+      <Link href="/influencer-program">
         <a>Influencers Program</a>
       </Link>
     </span>

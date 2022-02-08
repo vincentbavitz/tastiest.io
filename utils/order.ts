@@ -1,6 +1,7 @@
 import { dlog, ExperienceProduct, Promo } from '@tastiest-io/tastiest-utils';
 
 /**
+ * DELETE ME
  * Calculate price after applying promocode.
  */
 export const calculatePromoPrice = (price: number, promo: Promo): number => {
@@ -21,7 +22,9 @@ export const calculatePromoPrice = (price: number, promo: Promo): number => {
 };
 
 /**
+ * DELETE ME
  * Validate promo after you've pulled it from CMS
+ *
  */
 export const validatePromo = async (
   deal: ExperienceProduct,

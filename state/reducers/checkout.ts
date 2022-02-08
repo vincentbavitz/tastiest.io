@@ -1,5 +1,7 @@
 import { CheckoutActions, ICheckout, initialCheckoutState } from '../checkout';
 
+// DELETE ME ENTRIE FILE
+
 export interface CheckoutAction {
   type: CheckoutActions;
   payload: any;

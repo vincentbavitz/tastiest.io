@@ -1,36 +1,32 @@
-import { CheckOutlined, CloseOutlined, LockOutlined } from '@ant-design/icons';
+import { LockOutlined } from '@ant-design/icons';
 import { SupportIcon } from '@tastiest-io/tastiest-icons';
-import { Button, Input, Modal, Tooltip } from '@tastiest-io/tastiest-ui';
+import { Button, Modal, Tooltip } from '@tastiest-io/tastiest-ui';
 import {
   formatCurrency,
-  Order,
-  PAYMENTS,
+  HorusOrderEntity,
   TastiestPaymentError,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import MobileBottomButton from 'components/MobileBottomButton';
-import { useOrder } from 'hooks/checkout/useOrder';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { DateTime } from 'luxon';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { useController, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { IState } from '../../state/reducers';
 import { CheckoutCard } from './CheckoutCard';
 
 interface Props {
-  order: Order;
+  order: HorusOrderEntity;
   submit: () => void;
   error: TastiestPaymentError | null;
 }
 
 export function CheckoutPaymentPanel(props: Props) {
-  const { submit, error } = props;
+  const { submit, order, error } = props;
 
   const router = useRouter();
-  const { order } = useOrder(props.order?.token, props.order);
   const { isMobile, isDesktop } = useScreenSize();
 
   const { isPaymentProcessing } = useSelector(
@@ -38,7 +34,7 @@ export function CheckoutPaymentPanel(props: Props) {
   );
 
   const totalPrice = formatCurrency(
-    Math.floor(order.heads) * order.deal.pricePerHeadGBP,
+    Math.floor(order.heads) * order.experience.pricePerHeadGBP,
   );
 
   if (!props.order) {
@@ -70,24 +66,22 @@ export function CheckoutPaymentPanel(props: Props) {
           <div className="flex justify-between text-sm">
             <div>
               <div className="text-base font-medium">
-                {order?.deal?.restaurant?.name}
+                {order?.experience?.restaurant?.name}
                 <br />
                 <p className="text-sm font-normal leading-tight text-gray-700">
-                  {order?.deal?.tagline}
+                  {order?.experience?.tagline}
                 </p>
               </div>
             </div>
 
-            <p className="font-medium">£{order?.deal?.pricePerHeadGBP}</p>
+            <p className="font-medium">£{order?.experience?.pricePerHeadGBP}</p>
           </div>
         </div>
 
         <div className="flex items-center justify-between leading-none text-sm text-gray-600">
           <p className="">Date</p>
           <p className="font-medium">
-            {DateTime.fromMillis(order.bookedForTimestamp).toFormat(
-              'h:mm a, DD',
-            )}
+            {DateTime.fromJSDate(order.bookedFor).toFormat('h:mm a, DD')}
           </p>
         </div>
 
@@ -180,131 +174,134 @@ const SecureTransactionText = () => (
 const TermsAndConditions = () => (
   <div className="text-2xs pt-4 opacity-25 text-center">
     By placing this order, I agree to the{' '}
-    <a
-      href="/terms-of-use"
-      target="_blank"
-      rel="noreferrer"
-      className="font-semibold underline cursor-pointer"
-    >
-      Terms of Use
-    </a>
+    <Link href="/terms-of-use">
+      <a
+        target="_blank"
+        rel="noreferrer"
+        className="font-semibold underline cursor-pointer"
+      >
+        Terms of Use
+      </a>
+    </Link>
     {', '}
-    <a
-      href="/terms-of-sale"
-      target="_blank"
-      rel="noreferrer"
-      className="font-semibold underline cursor-pointer"
-    >
-      Terms of Sale
-    </a>{' '}
+    <Link href="/terms-of-sale">
+      <a
+        target="_blank"
+        rel="noreferrer"
+        className="font-semibold underline cursor-pointer"
+      >
+        Terms of Sale
+      </a>
+    </Link>{' '}
     and have read the{' '}
-    <a
-      href="/privacy"
-      target="_blank"
-      rel="noreferrer"
-      className="font-semibold underline cursor-pointer"
-    >
-      Privacy Statement.
-    </a>
+    <Link href="/privacy">
+      <a
+        target="_blank"
+        rel="noreferrer"
+        className="font-semibold underline cursor-pointer"
+      >
+        Privacy Statement.
+      </a>
+    </Link>
   </div>
 );
 
-interface PromoCodeInputProps {
-  initialOrder: Order;
-}
+// interface PromoCodeInputProps {
+//   initialOrder: Order;
+// }
 
-const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<{ promoCode: string }>({
-    mode: 'onBlur',
-    reValidateMode: 'onBlur',
-    criteriaMode: 'firstError',
-    shouldFocusError: true,
-  });
+// const PromoCodeInput = ({ initialOrder }: PromoCodeInputProps) => {
+//   const {
+//     handleSubmit,
+//     control,
+//     formState: { errors },
+//   } = useForm<{ promoCode: string }>({
+//     mode: 'onBlur',
+//     reValidateMode: 'onBlur',
+//     criteriaMode: 'firstError',
+//     shouldFocusError: true,
+//   });
 
-  const {
-    field: { ref: promoCodeRef, ...promoCodeProps },
-  } = useController({
-    name: 'promoCode',
-    defaultValue: '',
-    control,
-    rules: {
-      pattern: {
-        value: PAYMENTS.PROMO_CODE_REGEX,
-        message: 'Please enter a valid email',
-      },
-    },
-  });
+//   const {
+//     field: { ref: promoCodeRef, ...promoCodeProps },
+//   } = useController({
+//     name: 'promoCode',
+//     defaultValue: '',
+//     control,
+//     rules: {
+//       pattern: {
+//         value: PAYMENTS.PROMO_CODE_REGEX,
+//         message: 'Please enter a valid email',
+//       },
+//     },
+//   });
 
-  const [promoCode, setPromoCode] = useState('');
-  const [error, setError] = useState('');
+//   const [promoCode, setPromoCode] = useState('');
+//   const [error, setError] = useState('');
 
-  // Realtime order information
-  const { order, updateOrder, isOrderUpdating } = useOrder(
-    initialOrder?.token,
-    initialOrder,
-  );
+//   // Realtime order information
+//   // const { order, updateOrder, isOrderUpdating } = useOrder(
+//   //   initialOrder?.token,
+//   //   initialOrder,
+//   // );
 
-  // Disabled if we already added a discount code
-  const disabled = Boolean(order?.promoCode);
+//   // Disabled if we already added a discount code
+//   const disabled = Boolean(order?.promoCode);
 
-  const [promoCodeLoading, setPromoCodeLoading] = useState(false);
+//   const [promoCodeLoading, setPromoCodeLoading] = useState(false);
 
-  const applyPromoCode = async () => {
-    setPromoCodeLoading(true);
-    const { success } = await updateOrder({ promoCode });
-    setPromoCodeLoading(false);
-    setError(success ? null : 'Promo code is invalid or expired.');
-  };
+//   const applyPromoCode = async () => {
+//     setPromoCodeLoading(true);
+//     const { success } = await updateOrder({ promoCode });
+//     setPromoCodeLoading(false);
+//     setError(success ? null : 'Promo code is invalid or expired.');
+//   };
 
-  return (
-    <div className="leading-none">
-      {order?.promoCode ? (
-        <div className="flex items-center justify-between text-lg md:text-sm">
-          <p>
-            Promo code:{' '}
-            <span className="font-medium text-primary">{order.promoCode}</span>
-          </p>
+//   return (
+//     <div className="leading-none">
+//       {order?.promoCode ? (
+//         <div className="flex items-center justify-between text-lg md:text-sm">
+//           <p>
+//             Promo code:{' '}
+//             <span className="font-medium text-primary">{order.promoCode}</span>
+//           </p>
 
-          <p className="font-medium">
-            {promoCodeLoading ? (
-              '— £--.--'
-            ) : (
-              <>— £{formatCurrency(order.price.subtotal - order.price.final)}</>
-            )}
-          </p>
-        </div>
-      ) : (
-        <div className="flex items-center justify-between space-x-2 text-xs">
-          <Input
-            ref={promoCodeRef}
-            size="small"
-            label="Promo Code"
-            disabled={disabled}
-            formatter={value => value.toUpperCase()}
-            {...promoCodeProps}
-          />
-          <Button disabled={disabled} onClick={applyPromoCode} size="small">
-            <CheckOutlined className="text-lg" />
-          </Button>
-        </div>
-      )}
+//           <p className="font-medium">
+//             {promoCodeLoading ? (
+//               '— £--.--'
+//             ) : (
+//               <>— £{formatCurrency(order.price.subtotal - order.price.final)}</>
+//             )}
+//           </p>
+//         </div>
+//       ) : (
+//         <div className="flex items-center justify-between space-x-2 text-xs">
+//           <Input
+//             ref={promoCodeRef}
+//             size="small"
+//             label="Promo Code"
+//             disabled={disabled}
+//             formatter={value => value.toUpperCase()}
+//             {...promoCodeProps}
+//           />
+//           <Button disabled={disabled} onClick={applyPromoCode} size="small">
+//             <CheckOutlined className="text-lg" />
+//           </Button>
+//         </div>
+//       )}
 
-      {error && (
-        <div className="flex items-center mt-2 space-x-1 text-xs text-danger">
-          <CloseOutlined />
-          <p>{error}</p>
-        </div>
-      )}
-    </div>
-  );
-};
+//       {error && (
+//         <div className="flex items-center mt-2 space-x-1 text-xs text-danger">
+//           <CloseOutlined />
+//           <p>{error}</p>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
 
 interface PaymentErrorMessageProps {
-  order: Order;
+  order: HorusOrderEntity;
 }
 
 const PaymentErrorMessage = ({ order }: PaymentErrorMessageProps) => {

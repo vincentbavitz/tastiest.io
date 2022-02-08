@@ -1,7 +1,8 @@
 import { NextComponentType, NextPageContext } from 'next';
 import { Router } from 'next/router';
-import LayoutAssociates from './LayoutAssociates';
+import LayoutAssociatesInfluencers from './LayoutAssociatesInfluencers';
 import LayoutBlank from './LayoutBlank';
+import LayoutCheckout from './LayoutCheckout';
 import LayoutDefault from './LayoutDefault';
 import LayoutExperience from './LayoutExperience';
 import LayoutHome from './LayoutHome';
@@ -11,21 +12,23 @@ import LayoutRestaurant from './LayoutRestaurant';
 export enum Layouts {
   DEFAULT = 'default',
   INVITE = 'invite',
+  BLANK = 'blank',
   HOME = 'home',
+  CHECKOUT = 'checkout',
   RESTAURANT = 'restaurant',
   EXPERIENCE = 'experience',
-  BLANK = 'blank',
-  ASSOCIATES = 'associates',
+  ASSOCIATES_INFLUENCERS = 'associates-inflights',
 }
 
 const layouts = {
   [Layouts.DEFAULT]: LayoutDefault,
-  [Layouts.HOME]: LayoutHome,
-  [Layouts.BLANK]: LayoutBlank,
   [Layouts.INVITE]: LayoutInvite,
+  [Layouts.BLANK]: LayoutBlank,
+  [Layouts.HOME]: LayoutHome,
+  [Layouts.CHECKOUT]: LayoutCheckout,
   [Layouts.RESTAURANT]: LayoutRestaurant,
   [Layouts.EXPERIENCE]: LayoutExperience,
-  [Layouts.ASSOCIATES]: LayoutAssociates,
+  [Layouts.ASSOCIATES_INFLUENCERS]: LayoutAssociatesInfluencers,
 };
 
 type ChildrenWithLayout = { layout?: Layouts } & NextComponentType<
