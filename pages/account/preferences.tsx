@@ -214,8 +214,8 @@ const Preferences = ({
                   setBirthday(date);
                   compareModifiedValues();
                 }}
-                minYear={USER.OLDEST_BIRTH_YEAR}
-                maxYear={USER.YOUNGEST_BIRTH_YEAR}
+                minYear={Number(USER.OLDEST_BIRTH_YEAR)}
+                maxYear={Number(USER.YOUNGEST_BIRTH_YEAR)}
               />
             </div>
           </PreferenceBlock>

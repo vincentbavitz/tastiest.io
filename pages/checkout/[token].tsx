@@ -3,6 +3,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { Button, Tooltip } from '@tastiest-io/tastiest-ui';
 import {
+  dlog,
   formatCurrency,
   Horus,
   HorusOrderEntity,
@@ -51,8 +52,8 @@ export const getServerSideProps = async (
 ) => {
   const { params } = context;
   const orderToken = params.token;
-
   const cookieToken = nookies.get(context)?.token;
+
   const horus = new Horus(cookieToken);
 
   // This will automatically fail if the user doesn't own this order.
@@ -73,6 +74,8 @@ export const getServerSideProps = async (
       properties: { error },
       raw: error,
     });
+
+    dlog('[token] ➡️ error:', error);
 
     return {
       redirect: {
@@ -222,7 +225,7 @@ function CheckoutPayment(
     },
   );
 
-  const birthdayDateTime = DateTime.fromJSDate(order.user.birthday);
+  const birthdayDateTime = DateTime.fromJSDate(order?.user.birthday);
 
   return (
     <>
@@ -278,6 +281,14 @@ function CheckoutPayment(
                 disabled={isPaymentProcessing}
               />
 
+              <InputMobile
+                name="mobile"
+                size="large"
+                control={control}
+                disabled={isPaymentProcessing}
+                defaultValue={order.user.mobile ?? null}
+              />
+
               <InputContactBirthday
                 label="Birthday"
                 date={{
@@ -288,14 +299,6 @@ function CheckoutPayment(
                 disabled={isPaymentProcessing}
                 // onDateChange={value => setBirthday(value)}
                 onDateChange={() => null}
-              />
-
-              <InputMobile
-                name="mobile"
-                size="large"
-                control={control}
-                disabled={isPaymentProcessing}
-                defaultValue={order.user.mobile ?? null}
               />
             </div>
           </div>
