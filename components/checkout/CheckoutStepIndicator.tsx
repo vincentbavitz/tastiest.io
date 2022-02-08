@@ -72,13 +72,13 @@ function ProgressBar({ step, children }: ProgressBarProps) {
   return (
     <div className="relative h-10">
       <div className="flex items-center justify-start h-10 overflow-hidden">
-        <div className="w-full h-0 duration-300 border-b-2 border-gray-300"></div>
+        <div className="w-full h-0 duration-500 border-b-2 border-gray-300"></div>
       </div>
 
       <div className="absolute top-0 flex items-center justify-start w-full h-10 overflow-hidden">
         <div
           style={{ transform }}
-          className="w-full h-0 duration-300 border-b-2 border-success"
+          className="w-full h-0 duration-500 border-b-2 border-success"
         ></div>
       </div>
 

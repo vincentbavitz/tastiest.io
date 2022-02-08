@@ -1,7 +1,10 @@
+import { CmsApi } from '@tastiest-io/tastiest-utils';
 import {
   AuthTabsProvider,
   CheckoutAuthTabs,
 } from 'components/checkout/CheckoutAuthTabs';
+import { CheckoutCard } from 'components/checkout/CheckoutCard';
+import LayoutCheckout from 'layouts/LayoutCheckout';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { NextSeo } from 'next-seo';
@@ -30,7 +33,7 @@ export const getServerSideProps = async (
 
   // Now let's make a new order and redirect to /checkout/[token]
   const heads = Number(context.query.heads ?? 0);
-  const experienceId = context.query.experienceId;
+  const experienceId = String(context.query.experienceId);
   const bookedForTimestamp = Number(context.query.bookedForTimestamp ?? 0);
   const userAgent = context.query.userAgent;
 
@@ -46,14 +49,24 @@ export const getServerSideProps = async (
     };
   }
 
+  // Get experience for the experience image.
+  const cms = new CmsApi();
+  const experience = await cms.getDeal(experienceId);
+
   return {
-    props: {},
+    props: {
+      heads,
+      experience,
+      bookedForTimestamp,
+    },
   };
 };
 
 function CheckoutAuthorize(
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) {
+  const { heads, experience } = props;
+
   return (
     <>
       <Head>
@@ -82,11 +95,31 @@ function CheckoutAuthorize(
         }}
       />
 
-      <div className="">
+      <LayoutCheckout.Left>
         <AuthTabsProvider>
           <CheckoutAuthTabs />
         </AuthTabsProvider>
-      </div>
+      </LayoutCheckout.Left>
+
+      <LayoutCheckout.Right>
+        <CheckoutCard experienceImage={experience.image}>
+          <div className="text-base font-medium">
+            <div className="flex justify-between">
+              <span>{experience.restaurant.name}</span>
+            </div>
+
+            <p className="text-sm mt-2 font-normal leading-tight text-gray-700">
+              {experience.name}
+            </p>
+
+            <p className="text-sm font-normal leading-tight">
+              <p>
+                Booking for {heads} {heads === 1 ? 'person' : 'people'}
+              </p>
+            </p>
+          </div>
+        </CheckoutCard>
+      </LayoutCheckout.Right>
     </>
   );
 }

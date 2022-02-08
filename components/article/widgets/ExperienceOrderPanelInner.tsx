@@ -1,11 +1,9 @@
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button } from '@tastiest-io/tastiest-ui';
 import {
-  dlog,
   ExperienceProduct,
   getMinsIntoDay,
   minsIntoHumanTime,
-  OrderRequest,
   TIME,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
@@ -15,6 +13,7 @@ import XScrollSelectItem from 'components/XScrollSelectItem';
 import { useAuth } from 'hooks/auth/useAuth';
 import usePostFetch from 'hooks/usePostFetch';
 import { DateTime } from 'luxon';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
   CreateNewOrderParams,
@@ -31,7 +30,7 @@ import { generateLocalEndpoint, generateStaticURL } from 'utils/routing';
 import { ExperienceOrderPanelProps } from './ExperienceOrderPanelDesktop';
 
 export const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
-  const { user } = useAuth();
+  const { isSignedIn } = useAuth();
   const router = useRouter();
 
   // Update the selected booking day
@@ -86,7 +85,11 @@ export const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
     setSelectedTime(selectedDay ? selectedDay.times[0] : null);
   }, [deal, selectedDay]);
 
-  const toCheckout = async () => {
+  const toCheckoutLink = useMemo(() => {
+    if (!selectedDay || !selectedTime) {
+      return '#';
+    }
+
     const bookedForTimestamp = DateTime.fromMillis(selectedDay.timestamp)
       .set({ hour: 0, minute: 0 })
       .plus({
@@ -94,31 +97,9 @@ export const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
       })
       .toMillis();
 
-    const orderRequest: OrderRequest = {
-      heads,
-      fromSlug: slug,
-      bookedForTimestamp,
-      userId: user?.uid ?? null,
-      dealId: deal.id,
-      promoCode: null,
-      timestamp: Date.now(),
-      anonymousId: window.analytics?.user?.()?.anonymousId?.(),
-      userAgent: navigator?.userAgent,
-    };
-
-    const {
-      data: { token },
-      error,
-    } = await execute(orderRequest);
-
-    dlog('ExperienceOrderPanelInner ➡️ token:', token);
-    dlog('ExperienceOrderPanelInner ➡️ error:', error);
-
-    if (token) {
-      router.push(`/checkout/?token=${token}`);
-      return;
-    }
-  };
+    const search = `?experienceId=${deal.id}&heads=${heads}&bookedForTimestamp=${bookedForTimestamp}&userAgent=${navigator?.userAgent}`;
+    return isSignedIn ? `/checkout${search}` : `/checkout/authorize${search}`;
+  }, [isSignedIn, heads, selectedDay, selectedTime]);
 
   // Only allow dates less than Feb 16 for Alpha. (47 ordinal date)
   const filteredSlots = slots?.filter(slot => slot?.ordinal < 47) ?? [];
@@ -132,7 +113,7 @@ export const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
     selectedTime,
     setSelectedTime,
     totalPrice,
-    toCheckout,
+    toCheckoutLink,
     loading,
   };
 };
@@ -155,7 +136,7 @@ function ExperienceOrderPanelInner(props: Props) {
     setSelectedDay,
     setSelectedTime,
     totalPrice,
-    toCheckout,
+    toCheckoutLink,
     loading,
   } = useOrderPanel(deal, slug);
 
@@ -306,7 +287,7 @@ function ExperienceOrderPanelInner(props: Props) {
         {layout === 'overlay' ? (
           <MobileBottomButton
             disabled={!selectedTime || !selectedDay}
-            onClick={toCheckout}
+            href={toCheckoutLink}
             loading={loading}
           >
             Book Now
@@ -314,14 +295,17 @@ function ExperienceOrderPanelInner(props: Props) {
         ) : null}
         {/* Sidebar CTA button */}
         {layout === 'sidebar' ? (
-          <Button
-            wide
-            disabled={!selectedTime || !selectedDay}
-            loading={loading}
-            onClick={toCheckout}
-          >
-            Book Now
-          </Button>
+          <Link href={toCheckoutLink}>
+            <a className="no-underline">
+              <Button
+                wide
+                disabled={!selectedTime || !selectedDay}
+                loading={loading}
+              >
+                Book Now
+              </Button>{' '}
+            </a>
+          </Link>
         ) : null}
       </div>
     </div>
