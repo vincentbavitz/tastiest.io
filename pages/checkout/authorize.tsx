@@ -3,11 +3,57 @@ import {
   CheckoutAuthTabs,
 } from 'components/checkout/CheckoutAuthTabs';
 import { Layouts } from 'layouts/LayoutHandler';
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
+import nookies from 'nookies';
 import React from 'react';
 
-function CheckoutAuthorize() {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
+  const cookieToken = nookies.get(context)?.token;
+
+  // Somehow their query paramters got messed up.
+  if (
+    !context.query.heads ||
+    !context.query.experienceId ||
+    !context.query.bookedForTimestamp
+  ) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  // Now let's make a new order and redirect to /checkout/[token]
+  const heads = Number(context.query.heads ?? 0);
+  const experienceId = context.query.experienceId;
+  const bookedForTimestamp = Number(context.query.bookedForTimestamp ?? 0);
+  const userAgent = context.query.userAgent;
+
+  const checkoutInitLink = `/checkout?heads=${heads}&experienceId=${experienceId}&bookedForTimestamp=${bookedForTimestamp}&userAgent=${userAgent}`;
+
+  // They're already logged in, take them to the checkout.
+  if (cookieToken) {
+    return {
+      redirect: {
+        destination: checkoutInitLink,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
+
+function CheckoutAuthorize(
+  props: InferGetServerSidePropsType<typeof getServerSideProps>,
+) {
   return (
     <>
       <Head>
@@ -36,7 +82,7 @@ function CheckoutAuthorize() {
         }}
       />
 
-      <div className="bg-red-300">
+      <div className="">
         <AuthTabsProvider>
           <CheckoutAuthTabs />
         </AuthTabsProvider>

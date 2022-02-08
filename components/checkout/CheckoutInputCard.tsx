@@ -1,5 +1,13 @@
-import { CardNumberElement } from '@stripe/react-stripe-js';
+import { QuestionOutlined } from '@ant-design/icons';
 import {
+  CardCvcElement,
+  CardExpiryElement,
+  CardNumberElement,
+  useElements,
+} from '@stripe/react-stripe-js';
+import {
+  StripeCardCvcElementChangeEvent,
+  StripeCardExpiryElementChangeEvent,
   StripeCardNumberElementChangeEvent,
   StripeCardNumberElementOptions,
 } from '@stripe/stripe-js';
@@ -8,13 +16,13 @@ import {
   MasteroIcon,
   VisaIcon,
 } from '@tastiest-io/tastiest-icons';
-import { Input } from '@tastiest-io/tastiest-ui';
+import { Input, Tooltip } from '@tastiest-io/tastiest-ui';
 import { CardBrand } from '@tastiest-io/tastiest-utils';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const CARD_ELEMENT_OPTIONS: StripeCardNumberElementOptions = {
   classes: {
-    base: 'py-2 w-full',
+    base: 'py-3 w-full',
   },
   style: {
     base: {
@@ -39,9 +47,23 @@ const CardRow = ({ brand }: { brand: CardBrand }) => {
 };
 
 export function CheckoutInputCard({ disabled }: Props) {
+  const elements = useElements();
   const [brand, setBrand] = useState<CardBrand>(null);
 
+  // Remove placeholder from Card input
+  useEffect(() => {
+    elements?.getElement('cardNumber').update({ placeholder: '' });
+    elements?.getElement('cardExpiry').update({ placeholder: '' });
+    elements?.getElement('cardCvc').update({ placeholder: '' });
+  }, [elements]);
+
+  const [cardNumberHasFocus, setCardNumberHasFocus] = useState(false);
+  const [cardExpiryHasFocus, setCardExpiryHasFocus] = useState(false);
+  const [cardCvvHasFocus, setCardCvvHasFocus] = useState(false);
+
   const onCardNumberChange = (event: StripeCardNumberElementChangeEvent) => {
+    setCardNumberHasFocus(!event.empty);
+
     // prettier-ignore
     const brand = 
           event.brand === 'visa' ? CardBrand.VISA :
@@ -50,21 +72,68 @@ export function CheckoutInputCard({ disabled }: Props) {
 
     setBrand(brand);
   };
+
+  const onCardExpiryChange = (event: StripeCardExpiryElementChangeEvent) => {
+    setCardExpiryHasFocus(!event.empty);
+  };
+
+  const onCardCvvChange = (event: StripeCardCvcElementChangeEvent) => {
+    setCardCvvHasFocus(!event.empty);
+  };
+
   return (
-    <div className="flex w-full space-x-3">
+    <div className="flex flex-col space-y-4">
       <Input
         size="large"
         label="Card Number"
         className="font-mono"
         suffix={brand ? <CardRow brand={brand} /> : null}
+        forceFocus={cardNumberHasFocus}
         disabled={disabled}
         input={
           <CardNumberElement
-            options={CARD_ELEMENT_OPTIONS}
             onChange={onCardNumberChange}
+            options={CARD_ELEMENT_OPTIONS}
           />
         }
       />
+
+      <div className="flex w-full space-x-3">
+        <Input
+          size="large"
+          label="Expiration Date"
+          className="py-1"
+          forceFocus={cardExpiryHasFocus}
+          disabled={disabled}
+          input={
+            <CardExpiryElement
+              onChange={onCardExpiryChange}
+              options={CARD_ELEMENT_OPTIONS}
+            />
+          }
+        />
+
+        <div className="flex items-center space-x-2 w-28">
+          <Input
+            size="large"
+            label="CVV"
+            className="py-1"
+            disabled={disabled}
+            forceFocus={cardCvvHasFocus}
+            suffix={
+              <Tooltip content="This is the 3 digit code on the back of your card.">
+                <QuestionOutlined className="text-lg -mt-1 opacity-75" />
+              </Tooltip>
+            }
+            input={
+              <CardCvcElement
+                onChange={onCardCvvChange}
+                options={CARD_ELEMENT_OPTIONS}
+              />
+            }
+          />
+        </div>
+      </div>
     </div>
   );
 }

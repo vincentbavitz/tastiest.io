@@ -6,14 +6,19 @@ import {
   HorusOrderEntity,
   reportInternalError,
   TastiestInternalErrorCode,
+  TDay,
   titleCase,
+  TMonth,
+  TYear,
 } from '@tastiest-io/tastiest-utils';
 import { CheckoutInputCard } from 'components/checkout/CheckoutInputCard';
 import CheckoutInputName from 'components/checkout/CheckoutInputName';
+import { InputContactBirthday } from 'components/inputs/contact/InputContactBirthday';
 import { InputMobile } from 'components/inputs/contact/InputMobile';
 import { InputName } from 'components/inputs/contact/InputName';
 import InputPostcode from 'components/inputs/contact/InputPostcode';
 import { Layouts } from 'layouts/LayoutHandler';
+import { DateTime } from 'luxon';
 import { GetServerSidePropsContext, InferGetStaticPropsType } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
@@ -21,7 +26,6 @@ import { useRouter } from 'next/router';
 import nookies from 'nookies';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { DatePicker } from 'rsuite';
 import { generateStaticURL } from 'utils/routing';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
@@ -121,6 +125,8 @@ function CheckoutPayment(
   // FIX ME
   const isPaymentProcessing = false;
 
+  const birthdayDateTime = DateTime.fromJSDate(order.user.birthday);
+
   return (
     <>
       <Head>
@@ -152,7 +158,7 @@ function CheckoutPayment(
       <div>
         <Elements stripe={stripePromise}>
           <div>
-            <div className="pt-4 mb-6 text-xl font-medium text-primary border-b-2 border-gray-200">
+            <div className="pt-4 mb-6 text-2xl font-medium text-dark font-primary border-b-2 border-gray-200">
               Contact details
             </div>
 
@@ -175,24 +181,16 @@ function CheckoutPayment(
                 disabled={isPaymentProcessing}
               />
 
-              {/* <InputContactBirthday
+              <InputContactBirthday
                 label="Birthday"
-                date={order.user.birthday}
+                date={{
+                  day: String(birthdayDateTime.day) as TDay,
+                  month: String(birthdayDateTime.month) as TMonth,
+                  year: String(birthdayDateTime.year) as TYear,
+                }}
                 disabled={isPaymentProcessing}
-                onDateChange={value => setBirthday(value)}
-              /> */}
-
-              <DatePicker
-                format="dd MMM yy hh:mm aa"
-                // disabled={booking.hasCancelled}
-                // disabledDate={date =>
-                //   DateTime.fromJSDate(date).year < DateTime.now().year ||
-                //   DateTime.fromJSDate(date).ordinal < DateTime.now().ordinal
-                // }
-                // onChange={setEditedDate}
-                // defaultValue={bookingDate}
-                placeholder={'Booking date'}
-                showMeridian
+                // onDateChange={value => setBirthday(value)}
+                onDateChange={() => null}
               />
 
               <InputMobile
@@ -206,7 +204,7 @@ function CheckoutPayment(
           </div>
 
           <div>
-            <div className="pt-4 mb-6 text-xl font-medium text-primary border-b-2 border-gray-200">
+            <div className="pt-10 mb-6 text-2xl font-medium text-dark font-primary border-b-2 border-gray-200">
               Payment details
             </div>
 
@@ -216,45 +214,7 @@ function CheckoutPayment(
                 disabled={isPaymentProcessing}
               />
 
-              {/* <InputCardNumberWrapper
-                brand={cardBrand}
-                disabled={isPaymentProcessing}
-              >
-                <CardNumberElement
-                  onChange={onCardNumberChange}
-                  options={CARD_ELEMENT_OPTIONS}
-                />
-              </InputCardNumberWrapper> */}
-
               <CheckoutInputCard disabled={isPaymentProcessing} />
-
-              <div className="flex w-full space-x-3">
-                {/* <InputWrapper
-                  size="large"
-                  label="Expiration Date"
-                  className="py-1"
-                  disabled={isPaymentProcessing}
-                >
-                  <CardExpiryElement
-                    onChange={onCardExpiryChange}
-                    options={CARD_ELEMENT_OPTIONS}
-                  />
-                </InputWrapper>
-
-                <InputWrapper
-                  size="large"
-                  label="Security Code"
-                  className="py-1"
-                  disabled={isPaymentProcessing}
-                  externalSuffix={
-                    <Tooltip content="This is the 3 digit code on the back of your card.">
-                      <HelpIcon className="h-6" />
-                    </Tooltip>
-                  }
-                >
-                  <CardCvcElement options={CARD_ELEMENT_OPTIONS} />
-                </InputWrapper> */}
-              </div>
 
               <InputPostcode
                 size="large"

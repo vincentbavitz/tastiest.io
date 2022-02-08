@@ -48,7 +48,6 @@ export const getServerSideProps = async (
     // Horus will tell us whether or not the order was valid.
     const { data: order, error } = await horus.post('/orders/new', {
       experienceId,
-      userId: user.id,
       heads,
       userAgent,
       bookedForTimestamp,

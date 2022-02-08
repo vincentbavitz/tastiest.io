@@ -1,10 +1,7 @@
-import { CardCvcElement, CardExpiryElement } from '@stripe/react-stripe-js';
 import {
   StripeCardExpiryElementChangeEvent,
   StripeCardNumberElementOptions,
 } from '@stripe/stripe-js';
-import { HelpIcon } from '@tastiest-io/tastiest-icons';
-import { Tooltip } from '@tastiest-io/tastiest-ui';
 import {
   DateObject,
   dlog,
@@ -28,7 +25,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setIsPaymentProcessing } from 'state/checkout';
 import { IState } from 'state/reducers';
 import { UI } from '../../../constants';
-import { InputWrapper } from '../../inputs/InputWrapper';
 import { CheckoutPaymentPanel } from '../CheckoutPaymentPanel';
 
 const CARD_ELEMENT_OPTIONS: StripeCardNumberElementOptions = {
@@ -265,7 +261,7 @@ export function CheckoutStepPayment(props: Props) {
             </InputCardNumberWrapper> */}
 
             <div className="flex w-full space-x-3">
-              <InputWrapper
+              {/* <InputWrapper
                 size="large"
                 label="Expiration Date"
                 className="py-1"
@@ -289,7 +285,7 @@ export function CheckoutStepPayment(props: Props) {
                 }
               >
                 <CardCvcElement options={CARD_ELEMENT_OPTIONS} />
-              </InputWrapper>
+              </InputWrapper> */}
             </div>
 
             <InputPostcode

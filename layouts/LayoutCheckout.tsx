@@ -1,12 +1,18 @@
 import { Button, Tooltip } from '@tastiest-io/tastiest-ui';
-import { formatCurrency, HorusOrderEntity } from '@tastiest-io/tastiest-utils';
+import {
+  dlog,
+  formatCurrency,
+  Horus,
+  HorusOrderEntity,
+} from '@tastiest-io/tastiest-utils';
 import { CheckoutCard } from 'components/checkout/CheckoutCard';
 import { CheckoutStepIndicator } from 'components/checkout/CheckoutStepIndicator';
 import { Contained } from 'components/Contained';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { DateTime } from 'luxon';
 import { InferGetStaticPropsType } from 'next';
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { CheckoutStep } from 'state/checkout';
 import { UI } from '../constants';
 import { LayoutProps } from './LayoutHandler';
@@ -138,24 +144,76 @@ export const order = ({
 } as any) as HorusOrderEntity;
 
 export default function LayoutCheckout({
-  router,
   pageProps,
+  router,
   children: Component,
 }: // }: LayoutProps<InferGetStaticPropsType<typeof getServerSideProps>>) {
 LayoutProps<InferGetStaticPropsType<any>>) {
   //   const {  } = pageProps;
 
+  const { isSignedIn, token, user } = useAuth();
   const { isDesktop } = useScreenSize();
 
-  const step: CheckoutStep = router.pathname.startsWith('/checkout/register')
-    ? CheckoutStep.PAYMENT
-    : CheckoutStep.SIGN_IN;
+  const toCheckoutWithToken = async () => {
+    const currentUrl = new URL(window.location.href);
+
+    const heads = Number(currentUrl.searchParams.get('heads') ?? 0);
+    const experienceId = currentUrl.searchParams.get('experienceId');
+    const userAgent = currentUrl.searchParams.get('userAgent');
+    const bookedForTimestamp = Number(
+      currentUrl.searchParams.get('bookedForTimestamp') ?? 0,
+    );
+
+    // Horus will tell us whether or not the order was valid.
+    const horus = new Horus(token);
+    const { data: order, error } = await horus.post<any, HorusOrderEntity>(
+      '/orders/new',
+      {
+        experienceId,
+        heads,
+        userAgent,
+        bookedForTimestamp,
+        isTest: process.env.NODE_ENV !== 'production',
+      },
+    );
+
+    dlog('LayoutCheckout ➡️ order:', order);
+
+    if (order && !error) {
+      router.push(`/checkout/${order.token}`);
+    }
+  };
+
+  // Router change when they sign in.
+  useEffect(() => {
+    // Account for exact values because isSignedIn being null is falsy.
+    if (token && step === CheckoutStep.SIGN_IN) {
+      // Create a new order and direct them straight to /checkout/[token]
+      toCheckoutWithToken();
+    }
+
+    if (!token && step === CheckoutStep.PAYMENT) {
+      router.push('/checkout/authorize' + window.location.search);
+    }
+  }, [token]);
+
+  const step: CheckoutStep = useMemo(
+    () =>
+      router.pathname.startsWith('/checkout/authorize')
+        ? CheckoutStep.SIGN_IN
+        : CheckoutStep.PAYMENT,
+    [router.pathname],
+  );
 
   const isPaymentProcessing = false;
   const submit = () => null;
 
   return (
-    <LayoutWrapper router={router} pageProps={pageProps} headerProps={{}}>
+    <LayoutWrapper
+      router={router}
+      pageProps={pageProps}
+      headerProps={{ blank: true }}
+    >
       <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
         <div className="relative flex flex-col w-full mt-28 space-y-10">
           <CheckoutStepIndicator step={step} />
