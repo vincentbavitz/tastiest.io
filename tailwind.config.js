@@ -37,6 +37,9 @@ module.exports = {
       colors: {
         primary: '#274f73',
         '-primary-1': '#1c3a54',
+        // the complimentary inverse of the primary
+        // From https://www.crispedge.com/generate-split-complimentary-colors
+        'primary-inverse': '#732729',
         secondary: '#3882bb',
         tertiary: '#9EB8CC',
         dark: '#07151b',

@@ -245,7 +245,9 @@ const LayoutCheckoutRight: FC = ({ children }) => {
   const { isDesktop } = useScreenSize();
 
   return (
-    <div className={clsx('flex-grow', isDesktop ? 'w-5/12 pl-10' : 'w-full')}>
+    <div
+      className={clsx('flex-grow pt-6', isDesktop ? 'w-5/12 pl-10' : 'w-full')}
+    >
       {children}
     </div>
   );

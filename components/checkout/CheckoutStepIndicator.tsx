@@ -14,7 +14,7 @@ export function CheckoutStepIndicator({ step }: Props) {
 
   return (
     <div
-      className="w-full md:w-7/12"
+      className="w-full"
       style={{
         minWidth: isDesktop ? `${UI.CHECKOUT_SPLIT_WIDTH_PX}px` : 'unset',
       }}

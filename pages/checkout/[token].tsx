@@ -3,6 +3,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { Button, Tooltip } from '@tastiest-io/tastiest-ui';
 import {
+  DateObject,
   dlog,
   formatCurrency,
   Horus,
@@ -10,19 +11,16 @@ import {
   reportInternalError,
   TastiestInternalErrorCode,
   TastiestPaymentError,
-  TDay,
   titleCase,
-  TMonth,
-  TYear,
   useHorusSWR,
 } from '@tastiest-io/tastiest-utils';
 import { CheckoutCard } from 'components/checkout/CheckoutCard';
 import { CheckoutInputCard } from 'components/checkout/CheckoutInputCard';
 import CheckoutInputName from 'components/checkout/CheckoutInputName';
-import { InputContactBirthday } from 'components/inputs/contact/InputContactBirthday';
 import { InputMobile } from 'components/inputs/contact/InputMobile';
 import { InputName } from 'components/inputs/contact/InputName';
 import InputPostcode from 'components/inputs/contact/InputPostcode';
+import { InputDate } from 'components/inputs/InputDate';
 import MobileBottomButton from 'components/MobileBottomButton';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -134,6 +132,18 @@ function CheckoutPayment(
     refreshInterval: 5000,
   });
 
+  // Birthday data-structre can't be handled nicely with use-form.
+  // So we can manage it ourselves.
+  const birthdayDateTime = order?.user.birthday
+    ? DateTime.fromISO(order?.user.birthday)
+    : null;
+
+  const [birthday, setBirthday] = useState<DateObject>({
+    day: birthdayDateTime?.day ?? 1,
+    month: birthdayDateTime?.month ?? 1,
+    year: birthdayDateTime?.year ?? 2000,
+  });
+
   const {
     handleSubmit,
     control,
@@ -147,26 +157,6 @@ function CheckoutPayment(
 
   const submit = handleSubmit(
     async ({ firstName, lastName, mobile, cardPostcode, cardHolderName }) => {
-      if (
-        firstName?.length > 0 ||
-        lastName?.length > 0 ||
-        mobile?.length > 0 ||
-        cardPostcode?.length > 0
-        // JSON.stringify(birthday) !== JSON.stringify(userData.details?.birthday)
-      ) {
-        const horus = new Horus(token);
-
-        // Update user information
-        horus.post('/users/update', {
-          uid: userId,
-          firstName,
-          lastName,
-          mobile,
-          // birthday?: Date;
-          location: { postcode: cardPostcode },
-        });
-      }
-
       // Start isLoading
       setIsPaymentProcessing(true);
       setError(null);
@@ -222,10 +212,28 @@ function CheckoutPayment(
         setIsPaymentProcessing(false);
         return;
       }
+
+      if (
+        firstName?.length > 0 ||
+        lastName?.length > 0 ||
+        mobile?.length > 0 ||
+        cardPostcode?.length > 0 ||
+        JSON.stringify(birthday) !== JSON.stringify(order.user.birthday)
+      ) {
+        const horus = new Horus(token);
+
+        // Update user information
+        horus.post('/users/update', {
+          uid: userId,
+          firstName,
+          lastName,
+          mobile,
+          birthday: DateTime.fromObject(birthday).toJSDate(),
+          location: { postcode: cardPostcode },
+        });
+      }
     },
   );
-
-  const birthdayDateTime = DateTime.fromJSDate(order?.user.birthday);
 
   return (
     <>
@@ -271,7 +279,6 @@ function CheckoutPayment(
                 control={control}
                 disabled={isPaymentProcessing}
               />
-
               <InputName
                 name="lastName"
                 size="large"
@@ -280,7 +287,6 @@ function CheckoutPayment(
                 control={control}
                 disabled={isPaymentProcessing}
               />
-
               <InputMobile
                 name="mobile"
                 size="large"
@@ -288,18 +294,21 @@ function CheckoutPayment(
                 disabled={isPaymentProcessing}
                 defaultValue={order.user.mobile ?? null}
               />
-
-              <InputContactBirthday
-                label="Birthday"
-                date={{
-                  day: String(birthdayDateTime.day) as TDay,
-                  month: String(birthdayDateTime.month) as TMonth,
-                  year: String(birthdayDateTime.year) as TYear,
-                }}
-                disabled={isPaymentProcessing}
-                // onDateChange={value => setBirthday(value)}
-                onDateChange={() => null}
+              <InputDate
+                initialDate={birthday}
+                onDateChange={(_, destructured) => setBirthday(destructured)}
+                maxYear={2010}
               />
+              {/* label="Birthday" date=
+              {{
+                day: String(birthdayDateTime.day) as TDay,
+                month: String(birthdayDateTime.month) as TMonth,
+                year: String(birthdayDateTime.year) as TYear,
+              }}
+              disabled={isPaymentProcessing}
+              // onDateChange={value => setBirthday(value)}
+              onDateChange={() => null}
+              /> */}
             </div>
           </div>
 
