@@ -230,9 +230,7 @@ const SocialsBlock = () => (
 const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
   <>
     <span>
-      <a href="https://restaurants.tastiest.io">
-        Tastiest For {!flat && <br />} Restaurants
-      </a>
+      <a href="/restaurateurs">Tastiest For {!flat && <br />} Restaurants</a>
     </span>
     {/* <p>
       <Link href="/how-it-works">
