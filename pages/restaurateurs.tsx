@@ -1,8 +1,9 @@
-import { Button, Input, TextArea } from '@tastiest-io/tastiest-ui';
+import { Button, Input, TextArea, Tooltip } from '@tastiest-io/tastiest-ui';
+import { Horus } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import ResponsiveImage from 'components/ResponsiveImage';
 import { useScreenSize } from 'hooks/useScreenSize';
-import React from 'react';
+import React, { useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 
 interface FormData {
@@ -21,6 +22,7 @@ function Restaurateurs() {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     mode: 'onBlur',
@@ -29,7 +31,31 @@ function Restaurateurs() {
     shouldFocusError: true,
   });
 
+  const [submitting, setSubmitting] = useState(false);
+
   const submit = handleSubmit(async form => {
+    const horus = new Horus(null);
+    setSubmitting(true);
+
+    const { error } = await horus.post('/restaurants/public/apply', {
+      name: form.name,
+      email: form.email,
+      contactNumber: form.contactNumber,
+      restaurantName: form.restaurantName,
+      restaurantAddress: form.restaurantAddress,
+      restaurantWebsite: form.restaurantWebsite,
+      description: form.givenExperienceIdea,
+    });
+
+    setSubmitting(false);
+
+    if (error) {
+      alert(error);
+      return;
+    }
+
+    reset();
+
     return null;
   });
 
@@ -90,7 +116,7 @@ function Restaurateurs() {
         message: 'Please enter your best contact number.',
       },
       maxLength: {
-        value: 14,
+        value: 18,
         message: 'Please enter a valid phone number.',
       },
     },
@@ -165,7 +191,7 @@ function Restaurateurs() {
   });
 
   return (
-    <div className="py-12">
+    <div className="pt-12 pb-20">
       <Contained maxWidth={900}>
         <h1 className="font-primary text-center font-medium text-3xl text-primary mb-2">
           Work with us
@@ -244,17 +270,27 @@ function Restaurateurs() {
                 {...restaurantAddressProps}
               />
 
-              <TextArea
-                ref={givenExperienceIdeaRef}
-                label="Something you're proud of"
-                placeholder="Please provide a brief description of the experience that you would like to sell with Tastiest"
-                {...givenExperienceIdeaProps}
-              />
+              <Tooltip
+                show={true}
+                trigger="manual"
+                placement="top-start"
+                content={errors.givenExperienceIdea?.message}
+                hideDelay={2000}
+              >
+                <TextArea
+                  ref={givenExperienceIdeaRef}
+                  label="Something you're proud of"
+                  placeholder="Please provide a brief description of the experience that you would like to sell with Tastiest"
+                  {...givenExperienceIdeaProps}
+                />
+              </Tooltip>
+            </form>
 
-              <Button wide size="large" onClick={submit}>
+            <div className="pt-4 w-full">
+              <Button wide size="large" onClick={submit} loading={submitting}>
                 Submit
               </Button>
-            </form>
+            </div>
           </div>
         </div>
       </Contained>

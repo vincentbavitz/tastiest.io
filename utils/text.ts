@@ -1,4 +1,4 @@
-import { DateObject, TDay, TMonth, TYear } from '@tastiest-io/tastiest-utils';
+import { DateObject, TMonth, TYear } from '@tastiest-io/tastiest-utils';
 
 function limit(val: string, max: string) {
   if (val.length === 1 && val[0] > max[0]) {
@@ -40,9 +40,9 @@ export const dateToString = (date: DateObject) =>
   date ? `${date.day}${date.month}${date.year}` : null;
 
 export const stringToDate = (value: string): DateObject => {
-  const day = value.substring(0, 2) as TDay;
-  const month = value.substring(2, 4) as TMonth;
-  const year = value.substring(4, 8) as TYear;
+  const day = Number(String(value).substring(0, 2));
+  const month = Number(String(value).substring(2, 4) as TMonth);
+  const year = Number(String(value).substring(4, 8) as TYear);
   return { day, month, year };
 };
 
@@ -50,7 +50,9 @@ export function dateFormat(value: string) {
   const { day, month, year } = stringToDate(value);
 
   return (
-    day + (month.length ? '/' + month : '') + (year.length ? '/' + year : '')
+    day +
+    (String(month).length ? '/' + month : '') +
+    (String(year).length ? '/' + year : '')
   );
 }
 

@@ -34,7 +34,7 @@ const CheckoutStepAuthDesktop = ({ order }: Props) => {
       </div>
 
       <div className="flex-grow w-5/12 pl-10">
-        <CheckoutCard order={order}>
+        <CheckoutCard experienceImage={order.deal.image}>
           <p className="font-medium">{order?.deal?.restaurant?.name}</p>
 
           <div className="flex items-center justify-between">
@@ -55,7 +55,7 @@ const CheckoutStepAuthMobile = ({ order }: Props) => {
 
   return (
     <div className="flex flex-col w-full space-y-6">
-      <CheckoutCard order={order}>
+      <CheckoutCard experienceImage={order.deal.image}>
         <div>
           <p className="text-xl font-medium">{order?.deal?.restaurant?.name}</p>
           <p className="text-sm sm:text-base">{order?.deal?.tagline}</p>
