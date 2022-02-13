@@ -1,4 +1,11 @@
 import {
+  CalendarOutlined,
+  CommentOutlined,
+  HeartOutlined,
+  RightOutlined,
+  VideoCameraOutlined,
+} from '@ant-design/icons';
+import {
   CmsApi,
   ExperiencePost,
   RestaurantContentful,
@@ -101,6 +108,51 @@ const Index = () => {
       <div className="flex flex-col mb-10 space-y-10">
         <div>
           <HomeHeroSection />
+
+          <Contained>
+            <h2 className="text-2xl text-center border-dark px-6 tracking-wide leading-8 pb-4">
+              We partner with the best restaurants so you have the best
+              experiences.
+            </h2>
+
+            <div className="flex flex-col items-center space-y-10 pt-6 pb-32">
+              <InfoRow
+                header="Restaurant Stories"
+                description="Feel the atmosphere through our cinematography and interviews"
+                icon={VideoCameraOutlined}
+              />
+
+              <InfoRow
+                header="Book experiences directly"
+                description="Reserve your table through Tastiest"
+                icon={CalendarOutlined}
+              />
+
+              <InfoRow
+                header="Be In The Know"
+                description="Loyal customers follow restaurants and get access to special experiences"
+                icon={HeartOutlined}
+              />
+
+              <InfoRow
+                header="Community Driven"
+                description="All restaurants are recommended by you and anonymously tested by us"
+                icon={CommentOutlined}
+              />
+            </div>
+
+            <p></p>
+          </Contained>
+
+          {/* <div className="w-full bg-primary-inverse py-12">
+            <Contained>
+              <h3 className="font-medium text-light text-lg leading-7">
+                Follow restaurants and get notified when they lorem ipsum
+                <br /> smoke some gypsum
+              </h3>
+            </Contained>
+          </div> */}
+
           <HomeFeaturedRestaurantsSection restaurants={restaurants} />
           <HomeAwardWinningDishesSection dishes={dishes} />
           <HomeFeaturedExperiencesSection cards={cards} />
@@ -148,6 +200,43 @@ const Index = () => {
         {/* <HomeRecentSearchesSection /> */}
       </div>
     </>
+  );
+};
+
+interface InfoRowProps {
+  header: string;
+  description: string;
+  icon: React.ForwardRefExoticComponent<any>;
+}
+
+const InfoRow = (props: InfoRowProps) => {
+  const { header, description, icon: Icon } = props;
+
+  return (
+    <div className="relative w-full">
+      <div
+        style={{
+          filter: 'drop-shadow(9px 9px 15px #3882bb20)',
+        }}
+        className="relative flex items-center justify-between gap-4 bg-white rounded-lg py-4 pl-6 pr-10 z-10"
+      >
+        <div className="flex items-center gap-4">
+          <Icon
+            style={{
+              filter: 'drop-shadow(0 0 3px #8dd7f4a0)',
+            }}
+            className="text-secondary text-3xl"
+          />
+
+          <div>
+            <h1 className="font-medium text-base leading-7">{header}</h1>
+            <span className="">{description}</span>
+          </div>
+        </div>
+
+        <RightOutlined className="text-xl text-secondary" />
+      </div>
+    </div>
   );
 };
 

@@ -1,3 +1,4 @@
+import { SearchOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Image from 'next/image';
@@ -83,13 +84,35 @@ export function HomeHeroSection(): JSX.Element {
       </div>
 
       <div className="absolute inset-0 flex items-center justify-center z-10">
-        <div style={{ maxWidth: '33rem' }} className="px-10">
+        <div
+          style={{ maxWidth: '33rem' }}
+          className="flex flex-col items-center px-10"
+        >
           <h1
             style={{ filter: 'drop-shadow(0 0 15px black)' }}
             className="text-center text-4xl text-light font-primary leading-10"
           >
             {METADATA.TAGLINE}
           </h1>
+          <div
+            style={{ filter: 'drop-shadow(0 0 10px rgba(0, 0, 0, 0.15)' }}
+            className="mt-6 py-1 px-1 border border-light rounded-full text-2xl text-light flex space-x-4 bg-dark bg-opacity-25"
+          >
+            <div className="rounded-full bg-light text-dark text-base px-4">
+              EXPERIENCES
+            </div>
+
+            <div className="rounded-full text-liht text-base px-4">
+              RESTAURANTS
+            </div>
+
+            <div className="rounded-full text-light text-base px-4">DISHES</div>
+          </div>
+
+          <div className="mt-4 flex items-center gap-2 bg-light bg-opacity-75 border border-light rounded-full px-4 py-1 tracking-wide font-medium">
+            <SearchOutlined />
+            DISCOVER
+          </div>
         </div>
       </div>
     </div>

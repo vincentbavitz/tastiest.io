@@ -5,7 +5,6 @@ import {
   Order,
 } from '@tastiest-io/tastiest-utils';
 import { ExperienceOrderPanelDesktop } from 'components/article/widgets/ExperienceOrderPanelDesktop';
-import { CheckoutPaymentPanel } from 'components/checkout/CheckoutPaymentPanel';
 import { Contained } from 'components/Contained';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
@@ -156,11 +155,11 @@ const ExperienceProductPreview = (
             </h2>
 
             <div style={{ width: '18rem' }} className="pt-6">
-              <CheckoutPaymentPanel
+              {/* <CheckoutPaymentPanel
                 order={order}
                 submit={() => null}
                 error={null}
-              />
+              /> */}
             </div>
           </div>
 

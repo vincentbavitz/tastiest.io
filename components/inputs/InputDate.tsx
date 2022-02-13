@@ -1,14 +1,14 @@
-import { Input } from '@tastiest-io/tastiest-ui';
-import { DateObject } from '@tastiest-io/tastiest-utils';
-import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Select } from '@tastiest-io/tastiest-ui';
+import { DateObject, dlog } from '@tastiest-io/tastiest-utils';
+import { DateTime } from 'luxon';
+import React, { useEffect, useMemo, useState } from 'react';
 
 interface Props {
-  // Data
-  date: DateObject;
-  minYear?: string;
-  maxYear?: string;
-  onDateChange: (date: DateObject) => void;
+  onDateChange: (date: Date, destructured: DateObject) => void;
+
+  maxYear?: number;
+  numYears?: number;
+  initialDate?: DateObject;
 
   // Styling
   size?: 'large' | 'medium' | 'small';
@@ -17,42 +17,97 @@ interface Props {
 }
 
 export function InputDate(props: Props) {
-  const { control } = useForm<{ date: string }>({
-    mode: 'onChange',
-    reValidateMode: 'onBlur',
-    criteriaMode: 'firstError',
-    shouldFocusError: true,
-  });
+  const { maxYear, numYears, label, onDateChange, initialDate } = props;
 
-  const transformInput = (value: string) => {
-    return String(value)
-      .replace(/[^0-9/]*/g, '')
-      .slice(0, 10);
-  };
+  const initialYear = 2000;
+  const [day, setDay] = useState<number>(initialDate?.day ?? 1);
+  const [month, setMonth] = useState<number>(initialDate?.month ?? 1);
+  const [year, setYear] = useState<number>(initialDate?.year ?? initialYear);
+
+  const daysOfMonth = useMemo(() => {
+    // February is weird.
+    if (month === 2) {
+      const isLeapYear = year % 4 === 0;
+      return isLeapYear ? 29 : 28;
+    }
+
+    // Alternating 31 and 30
+    return month % 2 === 0 ? 30 : 31;
+  }, [month, year]);
+
+  // Call onDateChange
+  useEffect(() => {
+    const destructured: DateObject = {
+      day,
+      month,
+      year,
+    };
+
+    dlog('InputDate ➡️ destructured:', destructured);
+
+    const date = DateTime.fromObject(destructured).toJSDate();
+    onDateChange(date, destructured);
+  }, [day, month, year]);
 
   return (
-    <Controller
-      control={control}
-      defaultValue=""
-      name="date"
-      rules={{
-        pattern: {
-          value: /^((0[1-9])|([1-2][0-9])|(3[0-1]))\/((0[1-9])|(1[0-2]))\/((19[2-9][0-9])|(201[0-1])|(200[0-9]))$/,
-          message: 'Please enter a valid date.',
-        },
-      }}
-      render={({ field, formState }) => (
-        <Input
-          {...field}
-          type="text"
-          inputMode="decimal"
-          placeholder="MM/DD/YYYY"
-          className="font-mono"
-          error={formState.errors.date?.message}
-          onChange={e => field.onChange(e.target.value)}
-          value={transformInput(field.value)}
-        ></Input>
-      )}
-    />
+    <div>
+      {label ? <span className="text-base">{label}</span> : null}
+
+      <div className="flex space-x-2">
+        <Select
+          color="secondary"
+          minSelectWidth={70}
+          minOptionWidth={70}
+          onSelect={id => setDay(Number(id))}
+        >
+          {Array(daysOfMonth)
+            .fill(null)
+            .map((_, n) => (
+              <Select.Option key={n} id={String(n + 1)} value={String(n + 1)} />
+            ))}
+        </Select>
+
+        <Select
+          color="secondary"
+          minSelectWidth={150}
+          onSelect={id => setMonth(Number(id))}
+        >
+          <Select.Option id="1" value="January" />
+          <Select.Option id="2" value="February" />
+          <Select.Option id="3" value="March" />
+          <Select.Option id="4" value="April" />
+          <Select.Option id="5" value="May" />
+          <Select.Option id="6" value="June" />
+          <Select.Option id="7" value="July" />
+          <Select.Option id="8" value="August" />
+          <Select.Option id="9" value="September" />
+          <Select.Option id="10" value="October" />
+          <Select.Option id="11" value="November" />
+          <Select.Option id="12" value="December" />
+        </Select>
+
+        <Select
+          color="secondary"
+          minSelectWidth={90}
+          minOptionWidth={90}
+          onSelect={id => setYear(Number(id))}
+          initialSelected={String(initialYear)}
+        >
+          {Array(numYears ?? 70)
+            .fill(null)
+            .map((_, n) => {
+              const currentYear = new Date().getFullYear();
+
+              return (
+                <Select.Option
+                  key={n}
+                  id={String(maxYear ? maxYear - n : currentYear - n)}
+                  value={String(maxYear ? maxYear - n : currentYear - n)}
+                />
+              );
+            })}
+        </Select>
+      </div>
+    </div>
   );
 }

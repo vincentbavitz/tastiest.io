@@ -209,13 +209,12 @@ const Preferences = ({
           >
             <div style={{ width: '8.5rem' }}>
               <InputDate
-                date={birthday}
-                onDateChange={date => {
-                  setBirthday(date);
+                initialDate={birthday}
+                onDateChange={(_, destructured) => {
+                  setBirthday(destructured);
                   compareModifiedValues();
                 }}
-                minYear={USER.OLDEST_BIRTH_YEAR}
-                maxYear={USER.YOUNGEST_BIRTH_YEAR}
+                maxYear={Number(USER.YOUNGEST_BIRTH_YEAR)}
               />
             </div>
           </PreferenceBlock>

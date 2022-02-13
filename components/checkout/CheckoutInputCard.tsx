@@ -101,7 +101,7 @@ export function CheckoutInputCard({ disabled }: Props) {
       <div className="flex w-full space-x-3">
         <Input
           size="large"
-          label="Expiration Date"
+          label="Expiry"
           className="py-1"
           forceFocus={cardExpiryHasFocus}
           disabled={disabled}
