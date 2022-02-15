@@ -248,7 +248,7 @@ const ThankYou = (
             </div>
 
             <div className="flex flex-wrap justify-center gap-10 pt-6 text-dark">
-              <section className="text-center">
+              {/* <section className="text-center">
                 <h4 className="text-4xl font-primary">
                   {Intl.NumberFormat().format(
                     updatedPlaceInLine > 200000
@@ -257,7 +257,7 @@ const ThankYou = (
                   )}
                 </h4>
                 <p>your place in line</p>
-              </section>
+              </section> */}
 
               {/* <section className="text-center">
                 <h4 className="text-4xl font-primary">

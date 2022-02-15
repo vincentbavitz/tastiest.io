@@ -1,5 +1,10 @@
+import {
+  CalendarOutlined,
+  CommentOutlined,
+  HeartOutlined,
+  VideoCameraOutlined,
+} from '@ant-design/icons';
 import { Button, Input, Modal, TastiestBrand } from '@tastiest-io/tastiest-ui';
-import { SVG } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import REGEX from 'constants/regex';
@@ -10,12 +15,6 @@ import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import {
-  HomeInformationBook,
-  HomeInformationLove,
-  HomeInformationPage,
-  HomeInformationShare,
-} from 'public/assets/page/home';
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { LocalEndpoint } from 'types/api';
@@ -161,7 +160,7 @@ const Invite = () => {
               <TastiestBrand type="full" size={10} />
 
               <h2 className="text-xl tracking-wide mt-4 leading-none">
-                Exceptional food experiences in London.
+                Premium Dining Experiences
               </h2>
               <h4 className="text-base mt-4">
                 Partnering only with the best restaurants.
@@ -219,24 +218,24 @@ const Invite = () => {
               )}
             >
               <InformationBlock
-                label="Know what to expect"
-                description="We go to every restaurant on our platform and capture video that represents what they are truly proud of."
-                illustration={HomeInformationPage}
+                label="Restaurant Stories"
+                description="Feel the atmosphere through our cinematography and interviews"
+                illustration={VideoCameraOutlined}
               ></InformationBlock>
               <InformationBlock
-                label="News from the kitchen"
-                description="Follow restaurants where Chefs update you on new dishes, menus and more."
-                illustration={HomeInformationShare}
+                label="Book Experiences"
+                description="Reserve your table through Tastiest"
+                illustration={CalendarOutlined}
               ></InformationBlock>
               <InformationBlock
-                label="Last minute tables"
-                description="Grab last-minute tables at the best restaurants in London."
-                illustration={HomeInformationLove}
+                label="Be In The Know"
+                description="Loyal customers follow restaurants and get access to special experiences"
+                illustration={HeartOutlined}
               ></InformationBlock>
               <InformationBlock
-                label="Book directly"
-                description="Book directly on Tastiest and earn rewards."
-                illustration={HomeInformationBook}
+                label="Community Driven"
+                description="All restaurants are recommended by you and anonymously tested by us"
+                illustration={CommentOutlined}
               ></InformationBlock>
             </div>
           </div>
@@ -248,8 +247,8 @@ const Invite = () => {
 
 interface InformationBlockProps {
   label: string;
-  illustration: SVG;
   description: string;
+  illustration: React.ForwardRefExoticComponent<any>;
 }
 
 const InformationBlock: FC<InformationBlockProps> = props => {
@@ -258,17 +257,22 @@ const InformationBlock: FC<InformationBlockProps> = props => {
   return (
     <div className="flex flex-col gap-4 items-center w-full">
       <div
-        style={{ maxWidth: '10rem', height: '2.25em' }}
-        className="pt-2 text-center leading-none font-medium flex justify-center"
+        style={{ maxWidth: '8rem', height: '2em' }}
+        className="flex items-center"
       >
-        {label}
+        <div className="pt-2 text-center font-medium text-lg leading-5 flex justify-center text-dark">
+          {label}
+        </div>
       </div>
 
-      <div className="flex justify-center items-center relative w-full h-20">
-        <Illustration className="h-full w-full object-contain" />
+      <div className="flex justify-center items-center relative w-full h-10 pt-1">
+        <Illustration
+          style={{ filter: 'drop-shadow(0 0 3px #8dd7f4a0)' }}
+          className="text-3xl object-contain"
+        />
       </div>
 
-      <div style={{ maxWidth: '10rem' }} className="pt-2 text-sm leading-4">
+      <div style={{ maxWidth: '11rem' }} className="text-sm leading-5">
         {description}
       </div>
     </div>
