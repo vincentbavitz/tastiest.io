@@ -157,12 +157,17 @@ export const EarlyAccessProvider = ({
     if (emailPrefix?.length) {
       dlog('submitPreregister ➡️ Adding to Firestore');
 
-      firebase.firestore().collection('preregisters').doc(emailPrefix).set({
-        email: _email,
-        position: calculatePosition(),
-        ref: emailPrefix,
-        referredFrom: referrer,
-      });
+      await firebase
+        .firestore()
+        .collection('preregisters')
+        .doc(emailPrefix)
+        .set({
+          email: _email,
+          position: calculatePosition(),
+          ref: emailPrefix,
+          referredFrom: referrer,
+          timestamp: Date.now(),
+        });
     }
 
     // Send event to Zapier.
