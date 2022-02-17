@@ -27,10 +27,10 @@ export function middleware(request: NextRequest) {
   // and forward this info to the redirect
   if (redirect) {
     // Add hasAccess=true to cookies.
-    return NextResponse.redirect(redirect + request.nextUrl.search).cookie(
-      'hasAccess',
-      'true',
-    );
+    const res = NextResponse.rewrite(redirect + request.nextUrl.search);
+    res.cookie('hasAccess', 'true');
+
+    return res;
   }
 
   // Beware loops when redirecting to the same directory
