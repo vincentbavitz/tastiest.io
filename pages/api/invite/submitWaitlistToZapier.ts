@@ -3,7 +3,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import fetch from 'node-fetch';
 
 const Analytics = require('analytics-node');
-const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY);
+const analytics = new Analytics(process.env.NEXT_PUBLIC_ANALYTICS_WRITE_KEY, {
+  flushInterval: 0,
+});
 
 export interface SubmitWaitlistToZapierParams {
   email: string;
@@ -13,6 +15,10 @@ export interface SubmitWaitlistToZapierParams {
   page_variant: string;
   referrer: string;
   ip: string;
+}
+
+function wait(milliseconds: number) {
+  return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
 /**
@@ -55,16 +61,16 @@ export default async function submitWaitlistToZapier(
     return;
   }
 
-  // Send off to Segment for Slack notifications
-  await analytics.track({
-    event: 'New Waitlist Submission',
-    anonymousId: email,
-    properties: body,
-  });
-
   try {
+    // Send off to Segment for Slack notifications
+    const segmentPromise = analytics.track({
+      event: 'New Waitlist Submission',
+      anonymousId: email,
+      properties: body,
+    });
+
     const zapierWebhookEndpoint = `https://hooks.zapier.com/hooks/catch/8960376/bmy7cmt`;
-    await fetch(zapierWebhookEndpoint, {
+    const zapierPromise = fetch(zapierWebhookEndpoint, {
       method: 'POST',
       body: JSON.stringify({
         email,
@@ -79,6 +85,12 @@ export default async function submitWaitlistToZapier(
         'Content-Type': 'application/json',
       },
     });
+
+    // Wait to ensure Segment actually fires
+    const waitPromise = wait(500);
+
+    // Wait for everything to finish so our events register.
+    await Promise.all([zapierPromise, segmentPromise, waitPromise]);
 
     response.json({ success: true, data: null, error: null });
   } catch (error) {
