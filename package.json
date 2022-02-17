@@ -55,7 +55,7 @@
     "luxon": "^2.0.2",
     "mapbox-gl": "^2.3.1",
     "moment": "^2.27.0",
-    "next": "^12.0.7",
+    "next": "^12.1.0",
     "next-compose-plugins": "^2.2.0",
     "next-images": "^1.8.1",
     "next-seo": "^4.26.0",
