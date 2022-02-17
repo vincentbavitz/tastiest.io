@@ -191,10 +191,10 @@ function Tastiest404() {
                   <div className="flex flex-col space-y-3">
                     <TextArea
                       ref={lookingForRef}
-                      {...lookingForFieldProps}
                       rows={5}
                       maxLength={UI.USER_QUERY_404_MAX_LEN}
                       placeholder="Let us know what you were looking for and we'll get back to you soon."
+                      {...lookingForFieldProps}
                     />
 
                     {!isSignedIn && (
