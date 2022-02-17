@@ -157,6 +157,20 @@ export const EarlyAccessProvider = ({
     if (emailPrefix?.length) {
       dlog('submitPreregister ➡️ Adding to Firestore');
 
+      // Send event to Zapier.
+      await postFetch<SubmitWaitlistToZapierParams>(
+        LocalEndpoint.SUBMIT_WAITLIST_TO_ZAPIER,
+        {
+          email: _email,
+          utm_medium: utmMedium,
+          utm_source: utmSource,
+          utm_campaign: utmCampaign,
+          page_variant: pageVariant,
+          referrer,
+          ip,
+        },
+      );
+
       await firebase
         .firestore()
         .collection('preregisters')
@@ -169,20 +183,6 @@ export const EarlyAccessProvider = ({
           timestamp: Date.now(),
         });
     }
-
-    // Send event to Zapier.
-    await postFetch<SubmitWaitlistToZapierParams>(
-      LocalEndpoint.SUBMIT_WAITLIST_TO_ZAPIER,
-      {
-        email: _email,
-        utm_medium: utmMedium,
-        utm_source: utmSource,
-        utm_campaign: utmCampaign,
-        page_variant: pageVariant,
-        referrer,
-        ip,
-      },
-    );
 
     router.push(`/invite/thank-you?ref=${emailPrefix}`);
   };

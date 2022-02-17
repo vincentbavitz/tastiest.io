@@ -1,5 +1,5 @@
-import { Button, Input, TextArea, Tooltip } from '@tastiest-io/tastiest-ui';
-import { Horus } from '@tastiest-io/tastiest-utils';
+import { Button, Input, TextArea } from '@tastiest-io/tastiest-ui';
+import { dlog, Horus } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import ResponsiveImage from 'components/ResponsiveImage';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -37,7 +37,7 @@ function Restaurateurs() {
     const horus = new Horus(null);
     setSubmitting(true);
 
-    const { error } = await horus.post('/restaurants/public/apply', {
+    const { data, error } = await horus.post('/restaurants/public/apply', {
       name: form.name,
       email: form.email,
       contactNumber: form.contactNumber,
@@ -46,6 +46,8 @@ function Restaurateurs() {
       restaurantWebsite: form.restaurantWebsite,
       description: form.givenExperienceIdea,
     });
+
+    dlog('restaurateurs ➡️ data:', data);
 
     setSubmitting(false);
 
@@ -270,20 +272,12 @@ function Restaurateurs() {
                 {...restaurantAddressProps}
               />
 
-              <Tooltip
-                show={true}
-                trigger="manual"
-                placement="top-start"
-                content={errors.givenExperienceIdea?.message}
-                hideDelay={2000}
-              >
-                <TextArea
-                  ref={givenExperienceIdeaRef}
-                  label="Something you're proud of"
-                  placeholder="Please provide a brief description of the experience that you would like to sell with Tastiest"
-                  {...givenExperienceIdeaProps}
-                />
-              </Tooltip>
+              <TextArea
+                ref={givenExperienceIdeaRef}
+                error={errors.givenExperienceIdea?.message}
+                label="A dish you're proud of"
+                {...givenExperienceIdeaProps}
+              />
             </form>
 
             <div className="pt-4 w-full">
