@@ -1,6 +1,6 @@
 import { HeartOutlined } from '@ant-design/icons';
-import { Button, Input, TextArea } from '@tastiest-io/tastiest-ui';
-import { dlog, Horus } from '@tastiest-io/tastiest-utils';
+import { Button, Input, TextArea, Tooltip } from '@tastiest-io/tastiest-ui';
+import { Horus } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import ResponsiveImage from 'components/ResponsiveImage';
@@ -35,11 +35,13 @@ function Restaurateurs() {
 
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [submittedForm, setSubmittedForm] = useState<FormData | null>(null);
 
   const submit = handleSubmit(async form => {
     const horus = new Horus(null);
     setSubmitting(true);
+    setSubmitError(null);
 
     const { data, error } = await horus.post('/restaurants/public/apply', {
       name: form.name,
@@ -51,18 +53,26 @@ function Restaurateurs() {
       description: form.givenExperienceIdea,
     });
 
-    dlog('restaurateurs ➡️ data:', data);
-
     setSubmitting(false);
 
     if (error) {
-      alert(error);
+      if (/contactNumber/.test(error)) {
+        setSubmitError('Please enter a valid UK phone number.');
+        return;
+      }
+
+      if (/restaurantWebsite/.test(error)) {
+        setSubmitError('Please enter a valid web address.');
+        return;
+      }
+
+      setSubmitError(`Please ensure you've entered the correct details.`);
       return;
     }
 
-    reset();
-    setSubmitted(true);
     setSubmittedForm(form);
+    setSubmitted(true);
+    reset();
 
     return null;
   });
@@ -240,11 +250,11 @@ function Restaurateurs() {
                 <div className="absolute inset-0 flex flex-col items-center justify-center -mt-16">
                   <HeartOutlined className="text-secondary text-3xl" />
 
-                  <h2 className="text-xl font-medium">
+                  <h2 className="text-xl font-medium text-center leading-8">
                     Thanks for your application, {submittedForm.name}.
                   </h2>
 
-                  <h3 className="text-lg font-light -mt-2">
+                  <h3 className="text-lg font-light text-center">
                     We'll be in touch with you shortly.
                   </h3>
                 </div>
@@ -307,7 +317,7 @@ function Restaurateurs() {
               </form>
             </div>
 
-            <div className="pt-6 w-full">
+            <div className="relative pt-6 w-full">
               {submitted ? (
                 <Button
                   wide
@@ -321,9 +331,23 @@ function Restaurateurs() {
                   Go back
                 </Button>
               ) : (
-                <Button wide size="large" onClick={submit} loading={submitting}>
-                  Submit
-                </Button>
+                <Tooltip
+                  trigger="manual"
+                  placement="bottom"
+                  show={Boolean(submitError)}
+                  content={
+                    <span className="text-yellow-600">{submitError}</span>
+                  }
+                >
+                  <Button
+                    wide
+                    size="large"
+                    onClick={submit}
+                    loading={submitting}
+                  >
+                    Submit
+                  </Button>
+                </Tooltip>
               )}
             </div>
           </div>
