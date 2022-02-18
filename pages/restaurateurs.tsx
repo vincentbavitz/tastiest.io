@@ -35,7 +35,7 @@ function Restaurateurs() {
 
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>('BIG erro');
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [submittedForm, setSubmittedForm] = useState<FormData | null>(null);
 
   const submit = handleSubmit(async form => {
