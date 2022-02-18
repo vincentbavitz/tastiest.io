@@ -1,5 +1,7 @@
+import { HeartOutlined } from '@ant-design/icons';
 import { Button, Input, TextArea } from '@tastiest-io/tastiest-ui';
 import { dlog, Horus } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import ResponsiveImage from 'components/ResponsiveImage';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -32,6 +34,8 @@ function Restaurateurs() {
   });
 
   const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [submittedForm, setSubmittedForm] = useState<FormData | null>(null);
 
   const submit = handleSubmit(async form => {
     const horus = new Horus(null);
@@ -57,6 +61,8 @@ function Restaurateurs() {
     }
 
     reset();
+    setSubmitted(true);
+    setSubmittedForm(form);
 
     return null;
   });
@@ -229,61 +235,96 @@ function Restaurateurs() {
               </p>
             </div>
 
-            <form className="flex flex-col space-y-6 w-full mt-10">
-              <Input
-                ref={nameRef}
-                label="Your name"
-                error={errors.name?.message}
-                {...nameFieldProps}
-              />
+            <div className="relative w-full">
+              {submittedForm ? (
+                <div className="absolute inset-0 flex flex-col items-center justify-center -mt-16">
+                  <HeartOutlined className="text-secondary text-3xl" />
 
-              <Input
-                ref={emailRef}
-                label="Your email address"
-                error={errors.email?.message}
-                {...emailFieldProps}
-              />
+                  <h2 className="text-xl font-medium">
+                    Thanks for your application, {submittedForm.name}.
+                  </h2>
 
-              <Input
-                ref={contactNumberRef}
-                label="Contact number"
-                error={errors.contactNumber?.message}
-                {...contactNumberFieldProps}
-              />
+                  <h3 className="text-lg font-light -mt-2">
+                    We'll be in touch with you shortly.
+                  </h3>
+                </div>
+              ) : null}
 
-              <Input
-                ref={restaurantNameRef}
-                label="Restaurant's name"
-                error={errors.restaurantName?.message}
-                {...restaurantNameFieldProps}
-              />
+              <form
+                className={clsx(
+                  'flex flex-col space-y-6 w-full mt-10',
+                  submitted ? 'invisible' : 'visible',
+                )}
+              >
+                <Input
+                  ref={nameRef}
+                  label="Your name"
+                  error={errors.name?.message}
+                  {...nameFieldProps}
+                />
 
-              <Input
-                ref={restaurantWebsiteRef}
-                label="Restaurant's website"
-                error={errors.restaurantWebsite?.message}
-                {...restaurantWebsiteFieldProps}
-              />
+                <Input
+                  ref={emailRef}
+                  label="Your email address"
+                  error={errors.email?.message}
+                  {...emailFieldProps}
+                />
 
-              <Input
-                ref={restaurantAddressRef}
-                error={errors.restaurantAddress?.message}
-                label="Restaurant's address"
-                {...restaurantAddressProps}
-              />
+                <Input
+                  ref={contactNumberRef}
+                  label="Contact number"
+                  error={errors.contactNumber?.message}
+                  {...contactNumberFieldProps}
+                />
 
-              <TextArea
-                ref={givenExperienceIdeaRef}
-                error={errors.givenExperienceIdea?.message}
-                label="A dish you're proud of"
-                {...givenExperienceIdeaProps}
-              />
-            </form>
+                <Input
+                  ref={restaurantNameRef}
+                  label="Restaurant's name"
+                  error={errors.restaurantName?.message}
+                  {...restaurantNameFieldProps}
+                />
 
-            <div className="pt-4 w-full">
-              <Button wide size="large" onClick={submit} loading={submitting}>
-                Submit
-              </Button>
+                <Input
+                  ref={restaurantWebsiteRef}
+                  label="Restaurant's website"
+                  error={errors.restaurantWebsite?.message}
+                  {...restaurantWebsiteFieldProps}
+                />
+
+                <Input
+                  ref={restaurantAddressRef}
+                  error={errors.restaurantAddress?.message}
+                  label="Restaurant's address"
+                  {...restaurantAddressProps}
+                />
+
+                <TextArea
+                  ref={givenExperienceIdeaRef}
+                  error={errors.givenExperienceIdea?.message}
+                  label="A dish you're proud of"
+                  {...givenExperienceIdeaProps}
+                />
+              </form>
+            </div>
+
+            <div className="pt-6 w-full">
+              {submitted ? (
+                <Button
+                  wide
+                  size="large"
+                  color="light"
+                  onClick={() => {
+                    setSubmitted(false);
+                    setSubmittedForm(null);
+                  }}
+                >
+                  Go back
+                </Button>
+              ) : (
+                <Button wide size="large" onClick={submit} loading={submitting}>
+                  Submit
+                </Button>
+              )}
             </div>
           </div>
         </div>
