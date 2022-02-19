@@ -43,7 +43,7 @@ function Restaurateurs() {
     setSubmitting(true);
     setSubmitError(null);
 
-    const { data, error } = await horus.post('/restaurants/public/apply', {
+    const { error } = await horus.post('/restaurants/public/apply', {
       name: form.name,
       email: form.email,
       contactNumber: form.contactNumber,
