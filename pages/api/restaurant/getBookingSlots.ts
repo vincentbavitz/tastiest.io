@@ -77,6 +77,8 @@ export default async function getBookingSlots(
       realtime,
     } = await restaurantDataApi.getRestaurantData();
 
+    dlog('getBookingSlots ➡️ settings:', settings);
+
     // const slots: Slot[] = [];
     const seatingDuration = metrics?.seatingDuration ?? 60;
 
