@@ -218,7 +218,7 @@ const InfoRow = (props: InfoRowProps) => {
         style={{
           filter: 'drop-shadow(9px 9px 15px #3882bb20)',
         }}
-        className="relative flex items-center justify-between gap-4 bg-white rounded-lg py-4 pl-6 pr-10 z-10"
+        className="relative flex items-center justify-between gap-4 bg-white py-4 pl-6 pr-10 z-10"
       >
         <div className="flex items-center gap-4">
           <Icon

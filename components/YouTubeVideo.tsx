@@ -4,11 +4,10 @@ import YouTube from 'react-youtube';
 
 interface Props {
   url: string;
-  rounded?: boolean;
 }
 
 export function YouTubeVideo(props: Props) {
-  const { url, rounded = true } = props;
+  const { url } = props;
 
   const videoId = url
     ?.replace(
@@ -22,7 +21,6 @@ export function YouTubeVideo(props: Props) {
       <div
         className={clsx(
           'relative w-full overflow-hidden bg-gray-200 bg-opacity-25 aspect-w-16 aspect-h-9',
-          rounded && 'rounded-md',
         )}
       >
         <YouTube

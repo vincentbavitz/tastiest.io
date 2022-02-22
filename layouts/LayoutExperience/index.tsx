@@ -159,7 +159,7 @@ const LayoutExperienceMobile = ({
         </div>
 
         <div className="flex flex-col space-y-10">
-          <RestaurautLinkBlockButton
+          <RestaurantLinkBlockButton
             {...restaurantPageUrl}
             restaurantName={post.restaurant.name}
             seeRestaurantButton={post.seeRestaurantButton}
@@ -208,7 +208,7 @@ const LayoutExperienceDesktop = ({
       </div>
 
       <div className="flex flex-col space-y-10 pt-10 pb-10">
-        <RestaurautLinkBlockButton
+        <RestaurantLinkBlockButton
           {...restaurantPageUrl}
           restaurantName={post.restaurant.name}
           seeRestaurantButton={post.seeRestaurantButton}
@@ -221,7 +221,7 @@ const LayoutExperienceDesktop = ({
   );
 };
 
-interface RestaurautLinkBlockButtonProps {
+interface RestaurantLinkBlockButtonProps {
   href: string;
   as: string;
   restaurantName: string;
@@ -229,7 +229,7 @@ interface RestaurautLinkBlockButtonProps {
   restaurantProfileProfile: Media;
 }
 
-const RestaurautLinkBlockButton = (props: RestaurautLinkBlockButtonProps) => {
+const RestaurantLinkBlockButton = (props: RestaurantLinkBlockButtonProps) => {
   const {
     href,
     as,

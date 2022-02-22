@@ -194,8 +194,7 @@ export default function VideoCarousel() {
               >
                 <div
                   className={clsx(
-                    !isMobile &&
-                      'border-2 rounded-lg border-light duration-300',
+                    !isMobile && 'border-2 border-light duration-300',
                     isFocused
                       ? 'border-opacity-75'
                       : 'border-opacity-0 pointer-events-none',

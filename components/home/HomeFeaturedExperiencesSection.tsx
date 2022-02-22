@@ -23,7 +23,7 @@ export default function HomeFeaturedExperiencesSection(props: Props) {
           forceButtons
           spacing={6}
           verticalBuffer={6}
-          buttonsOffset={-50}
+          buttonsOffset={-35}
         >
           {cards.map((card, key) => (
             <div key={key} style={{ width: '250px' }}>

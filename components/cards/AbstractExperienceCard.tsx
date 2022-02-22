@@ -43,21 +43,17 @@ export function AbstractExperienceCard(
       <Link href={experienceHref} as={experienceAs}>
         <a className="no-underline">
           <div
-            className={classNames(
-              'relative no-underline rounded-lg cursor-pointer',
-            )}
+            className={classNames('relative no-underline cursor-pointer')}
             style={{ maxWidth: '350px' }}
           >
             <div
               style={{ paddingBottom: '100%' }}
-              className={clsx(
-                'relative w-full h-0 shadow-lg rounded-lg overflow-hidden',
-              )}
+              className={clsx('relative w-full h-0 shadow-lg overflow-hidden')}
             >
               <Image
                 layout="fill"
                 className={clsx(
-                  'object-cover w-full h-full rounded-lg transform duration-300',
+                  'object-cover w-full h-full transform duration-300',
                   isHovering && 'scale-105',
                 )}
                 src={`${deal.image?.url}?w=400`}
@@ -65,7 +61,7 @@ export function AbstractExperienceCard(
               />
 
               {/* Restaurant profile */}
-              <div className="absolute bottom-0 left-0 right-0 flex items-end pb-2 h-20 z-50 px-2 bg-gradient-to-t from-primary rounded-lg">
+              <div className="absolute bottom-0 left-0 right-0 flex items-end pb-2 h-20 z-50 px-2 bg-gradient-to-t from-primary">
                 {withRestaurantName ? (
                   <div className="flex items-center space-x-2">
                     <div

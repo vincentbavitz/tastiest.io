@@ -36,9 +36,9 @@ const XScrollSelectItem = (props: XScrollSelectItemProps) => {
         'relative border-2 space-y-1 leading-none select-none',
         'text-center duration-300 whitespace-nowrap h-full',
         disabled ? disabledStyles : activeStyles,
-        size === 'small' && 'mx-1 rounded',
-        size === 'medium' && 'mx-2 rounded',
-        size === 'large' && 'mx-3  rounded-md',
+        size === 'small' && 'mx-1',
+        size === 'medium' && 'mx-2',
+        size === 'large' && 'mx-3',
       )}
     >
       {link ? (

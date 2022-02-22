@@ -27,7 +27,7 @@ export function RestaurantMap({ location }: Props) {
       style={{
         filter: 'drop-shadow(0px 0px 10px rgba(0,0,0,0.10))',
       }}
-      className="relative w-full h-full overflow-hidden bg-opacity-25 rounded-md bg-secondary"
+      className="relative w-full h-full overflow-hidden bg-opacity-25 bg-secondary"
     ></div>
   );
 }

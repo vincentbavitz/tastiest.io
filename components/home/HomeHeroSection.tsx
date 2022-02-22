@@ -96,20 +96,18 @@ export function HomeHeroSection(): JSX.Element {
           </h1>
           <div
             style={{ filter: 'drop-shadow(0 0 10px rgba(0, 0, 0, 0.15)' }}
-            className="mt-6 py-1 px-1 border border-light rounded-full text-2xl text-light flex space-x-4 bg-dark bg-opacity-25"
+            className="mt-6 border border-light text-2xl text-light flex space-x-4 bg-dark bg-opacity-25"
           >
-            <div className="rounded-full bg-light text-dark text-base px-4">
+            <div className="bg-light bg-opacity-75 text-dark text-base px-4">
               EXPERIENCES
             </div>
 
-            <div className="rounded-full text-liht text-base px-4">
-              RESTAURANTS
-            </div>
+            <div className="text-liht text-base px-4">RESTAURANTS</div>
 
-            <div className="rounded-full text-light text-base px-4">DISHES</div>
+            <div className="text-light text-base px-4">DISHES</div>
           </div>
 
-          <div className="mt-4 flex items-center gap-2 bg-light bg-opacity-75 border border-light rounded-full px-4 py-1 tracking-wide font-medium">
+          <div className="mt-4 flex items-center gap-2 bg-light bg-opacity-75 px-4 py-1 tracking-wide font-medium">
             <SearchOutlined />
             DISCOVER
           </div>

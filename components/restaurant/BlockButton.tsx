@@ -17,7 +17,7 @@ const BlockButton = (props: SeeExperiencesButtonProps) => {
       <a className="no-underline">
         <div
           className={clsx(
-            'bg-gradient-to-tr from-blue-300 via-secondary to-primary w-full rounded-lg duration-300 hover:brightness-110 filter text-light tracking-wide',
+            'bg-gradient-to-tr from-blue-300 via-secondary to-primary w-full duration-300 hover:brightness-110 filter text-light tracking-wide',
             'flex justify-center items-center whitespace-nowrap leading-none px-4 text-lg shadow-lg',
             autoHeight ? 'h-full' : 'h-16',
           )}

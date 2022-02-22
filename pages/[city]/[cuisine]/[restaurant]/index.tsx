@@ -254,6 +254,7 @@ interface RestaurantCTAButtonProps {
   label: string;
   href?: string;
   scrollTo?: number;
+  backdropImageSrc?: string;
 }
 
 const RestaurantCTAButton = (props: RestaurantCTAButtonProps) => {
@@ -286,13 +287,24 @@ const RestaurantCTAButtonInner = (props: RestaurantCTAButtonProps) => {
     <div
       onClick={href ? null : scrollToCtaRef}
       className={clsx(
-        'flex items-center justify-center w-full text-lg h-32 p-4 rounded-lg',
+        'relative flex items-center justify-center w-full text-lg h-32 p-4',
         'font-medium uppercase tracking-wide text-light',
         'cursor-pointer',
-        'bg-gradient-to-tr from-secondary to-primary',
       )}
     >
-      {label}
+      {/* Image underlay */}
+      <div className="absolute inset-0">
+        <img
+          src="https://images.ctfassets.net/tq39z0nxr0bv/3mYExawK75BTsvwsJuJ7DD/534b2ca24534faa542ef5a45bccbfcf5/El_Vaquero_Carousel_5.png"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      <div className="absolute inset-0 bg-gradient-to-tr from-secondary opacity-50"></div>
+
+      <div style={{ filter: 'drop-shadow(0 0 5px black)' }} className="z-10">
+        {label}
+      </div>
     </div>
   );
 };
