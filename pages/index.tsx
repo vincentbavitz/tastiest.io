@@ -196,8 +196,6 @@ const Index = () => {
             <SuggestRestaurantPrompBox />
           </div>
         </Contained>
-
-        {/* <HomeRecentSearchesSection /> */}
       </div>
     </>
   );
