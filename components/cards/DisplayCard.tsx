@@ -72,7 +72,7 @@ function DisplayCardInner(props: DisplayCardProps) {
       >
         {/* Border overlay */}
         {children ? null : (
-          <div className="absolute inset-0 p-2 z-50">
+          <div className="absolute inset-0 p-2 z-10">
             <div
               style={{ zIndex: 5000 }}
               className="ring-4 ring-white h-full"
@@ -106,7 +106,7 @@ function DisplayCardInner(props: DisplayCardProps) {
           </div>
 
           {/* Title & Description */}
-          <div className="absolute inset-0 pb-6 px-4 flex flex-col items-center justify-end">
+          <div className="absolute inset-0 pb-3 px-4 flex flex-col items-center justify-end">
             <h4
               style={{
                 letterSpacing: '0.20em',
@@ -123,12 +123,12 @@ function DisplayCardInner(props: DisplayCardProps) {
 
             <div
               style={{ height: '2px' }}
-              className="w-16 rounded-full bg-light opacity-50 block mt-2"
+              className="w-16 rounded-full bg-light opacity-50 block mt-3"
             ></div>
           </div>
         </div>
 
-        <div className="relative pb-4 px-4 w-full bg-gradient-to-tr from-primary via-dark to-dark">
+        <div className="relative pb-6 px-4 w-full bg-gradient-to-tr from-primary via-dark to-dark">
           <p className="leading-4 opacity-75 text-light text-center text-sm">
             {description}
           </p>
