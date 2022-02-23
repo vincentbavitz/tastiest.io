@@ -101,11 +101,8 @@ export const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
     return isSignedIn ? `/checkout${search}` : `/checkout/authorize${search}`;
   }, [isSignedIn, heads, selectedDay, selectedTime]);
 
-  // Only allow dates less than Feb 16 for Alpha. (47 ordinal date)
-  const filteredSlots = slots?.filter(slot => slot?.ordinal < 47) ?? [];
-
   return {
-    slots: filteredSlots,
+    slots,
     heads,
     setHeads,
     selectedDay,

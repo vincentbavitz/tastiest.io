@@ -9,7 +9,7 @@ import {
 } from '@tastiest-io/tastiest-ui';
 import {
   FollowerNotificationPreferences,
-  FOLLOWER_NOTIFICATION_TYPE,
+  FollowerNotificationType,
   RestaurantContentful,
 } from '@tastiest-io/tastiest-utils';
 import { AuthFlowStep } from 'components/modals/auth/AuthModal';
@@ -95,27 +95,13 @@ export default function FollowButton(props: Props) {
     FollowerNotificationPreferences
   >(
     notifications ?? {
-      [FOLLOWER_NOTIFICATION_TYPE.LIMITED_TIME_DISHES]: true,
-      [FOLLOWER_NOTIFICATION_TYPE.SPECIAL_EXPERIENCES]: true,
-      [FOLLOWER_NOTIFICATION_TYPE.LAST_MINUTE_TABLES]: true,
-      [FOLLOWER_NOTIFICATION_TYPE.GENERAL_INFO]: true,
-      [FOLLOWER_NOTIFICATION_TYPE.NEW_MENU]: true,
+      [FollowerNotificationType.LIMITED_TIME_DISHES]: true,
+      [FollowerNotificationType.SPECIAL_EXPERIENCES]: true,
+      [FollowerNotificationType.LAST_MINUTE_TABLES]: true,
+      [FollowerNotificationType.GENERAL_INFO]: true,
+      [FollowerNotificationType.NEW_MENU]: true,
     },
   );
-
-  // const [enableNewMenu, setenableNewMenu] = useState(notifications.NEW_MENU);
-  // const [enableSpecialExp, setEnableSpecialExp] = useState(
-  //   notifications.SPECIAL_EXPERIENCES,
-  // );
-  // const [enableLastMinute, setEnableLastMinute] = useState(
-  //   notifications.LAST_MINUTE_TABLES,
-  // );
-  // const [enableLimitedTime, setEnableLimitedTime] = useState(
-  //   notifications.LIMITED_TIME_DISHES,
-  // );
-  // const [enableGeneralInfo, setEnableGeneralInfo] = useState(
-  //   notifications.GENERAL_INFO,
-  // );
 
   return (
     <>
@@ -134,24 +120,11 @@ export default function FollowButton(props: Props) {
         <div className="flex flex-col space-y-2 mt-6">
           <div className="flex items-center text-base space-x-2">
             <Switch
-              checked={unsavedNotifications.SPECIAL_EXPERIENCES}
-              onChange={on =>
-                setUnsavedNotifications({
-                  ...unsavedNotifications,
-                  [FOLLOWER_NOTIFICATION_TYPE.SPECIAL_EXPERIENCES]: on,
-                })
-              }
-            />
-            <span>Special experiences</span>
-          </div>
-
-          <div className="flex items-center text-base space-x-2">
-            <Switch
               checked={unsavedNotifications.NEW_MENU}
               onChange={on =>
                 setUnsavedNotifications({
                   ...unsavedNotifications,
-                  [FOLLOWER_NOTIFICATION_TYPE.NEW_MENU]: on,
+                  [FollowerNotificationType.NEW_MENU]: on,
                 })
               }
             />
@@ -160,11 +133,24 @@ export default function FollowButton(props: Props) {
 
           <div className="flex items-center text-base space-x-2">
             <Switch
+              checked={unsavedNotifications.SPECIAL_EXPERIENCES}
+              onChange={on =>
+                setUnsavedNotifications({
+                  ...unsavedNotifications,
+                  [FollowerNotificationType.SPECIAL_EXPERIENCES]: on,
+                })
+              }
+            />
+            <span>Special experiences</span>
+          </div>
+
+          <div className="flex items-center text-base space-x-2">
+            <Switch
               checked={unsavedNotifications.LIMITED_TIME_DISHES}
               onChange={on =>
                 setUnsavedNotifications({
                   ...unsavedNotifications,
-                  [FOLLOWER_NOTIFICATION_TYPE.LIMITED_TIME_DISHES]: on,
+                  [FollowerNotificationType.LIMITED_TIME_DISHES]: on,
                 })
               }
             />
@@ -177,25 +163,25 @@ export default function FollowButton(props: Props) {
               onChange={on =>
                 setUnsavedNotifications({
                   ...unsavedNotifications,
-                  [FOLLOWER_NOTIFICATION_TYPE.LAST_MINUTE_TABLES]: on,
+                  [FollowerNotificationType.LAST_MINUTE_TABLES]: on,
                 })
               }
             />
             <span>Last minute tables</span>
           </div>
 
-          <div className="flex items-center text-base space-x-2">
+          {/* <div className="flex items-center text-base space-x-2">
             <Switch
               checked={unsavedNotifications.GENERAL_INFO}
               onChange={on =>
                 setUnsavedNotifications({
                   ...unsavedNotifications,
-                  [FOLLOWER_NOTIFICATION_TYPE.GENERAL_INFO]: on,
+                  [FollowerNotificationType.GENERAL_INFO]: on,
                 })
               }
             />
             <span>General info</span>
-          </div>
+          </div> */}
         </div>
 
         <div className="flex justify-end space-x-2 mt-6">

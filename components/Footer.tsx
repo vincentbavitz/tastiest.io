@@ -208,19 +208,35 @@ const ThanksForSupportMessage = ({
 
 const SocialsBlock = () => (
   <>
-    <a href="https://instagram.com/tastiestio" target="_blank" rel="noreferrer">
+    <a
+      href="https://instagram.com/tastiestio"
+      target="_blank"
+      rel="noreferrer"
+      className="bg-secondary"
+    >
       <InstagramIcon className="w-10 h-10 duration-300 cursor-pointer fill-current hover:brightness-125 filter text-secondary" />
     </a>
-    <a href="https://facebook.com/tastiestio" target="_blank" rel="noreferrer">
+    <a
+      href="https://facebook.com/tastiestio"
+      target="_blank"
+      rel="noreferrer"
+      className="bg-secondary"
+    >
       <FacebookIcon className="w-10 h-10 duration-300 cursor-pointer fill-current text-secondary hover:brightness-125 filter" />
     </a>
-    <a href="https://twitter.com/tastiestio" target="_blank" rel="noreferrer">
+    <a
+      href="https://twitter.com/tastiestio"
+      target="_blank"
+      rel="noreferrer"
+      className="bg-secondary"
+    >
       <TwitterIcon className="w-10 h-10 duration-300 cursor-pointer fill-current text-secondary hover:brightness-125 filter" />
     </a>
     <a
       href="https://www.youtube.com/channel/UCSK_WmrVPgwxRBrqKbNxLkg"
       target="_blank"
       rel="noreferrer"
+      className="bg-secondary"
     >
       <YoutubeIcon className="w-10 h-10 duration-300 cursor-pointer fill-current text-secondary hover:brightness-125 filter" />
     </a>

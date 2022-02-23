@@ -53,7 +53,7 @@ export default function AwardWinningDishCard(props: Props) {
           className={clsx(
             'overflow-hidden w-full no-underline',
             'border-4 border-primary shadow-lg',
-            'rounded-xl',
+            '',
           )}
         >
           <div
@@ -73,12 +73,12 @@ export default function AwardWinningDishCard(props: Props) {
           >
             {image.url && (
               <>
-                <div className="absolute inset-0 z-10 pointer-events-none rounded-b-xl">
+                <div className="absolute inset-0 z-10 pointer-events-none">
                   {video}
                 </div>
                 <div className="absolute inset-0">
                   <img
-                    className="object-cover w-full h-full rounded-b-xl"
+                    className="object-cover w-full h-full"
                     src={`${image?.url}?w=700`}
                     alt={image?.description}
                   />

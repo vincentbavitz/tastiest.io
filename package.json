@@ -8,12 +8,13 @@
     "now": "npm run now",
     "dev": "NODE_ENV=development next dev",
     "build": "next build",
-    "postbuild": "next-sitemap",
+    "postbuild": "next-sitemap && next-unused",
     "start": "next start",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "lint:fix": "npm run lint -- --fix",
     "test": "clear && jest",
     "build-assets": "npm run convert-svg",
+    "find:unused": "next-unused",
     "convert-svg": "rm -r ./public/assets/*/*.tsx && svgr --typescript -d ./public/assets/article ./public/assets/article && svgr --typescript -d ./public/assets/page ./public/assets/page && svgr --typescript -d ./public/assets/illustrations ./public/assets/illustrations && svgr --typescript -d ./public/assets/ui ./public/assets/ui",
     "convert-cuisine-page-svg": "for f in ./public/assets/cuisine-pages/*.svg; do svgr --no-svgo --typescript $f > $f.tsx; done;"
   },
@@ -31,8 +32,8 @@
     "@stripe/stripe-js": "^1.12.1",
     "@svgr/cli": "^5.5.0",
     "@tastiest-io/tastiest-icons": "^0.28.0",
-    "@tastiest-io/tastiest-ui": "^0.90.0",
-    "@tastiest-io/tastiest-utils": "^1.65.0",
+    "@tastiest-io/tastiest-ui": "^0.91.0",
+    "@tastiest-io/tastiest-utils": "^1.66.0",
     "D": "^1.0.0",
     "analytics-node": "^4.0.1",
     "analytics.js": "^2.9.1",
@@ -120,6 +121,7 @@
     "jest": "^26.6.3",
     "lint-staged": "^10.2.11",
     "next-sitemap": "^2.0.5",
+    "next-unused": "^0.0.6",
     "postcss": "^8.3.9",
     "prettier": "^2.0.5",
     "react-addons-test-utils": "^15.6.2",
@@ -135,6 +137,24 @@
     "hooks": {
       "pre-commit": "lint-staged",
       "pre-push": "yarn build"
+    }
+  },
+  "next-unused": {
+    "debug": false,
+    "include": ["components", "utils", "hooks", "types", "state", "pages"],
+    "entrypoints": [
+      "pages",
+      "contexts",
+      "components"
+    ],
+    "alias": {
+      "components": "components/",
+      "contexts": "contexts/",
+      "utils": "utils/",
+      "hooks": "hooks/",
+      "types": "types/",
+      "state": "state/",
+      "pages": "pages/"
     }
   }
 }

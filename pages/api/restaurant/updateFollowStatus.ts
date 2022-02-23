@@ -1,7 +1,7 @@
 import {
   dlog,
   FollowerNotificationPreferences,
-  FOLLOWER_NOTIFICATION_TYPE,
+  FollowerNotificationType,
   FunctionsResponse,
   RestaurantDataApi,
   RestaurantDataKey,
@@ -95,11 +95,11 @@ export default async function updateFollowStatus(
 
       const updatedNotifications = {
         ...{
-          [FOLLOWER_NOTIFICATION_TYPE.LIMITED_TIME_DISHES]: true,
-          [FOLLOWER_NOTIFICATION_TYPE.SPECIAL_EXPERIENCES]: true,
-          [FOLLOWER_NOTIFICATION_TYPE.LAST_MINUTE_TABLES]: true,
-          [FOLLOWER_NOTIFICATION_TYPE.GENERAL_INFO]: true,
-          [FOLLOWER_NOTIFICATION_TYPE.NEW_MENU]: true,
+          [FollowerNotificationType.LIMITED_TIME_DISHES]: true,
+          [FollowerNotificationType.SPECIAL_EXPERIENCES]: true,
+          [FollowerNotificationType.LAST_MINUTE_TABLES]: true,
+          [FollowerNotificationType.GENERAL_INFO]: true,
+          [FollowerNotificationType.NEW_MENU]: true,
         },
         ...alreadyFollowing?.notifications,
         ...notifications,

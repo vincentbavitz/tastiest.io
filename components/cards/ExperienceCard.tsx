@@ -70,7 +70,7 @@ export function ExperienceCard(props: Props): JSX.Element {
           ref={ref}
           className={classNames(
             'overflow-hidden w-full bg-light shadow-lg no-underline',
-            isSmall || compact ? 'rounded-md' : 'rounded-xl',
+            isSmall || compact ? '' : '',
             isSmall ? 'pb-2' : 'pb-1',
           )}
         >

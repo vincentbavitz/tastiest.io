@@ -54,7 +54,7 @@ export default function OpenTimes(props: Props) {
         minWidth: small ? '14rem' : '17rem',
         minHeight: buffHeight ? '100%' : 'unset',
       }}
-      className="whitespace-nowrap shadow-lg border duration-300 border-light hover:border-secondary bg-light px-4 py-2 rounded-lg"
+      className="whitespace-nowrap shadow-lg border-4 duration-300 border-opacity-75 hover:border-opacity-100 border-secondary bg-light px-4 py-2"
     >
       <div className="text-primary border-b border-gray-300 w-full text-lg tracking-wide mb-2 pr-6">
         Open Times
