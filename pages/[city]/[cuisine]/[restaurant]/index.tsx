@@ -292,15 +292,7 @@ const RestaurantCTAButtonInner = (props: RestaurantCTAButtonProps) => {
         'cursor-pointer',
       )}
     >
-      {/* Image underlay */}
-      <div className="absolute inset-0">
-        <img
-          src="https://images.ctfassets.net/tq39z0nxr0bv/3mYExawK75BTsvwsJuJ7DD/534b2ca24534faa542ef5a45bccbfcf5/El_Vaquero_Carousel_5.png"
-          className="w-full h-full object-cover"
-        />
-      </div>
-
-      <div className="absolute inset-0 bg-gradient-to-tr from-secondary opacity-50"></div>
+      <div className="absolute inset-0 bg-gradient-to-tr from-secondary to-primary opacity-90"></div>
 
       <div style={{ filter: 'drop-shadow(0 0 5px black)' }} className="z-10">
         {label}
