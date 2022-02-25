@@ -2,6 +2,7 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { dlog } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
+import { SectionTitle } from 'components/SectionTitle';
 import { YouTubeVideo } from 'components/YouTubeVideo';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useEffect, useRef, useState } from 'react';
@@ -12,10 +13,11 @@ type CarouselVideo = {
 };
 
 const videos: CarouselVideo[] = [
-  { title: 'Interview with Tomer', url: 'https://youtu.be/-l9JZKI5WSc' },
-  { title: 'Interview with Tomer', url: 'https://youtu.be/-l9JZKI5WSc' },
-  { title: 'Interview with Tomer', url: 'https://youtu.be/-l9JZKI5WSc' },
-  { title: 'Interview with Tomer', url: 'https://youtu.be/-l9JZKI5WSc' },
+  {
+    title: 'A glimpse of Numa',
+    url: 'https://www.youtu.be/YZRWpjeB4DQ',
+  },
+  { title: `Numa's Story: Emil Pekarsky`, url: 'https://youtu.be/-l9JZKI5WSc' },
 ];
 
 export default function VideoCarousel() {
@@ -205,8 +207,8 @@ export default function VideoCarousel() {
 
                 <h4
                   className={clsx(
-                    'text-lg mt-2 opacity-75 font-medium',
-                    isMobile ? 'pb-2 px-4 text-dark' : 'text-light',
+                    'text-lg mt-2 font-medium',
+                    isMobile ? 'pb-2 px-4 text-light' : 'text-light',
                   )}
                 >
                   {video.title}
@@ -228,18 +230,20 @@ export default function VideoCarousel() {
   );
 
   return (
-    <div
-      className={clsx('w-full mb-10', isMobile ? 'bg-gray-200' : 'bg-gray-800')}
-    >
-      <div className="flex justify-center items-center w-full px-10 py-3 bg-primary">
-        <h3 className="text-2xl font-primary text-light font-medium">Videos</h3>
+    <div className="w-full mb-10">
+      <div className="mb-10">
+        <SectionTitle>Videos</SectionTitle>
       </div>
 
-      {isHuge ? (
-        <Contained maxWidth={1000}>{InnerCarousel}</Contained>
-      ) : (
-        InnerCarousel
-      )}
+      <div
+        className={clsx('w-full mb-10', isMobile ? 'bg-primary' : 'bg-primary')}
+      >
+        {isHuge ? (
+          <Contained maxWidth={1000}>{InnerCarousel}</Contained>
+        ) : (
+          InnerCarousel
+        )}
+      </div>
     </div>
   );
 }

@@ -7,6 +7,7 @@ import BlockButton from 'components/restaurant/BlockButton';
 import FollowButton from 'components/restaurant/FollowButton';
 import OpenTimes from 'components/restaurant/OpenTimes';
 import RestaurantMapBlock from 'components/RestaurantMapBlock';
+import { SectionTitle } from 'components/SectionTitle';
 import TabbedContent from 'components/TabbedContent';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetStaticPropsType } from 'next';
@@ -170,12 +171,15 @@ export default function LayoutRestaurant({
 
         <div className="absolute inset-0 z-20 bottom-2 flex flex-col items-center justify-end space-y-4">
           {/* Restaurant Name */}
-          <h1 className="text-3xl font-medium sm:text-4xl text-primary font-primary">
+          <h1 className="text-4xl font-semibold sm:text-4xl text-primary font-primary leading-none tracking-wide">
             {titleCase(restaurant.name)}
-            {restaurant.location.displayLocation
-              ? ` - ${titleCase(restaurant.location.displayLocation)}`
-              : null}
           </h1>
+
+          <h2 className="text-base text-secondary leading-none font-secondary">
+            {restaurant.location.displayLocation
+              ? `${titleCase(restaurant.location.displayLocation)}`
+              : null}
+          </h2>
 
           {/* Follow and Notifications */}
           <FollowButton restaurant={restaurant} />
@@ -192,7 +196,7 @@ export default function LayoutRestaurant({
         {[
           {
             id: 'about',
-            label: 'About',
+            label: 'Information',
             content: (
               <div className="">
                 <Component {...(pageProps as any)} />
@@ -212,11 +216,30 @@ export default function LayoutRestaurant({
       </TabbedContent>
 
       <Contained maxWidth={900}>
-        <div className="flex flex-col space-y-12 pt-10 pb-10">
+        <div className="pt-10 pb-4">
+          <SectionTitle>Details</SectionTitle>
+        </div>
+
+        <div className="flex flex-col space-y-10 pb-10">
           <div className="flex flex-wrap gap-10 w-full">
             <div
-              style={{ height: '15rem', minWidth: '19rem' }}
-              className="relative flex-grow"
+              className={clsx('flex items-end', !isDesktop ? 'flex-grow' : '')}
+            >
+              <OpenTimes restaurantId={restaurant.id} wide small />
+            </div>
+          </div>
+
+          <div className="pt-2">
+            <RestaurantMapBlock restaurant={restaurant} />
+          </div>
+
+          <div>
+            <div
+              style={{
+                height: isMobile ? '8rem' : '15rem',
+                minWidth: '19rem',
+              }}
+              className="relative flex-grow mb-10"
             >
               <Image
                 src={restaurant.heroIllustration.url}
@@ -226,14 +249,6 @@ export default function LayoutRestaurant({
               />
             </div>
 
-            <div
-              className={clsx('flex items-end', !isDesktop ? 'flex-grow' : '')}
-            >
-              <OpenTimes restaurantId={restaurant.id} wide small />
-            </div>
-          </div>
-
-          <div>
             {isExperiencesPage ? (
               <BlockButton
                 href={baseRestaurantPath.href}
@@ -286,8 +301,10 @@ export default function LayoutRestaurant({
                     </div>
 
                     <div className="">
-                      See experiences at <br />
-                      <span className="font-medium">{restaurant.name}</span>
+                      Book an experience at <br />
+                      <span className="font-semibold text-xl leading-5">
+                        {restaurant.name}
+                      </span>
                     </div>
                   </div>
 
@@ -296,8 +313,6 @@ export default function LayoutRestaurant({
               </BlockButton>
             )}
           </div>
-
-          <RestaurantMapBlock restaurant={restaurant} />
         </div>
       </Contained>
     </LayoutWrapper>

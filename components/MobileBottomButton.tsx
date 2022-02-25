@@ -48,6 +48,8 @@ function MobileBottomButtonInner(props: MobileBottomButtonProps) {
         loading || disabled ? 'cursor-not-allowed' : 'hover:bg-secondary',
       )}
     >
+      <div className="fixed bottom-1 left-1 right-1 h-12 border-2 border-light"></div>
+
       {loading ? <LoadingOutlined className="text-4xl" /> : <>{children}</>}
     </button>
   );

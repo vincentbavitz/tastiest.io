@@ -135,17 +135,13 @@ export function RichBody(props: Props) {
         [BLOCKS.HEADING_3]: (node: Heading3) => {
           const content = (node.content[0] as Text)?.value;
           return (
-            <h2 className="mt-6 mb-2 text-xl font-primary text-primary font-semibold">
-              {content}
-            </h2>
+            <h2 className="text-xl font-primary text-primary">{content}</h2>
           );
         },
         [BLOCKS.HEADING_4]: (node: Heading4) => {
           const content = (node.content[0] as Text)?.value;
           return (
-            <h2 className="mt-6 mb-2 text-lg font-medium font-secondary">
-              {content}
-            </h2>
+            <h2 className="text-lg font-medium font-secondary">{content}</h2>
           );
         },
         [BLOCKS.QUOTE]: (_, children: ReactNode) => {

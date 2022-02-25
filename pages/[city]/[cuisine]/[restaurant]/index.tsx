@@ -182,7 +182,12 @@ const RestaurantPage = (
       />
 
       <Contained maxWidth={900}>
-        <div className="relative w-full grid grid-cols-2 gap-6">
+        <div
+          className={clsx(
+            'relative w-full grid',
+            isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-2 gap-6',
+          )}
+        >
           <RestaurantCTAButton
             href={experiencesPath.as}
             label="Book an experience"
@@ -192,20 +197,20 @@ const RestaurantPage = (
 
           <RestaurantCTAButton
             scrollTo={scrollLocations.generalInfo}
-            label="General Info"
+            label="Details"
           />
 
           <RestaurantCTAButton label="Recommended Dishes" />
-
-          {/* Blush */}
-          <div
-            className={clsx(
-              'absolute -right-0 -bottom-64 w-64 h-64 z-0 rounded-full',
-              'bg-blue-100 bg-opacity-50 filter blur-3xl',
-            )}
-          ></div>
         </div>
       </Contained>
+
+      <div className="h-14"></div>
+
+      <VideoCarousel />
+
+      <div className="w-full h-16 flex flex-col items-center justify-center">
+        <SectionTitle>Summary</SectionTitle>
+      </div>
 
       <div ref={refGeneralInfo}>
         <Contained maxWidth={900}>
@@ -214,8 +219,6 @@ const RestaurantPage = (
           </div>
         </Contained>
       </div>
-
-      <VideoCarousel />
 
       <div className="flex flex-col items-center">
         <Contained maxWidth={900}>
@@ -243,7 +246,7 @@ const RestaurantPage = (
 
       {!isDesktop ? (
         <MobileBottomButton href={experiencesPath.as}>
-          See Experiences
+          Book an experience
         </MobileBottomButton>
       ) : null}
     </>
@@ -274,6 +277,8 @@ const RestaurantCTAButton = (props: RestaurantCTAButtonProps) => {
 const RestaurantCTAButtonInner = (props: RestaurantCTAButtonProps) => {
   const { label, href, scrollTo } = props;
 
+  const { isMobile } = useScreenSize();
+
   const scrollToCtaRef = () => {
     window.scrollTo(0, scrollTo);
     // const c = document.documentElement.scrollTop || document.body.scrollTop;
@@ -287,14 +292,23 @@ const RestaurantCTAButtonInner = (props: RestaurantCTAButtonProps) => {
     <div
       onClick={href ? null : scrollToCtaRef}
       className={clsx(
-        'relative flex items-center justify-center w-full text-lg h-32 p-4',
+        'relative flex items-center justify-center w-full h-32 p-4',
         'font-medium uppercase tracking-wide text-light',
         'cursor-pointer',
+        'duration-300 filter hover:brightness-125',
       )}
     >
-      <div className="absolute inset-0 bg-gradient-to-tr from-secondary to-primary opacity-90"></div>
+      <div className="absolute inset-0 bg-primary"></div>
 
-      <div style={{ filter: 'drop-shadow(0 0 5px black)' }} className="z-10">
+      {/* Border */}
+      <div className="absolute top-1 bottom-1 left-1 right-1 border-4 border-light "></div>
+
+      <div
+        className={clsx(
+          'z-10 font-medium tracking-wide mx-2 text-center w-full',
+          isMobile ? 'text-xs' : 'text-lg',
+        )}
+      >
         {label}
       </div>
     </div>

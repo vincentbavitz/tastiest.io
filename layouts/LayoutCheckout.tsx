@@ -5,7 +5,7 @@ import { Contained } from 'components/Contained';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetStaticPropsType } from 'next';
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { CheckoutStep } from 'state/checkout';
 import { UI } from '../constants';
 import { getServerSideProps } from '../pages/checkout/[token]';
@@ -54,17 +54,18 @@ LayoutProps<InferGetStaticPropsType<typeof getServerSideProps>>) {
   };
 
   // Router change when they sign in.
-  useEffect(() => {
-    // Account for exact values because isSignedIn being null is falsy.
-    if (token && step === CheckoutStep.SIGN_IN) {
-      // Create a new order and direct them straight to /checkout/[token]
-      toCheckoutWithToken();
-    }
+  // CORRECT ME
+  // useEffect(() => {
+  //   // Account for exact values because isSignedIn being null is falsy.
+  //   if (token && step === CheckoutStep.SIGN_IN) {
+  //     // Create a new order and direct them straight to /checkout/[token]
+  //     toCheckoutWithToken();
+  //   }
 
-    if (!token && step === CheckoutStep.PAYMENT) {
-      router.push('/checkout/authorize' + window.location.search);
-    }
-  }, [token]);
+  //   if (!token && step === CheckoutStep.PAYMENT) {
+  //     router.push('/checkout/authorize' + window.location.search);
+  //   }
+  // }, [token]);
 
   const step: CheckoutStep = useMemo(
     () =>

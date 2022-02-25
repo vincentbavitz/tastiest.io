@@ -18,6 +18,11 @@ a {
   }
 }
 
+// Force all of our primary font to be uppercase
+.font-primary:not(.lowercase) {
+  @apply uppercase
+}
+
 ul:not([role="listbox"]):not(.slider) {
   @apply list-none;
 

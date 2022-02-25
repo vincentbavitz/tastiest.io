@@ -1,13 +1,14 @@
 import {
   dlog,
   Horus,
-  reportInternalError,
-  TastiestInternalErrorCode,
+  postFetch,
+  UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import { GetServerSidePropsContext } from 'next';
 import nookies from 'nookies';
 import { ParsedUrlQuery } from 'querystring';
 import React from 'react';
+import { firebaseAdmin } from 'utils/firebaseAdmin';
 
 /**
  * This page does nothing except create a new order and redirect to /checkout/[token].
@@ -19,93 +20,52 @@ export const getServerSideProps = async (
   const cookieToken = nookies.get(context)?.token;
   const horus = new Horus(cookieToken);
 
-  try {
-    dlog('index ➡️ cookieToken:', cookieToken);
+  // CORRECT ME
+  // const { data: user } = await horus.get('/users/me');
+  const userDataApi = new UserDataApi(firebaseAdmin);
+  const { userId } = await userDataApi.initFromCookieToken(cookieToken);
 
-    const { data: user } = await horus.get('/users/me');
+  dlog('index ➡️ cookieToken:', cookieToken);
+  dlog('index ➡️ user:', userId);
 
-    if (!user) {
-      return {
-        redirect: {
-          destination: '/checkout/authorize',
-          permanent: false,
-        },
-      };
-    }
+  // prettier-ignore
+  const destination = '/checkout/authorize' + '?' +
+      `heads=${context.query.heads}` + '&' +
+      `experienceId=${context.query.experienceId}` + '&' +
+      `bookedForTimestamp=${context.query.bookedForTimestamp}` + '&' +
+      `userAgent=${context.query.userAgent}`
 
-    // Ok cool -- user exists and is valid.
-    // Now let's make a new order and redirect to /checkout/[token]
-    const heads = Number(context.query.heads ?? 0);
-    const experienceId = context.query.experienceId;
-    const bookedForTimestamp = Number(context.query.bookedForTimestamp ?? 0);
-    const userAgent = context.query.userAgent;
-
-    dlog('index ➡️ heads:', heads);
-    dlog('index ➡️ experienceId:', experienceId);
-    dlog('index ➡️ bookedForTimestamp:', bookedForTimestamp);
-    dlog('index ➡️ context.query:', context.query);
-
-    // Horus will tell us whether or not the order was valid.
-    const { data: order, error } = await horus.post('/orders/new', {
-      experienceId,
-      heads,
-      userAgent,
-      bookedForTimestamp,
-      isTest: process.env.NODE_ENV !== 'production',
-    });
-
-    dlog('index ➡️ order:', order);
-    dlog('index ➡️ erorr:', error);
-
-    // Serious checkout error. Report internal error.
-    if (error) {
-      await reportInternalError({
-        code: TastiestInternalErrorCode.PAGE_PREFETCH_ERROR,
-        message:
-          'Checkout creation of order from Horus.post failed in getServerSideProps.',
-        timestamp: Date.now(),
-        shouldAlert: false,
-        originFile: '/pages/checkout/index.tsx',
-        severity: 'HIGH',
-        properties: { error },
-        raw: error,
-      });
-
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false,
-        },
-      };
-    }
-
+  if (!userId) {
+    dlog('index ➡️ no user');
     return {
       redirect: {
-        destination: `/checkout/${order.token}`,
+        destination,
         permanent: false,
       },
     };
-
-    // dlog('index ➡️ user:', user);
-  } catch (error) {
-    dlog('index ➡️ error:', error);
   }
 
-  return { props: {} };
+  // CORRECT ME
+  // Create a new order.
+  const { data } = await postFetch(
+    'https://tastiest.io/api/payments/createNewOrder',
+    {
+      userId,
+      dealId: String(context.query.experienceId),
+      heads: Number(context.query.heads),
+      fromSlug: 'a-taste-of-numa-vegetarian',
+      bookedForTimestamp: Number(context.query.bookedForTimestamp),
+    },
+  );
 
-  //   const token = String(context.query.token);
-
-  //   // If no order exists in URI, redirect to home.
-  //   if (!token) {
-  //     dlog('no order token');
-
-  //     return {
-  //       redirect: {
-  //         destination: '/',
-  //         permanent: false,
-  //       },
-  //     };
-  //   }
+  // Cool - a legit checkout.
+  // CORRECT ME
+  return {
+    redirect: {
+      destination: `/checkout/${data.token}`,
+      permanent: false,
+    },
+  };
 };
 
 export default function Checkout() {

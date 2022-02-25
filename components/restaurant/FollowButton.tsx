@@ -233,7 +233,6 @@ export default function FollowButton(props: Props) {
                 size="large"
               >
                 <span className="font-bold px-4 text-light font-secondary tracking-wide">
-                  {/* {following ? 'Following' : 'Follow'} */}
                   Following
                 </span>
               </Button>
@@ -267,7 +266,7 @@ export default function FollowButton(props: Props) {
               }
             >
               <div
-                style={{ marginLeft: '0.45rem' }}
+                style={{ marginLeft: '0.45rem', textTransform: 'lowercase' }}
                 className="flex items-center justify-center w-5 h-5 rounded-full bg-white filter drop-shadow-md font-primary cursor-pointer"
               >
                 i

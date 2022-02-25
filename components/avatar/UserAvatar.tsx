@@ -9,8 +9,10 @@ type UserAvatarProps = Omit<AvatarProps, 'imageSrc'> & {
 export function UserAvatar(props: UserAvatarProps) {
   const { userData } = useAuth();
 
-  const firstWord = userData?.firstName;
-  const initial = props.initial ?? firstWord?.[0]?.toUpperCase();
+  // CORRECT ME
+  // const firstWord = userData?.firstName;
+  // const initial = props.initial ?? firstWord?.[0]?.toUpperCase();
+  const initial = 'T';
 
   return <Avatar {...props} initial={initial} />;
 }

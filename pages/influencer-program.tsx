@@ -469,7 +469,9 @@ const CallToActionSection = (props: any) => {
       platform: socialsOption.id,
       reference: socialReference,
       affiliateType: 'influencer',
-      userId: userData?.id,
+      // CORRECT ME
+      userId: 'anonymous',
+      // userId: userData?.id,
       anonymousId: window.analytics?.user?.().anonymousId,
     });
 
