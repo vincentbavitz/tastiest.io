@@ -1,9 +1,8 @@
 import {
   dlog,
+  FirestoreCollection,
   Horus,
-  useHorusSWR,
-  UserMetrics,
-  UserPreferences,
+  UserData,
 } from '@tastiest-io/tastiest-utils';
 import nookies from 'nookies';
 import React, { createContext, useEffect, useState } from 'react';
@@ -12,7 +11,7 @@ import { ANONYMOUS_USER_ID, LocalStorageItem } from './tracking';
 
 type AuthContextShape = {
   user: firebaseClient.User | null;
-  userData: any | null;
+  userData: UserData | null;
   isSignedIn: null | boolean;
   token: string | null;
   register?: (
@@ -30,28 +29,6 @@ export const AuthContext = createContext<AuthContextShape>({
   isSignedIn: null,
 });
 
-/** Updated UserData based on Horus response. */
-interface UserData {
-  uid: string;
-  email: string;
-  firstName: string;
-  lastName?: string;
-  mobile?: string;
-
-  isTestAccont: boolean;
-  lastActive: Date | null;
-
-  location?: {
-    lat: number | null;
-    lon: number | null;
-    address: string | null;
-    display: string | null;
-  };
-
-  metrics?: UserMetrics | null;
-  preferences?: UserPreferences | null;
-}
-
 export function AuthProvider({ children }: any) {
   // Undefined while loading, null if not logged in
   const [user, setUser] = useState<firebaseClient.User | null | undefined>(
@@ -61,7 +38,8 @@ export function AuthProvider({ children }: any) {
   const [token, setToken] = useState<string | null>(null);
 
   // Works like an async setter method
-  const setUserData = () => null;
+  // CORRECT ME
+  // const setUserData = () => null;
 
   // Null if the user information has not been loaded yet -- else boolean
   const isSignedIn = user === undefined ? null : Boolean(user?.uid);
@@ -109,13 +87,30 @@ export function AuthProvider({ children }: any) {
   }, [user]);
 
   // Store user data in the provider.
-  const { data: userData } = useHorusSWR(
-    user?.uid ? `/users/${user?.uid}` : null,
-    token,
-    {
-      refreshInterval: 30000,
-    },
-  );
+  // CORRECT ME
+  // const { data: userData } = useHorusSWR(
+  //   user?.uid ? `/users/${user?.uid}` : null,
+  //   token,
+  //   {
+  //     refreshInterval: 30000,
+  //   },
+  // );
+  const [userData, setUserData] = useState<UserData | null>(null);
+  useEffect(() => {
+    setInterval(async () => {
+      if (!user) {
+        return;
+      }
+
+      const userDataSnapshot = await firebaseClient
+        .firestore()
+        .collection(FirestoreCollection.USERS)
+        .doc(user.uid)
+        .get();
+
+      setUserData(userDataSnapshot.data() as UserData);
+    }, 30000);
+  }, [user]);
 
   dlog('auth ➡️ data:', userData);
 

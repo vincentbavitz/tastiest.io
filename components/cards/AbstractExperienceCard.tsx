@@ -63,7 +63,7 @@ export function AbstractExperienceCard(
               {/* Restaurant profile */}
               <div className="absolute bottom-0 left-0 right-0 flex items-end pb-2 h-20 z-50 px-2 bg-gradient-to-t from-primary">
                 {withRestaurantName ? (
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 mb-2 ml-2">
                     <div
                       style={{
                         filter:
@@ -85,6 +85,9 @@ export function AbstractExperienceCard(
                   </div>
                 ) : null}
               </div>
+
+              {/* White border */}
+              <div className="absolute inset-1 border-4 border-light z-50"></div>
             </div>
 
             <div className={clsx('text-dark pt-2 pb-3')}>

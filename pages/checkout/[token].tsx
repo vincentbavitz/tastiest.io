@@ -3,16 +3,16 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { Button, Tooltip } from '@tastiest-io/tastiest-ui';
 import {
+  Booking,
   DateObject,
   dlog,
+  FirestoreCollection,
   formatCurrency,
-  Horus,
-  HorusOrderEntity,
+  Order,
   reportInternalError,
+  RestaurantDetails,
   TastiestInternalErrorCode,
   TastiestPaymentError,
-  titleCase,
-  useHorusSWR,
 } from '@tastiest-io/tastiest-utils';
 import { CheckoutCard } from 'components/checkout/CheckoutCard';
 import { CheckoutInputCard } from 'components/checkout/CheckoutInputCard';
@@ -35,6 +35,8 @@ import { useRouter } from 'next/router';
 import nookies from 'nookies';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { firebaseAdmin } from 'utils/firebaseAdmin';
+import { firebaseClient } from 'utils/firebaseClient';
 import { generateStaticURL } from 'utils/routing';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
@@ -52,12 +54,27 @@ export const getServerSideProps = async (
   const orderToken = params.token;
   const cookieToken = nookies.get(context)?.token;
 
-  const horus = new Horus(cookieToken);
+  // CORRECT ME
+  // const horus = new Horus(cookieToken);
 
-  // This will automatically fail if the user doesn't own this order.
-  const { data: order, error } = await horus.get<any, HorusOrderEntity>(
-    `orders/${orderToken}`,
-  );
+  // // This will automatically fail if the user doesn't own this order.
+  // const { data: order, error } = await horus.get<any, HorusOrderEntity>(
+  //   `orders/${orderToken}`,
+  // );
+
+  const ordersSnapshot = await firebaseAdmin
+    .firestore()
+    .collection(FirestoreCollection.ORDERS)
+    .where('token', '==', orderToken)
+    .get();
+
+  dlog('[token] ➡️ ordersSnapshot:', ordersSnapshot);
+
+  let order: Order;
+  const error = null;
+  ordersSnapshot.forEach(o => (order = o.data() as Order));
+
+  dlog('[token] ➡️ order:', order);
 
   // Serious checkout error. Report internal error.
   if (!order || error) {
@@ -88,9 +105,14 @@ export const getServerSideProps = async (
     return {
       redirect: {
         destination: generateStaticURL({
-          restaurant: order.experience.restaurant.uriName,
-          cuisine: order.experience.restaurant.cuisine,
-          city: order.experience.restaurant.city,
+          // CORRECT ME
+          // restaurant: order.experience.restaurant.uriName,
+          // cuisine: order.experience.restaurant.cuisine,
+          // city: order.experience.restaurant.city,
+          // slug: order.fromSlug,
+          restaurant: order.deal.restaurant.uriName,
+          cuisine: order.deal.restaurant.cuisine,
+          city: order.deal.restaurant.city,
           slug: order.fromSlug,
         }).as,
         permanent: false,
@@ -101,8 +123,11 @@ export const getServerSideProps = async (
   return {
     props: {
       order,
+      orderToken,
       userToken: cookieToken,
-      userId: order.user.id,
+      // CORRECT ME
+      // userId: order.user.id,
+      userId: order.userId,
     },
   };
 };
@@ -118,8 +143,8 @@ type FormData = {
 function CheckoutPayment(
   props: InferGetStaticPropsType<typeof getServerSideProps>,
 ) {
-  const { userId, userToken } = props;
-  const { token = userToken } = useAuth();
+  const { userId, userToken, orderToken } = props;
+  const { token = userToken, userData } = useAuth();
 
   const { isDesktop } = useScreenSize();
   const router = useRouter();
@@ -127,21 +152,31 @@ function CheckoutPayment(
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const [error, setError] = useState<TastiestPaymentError | null>(null);
 
-  const { data: order } = useHorusSWR(`/orders/${props.order.token}`, token, {
-    initialData: props.order,
-    refreshInterval: 5000,
-  });
+  // CORRECT ME
+  // const { data: order } = useHorusSWR(`/orders/${props.order.token}`, token, {
+  //   initialData: props.order,
+  //   refreshInterval: 5000,
+  // });
+  const order = props.order;
 
   // Birthday data-structre can't be handled nicely with use-form.
   // So we can manage it ourselves.
-  const birthdayDateTime = order?.user.birthday
-    ? DateTime.fromISO(order?.user.birthday)
-    : null;
+  // CORRECT ME
+  // const birthdayDateTime = order?.user.birthday
+  //   ? DateTime.fromISO(order?.user.birthday)
+  //   : null;
+
+  // CORRECT ME
+  // const [birthday, setBirthday] = useState<DateObject>({
+  //   day: birthdayDateTime?.day ?? 1,
+  //   month: birthdayDateTime?.month ?? 1,
+  //   year: birthdayDateTime?.year ?? 2000,
+  // });
 
   const [birthday, setBirthday] = useState<DateObject>({
-    day: birthdayDateTime?.day ?? 1,
-    month: birthdayDateTime?.month ?? 1,
-    year: birthdayDateTime?.year ?? 2000,
+    day: 1,
+    month: 1,
+    year: 2000,
   });
 
   const {
@@ -155,85 +190,115 @@ function CheckoutPayment(
     shouldFocusError: true,
   });
 
-  const submit = handleSubmit(
-    async ({ firstName, lastName, mobile, cardPostcode, cardHolderName }) => {
-      // Start isLoading
-      setIsPaymentProcessing(true);
-      setError(null);
+  // const submit = handleSubmit(
+  //   async ({ firstName, lastName, mobile, cardPostcode, cardHolderName }) => {
+  //     // Start isLoading
+  //     setIsPaymentProcessing(true);
+  //     setError(null);
 
-      // const { paymentMethod, error: paymentMethodError } = await addCard(
-      //   cardHolderName,
-      //   cardPostcode,
-      // );
+  //     // const { paymentMethod, error: paymentMethodError } = await addCard(
+  //     //   cardHolderName,
+  //     //   cardPostcode,
+  //     // );
 
-      // Error adding card. Either card already exists or validation error
-      // if (paymentMethodError) {
-      //   dlog('CheckoutStepPayment ➡️ paymentMethodError:', paymentMethodError);
+  //     // Error adding card. Either card already exists or validation error
+  //     // if (paymentMethodError) {
+  //     //   dlog('CheckoutStepPayment ➡️ paymentMethodError:', paymentMethodError);
 
-      //   setIsPaymentProcessing(false);
-      //   setError({
-      //     code: 'card_error',
-      //     type: 'tastiest-payment-error',
-      //     message: 'This card is already in use. Please contact support.',
-      //   });
-      //   return;
-      // }
+  //     //   setIsPaymentProcessing(false);
+  //     //   setError({
+  //     //     code: 'card_error',
+  //     //     type: 'tastiest-payment-error',
+  //     //     message: 'This card is already in use. Please contact support.',
+  //     //   });
+  //     //   return;
+  //     // }
 
-      // const { error: updateOrderError } = await updateOrder({
-      //   paymentMethodId: paymentMethod.id,
-      // });
+  //     // const { error: updateOrderError } = await updateOrder({
+  //     //   paymentMethodId: paymentMethod.id,
+  //     // });
 
-      // if (updateOrderError) {
-      //   dlog('CheckoutStepPayment ➡️ updateOrderError:', updateOrderError);
-      //   dispatch(setIsPaymentProcessing(false));
-      //   setError({
-      //     code: 'update_order_error',
-      //     type: 'api_error',
-      //     message: 'There was an error updating your order.',
-      //   });
+  //     // if (updateOrderError) {
+  //     //   dlog('CheckoutStepPayment ➡️ updateOrderError:', updateOrderError);
+  //     //   dispatch(setIsPaymentProcessing(false));
+  //     //   setError({
+  //     //     code: 'update_order_error',
+  //     //     type: 'api_error',
+  //     //     message: 'There was an error updating your order.',
+  //     //   });
 
-      //   return { success: false, error: updateOrderError };
-      // }
+  //     //   return { success: false, error: updateOrderError };
+  //     // }
 
-      // const { success, error } = await pay();
+  //     // const { success, error } = await pay();
 
-      // Uh-oh - a general payment error!
-      // This usually means the card declined.
-      if (error) {
-        setError({
-          code: 'general_payment_error',
-          type: 'card_error',
-          message:
-            'There was an error processing your payment. Please try using another card.',
-        });
+  //     // Uh-oh - a general payment error!
+  //     // This usually means the card declined.
+  //     if (error) {
+  //       setError({
+  //         code: 'general_payment_error',
+  //         type: 'card_error',
+  //         message:
+  //           'There was an error processing your payment. Please try using another card.',
+  //       });
 
-        alert(error);
+  //       alert(error);
 
-        setIsPaymentProcessing(false);
-        return;
-      }
+  //       setIsPaymentProcessing(false);
+  //       return;
+  //     }
 
-      if (
-        firstName?.length > 0 ||
-        lastName?.length > 0 ||
-        mobile?.length > 0 ||
-        cardPostcode?.length > 0 ||
-        JSON.stringify(birthday) !== JSON.stringify(order.user.birthday)
-      ) {
-        const horus = new Horus(token);
+  //     if (
+  //       firstName?.length > 0 ||
+  //       lastName?.length > 0 ||
+  //       mobile?.length > 0 ||
+  //       cardPostcode?.length > 0 // ||
+  //       // CORRECT ME
+  //       // JSON.stringify(birthday) !== JSON.stringify(order.user.birthday)
+  //     ) {
+  //       const horus = new Horus(token);
 
-        // Update user information
-        horus.post('/users/update', {
-          uid: userId,
-          firstName,
-          lastName,
-          mobile,
-          birthday: DateTime.fromObject(birthday).toJSDate(),
-          location: { postcode: cardPostcode },
-        });
-      }
-    },
-  );
+  //       // Update user information
+  //       horus.post('/users/update', {
+  //         uid: userId,
+  //         firstName,
+  //         lastName,
+  //         mobile,
+  //         birthday: DateTime.fromObject(birthday).toJSDate(),
+  //         location: { postcode: cardPostcode },
+  //       });
+  //     }
+  //   },
+  // );
+
+  // CORRECT ME
+  const submit = handleSubmit(async form => {
+    setIsPaymentProcessing(true);
+
+    // Create a booking.
+    const _booking = {
+      orderId: order.id,
+      userId,
+      restaurant: (order.deal.restaurant as never) as RestaurantDetails,
+      hasArrived: false,
+      confirmationCode: '0033',
+    } as Booking;
+
+    await firebaseClient
+      .firestore()
+      .collection(FirestoreCollection.BOOKINGS)
+      .doc(order.id)
+      .set(_booking);
+
+    // Update order
+    await firebaseClient
+      .firestore()
+      .collection(FirestoreCollection.ORDERS)
+      .doc(order.id)
+      .set({ paidAt: Date.now() }, { merge: true });
+
+    router.push(`/thank-you?token=${order.token}`);
+  });
 
   return (
     <>
@@ -275,7 +340,8 @@ function CheckoutPayment(
                 name="firstName"
                 size="large"
                 label="First Name"
-                defaultValue={titleCase(order.user.firstName)}
+                // CORRECT ME
+                // defaultValue={titleCase(order.user.firstName)}
                 control={control}
                 disabled={isPaymentProcessing}
               />
@@ -283,7 +349,8 @@ function CheckoutPayment(
                 name="lastName"
                 size="large"
                 label="Last Name"
-                defaultValue={order.user.lastName ?? null}
+                // CORRECT ME
+                // defaultValue={order.user.lastName ?? null}
                 control={control}
                 disabled={isPaymentProcessing}
               />
@@ -292,7 +359,8 @@ function CheckoutPayment(
                 size="large"
                 control={control}
                 disabled={isPaymentProcessing}
-                defaultValue={order.user.mobile ?? null}
+                // CORRECT ME
+                // defaultValue={order.user.mobile ?? null}
               />
               <InputDate
                 initialDate={birthday}
@@ -346,19 +414,23 @@ function CheckoutPayment(
           <SecureTransactionText />
         </div>
 
-        <CheckoutCard experienceImage={order.experience.image}>
+        {/* CORRECT ME */}
+        {/* <CheckoutCard experienceImage={order.experience.image}> */}
+        <CheckoutCard experienceImage={order.deal.image}>
           <div className="">
             <div className="text-base font-medium">
               <div className="flex justify-between">
-                <span>{order.experience.restaurant.name}</span>
+                {/* CORRECT ME */}
+                {/* <span>{order.experience.restaurant.name}</span> */}
+                <span>{order.deal.restaurant.name}</span>
 
                 <span className="font-light">
-                  £{order?.experience?.pricePerHeadGBP}
+                  £{order?.deal?.pricePerHeadGBP}
                 </span>
               </div>
 
               <p className="text-sm mt-2 font-normal leading-tight text-gray-700">
-                {order.experience.name}
+                {order.deal.name}
               </p>
             </div>
           </div>
@@ -366,7 +438,11 @@ function CheckoutPayment(
           <div className="flex items-center justify-between text-sm text-gray-600">
             <span className="leading-none">Date</span>
             <span className="font-medium leading-none">
-              {DateTime.fromISO(order.bookedFor).toFormat('h:mm a, DD')}
+              {/* CORRECT ME */}
+              {/* {DateTime.fromISO(order.bookedFor).toFormat('h:mm a, DD')} */}
+              {DateTime.fromMillis(order.bookedForTimestamp).toFormat(
+                'h:mm a, DD',
+              )}
             </span>
           </div>
 
@@ -381,7 +457,7 @@ function CheckoutPayment(
             <div className="flex items-center gap-1">
               <span>Fees</span>
               <Tooltip content="Card processing fees are 2.9% + 30p.">
-                <div className="flex items-center justify-center w-4 h-4 rounded-full bg-gray-200 font-primary cursor-pointer">
+                <div className="flex items-center justify-center w-4 h-4 rounded-full bg-gray-200 font-primary cursor-pointer lowercase">
                   i
                 </div>
               </Tooltip>

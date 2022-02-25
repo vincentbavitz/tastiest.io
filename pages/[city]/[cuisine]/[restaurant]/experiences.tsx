@@ -8,6 +8,7 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import { AbstractExperienceCard } from 'components/cards/AbstractExperienceCard';
 import { Contained } from 'components/Contained';
+import { SectionTitle } from 'components/SectionTitle';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { Layouts } from 'layouts/LayoutHandler';
 import {} from 'layouts/LayoutRestaurant';
@@ -109,6 +110,10 @@ const RestaurantExperiencesPage = (
 
   return (
     <Contained maxWidth={900}>
+      <div className="pt-3 pb-4">
+        <SectionTitle>Choose an experience</SectionTitle>
+      </div>
+
       <div className="pt-4 pb-10">
         {isMobile ? (
           <div className="grid grid-cols-1 gap-4 justify-items-center">

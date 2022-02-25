@@ -1,5 +1,3 @@
-import { PhoneIcon } from '@tastiest-io/tastiest-icons';
-import { Button } from '@tastiest-io/tastiest-ui';
 import {
   Booking,
   CmsApi,
@@ -10,6 +8,7 @@ import {
   UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
+import { SectionTitle } from 'components/SectionTitle';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { DateTime } from 'luxon';
 import { InferGetServerSidePropsType } from 'next';
@@ -38,6 +37,8 @@ export const getServerSideProps = async context => {
   // Verify order is legit; else redirect and wipe order data.
   const token = String(context.query.token ?? '') ?? null;
 
+  console.log('On thankyou page');
+
   // If no order or user exists in URI, redirect to home
   if (!token) {
     dlog('No token!');
@@ -62,24 +63,26 @@ export const getServerSideProps = async context => {
   orderSnapshot.docs.forEach(doc => (order = doc.data() as Order));
 
   // Redirect if user somehow got to this state of no order request.
-  if (!order || !order.paidAt) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
+  // CORRECT ME
+  // if (!order || !order.paidAt) {
+  //   return {
+  //     redirect: {
+  //       destination: '/',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
   // Wrong user?
-  if (!order.userId) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
+  // CORRECT ME
+  // if (!order.userId) {
+  //   return {
+  //     redirect: {
+  //       destination: '/',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
   // Get the corresponding booking
   const bookingSnapshot = await db(FirestoreCollection.BOOKINGS)
@@ -88,15 +91,18 @@ export const getServerSideProps = async context => {
 
   const booking = bookingSnapshot.data() as Booking;
 
+  dlog('thank-you ➡️ booking:', booking);
+
   // Redirect if invalid booking or they've already arrived.
-  if (!booking || booking.hasArrived) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
+  // CORRECT ME
+  // if (!booking || booking.hasArrived) {
+  //   return {
+  //     redirect: {
+  //       destination: '/',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
   const userDataApi = new UserDataApi(firebaseAdmin, order.userId);
   const { details: userDetails } = await userDataApi.getUserData();
@@ -111,14 +117,14 @@ export const getServerSideProps = async context => {
     },
   );
 
-  const paymentMethod = await stripe.paymentMethods.retrieve(
-    order.paymentMethod,
-  );
+  // const paymentMethod = await stripe.paymentMethods.retrieve(
+  //   order.paymentMethod,
+  // );
 
-  const paymentCard: PaymentCard = {
-    brand: paymentMethod.card.brand,
-    last4: paymentMethod.card.last4,
-  };
+  // const paymentCard: PaymentCard = {
+  //   brand: paymentMethod.card.brand,
+  //   last4: paymentMethod.card.last4,
+  // };
 
   // Get post's images
   // Don't worry about speed, this page is pre-fetched on checkout.
@@ -126,7 +132,7 @@ export const getServerSideProps = async context => {
 
   const post = await cmsApi.getPostBySlug(order.fromSlug);
   const assets = {
-    restaurantHero: post.restaurant.heroIllustration,
+    restaurantHero: order.deal.restaurant.heroIllustration,
     dish: post.plate,
   };
 
@@ -135,7 +141,12 @@ export const getServerSideProps = async context => {
       firstName: userDetails?.firstName,
       order,
       booking,
-      paymentCard,
+      // CORRECT ME
+      // paymentCard,
+      paymentCard: {
+        brand: 'VISA',
+        last4: '3333',
+      },
       assets,
     },
   };
@@ -196,28 +207,76 @@ function ThankYou(
                 }}
                 className="w-full"
               />
-
-              <h1 className="text-5xl md:text-6xl font-primary text-light px-4">
-                Yay!
-              </h1>
             </div>
 
-            <h2 className="text-2xl text-center font-primary text-light opacity-75 pt-3">
+            <h2 className="text-2xl text-center font-secondary text-light leading-8 opacity-75 pt-6">
               Thanks, {firstName ? ` ${firstName}` : ''}!{' '}
-              {isDesktop ? null : <br />} You're going to love it.
+              {isDesktop ? null : <br />} Booking complete.
             </h2>
           </Contained>
         </div>
 
         <Contained>
-          <h2 className="w-full pt-12 mb-10 pb-2 text-2xl text-center border-b-2 border-secondary font-primary">
-            What's next?
-          </h2>
+          <div className="pt-6">
+            <SectionTitle>What's next?</SectionTitle>
+          </div>
 
-          <div className="flex flex-col space-y-10 pb-16 items-center">
+          <div className="flex flex-col space-y-10 pt-6 pb-12 items-center">
             <BookingSection
-              title={`${booking.restaurant.name} is expecting you ${humanBookedForDate}.`}
+              title={'Arrival Code'}
               step={1}
+              figure={<></>}
+              promptText={
+                <div className="flex flex-col items-center text-base md:items-start">
+                  <div
+                    style={{ maxWidth: '225px' }}
+                    className="flex w-full mb-4 space-x-2"
+                  >
+                    {booking.confirmationCode.split('').map(digit => (
+                      <div
+                        key={uuid()}
+                        style={{ minWidth: '2.5rem' }}
+                        className="flex items-center justify-center flex-1 h-14 text-2xl rounded font-mono bg-gradient-to-br from-primary to-secondary text-light"
+                      >
+                        {digit}
+                      </div>
+                    ))}
+                  </div>
+
+                  <p className={isDesktop ? 'pb-2' : 'pb-3'}>
+                    Let {booking.restaurant.name} know your arrival code when
+                    you arrive.
+                  </p>
+
+                  <p className="leading-tight pb-1">
+                    <span className="font-medium">Your experience</span> <br />
+                    <span className="italic">{order.deal.name}</span>
+                  </p>
+
+                  <p className="leading-tight pb-1">
+                    <span className="font-medium">Date</span> <br />
+                    {DateTime.fromMillis(order.bookedForTimestamp).toFormat(
+                      't a, DDD',
+                    )}
+                  </p>
+
+                  <p className="leading-tight">
+                    <span className="font-medium">Number of people</span> <br />
+                    {order.heads}
+                  </p>
+                </div>
+              }
+            />
+
+            <BookingSection
+              title="Enjoy your food"
+              step={2}
+              promptText={
+                <p className="text-base">
+                  A discretionary service charge bill will be presented at the
+                  end of your meal.
+                </p>
+              }
               figure={
                 <div className="relative h-24 w-64">
                   <Image
@@ -228,72 +287,7 @@ function ThankYou(
                   />
                 </div>
               }
-              promptText={
-                <div className="flex flex-col items-center md:items-start">
-                  <p className={isDesktop ? 'pb-2' : 'pb-3'}>
-                    If you have any questions, please call us.
-                  </p>
-
-                  <a
-                    href={`tel:${TASTIEAT_AIR_CALL_NUMBER}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="no-underline"
-                  >
-                    <Button
-                      color="light"
-                      prefix={
-                        <PhoneIcon className="h-6 text-primary fill-current" />
-                      }
-                    >
-                      <p className="font-normal tracking-wide">
-                        {order.deal.restaurant?.publicPhoneNumber}
-                      </p>
-                    </Button>
-                  </a>
-                </div>
-              }
-            />
-
-            <BookingSection
-              title="Give your waiter your code on arrival"
-              step={2}
-              promptText={
-                <p>
-                  Simply let {booking.restaurant.name} know your 4 digit booking
-                  code when you arrive.
-                </p>
-              }
-              figure={
-                <div className="flex w-full space-x-2">
-                  {booking.confirmationCode.split('').map(digit => (
-                    <div
-                      key={uuid()}
-                      style={{ minWidth: '2.5rem' }}
-                      className="flex items-center justify-center flex-1 h-14 text-2xl rounded-md font-mono bg-gradient-to-br from-tertiary to-secondary text-light"
-                    >
-                      {digit}
-                    </div>
-                  ))}
-                </div>
-              }
             ></BookingSection>
-
-            <BookingSection
-              title={`Enjoy your food!`}
-              step={3}
-              promptText={
-                'A discretionary service charge bill will be presented at the end of your meal.'
-              }
-              figure={
-                <div
-                  style={{ maxWidth: '150px' }}
-                  className="relative mt-4 h-32 w-full"
-                >
-                  <Image layout="fill" src={assets.dish.url} />
-                </div>
-              }
-            />
           </div>
         </Contained>
 
@@ -330,7 +324,7 @@ function ThankYou(
 interface BookingSectionProps {
   title: string;
   step: number;
-  figure: ReactNode;
+  figure?: ReactNode;
   children?: ReactNode;
   promptText?: ReactNode;
 }
@@ -342,23 +336,21 @@ function BookingSection(props: BookingSectionProps) {
 
   return (
     <div className={clsx('relative w-full', isDesktop && 'pl-10')}>
-      {isDesktop ? null : (
+      {/* {isDesktop ? null : (
         <div className="flex justify-center">
           <div className="flex items-center justify-center w-8 h-8 text-xl font-bold text-white rounded-full bg-primary font-mono">
             {step}
           </div>
         </div>
-      )}
+      )} */}
 
       <div
         className={clsx(
           isDesktop
             ? 'flex justify-center'
-            : 'flex flex-col items-center space-y-4',
+            : 'flex flex-col-reverse items-center space-y-4',
         )}
       >
-        <BookingSectionImage {...props} isDesktop={isDesktop} />
-
         <div
           style={{ width: '350px' }}
           className={clsx('flex flex-col justify-center h-auto')}
@@ -391,34 +383,6 @@ function BookingSection(props: BookingSectionProps) {
     </div>
   );
 }
-
-interface BookingSectionImageProps extends BookingSectionProps {
-  isDesktop: boolean;
-}
-
-const BookingSectionImage = (props: BookingSectionImageProps) => {
-  const { figure, step, isDesktop } = props;
-
-  return (
-    <div className="relative px-8">
-      <div
-        style={{
-          width: isDesktop ? '14rem' : '13rem',
-          minHeight: '5rem',
-        }}
-        className="relative h-full flex items-end justify-center w-full md:items-center"
-      >
-        {figure}
-
-        {isDesktop ? (
-          <div className="absolute top-0 -left-12 flex items-center justify-center w-8 h-8 mt-2 text-xl font-bold text-white rounded-full bg-primary font-mono">
-            {step}
-          </div>
-        ) : null}
-      </div>
-    </div>
-  );
-};
 
 interface OrderSummaryProps {
   order: Order;
