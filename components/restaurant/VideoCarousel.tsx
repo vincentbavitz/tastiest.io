@@ -129,13 +129,13 @@ export default function VideoCarousel() {
   const InnerCarousel = (
     <div className="relative">
       {/* Controls */}
-      <div className="absolute inset-0 flex justify-between items-center h-full px-5 z-50">
+      <div className="absolute left-0 right-0 -bottom-8 flex justify-center items-end h-full px-5 gap-6">
         <div
           onClick={toPreviousVideo}
           className={clsx(
             'flex items-center justify-center w-10 h-10 rounded-full bg-secondary cursor-pointer filter duration-300 hover:brightness-110 z-50',
             currentVideo === 0
-              ? 'pointer-events-none opacity-0'
+              ? 'pointer-events-none opacity-50'
               : 'pointer-events-auto opacity-100',
           )}
         >
@@ -147,7 +147,7 @@ export default function VideoCarousel() {
           className={clsx(
             'flex items-center justify-center w-10 h-10 rounded-full bg-secondary cursor-pointer filter duration-300 hover:brightness-110 z-50',
             currentVideo === videos.length - 1
-              ? 'pointer-events-none opacity-0'
+              ? 'pointer-events-none opacity-50'
               : 'pointer-events-auto opacity-100',
           )}
         >
@@ -167,7 +167,7 @@ export default function VideoCarousel() {
         ref={refScrollContainer}
         className={clsx(
           'flex flex-nowrap overflow-x-hidden',
-          isMobile && 'px-0',
+          isMobile && 'px-3',
           isTablet && 'px-6 pt-3',
           isDesktop && 'px-10 pt-3',
         )}
@@ -179,7 +179,7 @@ export default function VideoCarousel() {
             <div
               key={key}
               style={{
-                minWidth: isMobile ? '100vw' : '75%',
+                minWidth: isMobile ? '80vw' : '75%',
                 maxWidth: '600px',
               }}
               className=""
@@ -189,14 +189,14 @@ export default function VideoCarousel() {
                 className={clsx(
                   'flex flex-col w-full duration-300',
                   isFocused ? 'opacity-100' : 'opacity-75 cursor-pointer',
-                  isMobile && 'pr-0 my-0',
+                  isMobile && 'pr-3 my-3',
                   isTablet && 'pr-6 my-4',
                   isDesktop && 'pr-10 my-6',
                 )}
               >
                 <div
                   className={clsx(
-                    !isMobile && 'border-2 border-light duration-300',
+                    'border-2 border-light duration-300',
                     isFocused
                       ? 'border-opacity-75'
                       : 'border-opacity-0 pointer-events-none',
@@ -208,7 +208,7 @@ export default function VideoCarousel() {
                 <h4
                   className={clsx(
                     'text-lg mt-2 font-medium',
-                    isMobile ? 'pb-2 px-4 text-light' : 'text-light',
+                    isMobile ? 'pb-2 text-light' : 'text-light',
                   )}
                 >
                   {video.title}
@@ -221,7 +221,7 @@ export default function VideoCarousel() {
         <div
           ref={refSpacerVideo}
           style={{
-            minWidth: isMobile ? '100vw' : '75%',
+            minWidth: isMobile ? '80vw' : '75%',
             maxWidth: '600px',
           }}
         ></div>
@@ -236,7 +236,10 @@ export default function VideoCarousel() {
       </div>
 
       <div
-        className={clsx('w-full mb-10', isMobile ? 'bg-primary' : 'bg-primary')}
+        className={clsx(
+          'w-full pb-12 mb-10',
+          isMobile ? 'bg-primary' : 'bg-primary',
+        )}
       >
         {isHuge ? (
           <Contained maxWidth={1000}>{InnerCarousel}</Contained>
