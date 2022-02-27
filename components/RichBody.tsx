@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/display-name */
 import { documentToPlainTextString } from '@contentful/rich-text-plain-text-renderer';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
@@ -41,13 +42,7 @@ const Paragraph = ({
   justify = true,
   margins = true,
 }: ParagraphProps) => (
-  <p
-    className={clsx(
-      'font-secondary',
-      margins && 'mb-3',
-      justify && 'text-justify',
-    )}
-  >
+  <p className={clsx('font-secondary mb-2', justify && 'text-justify')}>
     {children}
   </p>
 );
@@ -71,12 +66,19 @@ export function RichBody(props: Props) {
 
   const options = React.useMemo(
     () => ({
+      renderText: text => {
+        return text.split('\n').reduce((children, textSegment, index) => {
+          return [...children, index > 0 && <br key={index} />, textSegment];
+        }, []);
+      },
       renderMark: {
         [MARKS.BOLD]: text => <Bold>{text}</Bold>,
       },
       renderNode: {
         [BLOCKS.PARAGRAPH]: (node, children) => {
           const plaintext = documentToPlainTextString(node);
+
+          dlog('RichBody ➡️ children:', children);
 
           if (BaseShortCodeRegex.test(plaintext)) {
             // Get all the shortcodes from the string
