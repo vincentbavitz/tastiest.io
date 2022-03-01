@@ -5,7 +5,6 @@ import {
   FirestoreCollection,
   formatCurrency,
   Order,
-  UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { SectionTitle } from 'components/SectionTitle';
@@ -21,7 +20,7 @@ import React, { ReactNode, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setIsPaymentProcessing } from 'state/checkout';
 import Stripe from 'stripe';
-import { db, firebaseAdmin } from 'utils/firebaseAdmin';
+import { db } from 'utils/firebaseAdmin';
 import { generateTitle } from 'utils/metadata';
 import { v4 as uuid } from 'uuid';
 import { Contained } from '../components/Contained';
@@ -62,28 +61,6 @@ export const getServerSideProps = async context => {
   let order: Order;
   orderSnapshot.docs.forEach(doc => (order = doc.data() as Order));
 
-  // Redirect if user somehow got to this state of no order request.
-  // CORRECT ME
-  // if (!order || !order.paidAt) {
-  //   return {
-  //     redirect: {
-  //       destination: '/',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
-
-  // Wrong user?
-  // CORRECT ME
-  // if (!order.userId) {
-  //   return {
-  //     redirect: {
-  //       destination: '/',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
-
   // Get the corresponding booking
   const bookingSnapshot = await db(FirestoreCollection.BOOKINGS)
     .doc(order.id)
@@ -103,9 +80,6 @@ export const getServerSideProps = async context => {
   //     },
   //   };
   // }
-
-  const userDataApi = new UserDataApi(firebaseAdmin, order.userId);
-  const { details: userDetails } = await userDataApi.getUserData();
 
   // Get Live / Test data
   const stripe = new Stripe(
@@ -138,7 +112,7 @@ export const getServerSideProps = async context => {
 
   return {
     props: {
-      firstName: userDetails?.firstName,
+      firstName: 'John',
       order,
       booking,
       // CORRECT ME
