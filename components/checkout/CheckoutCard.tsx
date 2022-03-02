@@ -11,7 +11,7 @@ interface CheckoutCardProps {
 
 export const CheckoutCard = (props: CheckoutCardProps) => {
   const { experienceImage, children } = props;
-  const { isMobile, isTablet, isDesktop } = useScreenSize();
+  const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
 
   return (
     <div
@@ -37,9 +37,10 @@ export const CheckoutCard = (props: CheckoutCardProps) => {
           <div
             className={clsx(
               'relative bg-opacity-75 overflow-hidden',
-              isMobile && 'w-full',
-              isTablet ? 'w-44 h-44' : 'aspect-w-1 aspect-h-1',
+              isMobile && 'w-full h-32',
+              isTablet && 'w-44 h-44',
               isDesktop && 'w-full',
+              isHuge && 'aspect-w-1 aspect-h-1',
             )}
           >
             <Image

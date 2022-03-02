@@ -21,7 +21,7 @@ LayoutProps<InferGetStaticPropsType<typeof getServerSideProps>>) {
   //   const {  } = pageProps;
 
   const { isSignedIn, token, user } = useAuth();
-  const { isDesktop } = useScreenSize();
+  const { isMobile, isDesktop } = useScreenSize();
 
   const toCheckoutWithToken = async () => {
     const currentUrl = new URL(window.location.href);
@@ -87,7 +87,12 @@ LayoutProps<InferGetStaticPropsType<typeof getServerSideProps>>) {
       headerProps={{ blank: true }}
     >
       <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
-        <div className="relative flex flex-col w-full mt-28 space-y-10">
+        <div
+          className={clsx(
+            'relative flex flex-col w-full space-y-10',
+            isMobile ? 'mt-14' : 'mt-28',
+          )}
+        >
           <CheckoutStepIndicator step={step} />
 
           <div
@@ -247,7 +252,10 @@ const LayoutCheckoutRight: FC = ({ children }) => {
 
   return (
     <div
-      className={clsx('flex-grow pt-6', isDesktop ? 'w-5/12 pl-10' : 'w-full')}
+      className={clsx(
+        'flex-grow',
+        isDesktop ? 'w-5/12 pt-6 pl-10' : 'w-full pt-0',
+      )}
     >
       {children}
     </div>
