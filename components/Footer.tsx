@@ -6,13 +6,17 @@ import {
   YoutubeIcon,
 } from '@tastiest-io/tastiest-icons';
 import { TastiestBrand } from '@tastiest-io/tastiest-ui';
-import { SupportRequestType } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, ReactNode } from 'react';
 import { Contained } from './Contained';
+
+enum SupportRequestType {
+  BUG,
+  FEATURE_REQUEST,
+}
 
 export function Footer() {
   const { isDesktop, isHuge } = useScreenSize();

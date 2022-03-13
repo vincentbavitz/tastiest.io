@@ -20,7 +20,7 @@ export const getServerSideProps = async (
   // Somehow their query paramters got messed up.
   if (
     !context.query.heads ||
-    !context.query.experienceId ||
+    !context.query.productId ||
     !context.query.bookedForTimestamp
   ) {
     return {

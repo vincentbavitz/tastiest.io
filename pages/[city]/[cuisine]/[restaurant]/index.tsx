@@ -1,8 +1,8 @@
 import {
   CmsApi,
+  ContentfulPost,
+  ContentfulRestaurant,
   dlog,
-  ExperiencePost,
-  RestaurantContentful,
   TastiestDish,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
@@ -42,7 +42,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   let page = 1;
   let foundAllRestaurants = false;
-  const restaurants: RestaurantContentful[] = [];
+  const restaurants: ContentfulRestaurant[] = [];
 
   // Contentful only allows 100 at a time
   while (!foundAllRestaurants) {
@@ -62,7 +62,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     params: {
       city: restaurant.city.toLowerCase(),
       cuisine: restaurant.cuisine.toLowerCase(),
-      restaurant: restaurant.uriName.toLowerCase(),
+      restaurant: restaurant.uri_name.toLowerCase(),
     },
   }));
 
@@ -87,20 +87,20 @@ export const getStaticProps = async (
     return {
       // returning as such to keep the props types consistent
       props: {
-        restaurant: null as RestaurantContentful,
+        restaurant: null as ContentfulRestaurant,
         tastiestDishes: null as TastiestDish[],
-        posts: null as ExperiencePost[],
+        posts: null as ContentfulPost[],
       },
       notFound: true,
     };
   }
 
   // Get posts from restaurant
-  const { posts } = await cms.getPostsOfRestaurant(restaurant.uriName, 100);
+  const { posts } = await cms.getPostsOfRestaurant(restaurant.uri_name, 100);
 
   // Get the restaurant's Tastiest Dishes
   const { dishes: tastiestDishes } = await cms.getTastiestDishesOfRestaurant(
-    restaurant.uriName,
+    restaurant.uri_name,
   );
 
   return {
@@ -119,7 +119,7 @@ const RestaurantPage = (
     const baseRestaurantPath = generateStaticURL({
       city: restaurant.city,
       cuisine: restaurant.cuisine,
-      restaurant: restaurant.uriName,
+      restaurant: restaurant.uri_name,
     });
 
     return {
@@ -215,7 +215,7 @@ const RestaurantPage = (
       <div ref={refGeneralInfo}>
         <Contained maxWidth={900}>
           <div className="flex flex-col py-4 pb-10 space-y-10">
-            <RichBody body={restaurant.description}></RichBody>
+            <RichBody body={restaurant.description as any}></RichBody>
           </div>
         </Contained>
       </div>
@@ -301,7 +301,7 @@ const RestaurantCTAButtonInner = (props: RestaurantCTAButtonProps) => {
       <div className="absolute inset-0 bg-primary"></div>
 
       {/* Border */}
-      <div className="absolute top-1 bottom-1 left-1 right-1 border-4 border-light "></div>
+      <div className="absolute top-1 bottom-1 left-1 right-1 border-2 border-light "></div>
 
       <div
         className={clsx(

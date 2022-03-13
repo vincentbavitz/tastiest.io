@@ -19,9 +19,9 @@ a {
 }
 
 // Force all of our primary font to be uppercase
-.font-primary:not(.lowercase) {
-  @apply uppercase
-}
+// .font-primary:not(.lowercase) {
+//   @apply uppercase
+// }
 
 ul:not([role="listbox"]):not(.slider) {
   @apply list-none;
@@ -82,6 +82,10 @@ body {
 .glass {
   backdrop-filter: blur(5px);
   @apply bg-gray-200 bg-opacity-25;
+
+  &-white {
+    @apply bg-white bg-opacity-50;
+  }
 }
 
 // HorizontalScrollable

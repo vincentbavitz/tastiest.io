@@ -1,11 +1,11 @@
-import { ExperiencePost } from '@tastiest-io/tastiest-utils';
+import { ContentfulPost } from '@tastiest-io/tastiest-utils';
 import { AbstractExperienceCard } from 'components/cards/AbstractExperienceCard';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { SectionTitle } from 'components/SectionTitle';
 import React from 'react';
 
 interface Props {
-  cards: ExperiencePost[];
+  cards: ContentfulPost[];
 }
 
 export default function HomeFeaturedExperiencesSection(props: Props) {

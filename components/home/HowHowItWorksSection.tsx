@@ -1,24 +1,22 @@
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
-import FancyBorder from 'components/FancyBorder';
 import LineLimit from 'components/text/LineLimit';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Image from 'next/image';
 import React, { FC } from 'react';
 
-export default function HomeInformationSection() {
-  const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
+export default function HomeHowItWorksSection() {
+  const { isMobile, isTablet, isDesktop } = useScreenSize();
 
   return (
     <Contained>
       <div className="flex flex-col py-6 space-y-6">
         <div
           className={clsx(
-            'grid gap-4 grid-rows-1',
+            'grid gap-6 grid-rows-1',
             isMobile && 'grid-cols-1',
             isTablet && 'grid-cols-2',
-            isDesktop && 'grid-cols-2',
-            isHuge && 'grid-cols-4',
+            isDesktop && 'grid-cols-4',
           )}
         >
           <InformationBlock
@@ -67,24 +65,20 @@ const InformationBlock: FC<InformationBlockProps> = props => {
   const { label, image, children } = props;
 
   return (
-    <FancyBorder>
-      <div className="flex flex-col w-full px-4 py-6">
-        <h4 className="text-lg font-medium text-center">
-          <LineLimit lines={3} fit="tight">
-            {label}
-          </LineLimit>
-        </h4>
+    <div className="flex flex-col w-full border border-primary px-4 py-6">
+      <h4 className="text-lg font-medium text-center">
+        <LineLimit lines={3} fit="tight">
+          {label}
+        </LineLimit>
+      </h4>
 
-        <div className="">
-          <div className="flex justify-center items-center relative w-full h-32">
-            <Image src={image} layout="fill" objectFit="contain" />
-          </div>
-        </div>
-
-        <div className="pt-4 text-center text-base font-light">
-          <LineLimit lines={2}>{children}</LineLimit>
+      <div className="">
+        <div className="flex justify-center items-center relative w-full h-32">
+          <Image src={image} layout="fill" objectFit="contain" />
         </div>
       </div>
-    </FancyBorder>
+
+      <div className="pt-4 text-center leading-none font-light">{children}</div>
+    </div>
   );
 };

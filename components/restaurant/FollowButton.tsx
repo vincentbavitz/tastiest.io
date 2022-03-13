@@ -2,15 +2,14 @@ import { BellOutlined } from '@ant-design/icons';
 import {
   Avatar,
   Button,
-  ButtonGroup,
   Modal,
   Switch,
   Tooltip,
 } from '@tastiest-io/tastiest-ui';
 import {
+  ContentfulRestaurant,
   FollowerNotificationPreferences,
   FollowerNotificationType,
-  RestaurantContentful,
 } from '@tastiest-io/tastiest-utils';
 import { AuthFlowStep } from 'components/modals/auth/AuthModal';
 import { AuthContext } from 'contexts/auth';
@@ -21,7 +20,7 @@ import { useDispatch } from 'react-redux';
 import { openAuthModal, setAuthModalStep } from 'state/navigation';
 
 interface Props {
-  restaurant: RestaurantContentful;
+  restaurant: ContentfulRestaurant;
 }
 
 export default function FollowButton(props: Props) {
@@ -34,12 +33,14 @@ export default function FollowButton(props: Props) {
   const {
     follow,
     unfollow,
-    following,
+    // following,
     notifications,
     toggleNotifications,
     followLoading,
     notificationsLoading,
   } = useFollow(restaurant.id);
+
+  const following = true;
 
   const [showFollowModal, setShowFollowModal] = useState(false);
   const toggleFollowRestaurant = (shouldFollow: boolean) => {
@@ -107,7 +108,7 @@ export default function FollowButton(props: Props) {
     <>
       <Modal show={showFollowModal}>
         <div className="flex items-center space-x-2 -mt-10 pb-6">
-          <Avatar size={10} imageSrc={restaurant.profilePicture.url} />
+          <Avatar size={10} imageSrc={restaurant.profile_picture.url} />
           <span className="font-medium font-primary text-2xl">
             {restaurant.name}
           </span>
@@ -225,7 +226,7 @@ export default function FollowButton(props: Props) {
       <div className="flex items-center -mr-7 space-x-2">
         {following ? (
           <div className="filter drop-shadow-md">
-            <ButtonGroup>
+            <div className="flex gap-2">
               <Button
                 color={'secondary'}
                 onClick={unfollow}
@@ -242,7 +243,7 @@ export default function FollowButton(props: Props) {
                   <BellOutlined className="text-secondary text-xl" />
                 </div>
               </Button>
-            </ButtonGroup>
+            </div>
           </div>
         ) : (
           <div className="flex space-x-1 items-center filter drop-shadow-md">
@@ -250,9 +251,10 @@ export default function FollowButton(props: Props) {
               color={'light'}
               onClick={() => setShowFollowModal(true)}
               loading={followLoading}
+              prefix={<BellOutlined />}
               size="large"
             >
-              <span className="font-bold px-4 text-dark font-secondary tracking-wide">
+              <span className="px-4 text-dark font-secondary tracking-wide">
                 Follow
               </span>
             </Button>

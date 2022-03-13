@@ -41,7 +41,6 @@ export type CreateNewOrderReturn = {
  *
  * Response is of the shape `{ orderId: string | null, error: Error | string | null }`
  */
-
 export default async function createNewOrder(
   request: NextApiRequest,
   response: NextApiResponse<FunctionsResponse<CreateNewOrderReturn>>,

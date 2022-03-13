@@ -1,22 +1,22 @@
 import { useMap } from '@tastiest-io/tastiest-ui';
-import { Address } from '@tastiest-io/tastiest-utils';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React from 'react';
 
 interface Props {
-  location: Address;
+  lat: number;
+  lon: number;
 }
 
-export function RestaurantMap({ location }: Props) {
+export function RestaurantMap({ lat, lon }: Props) {
   useMap('map', {
-    lat: location.lat,
-    lng: location.lon,
+    lat: lat,
+    lng: lon,
     pitch: 0,
     zoom: 14,
     markers: [
       {
-        lat: location.lat,
-        lng: location.lon,
+        lat: lat,
+        lng: lon,
       },
     ],
   });

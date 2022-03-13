@@ -24,7 +24,7 @@ const BlockButton = (props: SeeExperiencesButtonProps) => {
         >
           {children}
 
-          <div className="absolute inset-1 border-4 border-light"></div>
+          <div className="absolute inset-1 border-2 border-light"></div>
         </div>
       </a>
     </Link>
