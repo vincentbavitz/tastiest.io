@@ -12,24 +12,24 @@ export default function FancyBorder(props: FancyBorderProps) {
   return (
     <div className={clsx(layers === 'double' && 'p-2 border-2 border-primary')}>
       <div className="relative">
-        <div className="py-8 px-2">{children}</div>
+        <div className="py-8 px-2 z-10">{children}</div>
 
-        <div className="absolute my-4 border-primary border-l-2 border-r-2 inset-0"></div>
-        <div className="absolute mx-4 border-primary border-t-2 border-b-2 inset-0"></div>
+        <div className="absolute my-4 border-primary border-l-2 border-r-2 inset-0 z-0 pointer-events-none"></div>
+        <div className="absolute mx-4 border-primary border-t-2 border-b-2 inset-0 z-0 pointer-events-none"></div>
 
-        <div className="absolute top-0 left-0">
+        <div className="absolute top-0 left-0 z-0">
           <BorderCorner rotation={90} />
         </div>
 
-        <div className="absolute top-0 right-0">
+        <div className="absolute top-0 right-0 z-0">
           <BorderCorner rotation={180} />
         </div>
 
-        <div className="absolute bottom-0 left-0">
+        <div className="absolute bottom-0 left-0 z-0">
           <BorderCorner rotation={0} />
         </div>
 
-        <div className="absolute bottom-0 right-0">
+        <div className="absolute bottom-0 right-0 z-0">
           <BorderCorner rotation={270} />
         </div>
       </div>

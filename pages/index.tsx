@@ -127,17 +127,6 @@ const Index = () => {
           <HomeFeaturedExperiencesSection cards={cards} />
         </Element>
 
-        <div>
-          {/* <div className="w-full bg-primary-inverse py-12">
-            <Contained>
-              <h3 className="font-medium text-light text-lg leading-7">
-                Follow restaurants and get notified when they lorem ipsum
-                <br /> smoke some gypsum
-              </h3>
-            </Contained>
-          </div> */}
-        </div>
-
         <Contained>
           <div className="relative flex flex-col overflow-hidden text-center space-y-4 text-lg px-6 py-8 shadow-lg bg-white rounded-xl">
             <div className="absolute -top-24 -left-24 z-0 bg-blue-300 bg-opacity-10 filter blur-2xl rounded-full w-64 h-64"></div>
