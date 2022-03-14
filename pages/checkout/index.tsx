@@ -1,14 +1,8 @@
-import {
-  dlog,
-  Horus,
-  postFetch,
-  UserDataApi,
-} from '@tastiest-io/tastiest-utils';
+import { dlog, Horus, postFetch } from '@tastiest-io/tastiest-utils';
 import { GetServerSidePropsContext } from 'next';
 import nookies from 'nookies';
 import { ParsedUrlQuery } from 'querystring';
 import React from 'react';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
 
 /**
  * This page does nothing except create a new order and redirect to /checkout/[token].
@@ -20,22 +14,21 @@ export const getServerSideProps = async (
   const cookieToken = nookies.get(context)?.token;
   const horus = new Horus(cookieToken);
 
-  // CORRECT ME
-  // const { data: user } = await horus.get('/users/me');
-  const userDataApi = new UserDataApi(firebaseAdmin);
-  const { userId } = await userDataApi.initFromCookieToken(cookieToken);
+  const { data: user } = await horus.get('/users/me');
 
-  dlog('index ➡️ cookieToken:', cookieToken);
-  dlog('index ➡️ user:', userId);
+  const heads = Number(context.query.heads);
+  const productId = String(context.query.productId);
+  const bookedForTimestamp = Number(context.query.bookedForTimestamp);
+  const userAgent = String(context.query.userAgent);
 
   // prettier-ignore
   const destination = '/checkout/authorize' + '?' +
-      `heads=${context.query.heads}` + '&' +
-      `experienceId=${context.query.experienceId}` + '&' +
-      `bookedForTimestamp=${context.query.bookedForTimestamp}` + '&' +
-      `userAgent=${context.query.userAgent}`
+      `heads=${heads}` + '&' +
+      `productId=${productId}` + '&' +
+      `bookedForTimestamp=${bookedForTimestamp}` + '&' +
+      `userAgent=${userAgent}`
 
-  if (!userId) {
+  if (!user) {
     dlog('index ➡️ no user');
     return {
       redirect: {
@@ -57,6 +50,14 @@ export const getServerSideProps = async (
       bookedForTimestamp: Number(context.query.bookedForTimestamp),
     },
   );
+
+  await horus.post('/orders/new', {
+    productId: '3AHThFL0lfX3z8mjRgnp6M',
+    heads: 5,
+    userId: 'uEmkrFSIDoZmBadkIKP7upMMjUo2',
+    bookedForTimestamp: 1644453648600,
+    fromSlug: 'any-2-items-from-the-numa-menu-with-a-glass-of-wine-or-cocktail',
+  });
 
   // Cool - a legit checkout.
   // CORRECT ME

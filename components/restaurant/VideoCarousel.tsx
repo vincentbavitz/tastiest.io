@@ -54,7 +54,7 @@ export default function VideoCarousel() {
     setScrolling(true);
 
     // Going right
-    if (distance >= 8) {
+    if (distance >= 16) {
       window.requestAnimationFrame(scrollToRight);
       refScrollContainer.current?.scrollTo(
         currentScrollPosition + distance / 8,
@@ -76,7 +76,7 @@ export default function VideoCarousel() {
     setScrolling(true);
 
     // Going left
-    if (distance >= 8) {
+    if (distance >= 16) {
       window.requestAnimationFrame(scrollToLeft);
       refScrollContainer.current?.scrollTo(
         currentScrollPosition - distance / 8,
@@ -90,9 +90,14 @@ export default function VideoCarousel() {
 
   // Update scroll position when they click
   useEffect(() => {
+    dlog('VideoCarousel ➡️ scrolling:', scrolling);
+
     if (scrolling) {
       return;
     }
+
+    dlog('VideoCarousel ➡️ currentVideo:', currentVideo);
+    dlog('VideoCarousel ➡️ previousVideo:', previousVideo);
 
     if (currentVideo > previousVideo) {
       scrollToRight();
@@ -159,7 +164,7 @@ export default function VideoCarousel() {
       {isHuge ? (
         <div
           style={{ width: `${scrollLengthPx / 2}px` }}
-          className="absolute right-0 top-0 bottom-0 h-full bg-gradient-to-l from-gray-800 z-40"
+          className="absolute right-0 top-0 bottom-0 h-full bg-gradient-to-l from-primary z-40"
         ></div>
       ) : null}
 

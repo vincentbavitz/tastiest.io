@@ -1,12 +1,15 @@
-import { RestaurantContentful, titleCase } from '@tastiest-io/tastiest-utils';
+import { PlusOutlined } from '@ant-design/icons';
+import { Button } from '@tastiest-io/tastiest-ui';
+import { ContentfulRestaurant, titleCase } from '@tastiest-io/tastiest-utils';
 import DisplayCard from 'components/cards/DisplayCard';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { SectionTitle } from 'components/SectionTitle';
+import Link from 'next/link';
 import React from 'react';
 import { generateStaticURL } from 'utils/routing';
 
 interface Props {
-  restaurants: RestaurantContentful[];
+  restaurants: ContentfulRestaurant[];
 }
 
 export default function HomeFeaturedRestaurantsSection(props: Props) {
@@ -29,7 +32,7 @@ export default function HomeFeaturedRestaurantsSection(props: Props) {
             const link = generateStaticURL({
               city: restaurant.city,
               cuisine: restaurant.cuisine,
-              restaurant: restaurant.uriName,
+              restaurant: restaurant.uri_name,
             });
 
             return (
@@ -37,10 +40,20 @@ export default function HomeFeaturedRestaurantsSection(props: Props) {
                 <DisplayCard
                   header={restaurant.name}
                   headerFont="primary"
+                  overlayButton={
+                    <Link
+                      href={`${link.href}?notifications=true`}
+                      as={`${link.as}?notifications=true`}
+                    >
+                      <a className="no-underline">
+                        <Button prefix={<PlusOutlined />}>Follow</Button>
+                      </a>
+                    </Link>
+                  }
                   description={`${titleCase(
                     restaurant.cuisine.replace('_', ' '),
-                  )} - ${restaurant.location.displayLocation}`}
-                  image={restaurant.displayPhotograph}
+                  )} - ${restaurant.location_display}`}
+                  image={restaurant.display_photograph}
                   {...link}
                 />
               </div>
@@ -50,16 +63,4 @@ export default function HomeFeaturedRestaurantsSection(props: Props) {
       </div>
     </div>
   );
-}
-
-{
-  /* <div className="flex items-center space-x-4">
-<Avatar
-  size={10}
-  imageSrc={restaurant.profilePicture.url}
-/>
-<span className="text-lg font-medium">
-  {restaurant.name}
-</span>
-</div> */
 }

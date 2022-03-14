@@ -17,7 +17,7 @@ export default function HomeAwardWinningDishesSection(
   const { dishes } = props;
 
   return (
-    <div className="relative pt-16">
+    <div className="relative">
       <div className="pb-10">
         <SectionTitle>Award Winning Dishes</SectionTitle>
       </div>
@@ -31,7 +31,7 @@ export default function HomeAwardWinningDishesSection(
         >
           {dishes.map(dish => {
             const link = generateStaticURL({
-              restaurant: dish.restaurant.uriName,
+              restaurant: dish.restaurant.uri_name,
               cuisine: dish.restaurant.cuisine,
               city: dish.restaurant.city,
             });
@@ -48,7 +48,7 @@ export default function HomeAwardWinningDishesSection(
                     <div className="flex items-center space-x-4">
                       <Avatar
                         size={10}
-                        imageSrc={dish.restaurant.profilePicture.url}
+                        imageSrc={dish.restaurant.profile_picture.url}
                       />
                       <span className="text-lg font-medium">
                         {dish.restaurant.name}

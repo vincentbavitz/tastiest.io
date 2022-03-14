@@ -22,7 +22,7 @@ export default function AwardWinningDishCard(props: Props) {
       generateStaticURL({
         city: restaurant.city,
         cuisine: restaurant.cuisine,
-        restaurant: restaurant.uriName,
+        restaurant: restaurant.uri_name,
       }),
     [],
   );
@@ -52,7 +52,7 @@ export default function AwardWinningDishCard(props: Props) {
           ref={ref}
           className={clsx(
             'overflow-hidden w-full no-underline',
-            'border-4 border-primary shadow-lg',
+            'border-2 border-primary shadow-lg',
             '',
           )}
         >
@@ -62,8 +62,8 @@ export default function AwardWinningDishCard(props: Props) {
             <img
               className="object-contain w-full h-full mt-px"
               style={{ maxWidth: '50%' }}
-              src={`${restaurant.profilePicture.url}?w=300`}
-              alt={restaurant.profilePicture.description}
+              src={`${restaurant.profile_picture.url}?w=300`}
+              alt={restaurant.profile_picture.description}
             />
           </div>
 

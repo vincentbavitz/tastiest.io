@@ -1,14 +1,8 @@
-import {
-  CalendarOutlined,
-  CommentOutlined,
-  HeartOutlined,
-  RightOutlined,
-  VideoCameraOutlined,
-} from '@ant-design/icons';
+import { RightOutlined } from '@ant-design/icons';
 import {
   CmsApi,
-  ExperiencePost,
-  RestaurantContentful,
+  ContentfulPost,
+  ContentfulRestaurant,
   TastiestDish,
 } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
@@ -16,6 +10,7 @@ import HomeAwardWinningDishesSection from 'components/home/HomeAwardWinningDishe
 import HomeFeaturedExperiencesSection from 'components/home/HomeFeaturedExperiencesSection';
 import HomeFeaturedRestaurantsSection from 'components/home/HomeFeaturedRestaurantsSection';
 import HomeInformationSection from 'components/home/HomeInformationSection';
+import HomeWhyTastiestSection from 'components/home/HomeWhyTastiestSection';
 import SuggestRestaurantPrompBox from 'components/SuggestRestaurantPrompBox';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSideProps } from 'next';
@@ -24,8 +19,10 @@ import Head from 'next/head';
 import Link from 'next/link';
 import nookies from 'nookies';
 import React, { useEffect, useState } from 'react';
-import { HomeHeroSection } from '../components/home/HomeHeroSection';
+import Scroll from 'react-scroll';
 import { METADATA } from '../constants';
+
+const Element = Scroll.Element;
 
 function shuffleArray(array) {
   return array
@@ -52,12 +49,15 @@ export const getServerSideProps: GetServerSideProps = async context => {
 };
 
 const Index = () => {
-  const [posts, setPosts] = useState<ExperiencePost[]>([]);
+  const [posts, setPosts] = useState<ContentfulPost[]>([]);
   const [dishes, setDishes] = useState<TastiestDish[]>([]);
-  const [restaurants, setRestaurants] = useState<RestaurantContentful[]>([]);
+  const [restaurants, setRestaurants] = useState<ContentfulRestaurant[]>([]);
 
   useEffect(() => {
-    const cms = new CmsApi();
+    const cms = new CmsApi(
+      process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID,
+      process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN,
+    );
 
     const fetchContent = async () => {
       const { posts: _posts = [] } = await cms.getTopPosts(10);
@@ -111,58 +111,21 @@ const Index = () => {
 
       <div className="flex flex-col mb-10 space-y-10">
         <div>
-          <HomeHeroSection />
-
-          <Contained>
-            <h2 className="text-2xl text-center border-dark px-6 tracking-wide leading-8 pb-4">
-              We partner with the best restaurants so you have the best
-              experiences.
-            </h2>
-
-            <div className="flex flex-col items-center space-y-10 pt-6 pb-32">
-              <InfoRow
-                header="Restaurant Stories"
-                description="Feel the atmosphere through our cinematography and interviews"
-                icon={VideoCameraOutlined}
-              />
-
-              <InfoRow
-                header="Book experiences directly"
-                description="Reserve your table through Tastiest"
-                icon={CalendarOutlined}
-              />
-
-              <InfoRow
-                header="Be In The Know"
-                description="Loyal customers follow restaurants and get access to special experiences"
-                icon={HeartOutlined}
-              />
-
-              <InfoRow
-                header="Community Driven"
-                description="All restaurants are recommended by you and anonymously tested by us"
-                icon={CommentOutlined}
-              />
-            </div>
-
-            <p></p>
-          </Contained>
-
-          {/* <div className="w-full bg-primary-inverse py-12">
-            <Contained>
-              <h3 className="font-medium text-light text-lg leading-7">
-                Follow restaurants and get notified when they lorem ipsum
-                <br /> smoke some gypsum
-              </h3>
-            </Contained>
-          </div> */}
-
-          <HomeFeaturedRestaurantsSection restaurants={restaurants} />
-          <HomeAwardWinningDishesSection dishes={dishes} />
-          <HomeFeaturedExperiencesSection cards={cards} />
+          <HomeWhyTastiestSection />
+          <HomeInformationSection />
         </div>
 
-        <HomeInformationSection />
+        <Element name="featured-restaurants-section">
+          <HomeFeaturedRestaurantsSection restaurants={restaurants} />
+        </Element>
+
+        <Element name="featured-dishes-section">
+          <HomeAwardWinningDishesSection dishes={dishes} />
+        </Element>
+
+        <Element name="featured-experiences-section">
+          <HomeFeaturedExperiencesSection cards={cards} />
+        </Element>
 
         <Contained>
           <div className="relative flex flex-col overflow-hidden text-center space-y-4 text-lg px-6 py-8 shadow-lg bg-white rounded-xl">

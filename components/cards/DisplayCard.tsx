@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { Media } from '@tastiest-io/tastiest-utils';
+import { Media } from '@tastiest-io/tastiest-horus';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -16,6 +16,9 @@ interface DisplayCardProps {
   // The underlay card at the bottom.
   children?: ReactNode;
 
+  // Eg. the follow button
+  overlayButton?: ReactNode;
+
   // For next/link
   href?: string;
   as?: string;
@@ -23,25 +26,27 @@ interface DisplayCardProps {
   loading?: boolean;
 }
 
-// const { href, as } = useMemo(
-//   () =>
-//     generateStaticURL({
-//       city: restaurant.city,
-//       cuisine: restaurant.cuisine,
-//       restaurant: restaurant.uriName,
-//     }),
-//   [],
-// );
-
 export default function DisplayCard(props: DisplayCardProps) {
-  return props.href ? (
-    <Link href={props.href} as={props.as}>
-      <a className="no-underline">
+  return (
+    <div className="relative h-full shadow-md">
+      {props.overlayButton ? (
+        <div className="absolute right-3 top-3 flex items-start justify-end z-50 text-lg shadow-lg">
+          <Link href={`${props.href}?notifications=true`}>
+            <a className="no-underline">{props.overlayButton}</a>
+          </Link>
+        </div>
+      ) : null}
+
+      {props.href ? (
+        <Link href={props.href} as={props.as}>
+          <a className="no-underline">
+            <DisplayCardInner {...props} />
+          </a>
+        </Link>
+      ) : (
         <DisplayCardInner {...props} />
-      </a>
-    </Link>
-  ) : (
-    <DisplayCardInner {...props} />
+      )}
+    </div>
   );
 }
 
@@ -59,26 +64,13 @@ function DisplayCardInner(props: DisplayCardProps) {
   const isHovering = useHoverDirty(ref);
 
   return (
-    <div
-      className={clsx(
-        'flex flex-col h-full',
-        children && 'ring-4 ring-primary ring-offset-4',
-      )}
-    >
+    <div className={clsx('relative flex flex-col h-full')}>
       <div
         ref={ref}
         style={{ minWidth: '200px' }}
-        className="flex flex-col relative h-full w-full select-none shadow-lg"
+        className="relative flex flex-col h-full w-full select-none shadow-lg"
       >
-        {/* Border overlay */}
-        {children ? null : (
-          <div className="absolute inset-0 p-2 z-10">
-            <div
-              style={{ zIndex: 5000 }}
-              className="ring-4 ring-white h-full"
-            ></div>
-          </div>
-        )}
+        <div className="absolute inset-1 border-2 z-10"></div>
 
         <div className="relative flex-grow w-full">
           <div
@@ -128,7 +120,7 @@ function DisplayCardInner(props: DisplayCardProps) {
           </div>
         </div>
 
-        <div className="relative pb-6 px-4 w-full bg-gradient-to-tr from-primary via-dark to-dark">
+        <div className="relative pb-4 px-4 w-full bg-gradient-to-tr from-primary via-dark to-dark">
           <p className="leading-4 opacity-75 text-light text-center text-sm">
             {description}
           </p>

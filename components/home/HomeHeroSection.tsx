@@ -1,118 +1,103 @@
-import { SearchOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
+import StyledUppercase from 'components/text/StyledUppercase';
 import { useScreenSize } from 'hooks/useScreenSize';
-import Image from 'next/image';
-import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { Carousel } from 'react-responsive-carousel';
+import React, { useState } from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import Scroll from 'react-scroll';
 import { METADATA } from '../../constants';
-import { IState } from '../../state/reducers';
+
+const scroller = Scroll.scroller;
 
 export function HomeHeroSection(): JSX.Element {
-  const navigationState = useSelector((state: IState) => state.navigation);
-  const searchState = useSelector((state: IState) => state.search);
-
   const { isMobile, isDesktop } = useScreenSize();
-
-  const carouselImages = useMemo(
-    () => [
-      'https://images.ctfassets.net/tq39z0nxr0bv/7zRwJk41nHBVtKns1jvEFe/f7c1cc80520cf13cc3e836858811a4eb/Numa_carousel.png',
-      'https://images.ctfassets.net/tq39z0nxr0bv/3mYExawK75BTsvwsJuJ7DD/534b2ca24534faa542ef5a45bccbfcf5/El_Vaquero_Carousel_5.png',
-      'https://images.ctfassets.net/tq39z0nxr0bv/t9LBT7P7dVavzwRaECbVn/5d0b7e83c3039a648bd914fb46c0758f/Numa_carousel_2.png',
-      'https://images.ctfassets.net/tq39z0nxr0bv/19cJYp4XVyd2egl33KYNcE/ac84feae42941cfc699513a30f8780d6/Numa_carousel_5.png',
-      'https://images.ctfassets.net/tq39z0nxr0bv/3MLr8OlH3p3UUy55pbKQxD/c26d6988bf1e9fb965a90d19f183576a/El_Vaquero_Carousel_2.png',
-      'https://images.ctfassets.net/tq39z0nxr0bv/JiGui6bDzBAZK5yIXU1OA/7e4e47e0e3e1b943a8a06dbabf874602/Numa_carousel_4.png',
-      'https://images.ctfassets.net/tq39z0nxr0bv/XQka1BkBn4kNm7hKIUT07/5fbf514504a2078d803a93d9e9898615/Numa_carousel_3.png',
-      'https://images.ctfassets.net/tq39z0nxr0bv/77Wfdy9wIFpEOQGnhxQFxG/c76a226e2a74692a0836e2c2e409f55e/El_Vaquero_Carousel_4.png',
-      'https://images.ctfassets.net/tq39z0nxr0bv/4Y27rbFUi3zkIKqf5f3UYe/c7eba5701b19157bf14ad03d9d6444a4/El_Vaquero_Carousel.png',
-    ],
-    [],
-  );
 
   return (
     <div
-      className={clsx(
-        'relative flex flex-col items-center justify-evenly w-full overflow-x-hidden mb-10',
-        isDesktop ? 'mt-28' : '',
-      )}
+      style={{ width: isDesktop ? '450px' : '80vw', maxWidth: '80vw' }}
+      className="relative w-1/2 bg-white glass glass-white z-50 ring-2 ring-primary ring-offset-2 ring-offset-white px-6 py-6"
     >
-      <div
-        style={{
-          width: '100%',
-          maxWidth: isDesktop ? 'min(700px, 90vw)' : 'unset',
-        }}
-        className="z-10 relative"
-      >
-        <Carousel
-          autoPlay
-          interval={5000}
-          showArrows={false}
-          showStatus={false}
-          showThumbs={false}
-          infiniteLoop={true}
-          showIndicators={false}
-          transitionTime={1500}
-          animationHandler={'fade'}
-        >
-          {carouselImages.map((image, key) => (
-            <div
-              key={key}
-              style={{
-                minHeight: isMobile ? '300px' : '300px',
-              }}
-              className="relative h-full"
-            >
-              <Image
-                src={image}
-                layout="fill"
-                objectFit="cover"
-                priority={key === 0}
-                className={clsx('w-full z-10', isDesktop ? 'rounded-xl' : '')}
-              />
+      <div className="leading-tight">
+        <StyledUppercase size="2xl">{METADATA.TAGLINE}</StyledUppercase>
 
-              {/* Blue tint */}
-              <div
-                className={clsx(
-                  'absolute inset-0 bg-gradient-to-b opacity-75 from-primary z-50',
-                  isDesktop ? 'rounded-lg' : '',
-                )}
-              ></div>
-            </div>
-          ))}
-        </Carousel>
+        <h3 className="text-lg leading-tight mt-4 font-light opacity-75">
+          We partner with the best restaurants so you have the best experiences.
+        </h3>
       </div>
 
-      <div className="absolute inset-0 flex items-center justify-center z-10">
-        <div
-          style={{ maxWidth: '33rem' }}
-          className="flex flex-col items-center px-10"
-        >
-          <h1
-            style={{ filter: 'drop-shadow(0 0 15px black)' }}
-            className="text-center text-4xl text-light font-primary leading-10"
-          >
-            {METADATA.TAGLINE}
-          </h1>
-          <div
-            style={{ filter: 'drop-shadow(0 0 10px rgba(0, 0, 0, 0.15)' }}
-            className="mt-6 border border-light text-2xl text-light flex space-x-4 bg-dark bg-opacity-25"
-          >
-            <div className="bg-light bg-opacity-75 text-dark text-base px-4">
-              EXPERIENCES
-            </div>
-
-            <div className="text-liht text-base px-4">RESTAURANTS</div>
-
-            <div className="text-light text-base px-4">DISHES</div>
-          </div>
-
-          <div className="mt-4 flex items-center gap-2 bg-light bg-opacity-75 px-4 py-1 tracking-wide font-medium">
-            <SearchOutlined />
-            DISCOVER
-          </div>
-        </div>
-      </div>
+      <CallToActionSelector />
     </div>
   );
 }
+
+const CallToActionSelector = () => {
+  const [selected, setSelected] = useState<
+    'restaurants' | 'experiences' | 'dishes'
+  >('restaurants');
+
+  const scrollToSelected = () => {
+    scroller.scrollTo(`featured-${selected}-section`, {
+      duration: 250,
+      smooth: true,
+      offset: -75,
+    });
+  };
+
+  return (
+    <div className="mt-8 w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-3 border border-white">
+        <CallToActionItem
+          isSelected={selected === 'restaurants'}
+          onSelect={() => setSelected('restaurants')}
+        >
+          Restaurants
+        </CallToActionItem>
+
+        <CallToActionItem
+          isSelected={selected === 'experiences'}
+          onSelect={() => setSelected('experiences')}
+        >
+          Experiences
+        </CallToActionItem>
+
+        <CallToActionItem
+          isSelected={selected === 'dishes'}
+          onSelect={() => setSelected('dishes')}
+        >
+          Dishes
+        </CallToActionItem>
+      </div>
+
+      <div
+        onClick={scrollToSelected}
+        className="flex items-center justify-center w-full bg-primary h-10 px-4 py-1 text-white text-lg font-medium cursor-pointer"
+      >
+        Browse
+      </div>
+    </div>
+  );
+};
+
+interface CallToActionItemProps {
+  children: string;
+  isSelected: boolean;
+  onSelect: () => void;
+}
+
+const CallToActionItem = (props: CallToActionItemProps) => {
+  const { isSelected, onSelect, children: label } = props;
+
+  return (
+    <div
+      onClick={onSelect}
+      className={clsx(
+        'flex items-center justify-center cursor-pointer duration-300 py-1 px-2',
+        'text-gray-700 border-secondary text-base select-none',
+        isSelected
+          ? 'text-dark bg-white border-2'
+          : 'bg-white hover:bg-gray-100',
+      )}
+    >
+      {label}
+    </div>
+  );
+};

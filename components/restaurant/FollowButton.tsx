@@ -1,17 +1,11 @@
-import { BellOutlined } from '@ant-design/icons';
+import { BellOutlined, CheckOutlined } from '@ant-design/icons';
+import { Avatar, Button, Modal, Tooltip } from '@tastiest-io/tastiest-ui';
 import {
-  Avatar,
-  Button,
-  ButtonGroup,
-  Modal,
-  Switch,
-  Tooltip,
-} from '@tastiest-io/tastiest-ui';
-import {
+  ContentfulRestaurant,
   FollowerNotificationPreferences,
   FollowerNotificationType,
-  RestaurantContentful,
 } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
 import { AuthFlowStep } from 'components/modals/auth/AuthModal';
 import { AuthContext } from 'contexts/auth';
 import useFollow from 'hooks/useFollow';
@@ -21,7 +15,7 @@ import { useDispatch } from 'react-redux';
 import { openAuthModal, setAuthModalStep } from 'state/navigation';
 
 interface Props {
-  restaurant: RestaurantContentful;
+  restaurant: ContentfulRestaurant;
 }
 
 export default function FollowButton(props: Props) {
@@ -34,12 +28,14 @@ export default function FollowButton(props: Props) {
   const {
     follow,
     unfollow,
-    following,
+    // following,
     notifications,
     toggleNotifications,
     followLoading,
     notificationsLoading,
   } = useFollow(restaurant.id);
+
+  const following = true;
 
   const [showFollowModal, setShowFollowModal] = useState(false);
   const toggleFollowRestaurant = (shouldFollow: boolean) => {
@@ -107,7 +103,7 @@ export default function FollowButton(props: Props) {
     <>
       <Modal show={showFollowModal}>
         <div className="flex items-center space-x-2 -mt-10 pb-6">
-          <Avatar size={10} imageSrc={restaurant.profilePicture.url} />
+          <Avatar size={10} imageSrc={restaurant.profile_picture.url} />
           <span className="font-medium font-primary text-2xl">
             {restaurant.name}
           </span>
@@ -117,71 +113,64 @@ export default function FollowButton(props: Props) {
           Notification preferences for {restaurant.name}
         </div>
 
-        <div className="flex flex-col space-y-2 mt-6">
-          <div className="flex items-center text-base space-x-2">
-            <Switch
-              checked={unsavedNotifications.NEW_MENU}
-              onChange={on =>
-                setUnsavedNotifications({
-                  ...unsavedNotifications,
-                  [FollowerNotificationType.NEW_MENU]: on,
-                })
-              }
-            />
-            <span>New menu</span>
-          </div>
+        <div className="mt-6">
+          <NotificationSelectItem
+            label="General Info"
+            sublabel="closed for Christmas, etc."
+            checked={unsavedNotifications.GENERAL_INFO}
+            onChange={on =>
+              setUnsavedNotifications({
+                ...unsavedNotifications,
+                [FollowerNotificationType.GENERAL_INFO]: on,
+              })
+            }
+          />
 
-          <div className="flex items-center text-base space-x-2">
-            <Switch
-              checked={unsavedNotifications.SPECIAL_EXPERIENCES}
-              onChange={on =>
-                setUnsavedNotifications({
-                  ...unsavedNotifications,
-                  [FollowerNotificationType.SPECIAL_EXPERIENCES]: on,
-                })
-              }
-            />
-            <span>Special experiences</span>
-          </div>
+          <NotificationSelectItem
+            label="Last minute tables available"
+            sublabel="at a discount price"
+            checked={unsavedNotifications.LAST_MINUTE_TABLES}
+            onChange={on =>
+              setUnsavedNotifications({
+                ...unsavedNotifications,
+                [FollowerNotificationType.LAST_MINUTE_TABLES]: on,
+              })
+            }
+          />
 
-          <div className="flex items-center text-base space-x-2">
-            <Switch
-              checked={unsavedNotifications.LIMITED_TIME_DISHES}
-              onChange={on =>
-                setUnsavedNotifications({
-                  ...unsavedNotifications,
-                  [FollowerNotificationType.LIMITED_TIME_DISHES]: on,
-                })
-              }
-            />
-            <span>Limited time dishes</span>
-          </div>
+          <NotificationSelectItem
+            label="New menu"
+            checked={unsavedNotifications.NEW_MENU}
+            onChange={on =>
+              setUnsavedNotifications({
+                ...unsavedNotifications,
+                [FollowerNotificationType.NEW_MENU]: on,
+              })
+            }
+          />
 
-          <div className="flex items-center text-base space-x-2">
-            <Switch
-              checked={unsavedNotifications.LAST_MINUTE_TABLES}
-              onChange={on =>
-                setUnsavedNotifications({
-                  ...unsavedNotifications,
-                  [FollowerNotificationType.LAST_MINUTE_TABLES]: on,
-                })
-              }
-            />
-            <span>Last minute tables</span>
-          </div>
+          <NotificationSelectItem
+            label="New limited time only dishes"
+            checked={unsavedNotifications.LIMITED_TIME_DISHES}
+            onChange={on =>
+              setUnsavedNotifications({
+                ...unsavedNotifications,
+                [FollowerNotificationType.LIMITED_TIME_DISHES]: on,
+              })
+            }
+          />
 
-          {/* <div className="flex items-center text-base space-x-2">
-            <Switch
-              checked={unsavedNotifications.GENERAL_INFO}
-              onChange={on =>
-                setUnsavedNotifications({
-                  ...unsavedNotifications,
-                  [FollowerNotificationType.GENERAL_INFO]: on,
-                })
-              }
-            />
-            <span>General info</span>
-          </div> */}
+          <NotificationSelectItem
+            label="Special experiences"
+            sublabel="for loyal customers"
+            checked={unsavedNotifications.SPECIAL_EXPERIENCES}
+            onChange={on =>
+              setUnsavedNotifications({
+                ...unsavedNotifications,
+                [FollowerNotificationType.SPECIAL_EXPERIENCES]: on,
+              })
+            }
+          />
         </div>
 
         <div className="flex justify-end space-x-2 mt-6">
@@ -225,7 +214,7 @@ export default function FollowButton(props: Props) {
       <div className="flex items-center -mr-7 space-x-2">
         {following ? (
           <div className="filter drop-shadow-md">
-            <ButtonGroup>
+            <div className="flex gap-2">
               <Button
                 color={'secondary'}
                 onClick={unfollow}
@@ -242,7 +231,7 @@ export default function FollowButton(props: Props) {
                   <BellOutlined className="text-secondary text-xl" />
                 </div>
               </Button>
-            </ButtonGroup>
+            </div>
           </div>
         ) : (
           <div className="flex space-x-1 items-center filter drop-shadow-md">
@@ -250,9 +239,10 @@ export default function FollowButton(props: Props) {
               color={'light'}
               onClick={() => setShowFollowModal(true)}
               loading={followLoading}
+              prefix={<BellOutlined />}
               size="large"
             >
-              <span className="font-bold px-4 text-dark font-secondary tracking-wide">
+              <span className="px-4 text-dark font-secondary tracking-wide">
                 Follow
               </span>
             </Button>
@@ -278,3 +268,43 @@ export default function FollowButton(props: Props) {
     </>
   );
 }
+
+interface NotificationSelectItemProps {
+  label: string;
+  sublabel?: string;
+  checked: boolean;
+  onChange: (on: boolean) => void;
+}
+
+const NotificationSelectItem = (props: NotificationSelectItemProps) => {
+  const { label, sublabel, checked, onChange } = props;
+
+  return (
+    <div onClick={() => onChange(!checked)} className="text-base">
+      <div
+        className={clsx(
+          'flex items-center space-x-3 py-2 px-4 font-medium select-none cursor-pointer duration-150',
+          checked ? 'bg-gray-100 text-dark' : 'bg-light text-gray-500',
+        )}
+      >
+        <div className="flex items-center justify-center w-6 h-6 bg-white">
+          <CheckOutlined
+            className={clsx(
+              'text-secondary text-lg duration-150',
+              checked ? 'opacity-100' : 'opacity-0',
+            )}
+          />
+        </div>
+
+        <div className="flex flex-col">
+          <span>{label}</span>
+          {sublabel ? (
+            <p className="text-sm font-light text-gray-600 leading-none italic">
+              {sublabel}
+            </p>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  );
+};

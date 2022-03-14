@@ -1,5 +1,11 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { ExperiencePost, formatCurrency } from '@tastiest-io/tastiest-utils';
+import { TagsOutlined } from '@ant-design/icons';
+import { Button } from '@tastiest-io/tastiest-ui';
+import {
+  ContentfulPost,
+  formatCurrency,
+  titleCase,
+} from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import clsx from 'clsx';
 import Image from 'next/image';
@@ -8,7 +14,7 @@ import React, { useMemo, useRef } from 'react';
 import { useHoverDirty } from 'react-use';
 import { generateStaticURL } from 'utils/routing';
 
-interface AbstractExperienceCardProps extends ExperiencePost {
+interface AbstractExperienceCardProps extends ContentfulPost {
   withRestaurantName?: boolean;
 }
 
@@ -20,7 +26,7 @@ export function AbstractExperienceCard(
     city,
     cuisine,
     restaurant,
-    deal,
+    product,
     withRestaurantName = true,
   } = props;
 
@@ -33,22 +39,32 @@ export function AbstractExperienceCard(
         city,
         slug,
         cuisine,
-        restaurant: restaurant.uriName,
+        restaurant: restaurant.uri_name,
+      }),
+    [],
+  );
+
+  const { href: restaurantHref, as: restaurantAs } = useMemo(
+    () =>
+      generateStaticURL({
+        city,
+        cuisine,
+        restaurant: restaurant.uri_name,
       }),
     [],
   );
 
   return (
-    <div ref={ref} className="w-full">
-      <Link href={experienceHref} as={experienceAs}>
-        <a className="no-underline">
-          <div
-            className={classNames('relative no-underline cursor-pointer')}
-            style={{ maxWidth: '350px' }}
-          >
+    <div ref={ref} className="w-full shadow-md">
+      <div
+        className={classNames('relative no-underline cursor-pointer')}
+        style={{ maxWidth: '400px' }}
+      >
+        <Link href={experienceHref} as={experienceAs}>
+          <a className="no-underline">
             <div
               style={{ paddingBottom: '100%' }}
-              className={clsx('relative w-full h-0 shadow-lg overflow-hidden')}
+              className={clsx('relative w-full h-0 overflow-hidden')}
             >
               <Image
                 layout="fill"
@@ -56,12 +72,12 @@ export function AbstractExperienceCard(
                   'object-cover w-full h-full transform duration-300',
                   isHovering && 'scale-105',
                 )}
-                src={`${deal.image?.url}?w=400`}
-                alt={deal.image?.description}
+                src={`${product.image?.url}?w=400`}
+                alt={product.image?.description}
               />
 
               {/* Restaurant profile */}
-              <div className="absolute bottom-0 left-0 right-0 flex items-end pb-2 h-20 z-50 px-2 bg-gradient-to-t from-primary">
+              <div className="absolute bottom-0 left-0 right-0 flex flex-col justify-end pb-2 h-20 z-10 px-2 bg-gradient-to-t from-primary">
                 {withRestaurantName ? (
                   <div className="flex items-center space-x-2 mb-2 ml-2">
                     <div
@@ -69,49 +85,87 @@ export function AbstractExperienceCard(
                         filter:
                           'drop-shadow(0 0 3px rgba(255, 255, 255, 0.33))',
                       }}
-                      className="relative h-8 w-8"
+                      className="relative h-10 w-10"
                     >
                       <Image
                         layout="fill"
                         objectFit="cover"
                         className={clsx('rounded-full transform')}
-                        src={restaurant.profilePicture.url}
+                        src={restaurant.profile_picture.url}
                       />
                     </div>
 
-                    <h4 className={clsx('text-light font-medium')}>
-                      {restaurant.name}
-                    </h4>
+                    <div>
+                      <h4
+                        className={clsx(
+                          'text-light font-semibold leading-none',
+                        )}
+                      >
+                        {restaurant.name}
+                      </h4>
+
+                      <p className="text-light text-xs">
+                        {titleCase(restaurant.cuisine.replace('_', ' '))}
+                        {restaurant.cuisine.length ? ' - ' : null}
+                        {restaurant.location_display}
+                      </p>
+                    </div>
                   </div>
                 ) : null}
               </div>
 
               {/* White border */}
-              <div className="absolute inset-1 border-4 border-light z-50"></div>
+              <div className="absolute inset-1 border-2 border-light z-10"></div>
             </div>
+          </a>
+        </Link>
 
-            <div className={clsx('text-dark pt-2 pb-3')}>
-              {/* Title */}
-              <h4 className="text-base leading-tight font-medium pb-2">
-                {deal.name}
-              </h4>
+        <div className={clsx('bg-white text-dark pt-4 pb-3 px-4')}>
+          {/* Title */}
+          <h4
+            style={{ height: '3.15em' }}
+            className="text-base leading-tight font-semibold pb-2"
+          >
+            {product.name}
+          </h4>
 
-              {/* Description */}
-              {/* <LineLimit lines={4} fit="tight">
-                <p className="text-sm opacity-75">{description}</p>
-              </LineLimit> */}
+          {/* Price */}
+          <div className="flex items-center">
+            <TagsOutlined className="text-secondary text-lg mr-2" />
 
-              {/* Price */}
-              <span className="font-thin">
-                <span className="font-medium">
-                  £{formatCurrency(deal.pricePerHeadGBP)}
-                </span>{' '}
-                / person
-              </span>
-            </div>
+            <span className="font-thin">
+              <span className="font-medium">
+                £{formatCurrency(product.price)}
+              </span>{' '}
+              / person
+            </span>
           </div>
-        </a>
-      </Link>
+        </div>
+
+        <div className="flex flex-col pb-2 gap-2">
+          <div className="mx-2 border-2 border-dark">
+            <Link href={restaurantHref} as={restaurantAs}>
+              <a className="no-underline">
+                <Button wide color="light" size="large">
+                  <span className=" text-base font-semibold">
+                    View Restaurant
+                  </span>
+                </Button>
+              </a>
+            </Link>
+          </div>
+
+          <div className="mx-2 border-2 border-primary">
+            <Link href={experienceHref} as={experienceAs}>
+              <a className="no-underline">
+                <Button wide color="primary" size="large">
+                  <span className="text-base font-semibold">Book</span>
+                </Button>
+              </a>
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

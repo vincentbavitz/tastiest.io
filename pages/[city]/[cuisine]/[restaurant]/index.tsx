@@ -1,8 +1,8 @@
 import {
   CmsApi,
+  ContentfulPost,
+  ContentfulRestaurant,
   dlog,
-  ExperiencePost,
-  RestaurantContentful,
   TastiestDish,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
@@ -24,10 +24,13 @@ import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Link from 'next/link';
 import { ParsedUrlQuery } from 'querystring';
-import React, { useMemo, useRef } from 'react';
-import { useWindowScroll } from 'react-use';
+import React, { useMemo } from 'react';
+import Scroll from 'react-scroll';
 import { generateTitle } from 'utils/metadata';
 import { generateStaticURL } from 'utils/routing';
+
+const Element = Scroll.Element;
+const scroller = Scroll.scroller;
 
 export interface IRestaurantPath {
   params: {
@@ -42,7 +45,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   let page = 1;
   let foundAllRestaurants = false;
-  const restaurants: RestaurantContentful[] = [];
+  const restaurants: ContentfulRestaurant[] = [];
 
   // Contentful only allows 100 at a time
   while (!foundAllRestaurants) {
@@ -62,7 +65,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     params: {
       city: restaurant.city.toLowerCase(),
       cuisine: restaurant.cuisine.toLowerCase(),
-      restaurant: restaurant.uriName.toLowerCase(),
+      restaurant: restaurant.uri_name.toLowerCase(),
     },
   }));
 
@@ -87,20 +90,20 @@ export const getStaticProps = async (
     return {
       // returning as such to keep the props types consistent
       props: {
-        restaurant: null as RestaurantContentful,
+        restaurant: null as ContentfulRestaurant,
         tastiestDishes: null as TastiestDish[],
-        posts: null as ExperiencePost[],
+        posts: null as ContentfulPost[],
       },
       notFound: true,
     };
   }
 
   // Get posts from restaurant
-  const { posts } = await cms.getPostsOfRestaurant(restaurant.uriName, 100);
+  const { posts } = await cms.getPostsOfRestaurant(restaurant.uri_name, 100);
 
   // Get the restaurant's Tastiest Dishes
   const { dishes: tastiestDishes } = await cms.getTastiestDishesOfRestaurant(
-    restaurant.uriName,
+    restaurant.uri_name,
   );
 
   return {
@@ -119,7 +122,7 @@ const RestaurantPage = (
     const baseRestaurantPath = generateStaticURL({
       city: restaurant.city,
       cuisine: restaurant.cuisine,
-      restaurant: restaurant.uriName,
+      restaurant: restaurant.uri_name,
     });
 
     return {
@@ -131,32 +134,6 @@ const RestaurantPage = (
   dlog('index ➡️ posts:', posts);
   dlog('index ➡️ tastiestDishes:', tastiestDishes);
   dlog('index ➡️ restaurant.video:', restaurant);
-
-  // Get scroll positions of each of the CTA box locations
-  const refGeneralInfo = useRef<HTMLDivElement>(null);
-  const refVideosSummary = useRef<HTMLDivElement>(null);
-  const refBookExperience = useRef<HTMLDivElement>(null);
-  const refRecommendedDishes = useRef<HTMLDivElement>(null);
-
-  const { y: windowScrollY } = useWindowScroll();
-
-  const scrollLocations = useMemo(() => {
-    // prettier-ignore
-    return {
-      generalInfo: refGeneralInfo.current?.getBoundingClientRect().top,
-      videosSummary: refVideosSummary.current?.getBoundingClientRect().top,
-      bookExperience: refBookExperience.current?.getBoundingClientRect().top,
-      recommendedDishes: refRecommendedDishes.current?.getBoundingClientRect().top,
-    };
-  }, [
-    windowScrollY,
-    refGeneralInfo,
-    refVideosSummary,
-    refBookExperience,
-    refRecommendedDishes,
-  ]);
-
-  dlog('index ➡️ scrollLocations:', scrollLocations);
 
   return (
     <>
@@ -193,29 +170,39 @@ const RestaurantPage = (
             label="Book an experience"
           />
 
-          <RestaurantCTAButton label="Videos & Summary" />
-
           <RestaurantCTAButton
-            scrollTo={scrollLocations.generalInfo}
-            label="Details"
+            label="Videos & Summary"
+            scrollToElement="videos-section"
           />
 
-          <RestaurantCTAButton label="Recommended Dishes" />
+          <RestaurantCTAButton
+            label="Summary"
+            scrollToElement="summary-section"
+          />
+
+          <RestaurantCTAButton
+            label="Recommended Dishes"
+            scrollToElement="dishes-section"
+          />
         </div>
       </Contained>
 
       <div className="h-14"></div>
 
-      <VideoCarousel />
+      <Element name="videos-section">
+        <VideoCarousel />
+      </Element>
 
       <div className="w-full h-16 flex flex-col items-center justify-center">
-        <SectionTitle>Summary</SectionTitle>
+        <Element name="summary-section">
+          <SectionTitle>Summary</SectionTitle>
+        </Element>
       </div>
 
-      <div ref={refGeneralInfo}>
+      <div>
         <Contained maxWidth={900}>
           <div className="flex flex-col py-4 pb-10 space-y-10">
-            <RichBody body={restaurant.description}></RichBody>
+            <RichBody body={restaurant.description as any}></RichBody>
           </div>
         </Contained>
       </div>
@@ -223,7 +210,9 @@ const RestaurantPage = (
       <div className="flex flex-col items-center">
         <Contained maxWidth={900}>
           <div className="pb-6">
-            <SectionTitle>Recommended Dishes</SectionTitle>
+            <Element name="dishes-section">
+              <SectionTitle>Recommended Dishes</SectionTitle>
+            </Element>
           </div>
         </Contained>
 
@@ -256,7 +245,7 @@ const RestaurantPage = (
 interface RestaurantCTAButtonProps {
   label: string;
   href?: string;
-  scrollTo?: number;
+  scrollToElement?: string;
   backdropImageSrc?: string;
 }
 
@@ -275,17 +264,16 @@ const RestaurantCTAButton = (props: RestaurantCTAButtonProps) => {
 };
 
 const RestaurantCTAButtonInner = (props: RestaurantCTAButtonProps) => {
-  const { label, href, scrollTo } = props;
+  const { label, href, scrollToElement } = props;
 
   const { isMobile } = useScreenSize();
 
   const scrollToCtaRef = () => {
-    window.scrollTo(0, scrollTo);
-    // const c = document.documentElement.scrollTop || document.body.scrollTop;
-    // if (c > scrollTo) {
-    //   window.requestAnimationFrame(scrollToCtaRef);
-    //   window.scrollTo(0, c - c / 8);
-    // }
+    scroller.scrollTo(scrollToElement, {
+      duration: 250,
+      smooth: true,
+      offset: -105,
+    });
   };
 
   return (
@@ -301,7 +289,7 @@ const RestaurantCTAButtonInner = (props: RestaurantCTAButtonProps) => {
       <div className="absolute inset-0 bg-primary"></div>
 
       {/* Border */}
-      <div className="absolute top-1 bottom-1 left-1 right-1 border-4 border-light "></div>
+      <div className="absolute top-1 bottom-1 left-1 right-1 border-2 border-light "></div>
 
       <div
         className={clsx(

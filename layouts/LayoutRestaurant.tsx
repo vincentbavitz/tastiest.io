@@ -49,9 +49,8 @@ export default function LayoutRestaurant({
   );
 
   dlog('LayoutRestaurant ➡️ router.route:', router.route);
-  dlog('LayoutRestaurant ➡️ router.asPath:', router.asPath);
+  dlog('LayoutRestaurant ➡️ router6.asPath:', router.asPath);
   dlog('LayoutRestaurant ➡️ router._inFlightRoute:', router._inFlightRoute);
-
   dlog('LayoutRestaurant ➡️ restaurant:', restaurant);
 
   const baseRestaurantPath = useMemo(
@@ -59,7 +58,7 @@ export default function LayoutRestaurant({
       generateStaticURL({
         city: restaurant.city,
         cuisine: restaurant.cuisine,
-        restaurant: restaurant.uriName,
+        restaurant: restaurant.uri_name,
       }),
     [restaurant],
   );
@@ -115,7 +114,7 @@ export default function LayoutRestaurant({
     const currentPath = generateStaticURL({
       city: restaurant.city,
       cuisine: restaurant.cuisine,
-      restaurant: restaurant.uriName,
+      restaurant: restaurant.uri_name,
     }).as;
 
     const crumbs = [{ label: restaurant.name, href: currentPath }];
@@ -145,7 +144,7 @@ export default function LayoutRestaurant({
       >
         <div className="relative w-full z-0 h-0 aspect-w-10 sm:aspect-w-12 md:aspect-w-16 aspect-h-9">
           <Image
-            src={restaurant.backdropStillFrame.url}
+            src={restaurant.backdrop_still_frame.url}
             loading={'eager'}
             layout="fill"
             priority
@@ -154,7 +153,7 @@ export default function LayoutRestaurant({
             loop
             muted
             autoPlay
-            src={restaurant.backdropVideo.url}
+            src={restaurant.backdrop_video.url}
             className={clsx('object-cover w-full h-full')}
             playsInline // prevent fullscreen on iOS
           />
@@ -176,8 +175,8 @@ export default function LayoutRestaurant({
           </h1>
 
           <h2 className="text-base text-secondary leading-none font-secondary">
-            {restaurant.location.displayLocation
-              ? `${titleCase(restaurant.location.displayLocation)}`
+            {restaurant.location_display
+              ? `${titleCase(restaurant.location_display)}`
               : null}
           </h2>
 
@@ -242,7 +241,7 @@ export default function LayoutRestaurant({
               className="relative flex-grow mb-10"
             >
               <Image
-                src={restaurant.heroIllustration.url}
+                src={restaurant.hero_illustration.url}
                 layout="fill"
                 objectFit="contain"
                 objectPosition="bottom"
@@ -271,7 +270,7 @@ export default function LayoutRestaurant({
                       className="relative w-14 h-14 mx-2"
                     >
                       <Image
-                        src={restaurant.profilePicture.url}
+                        src={restaurant.profile_picture.url}
                         layout="fill"
                         className="rounded-full"
                       />
@@ -294,7 +293,7 @@ export default function LayoutRestaurant({
                       className="relative w-14 h-14 mx-2"
                     >
                       <Image
-                        src={restaurant.profilePicture.url}
+                        src={restaurant.profile_picture.url}
                         layout="fill"
                         className="rounded-full"
                       />
