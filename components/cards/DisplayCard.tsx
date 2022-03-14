@@ -26,25 +26,27 @@ interface DisplayCardProps {
   loading?: boolean;
 }
 
-// const { href, as } = useMemo(
-//   () =>
-//     generateStaticURL({
-//       city: restaurant.city,
-//       cuisine: restaurant.cuisine,
-//       restaurant: restaurant.uriName,
-//     }),
-//   [],
-// );
-
 export default function DisplayCard(props: DisplayCardProps) {
-  return props.href ? (
-    <Link href={props.href} as={props.as}>
-      <a className="no-underline">
+  return (
+    <div className="relative h-full shadow-md">
+      {props.overlayButton ? (
+        <div className="absolute right-3 top-3 flex items-start justify-end z-50 text-lg shadow-lg">
+          <Link href={`${props.href}?notifications=true`}>
+            <a className="no-underline">{props.overlayButton}</a>
+          </Link>
+        </div>
+      ) : null}
+
+      {props.href ? (
+        <Link href={props.href} as={props.as}>
+          <a className="no-underline">
+            <DisplayCardInner {...props} />
+          </a>
+        </Link>
+      ) : (
         <DisplayCardInner {...props} />
-      </a>
-    </Link>
-  ) : (
-    <DisplayCardInner {...props} />
+      )}
+    </div>
   );
 }
 
@@ -52,7 +54,6 @@ function DisplayCardInner(props: DisplayCardProps) {
   const {
     header,
     headerFont = 'secondary',
-    overlayButton,
     description,
     image,
     loading,
@@ -63,13 +64,7 @@ function DisplayCardInner(props: DisplayCardProps) {
   const isHovering = useHoverDirty(ref);
 
   return (
-    <div className={clsx('relative flex flex-col h-full shadow-md')}>
-      {overlayButton ? (
-        <div className="absolute right-3 top-3 flex items-start justify-end z-50 text-lg shadow-lg">
-          {overlayButton}
-        </div>
-      ) : null}
-
+    <div className={clsx('relative flex flex-col h-full')}>
       <div
         ref={ref}
         style={{ minWidth: '200px' }}

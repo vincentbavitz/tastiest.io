@@ -1,8 +1,10 @@
-import { BellOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
+import { Button } from '@tastiest-io/tastiest-ui';
 import { ContentfulRestaurant, titleCase } from '@tastiest-io/tastiest-utils';
 import DisplayCard from 'components/cards/DisplayCard';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { SectionTitle } from 'components/SectionTitle';
+import Link from 'next/link';
 import React from 'react';
 import { generateStaticURL } from 'utils/routing';
 
@@ -39,7 +41,14 @@ export default function HomeFeaturedRestaurantsSection(props: Props) {
                   header={restaurant.name}
                   headerFont="primary"
                   overlayButton={
-                    <BellOutlined className="text-white p-1 bg-primary rounded-full" />
+                    <Link
+                      href={`${link.href}?notifications=true`}
+                      as={`${link.as}?notifications=true`}
+                    >
+                      <a className="no-underline">
+                        <Button prefix={<PlusOutlined />}>Follow</Button>
+                      </a>
+                    </Link>
                   }
                   description={`${titleCase(
                     restaurant.cuisine.replace('_', ' '),
