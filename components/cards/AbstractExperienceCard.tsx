@@ -44,14 +44,24 @@ export function AbstractExperienceCard(
     [],
   );
 
+  const { href: restaurantHref, as: restaurantAs } = useMemo(
+    () =>
+      generateStaticURL({
+        city,
+        cuisine,
+        restaurant: restaurant.uri_name,
+      }),
+    [],
+  );
+
   return (
     <div ref={ref} className="w-full shadow-md">
-      <Link href={experienceHref} as={experienceAs}>
-        <a className="no-underline">
-          <div
-            className={classNames('relative no-underline cursor-pointer')}
-            style={{ maxWidth: '400px' }}
-          >
+      <div
+        className={classNames('relative no-underline cursor-pointer')}
+        style={{ maxWidth: '400px' }}
+      >
+        <Link href={experienceHref} as={experienceAs}>
+          <a className="no-underline">
             <div
               style={{ paddingBottom: '100%' }}
               className={clsx('relative w-full h-0 overflow-hidden')}
@@ -67,7 +77,7 @@ export function AbstractExperienceCard(
               />
 
               {/* Restaurant profile */}
-              <div className="absolute bottom-0 left-0 right-0 flex flex-col justify-end pb-2 h-20 z-50 px-2 bg-gradient-to-t from-primary">
+              <div className="absolute bottom-0 left-0 right-0 flex flex-col justify-end pb-2 h-20 z-10 px-2 bg-gradient-to-t from-primary">
                 {withRestaurantName ? (
                   <div className="flex items-center space-x-2 mb-2 ml-2">
                     <div
@@ -105,49 +115,57 @@ export function AbstractExperienceCard(
               </div>
 
               {/* White border */}
-              <div className="absolute inset-1 border-2 border-light z-50"></div>
+              <div className="absolute inset-1 border-2 border-light z-10"></div>
             </div>
+          </a>
+        </Link>
 
-            <div className={clsx('bg-white text-dark pt-4 pb-3 px-4')}>
-              {/* Title */}
-              <h4
-                style={{ height: '3.15em' }}
-                className="text-base leading-tight font-semibold pb-2"
-              >
-                {product.name}
-              </h4>
+        <div className={clsx('bg-white text-dark pt-4 pb-3 px-4')}>
+          {/* Title */}
+          <h4
+            style={{ height: '3.15em' }}
+            className="text-base leading-tight font-semibold pb-2"
+          >
+            {product.name}
+          </h4>
 
-              {/* Price */}
-              <div className="flex items-center">
-                <TagsOutlined className="text-secondary text-lg mr-2" />
+          {/* Price */}
+          <div className="flex items-center">
+            <TagsOutlined className="text-secondary text-lg mr-2" />
 
-                <span className="font-thin">
-                  <span className="font-medium">
-                    £{formatCurrency(product.price)}
-                  </span>{' '}
-                  / person
-                </span>
-              </div>
-            </div>
+            <span className="font-thin">
+              <span className="font-medium">
+                £{formatCurrency(product.price)}
+              </span>{' '}
+              / person
+            </span>
+          </div>
+        </div>
 
-            <div className="flex flex-col pb-2 gap-2">
-              <div className="mx-2 border-2 border-dark">
+        <div className="flex flex-col pb-2 gap-2">
+          <div className="mx-2 border-2 border-dark">
+            <Link href={restaurantHref} as={restaurantAs}>
+              <a className="no-underline">
                 <Button wide color="light" size="large">
                   <span className=" text-base font-semibold">
                     View Restaurant
                   </span>
                 </Button>
-              </div>
+              </a>
+            </Link>
+          </div>
 
-              <div className="mx-2 border-2 border-primary">
+          <div className="mx-2 border-2 border-primary">
+            <Link href={experienceHref} as={experienceAs}>
+              <a className="no-underline">
                 <Button wide color="primary" size="large">
                   <span className="text-base font-semibold">Book</span>
                 </Button>
-              </div>
-            </div>
+              </a>
+            </Link>
           </div>
-        </a>
-      </Link>
+        </div>
+      </div>
     </div>
   );
 }
