@@ -24,10 +24,13 @@ import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Link from 'next/link';
 import { ParsedUrlQuery } from 'querystring';
-import React, { useMemo, useRef } from 'react';
-import { useWindowScroll } from 'react-use';
+import React, { useMemo } from 'react';
+import Scroll from 'react-scroll';
 import { generateTitle } from 'utils/metadata';
 import { generateStaticURL } from 'utils/routing';
+
+const Element = Scroll.Element;
+const scroller = Scroll.scroller;
 
 export interface IRestaurantPath {
   params: {
@@ -132,32 +135,6 @@ const RestaurantPage = (
   dlog('index ➡️ tastiestDishes:', tastiestDishes);
   dlog('index ➡️ restaurant.video:', restaurant);
 
-  // Get scroll positions of each of the CTA box locations
-  const refGeneralInfo = useRef<HTMLDivElement>(null);
-  const refVideosSummary = useRef<HTMLDivElement>(null);
-  const refBookExperience = useRef<HTMLDivElement>(null);
-  const refRecommendedDishes = useRef<HTMLDivElement>(null);
-
-  const { y: windowScrollY } = useWindowScroll();
-
-  const scrollLocations = useMemo(() => {
-    // prettier-ignore
-    return {
-      generalInfo: refGeneralInfo.current?.getBoundingClientRect().top,
-      videosSummary: refVideosSummary.current?.getBoundingClientRect().top,
-      bookExperience: refBookExperience.current?.getBoundingClientRect().top,
-      recommendedDishes: refRecommendedDishes.current?.getBoundingClientRect().top,
-    };
-  }, [
-    windowScrollY,
-    refGeneralInfo,
-    refVideosSummary,
-    refBookExperience,
-    refRecommendedDishes,
-  ]);
-
-  dlog('index ➡️ scrollLocations:', scrollLocations);
-
   return (
     <>
       <Head>
@@ -193,26 +170,36 @@ const RestaurantPage = (
             label="Book an experience"
           />
 
-          <RestaurantCTAButton label="Videos & Summary" />
-
           <RestaurantCTAButton
-            scrollTo={scrollLocations.generalInfo}
-            label="Details"
+            label="Videos & Summary"
+            scrollToElement="videos-section"
           />
 
-          <RestaurantCTAButton label="Recommended Dishes" />
+          <RestaurantCTAButton
+            label="Summary"
+            scrollToElement="summary-section"
+          />
+
+          <RestaurantCTAButton
+            label="Recommended Dishes"
+            scrollToElement="dishes-section"
+          />
         </div>
       </Contained>
 
       <div className="h-14"></div>
 
-      <VideoCarousel />
+      <Element name="videos-section">
+        <VideoCarousel />
+      </Element>
 
       <div className="w-full h-16 flex flex-col items-center justify-center">
-        <SectionTitle>Summary</SectionTitle>
+        <Element name="summary-section">
+          <SectionTitle>Summary</SectionTitle>
+        </Element>
       </div>
 
-      <div ref={refGeneralInfo}>
+      <div>
         <Contained maxWidth={900}>
           <div className="flex flex-col py-4 pb-10 space-y-10">
             <RichBody body={restaurant.description as any}></RichBody>
@@ -223,7 +210,9 @@ const RestaurantPage = (
       <div className="flex flex-col items-center">
         <Contained maxWidth={900}>
           <div className="pb-6">
-            <SectionTitle>Recommended Dishes</SectionTitle>
+            <Element name="dishes-section">
+              <SectionTitle>Recommended Dishes</SectionTitle>
+            </Element>
           </div>
         </Contained>
 
@@ -256,7 +245,7 @@ const RestaurantPage = (
 interface RestaurantCTAButtonProps {
   label: string;
   href?: string;
-  scrollTo?: number;
+  scrollToElement?: string;
   backdropImageSrc?: string;
 }
 
@@ -275,17 +264,16 @@ const RestaurantCTAButton = (props: RestaurantCTAButtonProps) => {
 };
 
 const RestaurantCTAButtonInner = (props: RestaurantCTAButtonProps) => {
-  const { label, href, scrollTo } = props;
+  const { label, href, scrollToElement } = props;
 
   const { isMobile } = useScreenSize();
 
   const scrollToCtaRef = () => {
-    window.scrollTo(0, scrollTo);
-    // const c = document.documentElement.scrollTop || document.body.scrollTop;
-    // if (c > scrollTo) {
-    //   window.requestAnimationFrame(scrollToCtaRef);
-    //   window.scrollTo(0, c - c / 8);
-    // }
+    scroller.scrollTo(scrollToElement, {
+      duration: 250,
+      smooth: true,
+      offset: -105,
+    });
   };
 
   return (
