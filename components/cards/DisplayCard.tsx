@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { BellOutlined } from '@ant-design/icons';
 import { Media } from '@tastiest-io/tastiest-horus';
 import clsx from 'clsx';
 import Image from 'next/image';
@@ -16,6 +15,9 @@ interface DisplayCardProps {
 
   // The underlay card at the bottom.
   children?: ReactNode;
+
+  // Eg. the follow button
+  overlayButton?: ReactNode;
 
   // For next/link
   href?: string;
@@ -50,6 +52,7 @@ function DisplayCardInner(props: DisplayCardProps) {
   const {
     header,
     headerFont = 'secondary',
+    overlayButton,
     description,
     image,
     loading,
@@ -60,17 +63,12 @@ function DisplayCardInner(props: DisplayCardProps) {
   const isHovering = useHoverDirty(ref);
 
   return (
-    <div className={clsx('relative flex flex-col h-full')}>
-      <div className="absolute right-3 top-3 flex items-start justify-end z-50 text-lg shadow-lg">
-        <BellOutlined className="text-white p-1 bg-primary rounded-full" />
-
-        {/* <Button
-          color="light"
-          prefix={<BellOutlined className="text-secondary" />}
-        >
-          Follow
-        </Button> */}
-      </div>
+    <div className={clsx('relative flex flex-col h-full shadow-md')}>
+      {overlayButton ? (
+        <div className="absolute right-3 top-3 flex items-start justify-end z-50 text-lg shadow-lg">
+          {overlayButton}
+        </div>
+      ) : null}
 
       <div
         ref={ref}

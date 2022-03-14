@@ -17,7 +17,7 @@ export default function HomeAwardWinningDishesSection(
   const { dishes } = props;
 
   return (
-    <div className="relative pt-16">
+    <div className="relative">
       <div className="pb-10">
         <SectionTitle>Award Winning Dishes</SectionTitle>
       </div>

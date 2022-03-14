@@ -12,7 +12,7 @@ export default function HomeFeaturedExperiencesSection(props: Props) {
   const { cards } = props;
 
   return (
-    <div className="relative pt-16">
+    <div className="relative">
       <div className="pb-10">
         <SectionTitle>Featured Experiences</SectionTitle>
       </div>

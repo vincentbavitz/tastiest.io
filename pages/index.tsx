@@ -19,7 +19,10 @@ import Head from 'next/head';
 import Link from 'next/link';
 import nookies from 'nookies';
 import React, { useEffect, useState } from 'react';
+import Scroll from 'react-scroll';
 import { METADATA } from '../constants';
+
+const Element = Scroll.Element;
 
 function shuffleArray(array) {
   return array
@@ -108,6 +111,23 @@ const Index = () => {
 
       <div className="flex flex-col mb-10 space-y-10">
         <div>
+          <HomeWhyTastiestSection />
+          <HomeInformationSection />
+        </div>
+
+        <Element name="featured-restaurants-section">
+          <HomeFeaturedRestaurantsSection restaurants={restaurants} />
+        </Element>
+
+        <Element name="featured-dishes-section">
+          <HomeAwardWinningDishesSection dishes={dishes} />
+        </Element>
+
+        <Element name="featured-experiences-section">
+          <HomeFeaturedExperiencesSection cards={cards} />
+        </Element>
+
+        <div>
           {/* <div className="w-full bg-primary-inverse py-12">
             <Contained>
               <h3 className="font-medium text-light text-lg leading-7">
@@ -116,15 +136,6 @@ const Index = () => {
               </h3>
             </Contained>
           </div> */}
-
-          <HomeWhyTastiestSection />
-          <HomeInformationSection />
-
-          <div className="pt-16"></div>
-
-          <HomeFeaturedRestaurantsSection restaurants={restaurants} />
-          <HomeAwardWinningDishesSection dishes={dishes} />
-          <HomeFeaturedExperiencesSection cards={cards} />
         </div>
 
         <Contained>

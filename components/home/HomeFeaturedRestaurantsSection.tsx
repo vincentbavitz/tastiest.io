@@ -1,3 +1,4 @@
+import { BellOutlined } from '@ant-design/icons';
 import { ContentfulRestaurant, titleCase } from '@tastiest-io/tastiest-utils';
 import DisplayCard from 'components/cards/DisplayCard';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
@@ -37,6 +38,9 @@ export default function HomeFeaturedRestaurantsSection(props: Props) {
                 <DisplayCard
                   header={restaurant.name}
                   headerFont="primary"
+                  overlayButton={
+                    <BellOutlined className="text-white p-1 bg-primary rounded-full" />
+                  }
                   description={`${titleCase(
                     restaurant.cuisine.replace('_', ' '),
                   )} - ${restaurant.location_display}`}

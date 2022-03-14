@@ -45,7 +45,7 @@ export function AbstractExperienceCard(
   );
 
   return (
-    <div ref={ref} className="w-full shadow-xl">
+    <div ref={ref} className="w-full shadow-md">
       <Link href={experienceHref} as={experienceAs}>
         <a className="no-underline">
           <div
@@ -54,7 +54,7 @@ export function AbstractExperienceCard(
           >
             <div
               style={{ paddingBottom: '100%' }}
-              className={clsx('relative w-full h-0 shadow-lg overflow-hidden')}
+              className={clsx('relative w-full h-0 overflow-hidden')}
             >
               <Image
                 layout="fill"

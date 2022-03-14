@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { Contained } from 'components/Contained';
 import { HomeHeroSection } from 'components/home/HomeHeroSection';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetServerSidePropsType } from 'next';
@@ -56,15 +57,16 @@ export default function LayoutHome({
             />
           </div>
 
-          <div
-            style={{ marginLeft: '5vw' }}
-            className={clsx(
-              'flex items-center justify-start w-full z-50',
-              isDesktop ? 'mt-28 mb-12' : 'mt-24 mb-14',
-            )}
-          >
-            <HomeHeroSection />
-          </div>
+          <Contained>
+            <div
+              className={clsx(
+                'flex items-center justify-center w-full z-50',
+                isDesktop ? 'mt-28 mb-12' : 'mt-24 mb-14',
+              )}
+            >
+              <HomeHeroSection />
+            </div>
+          </Contained>
         </div>
 
         <Component {...(pageProps as any)} />

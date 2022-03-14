@@ -3,14 +3,17 @@ import StyledUppercase from 'components/text/StyledUppercase';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import Scroll from 'react-scroll';
 import { METADATA } from '../../constants';
+
+const scroller = Scroll.scroller;
 
 export function HomeHeroSection(): JSX.Element {
   const { isMobile, isDesktop } = useScreenSize();
 
   return (
     <div
-      style={{ width: isMobile ? '80vw' : '450px', maxWidth: '80vw;' }}
+      style={{ width: isDesktop ? '450px' : '80vw', maxWidth: '80vw' }}
       className="relative w-1/2 bg-white glass glass-white z-50 ring-2 ring-primary ring-offset-2 ring-offset-white px-6 py-6"
     >
       <div className="leading-tight">
@@ -31,9 +34,17 @@ const CallToActionSelector = () => {
     'restaurants' | 'experiences' | 'dishes'
   >('restaurants');
 
+  const scrollToSelected = () => {
+    scroller.scrollTo(`featured-${selected}-section`, {
+      duration: 250,
+      smooth: true,
+      offset: -75,
+    });
+  };
+
   return (
     <div className="mt-8 w-full">
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 border border-white">
         <CallToActionItem
           isSelected={selected === 'restaurants'}
           onSelect={() => setSelected('restaurants')}
@@ -56,7 +67,10 @@ const CallToActionSelector = () => {
         </CallToActionItem>
       </div>
 
-      <div className="flex items-center justify-center mt-4 w-full bg-primary h-10 px-4 py-1 text-white text-lg font-medium cursor-pointer">
+      <div
+        onClick={scrollToSelected}
+        className="flex items-center justify-center w-full bg-primary h-10 px-4 py-1 text-white text-lg font-medium cursor-pointer"
+      >
         Browse
       </div>
     </div>
@@ -77,7 +91,7 @@ const CallToActionItem = (props: CallToActionItemProps) => {
       onClick={onSelect}
       className={clsx(
         'flex items-center justify-center cursor-pointer duration-300 py-1 px-2',
-        'text-gray-700 border-primary text-base',
+        'text-gray-700 border-secondary text-base select-none',
         isSelected
           ? 'text-dark bg-white border-2'
           : 'bg-white hover:bg-gray-100',
