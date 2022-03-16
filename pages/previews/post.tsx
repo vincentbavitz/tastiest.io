@@ -1,4 +1,4 @@
-import { CmsApi, ExperiencePost } from '@tastiest-io/tastiest-utils';
+import { CmsApi, ContentfulPost } from '@tastiest-io/tastiest-utils';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import Experience from 'pages/[city]/[cuisine]/[restaurant]/[slug]';
@@ -47,7 +47,7 @@ const PostPreview = (
 
   return (
     <div className="relative">
-      <Experience post={post} posts={[{}] as ExperiencePost[]} />
+      <Experience post={post} posts={[{}] as ContentfulPost[]} />
 
       {/* Overlay to prevent mouse events. */}
       <div style={{ zIndex: 100000 }} className="fixed inset-0"></div>

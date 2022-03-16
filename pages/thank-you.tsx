@@ -1,10 +1,9 @@
+import { HorusBooking, HorusOrder } from '@tastiest-io/tastiest-horus';
 import {
-  Booking,
   CmsApi,
   dlog,
   FirestoreCollection,
   formatCurrency,
-  Order,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { SectionTitle } from 'components/SectionTitle';
@@ -58,15 +57,15 @@ export const getServerSideProps = async context => {
     .limit(1)
     .get();
 
-  let order: Order;
-  orderSnapshot.docs.forEach(doc => (order = doc.data() as Order));
+  let order: HorusOrder;
+  orderSnapshot.docs.forEach(doc => (order = doc.data() as HorusOrder));
 
   // Get the corresponding booking
   const bookingSnapshot = await db(FirestoreCollection.BOOKINGS)
     .doc(order.id)
     .get();
 
-  const booking = bookingSnapshot.data() as Booking;
+  const booking = bookingSnapshot.data() as HorusBooking;
 
   dlog('thank-you ➡️ booking:', booking);
 
@@ -83,7 +82,7 @@ export const getServerSideProps = async context => {
 
   // Get Live / Test data
   const stripe = new Stripe(
-    order.isTest
+    order.is_test
       ? process.env.STRIPE_TEST_SECRET_KEY
       : process.env.STRIPE_LIVE_SECRET_KEY,
     {
@@ -104,10 +103,10 @@ export const getServerSideProps = async context => {
   // Don't worry about speed, this page is pre-fetched on checkout.
   const cmsApi = new CmsApi();
 
-  const post = await cmsApi.getPostBySlug(order.fromSlug);
+  const post = await cmsApi.getPostBySlug(order.from_slug);
   const assets = {
-    restaurantHero: order.deal.restaurant.heroIllustration,
-    dish: post.plate,
+    restaurantHero: (order as any).restaurant.hero_illustration,
+    dish: post.plate_image,
   };
 
   return {
@@ -134,8 +133,8 @@ function ThankYou(
   const dispatch = useDispatch();
   const { isMobile, isDesktop } = useScreenSize();
 
-  const humanBookedForDate = DateTime.fromMillis(
-    order.bookedForTimestamp,
+  const humanBookedForDate = DateTime.fromJSDate(
+    new Date(order.booked_for),
   ).toRelativeCalendar();
 
   useEffect(() => {
@@ -206,7 +205,7 @@ function ThankYou(
                     style={{ maxWidth: '225px' }}
                     className="flex w-full mb-4 space-x-2"
                   >
-                    {booking.confirmationCode.split('').map(digit => (
+                    {booking.confirmation_code.split('').map(digit => (
                       <div
                         key={uuid()}
                         style={{ minWidth: '2.5rem' }}
@@ -218,18 +217,20 @@ function ThankYou(
                   </div>
 
                   <p className={isDesktop ? 'pb-2' : 'pb-3'}>
-                    Let {booking.restaurant.name} know your arrival code when
-                    you arrive.
+                    Let {(booking as any).restaurant.name} know your arrival
+                    code when you arrive.
                   </p>
 
                   <p className="leading-tight pb-1">
                     <span className="font-medium">Your experience</span> <br />
-                    <span className="italic">{order.deal.name}</span>
+                    <span className="italic">
+                      {(order as any).product.name}
+                    </span>
                   </p>
 
                   <p className="leading-tight pb-1">
                     <span className="font-medium">Date</span> <br />
-                    {DateTime.fromMillis(order.bookedForTimestamp).toFormat(
+                    {DateTime.fromJSDate(new Date(order.booked_for)).toFormat(
                       't a, DDD',
                     )}
                   </p>
@@ -359,7 +360,7 @@ function BookingSection(props: BookingSectionProps) {
 }
 
 interface OrderSummaryProps {
-  order: Order;
+  order: HorusOrder;
   paymentCard: PaymentCard;
 }
 
@@ -367,15 +368,15 @@ const OrderSummary = ({ order, paymentCard }: OrderSummaryProps) => {
   const sumeraryDetails = [
     {
       label: 'Experience',
-      value: order.deal.name,
+      value: (order as any).product.name,
     },
     {
       label: 'Payment Date',
-      value: DateTime.fromMillis(order.paidAt).toFormat('DDD'),
+      value: DateTime.fromJSDate(new Date(order.paid_at)).toFormat('DDD'),
     },
     {
       label: 'Booked For',
-      value: DateTime.fromMillis(order.bookedForTimestamp).toFormat(
+      value: DateTime.fromJSDate(new Date(order.booked_for)).toFormat(
         'h:mm a - d MMMM',
       ),
     },
@@ -385,7 +386,7 @@ const OrderSummary = ({ order, paymentCard }: OrderSummaryProps) => {
     },
     {
       label: 'Price',
-      value: `£${formatCurrency(order.deal.pricePerHeadGBP)}`,
+      value: `£${formatCurrency((order as any).product.price)}`,
     },
     {
       label: 'Heads',

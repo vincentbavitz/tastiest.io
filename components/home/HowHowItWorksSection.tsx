@@ -10,75 +10,81 @@ export default function HomeHowItWorksSection() {
 
   return (
     <Contained>
-      <div className="flex flex-col py-6 space-y-6">
-        <div
-          className={clsx(
-            'grid gap-6 grid-rows-1',
-            isMobile && 'grid-cols-1',
-            isTablet && 'grid-cols-2',
-            isDesktop && 'grid-cols-4',
-          )}
-        >
-          <InformationBlock
-            label="Community Driven"
-            image={
-              'https://images.ctfassets.net/tq39z0nxr0bv/2WFskjswTMEGw1o8IL524U/484db6a04ef839b11e62b9ff12d15a2a/Booked_table.png'
-            }
-          >
-            All restaurants are recommended by you and anonymously tested by us
-          </InformationBlock>
-          <InformationBlock
-            label="Restaurant Stories"
-            image="https://images.ctfassets.net/tq39z0nxr0bv/2WFskjswTMEGw1o8IL524U/484db6a04ef839b11e62b9ff12d15a2a/Booked_table.png"
-          >
-            Stories Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </InformationBlock>
-          <InformationBlock
-            label="Book Directly"
-            image={
-              'https://images.ctfassets.net/tq39z0nxr0bv/5MpdJ86OOL03uMdcVM3iKO/4b7b91bd89a566bf2b5adee632874a51/Hands_and_wine_glasses.png'
-            }
-          >
-            Reserve your table through Tastiest
-          </InformationBlock>
-          <InformationBlock
-            label="Be In The Know"
-            image={
-              'https://images.ctfassets.net/tq39z0nxr0bv/5c57DUVOkAxWtCfwi64jsk/28cab1c3a0b45f5f597df09a21fb17fc/Loyalty.png'
-            }
-          >
-            Loyal customers follow restaurants and get access to special
-            experiences
-          </InformationBlock>
-        </div>
+      <div
+        className={clsx(
+          'relative grid gap-6 grid-rows-1',
+          isMobile && 'grid-cols-1',
+          isTablet && 'grid-cols-3',
+          isDesktop && 'grid-cols-3',
+        )}
+      >
+        <TimelineBlock
+          label="Go to a restaurant's page and pick an experience"
+          image="https://images.ctfassets.net/tq39z0nxr0bv/QTS5Y0edHG9RQggGbidtO/b7422c2e6eb1a8125f2df28215040b44/phone.png"
+        />
+
+        <TimelineBlock
+          label="Book an experience, we'll send your confirmation code"
+          image="https://images.ctfassets.net/tq39z0nxr0bv/6EM4dK2EKzSW79CltjDWfM/9a6ae0e1415f8158cd801181a47dc8fc/calendar.png"
+        />
+
+        <TimelineBlock
+          label="Give your code to to the restaurant, and enjoy"
+          image="https://images.ctfassets.net/tq39z0nxr0bv/1w8v2RQYJEprawIqborEqx/8b5cdb960c3e983d9a8ca91d3307c535/vip.png"
+        />
+
+        {/* Connecting lines */}
+        {isMobile ? (
+          <div className="absolute inset-0 flex justify-center py-6">
+            <div className="h-full w-2 bg-secondary z-0"></div>
+          </div>
+        ) : (
+          <div className="absolute inset-0 flex items-center z-0 px-6">
+            <div className="w-full h-2 bg-secondary z-0"></div>
+          </div>
+        )}
       </div>
     </Contained>
   );
 }
 
-interface InformationBlockProps {
+interface TimelineBlockProps {
   label: string;
   image: string;
 }
 
-const InformationBlock: FC<InformationBlockProps> = props => {
-  const { label, image, children } = props;
+const TimelineBlock: FC<TimelineBlockProps> = props => {
+  const { label, image } = props;
+
+  const { isMobile } = useScreenSize();
 
   return (
-    <div className="flex flex-col w-full border border-primary px-4 py-6">
-      <h4 className="text-lg font-medium text-center">
-        <LineLimit lines={3} fit="tight">
-          {label}
-        </LineLimit>
+    <div className="w-full px-4 py-6 bg-white shadow-lg z-10">
+      <h4 className="text-base font-medium text-center leading-snug">
+        {isMobile ? (
+          label
+        ) : (
+          <LineLimit lines={5} fit="tight">
+            {label}
+          </LineLimit>
+        )}
       </h4>
 
-      <div className="">
-        <div className="flex justify-center items-center relative w-full h-32">
-          <Image src={image} layout="fill" objectFit="contain" />
+      <div
+        style={{
+          maxWidth: '300px',
+          margin: '0 auto',
+        }}
+      >
+        <div
+          style={{
+            paddingBottom: '100%',
+          }}
+          className="flex justify-center items-center relative w-full h-0"
+        >
+          <Image src={image} layout="fill" objectFit="cover" />
         </div>
       </div>
-
-      <div className="pt-4 text-center leading-none font-light">{children}</div>
     </div>
   );
 };

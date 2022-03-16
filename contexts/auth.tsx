@@ -1,9 +1,4 @@
-import {
-  dlog,
-  FirestoreCollection,
-  Horus,
-  UserData,
-} from '@tastiest-io/tastiest-utils';
+import { dlog, FirestoreCollection, Horus } from '@tastiest-io/tastiest-utils';
 import nookies from 'nookies';
 import React, { createContext, useEffect, useState } from 'react';
 import { firebaseClient } from '../utils/firebaseClient';
@@ -11,7 +6,7 @@ import { ANONYMOUS_USER_ID, LocalStorageItem } from './tracking';
 
 type AuthContextShape = {
   user: firebaseClient.User | null;
-  userData: UserData | null;
+  userData: any | null;
   isSignedIn: null | boolean;
   token: string | null;
   register?: (
@@ -95,7 +90,7 @@ export function AuthProvider({ children }: any) {
   //     refreshInterval: 30000,
   //   },
   // );
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<any | null>(null);
   useEffect(() => {
     setInterval(async () => {
       if (!user) {
@@ -108,7 +103,7 @@ export function AuthProvider({ children }: any) {
         .doc(user.uid)
         .get();
 
-      setUserData(userDataSnapshot.data() as UserData);
+      setUserData(userDataSnapshot.data() as any);
     }, 30000);
   }, [user]);
 

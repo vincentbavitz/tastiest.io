@@ -1,9 +1,8 @@
 import {
   CmsApi,
+  ContentfulPost,
+  ContentfulRestaurant,
   dlog,
-  ExperiencePost,
-  RestaurantContentful,
-  RestaurantDetails,
   TastiestDish,
 } from '@tastiest-io/tastiest-utils';
 import { AbstractExperienceCard } from 'components/cards/AbstractExperienceCard';
@@ -20,23 +19,13 @@ import {
 import { ParsedUrlQuery } from 'querystring';
 import React from 'react';
 import { IRestaurantPath } from '.';
-// import {
-//   getStaticPaths as getRestaurantStaticPaths,
-//   getStaticProps as getRestaurantStaticProps,
-// } from '.';
-
-// export const getStaticPaths = (context: GetStaticPathsContext) =>
-//   getRestaurantStaticPaths(context);
-
-// export const getStaticProps = (context: GetStaticPropsContext) =>
-//   getRestaurantStaticProps(context);
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const cms = new CmsApi();
 
   let page = 1;
   let foundAllRestaurants = false;
-  const restaurants: RestaurantContentful[] = [];
+  const restaurants: ContentfulRestaurant[] = [];
 
   // Contentful only allows 100 at a time
   while (!foundAllRestaurants) {
@@ -55,7 +44,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     params: {
       city: restaurant.city.toLowerCase(),
       cuisine: restaurant.cuisine.toLowerCase(),
-      restaurant: restaurant.uriName.toLowerCase(),
+      restaurant: restaurant.uri_name.toLowerCase(),
     },
   }));
 
@@ -80,20 +69,20 @@ export const getStaticProps = async (
     return {
       // returning as such to keep the props types consistent
       props: {
-        restaurant: null as RestaurantDetails,
+        restaurant: null as ContentfulRestaurant,
         tastiestDishes: null as TastiestDish[],
-        posts: null as ExperiencePost[],
+        posts: null as ContentfulPost[],
       },
       notFound: true,
     };
   }
 
   // Get posts from restaurant
-  const { posts } = await cms.getPostsOfRestaurant(restaurant.uriName, 100);
+  const { posts } = await cms.getPostsOfRestaurant(restaurant.uri_name, 100);
 
   // Get the restaurant's Tastiest Dishes
   const { dishes: tastiestDishes } = await cms.getTastiestDishesOfRestaurant(
-    restaurant.uriName,
+    restaurant.uri_name,
   );
 
   return {

@@ -1,5 +1,5 @@
+import { DateObject } from '@tastiest-io/tastiest-horus';
 import { Select } from '@tastiest-io/tastiest-ui';
-import { DateObject, dlog } from '@tastiest-io/tastiest-utils';
 import { DateTime } from 'luxon';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -42,8 +42,6 @@ export function InputDate(props: Props) {
       month,
       year,
     };
-
-    dlog('InputDate ➡️ destructured:', destructured);
 
     const date = DateTime.fromObject(destructured).toJSDate();
     onDateChange(date, destructured);

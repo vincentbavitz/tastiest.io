@@ -4,7 +4,6 @@ import {
   FollowerNotificationType,
   postFetch,
 } from '@tastiest-io/tastiest-utils';
-import { UpdateFollowParams } from 'pages/api/restaurant/updateFollowStatus';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { openAuthModal } from 'state/navigation';
@@ -66,7 +65,7 @@ export default function useFollow(restaurantId: string) {
 
     setFollowLoading(true);
 
-    const { success, error } = await postFetch<UpdateFollowParams>(
+    const { success, error } = await postFetch<any>(
       LocalEndpoint.UPDATE_FOLLOW_STATUS,
       {
         userId: user.uid,
@@ -97,7 +96,7 @@ export default function useFollow(restaurantId: string) {
 
     setFollowLoading(true);
 
-    const { success, error } = await postFetch<UpdateFollowParams>(
+    const { success, error } = await postFetch<any>(
       LocalEndpoint.UPDATE_FOLLOW_STATUS,
       {
         userId: user.uid,
@@ -133,7 +132,7 @@ export default function useFollow(restaurantId: string) {
 
     setNotificationsLoading(true);
 
-    const { success, error } = await postFetch<UpdateFollowParams>(
+    const { success, error } = await postFetch<any>(
       LocalEndpoint.UPDATE_FOLLOW_STATUS,
       {
         userId: user.uid,

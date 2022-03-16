@@ -6,7 +6,7 @@ import React from 'react';
 export default function HomeWhyTastiestSection() {
   return (
     <Contained>
-      <div className="flex gap-6 w-full py-16">
+      <div className="flex gap-6 w-full pt-16 pb-4">
         <div
           style={{ minWidth: `${44 / 4}rem` }}
           className="relative w-44 h-44"

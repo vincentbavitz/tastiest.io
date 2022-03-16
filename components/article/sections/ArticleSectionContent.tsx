@@ -1,4 +1,5 @@
-import { ExperiencePost, Media } from '@tastiest-io/tastiest-utils';
+import { Media } from '@tastiest-io/tastiest-horus';
+import { ContentfulPost } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { RichBody } from 'components/RichBody';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -11,7 +12,7 @@ import ArticleMenuModal from '../modals/ArticleMenuModal';
 // TODO
 // Really want writers to be able to do {{CALL_TO_ACTION}} sorta things like Wordpress shortcodes
 // And that will then conditionally render our components
-export function ArticleSectionContent(post: ExperiencePost) {
+export function ArticleSectionContent(post: ContentfulPost) {
   const { isMobile } = useScreenSize();
 
   return (
@@ -23,11 +24,13 @@ export function ArticleSectionContent(post: ExperiencePost) {
         )}
       >
         <CovidAwareBadge />
-        {post.menuImage ? <OpenMenuButton menuImage={post.menuImage} /> : null}
+        {post.menu_image ? (
+          <OpenMenuButton menuImage={post.menu_image} />
+        ) : null}
       </div>
 
       <div className="flex flex-col pb-10 space-y-6">
-        <RichBody body={post.body} />
+        <RichBody body={post.body as any} />
       </div>
     </div>
   );

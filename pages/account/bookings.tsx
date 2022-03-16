@@ -6,15 +6,11 @@ import {
 } from '@ant-design/icons';
 import { Button, Modal } from '@tastiest-io/tastiest-ui';
 import {
-  Booking,
   dlog,
   FirestoreCollection,
   formatCurrency,
   Horus,
-  Order,
-  SupportRequestType,
   TIME,
-  UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import ExperienceOrderPanelInner, {
@@ -30,18 +26,20 @@ import Link from 'next/link';
 import nookies from 'nookies';
 import React, { FC, useContext, useMemo, useState } from 'react';
 import { useLockBodyScroll } from 'react-use';
-import { db, firebaseAdmin } from 'utils/firebaseAdmin';
+import { db } from 'utils/firebaseAdmin';
 import { getGoogleMapLink } from 'utils/location';
 import { generateStaticURL } from 'utils/routing';
 
 const RESTULTS_PER_PAGE = 5;
-type MappedOrder = Order & { booking: Booking };
+type MappedOrder = any;
+// type MappedOrder = Order & { booking: Booking };
 
 export const getServerSideProps = async context => {
   // Get user ID from cookie.
   const cookieToken = nookies.get(context)?.token;
-  const userDataApi = new UserDataApi(firebaseAdmin);
-  const { userId } = await userDataApi.initFromCookieToken(cookieToken);
+  // const userDataApi = new UserDataApi(firebaseAdmin);
+  // const { userId } = await userDataApi.initFromCookieToken(cookieToken);
+  const userId = null;
 
   // If no user, redirect to home
   if (!userId) {
@@ -54,7 +52,8 @@ export const getServerSideProps = async context => {
   }
 
   // Grab user's details
-  const { details } = await userDataApi.getUserData();
+  // const { details } = await userDataApi.getUserData();
+  const details = {} as any;
 
   // Get orders of user
   const page = context?.query?.page ?? 1;
@@ -80,10 +79,10 @@ export const getServerSideProps = async context => {
     .orderBy('bookedForTimestamp', 'desc')
     .get();
 
-  const orders: Order[] = [];
-  const bookings: Booking[] = [];
-  ordersSnapshot.forEach(order => orders.push(order.data() as Order));
-  bookingsSnapshot.forEach(booking => bookings.push(booking.data() as Booking));
+  const orders: any[] = [];
+  const bookings: any[] = [];
+  ordersSnapshot.forEach(order => orders.push(order.data() as any));
+  bookingsSnapshot.forEach(booking => bookings.push(booking.data() as any));
 
   // Map each booking to its order and filter out bad mappings.
   const mappedOrders: MappedOrder[] = orders
@@ -281,7 +280,9 @@ const BookingRow: FC<BookingRowProps> = ({ order }) => {
         <BookingOptionRow
           label="Get help"
           icon={QuestionOutlined}
-          href={`/help?type=${SupportRequestType.ORDER}&userFacingOrderId=${order.userFacingOrderId}`}
+          href={`/help?type=${'order'}&userFacingOrderId=${
+            order.userFacingOrderId
+          }`}
           isLast
         />
       </div>

@@ -1,4 +1,5 @@
-import { dlog, Horus, HorusOrderEntity } from '@tastiest-io/tastiest-utils';
+import { HorusOrder } from '@tastiest-io/tastiest-horus';
+import { dlog, Horus } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { CheckoutStepIndicator } from 'components/checkout/CheckoutStepIndicator';
 import { Contained } from 'components/Contained';
@@ -35,7 +36,7 @@ LayoutProps<InferGetStaticPropsType<typeof getServerSideProps>>) {
 
     // Horus will tell us whether or not the order was valid.
     const horus = new Horus(token);
-    const { data: order, error } = await horus.post<any, HorusOrderEntity>(
+    const { data: order, error } = await horus.post<any, HorusOrder>(
       '/orders/new',
       {
         experienceId,

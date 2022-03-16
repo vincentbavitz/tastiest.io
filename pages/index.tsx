@@ -11,6 +11,7 @@ import HomeFeaturedExperiencesSection from 'components/home/HomeFeaturedExperien
 import HomeFeaturedRestaurantsSection from 'components/home/HomeFeaturedRestaurantsSection';
 import HomeInformationSection from 'components/home/HomeInformationSection';
 import HomeWhyTastiestSection from 'components/home/HomeWhyTastiestSection';
+import HomeHowItWorksSection from 'components/home/HowHowItWorksSection';
 import SuggestRestaurantPrompBox from 'components/SuggestRestaurantPrompBox';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSideProps } from 'next';
@@ -109,10 +110,7 @@ const Index = () => {
       />
 
       <div className="flex flex-col mb-10 space-y-10">
-        <div>
-          <HomeWhyTastiestSection />
-          <HomeInformationSection />
-        </div>
+        <HomeWhyTastiestSection />
 
         <Element name="featured-restaurants-section">
           <HomeFeaturedRestaurantsSection restaurants={restaurants} />
@@ -126,8 +124,12 @@ const Index = () => {
           <HomeFeaturedExperiencesSection cards={cards} />
         </Element>
 
+        <HomeInformationSection />
+
+        <HomeHowItWorksSection />
+
         <Contained>
-          <div className="flex justify-center w-full">
+          <div className="flex justify-center w-full py-6">
             <SuggestRestaurantPrompBox />
           </div>
         </Contained>

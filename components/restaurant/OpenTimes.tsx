@@ -1,15 +1,15 @@
 import {
-  minsIntoHumanTime,
   OpenTimesMetricDay,
-  TIME,
   TimeRange,
-  titleCase,
   WeekOpenTimes,
+} from '@tastiest-io/tastiest-horus';
+import {
+  minsIntoHumanTime,
+  TIME,
+  titleCase,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
-import { GetOpenTimesReturn } from 'pages/api/restaurant/getOpenTimes';
 import React, { useMemo } from 'react';
-import useSWR from 'swr';
 import { LocalEndpoint } from 'types/api';
 import { generateLocalEndpoint } from 'utils/routing';
 
@@ -40,7 +40,8 @@ export default function OpenTimes(props: Props) {
     restaurantId: restaurantId,
   });
 
-  const { data: openTimes } = useSWR<GetOpenTimesReturn>(swrURL);
+  // const { data: openTimes } = useSWR<GetOpenTimesReturn>(swrURL);
+  const openTimes = {} as any;
 
   // If we have successive openTimes that are the same,
   // starting from Monday, list them as (for example)...

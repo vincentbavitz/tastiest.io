@@ -1,4 +1,3 @@
-import { UserDataKey } from '@tastiest-io/tastiest-utils';
 import { useTrack } from 'hooks/useTrack';
 import { useDispatch } from 'react-redux';
 import { openAuthModal } from 'state/navigation';
@@ -30,7 +29,7 @@ export function useFavouriteArticle() {
 
   const unsaveArticle = (slug: string) => {
     const filtered = userData?.savedArticles?.filter(saved => slug !== saved);
-    setUserData(UserDataKey.SAVED_ARTICLES, filtered);
+    setUserData('', filtered);
 
     // Track with Segment
     const firstName = userData?.details?.firstName ?? 'User';
@@ -43,10 +42,7 @@ export function useFavouriteArticle() {
   };
 
   const saveArticle = (slug: string) => {
-    setUserData(UserDataKey.SAVED_ARTICLES, [
-      ...(userData?.savedArticles ?? []),
-      slug,
-    ]);
+    setUserData('saved-articles', [...(userData?.savedArticles ?? []), slug]);
 
     // Track with Segment
     const firstName = userData?.details?.firstName ?? 'User';

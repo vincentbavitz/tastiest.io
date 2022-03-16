@@ -1,4 +1,4 @@
-import { Media } from '@tastiest-io/tastiest-utils';
+import { Media } from '@tastiest-io/tastiest-horus';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Image from 'next/image';

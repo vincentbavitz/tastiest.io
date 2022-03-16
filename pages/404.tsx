@@ -1,6 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Input, TextArea } from '@tastiest-io/tastiest-ui';
-import { dlog, UserQueryType } from '@tastiest-io/tastiest-utils';
+import { dlog } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import { Contained } from 'components/Contained';
 import { useAuth } from 'hooks/auth/useAuth';
@@ -71,7 +71,7 @@ function Tastiest404() {
     const { success, errors } = await makeGeneralQuery(
       email,
       lookingForMessage,
-      UserQueryType._404_PAGE,
+      '404-page',
     );
 
     setSending(false);

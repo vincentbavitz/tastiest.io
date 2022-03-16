@@ -52,7 +52,7 @@ export const getRestaurantDestination = async (
   const path = generateStaticURL({
     city: restaurant.city ?? 'london',
     cuisine: restaurant.cuisine,
-    restaurant: restaurant.uriName,
+    restaurant: restaurant.uri_name,
   });
 
   const url = new URL(path.as, getBaseUrl());

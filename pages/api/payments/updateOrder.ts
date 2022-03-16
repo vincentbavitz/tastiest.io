@@ -1,207 +1,209 @@
-import {
-  calculatePaymentFees,
-  CmsApi,
-  dlog,
-  FirestoreCollection,
-  FunctionsResponse,
-  Order,
-  PAYMENTS,
-} from '@tastiest-io/tastiest-utils';
-import { NextApiRequest, NextApiResponse } from 'next';
-import Stripe from 'stripe';
-import { db } from 'utils/firebaseAdmin';
-import { calculatePromoPrice, validatePromo } from 'utils/order';
+export const x = 5;
 
-export interface UpdateOrderParams {
-  token: string;
-  userId?: string;
-  promoCode?: string;
-  heads?: number;
-  paymentMethodId?: string;
-}
+// import {
+//   calculatePaymentFees,
+//   CmsApi,
+//   dlog,
+//   FirestoreCollection,
+//   FunctionsResponse,
+//   Order,
+//   PAYMENTS,
+// } from '@tastiest-io/tastiest-utils';
+// import { NextApiRequest, NextApiResponse } from 'next';
+// import Stripe from 'stripe';
+// import { db } from 'utils/firebaseAdmin';
+// import { calculatePromoPrice, validatePromo } from 'utils/order';
 
-export type UpdateOrderReturn = {
-  order: Order | null;
-};
+// export interface UpdateOrderParams {
+//   token: string;
+//   userId?: string;
+//   promoCode?: string;
+//   heads?: number;
+//   paymentMethodId?: string;
+// }
 
-/**
- * Requires `token` as a parameter.
- * This can only be obtained client side on article page.
- *
- * Optionally takes one or more of these parameters...
- *  ```
- *    userId: string;
- *    heads: number;
- *    promoCode: string;
- *    paymentMethodId: string;
- *  ```
- *
- * Returns updated order object on success
- */
-export default async function updateOrder(
-  request: NextApiRequest,
-  response: NextApiResponse<FunctionsResponse<UpdateOrderReturn>>,
-) {
-  // Only allow POST
-  if (request.method !== 'POST') {
-    response.status(405).end();
-    return;
-  }
+// export type UpdateOrderReturn = {
+//   order: Order | null;
+// };
 
-  // Get body as JSON or raw
-  let body;
-  try {
-    body = JSON.parse(request.body);
-  } catch (e) {
-    body = request.body;
-  }
+// /**
+//  * Requires `token` as a parameter.
+//  * This can only be obtained client side on article page.
+//  *
+//  * Optionally takes one or more of these parameters...
+//  *  ```
+//  *    userId: string;
+//  *    heads: number;
+//  *    promoCode: string;
+//  *    paymentMethodId: string;
+//  *  ```
+//  *
+//  * Returns updated order object on success
+//  */
+// export default async function updateOrder(
+//   request: NextApiRequest,
+//   response: NextApiResponse<FunctionsResponse<UpdateOrderReturn>>,
+// ) {
+//   // Only allow POST
+//   if (request.method !== 'POST') {
+//     response.status(405).end();
+//     return;
+//   }
 
-  const {
-    token = null,
-    userId = null,
-    heads = null,
-    promoCode = null,
-    paymentMethodId = null,
-  } = body;
+//   // Get body as JSON or raw
+//   let body;
+//   try {
+//     body = JSON.parse(request.body);
+//   } catch (e) {
+//     body = request.body;
+//   }
 
-  // Order token is required
-  if (!token || !token.length) {
-    response.json({
-      success: false,
-      data: { order: null },
-      error: 'No order token provided',
-    });
-    return;
-  }
+//   const {
+//     token = null,
+//     userId = null,
+//     heads = null,
+//     promoCode = null,
+//     paymentMethodId = null,
+//   } = body;
 
-  try {
-    // Fetch the order from Firestore using orderToken
-    const snapshot = await db(FirestoreCollection.ORDERS)
-      .where('token', '==', token)
-      .limit(1)
-      .get();
+//   // Order token is required
+//   if (!token || !token.length) {
+//     response.json({
+//       success: false,
+//       data: { order: null },
+//       error: 'No order token provided',
+//     });
+//     return;
+//   }
 
-    let order: Order;
-    snapshot.docs.forEach(doc => (order = doc.data() as Order));
+//   try {
+//     // Fetch the order from Firestore using orderToken
+//     const snapshot = await db(FirestoreCollection.ORDERS)
+//       .where('token', '==', token)
+//       .limit(1)
+//       .get();
 
-    // Does the order belong to this user?
-    if (order.userId && order?.userId !== userId) {
-      dlog('updateOrder ➡️ userId:', userId);
-      dlog('updateOrder ➡️ order?.userId:', order?.userId);
-      response.json({
-        success: false,
-        data: { order: null },
-        error: 'Order does not belong to this user',
-      });
-      return;
-    }
+//     let order: Order;
+//     snapshot.docs.forEach(doc => (order = doc.data() as Order));
 
-    // Is the order already paid or expired?
-    const isOrderExpired =
-      order?.createdAt + PAYMENTS.ORDER_EXPIRY_MS < Date.now();
-    if (order.paidAt || isOrderExpired) {
-      response.json({
-        success: false,
-        data: { order: null },
-        error: 'Order already paid or is expired',
-      });
-      return;
-    }
+//     // Does the order belong to this user?
+//     if (order.userId && order?.userId !== userId) {
+//       dlog('updateOrder ➡️ userId:', userId);
+//       dlog('updateOrder ➡️ order?.userId:', order?.userId);
+//       response.json({
+//         success: false,
+//         data: { order: null },
+//         error: 'Order does not belong to this user',
+//       });
+//       return;
+//     }
 
-    // Start updating
-    const updatedOrder: Order = {
-      ...order,
-    };
+//     // Is the order already paid or expired?
+//     const isOrderExpired =
+//       order?.createdAt + PAYMENTS.ORDER_EXPIRY_MS < Date.now();
+//     if (order.paidAt || isOrderExpired) {
+//       response.json({
+//         success: false,
+//         data: { order: null },
+//         error: 'Order already paid or is expired',
+//       });
+//       return;
+//     }
 
-    // Adding userId to order
-    if (!order?.userId && userId && userId.length) {
-      updatedOrder.userId = userId;
-    }
+//     // Start updating
+//     const updatedOrder: Order = {
+//       ...order,
+//     };
 
-    // Validate heads
-    if (heads && heads > 0) {
-      updatedOrder.heads = heads;
-    }
+//     // Adding userId to order
+//     if (!order?.userId && userId && userId.length) {
+//       updatedOrder.userId = userId;
+//     }
 
-    // Validate discount if required
-    if (promoCode && promoCode.length > 0) {
-      const cms = new CmsApi();
-      const promo = await cms.getPromo(promoCode);
+//     // Validate heads
+//     if (heads && heads > 0) {
+//       updatedOrder.heads = heads;
+//     }
 
-      if (promo && validatePromo(order.deal, order.userId, promo)) {
-        updatedOrder.promoCode = promoCode;
+//     // Validate discount if required
+//     if (promoCode && promoCode.length > 0) {
+//       const cms = new CmsApi();
+//       const promo = await cms.getPromo(promoCode);
 
-        const priceAfterPromo = calculatePromoPrice(
-          order.price.subtotal,
-          promo,
-        );
+//       if (promo && validatePromo(order.deal, order.userId, promo)) {
+//         updatedOrder.promoCode = promoCode;
 
-        const { total: final, fees } = calculatePaymentFees(priceAfterPromo);
-        updatedOrder.price.final = final;
-        updatedOrder.price.fees = fees;
-      } else {
-        response.json({
-          success: false,
-          data: { order: null },
-          error: "Promo code doesn't exist",
-        });
-        return;
-      }
-    }
+//         const priceAfterPromo = calculatePromoPrice(
+//           order.price.subtotal,
+//           promo,
+//         );
 
-    // Validate payment method and add if valid
-    if (paymentMethodId && paymentMethodId?.length) {
-      dlog('updateOrder ➡️ paymentMethodId:', paymentMethodId);
+//         const { total: final, fees } = calculatePaymentFees(priceAfterPromo);
+//         updatedOrder.price.final = final;
+//         updatedOrder.price.fees = fees;
+//       } else {
+//         response.json({
+//           success: false,
+//           data: { order: null },
+//           error: "Promo code doesn't exist",
+//         });
+//         return;
+//       }
+//     }
 
-      const errorResponse = {
-        success: false,
-        data: { order: null },
-        error: 'Invalid payment method ID',
-      };
+//     // Validate payment method and add if valid
+//     if (paymentMethodId && paymentMethodId?.length) {
+//       dlog('updateOrder ➡️ paymentMethodId:', paymentMethodId);
 
-      const stripe = new Stripe(
-        process.env.NODE_ENV === 'development'
-          ? process.env.STRIPE_TEST_SECRET_KEY
-          : process.env.STRIPE_LIVE_SECRET_KEY,
-        {
-          apiVersion: '2020-08-27',
-        },
-      );
+//       const errorResponse = {
+//         success: false,
+//         data: { order: null },
+//         error: 'Invalid payment method ID',
+//       };
 
-      try {
-        const paymentMethod = await stripe.paymentMethods.retrieve(
-          paymentMethodId,
-        );
+//       const stripe = new Stripe(
+//         process.env.NODE_ENV === 'development'
+//           ? process.env.STRIPE_TEST_SECRET_KEY
+//           : process.env.STRIPE_LIVE_SECRET_KEY,
+//         {
+//           apiVersion: '2020-08-27',
+//         },
+//       );
 
-        if (!paymentMethod) {
-          dlog('updateOrder ➡️ errorResponse:', errorResponse);
-          response.json(errorResponse);
-        }
+//       try {
+//         const paymentMethod = await stripe.paymentMethods.retrieve(
+//           paymentMethodId,
+//         );
 
-        updatedOrder.paymentMethod = paymentMethodId as string;
-      } catch {
-        console.log('caught');
-        response.json(errorResponse);
-        return;
-      }
-    }
+//         if (!paymentMethod) {
+//           dlog('updateOrder ➡️ errorResponse:', errorResponse);
+//           response.json(errorResponse);
+//         }
 
-    // Sync with Firestore
-    await db(FirestoreCollection.ORDERS)
-      .doc(order.id)
-      .set(updatedOrder, { merge: true });
+//         updatedOrder.paymentMethod = paymentMethodId as string;
+//       } catch {
+//         console.log('caught');
+//         response.json(errorResponse);
+//         return;
+//       }
+//     }
 
-    response.json({
-      success: true,
-      data: { order: updatedOrder },
-      error: null,
-    });
-  } catch (error) {
-    response.json({
-      success: false,
-      data: { order: null },
-      error,
-    });
-    return;
-  }
-}
+//     // Sync with Firestore
+//     await db(FirestoreCollection.ORDERS)
+//       .doc(order.id)
+//       .set(updatedOrder, { merge: true });
+
+//     response.json({
+//       success: true,
+//       data: { order: updatedOrder },
+//       error: null,
+//     });
+//   } catch (error) {
+//     response.json({
+//       success: false,
+//       data: { order: null },
+//       error,
+//     });
+//     return;
+//   }
+// }

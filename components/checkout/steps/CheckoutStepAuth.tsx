@@ -1,4 +1,5 @@
-import { formatCurrency, Order } from '@tastiest-io/tastiest-utils';
+import { HorusOrder } from '@tastiest-io/tastiest-horus';
+import { ContentfulProduct, formatCurrency } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
 import { UI } from '../../../constants';
@@ -6,9 +7,10 @@ import { CheckoutAuthTabs } from '../CheckoutAuthTabs';
 import { CheckoutCard } from '../CheckoutCard';
 
 interface Props {
-  order: Order;
+  order: HorusOrder;
 }
 
+// CORRECT ME FIX ME
 export function CheckoutStepAuth(props: Props) {
   const { isDesktop } = useScreenSize();
 
@@ -20,7 +22,7 @@ export function CheckoutStepAuth(props: Props) {
 }
 
 const CheckoutStepAuthDesktop = ({ order }: Props) => {
-  const totalPrice = (order?.heads ?? 1) * order?.deal?.pricePerHeadGBP;
+  const totalPrice = (order?.heads ?? 1) * (order as any)?.product?.price;
 
   return (
     <div className="flex justify-between w-full">
@@ -34,12 +36,14 @@ const CheckoutStepAuthDesktop = ({ order }: Props) => {
       </div>
 
       <div className="flex-grow w-5/12 pl-10">
-        <CheckoutCard experienceImage={order.deal.image}>
-          <p className="font-medium">{order?.deal?.restaurant?.name}</p>
+        <CheckoutCard experienceImage={(order as any).product.image}>
+          <p className="font-medium">
+            {(order as any)?.product?.restaurant?.name}
+          </p>
 
           <div className="flex items-center justify-between">
             <p className="text-sm">
-              {order?.deal?.tagline} x{order?.heads}
+              {(order as any)?.product?.tagline} x{order?.heads}
             </p>
 
             <p className="pl-4 text-xl font-medium">£{totalPrice}</p>
@@ -51,14 +55,20 @@ const CheckoutStepAuthDesktop = ({ order }: Props) => {
 };
 
 const CheckoutStepAuthMobile = ({ order }: Props) => {
-  const totalPrice = formatCurrency(order.heads * order?.deal?.pricePerHeadGBP);
+  const totalPrice = formatCurrency(
+    order.heads * (order as any)?.product?.pricePerHeadGBP,
+  );
 
   return (
     <div className="flex flex-col w-full space-y-6">
-      <CheckoutCard experienceImage={order.deal.image}>
+      <CheckoutCard experienceImage={(order as any).product.image}>
         <div>
-          <p className="text-xl font-medium">{order?.deal?.restaurant?.name}</p>
-          <p className="text-sm sm:text-base">{order?.deal?.tagline}</p>
+          <p className="text-xl font-medium">
+            {(order as any)?.product?.restaurant?.name}
+          </p>
+          <p className="text-sm sm:text-base">
+            {((order as any)?.product as ContentfulProduct)?.name}
+          </p>
         </div>
 
         <div>

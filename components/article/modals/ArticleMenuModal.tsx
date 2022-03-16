@@ -1,5 +1,5 @@
+import { Media } from '@tastiest-io/tastiest-horus';
 import { Modal } from '@tastiest-io/tastiest-ui';
-import { Media } from '@tastiest-io/tastiest-utils';
 import ResponsiveImage from 'components/ResponsiveImage';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';

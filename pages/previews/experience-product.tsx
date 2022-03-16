@@ -1,8 +1,7 @@
 import {
   CmsApi,
-  ExperiencePost,
-  ExperienceProduct,
-  Order,
+  ContentfulPost,
+  ContentfulProduct,
 } from '@tastiest-io/tastiest-utils';
 import { ExperienceOrderPanelDesktop } from 'components/article/widgets/ExperienceOrderPanelDesktop';
 import { Contained } from 'components/Contained';
@@ -23,8 +22,8 @@ export const getServerSideProps = async (
   if (!environment || !id) {
     return {
       props: {
-        experienceProduct: null as ExperienceProduct,
-        posts: [] as ExperiencePost[],
+        experienceProduct: null as ContentfulProduct,
+        posts: [] as ContentfulPost[],
         slug: '',
       },
       redirect: {
@@ -41,8 +40,8 @@ export const getServerSideProps = async (
   if (!experienceProduct) {
     return {
       props: {
-        experienceProduct: null as ExperienceProduct,
-        posts: [] as ExperiencePost[],
+        experienceProduct: null as ContentfulProduct,
+        posts: [] as ContentfulPost[],
         slug: '',
       },
       redirect: {
@@ -65,7 +64,7 @@ const ExperienceProductPreview = (
 ) => {
   const { experienceProduct, posts, slug } = props;
 
-  const order: Order = {
+  const order: any = {
     restaurantCut: null,
     createdAt: 1643141044816,
     fromSlug: slug,
@@ -103,7 +102,7 @@ const ExperienceProductPreview = (
             </h2>
 
             <ExperienceOrderPanelDesktop
-              deal={experienceProduct}
+              product={experienceProduct}
               posts={posts}
               slug={slug}
             />

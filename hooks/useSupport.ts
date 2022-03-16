@@ -1,12 +1,4 @@
-import {
-  FirestoreCollection,
-  SupportMessage,
-  SupportMessageDirection,
-  SupportRequestType,
-  UserQuery,
-  UserQueryType,
-  UserSupportRequest,
-} from '@tastiest-io/tastiest-utils';
+import { FirestoreCollection } from '@tastiest-io/tastiest-utils';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
@@ -36,7 +28,7 @@ export function useSupport() {
     },
   ]);
 
-  const supportRequests: Partial<UserSupportRequest> = useSelector(
+  const supportRequests: Partial<any> = useSelector(
     ({ firestore: { data } }: IState) =>
       data?.[FirestoreCollection.SUPPORT_USERS],
   );
@@ -44,7 +36,7 @@ export function useSupport() {
   const makeSupportRequest = async (
     name: string,
     email: string,
-    type: SupportRequestType,
+    type: any,
     subject: string,
     message: string,
     userId?: string,
@@ -59,17 +51,17 @@ export function useSupport() {
       return { success: false, errors };
     }
 
-    const initialMessage: SupportMessage = {
+    const initialMessage: any = {
       name,
       message,
       timestamp: Date.now(),
-      direction: SupportMessageDirection.USER_TO_SUPPORT,
+      direction: 'user-to-support',
       hasOpened: false,
       recipientHasOpened: false,
     };
 
     const requestId = uuid();
-    const supportRequest: UserSupportRequest = {
+    const supportRequest: any = {
       id: requestId,
       name,
       email,
@@ -112,7 +104,7 @@ export function useSupport() {
   const makeGeneralQuery = async (
     email: string,
     message: string,
-    type: UserQueryType,
+    type: any,
   ): Promise<{ success: boolean; errors: SupportRequestGenerationError[] }> => {
     const errors: SupportRequestGenerationError[] = [];
     if (!email?.length) errors.push(SupportRequestGenerationError.NO_EMAIL);
@@ -122,7 +114,7 @@ export function useSupport() {
       return { success: false, errors };
     }
 
-    const query: UserQuery = {
+    const query: any = {
       email: user?.email ?? email,
       userId: user?.uid ?? null,
       message,

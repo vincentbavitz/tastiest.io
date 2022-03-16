@@ -1,9 +1,6 @@
 import {
   FirestoreCollection,
   GenericAsyncReturnType,
-  TUserData,
-  UserData,
-  UserDataKey,
 } from '@tastiest-io/tastiest-utils';
 import firebase from 'firebase';
 import { useSelector } from 'react-redux';
@@ -20,13 +17,13 @@ export function useUserData(user: firebase.User) {
     },
   ]);
 
-  const userData: Partial<UserData> = useSelector(
+  const userData: Partial<any> = useSelector(
     ({ firestore: { data } }: IState) => data.users && data.users[user?.uid],
   );
 
-  const setUserData = async <T extends UserDataKey>(
+  const setUserData = async <T extends string>(
     field: T,
-    value: Partial<TUserData<T>>,
+    value: Partial<any>,
     onInvalidUser?: () => void,
   ): Promise<GenericAsyncReturnType> => {
     if (!user?.uid) {

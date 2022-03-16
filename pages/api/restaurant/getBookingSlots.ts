@@ -1,264 +1,266 @@
-import {
-  dlog,
-  OpenTimesMetricDay,
-  RestaurantDataApi,
-  TIME,
-  TimeRange,
-  toZeroIndexedDays,
-  WeekOpenTimes,
-} from '@tastiest-io/tastiest-utils';
-import { DateTime } from 'luxon';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
+export const x = 5;
 
-const ALLOWED_DAYS_INTO_FUTURE = 28;
+// import {
+//   dlog,
+//   OpenTimesMetricDay,
+//   RestaurantDataApi,
+//   TIME,
+//   TimeRange,
+//   toZeroIndexedDays,
+//   WeekOpenTimes,
+// } from '@tastiest-io/tastiest-utils';
+// import { DateTime } from 'luxon';
+// import { NextApiRequest, NextApiResponse } from 'next';
+// import { firebaseAdmin } from 'utils/firebaseAdmin';
 
-export type Slot = {
-  open: boolean;
-  range: TimeRange | null;
-  times: number[]; // available booking times; in minutes from 00:00
-  timestamp: number; // used only to identify the day. Set to 00:00.
-  ordinal: number; // ordinal day of the year where 1 is January 1st
-  daysFromToday: number;
-};
+// const ALLOWED_DAYS_INTO_FUTURE = 28;
 
-export interface GetBookingSlotsReturn {
-  slots: Slot[];
-  openTimes: WeekOpenTimes;
-  seatingDuration: number; // in minutes
-  isRealtime: boolean;
-}
+// export type Slot = {
+//   open: boolean;
+//   range: TimeRange | null;
+//   times: number[]; // available booking times; in minutes from 00:00
+//   timestamp: number; // used only to identify the day. Set to 00:00.
+//   ordinal: number; // ordinal day of the year where 1 is January 1st
+//   daysFromToday: number;
+// };
 
-/**
- * Requires the following as parameters:
- *  `restaurantId: string`
- *  `offerId: string`
- *  `timezone: string`
- *
- * Get timezone from `DateTime.local().zoneName` using Luxon
- * Intended to be used exclusively with SWR
- */
-export default async function getBookingSlots(
-  request: NextApiRequest,
-  response: NextApiResponse<GetBookingSlotsReturn>,
-) {
-  // Only allow GET
-  if (request.method !== 'GET') {
-    response.status(405).end();
-    return;
-  }
+// export interface GetBookingSlotsReturn {
+//   slots: Slot[];
+//   openTimes: WeekOpenTimes;
+//   seatingDuration: number; // in minutes
+//   isRealtime: boolean;
+// }
 
-  const offerId = String(request.query.offerId);
-  const restaurantId = String(request.query.restaurantId);
-  const timezone = String(request.query.timezone);
+// /**
+//  * Requires the following as parameters:
+//  *  `restaurantId: string`
+//  *  `offerId: string`
+//  *  `timezone: string`
+//  *
+//  * Get timezone from `DateTime.local().zoneName` using Luxon
+//  * Intended to be used exclusively with SWR
+//  */
+// export default async function getBookingSlots(
+//   request: NextApiRequest,
+//   response: NextApiResponse<GetBookingSlotsReturn>,
+// ) {
+//   // Only allow GET
+//   if (request.method !== 'GET') {
+//     response.status(405).end();
+//     return;
+//   }
 
-  // Order restaurantId is required
-  if (!offerId?.length || !restaurantId?.length || !timezone?.length) {
-    response.statusMessage =
-      'Invalid parameters: `restaurantId`, `offerId` and `timezone` are required.';
-    response.status(400).end();
-    return;
-  }
+//   const offerId = String(request.query.offerId);
+//   const restaurantId = String(request.query.restaurantId);
+//   const timezone = String(request.query.timezone);
 
-  try {
-    const now = DateTime.now().setZone(timezone);
-    const ALLOWED_BOOKINGS_PER_SLOT = 2;
+//   // Order restaurantId is required
+//   if (!offerId?.length || !restaurantId?.length || !timezone?.length) {
+//     response.statusMessage =
+//       'Invalid parameters: `restaurantId`, `offerId` and `timezone` are required.';
+//     response.status(400).end();
+//     return;
+//   }
 
-    // Get the restaurant's booking slots
-    const restaurantDataApi = new RestaurantDataApi(
-      firebaseAdmin,
-      restaurantId,
-    );
+//   try {
+//     const now = DateTime.now().setZone(timezone);
+//     const ALLOWED_BOOKINGS_PER_SLOT = 2;
 
-    // Days are dictated by open times.
-    const {
-      settings,
-      metrics,
-      realtime,
-    } = await restaurantDataApi.getRestaurantData();
+//     // Get the restaurant's booking slots
+//     const restaurantDataApi = new RestaurantDataApi(
+//       firebaseAdmin,
+//       restaurantId,
+//     );
 
-    dlog('getBookingSlots ➡️ settings:', settings);
+//     // Days are dictated by open times.
+//     const {
+//       settings,
+//       metrics,
+//       realtime,
+//     } = await restaurantDataApi.getRestaurantData();
 
-    // const slots: Slot[] = [];
-    const seatingDuration = metrics?.seatingDuration ?? 60;
+//     dlog('getBookingSlots ➡️ settings:', settings);
 
-    // Rolls over by one each iteration
-    const startingDate = DateTime.now().setZone(timezone);
-    if (!startingDate.isValid) {
-      response.statusMessage =
-        'Invalid timezone. Ensure you are sending an IANA-specified timezone.';
-      response.status(400).end();
-      return;
-    }
+//     // const slots: Slot[] = [];
+//     const seatingDuration = metrics?.seatingDuration ?? 60;
 
-    startingDate.set({ hour: 0, minute: 0, second: 0 });
+//     // Rolls over by one each iteration
+//     const startingDate = DateTime.now().setZone(timezone);
+//     if (!startingDate.isValid) {
+//       response.statusMessage =
+//         'Invalid timezone. Ensure you are sending an IANA-specified timezone.';
+//       response.status(400).end();
+//       return;
+//     }
 
-    // We use realtime.availableBookingSlots preferentially over metrics.openTimes.
-    // because availableBookingSlots is realtime data from the restaurant's booking system.
-    // prettier-ignore
-    const lastSyncInMins = realtime?.lastBookingSlotsSync
-      ? now.diff(DateTime.fromMillis(realtime?.lastBookingSlotsSync).setZone(timezone)).as('minutes')
-      : Infinity;
+//     startingDate.set({ hour: 0, minute: 0, second: 0 });
 
-    dlog('getBookingSlots ➡️ lastSyncInMins:', lastSyncInMins);
+//     // We use realtime.availableBookingSlots preferentially over metrics.openTimes.
+//     // because availableBookingSlots is realtime data from the restaurant's booking system.
+//     // prettier-ignore
+//     const lastSyncInMins = realtime?.lastBookingSlotsSync
+//       ? now.diff(DateTime.fromMillis(realtime?.lastBookingSlotsSync).setZone(timezone)).as('minutes')
+//       : Infinity;
 
-    // HOWEVER! We must ensure that this data is recent, and was refreshed less than an hour ago.
-    if (
-      realtime?.availableBookingSlots &&
-      lastSyncInMins < TIME.OLDEST_VIABLE_BOOKING_SYNC_DATA_MINS
-    ) {
-      const slots: Slot[] = transformAvailableSlots(
-        realtime?.availableBookingSlots ?? [],
-        metrics.openTimes,
-        timezone,
-      );
+//     dlog('getBookingSlots ➡️ lastSyncInMins:', lastSyncInMins);
 
-      response.json({
-        slots,
-        seatingDuration,
-        isRealtime: true,
-        openTimes: metrics.openTimes,
-      });
+//     // HOWEVER! We must ensure that this data is recent, and was refreshed less than an hour ago.
+//     if (
+//       realtime?.availableBookingSlots &&
+//       lastSyncInMins < TIME.OLDEST_VIABLE_BOOKING_SYNC_DATA_MINS
+//     ) {
+//       const slots: Slot[] = transformAvailableSlots(
+//         realtime?.availableBookingSlots ?? [],
+//         metrics.openTimes,
+//         timezone,
+//       );
 
-      return;
-    }
+//       response.json({
+//         slots,
+//         seatingDuration,
+//         isRealtime: true,
+//         openTimes: metrics.openTimes,
+//       });
 
-    // NO REALTIME INFORMATION AVAILABLE
-    // Should we default to open times?
-    if (settings?.shouldFallbackToOpenTimes === false) {
-      const DAYS_IN_WEEK = 7;
+//       return;
+//     }
 
-      const slots: Slot[] = [];
-      for (let i = 0; i < DAYS_IN_WEEK; i++) {
-        const rollingDate = startingDate.plus({ days: i });
+//     // NO REALTIME INFORMATION AVAILABLE
+//     // Should we default to open times?
+//     if (settings?.shouldFallbackToOpenTimes === false) {
+//       const DAYS_IN_WEEK = 7;
 
-        const slot: Slot = {
-          open: false,
-          range: [0, 0],
-          times: [],
-          ordinal: rollingDate.ordinal,
-          timestamp: rollingDate.toMillis(),
-          daysFromToday: i,
-        };
+//       const slots: Slot[] = [];
+//       for (let i = 0; i < DAYS_IN_WEEK; i++) {
+//         const rollingDate = startingDate.plus({ days: i });
 
-        slots.push(slot);
-      }
+//         const slot: Slot = {
+//           open: false,
+//           range: [0, 0],
+//           times: [],
+//           ordinal: rollingDate.ordinal,
+//           timestamp: rollingDate.toMillis(),
+//           daysFromToday: i,
+//         };
 
-      response.json({
-        slots,
-        seatingDuration,
-        isRealtime: true,
-        openTimes: metrics.openTimes,
-      });
-      return;
-    }
+//         slots.push(slot);
+//       }
 
-    // Falling back to open times.
-    const slots: Slot[] = [];
-    for (let i = 0; i < ALLOWED_DAYS_INTO_FUTURE; i++) {
-      // Advance the days by `i` and
-      // match the current day of the week with open days.
-      const rollingDate = startingDate.plus({ days: i });
-      const currentDayZeroed = toZeroIndexedDays(rollingDate.weekday);
+//       response.json({
+//         slots,
+//         seatingDuration,
+//         isRealtime: true,
+//         openTimes: metrics.openTimes,
+//       });
+//       return;
+//     }
 
-      // prettier-ignore
-      const range = metrics?.openTimes[String(currentDayZeroed)]?.range ?? [0, 1440];
-      const open = metrics?.openTimes[String(currentDayZeroed)]?.open ?? false;
+//     // Falling back to open times.
+//     const slots: Slot[] = [];
+//     for (let i = 0; i < ALLOWED_DAYS_INTO_FUTURE; i++) {
+//       // Advance the days by `i` and
+//       // match the current day of the week with open days.
+//       const rollingDate = startingDate.plus({ days: i });
+//       const currentDayZeroed = toZeroIndexedDays(rollingDate.weekday);
 
-      // Set a minimum of 30 minutes between each selectable time slot
-      const minimumTimesInterval = 30;
-      const interval = Math.max(
-        seatingDuration / ALLOWED_BOOKINGS_PER_SLOT,
-        minimumTimesInterval,
-      );
+//       // prettier-ignore
+//       const range = metrics?.openTimes[String(currentDayZeroed)]?.range ?? [0, 1440];
+//       const open = metrics?.openTimes[String(currentDayZeroed)]?.open ?? false;
 
-      // Times are defined such that ALLOWED_BOOKINGS_PER_SLOT bookings can
-      // be made per one seatingDuration.
-      const numTimeSlots = (range[1] - range[0]) / interval;
-      const times = [];
+//       // Set a minimum of 30 minutes between each selectable time slot
+//       const minimumTimesInterval = 30;
+//       const interval = Math.max(
+//         seatingDuration / ALLOWED_BOOKINGS_PER_SLOT,
+//         minimumTimesInterval,
+//       );
 
-      // Fill up times; as such: [33, 66, 99, ...], etc.
-      for (let j = 0; j < numTimeSlots; j++) {
-        times.push(range[0] + j * interval);
-      }
+//       // Times are defined such that ALLOWED_BOOKINGS_PER_SLOT bookings can
+//       // be made per one seatingDuration.
+//       const numTimeSlots = (range[1] - range[0]) / interval;
+//       const times = [];
 
-      // Build up slot from this day.
-      const slot: Slot = {
-        open,
-        range,
-        times,
-        ordinal: rollingDate.ordinal,
-        timestamp: rollingDate.toMillis(),
-        daysFromToday: i,
-      };
+//       // Fill up times; as such: [33, 66, 99, ...], etc.
+//       for (let j = 0; j < numTimeSlots; j++) {
+//         times.push(range[0] + j * interval);
+//       }
 
-      slots.push(slot);
-    }
+//       // Build up slot from this day.
+//       const slot: Slot = {
+//         open,
+//         range,
+//         times,
+//         ordinal: rollingDate.ordinal,
+//         timestamp: rollingDate.toMillis(),
+//         daysFromToday: i,
+//       };
 
-    response.json({
-      slots,
-      seatingDuration,
-      isRealtime: false,
-      openTimes: metrics.openTimes,
-    });
-  } catch (error) {
-    response.statusMessage = 'Unknown error';
-    response.status(401);
-    response.end();
-    return;
-  }
-}
+//       slots.push(slot);
+//     }
 
-/** Transforms slots coming from `realtime` into an Array<Slot> */
-const transformAvailableSlots = (
-  isoSlots: string[],
-  openTimes: WeekOpenTimes,
-  timezone: string,
-): Slot[] => {
-  // Fill up slots by the day of the year.
-  const ordinalSlots: { [key: number]: Slot } = {};
+//     response.json({
+//       slots,
+//       seatingDuration,
+//       isRealtime: false,
+//       openTimes: metrics.openTimes,
+//     });
+//   } catch (error) {
+//     response.statusMessage = 'Unknown error';
+//     response.status(401);
+//     response.end();
+//     return;
+//   }
+// }
 
-  // Split isoSlots into days.
-  isoSlots.forEach(iso => {
-    const datetime = DateTime.fromISO(iso).setZone(timezone);
-    const ordinal = datetime.ordinal;
+// /** Transforms slots coming from `realtime` into an Array<Slot> */
+// const transformAvailableSlots = (
+//   isoSlots: string[],
+//   openTimes: WeekOpenTimes,
+//   timezone: string,
+// ): Slot[] => {
+//   // Fill up slots by the day of the year.
+//   const ordinalSlots: { [key: number]: Slot } = {};
 
-    const currentDayZeroed = toZeroIndexedDays(datetime.weekday);
-    const todayOpenTimes: OpenTimesMetricDay =
-      openTimes[String(currentDayZeroed)];
+//   // Split isoSlots into days.
+//   isoSlots.forEach(iso => {
+//     const datetime = DateTime.fromISO(iso).setZone(timezone);
+//     const ordinal = datetime.ordinal;
 
-    const range = todayOpenTimes?.range ?? [0, 1440];
-    const times: number[] = ordinalSlots[ordinal]?.times ?? [];
+//     const currentDayZeroed = toZeroIndexedDays(datetime.weekday);
+//     const todayOpenTimes: OpenTimesMetricDay =
+//       openTimes[String(currentDayZeroed)];
 
-    // Add this particular time to the day.
-    const timeOfThisSlot = datetime.hour * 60 + datetime.minute;
-    times.push(timeOfThisSlot);
+//     const range = todayOpenTimes?.range ?? [0, 1440];
+//     const times: number[] = ordinalSlots[ordinal]?.times ?? [];
 
-    // Ensure we ignore everything from the past.
-    const minsFromNow = datetime.diffNow().as('minutes');
-    if (minsFromNow <= 0) {
-      return;
-    }
+//     // Add this particular time to the day.
+//     const timeOfThisSlot = datetime.hour * 60 + datetime.minute;
+//     times.push(timeOfThisSlot);
 
-    const daysFromToday = ordinal - DateTime.now().setZone(timezone).ordinal;
+//     // Ensure we ignore everything from the past.
+//     const minsFromNow = datetime.diffNow().as('minutes');
+//     if (minsFromNow <= 0) {
+//       return;
+//     }
 
-    // Prevent getting too many days into the future.
-    if (daysFromToday > ALLOWED_DAYS_INTO_FUTURE) {
-      return;
-    }
+//     const daysFromToday = ordinal - DateTime.now().setZone(timezone).ordinal;
 
-    const slot: Slot = {
-      open: true,
-      range,
-      times,
-      ordinal,
-      daysFromToday,
-      timestamp: datetime.set({ hour: 0, minute: 0, second: 0 }).toMillis(),
-    };
+//     // Prevent getting too many days into the future.
+//     if (daysFromToday > ALLOWED_DAYS_INTO_FUTURE) {
+//       return;
+//     }
 
-    // Add to ordinal slots to slice them into days.
-    ordinalSlots[ordinal] = slot;
-  });
+//     const slot: Slot = {
+//       open: true,
+//       range,
+//       times,
+//       ordinal,
+//       daysFromToday,
+//       timestamp: datetime.set({ hour: 0, minute: 0, second: 0 }).toMillis(),
+//     };
 
-  return Object.values(ordinalSlots);
-};
+//     // Add to ordinal slots to slice them into days.
+//     ordinalSlots[ordinal] = slot;
+//   });
+
+//   return Object.values(ordinalSlots);
+// };
