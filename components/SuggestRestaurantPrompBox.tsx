@@ -1,60 +1,60 @@
-import { Button, TastiestBrand } from '@tastiest-io/tastiest-ui';
+import { Button } from '@tastiest-io/tastiest-ui';
 import { useScreenSize } from 'hooks/useScreenSize';
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import StyledUppercase from './text/StyledUppercase';
 
 export default function SuggestRestaurantPrompBox() {
   const { isDesktop } = useScreenSize();
 
   return (
     <div style={{ maxWidth: 800 }} className="flex justify-center">
-      <div className="flex justify-between bg-gradient-to-br from-purple-400 p-6 via-blue-300 to-blue-400 rounded-lg relative drop-shadow-lg">
-        <div className="flex flex-col justify-between">
-          <div>
-            <h4 className="text-3xl font-bold text-light filter drop-shadow-sm">
-              Recommend a restaurant
+      <div className="flex justify-between relative drop-shadow-lg">
+        {/* Image underlay */}
+        <div className="absolute inset-0 overflow-hidden z-0">
+          <Image
+            layout="fill"
+            objectFit="cover"
+            src="https://images.ctfassets.net/tq39z0nxr0bv/3mYExawK75BTsvwsJuJ7DD/534b2ca24534faa542ef5a45bccbfcf5/El_Vaquero_Carousel_5.png"
+          />
+        </div>
+        <div className="absolute inset-0 bg-dark bg-opacity-50 z-0"></div>
+
+        <div className="flex flex-col items-center justify-between py-4 px-4">
+          <div className="z-10 px-6">
+            <h4 className="font-primary text-light filter text-center drop-shadow-sm">
+              <StyledUppercase size="2xl">
+                Recommend a restaurant
+              </StyledUppercase>
             </h4>
-            <div className="pt-2 text-lg text-gray-800">
-              All our restaurant partners are recommended by you, our foodie
-              community.
-              <span className="font-medium"> Only the best make it. </span>
+
+            <div className="pt-2 text-base text-light text-center mb-4">
+              <p className="opacity-75">
+                All our restaurant partners are recommended by you, our foodie
+                community.
+              </p>
+              <p className="leading-none font-medium">
+                {' '}
+                Only the best make it.{' '}
+              </p>
             </div>
           </div>
 
-          <div
-            style={{ height: '5.5rem' }}
-            className="relative flex items-end space-x-10"
-          >
-            <Link href="/recommend">
-              <a className="no-underline">
-                <Button color="light" size="large">
-                  Recommend
-                </Button>
-              </a>
-            </Link>
-
-            {isDesktop ? (
-              <div className="relative">
-                <p className="italic text-lg font-medium">Have your say!</p>
-
-                <img
-                  className="absolute -top-10 -left-6 w-20 fill-current text-light"
-                  src="/assets/ui/bendy-arrow.svg"
-                />
-              </div>
-            ) : (
-              <div className="flex-grow flex justify-end pb-1">
-                <TastiestBrand type="full" theme="dark" size={10} />
-              </div>
-            )}
-          </div>
+          <Link href="/recommend">
+            <a className="no-underline">
+              <Button color="light" size="large">
+                Recommend
+              </Button>
+            </a>
+          </Link>
         </div>
 
-        {isDesktop && (
+        {/* {isDesktop && (
           <div className="flex flex-col justify-end">
             <TastiestBrand type="full" theme="dark" size={10} />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
