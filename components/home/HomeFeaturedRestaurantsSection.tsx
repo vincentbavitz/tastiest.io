@@ -1,4 +1,4 @@
-import { PlusOutlined } from '@ant-design/icons';
+import { BellOutlined } from '@ant-design/icons';
 import { Button } from '@tastiest-io/tastiest-ui';
 import { ContentfulRestaurant, titleCase } from '@tastiest-io/tastiest-utils';
 import DisplayCard from 'components/cards/DisplayCard';
@@ -46,7 +46,9 @@ export default function HomeFeaturedRestaurantsSection(props: Props) {
                       as={`${link.as}?notifications=true`}
                     >
                       <a className="no-underline">
-                        <Button prefix={<PlusOutlined />}>Follow</Button>
+                        <Button color="light" prefix={<BellOutlined />}>
+                          Follow
+                        </Button>
                       </a>
                     </Link>
                   }

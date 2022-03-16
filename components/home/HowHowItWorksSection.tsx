@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
+import { SectionTitle } from 'components/SectionTitle';
 import LineLimit from 'components/text/LineLimit';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Image from 'next/image';
@@ -10,9 +11,11 @@ export default function HomeHowItWorksSection() {
 
   return (
     <Contained>
+      <SectionTitle>How It Works</SectionTitle>
+
       <div
         className={clsx(
-          'relative grid gap-6 grid-rows-1',
+          'relative grid gap-6 grid-rows-1 mt-8',
           isMobile && 'grid-cols-1',
           isTablet && 'grid-cols-3',
           isDesktop && 'grid-cols-3',
