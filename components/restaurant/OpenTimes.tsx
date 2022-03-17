@@ -7,11 +7,11 @@ import {
   minsIntoHumanTime,
   TIME,
   titleCase,
+  useHorusSWR,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
+import { useAuth } from 'hooks/auth/useAuth';
 import React, { useMemo } from 'react';
-import { LocalEndpoint } from 'types/api';
-import { generateLocalEndpoint } from 'utils/routing';
 
 interface Props {
   restaurantId: string;
@@ -35,13 +35,12 @@ type HumanReadableOpenTimeRow = {
 export default function OpenTimes(props: Props) {
   const { restaurantId, wide, small, buffHeight } = props;
 
-  // Grab open times from SWR.
-  const swrURL = generateLocalEndpoint(LocalEndpoint.GET_OPEN_TIMES, {
-    restaurantId: restaurantId,
-  });
-
-  // const { data: openTimes } = useSWR<GetOpenTimesReturn>(swrURL);
-  const openTimes = {} as any;
+  const { token } = useAuth();
+  const { data: openTimes } = useHorusSWR<WeekOpenTimes>(
+    '/restaurants/public/open-times',
+    token,
+    { restaurant_id: restaurantId },
+  );
 
   // If we have successive openTimes that are the same,
   // starting from Monday, list them as (for example)...

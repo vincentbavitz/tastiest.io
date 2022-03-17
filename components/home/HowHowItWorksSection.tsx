@@ -75,7 +75,7 @@ const TimelineBlock: FC<TimelineBlockProps> = props => {
 
       <div
         style={{
-          maxWidth: '300px',
+          maxWidth: '150px',
           margin: '0 auto',
         }}
       >

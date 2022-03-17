@@ -116,15 +116,15 @@ const Index = () => {
           <HomeFeaturedRestaurantsSection restaurants={restaurants} />
         </Element>
 
-        <Element name="featured-dishes-section">
-          <HomeAwardWinningDishesSection dishes={dishes} />
-        </Element>
-
         <Element name="featured-experiences-section">
           <HomeFeaturedExperiencesSection cards={cards} />
         </Element>
 
         <HomeInformationSection />
+
+        <Element name="featured-dishes-section">
+          <HomeAwardWinningDishesSection dishes={dishes} />
+        </Element>
 
         <HomeHowItWorksSection />
 
