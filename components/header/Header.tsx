@@ -13,7 +13,7 @@ import { useSignOut } from 'hooks/auth/useSignOut';
 import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { UI } from '../../constants';
 import { openAuthModal } from '../../state/navigation';
@@ -159,25 +159,25 @@ function DesktopHeader(props: HeaderProps) {
   );
 
   // Prevent clicking when things are loading
-  const { isPageLoading } = usePageLoader();
+  // const { isPageLoading } = usePageLoader();
 
   // We only wnat the searchbar to be invisible on the home page
   // and given that they have not scrolled past the main home search
   const [searchIsShown, setSearchIsShown] = useState(false);
-  useEffect(() => {
-    if (
-      (location.pathname === '/' && searchBarPinnedToHeader) ||
-      location.pathname !== '/'
-    ) {
-      if (!searchIsShown) {
-        setSearchIsShown(true);
-      }
-    } else {
-      if (searchIsShown) {
-        setSearchIsShown(false);
-      }
-    }
-  }, [location.pathname, searchBarPinnedToHeader]);
+  // useEffect(() => {
+  //   if (
+  //     (location.pathname === '/' && searchBarPinnedToHeader) ||
+  //     location.pathname !== '/'
+  //   ) {
+  //     if (!searchIsShown) {
+  //       setSearchIsShown(true);
+  //     }
+  //   } else {
+  //     if (searchIsShown) {
+  //       setSearchIsShown(false);
+  //     }
+  //   }
+  // }, [location.pathname, searchBarPinnedToHeader]);
 
   const navBarRef = useRef(null);
 
@@ -201,7 +201,7 @@ function DesktopHeader(props: HeaderProps) {
               ? 'bg-white'
               : 'bg-dark'
             : 'bg-none',
-          isPageLoading ? 'pointer-events-none' : 'pointer-events-auto',
+          // isPageLoading ? 'pointer-events-none' : 'pointer-events-auto',
         )}
       >
         <Contained>

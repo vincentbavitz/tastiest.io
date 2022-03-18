@@ -1,12 +1,7 @@
-import {
-  CalendarOutlined,
-  CommentOutlined,
-  HeartOutlined,
-  VideoCameraOutlined,
-} from '@ant-design/icons';
 import { Button, Input, Modal, TastiestBrand } from '@tastiest-io/tastiest-ui';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
+import HomeInformationSection from 'components/home/HomeInformationSection';
 import REGEX from 'constants/regex';
 import { EarlyAccessContext } from 'contexts/invite';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -15,7 +10,7 @@ import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { LocalEndpoint } from 'types/api';
 import { generateTitle } from 'utils/metadata';
@@ -156,13 +151,13 @@ const Invite = () => {
 
         <Contained>
           <div className="flex flex-col space-y-10 items-center text-center pt-20">
-            <div>
+            <div className="flex flex-col items-center">
               <TastiestBrand type="full" size={10} />
 
-              <h2 className="text-xl tracking-wide mt-4 leading-none">
+              <h2 className="text-xl tracking-wide mt-4 font-medium leading-none">
                 Premium Dining Experiences
               </h2>
-              <h4 className="text-base mt-4">
+              <h4 className="text-sm font-light mt-1">
                 Partnering only with the best restaurants.
               </h4>
             </div>
@@ -208,74 +203,14 @@ const Invite = () => {
             </div>
 
             <h4 className="text-sm">Stop having disappointing experiences.</h4>
+          </div>
 
-            <div
-              className={clsx(
-                'grid gap-6 grid-rows-1',
-                isMobile && 'grid-cols-1',
-                isTablet && 'grid-cols-2',
-                isDesktop && 'grid-cols-4',
-              )}
-            >
-              <InformationBlock
-                label="Restaurant Stories"
-                description="Feel the atmosphere through our cinematography and interviews"
-                illustration={VideoCameraOutlined}
-              ></InformationBlock>
-              <InformationBlock
-                label="Book Experiences"
-                description="Reserve your table through Tastiest"
-                illustration={CalendarOutlined}
-              ></InformationBlock>
-              <InformationBlock
-                label="Be In The Know"
-                description="Loyal customers follow restaurants and get access to special experiences"
-                illustration={HeartOutlined}
-              ></InformationBlock>
-              <InformationBlock
-                label="Community Driven"
-                description="All restaurants are recommended by you and anonymously tested by us"
-                illustration={CommentOutlined}
-              ></InformationBlock>
-            </div>
+          <div className="">
+            <HomeInformationSection withoutButtons />
           </div>
         </Contained>
       </div>
     </>
-  );
-};
-
-interface InformationBlockProps {
-  label: string;
-  description: string;
-  illustration: React.ForwardRefExoticComponent<any>;
-}
-
-const InformationBlock: FC<InformationBlockProps> = props => {
-  const { illustration: Illustration, label, description } = props;
-
-  return (
-    <div className="flex flex-col gap-4 items-center w-full">
-      <div
-        style={{ maxWidth: '8rem', height: '2em' }}
-        className="flex items-center"
-      >
-        <div className="pt-2 text-center font-medium text-lg leading-5 flex justify-center text-dark">
-          {label}
-        </div>
-      </div>
-
-      <div className="flex justify-center items-center relative w-full h-10 pt-1">
-        <Illustration
-          style={{ filter: 'drop-shadow(0 0 3px #8dd7f4a0)' }}
-          className="text-3xl object-contain"
-        />
-      </div>
-
-      <div style={{ maxWidth: '11rem' }} className="text-sm leading-5">
-        {description}
-      </div>
-    </div>
   );
 };
 

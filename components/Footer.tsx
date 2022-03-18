@@ -272,7 +272,7 @@ const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
         <a>Terms of Sale</a>
       </Link>
     </span>
-    <span>
+    {/* <span>
       <Link href="/influencer-program">
         <a>Influencers Program</a>
       </Link>
@@ -281,7 +281,7 @@ const QuickLinksBlock = ({ flat }: { flat?: boolean }) => (
       <Link href="/affiliate-program">
         <a>Affiliate Program</a>
       </Link>
-    </span>
+    </span> */}
   </>
 );
 
