@@ -125,7 +125,7 @@ export function AbstractExperienceCard(
         <div className={clsx('bg-white text-dark pt-4 pb-3 px-4')}>
           {/* Title */}
           <h4
-            style={{ height: '3.15em' }}
+            style={{ height: '4rem' }}
             className="text-base leading-tight font-semibold pb-2"
           >
             {product.name}

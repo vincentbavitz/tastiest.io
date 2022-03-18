@@ -1,26 +1,20 @@
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { YouTubeVideo } from '@tastiest-io/tastiest-horus';
 import { dlog } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import { SectionTitle } from 'components/SectionTitle';
-import { YouTubeVideo } from 'components/YouTubeVideo';
+import { YouTubeVideo as YouTubeVideoComponent } from 'components/YouTubeVideo';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useEffect, useRef, useState } from 'react';
 
-type CarouselVideo = {
-  url: string;
-  title: string;
-};
+interface VideoCarouselProps {
+  videos: YouTubeVideo[];
+}
 
-const videos: CarouselVideo[] = [
-  {
-    title: 'A glimpse of Numa',
-    url: 'https://www.youtu.be/YZRWpjeB4DQ',
-  },
-  { title: `Numa's Story: Emil Pekarsky`, url: 'https://youtu.be/-l9JZKI5WSc' },
-];
+export default function VideoCarousel(props: VideoCarouselProps) {
+  const { videos } = props;
 
-export default function VideoCarousel() {
   // Index of the video currently visible.
   const [currentVideo, setCurrentVideo] = useState<number>(0);
   const [previousVideo, setPreviousVideo] = useState<number>(0);
@@ -41,8 +35,6 @@ export default function VideoCarousel() {
   // const scrollLengthPx = useMemo(() => {
   //   return refSpacerVideo.current?.getBoundingClientRect().width;
   // }, [refSpacerVideo, screenWidth, isMobile, isTablet, isDesktop]);
-
-  dlog('VideoCarousel ➡️ scrollLengthPx:', scrollLengthPx);
 
   const scrollToRight = () => {
     const currentScrollPosition = refScrollContainer.current?.scrollLeft;
@@ -151,7 +143,7 @@ export default function VideoCarousel() {
           onClick={toNextVideo}
           className={clsx(
             'flex items-center justify-center w-10 h-10 rounded-full bg-secondary cursor-pointer filter duration-300 hover:brightness-110 z-50',
-            currentVideo === videos.length - 1
+            currentVideo === videos?.length - 1
               ? 'pointer-events-none opacity-50'
               : 'pointer-events-auto opacity-100',
           )}
@@ -177,7 +169,7 @@ export default function VideoCarousel() {
           isDesktop && 'px-10 pt-3',
         )}
       >
-        {videos.map((video, key) => {
+        {videos?.map((video, key) => {
           const isFocused = key === currentVideo;
 
           return (
@@ -207,7 +199,7 @@ export default function VideoCarousel() {
                       : 'border-opacity-0 pointer-events-none',
                   )}
                 >
-                  <YouTubeVideo url={video.url} />
+                  <YouTubeVideoComponent url={video.url} />
                 </div>
 
                 <h4
@@ -233,6 +225,10 @@ export default function VideoCarousel() {
       </div>
     </div>
   );
+
+  if (videos?.length === 0) {
+    return null;
+  }
 
   return (
     <div className="w-full mb-10">

@@ -4,6 +4,7 @@ import {
   WeekOpenTimes,
 } from '@tastiest-io/tastiest-horus';
 import {
+  dlog,
   minsIntoHumanTime,
   TIME,
   titleCase,
@@ -46,6 +47,9 @@ export default function OpenTimes(props: Props) {
   // starting from Monday, list them as (for example)...
   // Monday to Wednesday: 9:00 AM --> 4:30 PM
   const { timeRows, transformRowIntoHumanLanguage } = useOpenTimes(openTimes);
+
+  dlog('OpenTimes ➡️ openTimes:', openTimes);
+  dlog('OpenTimes ➡️ timeRows:', timeRows);
 
   return (
     <div

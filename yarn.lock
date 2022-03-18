@@ -1919,10 +1919,18 @@
   dependencies:
     mini-svg-data-uri "^1.2.3"
 
-"@tastiest-io/tastiest-horus@^0.12.0":
-  version "0.12.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-horus/0.12.0/d84b01b3ef59ed322ab89e02cb04feb0b9762ca2cb5eb87cc859b6341a9c2a8e#9a2763ef78e2674eb03681e17d20538f09734393"
-  integrity sha512-94BVTAjjmhT91XsjzX6lAIhEGLydF/xZ/Gumr4skL2axhR3dIz23XjVWasPpzQjywr0b9X+86h1eCGkDrlH1zg==
+"@tastiest-io/tastiest-horus@^0.14.0":
+  version "0.14.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-horus/0.14.0/64982eae61dc59a446d5a1b2298324a13494a48be6eaa6514902b594116a0192#1f716796e774892ee535ac3613c0156555b72d86"
+  integrity sha512-Y3rEkZqbGxJKpswprPDHe2le86z5qjHHVgYnZf5UStJJ3T3lgg7A95NxJ/dWGJLonx4A2NJernindWEwiNuYNQ==
+  dependencies:
+    "@contentful/rich-text-types" "^15.11.1"
+    "@types/stripe" "^8.0.417"
+
+"@tastiest-io/tastiest-horus@^0.16.0":
+  version "0.16.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-horus/0.16.0/6aaaa332519e8d274a95a6a06e127ee912f98a9b600459cdeebd99f3aa979600#5e6939f5cff8fd49cd6c43e367c3b88a77ab2394"
+  integrity sha512-G2fCcf6XOfw02f01QaICFVTHXNWfmxRl6CHuFucr9iFND/DGcuzaMjIpzCW7ngbVl/TSv4+sI3Ln9MZtYBnPww==
   dependencies:
     "@contentful/rich-text-types" "^15.11.1"
     "@types/stripe" "^8.0.417"
@@ -1946,18 +1954,19 @@
     react-table "^7.7.0"
     uuid "^8.3.2"
 
-"@tastiest-io/tastiest-utils@^1.79.0":
-  version "1.79.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.79.0/cfe7b9e608f4df445927b619758addc9c51d13dbdb70f9ec219d728db53306f1#84cbb1aee457245c1fe9cc508700ea49fcab696f"
-  integrity sha512-2m6AjQAKVzZCYPGOB+y+yJW3Q3hLPKGwaBFw+VI5uEvDLgprhwTvr+Y3QRoADGkR7Yc58/vGPP+0E0z8fJ0yBA==
+"@tastiest-io/tastiest-utils@^1.81.0":
+  version "1.81.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.81.0/0ffe61b9bd060c7357ef40267c166ea087e40d37e7d0420b0bbd07df8a7850cc#292c281bbe86bc99a1209b54fe7193ee0b49341d"
+  integrity sha512-+kQdGxoNV4HpxLsf4qOHjvQmvBBfnATawLdaN0VSLHTgl9HldTDmjQFdtrOlH4DvvxZGd4qhL23WVUOL7o1ArA==
   dependencies:
     "@contentful/rich-text-types" "^14.1.2"
     "@shopify/shopify-api" "^1.4.0"
     "@stripe/stripe-js" "^1.13.2"
-    "@tastiest-io/tastiest-horus" "^0.12.0"
+    "@tastiest-io/tastiest-horus" "^0.16.0"
     "@types/react" "^17.0.3"
     contentful "^8.2.1"
     crypto-hash "^1.3.0"
+    eslint-config-prettier "^8.5.0"
     firebase-admin "^9.6.0"
     luxon "^2.0.2"
     moment "^2.29.1"
@@ -5590,6 +5599,11 @@ eslint-config-prettier@^6.11.0:
   integrity sha512-oB8cpLWSAjOVFEJhhyMZh6NOEOtBVziaqdDQ86+qhDHFbZXoRTM7pNSvFRfW/W/L/LrQ38C99J5CGuRBBzBsdA==
   dependencies:
     get-stdin "^6.0.0"
+
+eslint-config-prettier@^8.5.0:
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.5.0.tgz#5a81680ec934beca02c7b1a61cf8ca34b66feab1"
+  integrity sha512-obmWKLUNCnhtQRKc+tmnYuQl0pFU1ibYJQ5BGhTVB08bHe9wC8qUeG7c08dj9XX+AuPj1YSGSQIHl1pnDHZR0Q==
 
 eslint-import-resolver-node@^0.3.4:
   version "0.3.4"

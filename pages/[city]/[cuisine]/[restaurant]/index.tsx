@@ -131,10 +131,6 @@ const RestaurantPage = (
     };
   }, [restaurant]);
 
-  dlog('index ➡️ posts:', posts);
-  dlog('index ➡️ tastiestDishes:', tastiestDishes);
-  dlog('index ➡️ restaurant.video:', restaurant);
-
   return (
     <>
       <Head>
@@ -190,7 +186,7 @@ const RestaurantPage = (
       <div className="h-14"></div>
 
       <Element name="videos-section">
-        <VideoCarousel />
+        <VideoCarousel videos={restaurant.feature_videos} />
       </Element>
 
       <div className="w-full h-16 flex flex-col items-center justify-center">
