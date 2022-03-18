@@ -39,7 +39,7 @@ export default function HomeInformationSection(props: Props) {
           <InformationBlock
             label="Community Driven"
             image={
-              'https://images.ctfassets.net/tq39z0nxr0bv/2WFskjswTMEGw1o8IL524U/484db6a04ef839b11e62b9ff12d15a2a/Booked_table.png'
+              'https://images.ctfassets.net/tq39z0nxr0bv/1TlvBsEdpgkH2s96M4K2JH/6c4cb3234bfe5e0c2c2ef44dc4639eb3/Hands_and_wine_glasses_blue.png?h=400'
             }
             sublabel="All restaurants are recommended by you and anonymously tested by us"
             withoutButton={withoutButtons}
@@ -49,7 +49,7 @@ export default function HomeInformationSection(props: Props) {
 
           <InformationBlock
             label="Restaurant Stories"
-            image="https://images.ctfassets.net/tq39z0nxr0bv/2WFskjswTMEGw1o8IL524U/484db6a04ef839b11e62b9ff12d15a2a/Booked_table.png"
+            image="https://images.ctfassets.net/tq39z0nxr0bv/115r7wGs5FM1fY953TceAv/dee35d3a25c8611fa61605ba11b7779e/600-book.png"
             sublabel="Feel the atmosphere through our cinematography and interviews"
             withoutButton={withoutButtons}
             buttonText="Browse restaurants"
@@ -65,7 +65,7 @@ export default function HomeInformationSection(props: Props) {
           <InformationBlock
             label="Book Directly"
             image={
-              'https://images.ctfassets.net/tq39z0nxr0bv/5MpdJ86OOL03uMdcVM3iKO/4b7b91bd89a566bf2b5adee632874a51/Hands_and_wine_glasses.png'
+              'https://images.ctfassets.net/tq39z0nxr0bv/6Dw5ERJtjrrbCxGYL9OGA6/23dd081ee2322ec43af3e36cdd06f5de/Table_booked.png?h=400'
             }
             sublabel="Reserve your table through Tastiest"
             withoutButton={withoutButtons}
@@ -82,7 +82,7 @@ export default function HomeInformationSection(props: Props) {
           <InformationBlock
             label="Be In The Know"
             image={
-              'https://images.ctfassets.net/tq39z0nxr0bv/5c57DUVOkAxWtCfwi64jsk/28cab1c3a0b45f5f597df09a21fb17fc/Loyalty.png'
+              'https://images.ctfassets.net/tq39z0nxr0bv/3Q1dNV5LTzXKI1KM5rJpfq/1b78be9e0266ef33142098aa57cb2f35/Loyalty_hand.png?h=400'
             }
             sublabel="Loyal customers follow restaurants and get access to special
             experiences"
