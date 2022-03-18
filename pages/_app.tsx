@@ -8,25 +8,12 @@ import LayoutHandler from 'layouts/LayoutHandler';
 import { DefaultSeo } from 'next-seo';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { METADATA } from '../constants';
 import { AuthProvider } from '../contexts/auth';
 import '../styles/style.scss';
 
 function App({ Component, pageProps, router }: AppProps) {
-  const clientRouter = useRouter();
-
-  // Refuse to let any other page except Numa and El-Vaquero work.
-  useEffect(() => {
-    if (
-      !clientRouter.pathname.includes('el-vaquero') &&
-      !clientRouter.pathname.includes('numa')
-    ) {
-      clientRouter.push('/numa');
-    }
-  }, [clientRouter]);
-
   return (
     <AuthProvider>
       <TrackingProvider>
