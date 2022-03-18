@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import { SectionTitle } from 'components/SectionTitle';
-import LineLimit from 'components/text/LineLimit';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Image from 'next/image';
 import React, { FC } from 'react';
@@ -13,39 +12,32 @@ export default function HomeHowItWorksSection() {
     <Contained>
       <SectionTitle>How It Works</SectionTitle>
 
-      <div
-        className={clsx(
-          'relative grid gap-6 grid-rows-1 mt-8',
-          isMobile && 'grid-cols-1',
-          isTablet && 'grid-cols-3',
-          isDesktop && 'grid-cols-3',
-        )}
-      >
+      <div className={clsx('relative flex flex-col space-y-6 mt-2 pt-6')}>
         <TimelineBlock
           label="Go to a restaurant's page and pick an experience"
-          image="https://images.ctfassets.net/tq39z0nxr0bv/QTS5Y0edHG9RQggGbidtO/b7422c2e6eb1a8125f2df28215040b44/phone.png"
+          image="https://images.ctfassets.net/tq39z0nxr0bv/6z0dRxzex6jSt0Hd5uGqet/0061e8f647d1d176ab3d0f435d0c6008/600-phone.png"
+          place={1}
         />
 
         <TimelineBlock
           label="Book an experience, we'll send your confirmation code"
-          image="https://images.ctfassets.net/tq39z0nxr0bv/6EM4dK2EKzSW79CltjDWfM/9a6ae0e1415f8158cd801181a47dc8fc/calendar.png"
+          image="https://images.ctfassets.net/tq39z0nxr0bv/2SqxPpmBqfaqEmMNPMFfqN/52d8c3c10eb1ee6b83c625ba605896ba/600-calendar.png"
+          place={2}
         />
 
         <TimelineBlock
           label="Give your code to to the restaurant, and enjoy"
-          image="https://images.ctfassets.net/tq39z0nxr0bv/1w8v2RQYJEprawIqborEqx/8b5cdb960c3e983d9a8ca91d3307c535/vip.png"
+          image="https://images.ctfassets.net/tq39z0nxr0bv/68LskaFrEfKGEXk3ZfysNi/476e3dd9c5fbcc0960e617b88ecc4f84/600-vip.png"
+          place={3}
         />
 
         {/* Connecting lines */}
-        {isMobile ? (
-          <div className="absolute inset-0 flex justify-center py-6">
-            <div className="h-full w-2 bg-secondary z-0"></div>
-          </div>
-        ) : (
-          <div className="absolute inset-0 flex items-center z-0 px-6">
-            <div className="w-full h-2 bg-secondary z-0"></div>
-          </div>
-        )}
+        <div
+          style={{ padding: '50px 0' }}
+          className="absolute inset-0 flex justify-start ml-3"
+        >
+          <div className="h-full w-2 bg-gray-200 z-0"></div>
+        </div>
       </div>
     </Contained>
   );
@@ -53,41 +45,38 @@ export default function HomeHowItWorksSection() {
 
 interface TimelineBlockProps {
   label: string;
+  place: number;
   image: string;
 }
 
 const TimelineBlock: FC<TimelineBlockProps> = props => {
-  const { label, image } = props;
-
-  const { isMobile } = useScreenSize();
+  const { label, place, image } = props;
 
   return (
-    <div className="w-full px-4 py-6 bg-white shadow-lg z-10">
-      <h4 className="text-base font-medium text-center leading-snug">
-        {isMobile ? (
-          label
-        ) : (
-          <LineLimit lines={5} fit="tight">
-            {label}
-          </LineLimit>
-        )}
-      </h4>
-
+    <div className="flex items-center gap-4 w-full z-10">
       <div
-        style={{
-          maxWidth: '150px',
-          margin: '0 auto',
-        }}
+        style={{ minWidth: '2rem' }}
+        className="w-8 h-8 flex items-center justify-center bg-white ring-2 ring-primary rounded-full"
       >
+        <p className="font-primary text-primary font-bold text-lg leading-none">
+          {place}
+        </p>
+      </div>
+
+      <div>
         <div
           style={{
-            paddingBottom: '100%',
+            width: '100px',
+            height: '100px',
+            margin: '0 auto',
           }}
-          className="flex justify-center items-center relative w-full h-0"
+          className="relative"
         >
           <Image src={image} layout="fill" objectFit="cover" />
         </div>
       </div>
+
+      <h4 className="text-base font-medium leading-snug">{label}</h4>
     </div>
   );
 };
