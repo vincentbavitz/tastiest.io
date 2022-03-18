@@ -1,4 +1,4 @@
-import { CmsApi, dlog, ExperiencePost } from '@tastiest-io/tastiest-utils';
+import { CmsApi, ContentfulPost, dlog } from '@tastiest-io/tastiest-utils';
 import { ArticleSectionContent } from 'components/article/sections/ArticleSectionContent';
 import { useTrack } from 'hooks/useTrack';
 import { Layouts } from 'layouts/LayoutHandler';
@@ -24,7 +24,7 @@ interface IPath {
 export const getStaticPaths: GetStaticPaths = async () => {
   const cms = new CmsApi();
 
-  let posts: ExperiencePost[] = [];
+  let posts: ContentfulPost[] = [];
   let page = 1;
   let foundAllPosts = false;
 
@@ -46,7 +46,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       slug: item.slug,
       city: item.city.toLowerCase(),
       cuisine: item.cuisine.toLowerCase(),
-      restaurant: item.restaurant.uriName.toLowerCase(),
+      restaurant: item.restaurant.uri_name.toLowerCase(),
     },
   }));
 
@@ -68,8 +68,8 @@ export const getStaticProps = async ({ params }) => {
   if (!post) {
     return {
       props: {
-        post: (null as never) as ExperiencePost,
-        posts: (null as never) as ExperiencePost[],
+        post: (null as never) as ContentfulPost,
+        posts: (null as never) as ContentfulPost[],
       },
       notFound: true,
     };
@@ -114,7 +114,7 @@ function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
         generateStaticURL({
           city: restaurant.city,
           cuisine: restaurant.cuisine,
-          restaurant: restaurant.uriName,
+          restaurant: restaurant.uri_name,
           slug: post.slug,
         }).as
       }/continue`,
@@ -145,19 +145,18 @@ function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
       </Head>
 
       <ProductJsonLd
-        productName={post.deal.name}
-        images={[post.deal.image.url]}
+        productName={post.product.name}
+        images={[post.product.image.url]}
         description={post.description}
-        slogan={post.deal.tagline}
         offers={[
           {
-            price: post.deal.pricePerHeadGBP.toFixed(2),
+            price: post.product.price.toFixed(2),
             priceCurrency: 'GBP',
             seller: { name: post.restaurant.name },
             url: generateStaticURL({
               city: restaurant.city,
               cuisine: restaurant.cuisine,
-              restaurant: restaurant.uriName,
+              restaurant: restaurant.uri_name,
             }).as,
           },
         ]}

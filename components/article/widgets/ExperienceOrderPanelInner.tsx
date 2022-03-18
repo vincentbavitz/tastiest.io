@@ -1,7 +1,7 @@
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button } from '@tastiest-io/tastiest-ui';
 import {
-  ExperienceProduct,
+  ContentfulProduct,
   getMinsIntoDay,
   minsIntoHumanTime,
   TIME,
@@ -11,44 +11,35 @@ import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import MobileBottomButton from 'components/MobileBottomButton';
 import XScrollSelectItem from 'components/XScrollSelectItem';
 import { useAuth } from 'hooks/auth/useAuth';
-import usePostFetch from 'hooks/usePostFetch';
 import { DateTime } from 'luxon';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import {
-  CreateNewOrderParams,
-  CreateNewOrderReturn,
-} from 'pages/api/payments/createNewOrder';
-import {
-  GetBookingSlotsReturn,
-  Slot,
-} from 'pages/api/restaurant/getBookingSlots';
 import React, { useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import { LocalEndpoint } from 'types/api';
 import { generateLocalEndpoint, generateStaticURL } from 'utils/routing';
 import { ExperienceOrderPanelProps } from './ExperienceOrderPanelDesktop';
 
-export const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
+export const useOrderPanel = (product: ContentfulProduct, slug: string) => {
   const { isSignedIn } = useAuth();
   const router = useRouter();
 
   // Update the selected booking day
-  const [selectedDay, setSelectedDay] = useState<Slot>(null);
+  const [selectedDay, setSelectedDay] = useState<any>(null);
   const [selectedTime, setSelectedTime] = useState<number>(null);
 
   // Set valid heads from the first mount
-  const allowedHeads = deal.allowedHeads.sort((a, b) => a - b);
+  const allowedHeads = product.allowed_heads.sort((a, b) => a - b);
   const [heads, setHeads] = useState<number>(allowedHeads[0]);
 
   const swrURL = generateLocalEndpoint(LocalEndpoint.GET_BOOKING_SLOTS, {
-    restaurantId: deal.restaurant.id,
-    offerId: deal.id,
+    restaurantId: product.restaurant.id,
+    offerId: product.id,
     // timezone: DateTime.local().zoneName,
     timezone: TIME.LOCALES.LONDON,
   });
 
-  const { data } = useSWR<GetBookingSlotsReturn>(swrURL, {
+  const { data } = useSWR<any>(swrURL, {
     refreshInterval: 60000,
   });
 
@@ -57,33 +48,33 @@ export const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
     [data],
   );
 
-  const totalPrice = Number(heads) * deal?.pricePerHeadGBP;
+  const totalPrice = Number(heads) * product?.price;
 
-  const { error, execute, success, submitting } = usePostFetch<
-    CreateNewOrderParams,
-    CreateNewOrderReturn
-  >(LocalEndpoint.CREATE_NEW_ORDER, { retries: 1 });
+  // const { error, execute, success, submitting } = usePostFetch<
+  //   CreateNewOrderParams,
+  //   CreateNewOrderReturn
+  // >(LocalEndpoint.CREATE_NEW_ORDER, { retries: 1 });
 
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    if (submitting) {
-      setLoading(true);
-    }
+  // useEffect(() => {
+  //   if (submitting) {
+  //     setLoading(true);
+  //   }
 
-    if (error) {
-      setLoading(false);
-    }
-  }, [submitting, error]);
+  //   if (error) {
+  //     setLoading(false);
+  //   }
+  // }, [submitting, error]);
 
   // Update selected day when when deal changes
   useEffect(() => {
     setSelectedDay(null);
-  }, [deal]);
+  }, [product]);
 
   // Update the selected time when the day Changes
   useEffect(() => {
     setSelectedTime(selectedDay ? selectedDay.times[0] : null);
-  }, [deal, selectedDay]);
+  }, [product, selectedDay]);
 
   const toCheckoutLink = useMemo(() => {
     if (!selectedDay || !selectedTime) {
@@ -97,7 +88,7 @@ export const useOrderPanel = (deal: ExperienceProduct, slug: string) => {
       })
       .toMillis();
 
-    const search = `?experienceId=${deal.id}&heads=${heads}&bookedForTimestamp=${bookedForTimestamp}&userAgent=${navigator?.userAgent}`;
+    const search = `?experienceId=${product.id}&heads=${heads}&bookedForTimestamp=${bookedForTimestamp}&userAgent=${navigator?.userAgent}`;
     return isSignedIn ? `/checkout${search}` : `/checkout/authorize${search}`;
   }, [isSignedIn, heads, selectedDay, selectedTime]);
 
@@ -122,7 +113,7 @@ interface Props extends ExperienceOrderPanelProps {
 }
 
 function ExperienceOrderPanelInner(props: Props) {
-  const { deal, posts, slug, layout } = props;
+  const { product, posts, slug, layout } = props;
 
   const {
     slots,
@@ -135,7 +126,7 @@ function ExperienceOrderPanelInner(props: Props) {
     totalPrice,
     toCheckoutLink,
     loading,
-  } = useOrderPanel(deal, slug);
+  } = useOrderPanel(product, slug);
 
   const sizes = useMemo(() => {
     const chevronSize = (layout === 'overlay' ? 8 : 6) as 6 | 8;
@@ -157,23 +148,23 @@ function ExperienceOrderPanelInner(props: Props) {
   }, []);
 
   const nextValidHeads = () => {
-    const currentIndex = deal.allowedHeads.findIndex(h => h === heads);
-    const isLast = currentIndex === deal.allowedHeads.length - 1;
+    const currentIndex = product.allowed_heads.findIndex(h => h === heads);
+    const isLast = currentIndex === product.allowed_heads.length - 1;
     if (isLast) {
       return;
     }
 
-    setHeads(deal.allowedHeads[currentIndex + 1]);
+    setHeads(product.allowed_heads[currentIndex + 1]);
   };
 
   const previousValidHeads = () => {
-    const currentIndex = deal.allowedHeads.findIndex(h => h === heads);
+    const currentIndex = product.allowed_heads.findIndex(h => h === heads);
     const isFirst = currentIndex === 0;
     if (isFirst) {
       return;
     }
 
-    setHeads(deal.allowedHeads[currentIndex - 1]);
+    setHeads(product.allowed_heads[currentIndex - 1]);
   };
 
   return (
@@ -187,9 +178,9 @@ function ExperienceOrderPanelInner(props: Props) {
             chevronSize={sizes.chevronSize}
           >
             {posts?.map((_post, key) => {
-              const selected = deal.id === _post.deal.id;
+              const selected = product.id === _post.product.id;
               const basicLink = generateStaticURL({
-                restaurant: _post.restaurant.uriName,
+                restaurant: _post.restaurant.uri_name,
                 cuisine: _post.restaurant.cuisine,
                 city: _post.restaurant.city,
                 slug: _post.slug,
@@ -224,7 +215,7 @@ function ExperienceOrderPanelInner(props: Props) {
                         'whitespace-pre-wrap',
                       )}
                     >
-                      {_post.deal.name}
+                      {_post.product.name}
                     </h4>
                   </XScrollSelectItem>
                 </div>
@@ -259,7 +250,7 @@ function ExperienceOrderPanelInner(props: Props) {
               <Button
                 color="light"
                 onClick={previousValidHeads}
-                disabled={heads === deal.allowedHeads[0]}
+                disabled={heads === product.allowed_heads[0]}
               >
                 <MinusOutlined className="text-2xl" />
               </Button>
@@ -272,7 +263,8 @@ function ExperienceOrderPanelInner(props: Props) {
                 color="light"
                 onClick={nextValidHeads}
                 disabled={
-                  heads === deal.allowedHeads[deal.allowedHeads.length - 1]
+                  heads ===
+                  product.allowed_heads[product.allowed_heads.length - 1]
                 }
               >
                 <PlusOutlined className="text-2xl" />
@@ -310,7 +302,8 @@ function ExperienceOrderPanelInner(props: Props) {
 }
 
 interface TimeSelectorProps {
-  selectedDay: Slot;
+  // selectedDay: Slot;
+  selectedDay: any;
   selectedTime: number;
   setSelectedTime: (value: number) => void;
   chevronSize: 6 | 8;
@@ -364,9 +357,10 @@ const TimeSelector = (props: TimeSelectorProps) => {
 };
 
 interface DaySelectorProps {
-  slots: Slot[];
-  selectedDay: Slot;
-  setSelectedDay: (slot: Slot) => void;
+  // slots: Slot[];
+  slots: any[];
+  selectedDay: any;
+  setSelectedDay: (slot: any) => void;
   chevronSize: 6 | 8;
   selectItemSize: 'small' | 'medium' | 'large';
 }

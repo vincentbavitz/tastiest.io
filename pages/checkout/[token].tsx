@@ -1,16 +1,13 @@
 import { LockOutlined } from '@ant-design/icons';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import { DateObject, HorusOrder } from '@tastiest-io/tastiest-horus';
 import { Button, Tooltip } from '@tastiest-io/tastiest-ui';
 import {
-  Booking,
-  DateObject,
   dlog,
   FirestoreCollection,
   formatCurrency,
-  Order,
   reportInternalError,
-  RestaurantDetails,
   TastiestInternalErrorCode,
   TastiestPaymentError,
 } from '@tastiest-io/tastiest-utils';
@@ -70,9 +67,9 @@ export const getServerSideProps = async (
 
   dlog('[token] ➡️ ordersSnapshot:', ordersSnapshot);
 
-  let order: Order;
+  let order: HorusOrder;
   const error = null;
-  ordersSnapshot.forEach(o => (order = o.data() as Order));
+  ordersSnapshot.forEach(o => (order = o.data() as HorusOrder));
 
   dlog('[token] ➡️ order:', order);
 
@@ -101,7 +98,7 @@ export const getServerSideProps = async (
   }
 
   // Have they already paid? Redriect back to the experience page.
-  if (order.paidAt || order.abandonedAt) {
+  if (order.paid_at || order.abandoned_at) {
     return {
       redirect: {
         destination: generateStaticURL({
@@ -110,10 +107,10 @@ export const getServerSideProps = async (
           // cuisine: order.experience.restaurant.cuisine,
           // city: order.experience.restaurant.city,
           // slug: order.fromSlug,
-          restaurant: order.deal.restaurant.uriName,
-          cuisine: order.deal.restaurant.cuisine,
-          city: order.deal.restaurant.city,
-          slug: order.fromSlug,
+          restaurant: (order as any).product.restaurant.uriName,
+          cuisine: (order as any).product.restaurant.cuisine,
+          city: (order as any).product.restaurant.city,
+          slug: order.from_slug,
         }).as,
         permanent: false,
       },
@@ -127,7 +124,7 @@ export const getServerSideProps = async (
       userToken: cookieToken,
       // CORRECT ME
       // userId: order.user.id,
-      userId: order.userId,
+      userId: order.user_id,
     },
   };
 };
@@ -279,10 +276,10 @@ function CheckoutPayment(
     const _booking = {
       orderId: order.id,
       userId,
-      restaurant: (order.deal.restaurant as never) as RestaurantDetails,
+      restaurant: ((order as any).productt.restaurant as never) as any,
       hasArrived: false,
       confirmationCode: '0033',
-    } as Booking;
+    } as any;
 
     await firebaseClient
       .firestore()
@@ -416,21 +413,21 @@ function CheckoutPayment(
 
         {/* CORRECT ME */}
         {/* <CheckoutCard experienceImage={order.experience.image}> */}
-        <CheckoutCard experienceImage={order.deal.image}>
+        <CheckoutCard experienceImage={(order as any).product.image}>
           <div className="">
             <div className="text-base font-medium">
               <div className="flex justify-between">
                 {/* CORRECT ME */}
                 {/* <span>{order.experience.restaurant.name}</span> */}
-                <span>{order.deal.restaurant.name}</span>
+                <span>{(order as any).product.restaurant.name}</span>
 
                 <span className="font-light">
-                  £{order?.deal?.pricePerHeadGBP}
+                  £{(order as any)?.product?.price}
                 </span>
               </div>
 
               <p className="text-sm mt-2 font-normal leading-tight text-gray-700">
-                {order.deal.name}
+                {(order as any).product.name}
               </p>
             </div>
           </div>
@@ -440,7 +437,7 @@ function CheckoutPayment(
             <span className="font-medium leading-none">
               {/* CORRECT ME */}
               {/* {DateTime.fromISO(order.bookedFor).toFormat('h:mm a, DD')} */}
-              {DateTime.fromMillis(order.bookedForTimestamp).toFormat(
+              {DateTime.fromJSDate(new Date(order.booked_for)).toFormat(
                 'h:mm a, DD',
               )}
             </span>

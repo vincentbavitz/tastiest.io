@@ -1,6 +1,7 @@
 import { ArrowUpOutlined } from '@ant-design/icons';
+import { Media } from '@tastiest-io/tastiest-horus';
 import { CrumbProps } from '@tastiest-io/tastiest-ui';
-import { Media, titleCase } from '@tastiest-io/tastiest-utils';
+import { titleCase } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { ArticleSaveShareWidget } from 'components/article/widgets/ArticleSaveShareWidget';
 import { ExperienceOrderPanelDesktop } from 'components/article/widgets/ExperienceOrderPanelDesktop';
@@ -51,7 +52,7 @@ export default function LayoutExperience({
     const restaurantPath = generateStaticURL({
       city: restaurant.city,
       cuisine: restaurant.cuisine,
-      restaurant: restaurant.uriName,
+      restaurant: restaurant.uri_name,
     }).as;
 
     return [
@@ -84,7 +85,7 @@ export default function LayoutExperience({
           >
             <div className="relative w-full z-0 h-0  aspect-w-10 sm:aspect-w-12 md:aspect-w-16 aspect-h-9">
               <Image
-                src={restaurant.backdropStillFrame.url}
+                src={restaurant.backdrop_still_frame.url}
                 loading={'eager'}
                 layout="fill"
                 priority
@@ -93,7 +94,7 @@ export default function LayoutExperience({
                 loop
                 muted
                 autoPlay
-                src={restaurant.backdropVideo.url}
+                src={restaurant.backdrop_video.url}
                 className={clsx('object-cover w-full h-full')}
                 playsInline // prevent fullscreen on iOS
               />
@@ -145,7 +146,7 @@ const LayoutExperienceMobile = ({
   const restaurantPageUrl = generateStaticURL({
     city: post.restaurant.city,
     cuisine: post.restaurant.cuisine,
-    restaurant: post.restaurant.uriName,
+    restaurant: post.restaurant.uri_name,
   });
 
   const [continuePageLoading, setContinuePageLoading] = useState(false);
@@ -162,8 +163,8 @@ const LayoutExperienceMobile = ({
           <RestaurantLinkBlockButton
             {...restaurantPageUrl}
             restaurantName={post.restaurant.name}
-            seeRestaurantButton={post.seeRestaurantButton}
-            restaurantProfileProfile={post.restaurant.profilePicture}
+            seeRestaurantButton={post.see_restaurant_button}
+            restaurantProfileProfile={post.restaurant.profile_picture}
           />
 
           <RestaurantMapBlock restaurant={post.restaurant} />
@@ -190,7 +191,7 @@ const LayoutExperienceDesktop = ({
   const restaurantPageUrl = generateStaticURL({
     city: post.restaurant.city,
     cuisine: post.restaurant.cuisine,
-    restaurant: post.restaurant.uriName,
+    restaurant: post.restaurant.uri_name,
   });
 
   return (
@@ -201,7 +202,7 @@ const LayoutExperienceDesktop = ({
         </div>
 
         <ExperienceOrderPanelDesktop
-          deal={post.deal}
+          product={post.product}
           slug={post.slug}
           posts={posts}
         />
@@ -211,8 +212,8 @@ const LayoutExperienceDesktop = ({
         <RestaurantLinkBlockButton
           {...restaurantPageUrl}
           restaurantName={post.restaurant.name}
-          seeRestaurantButton={post.seeRestaurantButton}
-          restaurantProfileProfile={post.restaurant.profilePicture}
+          seeRestaurantButton={post.see_restaurant_button}
+          restaurantProfileProfile={post.restaurant.profile_picture}
         />
 
         <RestaurantMapBlock restaurant={post.restaurant} />

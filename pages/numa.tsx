@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 };
 
 function NumaRedirect() {
-  return null;
+  return <></>;
 }
 
 export default NumaRedirect;

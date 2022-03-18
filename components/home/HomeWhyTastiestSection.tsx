@@ -1,12 +1,21 @@
+import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import StyledUppercase from 'components/text/StyledUppercase';
+import { useScreenSize } from 'hooks/useScreenSize';
 import Image from 'next/image';
 import React from 'react';
 
 export default function HomeWhyTastiestSection() {
+  const { isMobile } = useScreenSize();
+
   return (
     <Contained>
-      <div className="flex gap-6 w-full py-16">
+      <div
+        className={clsx(
+          'flex gap-6 w-full pt-16 pb-4',
+          isMobile ? 'flex-col items-center' : '',
+        )}
+      >
         <div
           style={{ minWidth: `${44 / 4}rem` }}
           className="relative w-44 h-44"

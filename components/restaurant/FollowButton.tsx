@@ -35,7 +35,8 @@ export default function FollowButton(props: Props) {
     notificationsLoading,
   } = useFollow(restaurant.id);
 
-  const following = true;
+  // DELETE ME FIX ME CORRECT ME
+  const [following, setFollowing] = useState(false);
 
   const [showFollowModal, setShowFollowModal] = useState(false);
   const toggleFollowRestaurant = (shouldFollow: boolean) => {
@@ -182,8 +183,6 @@ export default function FollowButton(props: Props) {
             {isSignedIn === false ? 'Close' : 'Back'}
           </Button>
 
-          {/*  */}
-
           {isSignedIn ? (
             <Button
               size="large"
@@ -193,6 +192,7 @@ export default function FollowButton(props: Props) {
                 } else {
                   follow();
                   setShowFollowModal(false);
+                  setFollowing(true);
                 }
               }}
               loading={followLoading}

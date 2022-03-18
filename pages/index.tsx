@@ -11,12 +11,12 @@ import HomeFeaturedExperiencesSection from 'components/home/HomeFeaturedExperien
 import HomeFeaturedRestaurantsSection from 'components/home/HomeFeaturedRestaurantsSection';
 import HomeInformationSection from 'components/home/HomeInformationSection';
 import HomeWhyTastiestSection from 'components/home/HomeWhyTastiestSection';
+import HomeHowItWorksSection from 'components/home/HowHowItWorksSection';
 import SuggestRestaurantPrompBox from 'components/SuggestRestaurantPrompBox';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
-import Link from 'next/link';
 import nookies from 'nookies';
 import React, { useEffect, useState } from 'react';
 import Scroll from 'react-scroll';
@@ -110,56 +110,26 @@ const Index = () => {
       />
 
       <div className="flex flex-col mb-10 space-y-10">
-        <div>
-          <HomeWhyTastiestSection />
-          <HomeInformationSection />
-        </div>
+        <HomeWhyTastiestSection />
 
         <Element name="featured-restaurants-section">
           <HomeFeaturedRestaurantsSection restaurants={restaurants} />
-        </Element>
-
-        <Element name="featured-dishes-section">
-          <HomeAwardWinningDishesSection dishes={dishes} />
         </Element>
 
         <Element name="featured-experiences-section">
           <HomeFeaturedExperiencesSection cards={cards} />
         </Element>
 
-        <Contained>
-          <div className="relative flex flex-col overflow-hidden text-center space-y-4 text-lg px-6 py-8 shadow-lg bg-white rounded-xl">
-            <div className="absolute -top-24 -left-24 z-0 bg-blue-300 bg-opacity-10 filter blur-2xl rounded-full w-64 h-64"></div>
-            <div className="absolute -bottom-624 -right-24 z-0 bg-alt-1 bg-opacity-5 filter blur-2xl rounded-full w-64 h-64"></div>
+        <HomeInformationSection />
 
-            <p className="text-xl font-medium z-10">
-              Tastiest was established with one mission in mind:
-              <br />{' '}
-              <span className="italic">
-                revolutionise how you discover exceptional food online.
-              </span>
-            </p>
+        <Element name="featured-dishes-section">
+          <HomeAwardWinningDishesSection dishes={dishes} />
+        </Element>
 
-            <p className="z-10">
-              All our restaurant partners are recommended by you, our foodie
-              community, via{' '}
-              <Link href="/recommend">
-                <a className="text-secondary">this page</a>
-              </Link>{' '}
-              - only the best make it. We interview chefs to understand their
-              culinary creations, and uncover their stories so you see more than
-              just a menu.
-            </p>
-
-            <p>
-              Book, discover and stay up to date with must-try dishes and
-              restaurants by following on Tastiest.
-            </p>
-          </div>
-        </Contained>
+        <HomeHowItWorksSection />
 
         <Contained>
-          <div className="flex justify-center w-full">
+          <div className="flex justify-center w-full py-6">
             <SuggestRestaurantPrompBox />
           </div>
         </Contained>

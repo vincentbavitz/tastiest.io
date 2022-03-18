@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 import { Modal } from '@tastiest-io/tastiest-ui';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
@@ -81,14 +82,33 @@ export default function HomeInformationSection() {
           />
 
           <Modal
-            title="How Follow Works"
+            title="How Following Works"
             show={showFollowModal}
             close={() => setShowFollowModal(false)}
           >
-            <span>
-              When you follow a restaurant, you'll be notified about information
-              that's important to you.
-            </span>
+            <div style={{ maxWidth: '400px' }}>
+              <span>
+                When you follow a restaurant, you'll be notified about
+                information that's important to you.
+              </span>
+
+              <div
+                style={{ paddingBottom: '67%' }}
+                className="h-0 w-full bg-gray-200"
+              >
+                <video
+                  muted
+                  autoPlay
+                  playsInline // prevent fullscreen on iOS
+                  src="https://videos.ctfassets.net/tq39z0nxr0bv/4Ywf56iS0PSDh1FKDO6sSW/eead542476fc5077d81c74c3e08b5d54/simplescreenrecorder-2022-03-15_22.57.53.webm"
+                  className="mt-4 w-full border-2"
+                />
+              </div>
+
+              <p className="text-center mt-4 italic">
+                You can follow restaurants from their profile
+              </p>
+            </div>
           </Modal>
         </div>
       </div>

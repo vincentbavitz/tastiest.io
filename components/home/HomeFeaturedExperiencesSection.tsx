@@ -27,7 +27,11 @@ export default function HomeFeaturedExperiencesSection(props: Props) {
         >
           {cards.map((card, key) => (
             <div key={key} style={{ width: '250px' }}>
-              <AbstractExperienceCard key={card.id} {...card} />
+              <AbstractExperienceCard
+                withViewRestaurant
+                key={card.id}
+                {...card}
+              />
             </div>
           ))}
         </HorizontalScrollable>

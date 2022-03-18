@@ -16,6 +16,7 @@ import { generateStaticURL } from 'utils/routing';
 
 interface AbstractExperienceCardProps extends ContentfulPost {
   withRestaurantName?: boolean;
+  withViewRestaurant?: boolean;
 }
 
 export function AbstractExperienceCard(
@@ -28,6 +29,7 @@ export function AbstractExperienceCard(
     restaurant,
     product,
     withRestaurantName = true,
+    withViewRestaurant = false,
   } = props;
 
   const ref = useRef(null);
@@ -123,7 +125,7 @@ export function AbstractExperienceCard(
         <div className={clsx('bg-white text-dark pt-4 pb-3 px-4')}>
           {/* Title */}
           <h4
-            style={{ height: '3.15em' }}
+            style={{ height: '4rem' }}
             className="text-base leading-tight font-semibold pb-2"
           >
             {product.name}
@@ -143,17 +145,19 @@ export function AbstractExperienceCard(
         </div>
 
         <div className="flex flex-col pb-2 gap-2">
-          <div className="mx-2 border-2 border-dark">
-            <Link href={restaurantHref} as={restaurantAs}>
-              <a className="no-underline">
-                <Button wide color="light" size="large">
-                  <span className=" text-base font-semibold">
-                    View Restaurant
-                  </span>
-                </Button>
-              </a>
-            </Link>
-          </div>
+          {withViewRestaurant ? (
+            <div className="mx-2 border-2 border-dark">
+              <Link href={restaurantHref} as={restaurantAs}>
+                <a className="no-underline">
+                  <Button wide color="light" size="large">
+                    <span className=" text-base font-semibold">
+                      View Restaurant
+                    </span>
+                  </Button>
+                </a>
+              </Link>
+            </div>
+          ) : null}
 
           <div className="mx-2 border-2 border-primary">
             <Link href={experienceHref} as={experienceAs}>

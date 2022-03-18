@@ -1,7 +1,7 @@
 import {
   CmsApi,
-  ExperiencePost,
-  RestaurantContentful,
+  ContentfulPost,
+  ContentfulRestaurant,
   TastiestDish,
 } from '@tastiest-io/tastiest-utils';
 import { Layouts } from 'layouts/LayoutHandler';
@@ -23,9 +23,9 @@ export const getServerSideProps = async (
   if (!environment || !restaurantUriName) {
     return {
       props: {
-        restaurant: null as RestaurantContentful,
+        restaurant: null as ContentfulRestaurant,
         tastiestDishes: null as TastiestDish[],
-        posts: null as ExperiencePost[],
+        posts: null as ContentfulPost[],
       },
       redirect: {
         destination: '/',

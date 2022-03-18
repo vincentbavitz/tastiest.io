@@ -1,4 +1,4 @@
-import { ExperiencePost, ExperienceProduct } from '@tastiest-io/tastiest-utils';
+import { ContentfulPost, ContentfulProduct } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { DESKTOP_OFFER_WIDGET_WIDTH_PX } from 'layouts/LayoutExperience';
@@ -6,15 +6,15 @@ import React from 'react';
 import ExperienceOrderPanelInner from './ExperienceOrderPanelInner';
 
 export interface ExperienceOrderPanelProps {
-  deal: ExperienceProduct;
+  product: ContentfulProduct;
   slug: string;
-  posts: ExperiencePost[];
+  posts: ContentfulPost[];
 }
 
 const OFFER_WIDGET_FLOAT_GAP_PX = 120;
 
 export function ExperienceOrderPanelDesktop(props: ExperienceOrderPanelProps) {
-  const { deal, posts, slug: fromSlug } = props;
+  const { product, posts, slug: fromSlug } = props;
   const { isDesktop } = useScreenSize();
 
   return (
@@ -46,7 +46,7 @@ export function ExperienceOrderPanelDesktop(props: ExperienceOrderPanelProps) {
             <div className="py-2 mx-4">
               <ExperienceOrderPanelInner
                 layout="sidebar"
-                deal={deal}
+                product={product}
                 slug={fromSlug}
                 posts={posts}
               />

@@ -44,6 +44,7 @@ export default function LayoutHome({
                 'https://images.ctfassets.net/tq39z0nxr0bv/t9LBT7P7dVavzwRaECbVn/5d0b7e83c3039a648bd914fb46c0758f/Numa_carousel_2.png'
               }
               layout="fill"
+              objectFit="cover"
               loading={'eager'}
               priority
             />

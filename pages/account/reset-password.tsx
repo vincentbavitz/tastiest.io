@@ -1,27 +1,25 @@
 import {
-  PasswordResetRequest,
   reportInternalError,
   TastiestInternalErrorCode,
-  UserDataApi,
 } from '@tastiest-io/tastiest-utils';
 import { GetServerSideProps } from 'next';
 import nookies from 'nookies';
 import React, { useEffect } from 'react';
 import { useFirebase } from 'react-redux-firebase';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { useAuth } from '../../hooks/auth/useAuth';
 import { useUserData } from '../../hooks/useUserData';
 
 interface Props {
   signInToken: string;
-  resetPasswordRequest: PasswordResetRequest;
+  resetPasswordRequest: any;
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {
   // Get user ID from cookie.
   const cookieToken = nookies.get(context)?.token;
-  const userDataApi = new UserDataApi(firebaseAdmin);
-  const { userId } = await userDataApi.initFromCookieToken(cookieToken);
+  // const userDataApi = new UserDataApi(firebaseAdmin);
+  // const { userId } = await userDataApi.initFromCookieToken(cookieToken);
+  const userId = null;
 
   // If user is signed in, redirect to home.
   if (userId) {
@@ -47,8 +45,9 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   try {
     // Get password reset requests
-    await userDataApi.initFromEmail(email);
-    const { passwordResetRequests: requests } = await userDataApi.getUserData();
+    // await userDataApi.initFromEmail(email);
+    // const { passwordResetRequests: requests } = await userDataApi.getUserData();
+    const requests = [];
 
     if (requests.length === 0) {
       await reportInternalError({
@@ -88,9 +87,10 @@ export const getServerSideProps: GetServerSideProps = async context => {
     }
 
     // Create a sign in token for them
-    const signInToken = await firebaseAdmin
-      .auth()
-      .createCustomToken(userDataApi.userId);
+    // const signInToken = await firebaseAdmin
+    //   .auth()
+    //   .createCustomToken(userDataApi.userId);
+    const signInToken = '';
 
     const props: Props = { signInToken, resetPasswordRequest };
     return {

@@ -1,5 +1,5 @@
 import { CloseOutlined } from '@ant-design/icons';
-import { CmsApi, ExperiencePost } from '@tastiest-io/tastiest-utils';
+import { CmsApi, ContentfulPost } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import ExperienceOrderPanelInner from 'components/article/widgets/ExperienceOrderPanelInner';
 import { Contained } from 'components/Contained';
@@ -7,7 +7,7 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import { DESKTOP_LAYOUT_BREAKPOINT_PX } from 'layouts/LayoutExperience';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetStaticPaths, InferGetStaticPropsType } from 'next';
-import { NextSeo, ProductJsonLd } from 'next-seo';
+import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -28,7 +28,7 @@ interface IPath {
 export const getStaticPaths: GetStaticPaths = async () => {
   const cms = new CmsApi();
 
-  let posts: ExperiencePost[] = [];
+  let posts: ContentfulPost[] = [];
   let page = 1;
   let foundAllPosts = false;
 
@@ -50,7 +50,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       slug: item.slug,
       city: item.city.toLowerCase(),
       cuisine: item.cuisine.toLowerCase(),
-      restaurant: item.restaurant.uriName.toLowerCase(),
+      restaurant: item.restaurant.uri_name.toLowerCase(),
     },
   }));
 
@@ -69,8 +69,8 @@ export const getStaticProps = async ({ params }) => {
   if (!post) {
     return {
       props: {
-        post: (null as never) as ExperiencePost,
-        posts: (null as never) as ExperiencePost[],
+        post: (null as never) as ContentfulPost,
+        posts: (null as never) as ContentfulPost[],
       },
       notFound: true,
     };
@@ -98,7 +98,7 @@ function Continue(props: InferGetStaticPropsType<typeof getStaticProps>) {
       generateStaticURL({
         city: restaurant.city,
         cuisine: restaurant.cuisine,
-        restaurant: restaurant.uriName,
+        restaurant: restaurant.uri_name,
         slug: post.slug,
       }).as,
     [],
@@ -122,25 +122,6 @@ function Continue(props: InferGetStaticPropsType<typeof getStaticProps>) {
       <Head>
         <title>{generateTitle(title)}</title>
       </Head>
-
-      <ProductJsonLd
-        productName={post.deal.name}
-        images={[post.deal.image.url]}
-        description={post.description}
-        slogan={post.deal.tagline}
-        offers={[
-          {
-            price: post.deal.pricePerHeadGBP.toFixed(2),
-            priceCurrency: 'GBP',
-            seller: { name: post.restaurant.name },
-            url: generateStaticURL({
-              city: restaurant.city,
-              cuisine: restaurant.cuisine,
-              restaurant: restaurant.uriName,
-            }).as,
-          },
-        ]}
-      />
 
       <NextSeo
         title={generateTitle(title)}
@@ -199,7 +180,7 @@ function Continue(props: InferGetStaticPropsType<typeof getStaticProps>) {
             <Image
               layout="fill"
               objectFit="cover"
-              src={`${post.deal?.image?.url}?w=700`}
+              src={`${post.product?.image?.url}?w=700`}
             />
           </div>
         </div>
@@ -217,7 +198,7 @@ function Continue(props: InferGetStaticPropsType<typeof getStaticProps>) {
           <ExperienceOrderPanelInner
             layout="overlay"
             posts={posts}
-            deal={post.deal}
+            product={post.product}
             slug={post.slug}
           />
         </div>

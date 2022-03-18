@@ -1,4 +1,4 @@
-import { dlog, ExperienceProduct, Promo } from '@tastiest-io/tastiest-utils';
+import { ContentfulProduct, dlog, Promo } from '@tastiest-io/tastiest-utils';
 
 /**
  * DELETE ME
@@ -27,7 +27,7 @@ export const calculatePromoPrice = (price: number, promo: Promo): number => {
  *
  */
 export const validatePromo = async (
-  deal: ExperienceProduct,
+  deal: ContentfulProduct,
   userId: string,
   promo: Promo,
 ) => {

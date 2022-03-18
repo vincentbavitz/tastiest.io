@@ -1,10 +1,11 @@
-import { ExperiencePost, Media } from '@tastiest-io/tastiest-utils';
+import { Media } from '@tastiest-io/tastiest-horus';
+import { ContentfulPost } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import React, { useMemo } from 'react';
 import { generateStaticURL } from '../../utils/routing';
 
-export function ArticleCardRow(post: ExperiencePost) {
+export function ArticleCardRow(post: ContentfulPost) {
   const { isDesktop } = useScreenSize();
   const { city, slug, cuisine } = post;
 
@@ -14,7 +15,7 @@ export function ArticleCardRow(post: ExperiencePost) {
         city,
         slug,
         cuisine,
-        restaurant: post.restaurant.uriName,
+        restaurant: post.restaurant.uri_name,
       }),
     [],
   );
@@ -25,7 +26,7 @@ export function ArticleCardRow(post: ExperiencePost) {
         <div className="flex flex-col w-full mb-6 space-y-4">
           <div className="flex w-full space-x-6">
             <ArticlePreviewImage
-              image={post.deal.image}
+              image={post.product.image}
               isDesktop={isDesktop}
             />
             <div className="w-2/3">
@@ -39,7 +40,10 @@ export function ArticleCardRow(post: ExperiencePost) {
         </div>
       ) : (
         <div className="flex w-full space-x-6">
-          <ArticlePreviewImage image={post.deal.image} isDesktop={isDesktop} />
+          <ArticlePreviewImage
+            image={post.product.image}
+            isDesktop={isDesktop}
+          />
           <div
             style={{ width: 'min-content' }}
             className="flex flex-col flex-grow"

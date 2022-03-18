@@ -1,4 +1,4 @@
-import { ExperiencePost, titleCase } from '@tastiest-io/tastiest-utils';
+import { ContentfulPost, titleCase } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Image from 'next/image';
 import React from 'react';
@@ -9,7 +9,7 @@ const TITLE_MAX_WIDTH_TABLET_REM = 28;
 const TITLE_MAX_WIDTH_DESKTOP_REM = 20;
 const TITLE_MAX_WIDTH_HUGE_REM = 26;
 
-export function ArticleSectionTitle(props: ExperiencePost) {
+export function ArticleSectionTitle(props: ContentfulPost) {
   const { title, restaurant } = props;
   const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
 
@@ -36,7 +36,7 @@ export function ArticleSectionTitle(props: ExperiencePost) {
       >
         <div className="relative -mt-20 w-full z-0 h-0 aspect-w-10 sm:aspect-w-12 md:aspect-w-16 aspect-h-9">
           <Image
-            src={restaurant.backdropStillFrame.url}
+            src={restaurant.backdrop_still_frame.url}
             loading={'eager'}
             layout="fill"
             priority
@@ -46,7 +46,7 @@ export function ArticleSectionTitle(props: ExperiencePost) {
             muted
             autoPlay
             playsInline // prevent fullscreen on iOS
-            src={restaurant.backdropVideo.url}
+            src={restaurant.backdrop_video.url}
             className="object-cover w-full h-full"
           />
         </div>

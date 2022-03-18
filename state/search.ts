@@ -1,13 +1,13 @@
 import {
-  ExperiencePost,
-  RestaurantContentful,
+  ContentfulPost,
+  ContentfulRestaurant,
   TastiestDish,
 } from '@tastiest-io/tastiest-utils';
 
 export type SearchResult = {
-  posts: ExperiencePost[];
+  posts: ContentfulPost[];
   dishes: TastiestDish[];
-  restaurants: RestaurantContentful[];
+  restaurants: ContentfulRestaurant[];
 };
 
 export interface ISearch {

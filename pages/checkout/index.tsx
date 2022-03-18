@@ -43,7 +43,7 @@ export const getServerSideProps = async (
   const { data } = await postFetch(
     'https://tastiest.io/api/payments/createNewOrder',
     {
-      userId,
+      userId: '',
       dealId: String(context.query.experienceId),
       heads: Number(context.query.heads),
       fromSlug: 'a-taste-of-numa-vegetarian',

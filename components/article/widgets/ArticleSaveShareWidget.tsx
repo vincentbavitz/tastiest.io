@@ -1,6 +1,6 @@
 import { LinkOutlined, ShareAltOutlined } from '@ant-design/icons';
 import { Button, Popover } from '@tastiest-io/tastiest-ui';
-import { ExperiencePost } from '@tastiest-io/tastiest-utils';
+import { ContentfulPost } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { useFavouriteArticle } from 'hooks/article/useFavouriteArticle';
 import useShareArticle from 'hooks/article/useShareArticle';
@@ -8,7 +8,7 @@ import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
 
-export function ArticleSaveShareWidget(props: ExperiencePost) {
+export function ArticleSaveShareWidget(props: ContentfulPost) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { isDesktop } = useScreenSize();
 
@@ -27,7 +27,7 @@ export function ArticleSaveShareWidget(props: ExperiencePost) {
   const { share, hasNativeSharing, tastiestUrl } = useShareArticle(
     {
       ...props,
-      restaurant: props.restaurant.uriName,
+      restaurant: props.restaurant.uri_name,
     },
     { onNoNativeShare: () => setIsDropdownOpen(true) },
   );
