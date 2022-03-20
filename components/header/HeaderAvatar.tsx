@@ -1,9 +1,12 @@
-import { CalendarOutlined, LogoutOutlined } from '@ant-design/icons';
+import {
+  CalendarOutlined,
+  LogoutOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { Dropdown } from '@tastiest-io/tastiest-ui';
 import { titleCase } from '@tastiest-io/tastiest-utils';
 import { useSignOut } from 'hooks/auth/useSignOut';
 import { usePageLoader } from 'hooks/usePageLoader';
-import { useUserData } from 'hooks/useUserData';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -12,14 +15,13 @@ import { openAuthModal } from '../../state/navigation';
 import { UserAvatar } from '../avatar/UserAvatar';
 
 export function HeaderAvatar() {
-  const { user, isSignedIn } = useAuth();
+  const { userData, isSignedIn } = useAuth();
   const { signOut } = useSignOut();
-  const { userData } = useUserData(user);
 
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const displayName = titleCase(userData?.details?.firstName);
+  const displayName = titleCase(userData?.first_name ?? '');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Don't display dropdown on route change
@@ -47,6 +49,14 @@ export function HeaderAvatar() {
           <Dropdown.Trigger>
             <UserAvatar />
           </Dropdown.Trigger>
+
+          <Dropdown.Item
+            display={true}
+            href="/account/bookings"
+            icon={<UserOutlined />}
+          >
+            {userData?.first_name ?? 'Profile'}
+          </Dropdown.Item>
 
           <Dropdown.Item href="/account/bookings" icon={<CalendarOutlined />}>
             Bookings

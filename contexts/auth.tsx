@@ -1,4 +1,5 @@
-import { dlog, FirestoreCollection, Horus } from '@tastiest-io/tastiest-utils';
+import { HorusUser } from '@tastiest-io/tastiest-horus';
+import { dlog, Horus, useHorusSWR } from '@tastiest-io/tastiest-utils';
 import nookies from 'nookies';
 import React, { createContext, useEffect, useState } from 'react';
 import { firebaseClient } from '../utils/firebaseClient';
@@ -6,7 +7,7 @@ import { ANONYMOUS_USER_ID, LocalStorageItem } from './tracking';
 
 type AuthContextShape = {
   user: firebaseClient.User | null;
-  userData: any | null;
+  userData: HorusUser | null;
   isSignedIn: null | boolean;
   token: string | null;
   register?: (
@@ -82,30 +83,13 @@ export function AuthProvider({ children }: any) {
   }, [user]);
 
   // Store user data in the provider.
-  // CORRECT ME
-  // const { data: userData } = useHorusSWR(
-  //   user?.uid ? `/users/${user?.uid}` : null,
-  //   token,
-  //   {
-  //     refreshInterval: 30000,
-  //   },
-  // );
-  const [userData, setUserData] = useState<any | null>(null);
-  useEffect(() => {
-    setInterval(async () => {
-      if (!user) {
-        return;
-      }
-
-      const userDataSnapshot = await firebaseClient
-        .firestore()
-        .collection(FirestoreCollection.USERS)
-        .doc(user.uid)
-        .get();
-
-      setUserData(userDataSnapshot.data() as any);
-    }, 30000);
-  }, [user]);
+  const { data: userData } = useHorusSWR<HorusUser>(
+    token ? '/users/me' : null,
+    { token },
+    {
+      refreshInterval: 30000,
+    },
+  );
 
   dlog('auth ➡️ data:', userData);
 
@@ -146,7 +130,13 @@ export function AuthProvider({ children }: any) {
 
   return (
     <AuthContext.Provider
-      value={{ user, userData, token, isSignedIn, register }}
+      value={{
+        user,
+        userData,
+        token,
+        isSignedIn,
+        register,
+      }}
     >
       {children}
     </AuthContext.Provider>

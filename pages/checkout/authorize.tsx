@@ -33,11 +33,11 @@ export const getServerSideProps = async (
 
   // Now let's make a new order and redirect to /checkout/[token]
   const heads = Number(context.query.heads ?? 0);
-  const experienceId = String(context.query.experienceId);
+  const productId = String(context.query.productId);
   const bookedForTimestamp = Number(context.query.bookedForTimestamp ?? 0);
   const userAgent = context.query.userAgent;
 
-  const checkoutInitLink = `/checkout?heads=${heads}&experienceId=${experienceId}&bookedForTimestamp=${bookedForTimestamp}&userAgent=${userAgent}`;
+  const checkoutInitLink = `/checkout?heads=${heads}&productId=${productId}&bookedForTimestamp=${bookedForTimestamp}&userAgent=${userAgent}`;
 
   // They're already logged in, take them to the checkout.
   if (cookieToken) {
@@ -51,7 +51,7 @@ export const getServerSideProps = async (
 
   // Get experience for the experience image.
   const cms = new CmsApi();
-  const experience = await cms.getDeal(experienceId);
+  const experience = await cms.getDeal(productId);
 
   return {
     props: {

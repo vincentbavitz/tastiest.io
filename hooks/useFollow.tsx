@@ -9,14 +9,12 @@ import { useDispatch } from 'react-redux';
 import { openAuthModal } from 'state/navigation';
 import { LocalEndpoint } from 'types/api';
 import { useAuth } from './auth/useAuth';
-import { useUserData } from './useUserData';
 
 /**
  * Managed following and setting notifications for a specific restaurant.
  */
 export default function useFollow(restaurantId: string) {
-  const { user, isSignedIn } = useAuth();
-  const { userData } = useUserData(user);
+  const { user, userData, isSignedIn } = useAuth();
   const dispatch = useDispatch();
 
   const [following, setFollowing] = useState<boolean | null>(null);
@@ -34,11 +32,13 @@ export default function useFollow(restaurantId: string) {
       return null;
     }
 
-    return Boolean(
-      userData?.metrics?.restaurantsFollowed?.find(
-        r => r.restaurantId === restaurantId,
-      ),
-    );
+    // FIX ME - Get follower relation from Horus
+    // return Boolean(
+    //   userData?.metrics?.restaurantsFollowed?.find(
+    //     r => r.restaurantId === restaurantId,
+    //   ),
+    // );
+    return false;
   }, [restaurantId, user, isSignedIn]);
 
   // Set initial values

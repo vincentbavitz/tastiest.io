@@ -5,7 +5,6 @@ import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
 import { v4 as uuid } from 'uuid';
 import { IState } from '../state/reducers';
 import { useAuth } from './auth/useAuth';
-import { useUserData } from './useUserData';
 
 export enum SupportRequestGenerationError {
   NO_NAME = 'NO_NAME',
@@ -16,8 +15,7 @@ export enum SupportRequestGenerationError {
 }
 
 export function useSupport() {
-  const { user } = useAuth();
-  const { userData } = useUserData(user);
+  const { user, userData } = useAuth();
 
   const firestore = useFirestore();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -119,7 +117,7 @@ export function useSupport() {
       userId: user?.uid ?? null,
       message,
       type,
-      name: userData?.details?.firstName ?? null,
+      name: userData?.first_name ?? null,
       seen: false,
       resolved: false,
       createdAt: Date.now(),

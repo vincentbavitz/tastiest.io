@@ -150,7 +150,7 @@ function CheckoutPayment(
   const [error, setError] = useState<TastiestPaymentError | null>(null);
 
   // CORRECT ME
-  // const { data: order } = useHorusSWR(`/orders/${props.order.token}`, token, {
+  // const { data: order } = useHorusSWR(`/orders/${props.order.token}`, {token}, {
   //   initialData: props.order,
   //   refreshInterval: 5000,
   // });

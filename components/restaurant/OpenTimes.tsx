@@ -39,8 +39,7 @@ export default function OpenTimes(props: Props) {
   const { token } = useAuth();
   const { data: openTimes } = useHorusSWR<WeekOpenTimes>(
     '/restaurants/public/open-times',
-    token,
-    { restaurant_id: restaurantId },
+    { token, query: { restaurant_id: restaurantId } },
   );
 
   // If we have successive openTimes that are the same,
