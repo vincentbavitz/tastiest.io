@@ -1,4 +1,8 @@
-import { CalendarOutlined, LogoutOutlined } from '@ant-design/icons';
+import {
+  CalendarOutlined,
+  LogoutOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { HamburgerIcon } from '@tastiest-io/tastiest-icons';
 import {
   Breadcrumbs,
@@ -35,7 +39,7 @@ export function Header(props: HeaderProps) {
 }
 
 function MobileHeader(props: HeaderProps) {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, userData } = useAuth();
   const { signOut } = useSignOut();
 
   const { transparency = 'none', breadcrumbs, theme = 'light', blank } = props;
@@ -84,6 +88,14 @@ function MobileHeader(props: HeaderProps) {
                   )}
                 />
               </Dropdown.Trigger>
+
+              <Dropdown.Item
+                display={true}
+                href="/account/bookings"
+                icon={<UserOutlined />}
+              >
+                {userData?.first_name ?? 'Profile'}
+              </Dropdown.Item>
 
               <Dropdown.Item
                 display={isSignedIn}

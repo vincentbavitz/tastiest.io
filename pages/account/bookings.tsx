@@ -4,6 +4,7 @@ import {
   QuestionOutlined,
   RightOutlined,
 } from '@ant-design/icons';
+import { HorusUser } from '@tastiest-io/tastiest-horus';
 import { Button, Modal } from '@tastiest-io/tastiest-ui';
 import {
   dlog,
@@ -36,13 +37,13 @@ type MappedOrder = any;
 
 export const getServerSideProps = async context => {
   // Get user ID from cookie.
-  const cookieToken = nookies.get(context)?.token;
-  // const userDataApi = new UserDataApi(firebaseAdmin);
-  // const { userId } = await userDataApi.initFromCookieToken(cookieToken);
-  const userId = null;
+  const token = nookies.get(context)?.token;
+
+  const horus = new Horus(token);
+  const { data: user } = await horus.get<any, HorusUser>('/users/me');
 
   // If no user, redirect to home
-  if (!userId) {
+  if (!user) {
     return {
       redirect: {
         destination: '/?login=1',
@@ -68,14 +69,14 @@ export const getServerSideProps = async context => {
   }
 
   const bookingsSnapshot = await db(FirestoreCollection.BOOKINGS)
-    .where('userId', '==', userId)
+    .where('userId', '==', user.id)
     .orderBy('bookedForTimestamp', 'desc')
     // .limit(RESTULTS_PER_PAGE)
     // .offset((page - 1) * RESTULTS_PER_PAGE)
     .get();
 
   const ordersSnapshot = await db(FirestoreCollection.ORDERS)
-    .where('userId', '==', userId)
+    .where('userId', '==', user.id)
     .orderBy('bookedForTimestamp', 'desc')
     .get();
 
@@ -353,28 +354,26 @@ const ModifyBookingModal = (props: ModifyBookingModalProps) => {
   useLockBodyScroll(isMobile && show);
 
   const {
-    slots,
+    days,
     // heads,
     // setHeads,
     selectedDay,
-    selectedTime,
+    selectedSlot,
     setSelectedDay,
-    setSelectedTime,
-  } = useOrderPanel(order.deal, order.fromSlug);
+    setSelectedSlot,
+  } = useOrderPanel(order.product, order.fromSlug);
 
   const [submitting, setSubmitting] = useState(false);
 
   const selectedDateTime = useMemo<DateTime | null>(() => {
-    if (!selectedTime || !selectedDay) {
+    if (!selectedSlot || !selectedDay) {
       return null;
     }
 
-    return DateTime.fromMillis(selectedDay.timestamp)
-      .setZone(TIME.LOCALES.LONDON)
-      .set({
-        minute: selectedTime,
-      });
-  }, [selectedTime, selectedDay]);
+    return DateTime.fromMillis(selectedSlot.timestamp).setZone(
+      TIME.LOCALES.LONDON,
+    );
+  }, [selectedSlot, selectedDay]);
 
   const setNewBookingDate = async () => {
     if (!token || !selectedDateTime) {
@@ -487,7 +486,7 @@ const ModifyBookingModal = (props: ModifyBookingModalProps) => {
             <div className="flex flex-col space-y-4 mt-4">
               <div className={clsx(isMobile ? '-mx-6' : '-mx-2')}>
                 <ExperienceOrderPanelInner.DaySelector
-                  slots={slots}
+                  days={Object.keys(days).map(k => Number(k))}
                   selectedDay={selectedDay}
                   setSelectedDay={setSelectedDay}
                   selectItemSize={'medium'}
@@ -497,9 +496,10 @@ const ModifyBookingModal = (props: ModifyBookingModalProps) => {
 
               <div className={clsx(isMobile ? '-mx-5' : '-mx-1')}>
                 <ExperienceOrderPanelInner.TimeSelector
+                  slotsOfDay={days[selectedDay]}
                   selectedDay={selectedDay}
-                  selectedTime={selectedTime}
-                  setSelectedTime={setSelectedTime}
+                  selectedSlot={selectedSlot}
+                  setSelectedSlot={setSelectedSlot}
                   selectItemSize={'medium'}
                   chevronSize={6}
                 />
@@ -515,7 +515,7 @@ const ModifyBookingModal = (props: ModifyBookingModalProps) => {
           >
             <h4 className="">
               New booking date set for <br />
-              {selectedDay && selectedTime ? (
+              {selectedDay && selectedSlot ? (
                 <span className="font-medium">
                   {selectedDateTime.toFormat('h:mm a - DDDD')}
                 </span>
@@ -535,7 +535,7 @@ const ModifyBookingModal = (props: ModifyBookingModalProps) => {
         >
           <Button
             loading={submitting}
-            disabled={!selectedDay || !selectedTime}
+            disabled={!selectedDay || !selectedSlot}
             size={isMobile ? 'large' : 'medium'}
             onClick={setNewBookingDate}
           >

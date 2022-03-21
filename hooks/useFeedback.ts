@@ -9,7 +9,6 @@ import { useFirestore } from 'react-redux-firebase';
 import { v4 as uuid } from 'uuid';
 import { useAuth } from './auth/useAuth';
 import { useTrack } from './useTrack';
-import { useUserData } from './useUserData';
 
 interface IRecommendationDetails {
   // For home page recommendation
@@ -37,15 +36,14 @@ interface IRecommendation extends IRecommendationDetails {
 export function useFeedback() {
   const { track } = useTrack();
   const firestore = useFirestore();
-  const { user } = useAuth();
-  const { userData = {} } = useUserData(user);
+  const { user, userData } = useAuth();
 
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { firstName, lastName } = userData?.details ?? {
-    firstName: 'User',
-    lastName: undefined,
+  const { firstName, lastName } = {
+    firstName: userData?.first_name ?? 'User',
+    lastName: userData?.last_name ?? undefined,
   };
 
   const name = `${firstName}${lastName ? ' ' + lastName : ''}`;

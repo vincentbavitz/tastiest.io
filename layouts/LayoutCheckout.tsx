@@ -1,5 +1,4 @@
-import { HorusOrder } from '@tastiest-io/tastiest-horus';
-import { dlog, Horus } from '@tastiest-io/tastiest-utils';
+import { dlog } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { CheckoutStepIndicator } from 'components/checkout/CheckoutStepIndicator';
 import { Contained } from 'components/Contained';
@@ -23,36 +22,6 @@ LayoutProps<InferGetStaticPropsType<typeof getServerSideProps>>) {
 
   const { isSignedIn, token, user } = useAuth();
   const { isMobile, isDesktop } = useScreenSize();
-
-  const toCheckoutWithToken = async () => {
-    const currentUrl = new URL(window.location.href);
-
-    const heads = Number(currentUrl.searchParams.get('heads') ?? 0);
-    const experienceId = currentUrl.searchParams.get('experienceId');
-    const userAgent = currentUrl.searchParams.get('userAgent');
-    const bookedForTimestamp = Number(
-      currentUrl.searchParams.get('bookedForTimestamp') ?? 0,
-    );
-
-    // Horus will tell us whether or not the order was valid.
-    const horus = new Horus(token);
-    const { data: order, error } = await horus.post<any, HorusOrder>(
-      '/orders/new',
-      {
-        experienceId,
-        heads,
-        userAgent,
-        bookedForTimestamp,
-        isTest: process.env.NODE_ENV !== 'production',
-      },
-    );
-
-    dlog('LayoutCheckout ➡️ order:', order);
-
-    if (order && !error) {
-      router.push(`/checkout/${order.token}`);
-    }
-  };
 
   // Router change when they sign in.
   // CORRECT ME

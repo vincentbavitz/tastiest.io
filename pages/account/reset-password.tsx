@@ -7,7 +7,6 @@ import nookies from 'nookies';
 import React, { useEffect } from 'react';
 import { useFirebase } from 'react-redux-firebase';
 import { useAuth } from '../../hooks/auth/useAuth';
-import { useUserData } from '../../hooks/useUserData';
 
 interface Props {
   signInToken: string;
@@ -119,9 +118,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
 function ResetPassword(props: Props) {
   const { signInToken, resetPasswordRequest } = props;
-
-  const { user } = useAuth();
-  const { userData = {} } = useUserData(user);
+  const { user, userData } = useAuth();
 
   const firebase = useFirebase();
 

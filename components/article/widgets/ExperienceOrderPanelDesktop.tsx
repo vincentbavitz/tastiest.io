@@ -33,9 +33,9 @@ export function ExperienceOrderPanelDesktop(props: ExperienceOrderPanelProps) {
               width: isDesktop ? `${DESKTOP_OFFER_WIDGET_WIDTH_PX}px` : '400px',
               maxWidth: isDesktop ? 'unset' : '75vw',
             }}
-            className="relative z-30 bg-white shadow-lg border-2 border-gray-100 pointer-events-auto last:pb-4 border-secondary-1 rounded-xl pb-2"
+            className="relative z-30 bg-white shadow-lg border-2 border-gray-100 pointer-events-auto last:pb-4 border-secondary-1 pb-2"
           >
-            <div className="pb-4 mx-2 overflow-hidden bg-secondary-1 rounded-xl">
+            <div className="pb-4 mx-2 overflow-hidden">
               <div className="flex flex-col justify-center px-2 pt-6 space-y-3">
                 <p className="text-lg leading-none text-center font-primary">
                   Book the experience

@@ -1,4 +1,6 @@
-import { dlog, Horus, postFetch } from '@tastiest-io/tastiest-utils';
+import { HorusOrder } from '@tastiest-io/tastiest-horus';
+import { dlog, Horus } from '@tastiest-io/tastiest-utils';
+import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSidePropsContext } from 'next';
 import nookies from 'nookies';
 import { ParsedUrlQuery } from 'querystring';
@@ -14,6 +16,8 @@ export const getServerSideProps = async (
   const cookieToken = nookies.get(context)?.token;
   const horus = new Horus(cookieToken);
 
+  dlog('index ➡️ cookieToken:', cookieToken);
+
   const { data: user } = await horus.get('/users/me');
 
   const heads = Number(context.query.heads);
@@ -24,7 +28,7 @@ export const getServerSideProps = async (
   // prettier-ignore
   const destination = '/checkout/authorize' + '?' +
       `heads=${heads}` + '&' +
-      `productId=${productId}` + '&' +
+      `product_id=${productId}` + '&' +
       `bookedForTimestamp=${bookedForTimestamp}` + '&' +
       `userAgent=${userAgent}`
 
@@ -38,37 +42,34 @@ export const getServerSideProps = async (
     };
   }
 
-  // CORRECT ME
   // Create a new order.
-  const { data } = await postFetch(
-    'https://tastiest.io/api/payments/createNewOrder',
-    {
-      userId: '',
-      dealId: String(context.query.experienceId),
-      heads: Number(context.query.heads),
-      fromSlug: 'a-taste-of-numa-vegetarian',
-      bookedForTimestamp: Number(context.query.bookedForTimestamp),
-    },
-  );
-
-  await horus.post('/orders/new', {
-    productId: '3AHThFL0lfX3z8mjRgnp6M',
-    heads: 5,
-    userId: 'uEmkrFSIDoZmBadkIKP7upMMjUo2',
-    bookedForTimestamp: 1644453648600,
-    fromSlug: 'any-2-items-from-the-numa-menu-with-a-glass-of-wine-or-cocktail',
+  const response = await horus.post<any, HorusOrder>('/orders/new', {
+    product_id: productId,
+    heads,
+    booked_for_timestamp: bookedForTimestamp,
+    user_agent: userAgent,
+    is_test: process.env.NODE_ENV !== 'production',
+    // promo_code
   });
 
+  console.log('index ➡️ response:', response);
+
+  const { data: order } = response;
+
+  console.log('index ➡️ order:', order);
+
   // Cool - a legit checkout.
-  // CORRECT ME
   return {
     redirect: {
-      destination: `/checkout/${data.token}`,
+      destination: `/checkout/${order.token}`,
       permanent: false,
     },
   };
 };
 
-export default function Checkout() {
-  return <div>hi</div>;
+function Checkout() {
+  return <div></div>;
 }
+
+Checkout.layout = Layouts.BLANK;
+export default Checkout;

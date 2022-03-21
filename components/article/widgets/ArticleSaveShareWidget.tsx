@@ -2,7 +2,6 @@ import { LinkOutlined, ShareAltOutlined } from '@ant-design/icons';
 import { Button, Popover } from '@tastiest-io/tastiest-ui';
 import { ContentfulPost } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
-import { useFavouriteArticle } from 'hooks/article/useFavouriteArticle';
 import useShareArticle from 'hooks/article/useShareArticle';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useState } from 'react';
@@ -31,9 +30,6 @@ export function ArticleSaveShareWidget(props: ContentfulPost) {
     },
     { onNoNativeShare: () => setIsDropdownOpen(true) },
   );
-
-  const { savedArticles, toggleSaveArticle } = useFavouriteArticle();
-  const isArticleSaved = savedArticles.some(slug => slug === props.slug);
 
   return (
     <div className="relative">

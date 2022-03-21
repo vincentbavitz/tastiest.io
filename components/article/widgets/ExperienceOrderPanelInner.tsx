@@ -1,53 +1,64 @@
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { AvailableSlot } from '@tastiest-io/tastiest-horus';
 import { Button } from '@tastiest-io/tastiest-ui';
 import {
   ContentfulProduct,
   getMinsIntoDay,
   minsIntoHumanTime,
   TIME,
+  useHorusSWR,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import MobileBottomButton from 'components/MobileBottomButton';
 import XScrollSelectItem from 'components/XScrollSelectItem';
 import { useAuth } from 'hooks/auth/useAuth';
+import lodash from 'lodash';
 import { DateTime } from 'luxon';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
-import useSWR from 'swr';
-import { LocalEndpoint } from 'types/api';
-import { generateLocalEndpoint, generateStaticURL } from 'utils/routing';
+import { generateStaticURL } from 'utils/routing';
 import { ExperienceOrderPanelProps } from './ExperienceOrderPanelDesktop';
 
+type HorusOpenSlotsResponse = {
+  slots: AvailableSlot[];
+  last_synced: number;
+};
+
 export const useOrderPanel = (product: ContentfulProduct, slug: string) => {
-  const { isSignedIn } = useAuth();
-  const router = useRouter();
+  const { isSignedIn, token } = useAuth();
 
   // Update the selected booking day
-  const [selectedDay, setSelectedDay] = useState<any>(null);
-  const [selectedTime, setSelectedTime] = useState<number>(null);
+  const [selectedDay, setSelectedDay] = useState<number>(null);
+  const [selectedSlot, setSelectedSlot] = useState<AvailableSlot>(null);
 
   // Set valid heads from the first mount
   const allowedHeads = product.allowed_heads.sort((a, b) => a - b);
   const [heads, setHeads] = useState<number>(allowedHeads[0]);
 
-  const swrURL = generateLocalEndpoint(LocalEndpoint.GET_BOOKING_SLOTS, {
-    restaurantId: product.restaurant.id,
-    offerId: product.id,
-    // timezone: DateTime.local().zoneName,
-    timezone: TIME.LOCALES.LONDON,
-  });
+  const { data } = useHorusSWR<HorusOpenSlotsResponse>(
+    '/reservations/public/open-slots',
+    {
+      token,
+      query: {
+        restaurant_id: product.restaurant.id,
+        timezone: TIME.LOCALES.LONDON,
+      },
+    },
+    {
+      refreshInterval: 60000,
+    },
+  );
 
-  const { data } = useSWR<any>(swrURL, {
-    refreshInterval: 60000,
-  });
-
-  const slots = useMemo(
-    () => data?.slots?.sort((a, b) => a.timestamp - b.timestamp) ?? [],
+  const slots: AvailableSlot[] = useMemo(
+    () =>
+      data?.slots?.sort(
+        (a: string, b: string) => new Date(a).getTime() - new Date(b).getTime(),
+      ) ?? [],
     [data],
   );
 
+  const days = useMemo(() => lodash.groupBy(slots, s => s.ordinal), [slots]);
   const totalPrice = Number(heads) * product?.price;
 
   // const { error, execute, success, submitting } = usePostFetch<
@@ -73,33 +84,26 @@ export const useOrderPanel = (product: ContentfulProduct, slug: string) => {
 
   // Update the selected time when the day Changes
   useEffect(() => {
-    setSelectedTime(selectedDay ? selectedDay.times[0] : null);
+    setSelectedSlot(selectedDay ? days[selectedDay]?.[0] : null);
   }, [product, selectedDay]);
 
   const toCheckoutLink = useMemo(() => {
-    if (!selectedDay || !selectedTime) {
+    if (!selectedDay || !selectedSlot) {
       return '#';
     }
 
-    const bookedForTimestamp = DateTime.fromMillis(selectedDay.timestamp)
-      .set({ hour: 0, minute: 0 })
-      .plus({
-        minutes: selectedTime,
-      })
-      .toMillis();
-
-    const search = `?experienceId=${product.id}&heads=${heads}&bookedForTimestamp=${bookedForTimestamp}&userAgent=${navigator?.userAgent}`;
+    const search = `?product_id=${product.id}&heads=${heads}&bookedForTimestamp=${selectedSlot.timestamp}&userAgent=${navigator?.userAgent}`;
     return isSignedIn ? `/checkout${search}` : `/checkout/authorize${search}`;
-  }, [isSignedIn, heads, selectedDay, selectedTime]);
+  }, [isSignedIn, heads, selectedDay, selectedSlot]);
 
   return {
-    slots,
+    days,
     heads,
     setHeads,
     selectedDay,
     setSelectedDay,
-    selectedTime,
-    setSelectedTime,
+    selectedSlot,
+    setSelectedSlot,
     totalPrice,
     toCheckoutLink,
     loading,
@@ -116,13 +120,13 @@ function ExperienceOrderPanelInner(props: Props) {
   const { product, posts, slug, layout } = props;
 
   const {
-    slots,
+    days,
     heads,
     setHeads,
     selectedDay,
-    selectedTime,
+    selectedSlot,
     setSelectedDay,
-    setSelectedTime,
+    setSelectedSlot,
     totalPrice,
     toCheckoutLink,
     loading,
@@ -226,7 +230,7 @@ function ExperienceOrderPanelInner(props: Props) {
 
         <div className="-mx-2 pt-3 border-t border-gray-100">
           <DaySelector
-            slots={slots}
+            days={Object.keys(days).map(k => Number(k))}
             selectedDay={selectedDay}
             setSelectedDay={setSelectedDay}
             chevronSize={sizes.chevronSize}
@@ -236,9 +240,10 @@ function ExperienceOrderPanelInner(props: Props) {
 
         <div className="-mx-1 pt-3 border-t border-gray-100">
           <TimeSelector
+            slotsOfDay={days[selectedDay]}
             selectedDay={selectedDay}
-            selectedTime={selectedTime}
-            setSelectedTime={setSelectedTime}
+            selectedSlot={selectedSlot}
+            setSelectedSlot={setSelectedSlot}
             chevronSize={sizes.chevronSize}
             selectItemSize={sizes.selectItemSize}
           />
@@ -275,7 +280,7 @@ function ExperienceOrderPanelInner(props: Props) {
         {/* Overlay bottom-button */}
         {layout === 'overlay' ? (
           <MobileBottomButton
-            disabled={!selectedTime || !selectedDay}
+            disabled={!selectedSlot || !selectedDay}
             href={toCheckoutLink}
             loading={loading}
           >
@@ -288,7 +293,7 @@ function ExperienceOrderPanelInner(props: Props) {
             <a className="no-underline">
               <Button
                 wide
-                disabled={!selectedTime || !selectedDay}
+                disabled={!selectedSlot || !selectedDay}
                 loading={loading}
               >
                 Book Now
@@ -302,19 +307,22 @@ function ExperienceOrderPanelInner(props: Props) {
 }
 
 interface TimeSelectorProps {
-  // selectedDay: Slot;
-  selectedDay: any;
-  selectedTime: number;
-  setSelectedTime: (value: number) => void;
+  slotsOfDay: AvailableSlot[];
+  selectedDay: number;
+  selectedSlot: AvailableSlot;
+  setSelectedSlot: (value: AvailableSlot) => void;
+
+  // Visual props
   chevronSize: 6 | 8;
   selectItemSize: 'small' | 'medium' | 'large';
 }
 
 const TimeSelector = (props: TimeSelectorProps) => {
   const {
-    selectedTime,
-    setSelectedTime,
+    slotsOfDay,
     selectedDay,
+    selectedSlot,
+    setSelectedSlot,
     chevronSize,
     selectItemSize,
   } = props;
@@ -327,20 +335,28 @@ const TimeSelector = (props: TimeSelectorProps) => {
       chevronSize={chevronSize}
     >
       {selectedDay
-        ? selectedDay.times.map((time, key) => {
+        ? slotsOfDay.map((slot, key) => {
+            const todayOrdinal = DateTime.now().ordinal;
+            const minsIntoToday = getMinsIntoDay(TIME.LOCALES.LONDON);
+
+            // Disabled if it's past the slot's given time, and it's today.
             const disabled =
-              selectedDay.daysFromToday === 0 &&
-              getMinsIntoDay(TIME.LOCALES.LONDON) > time;
+              slot.ordinal === todayOrdinal &&
+              minsIntoToday > slot.minutes_into_day;
 
             return (
               <div key={key}>
                 <XScrollSelectItem
-                  selected={selectedTime === time}
+                  selected={
+                    selectedSlot?.minutes_into_day === slot.minutes_into_day
+                  }
                   disabled={disabled}
                   size={selectItemSize}
-                  onClick={disabled ? undefined : () => setSelectedTime(time)}
+                  onClick={disabled ? undefined : () => setSelectedSlot(slot)}
                 >
-                  <p className="text-xs">{minsIntoHumanTime(time)}</p>
+                  <p className="text-xs">
+                    {minsIntoHumanTime(slot.minutes_into_day)}
+                  </p>
                 </XScrollSelectItem>
               </div>
             );
@@ -357,17 +373,18 @@ const TimeSelector = (props: TimeSelectorProps) => {
 };
 
 interface DaySelectorProps {
-  // slots: Slot[];
-  slots: any[];
-  selectedDay: any;
-  setSelectedDay: (slot: any) => void;
+  days: number[];
+  selectedDay: number;
+  setSelectedDay: (day: number) => void;
+
+  // Visual props
   chevronSize: 6 | 8;
   selectItemSize: 'small' | 'medium' | 'large';
 }
 
 const DaySelector = (props: DaySelectorProps) => {
   const {
-    slots,
+    days,
     selectedDay,
     setSelectedDay,
     chevronSize,
@@ -381,25 +398,24 @@ const DaySelector = (props: DaySelectorProps) => {
       forceButtons
       chevronSize={chevronSize}
     >
-      {slots?.map((slot, key) => {
-        const datetime = DateTime.fromMillis(slot.timestamp).setZone(
-          TIME.LOCALES.LONDON,
-        );
+      {days?.map((ordinal, key) => {
+        // const daysFromToday = ordinal - DateTime.now().ordinal;
+        const datetime = DateTime.fromObject({ ordinal });
 
         // Is it too late for all the times in today?
-        const isTodayUnavailable =
-          slot.daysFromToday === 0 &&
-          !selectedDay?.times.some(time => getMinsIntoDay() < time);
+        const isTodayUnavailable = false;
+        //   daysFromToday === 0 &&
+        //   !selectedDay?.times.some(time => getMinsIntoDay() < time);
 
-        const disabled = !slot.open;
+        const disabled = false;
 
         return isTodayUnavailable ? null : (
           <div key={key}>
             <XScrollSelectItem
-              selected={selectedDay?.ordinal === slot.ordinal}
+              selected={selectedDay === ordinal}
               disabled={disabled}
               size={selectItemSize}
-              onClick={disabled ? undefined : () => setSelectedDay(slot)}
+              onClick={disabled ? undefined : () => setSelectedDay(ordinal)}
             >
               <p className="leading-none">{datetime.weekdayShort}</p>
               <p className="text-xs opacity-75 mt-1">
