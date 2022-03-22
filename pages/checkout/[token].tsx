@@ -7,6 +7,7 @@ import {
   dlog,
   FirestoreCollection,
   formatCurrency,
+  Horus,
   reportInternalError,
   TastiestInternalErrorCode,
   TastiestPaymentError,
@@ -32,7 +33,6 @@ import { useRouter } from 'next/router';
 import nookies from 'nookies';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
 import { firebaseClient } from 'utils/firebaseClient';
 import { generateStaticURL } from 'utils/routing';
 
@@ -48,28 +48,16 @@ export const getServerSideProps = async (
   context: GetServerSidePropsContext,
 ) => {
   const { params } = context;
-  const orderToken = params.token;
+  const orderToken = String(params.token);
   const cookieToken = nookies.get(context)?.token;
 
-  // CORRECT ME
-  // const horus = new Horus(cookieToken);
+  const horus = new Horus(cookieToken);
 
   // // This will automatically fail if the user doesn't own this order.
-  // const { data: order, error } = await horus.get<any, HorusOrderEntity>(
-  //   `orders/${orderToken}`,
-  // );
-
-  const ordersSnapshot = await firebaseAdmin
-    .firestore()
-    .collection(FirestoreCollection.ORDERS)
-    .where('token', '==', orderToken)
-    .get();
-
-  dlog('[token] ➡️ ordersSnapshot:', ordersSnapshot);
-
-  let order: HorusOrder;
-  const error = null;
-  ordersSnapshot.forEach(o => (order = o.data() as HorusOrder));
+  const { data: order, error } = await horus.get<any, HorusOrder>(
+    '/orders/:token',
+    { dynamic: orderToken },
+  );
 
   dlog('[token] ➡️ order:', order);
 
@@ -86,8 +74,6 @@ export const getServerSideProps = async (
       properties: { error },
       raw: error,
     });
-
-    dlog('[token] ➡️ error:', error);
 
     return {
       redirect: {
@@ -107,9 +93,9 @@ export const getServerSideProps = async (
           // cuisine: order.experience.restaurant.cuisine,
           // city: order.experience.restaurant.city,
           // slug: order.fromSlug,
-          restaurant: (order as any).product.restaurant.uriName,
-          cuisine: (order as any).product.restaurant.cuisine,
-          city: (order as any).product.restaurant.city,
+          restaurant: (order as any).restaurant.uri_name,
+          cuisine: (order as any).restaurant.cuisine,
+          city: (order as any).restaurant.city,
           slug: order.from_slug,
         }).as,
         permanent: false,
@@ -140,7 +126,7 @@ type FormData = {
 function CheckoutPayment(
   props: InferGetStaticPropsType<typeof getServerSideProps>,
 ) {
-  const { userId, userToken, orderToken } = props;
+  const { userId, userToken } = props;
   const { token = userToken, userData } = useAuth();
 
   const { isDesktop } = useScreenSize();
@@ -158,22 +144,14 @@ function CheckoutPayment(
 
   // Birthday data-structre can't be handled nicely with use-form.
   // So we can manage it ourselves.
-  // CORRECT ME
-  // const birthdayDateTime = order?.user.birthday
-  //   ? DateTime.fromISO(order?.user.birthday)
-  //   : null;
-
-  // CORRECT ME
-  // const [birthday, setBirthday] = useState<DateObject>({
-  //   day: birthdayDateTime?.day ?? 1,
-  //   month: birthdayDateTime?.month ?? 1,
-  //   year: birthdayDateTime?.year ?? 2000,
-  // });
+  const birthdayDateTime = (order as any)?.user.birthday
+    ? DateTime.fromISO((order as any)?.user.birthday)
+    : null;
 
   const [birthday, setBirthday] = useState<DateObject>({
-    day: 1,
-    month: 1,
-    year: 2000,
+    day: birthdayDateTime?.day ?? 1,
+    month: birthdayDateTime?.month ?? 1,
+    year: birthdayDateTime?.year ?? 2000,
   });
 
   const {
@@ -276,7 +254,7 @@ function CheckoutPayment(
     const _booking = {
       orderId: order.id,
       userId,
-      restaurant: ((order as any).productt.restaurant as never) as any,
+      restaurant: ((order as any).restaurant as never) as any,
       hasArrived: false,
       confirmationCode: '0033',
     } as any;
@@ -413,21 +391,19 @@ function CheckoutPayment(
 
         {/* CORRECT ME */}
         {/* <CheckoutCard experienceImage={order.experience.image}> */}
-        <CheckoutCard experienceImage={(order as any).product.image}>
+        <CheckoutCard experienceImage={order.product_image}>
           <div className="">
             <div className="text-base font-medium">
               <div className="flex justify-between">
                 {/* CORRECT ME */}
                 {/* <span>{order.experience.restaurant.name}</span> */}
-                <span>{(order as any).product.restaurant.name}</span>
+                <span>{(order as any).restaurant.name}</span>
 
-                <span className="font-light">
-                  £{(order as any)?.product?.price}
-                </span>
+                <span className="font-light">£{order.product_price}</span>
               </div>
 
               <p className="text-sm mt-2 font-normal leading-tight text-gray-700">
-                {(order as any).product.name}
+                {order.product_name}
               </p>
             </div>
           </div>

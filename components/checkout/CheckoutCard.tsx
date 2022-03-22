@@ -35,6 +35,7 @@ export const CheckoutCard = (props: CheckoutCardProps) => {
           )}
         >
           <div
+            style={{ minHeight: '200px' }}
             className={clsx(
               'relative bg-opacity-75 overflow-hidden',
               isMobile && 'w-full h-32',
@@ -46,7 +47,7 @@ export const CheckoutCard = (props: CheckoutCardProps) => {
             <Image
               layout="fill"
               className="absolute inset-0 object-cover w-full h-full"
-              src={`${experienceImage?.url}?w=700`}
+              src={experienceImage ? `${experienceImage?.url}?w=700` : '/'}
             />
           </div>
 

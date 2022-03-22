@@ -1,4 +1,3 @@
-import { CmsApi } from '@tastiest-io/tastiest-utils';
 import {
   AuthTabsProvider,
   CheckoutAuthTabs,
@@ -49,14 +48,9 @@ export const getServerSideProps = async (
     };
   }
 
-  // Get experience for the experience image.
-  const cms = new CmsApi();
-  const experience = await cms.getDeal(productId);
-
   return {
     props: {
       heads,
-      experience,
       bookedForTimestamp,
     },
   };
@@ -65,7 +59,9 @@ export const getServerSideProps = async (
 function CheckoutAuthorize(
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) {
-  const { heads, experience } = props;
+  // Product comes from LayoutCheckout
+  // NOTE FIX ME -> In future make a Layout context. Much cleaner.
+  const { heads, product } = props as any;
 
   return (
     <>
@@ -102,14 +98,14 @@ function CheckoutAuthorize(
       </LayoutCheckout.Left>
 
       <LayoutCheckout.Right>
-        <CheckoutCard experienceImage={experience.image}>
+        <CheckoutCard experienceImage={product?.image}>
           <div className="text-base font-medium">
             <div className="flex justify-between">
-              <span>{experience.restaurant.name}</span>
+              <span>{product?.restaurant.name}</span>
             </div>
 
             <p className="text-sm mt-2 font-normal leading-tight text-gray-700">
-              {experience.name}
+              {product?.name}
             </p>
 
             <p className="text-sm font-normal leading-tight">
