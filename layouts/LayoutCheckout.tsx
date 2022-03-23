@@ -1,17 +1,24 @@
-import { CmsApi, ContentfulProduct, dlog } from '@tastiest-io/tastiest-utils';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import clsx from 'clsx';
 import { CheckoutStepIndicator } from 'components/checkout/CheckoutStepIndicator';
 import { Contained } from 'components/Contained';
-import { useAuth } from 'hooks/auth/useAuth';
+import { CheckoutProvider } from 'contexts/checkout';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetStaticPropsType } from 'next';
-import { useRouter } from 'next/router';
-import React, { FC, useEffect, useMemo, useState } from 'react';
-import { CheckoutStep } from 'state/checkout';
+import React, { FC } from 'react';
 import { UI } from '../constants';
 import { getServerSideProps } from '../pages/checkout/[token]';
 import { LayoutProps } from './LayoutHandler';
 import LayoutWrapper from './LayoutWrapper';
+
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+const stripePromise = loadStripe(
+  process.env.NODE_ENV !== 'production'
+    ? process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY
+    : process.env.NEXT_PUBLIC_STRIPE_LIVE_PUBLISHABLE_KEY,
+);
 
 function LayoutCheckout({
   pageProps,
@@ -19,54 +26,8 @@ function LayoutCheckout({
   children: Component,
 }: // }: LayoutProps<InferGetStaticPropsType<typeof getServerSideProps>>) {
 LayoutProps<InferGetStaticPropsType<typeof getServerSideProps>>) {
-  //   const {  } = pageProps;
-  const clientRouter = useRouter();
-
-  const { isSignedIn, token, user } = useAuth();
   const { isMobile, isDesktop } = useScreenSize();
-
-  const [product, setProduct] = useState<ContentfulProduct>(null);
-
-  const setProductForCheckout = async () => {
-    if (router.query['productId']) {
-      const cms = new CmsApi();
-      const _product = await cms.getProduct(String(router.query['productId']));
-      setProduct(_product);
-    }
-  };
-
-  // If productId is in the URL, fetch the product.
-  useEffect(() => {
-    setProductForCheckout();
-  }, [router.query]);
-
-  // Router change when they sign in.
-  useEffect(() => {
-    // Account for exact values because isSignedIn being null is falsy.
-    if (token && step === CheckoutStep.SIGN_IN) {
-      // Take them to the payment step
-      clientRouter.replace(router.pathname.replace('authorize', ''));
-    }
-
-    if (!token && step === CheckoutStep.PAYMENT) {
-      router.push('/checkout/authorize' + window.location.search);
-    }
-  }, [token]);
-
-  const step: CheckoutStep = useMemo(
-    () =>
-      router.pathname.startsWith('/checkout/authorize')
-        ? CheckoutStep.SIGN_IN
-        : CheckoutStep.PAYMENT,
-    [router.pathname],
-  );
-
-  dlog('LayoutCheckout ➡️ pageProps:', pageProps);
-
-  const isPaymentProcessing = false;
-  const submit = () => null;
-
-  const pagePropsWithProduct = { ...pageProps, product };
+  const pagePropsWithProduct = { ...pageProps };
 
   return (
     <LayoutWrapper
@@ -74,25 +35,31 @@ LayoutProps<InferGetStaticPropsType<typeof getServerSideProps>>) {
       pageProps={pageProps}
       headerProps={{ blank: true }}
     >
-      <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
-        <div
-          className={clsx(
-            'relative flex flex-col w-full space-y-10',
-            isMobile ? 'mt-14' : 'mt-28',
-          )}
-        >
-          <CheckoutStepIndicator step={step} />
+      <Elements stripe={stripePromise}>
+        <CheckoutProvider>
+          <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
+            <div
+              className={clsx(
+                'relative flex flex-col w-full space-y-10',
+                isMobile ? 'mt-14' : 'mt-28',
+              )}
+            >
+              <CheckoutStepIndicator />
 
-          <div
-            className={clsx(
-              'flex  w-full',
-              isDesktop ? 'justify-between' : 'flex-col-reverse items-center',
-            )}
-          >
-            <Component {...(pagePropsWithProduct as any)} />
-          </div>
-        </div>
-      </Contained>
+              <div
+                className={clsx(
+                  'flex  w-full',
+                  isDesktop
+                    ? 'justify-between'
+                    : 'flex-col-reverse items-center',
+                )}
+              >
+                <Component {...(pagePropsWithProduct as any)} />
+              </div>
+            </div>
+          </Contained>
+        </CheckoutProvider>
+      </Elements>
     </LayoutWrapper>
   );
 }

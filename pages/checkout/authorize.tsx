@@ -1,3 +1,4 @@
+import { dlog } from '@tastiest-io/tastiest-utils';
 import {
   AuthTabsProvider,
   CheckoutAuthTabs,
@@ -62,6 +63,8 @@ function CheckoutAuthorize(
   // Product comes from LayoutCheckout
   // NOTE FIX ME -> In future make a Layout context. Much cleaner.
   const { heads, product } = props as any;
+
+  dlog('authorize ➡️ product:', product);
 
   return (
     <>
