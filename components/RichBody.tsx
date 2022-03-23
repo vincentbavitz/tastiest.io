@@ -16,7 +16,6 @@ import {
   Text,
   UnorderedList,
 } from '@contentful/rich-text-types';
-import { dlog } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import React, { ReactNode } from 'react';
 import {
@@ -77,8 +76,6 @@ export function RichBody(props: Props) {
       renderNode: {
         [BLOCKS.PARAGRAPH]: (node, children) => {
           const plaintext = documentToPlainTextString(node);
-
-          dlog('RichBody ➡️ children:', children);
 
           if (BaseShortCodeRegex.test(plaintext)) {
             // Get all the shortcodes from the string
@@ -223,8 +220,6 @@ export function RichBody(props: Props) {
     }),
     [],
   );
-
-  dlog('RichBody ➡️ body:', body);
 
   const RichBody = documentToReactComponents(body, options);
 
