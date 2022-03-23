@@ -118,7 +118,6 @@ function CheckoutPayment(
   const {
     pay,
     paymentError,
-    addPaymentMethod,
     isPaymentProcessing,
     setIsPaymentProcessing,
   } = useContext(CheckoutContext);
