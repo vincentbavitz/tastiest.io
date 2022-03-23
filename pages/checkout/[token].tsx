@@ -1,12 +1,9 @@
 import { LockOutlined } from '@ant-design/icons';
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
 import { DateObject, HorusOrder } from '@tastiest-io/tastiest-horus';
 import { Button, Tooltip } from '@tastiest-io/tastiest-ui';
 import {
-  dlog,
-  FirestoreCollection,
   formatCurrency,
+  Horus,
   reportInternalError,
   TastiestInternalErrorCode,
   TastiestPaymentError,
@@ -19,6 +16,7 @@ import { InputName } from 'components/inputs/contact/InputName';
 import InputPostcode from 'components/inputs/contact/InputPostcode';
 import { InputDate } from 'components/inputs/InputDate';
 import MobileBottomButton from 'components/MobileBottomButton';
+import { CheckoutContext } from 'contexts/checkout';
 import { useAuth } from 'hooks/auth/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import LayoutCheckout from 'layouts/LayoutCheckout';
@@ -30,48 +28,24 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import nookies from 'nookies';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { firebaseAdmin } from 'utils/firebaseAdmin';
-import { firebaseClient } from 'utils/firebaseClient';
 import { generateStaticURL } from 'utils/routing';
-
-// Make sure to call `loadStripe` outside of a component’s render to avoid
-// recreating the `Stripe` object on every render.
-const stripePromise = loadStripe(
-  process.env.NODE_ENV !== 'production'
-    ? process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY
-    : process.env.NEXT_PUBLIC_STRIPE_LIVE_PUBLISHABLE_KEY,
-);
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,
 ) => {
   const { params } = context;
-  const orderToken = params.token;
+  const orderToken = String(params.token);
   const cookieToken = nookies.get(context)?.token;
 
-  // CORRECT ME
-  // const horus = new Horus(cookieToken);
+  const horus = new Horus(cookieToken);
 
   // // This will automatically fail if the user doesn't own this order.
-  // const { data: order, error } = await horus.get<any, HorusOrderEntity>(
-  //   `orders/${orderToken}`,
-  // );
-
-  const ordersSnapshot = await firebaseAdmin
-    .firestore()
-    .collection(FirestoreCollection.ORDERS)
-    .where('token', '==', orderToken)
-    .get();
-
-  dlog('[token] ➡️ ordersSnapshot:', ordersSnapshot);
-
-  let order: HorusOrder;
-  const error = null;
-  ordersSnapshot.forEach(o => (order = o.data() as HorusOrder));
-
-  dlog('[token] ➡️ order:', order);
+  const { data: order, error } = await horus.get<any, HorusOrder>(
+    '/orders/:token',
+    { dynamic: orderToken },
+  );
 
   // Serious checkout error. Report internal error.
   if (!order || error) {
@@ -86,8 +60,6 @@ export const getServerSideProps = async (
       properties: { error },
       raw: error,
     });
-
-    dlog('[token] ➡️ error:', error);
 
     return {
       redirect: {
@@ -107,9 +79,9 @@ export const getServerSideProps = async (
           // cuisine: order.experience.restaurant.cuisine,
           // city: order.experience.restaurant.city,
           // slug: order.fromSlug,
-          restaurant: (order as any).product.restaurant.uriName,
-          cuisine: (order as any).product.restaurant.cuisine,
-          city: (order as any).product.restaurant.city,
+          restaurant: (order as any).restaurant.uri_name,
+          cuisine: (order as any).restaurant.cuisine,
+          city: (order as any).restaurant.city,
           slug: order.from_slug,
         }).as,
         permanent: false,
@@ -140,13 +112,20 @@ type FormData = {
 function CheckoutPayment(
   props: InferGetStaticPropsType<typeof getServerSideProps>,
 ) {
-  const { userId, userToken, orderToken } = props;
+  const { userId, userToken } = props;
   const { token = userToken, userData } = useAuth();
+
+  const {
+    pay,
+    paymentError,
+    addPaymentMethod,
+    isPaymentProcessing,
+    setIsPaymentProcessing,
+  } = useContext(CheckoutContext);
 
   const { isDesktop } = useScreenSize();
   const router = useRouter();
 
-  const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const [error, setError] = useState<TastiestPaymentError | null>(null);
 
   // CORRECT ME
@@ -158,22 +137,14 @@ function CheckoutPayment(
 
   // Birthday data-structre can't be handled nicely with use-form.
   // So we can manage it ourselves.
-  // CORRECT ME
-  // const birthdayDateTime = order?.user.birthday
-  //   ? DateTime.fromISO(order?.user.birthday)
-  //   : null;
-
-  // CORRECT ME
-  // const [birthday, setBirthday] = useState<DateObject>({
-  //   day: birthdayDateTime?.day ?? 1,
-  //   month: birthdayDateTime?.month ?? 1,
-  //   year: birthdayDateTime?.year ?? 2000,
-  // });
+  const birthdayDateTime = (order as any)?.user.birthday
+    ? DateTime.fromISO((order as any)?.user.birthday)
+    : null;
 
   const [birthday, setBirthday] = useState<DateObject>({
-    day: 1,
-    month: 1,
-    year: 2000,
+    day: birthdayDateTime?.day ?? 1,
+    month: birthdayDateTime?.month ?? 1,
+    year: birthdayDateTime?.year ?? 2000,
   });
 
   const {
@@ -185,116 +156,6 @@ function CheckoutPayment(
     reValidateMode: 'onBlur',
     criteriaMode: 'firstError',
     shouldFocusError: true,
-  });
-
-  // const submit = handleSubmit(
-  //   async ({ firstName, lastName, mobile, cardPostcode, cardHolderName }) => {
-  //     // Start isLoading
-  //     setIsPaymentProcessing(true);
-  //     setError(null);
-
-  //     // const { paymentMethod, error: paymentMethodError } = await addCard(
-  //     //   cardHolderName,
-  //     //   cardPostcode,
-  //     // );
-
-  //     // Error adding card. Either card already exists or validation error
-  //     // if (paymentMethodError) {
-  //     //   dlog('CheckoutStepPayment ➡️ paymentMethodError:', paymentMethodError);
-
-  //     //   setIsPaymentProcessing(false);
-  //     //   setError({
-  //     //     code: 'card_error',
-  //     //     type: 'tastiest-payment-error',
-  //     //     message: 'This card is already in use. Please contact support.',
-  //     //   });
-  //     //   return;
-  //     // }
-
-  //     // const { error: updateOrderError } = await updateOrder({
-  //     //   paymentMethodId: paymentMethod.id,
-  //     // });
-
-  //     // if (updateOrderError) {
-  //     //   dlog('CheckoutStepPayment ➡️ updateOrderError:', updateOrderError);
-  //     //   dispatch(setIsPaymentProcessing(false));
-  //     //   setError({
-  //     //     code: 'update_order_error',
-  //     //     type: 'api_error',
-  //     //     message: 'There was an error updating your order.',
-  //     //   });
-
-  //     //   return { success: false, error: updateOrderError };
-  //     // }
-
-  //     // const { success, error } = await pay();
-
-  //     // Uh-oh - a general payment error!
-  //     // This usually means the card declined.
-  //     if (error) {
-  //       setError({
-  //         code: 'general_payment_error',
-  //         type: 'card_error',
-  //         message:
-  //           'There was an error processing your payment. Please try using another card.',
-  //       });
-
-  //       alert(error);
-
-  //       setIsPaymentProcessing(false);
-  //       return;
-  //     }
-
-  //     if (
-  //       firstName?.length > 0 ||
-  //       lastName?.length > 0 ||
-  //       mobile?.length > 0 ||
-  //       cardPostcode?.length > 0 // ||
-  //       // CORRECT ME
-  //       // JSON.stringify(birthday) !== JSON.stringify(order.user.birthday)
-  //     ) {
-  //       const horus = new Horus(token);
-
-  //       // Update user information
-  //       horus.post('/users/update', {
-  //         uid: userId,
-  //         firstName,
-  //         lastName,
-  //         mobile,
-  //         birthday: DateTime.fromObject(birthday).toJSDate(),
-  //         location: { postcode: cardPostcode },
-  //       });
-  //     }
-  //   },
-  // );
-
-  // CORRECT ME
-  const submit = handleSubmit(async form => {
-    setIsPaymentProcessing(true);
-
-    // Create a booking.
-    const _booking = {
-      orderId: order.id,
-      userId,
-      restaurant: ((order as any).productt.restaurant as never) as any,
-      hasArrived: false,
-      confirmationCode: '0033',
-    } as any;
-
-    await firebaseClient
-      .firestore()
-      .collection(FirestoreCollection.BOOKINGS)
-      .doc(order.id)
-      .set(_booking);
-
-    // Update order
-    await firebaseClient
-      .firestore()
-      .collection(FirestoreCollection.ORDERS)
-      .doc(order.id)
-      .set({ paidAt: Date.now() }, { merge: true });
-
-    router.push(`/thank-you?token=${order.token}`);
   });
 
   return (
@@ -326,45 +187,44 @@ function CheckoutPayment(
       />
 
       <LayoutCheckout.Left>
-        <Elements stripe={stripePromise}>
-          <div>
-            <div className="pt-8 mb-6 text-2xl font-medium text-dark font-primary border-b-2 border-gray-200">
-              Contact details
-            </div>
+        <div>
+          <div className="pt-8 mb-6 text-2xl font-medium text-dark font-primary border-b-2 border-gray-200">
+            Contact details
+          </div>
 
-            <div className="flex flex-col space-y-4">
-              <InputName
-                name="firstName"
-                size="large"
-                label="First Name"
-                // CORRECT ME
-                // defaultValue={titleCase(order.user.firstName)}
-                control={control}
-                disabled={isPaymentProcessing}
-              />
-              <InputName
-                name="lastName"
-                size="large"
-                label="Last Name"
-                // CORRECT ME
-                // defaultValue={order.user.lastName ?? null}
-                control={control}
-                disabled={isPaymentProcessing}
-              />
-              <InputMobile
-                name="mobile"
-                size="large"
-                control={control}
-                disabled={isPaymentProcessing}
-                // CORRECT ME
-                // defaultValue={order.user.mobile ?? null}
-              />
-              <InputDate
-                initialDate={birthday}
-                onDateChange={(_, destructured) => setBirthday(destructured)}
-                maxYear={2010}
-              />
-              {/* label="Birthday" date=
+          <div className="flex flex-col space-y-4">
+            <InputName
+              name="firstName"
+              size="large"
+              label="First Name"
+              // CORRECT ME
+              // defaultValue={titleCase(order.user.firstName)}
+              control={control}
+              disabled={isPaymentProcessing}
+            />
+            <InputName
+              name="lastName"
+              size="large"
+              label="Last Name"
+              // CORRECT ME
+              // defaultValue={order.user.lastName ?? null}
+              control={control}
+              disabled={isPaymentProcessing}
+            />
+            <InputMobile
+              name="mobile"
+              size="large"
+              control={control}
+              disabled={isPaymentProcessing}
+              // CORRECT ME
+              // defaultValue={order.user.mobile ?? null}
+            />
+            <InputDate
+              initialDate={birthday}
+              onDateChange={(_, destructured) => setBirthday(destructured)}
+              maxYear={2010}
+            />
+            {/* label="Birthday" date=
               {{
                 day: String(birthdayDateTime.day) as TDay,
                 month: String(birthdayDateTime.month) as TMonth,
@@ -374,33 +234,32 @@ function CheckoutPayment(
               // onDateChange={value => setBirthday(value)}
               onDateChange={() => null}
               /> */}
-            </div>
+          </div>
+        </div>
+
+        <div>
+          <div className="pt-10 mb-6 text-2xl font-medium text-dark font-primary border-b-2 border-gray-200">
+            Payment details
           </div>
 
-          <div>
-            <div className="pt-10 mb-6 text-2xl font-medium text-dark font-primary border-b-2 border-gray-200">
-              Payment details
-            </div>
+          <div className="flex flex-col space-y-4">
+            <CheckoutInputName
+              control={control}
+              disabled={isPaymentProcessing}
+            />
 
-            <div className="flex flex-col space-y-4">
-              <CheckoutInputName
-                control={control}
-                disabled={isPaymentProcessing}
-              />
+            <CheckoutInputCard disabled={isPaymentProcessing} />
 
-              <CheckoutInputCard disabled={isPaymentProcessing} />
-
-              <InputPostcode
-                size="large"
-                label="Postcode"
-                name="cardPostcode"
-                placeholder="WC2H 7LT"
-                control={control}
-                disabled={isPaymentProcessing}
-              />
-            </div>
+            <InputPostcode
+              size="large"
+              label="Postcode"
+              name="cardPostcode"
+              placeholder="WC2H 7LT"
+              control={control}
+              disabled={isPaymentProcessing}
+            />
           </div>
-        </Elements>
+        </div>
       </LayoutCheckout.Left>
 
       <LayoutCheckout.Right>
@@ -413,21 +272,19 @@ function CheckoutPayment(
 
         {/* CORRECT ME */}
         {/* <CheckoutCard experienceImage={order.experience.image}> */}
-        <CheckoutCard experienceImage={(order as any).product.image}>
+        <CheckoutCard experienceImage={order.product_image}>
           <div className="">
             <div className="text-base font-medium">
               <div className="flex justify-between">
                 {/* CORRECT ME */}
                 {/* <span>{order.experience.restaurant.name}</span> */}
-                <span>{(order as any).product.restaurant.name}</span>
+                <span>{(order as any).restaurant.name}</span>
 
-                <span className="font-light">
-                  £{(order as any)?.product?.price}
-                </span>
+                <span className="font-light">£{order.product_price}</span>
               </div>
 
               <p className="text-sm mt-2 font-normal leading-tight text-gray-700">
-                {(order as any).product.name}
+                {order.product_name}
               </p>
             </div>
           </div>
@@ -482,7 +339,7 @@ function CheckoutPayment(
                 wide
                 type="solid"
                 size="large"
-                onClick={submit}
+                onClick={handleSubmit(pay)}
                 disabled={isPaymentProcessing}
                 loading={isPaymentProcessing}
               >
@@ -501,7 +358,7 @@ function CheckoutPayment(
         <MobileBottomButton
           loading={isPaymentProcessing}
           disabled={isPaymentProcessing}
-          onClick={submit}
+          onClick={handleSubmit(pay)}
         >
           Book Now
         </MobileBottomButton>

@@ -1,15 +1,13 @@
 import { CheckOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
+import { CheckoutContext } from 'contexts/checkout';
 import { useScreenSize } from 'hooks/useScreenSize';
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import { CheckoutStep } from 'state/checkout';
 import { UI } from '../../constants';
 
-interface Props {
-  step: CheckoutStep;
-}
-
-export function CheckoutStepIndicator({ step }: Props) {
+export function CheckoutStepIndicator() {
+  const { step } = useContext(CheckoutContext);
   const { isDesktop } = useScreenSize();
 
   return (
@@ -57,7 +55,8 @@ function CheckCircle({ label, complete }: CheckCircleProps) {
   );
 }
 
-interface ProgressBarProps extends Props {
+interface ProgressBarProps {
+  step: CheckoutStep;
   children: ReactNode;
 }
 

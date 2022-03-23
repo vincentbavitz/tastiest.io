@@ -16,14 +16,14 @@ export const getServerSideProps = async (
   const cookieToken = nookies.get(context)?.token;
   const horus = new Horus(cookieToken);
 
-  dlog('index ➡️ cookieToken:', cookieToken);
-
   const { data: user } = await horus.get('/users/me');
 
   const heads = Number(context.query.heads);
   const productId = String(context.query.productId);
   const bookedForTimestamp = Number(context.query.bookedForTimestamp);
   const userAgent = String(context.query.userAgent);
+
+  console.log('index ➡️ user:', user);
 
   // prettier-ignore
   const destination = '/checkout/authorize' + '?' +
@@ -55,8 +55,6 @@ export const getServerSideProps = async (
   console.log('index ➡️ response:', response);
 
   const { data: order } = response;
-
-  console.log('index ➡️ order:', order);
 
   // Cool - a legit checkout.
   return {

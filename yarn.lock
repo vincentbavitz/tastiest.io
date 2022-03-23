@@ -1927,10 +1927,10 @@
     "@contentful/rich-text-types" "^15.11.1"
     "@types/stripe" "^8.0.417"
 
-"@tastiest-io/tastiest-horus@^0.19.0":
-  version "0.19.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-horus/0.19.0/182d08121cbc9e6fb05291f49af6df46e34bf75b2c3acfb1e3454c655260bd58#2d3a9f0b54c1111d706a02cefda7d5d9689ebfcb"
-  integrity sha512-3HSMrwsxvQr1Vu8n4NAHWdcX0jF2j9BAASwV4GKOPDuPhgHK8HR/KpHiWrpvIW83o2jP/NTH7sboZUQ69PfRRw==
+"@tastiest-io/tastiest-horus@^0.21.0":
+  version "0.21.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-horus/0.21.0/25626dfc5c61966eb1b63fe29eb05b1964fc86b8a1ebb41eb745842ac1f7ffb2#d8250869a51d35cc844904f03de57cd95d905d84"
+  integrity sha512-XLBxI0sOLZbnLWypBr5f+JlKdJbKxZkf+963v9hkByfX7dqLTw9GJ7rXUOqw4ygEqd6Ip+cUj+1sOnbIHJvHOg==
   dependencies:
     "@contentful/rich-text-types" "^15.11.1"
     "@types/stripe" "^8.0.417"
@@ -1954,10 +1954,10 @@
     react-table "^7.7.0"
     uuid "^8.3.2"
 
-"@tastiest-io/tastiest-utils@^1.86.0":
-  version "1.86.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.86.0/23cc80abacaa9af44c33fd3c657912083d8d033734001161d7b19185cfc74ae4#e28ab89a90d008dcf5d708b51eb2aaefb3ca5c13"
-  integrity sha512-aD3HRssdx7jsYejy6bqVqYkOGIFWxRuSYB5+LJQn8uUfWbsERK0IQj8mZdC5ibvFPYs5iCRPLc/TjwzqTdcAEQ==
+"@tastiest-io/tastiest-utils@^1.87.0":
+  version "1.87.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.87.0/15eefdec5b65bbca1017b236ff6a888eff8fa1b94e92cc5dea9403b1bbbd65db#a7d3a8f1e09adbc41ff443018dc3d814c7d7488f"
+  integrity sha512-XsbCYFwjqN8Eqc+EvQU27yUD31T8ZSRdizFuYI7uv+7nJKfoqTgg1BYvpFyREnPMOdhXojoqCdS/TTDGOFmNDw==
   dependencies:
     "@contentful/rich-text-types" "^14.1.2"
     "@shopify/shopify-api" "^1.4.0"

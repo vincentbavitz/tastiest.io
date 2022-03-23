@@ -92,7 +92,7 @@ export const useOrderPanel = (product: ContentfulProduct, slug: string) => {
       return '#';
     }
 
-    const search = `?product_id=${product.id}&heads=${heads}&bookedForTimestamp=${selectedSlot.timestamp}&userAgent=${navigator?.userAgent}`;
+    const search = `?productId=${product.id}&heads=${heads}&bookedForTimestamp=${selectedSlot.timestamp}&userAgent=${navigator?.userAgent}`;
     return isSignedIn ? `/checkout${search}` : `/checkout/authorize${search}`;
   }, [isSignedIn, heads, selectedDay, selectedSlot]);
 

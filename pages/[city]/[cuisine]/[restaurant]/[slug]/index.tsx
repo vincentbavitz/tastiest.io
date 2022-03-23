@@ -62,9 +62,6 @@ export const getStaticProps = async ({ params }) => {
   const { posts } = await cms.getPostsOfRestaurant(params.restaurant);
   const post = posts.find(p => p.slug === params.slug);
 
-  dlog('index ➡️ params:', params);
-  dlog('index ➡️ posts:', posts);
-
   if (!post) {
     return {
       props: {
