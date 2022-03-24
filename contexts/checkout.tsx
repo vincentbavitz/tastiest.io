@@ -4,13 +4,16 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import { PaymentMethod } from '@stripe/stripe-js';
+import { DateObject } from '@tastiest-io/tastiest-horus';
 import {
   CmsApi,
   ContentfulProduct,
+  Horus,
   TastiestPaymentError,
   TastiestPaymentErrorCode,
 } from '@tastiest-io/tastiest-utils';
 import { useAuth } from 'hooks/auth/useAuth';
+import { DateTime } from 'luxon';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
 import { CheckoutStep } from 'state/checkout';
@@ -27,11 +30,12 @@ type PayFnParams = {
   firstName: string;
   lastName: string;
   mobile: string;
+  birthday: DateObject;
   cardPostcode: string;
   cardHolderName: string;
 };
 
-type PayFn = (params: PayFnParams) => void;
+type PayFn = (orderToken: string, params: PayFnParams) => void;
 
 type CheckoutContextShape = {
   step: CheckoutStep | null;
@@ -39,7 +43,7 @@ type CheckoutContextShape = {
 
   isPaymentProcessing: boolean;
   paymentError: TastiestPaymentError | null;
-
+  clearPaymentError: () => void;
   setIsPaymentProcessing: React.Dispatch<React.SetStateAction<boolean>>;
   pay: PayFn;
 };
@@ -48,6 +52,7 @@ export const CheckoutContext = React.createContext<CheckoutContextShape>({
   step: null,
   product: null,
   isPaymentProcessing: false,
+  clearPaymentError: null,
   setIsPaymentProcessing: null,
   paymentError: null,
   pay: null,
@@ -142,18 +147,17 @@ export const CheckoutProvider = ({ children }: any) => {
           },
         };
       }
-
-      // Now save it to the orders
     }
 
     return { paymentMethod, error: null };
   };
 
-  const pay: PayFn = async params => {
+  const pay: PayFn = async (orderToken, params) => {
     const {
       firstName,
       lastName,
       mobile,
+      birthday,
       cardPostcode,
       cardHolderName,
     } = params;
@@ -188,60 +192,35 @@ export const CheckoutProvider = ({ children }: any) => {
 
     console.log('checkout ➡️ paymentMethod:', paymentMethod);
 
-    // // const { error: updateOrderError } = await updateOrder({
-    // //   paymentMethodId: paymentMethod.id,
-    // // });
+    const horus = new Horus(token);
 
-    // // if (updateOrderError) {
-    // //   dlog('CheckoutStepPayment ➡️ updateOrderError:', updateOrderError);
-    // //   dispatch(setIsPaymentProcessing(false));
-    // //   setError({
-    // //     code: 'update_order_error',
-    // //     type: 'api_error',
-    // //     message: 'There was an error updating your order.',
-    // //   });
+    const { error } = await horus.post('/payments/pay', {
+      token: orderToken,
+      payment_method: paymentMethod.id,
+      given_first_name: firstName,
+      given_last_name: lastName,
+      postcode: cardPostcode,
+      birthday: DateTime.fromObject(birthday).toISO(),
+      mobile,
+      user_agent: navigator.userAgent,
+    });
 
-    // //   return { success: false, error: updateOrderError };
-    // // }
+    // Uh-oh - a general payment error!
+    // This usually means the card declined.
+    if (error) {
+      setPaymentError({
+        code: 'general_payment_error',
+        type: 'card_error',
+        message:
+          'There was an error processing your payment. Please try using another card.',
+      });
 
-    // // const { success, error } = await pay();
+      setIsPaymentProcessing(false);
+      return;
+    }
 
-    // // Uh-oh - a general payment error!
-    // // This usually means the card declined.
-    // if (error) {
-    //   setError({
-    //     code: 'general_payment_error',
-    //     type: 'card_error',
-    //     message:
-    //       'There was an error processing your payment. Please try using another card.',
-    //   });
-
-    //   alert(error);
-
-    //   setIsPaymentProcessing(false);
-    //   return;
-    // }
-
-    // if (
-    //   firstName?.length > 0 ||
-    //   lastName?.length > 0 ||
-    //   mobile?.length > 0 ||
-    //   cardPostcode?.length > 0 // ||
-    //   // CORRECT ME
-    //   // JSON.stringify(birthday) !== JSON.stringify(order.user.birthday)
-    // ) {
-    //   const horus = new Horus(token);
-
-    //   // Update user information
-    //   horus.post('/users/update', {
-    //     uid: userId,
-    //     firstName,
-    //     lastName,
-    //     mobile,
-    //     birthday: DateTime.fromObject(birthday).toJSDate(),
-    //     location: { postcode: cardPostcode },
-    //   });
-    // }
+    // Woo! Payment success.
+    router.push(`/thank-you?token=${orderToken}`);
   };
 
   // If productId is in the URL, fetch the product.
@@ -269,8 +248,9 @@ export const CheckoutProvider = ({ children }: any) => {
     step,
     product,
     isPaymentProcessing,
-    setIsPaymentProcessing,
     paymentError,
+    setIsPaymentProcessing,
+    clearPaymentError: () => setPaymentError(null),
     pay,
   };
 

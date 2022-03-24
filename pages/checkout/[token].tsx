@@ -1,12 +1,11 @@
 import { LockOutlined } from '@ant-design/icons';
 import { DateObject, HorusOrder } from '@tastiest-io/tastiest-horus';
-import { Button, Tooltip } from '@tastiest-io/tastiest-ui';
+import { Button, Modal, Tooltip } from '@tastiest-io/tastiest-ui';
 import {
   formatCurrency,
   Horus,
   reportInternalError,
   TastiestInternalErrorCode,
-  TastiestPaymentError,
 } from '@tastiest-io/tastiest-utils';
 import { CheckoutCard } from 'components/checkout/CheckoutCard';
 import { CheckoutInputCard } from 'components/checkout/CheckoutInputCard';
@@ -118,14 +117,13 @@ function CheckoutPayment(
   const {
     pay,
     paymentError,
+    clearPaymentError,
     isPaymentProcessing,
     setIsPaymentProcessing,
   } = useContext(CheckoutContext);
 
   const { isDesktop } = useScreenSize();
   const router = useRouter();
-
-  const [error, setError] = useState<TastiestPaymentError | null>(null);
 
   // CORRECT ME
   // const { data: order } = useHorusSWR(`/orders/${props.order.token}`, {token}, {
@@ -184,6 +182,18 @@ function CheckoutPayment(
           ],
         }}
       />
+
+      <Modal
+        title="Payment Error"
+        show={Boolean(paymentError)}
+        close={clearPaymentError}
+      >
+        {paymentError?.message}
+
+        <div className="flex justify-end mt-2">
+          <Button onClick={clearPaymentError}>Ok</Button>
+        </div>
+      </Modal>
 
       <LayoutCheckout.Left>
         <div>
@@ -338,7 +348,9 @@ function CheckoutPayment(
                 wide
                 type="solid"
                 size="large"
-                onClick={handleSubmit(pay)}
+                onClick={handleSubmit(params =>
+                  pay(order.token, { ...params, birthday }),
+                )}
                 disabled={isPaymentProcessing}
                 loading={isPaymentProcessing}
               >
@@ -357,7 +369,9 @@ function CheckoutPayment(
         <MobileBottomButton
           loading={isPaymentProcessing}
           disabled={isPaymentProcessing}
-          onClick={handleSubmit(pay)}
+          onClick={handleSubmit(params =>
+            pay(order.token, { ...params, birthday }),
+          )}
         >
           Book Now
         </MobileBottomButton>

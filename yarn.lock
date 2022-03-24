@@ -1919,18 +1919,18 @@
   dependencies:
     mini-svg-data-uri "^1.2.3"
 
-"@tastiest-io/tastiest-horus@^0.18.0":
-  version "0.18.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-horus/0.18.0/54d92db5dd04bad8ba26aaaf2cdb291f3e296a28f6d3a44101688c13fdedd3bd#21b1f5f83ebe624238c2695850209508daaf9135"
-  integrity sha512-pW//0G8LcAEN42h/3Pn9tZCDpZXQzCcfdVzxKqifdH7jZnL3sAQl8e33DgOYTnveEtZDJvoVNxZO8J6WLCTVpQ==
+"@tastiest-io/tastiest-horus@^0.22.0":
+  version "0.22.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-horus/0.22.0/991477f405c93fe27946670bc8817c815fbab4b840d1b95f463622cec7c49b05#a1ad72bb01f4472e7095eedf7329836c264804ab"
+  integrity sha512-QMSdYj7NjikmEMw/naEYk207o6tnXEIWYmmcWL/ldsAAk9Ss4UDjwWYMO6OsVCZTgp55tMgfuN/9+EGEpjsfNA==
   dependencies:
     "@contentful/rich-text-types" "^15.11.1"
     "@types/stripe" "^8.0.417"
 
-"@tastiest-io/tastiest-horus@^0.21.0":
-  version "0.21.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-horus/0.21.0/25626dfc5c61966eb1b63fe29eb05b1964fc86b8a1ebb41eb745842ac1f7ffb2#d8250869a51d35cc844904f03de57cd95d905d84"
-  integrity sha512-XLBxI0sOLZbnLWypBr5f+JlKdJbKxZkf+963v9hkByfX7dqLTw9GJ7rXUOqw4ygEqd6Ip+cUj+1sOnbIHJvHOg==
+"@tastiest-io/tastiest-horus@^0.24.0":
+  version "0.24.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-horus/0.24.0/e12fe2172c5c62889485dfa0053f6128f9604454cfdd89f20e7cab3e60503b23#7f061fe029cbdb3b69e787461b9c58c8f92a646f"
+  integrity sha512-2S9adwOVtLPi97rsTfw8BeIpe7xLa4u/3KtkUJPVmWV1sb9wqlRZSjmbCh0RB/8pxBwK9LNZt7d6WHNenSJFdA==
   dependencies:
     "@contentful/rich-text-types" "^15.11.1"
     "@types/stripe" "^8.0.417"
@@ -1954,15 +1954,15 @@
     react-table "^7.7.0"
     uuid "^8.3.2"
 
-"@tastiest-io/tastiest-utils@^1.87.0":
-  version "1.87.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.87.0/15eefdec5b65bbca1017b236ff6a888eff8fa1b94e92cc5dea9403b1bbbd65db#a7d3a8f1e09adbc41ff443018dc3d814c7d7488f"
-  integrity sha512-XsbCYFwjqN8Eqc+EvQU27yUD31T8ZSRdizFuYI7uv+7nJKfoqTgg1BYvpFyREnPMOdhXojoqCdS/TTDGOFmNDw==
+"@tastiest-io/tastiest-utils@^1.90.0":
+  version "1.90.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-utils/1.90.0/96ff852ee9e91972af4f0218259a45af67bfedd78c64e6fa2f6a1693a16836c2#a2a8f59335e312f1706d3888fceaceef0f91baeb"
+  integrity sha512-pTejJ6i2CbK+Pd2weO1Re8rhXu1Kd972tf4sEMaUfPCIlYiqq1Cjb/3uFnnxtJSufY/JsMqHeQdrd7SNO61loQ==
   dependencies:
     "@contentful/rich-text-types" "^14.1.2"
     "@shopify/shopify-api" "^1.4.0"
     "@stripe/stripe-js" "^1.13.2"
-    "@tastiest-io/tastiest-horus" "^0.18.0"
+    "@tastiest-io/tastiest-horus" "^0.24.0"
     "@types/react" "^17.0.3"
     contentful "^8.2.1"
     crypto-hash "^1.3.0"
