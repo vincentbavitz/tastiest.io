@@ -1,10 +1,5 @@
-import { HorusBooking, HorusOrder } from '@tastiest-io/tastiest-horus';
-import {
-  CmsApi,
-  dlog,
-  FirestoreCollection,
-  formatCurrency,
-} from '@tastiest-io/tastiest-utils';
+import { HorusOrder } from '@tastiest-io/tastiest-horus';
+import { dlog, formatCurrency, Horus } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { SectionTitle } from 'components/SectionTitle';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -14,24 +9,17 @@ import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import nookies from 'nookies';
 import { ThankYouHero } from 'public/assets/page';
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import { useDispatch } from 'react-redux';
-import { setIsPaymentProcessing } from 'state/checkout';
-import Stripe from 'stripe';
-import { db } from 'utils/firebaseAdmin';
 import { generateTitle } from 'utils/metadata';
 import { v4 as uuid } from 'uuid';
 import { Contained } from '../components/Contained';
 
-const TASTIEAT_AIR_CALL_NUMBER = '0203-868-2972';
-
-type PaymentCard = {
-  brand: string;
-  last4: string;
-};
-
 export const getServerSideProps = async context => {
+  const cookieToken = nookies.get(context)?.token;
+
   // Verify order is legit; else redirect and wipe order data.
   const token = String(context.query.token ?? '') ?? null;
 
@@ -52,22 +40,12 @@ export const getServerSideProps = async context => {
   // Get order, given our order IDs
   // If the order exists, /api/payments/createNewOrder
   // has already verified that it's valid.
-  const orderSnapshot = await db(FirestoreCollection.ORDERS)
-    .where('token', '==', token)
-    .limit(1)
-    .get();
+  const horus = new Horus(cookieToken);
+  const { data: order } = await horus.get<any, HorusOrder>('/orders/:token', {
+    dynamic: token,
+  });
 
-  let order: HorusOrder;
-  orderSnapshot.docs.forEach(doc => (order = doc.data() as HorusOrder));
-
-  // Get the corresponding booking
-  const bookingSnapshot = await db(FirestoreCollection.BOOKINGS)
-    .doc(order.id)
-    .get();
-
-  const booking = bookingSnapshot.data() as HorusBooking;
-
-  dlog('thank-you ➡️ booking:', booking);
+  console.log('thank-you ➡️ order:', order);
 
   // Redirect if invalid booking or they've already arrived.
   // CORRECT ME
@@ -80,47 +58,19 @@ export const getServerSideProps = async context => {
   //   };
   // }
 
-  // Get Live / Test data
-  const stripe = new Stripe(
-    order.is_test
-      ? process.env.STRIPE_TEST_SECRET_KEY
-      : process.env.STRIPE_LIVE_SECRET_KEY,
-    {
-      apiVersion: '2020-08-27',
-    },
-  );
-
-  // const paymentMethod = await stripe.paymentMethods.retrieve(
-  //   order.paymentMethod,
-  // );
-
-  // const paymentCard: PaymentCard = {
-  //   brand: paymentMethod.card.brand,
-  //   last4: paymentMethod.card.last4,
-  // };
-
   // Get post's images
   // Don't worry about speed, this page is pre-fetched on checkout.
-  const cmsApi = new CmsApi();
+  // const cmsApi = new CmsApi();
 
-  const post = await cmsApi.getPostBySlug(order.from_slug);
-  const assets = {
-    restaurantHero: (order as any).restaurant.hero_illustration,
-    dish: post.plate_image,
-  };
+  // const post = await cmsApi.getPostBySlug(order.from_slug);
+  // const assets = {
+  //   restaurantHero: (order as any).restaurant.hero_illustration,
+  //   dish: post.plate_image,
+  // };
 
   return {
     props: {
-      firstName: 'John',
       order,
-      booking,
-      // CORRECT ME
-      // paymentCard,
-      paymentCard: {
-        brand: 'VISA',
-        last4: '3333',
-      },
-      assets,
     },
   };
 };
@@ -128,7 +78,7 @@ export const getServerSideProps = async context => {
 function ThankYou(
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) {
-  const { firstName, order, booking, paymentCard, assets } = props;
+  const { order } = props;
 
   const dispatch = useDispatch();
   const { isMobile, isDesktop } = useScreenSize();
@@ -136,10 +86,6 @@ function ThankYou(
   const humanBookedForDate = DateTime.fromJSDate(
     new Date(order.booked_for),
   ).toRelativeCalendar();
-
-  useEffect(() => {
-    dispatch(setIsPaymentProcessing(false));
-  }, []);
 
   return (
     <>

@@ -56,6 +56,16 @@ export const getServerSideProps = async (
 
   const { data: order } = response;
 
+  // Creating order failed
+  if (!order?.token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
   // Cool - a legit checkout.
   return {
     redirect: {
