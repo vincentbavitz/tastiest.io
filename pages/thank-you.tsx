@@ -1,5 +1,16 @@
-import { HorusOrder } from '@tastiest-io/tastiest-horus';
-import { dlog, formatCurrency, Horus } from '@tastiest-io/tastiest-utils';
+import {
+  HorusBooking,
+  HorusOrder,
+  HorusRestaurant,
+  HorusUser,
+  PaymentCardDetails,
+} from '@tastiest-io/tastiest-horus';
+import {
+  CmsApi,
+  dlog,
+  formatCurrency,
+  Horus,
+} from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { SectionTitle } from 'components/SectionTitle';
 import { useScreenSize } from 'hooks/useScreenSize';
@@ -16,6 +27,12 @@ import { useDispatch } from 'react-redux';
 import { generateTitle } from 'utils/metadata';
 import { v4 as uuid } from 'uuid';
 import { Contained } from '../components/Contained';
+
+type CompleteOrder = HorusOrder & {
+  restaurant: HorusRestaurant;
+  booking: HorusBooking;
+  user: HorusUser;
+};
 
 export const getServerSideProps = async context => {
   const cookieToken = nookies.get(context)?.token;
@@ -41,11 +58,12 @@ export const getServerSideProps = async context => {
   // If the order exists, /api/payments/createNewOrder
   // has already verified that it's valid.
   const horus = new Horus(cookieToken);
-  const { data: order } = await horus.get<any, HorusOrder>('/orders/:token', {
-    dynamic: token,
-  });
-
-  console.log('thank-you ➡️ order:', order);
+  const { data: order } = await horus.get<any, CompleteOrder>(
+    '/orders/:token',
+    {
+      dynamic: token,
+    },
+  );
 
   // Redirect if invalid booking or they've already arrived.
   // CORRECT ME
@@ -60,7 +78,8 @@ export const getServerSideProps = async context => {
 
   // Get post's images
   // Don't worry about speed, this page is pre-fetched on checkout.
-  // const cmsApi = new CmsApi();
+  const cms = new CmsApi();
+  const restaurantContentful = await cms.getRestaurantById(order.restaurant_id);
 
   // const post = await cmsApi.getPostBySlug(order.from_slug);
   // const assets = {
@@ -71,6 +90,7 @@ export const getServerSideProps = async context => {
   return {
     props: {
       order,
+      restaurantHero: restaurantContentful.hero_illustration,
     },
   };
 };
@@ -78,7 +98,7 @@ export const getServerSideProps = async context => {
 function ThankYou(
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) {
-  const { order } = props;
+  const { order, restaurantHero } = props;
 
   const dispatch = useDispatch();
   const { isMobile, isDesktop } = useScreenSize();
@@ -129,8 +149,8 @@ function ThankYou(
             </div>
 
             <h2 className="text-2xl text-center font-secondary text-light leading-8 opacity-75 pt-6">
-              Thanks, {firstName ? ` ${firstName}` : ''}!{' '}
-              {isDesktop ? null : <br />} Booking complete.
+              Thanks, {order.user.first_name ? ` ${order.user.first_name}` : ''}
+              ! {isDesktop ? null : <br />} Booking complete.
             </h2>
           </Contained>
         </div>
@@ -151,7 +171,7 @@ function ThankYou(
                     style={{ maxWidth: '225px' }}
                     className="flex w-full mb-4 space-x-2"
                   >
-                    {booking.confirmation_code.split('').map(digit => (
+                    {order.booking.confirmation_code.split('').map(digit => (
                       <div
                         key={uuid()}
                         style={{ minWidth: '2.5rem' }}
@@ -163,15 +183,13 @@ function ThankYou(
                   </div>
 
                   <p className={isDesktop ? 'pb-2' : 'pb-3'}>
-                    Let {(booking as any).restaurant.name} know your arrival
-                    code when you arrive.
+                    Let {order.restaurant.name} know your arrival code when you
+                    arrive.
                   </p>
 
                   <p className="leading-tight pb-1">
                     <span className="font-medium">Your experience</span> <br />
-                    <span className="italic">
-                      {(order as any).product.name}
-                    </span>
+                    <span className="italic">{order.product_name}</span>
                   </p>
 
                   <p className="leading-tight pb-1">
@@ -204,7 +222,7 @@ function ThankYou(
                     layout="fill"
                     objectFit="contain"
                     objectPosition="bottom"
-                    src={assets.restaurantHero.url}
+                    src={restaurantHero.url}
                   />
                 </div>
               }
@@ -225,7 +243,7 @@ function ThankYou(
 
           <div className="w-full h-0 border-b-2"></div>
 
-          <OrderSummary order={order} paymentCard={paymentCard} />
+          <OrderSummary order={order} paymentCard={order.payment_card} />
 
           <div className="pb-10"></div>
         </Contained>
@@ -307,14 +325,14 @@ function BookingSection(props: BookingSectionProps) {
 
 interface OrderSummaryProps {
   order: HorusOrder;
-  paymentCard: PaymentCard;
+  paymentCard: PaymentCardDetails;
 }
 
 const OrderSummary = ({ order, paymentCard }: OrderSummaryProps) => {
   const sumeraryDetails = [
     {
       label: 'Experience',
-      value: (order as any).product.name,
+      value: order.product_name,
     },
     {
       label: 'Payment Date',
@@ -332,7 +350,7 @@ const OrderSummary = ({ order, paymentCard }: OrderSummaryProps) => {
     },
     {
       label: 'Price',
-      value: `£${formatCurrency((order as any).product.price)}`,
+      value: `£${formatCurrency(order.product_price)}`,
     },
     {
       label: 'Heads',

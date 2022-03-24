@@ -26,6 +26,10 @@ export function ArticleSaveShareWidget(props: ContentfulPost) {
   const { share, hasNativeSharing, tastiestUrl } = useShareArticle(
     {
       ...props,
+      title: props.title,
+      city: props.restaurant.city,
+      slug: props.slug,
+      cuisine: props.restaurant.cuisine,
       restaurant: props.restaurant.uri_name,
     },
     { onNoNativeShare: () => setIsDropdownOpen(true) },
