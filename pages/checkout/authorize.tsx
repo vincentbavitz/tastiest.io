@@ -4,18 +4,23 @@ import {
   CheckoutAuthTabs,
 } from 'components/checkout/CheckoutAuthTabs';
 import { CheckoutCard } from 'components/checkout/CheckoutCard';
+import { CheckoutContext } from 'contexts/checkout';
+import { useAuth } from 'hooks/auth/useAuth';
 import LayoutCheckout from 'layouts/LayoutCheckout';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import nookies from 'nookies';
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,
 ) => {
   const cookieToken = nookies.get(context)?.token;
+
+  dlog('authorize ➡️ cookieToken:', cookieToken);
 
   // Somehow their query paramters got messed up.
   if (
@@ -60,11 +65,22 @@ export const getServerSideProps = async (
 function CheckoutAuthorize(
   props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) {
-  // Product comes from LayoutCheckout
-  // NOTE FIX ME -> In future make a Layout context. Much cleaner.
-  const { heads, product } = props as any;
+  const { heads } = props;
 
-  dlog('authorize ➡️ product:', product);
+  const router = useRouter();
+  const { isSignedIn } = useAuth();
+  const { product } = useContext(CheckoutContext);
+
+  // Router change when they sign in.
+  useEffect(() => {
+    dlog('authorize ➡️ Advance to checkout');
+
+    // Account for exact values because isSignedIn being null is falsy.
+    if (isSignedIn === true) {
+      // Take them to the payment step
+      router.replace(router.asPath.replace('authorize', ''));
+    }
+  }, [isSignedIn]);
 
   return (
     <>

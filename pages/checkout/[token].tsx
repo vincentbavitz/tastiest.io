@@ -1,11 +1,17 @@
 import { LockOutlined } from '@ant-design/icons';
-import { DateObject, HorusOrder } from '@tastiest-io/tastiest-horus';
+import {
+  DateObject,
+  HorusOrder,
+  HorusRestaurant,
+  HorusUser,
+} from '@tastiest-io/tastiest-horus';
 import { Button, Modal, Tooltip } from '@tastiest-io/tastiest-ui';
 import {
   formatCurrency,
   Horus,
   reportInternalError,
   TastiestInternalErrorCode,
+  titleCase,
 } from '@tastiest-io/tastiest-utils';
 import { CheckoutCard } from 'components/checkout/CheckoutCard';
 import { CheckoutInputCard } from 'components/checkout/CheckoutInputCard';
@@ -27,9 +33,14 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import nookies from 'nookies';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { generateStaticURL } from 'utils/routing';
+
+type OrderWithUserAndRestaurant = HorusOrder & {
+  user: HorusUser;
+  restaurant: HorusRestaurant;
+};
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,
@@ -41,10 +52,10 @@ export const getServerSideProps = async (
   const horus = new Horus(cookieToken);
 
   // // This will automatically fail if the user doesn't own this order.
-  const { data: order, error } = await horus.get<any, HorusOrder>(
-    '/orders/:token',
-    { dynamic: orderToken },
-  );
+  const { data: order, error } = await horus.get<
+    any,
+    OrderWithUserAndRestaurant
+  >('/orders/:token', { dynamic: orderToken });
 
   // Serious checkout error. Report internal error.
   if (!order || error) {
@@ -73,14 +84,9 @@ export const getServerSideProps = async (
     return {
       redirect: {
         destination: generateStaticURL({
-          // CORRECT ME
-          // restaurant: order.experience.restaurant.uriName,
-          // cuisine: order.experience.restaurant.cuisine,
-          // city: order.experience.restaurant.city,
-          // slug: order.fromSlug,
-          restaurant: (order as any).restaurant.uri_name,
-          cuisine: (order as any).restaurant.cuisine,
-          city: (order as any).restaurant.city,
+          restaurant: order.restaurant.uri_name,
+          cuisine: order.restaurant.cuisine,
+          city: order.restaurant.city,
           slug: order.from_slug,
         }).as,
         permanent: false,
@@ -93,8 +99,6 @@ export const getServerSideProps = async (
       order,
       orderToken,
       userToken: cookieToken,
-      // CORRECT ME
-      // userId: order.user.id,
       userId: order.user_id,
     },
   };
@@ -112,7 +116,7 @@ function CheckoutPayment(
   props: InferGetStaticPropsType<typeof getServerSideProps>,
 ) {
   const { userId, userToken } = props;
-  const { token = userToken, userData } = useAuth();
+  const { token = userToken, isSignedIn } = useAuth();
 
   const {
     pay,
@@ -134,8 +138,8 @@ function CheckoutPayment(
 
   // Birthday data-structre can't be handled nicely with use-form.
   // So we can manage it ourselves.
-  const birthdayDateTime = (order as any)?.user.birthday
-    ? DateTime.fromISO((order as any)?.user.birthday)
+  const birthdayDateTime = order.user.birthday
+    ? DateTime.fromJSDate(new Date(order.user.birthday))
     : null;
 
   const [birthday, setBirthday] = useState<DateObject>({
@@ -154,6 +158,15 @@ function CheckoutPayment(
     criteriaMode: 'firstError',
     shouldFocusError: true,
   });
+
+  // Did they sign-out during the checkout?
+  useEffect(() => {
+    console.log('Kick them back to /auth');
+
+    if (isSignedIn === false) {
+      router.push('/checkout/authorize' + window.location.search);
+    }
+  }, [isSignedIn]);
 
   return (
     <>
@@ -206,8 +219,7 @@ function CheckoutPayment(
               name="firstName"
               size="large"
               label="First Name"
-              // CORRECT ME
-              // defaultValue={titleCase(order.user.firstName)}
+              defaultValue={titleCase(order.user.first_name ?? null)}
               control={control}
               disabled={isPaymentProcessing}
             />
@@ -215,8 +227,7 @@ function CheckoutPayment(
               name="lastName"
               size="large"
               label="Last Name"
-              // CORRECT ME
-              // defaultValue={order.user.lastName ?? null}
+              defaultValue={titleCase(order.user.last_name ?? null)}
               control={control}
               disabled={isPaymentProcessing}
             />
@@ -225,8 +236,7 @@ function CheckoutPayment(
               size="large"
               control={control}
               disabled={isPaymentProcessing}
-              // CORRECT ME
-              // defaultValue={order.user.mobile ?? null}
+              defaultValue={titleCase(order.user.mobile ?? null)}
             />
             <InputDate
               initialDate={birthday}
@@ -279,15 +289,11 @@ function CheckoutPayment(
           <SecureTransactionText />
         </div>
 
-        {/* CORRECT ME */}
-        {/* <CheckoutCard experienceImage={order.experience.image}> */}
         <CheckoutCard experienceImage={order.product_image}>
           <div className="">
             <div className="text-base font-medium">
               <div className="flex justify-between">
-                {/* CORRECT ME */}
-                {/* <span>{order.experience.restaurant.name}</span> */}
-                <span>{(order as any).restaurant.name}</span>
+                <span>{order.restaurant.name}</span>
 
                 <span className="font-light">£{order.product_price}</span>
               </div>
@@ -301,8 +307,6 @@ function CheckoutPayment(
           <div className="flex items-center justify-between text-sm text-gray-600">
             <span className="leading-none">Date</span>
             <span className="font-medium leading-none">
-              {/* CORRECT ME */}
-              {/* {DateTime.fromISO(order.bookedFor).toFormat('h:mm a, DD')} */}
               {DateTime.fromJSDate(new Date(order.booked_for)).toFormat(
                 'h:mm a, DD',
               )}

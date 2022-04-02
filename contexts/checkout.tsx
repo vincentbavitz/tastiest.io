@@ -111,8 +111,6 @@ export const CheckoutProvider = ({ children }: any) => {
       },
     });
 
-    console.log('checkout ➡️ paymentMethod:', paymentMethod);
-
     if (paymentMethodError) {
       return {
         paymentMethod,
@@ -173,12 +171,20 @@ export const CheckoutProvider = ({ children }: any) => {
 
     // Error adding card. Either card already exists or validation error
     if (paymentMethodError) {
-      console.log(
-        'CheckoutStepPayment ➡️ paymentMethodError:',
-        paymentMethodError,
-      );
-
       setIsPaymentProcessing(false);
+
+      if (
+        paymentMethodError.code ===
+        ('card_declined' as TastiestPaymentErrorCode)
+      ) {
+        setPaymentError({
+          code: 'card_error',
+          type: 'tastiest-payment-error',
+          message: 'Your card was declined. Please try using a different card.',
+        });
+
+        return;
+      }
 
       // FIX ME -> Allow users to re-use cards.
       setPaymentError({
@@ -211,8 +217,7 @@ export const CheckoutProvider = ({ children }: any) => {
       setPaymentError({
         code: 'general_payment_error',
         type: 'card_error',
-        message:
-          'There was an error processing your payment. Please try using another card.',
+        message: `There was an error processing your payment. Please try using another card.`,
       });
 
       setIsPaymentProcessing(false);
@@ -230,19 +235,6 @@ export const CheckoutProvider = ({ children }: any) => {
       cms.getProduct(String(router.query['productId'])).then(setProduct);
     }
   }, [router.query]);
-
-  // Router change when they sign in.
-  useEffect(() => {
-    // Account for exact values because isSignedIn being null is falsy.
-    if (token && step === CheckoutStep.SIGN_IN) {
-      // Take them to the payment step
-      router.replace(router.pathname.replace('authorize', ''));
-    }
-
-    if (!token && step === CheckoutStep.PAYMENT) {
-      router.push('/checkout/authorize' + window.location.search);
-    }
-  }, [token]);
 
   const value: CheckoutContextShape = {
     step,

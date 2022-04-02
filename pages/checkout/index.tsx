@@ -23,12 +23,13 @@ export const getServerSideProps = async (
   const bookedForTimestamp = Number(context.query.bookedForTimestamp);
   const userAgent = String(context.query.userAgent);
 
-  console.log('index ➡️ user:', user);
+  console.log('creating a new order!!:#!@#:@!#!', cookieToken);
+  // console.log('index ➡️ user:', user);
 
   // prettier-ignore
   const destination = '/checkout/authorize' + '?' +
       `heads=${heads}` + '&' +
-      `product_id=${productId}` + '&' +
+      `productId=${productId}` + '&' +
       `bookedForTimestamp=${bookedForTimestamp}` + '&' +
       `userAgent=${userAgent}`
 

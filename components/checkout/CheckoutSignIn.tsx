@@ -1,6 +1,6 @@
 import { Button } from '@tastiest-io/tastiest-ui';
 import { AuthError, AuthErrorMessageMap } from 'contexts/auth';
-import { useSignIn } from 'hooks/auth/useSignIn';
+import { useAuth } from 'hooks/auth/useAuth';
 import { useScreenSize } from 'hooks/useScreenSize';
 import React, { useContext, useState } from 'react';
 import { useToggle } from 'react-use';
@@ -10,24 +10,19 @@ import { InputPassword } from '../inputs/InputPassword';
 import { AuthTabsContext, CheckoutSignInTabSelected } from './CheckoutAuthTabs';
 
 export function CheckoutSignIn() {
-  const { isDesktop } = useScreenSize();
+  const { signIn, isSigningIn } = useAuth();
+  const [error, setError] = useState<AuthError | null>(null);
 
-  const { signIn, error } = useSignIn();
   const { setTab } = useContext(AuthTabsContext);
 
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
   const [showPassword, toggleShowPassword] = useToggle(false);
-  const [submitting, setSubmitting] = useState(false);
+
+  const { isDesktop } = useScreenSize();
 
   const submitSignIn = async () => {
-    setSubmitting(true);
-
-    try {
-      await signIn(signInEmail, signInPassword);
-    } catch {
-      setSubmitting(false);
-    }
+    signIn(signInEmail, signInPassword).then(({ error }) => setError(error));
   };
 
   return (
@@ -47,7 +42,7 @@ export function CheckoutSignIn() {
         size="large"
         type="solid"
         color="primary"
-        loading={submitting}
+        loading={isSigningIn}
         onClick={submitSignIn}
       >
         Sign in to Proceed to Checkout
