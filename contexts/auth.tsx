@@ -1,3 +1,4 @@
+import * as AuthTypes from '@firebase/auth-types';
 import { HorusUser } from '@tastiest-io/tastiest-horus';
 import { dlog, Horus, useHorusSWR } from '@tastiest-io/tastiest-utils';
 import nookies from 'nookies';
@@ -5,16 +6,28 @@ import React, { createContext, useEffect, useState } from 'react';
 import { firebaseClient } from '../utils/firebaseClient';
 import { ANONYMOUS_USER_ID, LocalStorageItem } from './tracking';
 
+type SignInFn = (
+  email: string,
+  password: string,
+) => Promise<{
+  credential: AuthTypes.UserCredential | null;
+  error: AuthError | null;
+}>;
+
+type RegisterFn = (
+  email: string,
+  password: string,
+  firstName: string,
+) => Promise<{ success: boolean; error: string | null }>;
+
 type AuthContextShape = {
   user: firebaseClient.User | null;
   userData: HorusUser | null;
   isSignedIn: null | boolean;
+  isSigningIn: boolean;
   token: string | null;
-  register?: (
-    email: string,
-    password: string,
-    firstName: string,
-  ) => Promise<{ success: boolean; error: string | null }>;
+  register?: RegisterFn;
+  signIn?: SignInFn;
 };
 
 // Example taken from  https://github1s.com/colinhacks/next-firebase-ssr/blob/HEAD/auth.tsx
@@ -23,6 +36,7 @@ export const AuthContext = createContext<AuthContextShape>({
   userData: null,
   token: null,
   isSignedIn: null,
+  isSigningIn: false,
 });
 
 export function AuthProvider({ children }: any) {
@@ -32,10 +46,7 @@ export function AuthProvider({ children }: any) {
   );
 
   const [token, setToken] = useState<string | null>(null);
-
-  // Works like an async setter method
-  // CORRECT ME
-  // const setUserData = () => null;
+  const [isSigningIn, setIsSigningIn] = useState(false);
 
   // Null if the user information has not been loaded yet -- else boolean
   const isSignedIn = user === undefined ? null : Boolean(user?.uid);
@@ -83,13 +94,29 @@ export function AuthProvider({ children }: any) {
   }, [user]);
 
   // Store user data in the provider.
-  const { data: userData } = useHorusSWR<HorusUser>(
+  const { data: userData, mutate } = useHorusSWR<HorusUser>(
     token ? '/users/me' : null,
     { token },
     {
       refreshInterval: 30000,
     },
   );
+
+  // Manually fetch user-data for the mutation on useHorusSWR.
+  // This occurs when the user logs in or out.
+  const fetchUserData = async (token: string) => {
+    const horus = new Horus(token);
+    return horus.get<HorusUser>('/users/me');
+  };
+
+  // Mutate userData as soon as they sign in.
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+
+    mutate(fetchUserData, { rollbackOnError: true });
+  }, [token]);
 
   dlog('auth ➡️ data:', userData);
 
@@ -116,16 +143,78 @@ export function AuthProvider({ children }: any) {
       return { success: false, error };
     }
 
+    dlog('auth ➡️ data:', data);
+
     // User has accepted cookies implicitly
     localStorage.setItem(LocalStorageItem.HAS_ACCEPTED_COOKIES, '1');
-    setToken(data.token);
 
     // Sign user in.
-    const { user: _user } = await window?.firebase
-      .auth()
-      .signInWithCustomToken(data.token);
+    await signIn(email, password);
+    setToken(data.token);
 
     return { success: true, error: null };
+  };
+
+  const signIn: SignInFn = async (email, password) => {
+    if (!email?.length || !password?.length) {
+      return {
+        credential: null,
+        error: AuthErrorMessageMap[AuthErrorCode.INVALID_ARGUMENT],
+      };
+    }
+
+    const anonymousId = window.analytics?.user?.()?.anonymousId?.();
+
+    setIsSigningIn(true);
+
+    let credential: AuthTypes.UserCredential;
+    try {
+      credential = await window?.firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password);
+    } catch (error) {
+      setIsSigningIn(false);
+
+      return {
+        credential: null,
+        error: AuthErrorMessageMap[(error as AuthError).code],
+      };
+    }
+
+    if (credential) {
+      setIsSigningIn(false);
+
+      console.log('auth ➡️ credential:', credential);
+
+      // User has accepted cookies by logging in
+      localStorage.setItem(LocalStorageItem.HAS_ACCEPTED_COOKIES, '1');
+
+      // Identify user with Segment
+      window.analytics.identify(anonymousId, {
+        userId: credential.user.uid,
+        email: credential.user.email,
+        context: {
+          userAgent: navigator?.userAgent,
+        },
+      });
+
+      // Track user sign in
+      window.analytics.track('User Signed In', {
+        userId: credential.user.uid,
+        anonymousId: null,
+        properties: credential.user,
+      });
+
+      return {
+        credential: credential as AuthTypes.UserCredential,
+        error: null,
+      };
+    }
+
+    return {
+      credential: null,
+      error: AuthErrorMessageMap[AuthErrorCode.INTERNAL_ERROR],
+    };
   };
 
   return (
@@ -135,7 +224,9 @@ export function AuthProvider({ children }: any) {
         userData,
         token,
         isSignedIn,
+        isSigningIn,
         register,
+        signIn,
       }}
     >
       {children}

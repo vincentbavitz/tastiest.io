@@ -1,8 +1,8 @@
 import { EmailIcon, LockIcon } from '@tastiest-io/tastiest-icons';
 import { Button, Input, Tooltip } from '@tastiest-io/tastiest-ui';
-import { dlog } from '@tastiest-io/tastiest-utils';
-import { useSignIn } from 'hooks/auth/useSignIn';
-import React from 'react';
+import { AuthError } from 'contexts/auth';
+import { useAuth } from 'hooks/auth/useAuth';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { cleanupInputValue } from 'utils/text';
 import { REGEX } from '../../../constants';
@@ -16,7 +16,8 @@ type SignInFormData = {
 };
 
 export const AuthModalSignInContent = ({ setStep }: ContentElementProps) => {
-  const { signIn, error, submitting } = useSignIn();
+  const { signIn, isSigningIn } = useAuth();
+  const [error, setError] = useState<AuthError | null>(null);
 
   const { handleSubmit, control } = useForm<SignInFormData>({
     mode: 'onBlur',
@@ -26,10 +27,10 @@ export const AuthModalSignInContent = ({ setStep }: ContentElementProps) => {
   });
 
   const onClickSignIn = handleSubmit(({ email, password }) => {
-    signIn(email, password);
+    signIn(email, password).then(({ error }) => {
+      setError(error);
+    });
   });
-
-  dlog('AuthModalSignInContent ➡️ error:', error);
 
   return (
     <AuthModalWrapper
@@ -102,7 +103,7 @@ export const AuthModalSignInContent = ({ setStep }: ContentElementProps) => {
           </div>
         }
       >
-        <Button wide size="large" loading={submitting} onClick={onClickSignIn}>
+        <Button wide size="large" loading={isSigningIn} onClick={onClickSignIn}>
           Sign In
         </Button>
       </Tooltip>
