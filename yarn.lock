@@ -1919,18 +1919,18 @@
   dependencies:
     mini-svg-data-uri "^1.2.3"
 
-"@tastiest-io/tastiest-horus@^0.22.0":
-  version "0.22.0"
-  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-horus/0.22.0/991477f405c93fe27946670bc8817c815fbab4b840d1b95f463622cec7c49b05#a1ad72bb01f4472e7095eedf7329836c264804ab"
-  integrity sha512-QMSdYj7NjikmEMw/naEYk207o6tnXEIWYmmcWL/ldsAAk9Ss4UDjwWYMO6OsVCZTgp55tMgfuN/9+EGEpjsfNA==
-  dependencies:
-    "@contentful/rich-text-types" "^15.11.1"
-    "@types/stripe" "^8.0.417"
-
 "@tastiest-io/tastiest-horus@^0.24.0":
   version "0.24.0"
   resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-horus/0.24.0/e12fe2172c5c62889485dfa0053f6128f9604454cfdd89f20e7cab3e60503b23#7f061fe029cbdb3b69e787461b9c58c8f92a646f"
   integrity sha512-2S9adwOVtLPi97rsTfw8BeIpe7xLa4u/3KtkUJPVmWV1sb9wqlRZSjmbCh0RB/8pxBwK9LNZt7d6WHNenSJFdA==
+  dependencies:
+    "@contentful/rich-text-types" "^15.11.1"
+    "@types/stripe" "^8.0.417"
+
+"@tastiest-io/tastiest-horus@^0.31.0":
+  version "0.31.0"
+  resolved "https://npm.pkg.github.com/download/@tastiest-io/tastiest-horus/0.31.0/8ed80c8b508d6be421bf50a46f6800e5441bacc5522bd110d0fc154530d41e17#3af85a948589e91c313e9fea73c329bb3b7860b9"
+  integrity sha512-JXuqQLrD5CKfpbuzdZy8j7hfSn+QQdDBjoSH9XZMFDtmKf2Fc6HvzzROLxDhbode/NyJM164Ni8u4ZT1VnwTSw==
   dependencies:
     "@contentful/rich-text-types" "^15.11.1"
     "@types/stripe" "^8.0.417"

@@ -106,7 +106,13 @@ export function AuthProvider({ children }: any) {
   // This occurs when the user logs in or out.
   const fetchUserData = async (token: string) => {
     const horus = new Horus(token);
-    return horus.get<HorusUser>('/users/me');
+    const { data: _userData, error } = await horus.get<HorusUser>('/users/me');
+
+    if (error) {
+      return null;
+    }
+
+    return _userData as HorusUser;
   };
 
   // Mutate userData as soon as they sign in.
@@ -115,7 +121,7 @@ export function AuthProvider({ children }: any) {
       return;
     }
 
-    mutate(fetchUserData, { rollbackOnError: true });
+    mutate(() => fetchUserData(token));
   }, [token]);
 
   dlog('auth ➡️ data:', userData);
@@ -266,14 +272,14 @@ export enum AuthErrorCode {
   PASSWORDS_DO_NOT_MATCH = 'auth/passwords-do-not-match', // when registering
 }
 
+export const userFacingUnknownError =
+  'An unknown error occured; please try again';
+
 export type AuthError = {
   code: AuthErrorCode;
   message: string;
   userFacingMessage?: string;
 };
-
-export const userFacingUnknownError =
-  'An unknown error occured; please try again';
 
 export const AuthErrorMessageMap = {
   [AuthErrorCode.CLAIMS_TOO_LARGE]: {
