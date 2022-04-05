@@ -311,7 +311,8 @@ function Restaurateurs() {
                 <TextArea
                   ref={givenExperienceIdeaRef}
                   error={errors.givenExperienceIdea?.message}
-                  label="A dish you're proud of"
+                  label="An experience you’d like to sell with Tastiest"
+                  // Eg. Tasting menu for 50 GBP per head
                   {...givenExperienceIdeaProps}
                 />
               </form>

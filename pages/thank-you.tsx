@@ -37,6 +37,16 @@ type CompleteOrder = HorusOrder & {
 export const getServerSideProps = async context => {
   const cookieToken = nookies.get(context)?.token;
 
+  // Are they signed in?
+  if (!cookieToken) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
   // Verify order is legit; else redirect and wipe order data.
   const token = String(context.query.token ?? '') ?? null;
 
@@ -64,6 +74,17 @@ export const getServerSideProps = async context => {
       dynamic: token,
     },
   );
+
+  if (!order) {
+    dlog('Order not found');
+
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 
   // Redirect if invalid booking or they've already arrived.
   // CORRECT ME
@@ -183,8 +204,7 @@ function ThankYou(
                   </div>
 
                   <p className={isDesktop ? 'pb-2' : 'pb-3'}>
-                    Let {order.restaurant.name} know your arrival code when you
-                    arrive.
+                    Let {order.restaurant.name} know your code when you arrive.
                   </p>
 
                   <p className="leading-tight pb-1">
@@ -358,15 +378,19 @@ const OrderSummary = ({ order, paymentCard }: OrderSummaryProps) => {
     },
   ];
 
-  const sumeraryPayment = [
+  const summaryPayment = [
     {
       label: 'Subtotal',
       value: `£${formatCurrency(order.price.subtotal)}`,
     },
     {
+      label: 'Processing Fees',
+      value: `£${formatCurrency(order.price.fees)}`,
+    },
+    {
       label: 'Discount',
       value: `— £${formatCurrency(
-        Math.abs(order.price.final - order.price.subtotal),
+        Math.abs(order.price.final - (order.price.subtotal + order.price.fees)),
       )}`,
     },
   ];
@@ -391,7 +415,7 @@ const OrderSummary = ({ order, paymentCard }: OrderSummaryProps) => {
         </div>
 
         <div>
-          {sumeraryPayment.map((item, key) => (
+          {summaryPayment.map((item, key) => (
             <div key={key} className="flex justify-between">
               <span className="font-light">{item.label}</span>
               <span>{item.value}</span>

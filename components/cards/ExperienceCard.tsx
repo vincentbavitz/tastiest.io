@@ -45,9 +45,23 @@ export function ExperienceCard(props: Props): JSX.Element {
     [],
   );
 
+  // FIX ME CORRECT ME
+  // Greyed out for 'Coming Soon' restaurants.
+  const isComingSoon = restaurant.name.includes('Numa');
+
   return (
-    <Link href={href} as={as}>
-      <a className="no-underline">
+    <Link href={isComingSoon ? '#' : href} as={isComingSoon ? '#' : as}>
+      <a className="no-underline relative">
+        {/* Greyed out for 'Coming soon' restaurants */}
+        {isComingSoon ? (
+          <div
+            style={{ zIndex: 9999 }}
+            className="flex absolute inset-0 items-center justify-center bg-dark bg-opacity-75"
+          >
+            <div className="text-2xl font-medium text-white">Coming Soon</div>
+          </div>
+        ) : null}
+
         <div
           ref={ref}
           className={classNames(

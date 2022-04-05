@@ -33,15 +33,15 @@ export const useOrderPanel = (product: ContentfulProduct, slug: string) => {
   const [selectedSlot, setSelectedSlot] = useState<AvailableSlot>(null);
 
   // Set valid heads from the first mount
-  const allowedHeads = product.allowed_heads.sort((a, b) => a - b);
-  const [heads, setHeads] = useState<number>(allowedHeads[0]);
+  const allowedHeads = product?.allowed_heads.sort((a, b) => a - b);
+  const [heads, setHeads] = useState<number>(allowedHeads?.[0] ?? 1);
 
   const { data } = useHorusSWR<HorusOpenSlotsResponse>(
-    '/reservations/public/open-slots',
+    product ? '/reservations/public/open-slots' : null,
     {
       token,
       query: {
-        restaurant_id: product.restaurant.id,
+        restaurant_id: product?.restaurant.id,
         timezone: TIME.LOCALES.LONDON,
       },
     },
@@ -55,7 +55,7 @@ export const useOrderPanel = (product: ContentfulProduct, slug: string) => {
       data?.slots?.sort(
         (a: string, b: string) => new Date(a).getTime() - new Date(b).getTime(),
       ) ?? [],
-    [data],
+    [data, product],
   );
 
   const days = useMemo(() => lodash.groupBy(slots, s => s.ordinal), [slots]);
@@ -92,9 +92,9 @@ export const useOrderPanel = (product: ContentfulProduct, slug: string) => {
       return '#';
     }
 
-    const search = `?productId=${product.id}&heads=${heads}&bookedForTimestamp=${selectedSlot.timestamp}&userAgent=${navigator?.userAgent}`;
+    const search = `?productId=${product?.id}&heads=${heads}&bookedForTimestamp=${selectedSlot.timestamp}&userAgent=${navigator?.userAgent}`;
     return isSignedIn ? `/checkout${search}` : `/checkout/authorize${search}`;
-  }, [isSignedIn, heads, selectedDay, selectedSlot]);
+  }, [product, isSignedIn, heads, selectedDay, selectedSlot]);
 
   return {
     days,

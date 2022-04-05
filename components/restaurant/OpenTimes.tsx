@@ -37,10 +37,12 @@ export default function OpenTimes(props: Props) {
   const { restaurantId, wide, small, buffHeight } = props;
 
   const { token } = useAuth();
-  const { data: openTimes } = useHorusSWR<WeekOpenTimes>(
+  const { data } = useHorusSWR<WeekOpenTimes>(
     '/restaurants/public/open-times',
     { token, query: { restaurant_id: restaurantId } },
   );
+
+  const openTimes = data?.open_times ?? [];
 
   // If we have successive openTimes that are the same,
   // starting from Monday, list them as (for example)...
@@ -89,13 +91,6 @@ export default function OpenTimes(props: Props) {
 
 const useOpenTimes = (openTimes: WeekOpenTimes) => {
   const timeRows = useMemo(() => {
-    // const rows: OpenTimeRow[] = [
-    //   { from: 1, to: 3, range: [135, 1045] },
-    //   { from: 4, to: 5, range: [165, 900] },
-    //   { from: 4, to: 5, range: [165, 900] },
-    //   { from: 6, to: 0, range: [300, 900] },
-    // ];
-
     const rows: OpenTimeRow[] = [];
     if (!openTimes) {
       return null;
@@ -104,6 +99,10 @@ const useOpenTimes = (openTimes: WeekOpenTimes) => {
     Object.entries(openTimes)
       .sort((a, b) => Number(a[0]) - Number(b[0]))
       .forEach(([day, openTimeItem]) => {
+        if (!openTimeItem) {
+          return;
+        }
+
         const isSunday = Number(day) === 0;
 
         // Previous day where the first is Monday and Monday has no previous

@@ -11,8 +11,8 @@ export default function FancyBorder(props: FancyBorderProps) {
 
   return (
     <div className={clsx(layers === 'double' && 'p-2 border-2 border-primary')}>
-      <div className="relative">
-        <div className="py-8 px-2 z-10">{children}</div>
+      <div className="relative h-full">
+        <div className="py-8 px-2 z-10 h-full">{children}</div>
 
         <div className="absolute my-4 border-primary border-l-2 border-r-2 inset-0 z-0 pointer-events-none"></div>
         <div className="absolute mx-4 border-primary border-t-2 border-b-2 inset-0 z-0 pointer-events-none"></div>

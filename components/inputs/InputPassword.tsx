@@ -19,6 +19,8 @@ export function InputPassword(props: Props) {
   return (
     <Input
       type={show ? 'text' : 'password'}
+      autoCapitalize="none"
+      autoCorrect="off"
       label={'Password'}
       prefix={<LockIcon className="w-8 h-6 fill-current text-primary" />}
       suffix={

@@ -11,6 +11,13 @@ interface Props {
 export default function HomeFeaturedExperiencesSection(props: Props) {
   const { cards } = props;
 
+  // FIX ME CORRECT ME
+  // Sort cards so Numa is last; it's Coming Soon
+  const sortedCards = [
+    ...cards.filter(c => c.restaurant.name !== 'Numa'),
+    ...cards.filter(c => c.restaurant.name === 'Numa'),
+  ];
+
   return (
     <div className="relative">
       <div className="pb-10">
@@ -25,7 +32,7 @@ export default function HomeFeaturedExperiencesSection(props: Props) {
           verticalBuffer={6}
           buttonsOffset={-35}
         >
-          {cards.map((card, key) => (
+          {sortedCards.map((card, key) => (
             <div key={key} style={{ width: '250px' }}>
               <AbstractExperienceCard
                 withViewRestaurant

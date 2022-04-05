@@ -110,6 +110,7 @@ export default function HomeInformationSection(props: Props) {
                   muted
                   autoPlay
                   playsInline // prevent fullscreen on iOS
+                  controls={true}
                   src="https://videos.ctfassets.net/tq39z0nxr0bv/4Ywf56iS0PSDh1FKDO6sSW/eead542476fc5077d81c74c3e08b5d54/simplescreenrecorder-2022-03-15_22.57.53.webm"
                   className="mt-4 w-full border-2"
                 />
@@ -148,7 +149,7 @@ const InformationBlock: FC<InformationBlockProps> = props => {
 
   return (
     <FancyBorder layers="double">
-      <div className="flex flex-col w-full px-4 py-6">
+      <div className="flex flex-col w-full px-4 py-6 h-full">
         <h4 className="text-lg font-medium text-center">
           <LineLimit lines={3} fit="tight">
             {label}
@@ -161,14 +162,17 @@ const InformationBlock: FC<InformationBlockProps> = props => {
           </div>
         </div>
 
-        <div className="pt-4 text-center text-base font-light">
-          <LineLimit lines={2}>{sublabel}</LineLimit>
+        <div className="flex items-center flex-grow">
+          <div className="pt-4 text-center text-base font-light">
+            {sublabel}
+          </div>
         </div>
 
         {withoutButton ? null : (
           <div
             onClick={onButtonClick}
-            className="text-center px-4 py-2 mt-4 text-base text-light font-medium cursor-pointer w-full bg-primary duration-300 filter hover:brightness-125"
+            style={{ minHeight: '64px' }}
+            className="flex items-center justify-center text-center px-4 py-2 mt-4 text-base text-light font-medium cursor-pointer w-full bg-primary duration-300 filter hover:brightness-125"
           >
             {buttonText}
           </div>

@@ -39,6 +39,10 @@ LayoutProps<InferGetStaticPropsType<typeof getServerSideProps>>) {
         <CheckoutProvider>
           <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
             <div
+              style={{
+                // Prevent tooltips from changing screen width
+                maxWidth: '100vw',
+              }}
               className={clsx(
                 'relative flex flex-col w-full space-y-10',
                 isMobile ? 'mt-14' : 'mt-28',
