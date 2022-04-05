@@ -4,11 +4,17 @@ import {
   QuestionOutlined,
   RightOutlined,
 } from '@ant-design/icons';
-import { HorusUser } from '@tastiest-io/tastiest-horus';
+import {
+  HorusBooking,
+  HorusOrder,
+  HorusRestaurant,
+  HorusUser,
+} from '@tastiest-io/tastiest-horus';
 import { Button, Modal } from '@tastiest-io/tastiest-ui';
 import {
+  CmsApi,
+  ContentfulProduct,
   dlog,
-  FirestoreCollection,
   formatCurrency,
   Horus,
   TIME,
@@ -25,15 +31,18 @@ import { InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import nookies from 'nookies';
-import React, { FC, useContext, useMemo, useState } from 'react';
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { useLockBodyScroll } from 'react-use';
-import { db } from 'utils/firebaseAdmin';
 import { getGoogleMapLink } from 'utils/location';
 import { generateStaticURL } from 'utils/routing';
 
 const RESTULTS_PER_PAGE = 5;
-type MappedOrder = any;
-// type MappedOrder = Order & { booking: Booking };
+
+type BookingEnchanted = HorusBooking & {
+  restaurant: HorusRestaurant;
+  order: HorusOrder;
+  user: HorusUser;
+};
 
 export const getServerSideProps = async context => {
   // Get user ID from cookie.
@@ -52,9 +61,11 @@ export const getServerSideProps = async context => {
     };
   }
 
-  // Grab user's details
-  // const { details } = await userDataApi.getUserData();
-  const details = {} as any;
+  const { data } = await horus.get<any, BookingEnchanted[]>('/bookings/', {
+    query: { user_id: user.id },
+  });
+
+  const bookings = data ?? [];
 
   // Get orders of user
   const page = context?.query?.page ?? 1;
@@ -68,70 +79,39 @@ export const getServerSideProps = async context => {
     };
   }
 
-  const bookingsSnapshot = await db(FirestoreCollection.BOOKINGS)
-    .where('userId', '==', user.id)
-    .orderBy('bookedForTimestamp', 'desc')
-    // .limit(RESTULTS_PER_PAGE)
-    // .offset((page - 1) * RESTULTS_PER_PAGE)
-    .get();
-
-  const ordersSnapshot = await db(FirestoreCollection.ORDERS)
-    .where('userId', '==', user.id)
-    .orderBy('bookedForTimestamp', 'desc')
-    .get();
-
-  const orders: any[] = [];
-  const bookings: any[] = [];
-  ordersSnapshot.forEach(order => orders.push(order.data() as any));
-  bookingsSnapshot.forEach(booking => bookings.push(booking.data() as any));
-
-  // Map each booking to its order and filter out bad mappings.
-  const mappedOrders: MappedOrder[] = orders
-    .map(order => {
-      const booking =
-        bookings.find(booking => booking.orderId === order.id) ?? null;
-
-      dlog('bookings ➡️ booking:', booking);
-
-      (order as MappedOrder).booking = booking;
-
-      return order as MappedOrder;
-    })
-    .filter(order => Boolean(order.booking));
-
   return {
-    props: { orders: mappedOrders, details },
+    props: { user, bookings },
   };
 };
 
-const Bookings = ({
-  details,
-  orders,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Bookings = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>,
+) => {
+  const { user, bookings } = props;
   const { isMobile, isTablet } = useScreenSize();
 
-  const quantity = orders.length;
+  const quantity = bookings.length;
 
-  dlog('bookings ➡️ orders:', orders);
+  dlog('bookings ➡️ bookings:', bookings);
 
   return (
     <div className="pb-20">
       <div className="relative flex flex-col items-center w-full pb-12 mt-10 space-y-4">
         <h1 className="text-3xl text-center font-primary text-primary">
-          {details?.firstName ? `${details?.firstName}'s` : 'My'} Bookings
+          {user.first_name ? `${user.first_name}'s` : 'My'} Bookings
         </h1>
       </div>
 
       <Contained>
-        {orders.length > 0 ? (
+        {bookings.length > 0 ? (
           <div className="flex flex-col space-y-8">
-            {orders.map((order, key) => (
-              <BookingRow key={key} order={order} />
+            {bookings.map((booking, key) => (
+              <BookingRow key={key} booking={booking} />
             ))}
           </div>
         ) : (
           <div className="flex flex-col items-center space-y-4 text-lg bg-white shadow-lg rounded-lg py-6 px-8">
-            <h4>You don't have any bookings yet.</h4>
+            <h4 className="text-center">You don't have any bookings yet.</h4>
             <Link href="/">
               <a className="no-underline">
                 <Button>Take me back</Button>{' '}
@@ -145,10 +125,10 @@ const Bookings = ({
 };
 
 interface BookingRowProps {
-  order: MappedOrder;
+  booking: BookingEnchanted;
 }
 
-const BookingRow: FC<BookingRowProps> = ({ order }) => {
+const BookingRow: FC<BookingRowProps> = ({ booking }) => {
   const { isMobile } = useScreenSize();
 
   const [showModifyModal, setShowModifyModal] = useState(false);
@@ -156,9 +136,9 @@ const BookingRow: FC<BookingRowProps> = ({ order }) => {
   const restaurantPageUrl = useMemo(
     () =>
       generateStaticURL({
-        city: order.deal.restaurant.city,
-        cuisine: order.deal.restaurant.cuisine,
-        restaurant: order.deal.restaurant.uriName,
+        city: booking.restaurant.city,
+        cuisine: booking.restaurant.cuisine,
+        restaurant: booking.restaurant.uri_name,
       }).as,
     [],
   );
@@ -168,7 +148,7 @@ const BookingRow: FC<BookingRowProps> = ({ order }) => {
       {isMobile ? (
         <div className="relative h-40 mx-4">
           <Image
-            src={order.deal.image.url}
+            src={booking.order.product_image.url}
             layout="fill"
             objectFit="cover"
             className="rounded"
@@ -181,7 +161,7 @@ const BookingRow: FC<BookingRowProps> = ({ order }) => {
           {!isMobile ? (
             <div style={{ minWidth: '6rem' }} className="relative h-24">
               <Image
-                src={order.deal.image.url}
+                src={booking.order.product_image.url}
                 layout="fill"
                 objectFit="cover"
                 className="rounded"
@@ -207,7 +187,7 @@ const BookingRow: FC<BookingRowProps> = ({ order }) => {
                     'no-underline font-medium text-primary text-base',
                   )}
                 >
-                  {order.deal.name}
+                  {booking.order.product_name}
                 </a>
               </Link>
 
@@ -216,12 +196,12 @@ const BookingRow: FC<BookingRowProps> = ({ order }) => {
               >
                 <Link href={restaurantPageUrl}>
                   <a className="no-underline font-medium text-secondary">
-                    {order.deal.restaurant.name}
+                    {booking.restaurant.name}
                   </a>
                 </Link>
 
                 <div className="text-base font-light text-gray-800">
-                  £{formatCurrency(order.price.final)}
+                  £{formatCurrency(booking.order.price.final)}
                 </div>
               </div>
             </div>
@@ -230,12 +210,12 @@ const BookingRow: FC<BookingRowProps> = ({ order }) => {
               <CalendarOutlined className="text-secondary text-base" />
 
               <p className="leading-none">
-                {DateTime.fromMillis(order.bookedForTimestamp).toFormat(
-                  'hh:mm a, DDD',
-                )}
+                {DateTime.fromJSDate(
+                  new Date(booking.order.booked_for),
+                ).toFormat('hh:mm a, DDD')}
               </p>
 
-              {!(order.booking.hasArrived || order.booking.hasCancelled) ? (
+              {!(booking.has_arrived || booking.has_cancelled) ? (
                 <>
                   <span className="text-gray-400">|</span>
 
@@ -256,14 +236,14 @@ const BookingRow: FC<BookingRowProps> = ({ order }) => {
       <div className="w-full px-6 pb-2">
         <div className="flex items-center justify-between text-sm border-gray-100 border-t border-b h-12">
           <div className="font-medium pb-1">Confirmation Code</div>
-          <span className="bg-green-300 rounded bg-opacity-50 px-2 text-base tracking-widest font-medium">
-            {order.booking.confirmationCode}
+          <span className="bg-green-300 rounded bg-opacity-50 px-2 text-base tracking-widest font-mono font-medium">
+            {booking.confirmation_code}
           </span>
         </div>
 
         <div className="flex items-center justify-between text-sm h-10">
           <div className="font-medium pb-1">Heads</div>
-          <span className="text-base">{order.booking.heads}</span>
+          <span className="text-base">{booking.order.heads}</span>
         </div>
       </div>
 
@@ -272,8 +252,8 @@ const BookingRow: FC<BookingRowProps> = ({ order }) => {
           label="Get directions"
           icon={EnvironmentOutlined}
           href={getGoogleMapLink(
-            order.deal.restaurant.location.lat,
-            order.deal.restaurant.location.lon,
+            booking.restaurant.location_lat,
+            booking.restaurant.location_lon,
           )}
           newTab
         />
@@ -282,14 +262,14 @@ const BookingRow: FC<BookingRowProps> = ({ order }) => {
           label="Get help"
           icon={QuestionOutlined}
           href={`/help?type=${'order'}&userFacingOrderId=${
-            order.userFacingOrderId
+            booking.order.user_facing_id
           }`}
           isLast
         />
       </div>
 
       <ModifyBookingModal
-        order={order}
+        booking={booking}
         show={showModifyModal}
         close={() => setShowModifyModal(false)}
       />
@@ -341,17 +321,27 @@ const BookingOptionRowInner = (props: BookingOptionRowProps) => {
 };
 
 interface ModifyBookingModalProps {
-  order: MappedOrder;
+  booking: BookingEnchanted;
   show: boolean;
   close: () => void;
 }
 
 const ModifyBookingModal = (props: ModifyBookingModalProps) => {
-  const { order, show, close } = props;
+  const { booking, show, close } = props;
   const { token } = useContext(AuthContext);
 
   const { isMobile } = useScreenSize();
   useLockBodyScroll(isMobile && show);
+
+  const [product, setProduct] = useState<ContentfulProduct>(null);
+
+  dlog('bookings ➡️ product:', product);
+
+  // Fetch the product from Contentful
+  useEffect(() => {
+    const cms = new CmsApi();
+    cms.getProduct(booking.order.product_id).then(setProduct);
+  }, []);
 
   const {
     days,
@@ -361,7 +351,7 @@ const ModifyBookingModal = (props: ModifyBookingModalProps) => {
     selectedSlot,
     setSelectedDay,
     setSelectedSlot,
-  } = useOrderPanel(order.product, order.fromSlug);
+  } = useOrderPanel(product, booking.order.from_slug);
 
   const [submitting, setSubmitting] = useState(false);
 
@@ -384,7 +374,7 @@ const ModifyBookingModal = (props: ModifyBookingModalProps) => {
 
     const horus = new Horus(token);
     const { data, error } = await horus.post('/bookings/update', {
-      bookingId: order.id,
+      bookingId: booking.id,
       bookedForTimestamp: selectedDateTime.toMillis(),
     });
 
@@ -431,7 +421,7 @@ const ModifyBookingModal = (props: ModifyBookingModalProps) => {
               >
                 Restaurant
               </h4>
-              <span>{order.deal.restaurant.name}</span>
+              <span>{booking.restaurant.name}</span>
             </div>
 
             <div
@@ -451,7 +441,7 @@ const ModifyBookingModal = (props: ModifyBookingModalProps) => {
                 Experience
               </h4>
 
-              <span>{order.deal.name}</span>
+              <span>{booking.order.product_name}</span>
             </div>
 
             <div
@@ -472,7 +462,7 @@ const ModifyBookingModal = (props: ModifyBookingModalProps) => {
               </h4>
 
               <span>
-                {DateTime.fromMillis(order.booking.bookedForTimestamp).toFormat(
+                {DateTime.fromJSDate(new Date(booking.booked_for)).toFormat(
                   'h:mm a dd LLL yyyy',
                 )}
               </span>
