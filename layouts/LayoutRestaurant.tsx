@@ -1,5 +1,5 @@
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { CrumbProps } from '@tastiest-io/tastiest-ui';
+import { Button, CrumbProps } from '@tastiest-io/tastiest-ui';
 import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
@@ -12,6 +12,7 @@ import TabbedContent from 'components/TabbedContent';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetStaticPropsType } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { getStaticProps } from 'pages/[city]/[cuisine]/[restaurant]';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLockBodyScroll, useWindowScroll } from 'react-use';
@@ -137,11 +138,19 @@ export default function LayoutRestaurant({
       {isComingSoon ? (
         <div
           style={{ zIndex: 100000 }}
-          className="flex fixed inset-0 items-center justify-center bg-dark bg-opacity-75"
+          className="flex fixed inset-0 flex-col gap-4 items-center justify-center bg-dark bg-opacity-75"
         >
           <div className="text-3xl font-medium text-white">
             {restaurant.name} Coming Soon
           </div>
+
+          <Link href="/">
+            <a className="no-underline">
+              <Button size="large" prefix={<LeftOutlined />}>
+                Take me back
+              </Button>
+            </a>
+          </Link>
         </div>
       ) : null}
 

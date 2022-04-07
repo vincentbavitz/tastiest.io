@@ -384,12 +384,16 @@ interface DaySelectorProps {
 
 const DaySelector = (props: DaySelectorProps) => {
   const {
-    days,
+    // days,
     selectedDay,
     setSelectedDay,
     chevronSize,
     selectItemSize,
   } = props;
+
+  // FIX ME CORRECT ME
+  // Temporarily disallow dates before April 12 for BETA.
+  const days = props.days.filter(d => d > 101);
 
   return (
     <HorizontalScrollable

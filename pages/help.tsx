@@ -116,7 +116,19 @@ const Help = (
         }}
       />
 
-      {sent ? (
+      <Contained maxWidth={900}>
+        <div className="w-full bg-white shadow-lg flex justify-center py-10 px-12 mt-32 rounded-sm text-lg">
+          If you need help or you've spotted a bug, please contact us at{' '}
+          <a
+            href="mailto:support@tastiest.io"
+            className="text-secondary hover:underline ml-1"
+          >
+            support@tastiest.io
+          </a>
+        </div>
+      </Contained>
+
+      {/* {sent ? (
         <HelpSuccess
           userName={userName}
           userEmail={userEmail}
@@ -130,7 +142,7 @@ const Help = (
           initialSubject={initialSubject}
           setHasSent={setHasSent}
         />
-      )}
+      )} */}
     </>
   );
 };

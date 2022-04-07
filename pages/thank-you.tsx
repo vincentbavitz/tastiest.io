@@ -387,12 +387,12 @@ const OrderSummary = ({ order, paymentCard }: OrderSummaryProps) => {
       label: 'Processing Fees',
       value: `£${formatCurrency(order.price.fees)}`,
     },
-    {
-      label: 'Discount',
-      value: `— £${formatCurrency(
-        Math.abs(order.price.final - (order.price.subtotal + order.price.fees)),
-      )}`,
-    },
+    // {
+    //   label: 'Discount',
+    //   value: `— £${formatCurrency(
+    //     Math.abs(order.price.final - (order.price.subtotal + order.price.fees)),
+    //   )}`,
+    // },
   ];
 
   return (
