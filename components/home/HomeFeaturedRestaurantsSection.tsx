@@ -41,21 +41,24 @@ export default function HomeFeaturedRestaurantsSection(props: Props) {
                   header={restaurant.name}
                   headerFont="primary"
                   overlayButton={
-                    <Link
-                      href={`${link.href}?notifications=true`}
-                      as={`${link.as}?notifications=true`}
-                    >
-                      <a className="no-underline">
-                        <Button color="light" prefix={<BellOutlined />}>
-                          Follow
-                        </Button>
-                      </a>
-                    </Link>
+                    restaurant.name.includes('Numa') ? null : (
+                      <Link
+                        href={`${link.href}?notifications=true`}
+                        as={`${link.as}?notifications=true`}
+                      >
+                        <a className="no-underline">
+                          <Button color="light" prefix={<BellOutlined />}>
+                            Follow
+                          </Button>
+                        </a>
+                      </Link>
+                    )
                   }
                   description={`${titleCase(
                     restaurant.cuisine.replace('_', ' '),
                   )} - ${restaurant.location_display}`}
                   image={restaurant.display_photograph}
+                  isComingSoon={restaurant.name.includes('Numa')}
                   {...link}
                 />
               </div>

@@ -42,6 +42,7 @@ export default function HomeAwardWinningDishesSection(
                   header={dish.name}
                   description={dish.description}
                   image={dish.image}
+                  isComingSoon={dish.restaurant.name.includes('Numa')}
                   {...link}
                 >
                   <div className="flex items-center justify-between">

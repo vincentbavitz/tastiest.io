@@ -24,6 +24,8 @@ interface DisplayCardProps {
   as?: string;
 
   loading?: boolean;
+
+  isComingSoon?: boolean;
 }
 
 export default function DisplayCard(props: DisplayCardProps) {
@@ -58,6 +60,7 @@ function DisplayCardInner(props: DisplayCardProps) {
     image,
     loading,
     children,
+    isComingSoon,
   } = props;
 
   const ref = useRef(null);
@@ -65,10 +68,20 @@ function DisplayCardInner(props: DisplayCardProps) {
 
   return (
     <div className={clsx('relative flex flex-col h-full')}>
+      {/* Greyed out for 'Coming soon' restaurants */}
+      {isComingSoon ? (
+        <div className="absolute top-4 left-4 bg-secondary border-2 border-white text-base font-medium text-white z-10 px-2">
+          Coming Soon
+        </div>
+      ) : null}
+
       <div
         ref={ref}
         style={{ minWidth: '200px' }}
-        className="relative flex flex-col h-full w-full select-none shadow-lg"
+        className={clsx(
+          'relative flex flex-col h-full w-full select-none shadow-lg',
+          isComingSoon ? 'pointer-events-none filter saturate-50' : '',
+        )}
       >
         <div className="absolute inset-1 border-2 z-10"></div>
 
@@ -133,7 +146,12 @@ function DisplayCardInner(props: DisplayCardProps) {
       </div>
 
       {children ? (
-        <div className="pt-4 pb-2 px-2 bg-white w-full -mt-2 duration-300">
+        <div
+          className={clsx(
+            'pt-4 pb-2 px-2 bg-white w-full -mt-2 duration-300',
+            isComingSoon ? 'pointer-events-none filter saturate-50' : '',
+          )}
+        >
           {children}
         </div>
       ) : null}

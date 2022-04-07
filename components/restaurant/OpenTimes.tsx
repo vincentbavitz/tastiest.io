@@ -42,15 +42,13 @@ export default function OpenTimes(props: Props) {
     { token, query: { restaurant_id: restaurantId } },
   );
 
+  dlog('OpenTimes ➡️ data:', data);
   const openTimes = data?.open_times ?? [];
 
   // If we have successive openTimes that are the same,
   // starting from Monday, list them as (for example)...
   // Monday to Wednesday: 9:00 AM --> 4:30 PM
   const { timeRows, transformRowIntoHumanLanguage } = useOpenTimes(openTimes);
-
-  dlog('OpenTimes ➡️ openTimes:', openTimes);
-  dlog('OpenTimes ➡️ timeRows:', timeRows);
 
   return (
     <div

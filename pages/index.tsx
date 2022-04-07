@@ -62,11 +62,7 @@ const Index = () => {
     const fetchContent = async () => {
       const { posts: _posts = [] } = await cms.getTopPosts(10);
       const { dishes: _dishes } = await cms.getTastiestDishes(15);
-      const { restaurants: _restaurants } = await cms.getRestaurants(
-        10,
-        1,
-        process.env.NODE_ENV === 'development',
-      );
+      const { restaurants: _restaurants } = await cms.getRestaurants(10, 1);
 
       return { posts: _posts, dishes: _dishes, restaurants: _restaurants };
     };
@@ -79,6 +75,11 @@ const Index = () => {
   }, []);
 
   const cards = posts.slice(0, 20);
+
+  const sortedDishes = [
+    ...dishes.filter(d => !d.restaurant.name.includes('Numa')),
+    ...dishes.filter(d => d.restaurant.name.includes('Numa')),
+  ];
 
   return (
     <>
@@ -123,7 +124,7 @@ const Index = () => {
         <HomeInformationSection />
 
         <Element name="featured-dishes-section">
-          <HomeAwardWinningDishesSection dishes={dishes} />
+          <HomeAwardWinningDishesSection dishes={sortedDishes} />
         </Element>
 
         <HomeHowItWorksSection />
