@@ -20,17 +20,19 @@ export default function useFollow(restaurantId: string) {
 
   const horus = useMemo(() => (token ? new Horus(token) : null), [token]);
 
+  // FIX ME CORRECT ME
+  const isFollowing = true;
+
   console.log('useFollow ➡️ token:', token);
 
   // Set following status initially
+  // `null` indicates that the user isn't logged in
   useEffect(() => {
     if (!horus) {
       return;
     }
 
-    horus
-      .get('/users/following')
-      .then(({ data }) => console.log('useFollow ➡️ ', data));
+    horus.get('/users/following').then(({ data }) => data);
   }, [horus]);
 
   const [
@@ -38,21 +40,6 @@ export default function useFollow(restaurantId: string) {
     setNotifications,
   ] = useState<FollowerNotificationPreferences | null>(null);
   const [notificationsLoading, setNotificationsLoading] = useState(false);
-
-  /** `null` indicates that the user isn't logged in */
-  const isFollowing = useMemo(() => {
-    if (!userData) {
-      return null;
-    }
-
-    // FIX ME - Get follower relation from Horus
-    // return Boolean(
-    //   userData?.metrics?.restaurantsFollowed?.find(
-    //     r => r.restaurantId === restaurantId,
-    //   ),
-    // );
-    return false;
-  }, [restaurantId, user, isSignedIn]);
 
   // Set initial values
   useEffect(() => {

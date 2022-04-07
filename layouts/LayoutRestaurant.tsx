@@ -263,7 +263,7 @@ export default function LayoutRestaurant({
             </div>
 
             <div>
-              <div
+              {/* <div
                 style={{
                   height: isMobile ? '8rem' : '15rem',
                   minWidth: '19rem',
@@ -276,7 +276,7 @@ export default function LayoutRestaurant({
                   objectFit="contain"
                   objectPosition="bottom"
                 />
-              </div>
+              </div> */}
 
               {isExperiencesPage ? (
                 <BlockButton
