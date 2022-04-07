@@ -9,7 +9,7 @@ import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { generateTitle } from 'utils/metadata';
 
@@ -27,7 +27,7 @@ const Invite = () => {
 
   const [showAccessModal, setShowAccessModal] = useState(false);
 
-  const { submitPreregister } = useContext(EarlyAccessContext);
+  const { submitPreregister, setHasAccess } = useContext(EarlyAccessContext);
   const [loading, setLoading] = useState(false);
 
   const submit = async ({ joinWaitlistEmail }: JoinWaitlistFormData) => {
@@ -39,10 +39,6 @@ const Invite = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    router.prefetch('/invite/thank-you');
-  }, []);
 
   const {
     handleSubmit,
