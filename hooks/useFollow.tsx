@@ -1,24 +1,37 @@
 import {
-  dlog,
   FollowerNotificationPreferences,
   FollowerNotificationType,
-  postFetch,
+  Horus,
 } from '@tastiest-io/tastiest-utils';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { openAuthModal } from 'state/navigation';
-import { LocalEndpoint } from 'types/api';
 import { useAuth } from './auth/useAuth';
 
 /**
  * Managed following and setting notifications for a specific restaurant.
  */
 export default function useFollow(restaurantId: string) {
-  const { user, userData, isSignedIn } = useAuth();
+  const { user, userData, token, isSignedIn } = useAuth();
   const dispatch = useDispatch();
 
   const [following, setFollowing] = useState<boolean | null>(null);
   const [followLoading, setFollowLoading] = useState(false);
+
+  const horus = useMemo(() => (token ? new Horus(token) : null), [token]);
+
+  console.log('useFollow ➡️ token:', token);
+
+  // Set following status initially
+  useEffect(() => {
+    if (!horus) {
+      return;
+    }
+
+    horus
+      .get('/users/following')
+      .then(({ data }) => console.log('useFollow ➡️ ', data));
+  }, [horus]);
 
   const [
     notifications,
@@ -65,25 +78,18 @@ export default function useFollow(restaurantId: string) {
 
     setFollowLoading(true);
 
-    const { success, error } = await postFetch<any>(
-      LocalEndpoint.UPDATE_FOLLOW_STATUS,
-      {
-        userId: user.uid,
-        restaurantId,
-        following: true,
-        notifications,
-      },
-    );
-
-    dlog('useFollow ➡️ success:', success);
-    dlog('useFollow ➡️ error:', error);
+    const { error } = await horus.post('/users/follow-restaurant', {
+      restaurant_id: restaurantId,
+      notify_new_nenu: notifications.NEW_MENU,
+      notify_general_info: notifications.GENERAL_INFO,
+      notify_last_minute_tables: notifications.LAST_MINUTE_TABLES,
+      notify_special_sxperiences: notifications.SPECIAL_EXPERIENCES,
+    });
 
     setFollowLoading(false);
 
-    if (success) {
-      setFollowing(success);
-    } else if (error) {
-      dlog('useFollow ➡️ error:', error);
+    if (!error) {
+      setFollowing(true);
     }
   };
 
@@ -96,22 +102,15 @@ export default function useFollow(restaurantId: string) {
 
     setFollowLoading(true);
 
-    const { success, error } = await postFetch<any>(
-      LocalEndpoint.UPDATE_FOLLOW_STATUS,
-      {
-        userId: user.uid,
-        restaurantId,
-        following: false,
-      },
-    );
+    const { error } = await horus.post('/users/unfollow-restaurant', {
+      restaurant_id: restaurantId,
+    });
 
     setFollowLoading(false);
 
-    if (success) {
+    if (!error) {
       setFollowing(false);
       setNotifications(null);
-    } else if (error) {
-      dlog('useFollow ➡️ error:', error);
     }
   };
 
@@ -132,22 +131,18 @@ export default function useFollow(restaurantId: string) {
 
     setNotificationsLoading(true);
 
-    const { success, error } = await postFetch<any>(
-      LocalEndpoint.UPDATE_FOLLOW_STATUS,
-      {
-        userId: user.uid,
-        restaurantId,
-        following: true,
-        notifications: notificationPreferences,
-      },
-    );
+    const { error } = await horus.post('/users/follow-restaurant', {
+      restaurant_id: restaurantId,
+      notify_new_nenu: notifications.NEW_MENU,
+      notify_general_info: notifications.GENERAL_INFO,
+      notify_last_minute_tables: notifications.LAST_MINUTE_TABLES,
+      notify_special_sxperiences: notifications.SPECIAL_EXPERIENCES,
+    });
 
     setNotificationsLoading(false);
 
-    if (success) {
+    if (!error) {
       setNotifications(notificationPreferences);
-    } else if (error) {
-      dlog('useFollow ➡️ error:', error);
     }
 
     return;
@@ -157,6 +152,7 @@ export default function useFollow(restaurantId: string) {
     follow,
     unfollow,
     following,
+    setFollowing,
     notifications,
     toggleNotifications,
     followLoading,

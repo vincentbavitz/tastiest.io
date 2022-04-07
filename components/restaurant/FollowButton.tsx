@@ -28,15 +28,13 @@ export default function FollowButton(props: Props) {
   const {
     follow,
     unfollow,
-    // following,
+    following,
+    setFollowing,
     notifications,
     toggleNotifications,
     followLoading,
     notificationsLoading,
   } = useFollow(restaurant.id);
-
-  // DELETE ME FIX ME CORRECT ME
-  const [following, setFollowing] = useState(false);
 
   const [showFollowModal, setShowFollowModal] = useState(false);
   const toggleFollowRestaurant = (shouldFollow: boolean) => {
