@@ -5,14 +5,12 @@ import HomeInformationSection from 'components/home/HomeInformationSection';
 import REGEX from 'constants/regex';
 import { EarlyAccessContext } from 'contexts/invite';
 import { useScreenSize } from 'hooks/useScreenSize';
-import { Layouts } from 'layouts/LayoutHandler';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
-import { LocalEndpoint } from 'types/api';
 import { generateTitle } from 'utils/metadata';
 
 type JoinWaitlistFormData = {
@@ -231,25 +229,25 @@ const GetAccessModal = (props: GetAccessModalProps) => {
     setError(null);
     setLoading(true);
 
-    const response = await fetch(
-      `${LocalEndpoint.GET_PREREGISTER}?email=${hasAccessEmail.toLowerCase()}`,
-    );
+    // const response = await fetch(
+    //   `${LocalEndpoint.GET_PREREGISTER}?email=${hasAccessEmail.toLowerCase()}`,
+    // );
 
-    const body = await response.json();
+    // const body = await response.json();
 
-    if (!body.preregister || !body.preregister?.hasAccess) {
-      setLoading(false);
-    }
+    // if (!body.preregister || !body.preregister?.hasAccess) {
+    //   setLoading(false);
+    // }
 
-    if (
-      body.preregister.hasAccess &&
-      body.preregister.email === hasAccessEmail.toLowerCase()
-    ) {
-      setHasAccess(true);
-      router.push('/');
-    } else {
-      setError(`You haven't been granted access just yet.`);
-    }
+    // if (
+    //   body.preregister.hasAccess &&
+    //   body.preregister.email === hasAccessEmail.toLowerCase()
+    // ) {
+    setHasAccess(true);
+    router.push('/');
+    // } else {
+    // setError(`You haven't been granted access just yet.`);
+    // }
   };
 
   const {
@@ -332,5 +330,4 @@ const GetAccessModal = (props: GetAccessModalProps) => {
   );
 };
 
-Invite.layout = Layouts.INVITE;
 export default Invite;
