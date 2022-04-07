@@ -148,8 +148,8 @@ export const EarlyAccessProvider = ({
 
     // Take to thank-you page if already exists.
     if (existing.exists) {
-      console.log('invite ➡️ exists:');
-      router.push(`/invite/thank-you?ref=${emailPrefix}`);
+      _setHasAcccess(true);
+      router.push('/');
       return;
     }
 
@@ -184,7 +184,8 @@ export const EarlyAccessProvider = ({
         });
     }
 
-    router.push(`/invite/thank-you?ref=${emailPrefix}`);
+    _setHasAcccess(true);
+    router.push('/');
   };
 
   const value: EarlyAccessParams = {
