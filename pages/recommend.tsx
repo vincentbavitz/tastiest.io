@@ -57,8 +57,8 @@ const Recommend = () => {
         message: 'Please enter at least 2 characters',
       },
       maxLength: {
-        value: 30,
-        message: 'Please enter at most 30 characters',
+        value: 128,
+        message: 'Please enter at most 128 characters',
       },
       required: {
         value: true,
@@ -119,8 +119,8 @@ const Recommend = () => {
         message: 'Please enter at least 2 characters',
       },
       maxLength: {
-        value: 30,
-        message: 'Please enter at most 30 characters',
+        value: 128,
+        message: 'Please enter at most 128 characters',
       },
       required: {
         value: true,
