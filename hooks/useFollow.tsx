@@ -1,4 +1,5 @@
 import {
+  dlog,
   FollowerNotificationPreferences,
   FollowerNotificationType,
   Horus,
@@ -7,6 +8,18 @@ import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { openAuthModal } from 'state/navigation';
 import { useAuth } from './auth/useAuth';
+
+type FollowRelation = {
+  id: string;
+  followed_at: string;
+  notify_new_menu: boolean;
+  notify_general_info: boolean;
+  notify_last_minute_tables: boolean;
+  notify_limited_time_dishes: boolean;
+  notify_special_experiences: boolean;
+  user_id: string;
+  restaurant_id: string;
+};
 
 /**
  * Managed following and setting notifications for a specific restaurant.
@@ -29,35 +42,40 @@ export default function useFollow(restaurantId: string) {
       return;
     }
 
-    horus.get('/users/following').then(({ data }) => data);
+    horus.get<FollowRelation[]>('/users/following').then(({ data }) => {
+      dlog('useFollow ➡️ data:', data);
+      const _followRelation: FollowRelation = data?.find(
+        r => r.restaurant_id === restaurantId,
+      );
+
+      setFollowing(Boolean(_followRelation));
+
+      // Set thie notifcations of the follow relation.
+      setNotifications({
+        [FollowerNotificationType.LIMITED_TIME_DISHES]:
+          _followRelation.notify_limited_time_dishes,
+        [FollowerNotificationType.SPECIAL_EXPERIENCES]:
+          _followRelation.notify_special_experiences,
+        [FollowerNotificationType.LAST_MINUTE_TABLES]:
+          _followRelation.notify_last_minute_tables,
+        [FollowerNotificationType.GENERAL_INFO]:
+          _followRelation.notify_general_info,
+        [FollowerNotificationType.NEW_MENU]: _followRelation.notify_new_menu,
+      });
+    });
   }, [horus]);
 
   const [
     notifications,
     setNotifications,
   ] = useState<FollowerNotificationPreferences | null>(null);
+
   const [notificationsLoading, setNotificationsLoading] = useState(false);
-
-  // Set initial values
-  useEffect(() => {
-    if (!userData) {
-      setFollowing(null);
-    }
-
-    if (following !== null) {
-      setFollowing(following);
-      setNotifications({
-        [FollowerNotificationType.LIMITED_TIME_DISHES]: true,
-        [FollowerNotificationType.SPECIAL_EXPERIENCES]: true,
-        [FollowerNotificationType.LAST_MINUTE_TABLES]: true,
-        [FollowerNotificationType.GENERAL_INFO]: false,
-        [FollowerNotificationType.NEW_MENU]: true,
-      });
-    }
-  }, [userData]);
 
   // Set the following status on Firestore when following changes.
   const follow = async (notifications?: FollowerNotificationPreferences) => {
+    dlog('useFollow ➡️ following:', following);
+
     if (following === null) {
       return;
     }
@@ -66,10 +84,11 @@ export default function useFollow(restaurantId: string) {
 
     const { error } = await horus.post('/users/follow-restaurant', {
       restaurant_id: restaurantId,
-      notify_new_nenu: notifications.NEW_MENU,
-      notify_general_info: notifications.GENERAL_INFO,
-      notify_last_minute_tables: notifications.LAST_MINUTE_TABLES,
-      notify_special_sxperiences: notifications.SPECIAL_EXPERIENCES,
+      notify_new_nenu: notifications?.NEW_MENU ?? true,
+      notify_general_info: notifications?.GENERAL_INFO ?? true,
+      notify_last_minute_tables: notifications?.LAST_MINUTE_TABLES ?? true,
+      notify_special_experiences: notifications?.SPECIAL_EXPERIENCES ?? true,
+      notify_limited_time_dishes: notifications?.LIMITED_TIME_DISHES ?? true,
     });
 
     setFollowLoading(false);
@@ -110,19 +129,15 @@ export default function useFollow(restaurantId: string) {
       return;
     }
 
-    // Turning on notifications should only be possible if they're following.
-    if (!userData || !following) {
-      return;
-    }
-
     setNotificationsLoading(true);
 
     const { error } = await horus.post('/users/follow-restaurant', {
       restaurant_id: restaurantId,
-      notify_new_nenu: notifications.NEW_MENU,
-      notify_general_info: notifications.GENERAL_INFO,
-      notify_last_minute_tables: notifications.LAST_MINUTE_TABLES,
-      notify_special_sxperiences: notifications.SPECIAL_EXPERIENCES,
+      notify_new_nenu: notifications?.NEW_MENU ?? true,
+      notify_general_info: notifications?.GENERAL_INFO ?? true,
+      notify_last_minute_tables: notifications?.LAST_MINUTE_TABLES ?? true,
+      notify_special_experiences: notifications?.SPECIAL_EXPERIENCES ?? true,
+      notify_limited_time_dishes: notifications?.LIMITED_TIME_DISHES ?? true,
     });
 
     setNotificationsLoading(false);
