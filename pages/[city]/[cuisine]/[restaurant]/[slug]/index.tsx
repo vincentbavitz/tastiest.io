@@ -6,7 +6,7 @@ import { GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { NextSeo, ProductJsonLd } from 'next-seo';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toggleOfferMenu } from 'state/navigation';
 import { generateTitle } from 'utils/metadata';
@@ -82,7 +82,6 @@ export const getStaticProps = async ({ params }) => {
 };
 
 function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
-  const cms = useMemo(() => new CmsApi(), []);
   const dispatch = useDispatch();
 
   const { post } = props;
@@ -95,6 +94,7 @@ function Experience(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const [recommendedPosts, setRecommendedPosts] = useState([]);
   useEffect(() => {
     dlog('[slug] ➡️ recommendedPosts:', recommendedPosts);
+    const cms = new CmsApi();
     cms.getTopPosts(8).then(result => setRecommendedPosts(result?.posts));
   }, []);
 
