@@ -87,7 +87,7 @@ export default function useFollow(restaurantId: string) {
       notify_new_nenu: notifications?.NEW_MENU ?? true,
       notify_general_info: notifications?.GENERAL_INFO ?? true,
       notify_last_minute_tables: notifications?.LAST_MINUTE_TABLES ?? true,
-      notify_special_sxperiences: notifications?.SPECIAL_EXPERIENCES ?? true,
+      notify_special_experiences: notifications?.SPECIAL_EXPERIENCES ?? true,
       notify_limited_time_dishes: notifications?.LIMITED_TIME_DISHES ?? true,
     });
 
@@ -136,7 +136,7 @@ export default function useFollow(restaurantId: string) {
       notify_new_nenu: notifications?.NEW_MENU ?? true,
       notify_general_info: notifications?.GENERAL_INFO ?? true,
       notify_last_minute_tables: notifications?.LAST_MINUTE_TABLES ?? true,
-      notify_special_sxperiences: notifications?.SPECIAL_EXPERIENCES ?? true,
+      notify_special_experiences: notifications?.SPECIAL_EXPERIENCES ?? true,
       notify_limited_time_dishes: notifications?.LIMITED_TIME_DISHES ?? true,
     });
 
