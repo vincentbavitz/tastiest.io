@@ -1,18 +1,16 @@
 import { Button, Input, Modal, TastiestBrand } from '@tastiest-io/tastiest-ui';
 import { postFetch } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
-import { EarlyAccessContext, EarlyAccessParams } from 'contexts/invite';
 import { Layouts } from 'layouts/LayoutHandler';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { LocalEndpoint } from 'types/api';
 import { generateTitle } from 'utils/metadata';
 import { REGEX } from '../constants';
-import { SubmitRecommendToZapierParams } from './api/invite/submitRecommendToZapier';
 import HomeHero from '/public/assets/illustrations/bridge.svg';
 
 export type InviteRecommendFormData = {
@@ -25,10 +23,6 @@ export type InviteRecommendFormData = {
 const Recommend = () => {
   const [loading, setLoading] = useState(false);
   const [showThankYouModal, setShowThankYouModal] = useState(false);
-
-  const { utmMedium, utmSource, utmCampaign } = useContext<EarlyAccessParams>(
-    EarlyAccessContext,
-  );
 
   const {
     handleSubmit,
@@ -137,15 +131,12 @@ const Recommend = () => {
     setLoading(true);
 
     // Send event to Zapier.
-    await postFetch<SubmitRecommendToZapierParams>(
-      LocalEndpoint.SUBMIT_RECOMMEND_TO_ZAPIER,
-      {
-        ...form,
-        utm_medium: utmMedium,
-        utm_source: utmSource,
-        utm_campaign: utmCampaign,
-      },
-    );
+    await postFetch(LocalEndpoint.SUBMIT_RECOMMEND_TO_ZAPIER, {
+      ...form,
+      // utm_medium: utmMedium,
+      // utm_source: utmSource,
+      // utm_campaign: utmCampaign,
+    });
 
     reset();
     setLoading(false);
