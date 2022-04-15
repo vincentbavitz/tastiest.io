@@ -20,9 +20,6 @@ export default function useFollow(restaurantId: string) {
 
   const horus = useMemo(() => (token ? new Horus(token) : null), [token]);
 
-  // FIX ME CORRECT ME
-  const isFollowing = true;
-
   console.log('useFollow ➡️ token:', token);
 
   // Set following status initially
@@ -43,10 +40,12 @@ export default function useFollow(restaurantId: string) {
 
   // Set initial values
   useEffect(() => {
-    const _following = isFollowing;
+    if (!userData) {
+      setFollowing(null);
+    }
 
-    if (_following !== null) {
-      setFollowing(_following);
+    if (following !== null) {
+      setFollowing(following);
       setNotifications({
         [FollowerNotificationType.LIMITED_TIME_DISHES]: true,
         [FollowerNotificationType.SPECIAL_EXPERIENCES]: true,
@@ -59,7 +58,7 @@ export default function useFollow(restaurantId: string) {
 
   // Set the following status on Firestore when following changes.
   const follow = async (notifications?: FollowerNotificationPreferences) => {
-    if (isFollowing === null) {
+    if (following === null) {
       return;
     }
 
@@ -82,7 +81,7 @@ export default function useFollow(restaurantId: string) {
 
   const unfollow = async () => {
     // Request user to sign in
-    if (isFollowing === null) {
+    if (following === null) {
       dispatch(openAuthModal());
       return;
     }
@@ -106,13 +105,13 @@ export default function useFollow(restaurantId: string) {
     notificationPreferences: FollowerNotificationPreferences,
   ) => {
     // Request user to sign in
-    if (isFollowing === null) {
+    if (following === null) {
       dispatch(openAuthModal());
       return;
     }
 
     // Turning on notifications should only be possible if they're following.
-    if (!userData || !isFollowing) {
+    if (!userData || !following) {
       return;
     }
 

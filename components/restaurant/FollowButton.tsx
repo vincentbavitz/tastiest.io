@@ -37,15 +37,6 @@ export default function FollowButton(props: Props) {
   } = useFollow(restaurant.id);
 
   const [showFollowModal, setShowFollowModal] = useState(false);
-  const toggleFollowRestaurant = (shouldFollow: boolean) => {
-    setShowFollowModal(false);
-
-    if (shouldFollow) {
-      follow();
-    } else {
-      unfollow();
-    }
-  };
 
   // Popup modal when we've got the ?notifcations parameter
   useEffect(() => {
