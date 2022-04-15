@@ -6,7 +6,6 @@ import LayoutCheckout from './LayoutCheckout';
 import LayoutDefault from './LayoutDefault';
 import LayoutExperience from './LayoutExperience';
 import LayoutHome from './LayoutHome';
-import LayoutInvite from './LayoutInvite';
 import LayoutRestaurant from './LayoutRestaurant';
 
 export enum Layouts {
@@ -22,7 +21,6 @@ export enum Layouts {
 
 const layouts = {
   [Layouts.DEFAULT]: LayoutDefault,
-  [Layouts.INVITE]: LayoutInvite,
   [Layouts.BLANK]: LayoutBlank,
   [Layouts.HOME]: LayoutHome,
   [Layouts.CHECKOUT]: LayoutCheckout,

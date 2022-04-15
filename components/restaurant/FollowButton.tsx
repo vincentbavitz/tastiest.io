@@ -2,6 +2,7 @@ import { BellOutlined, CheckOutlined } from '@ant-design/icons';
 import { Avatar, Button, Modal, Tooltip } from '@tastiest-io/tastiest-ui';
 import {
   ContentfulRestaurant,
+  dlog,
   FollowerNotificationPreferences,
   FollowerNotificationType,
 } from '@tastiest-io/tastiest-utils';
@@ -37,15 +38,6 @@ export default function FollowButton(props: Props) {
   } = useFollow(restaurant.id);
 
   const [showFollowModal, setShowFollowModal] = useState(false);
-  const toggleFollowRestaurant = (shouldFollow: boolean) => {
-    setShowFollowModal(false);
-
-    if (shouldFollow) {
-      follow();
-    } else {
-      unfollow();
-    }
-  };
 
   // Popup modal when we've got the ?notifcations parameter
   useEffect(() => {
@@ -73,7 +65,7 @@ export default function FollowButton(props: Props) {
       return;
     }
 
-    await follow(unsavedNotifications);
+    await toggleNotifications(unsavedNotifications);
     setShowFollowModal(false);
   };
 
@@ -98,6 +90,18 @@ export default function FollowButton(props: Props) {
     },
   );
 
+  // Update unsaved notifications as soon as we get initial data about the follow relation
+  useEffect(() => {
+    console.log('notifications -> updating notifications');
+
+    if (notifications) {
+      setUnsavedNotifications(notifications);
+    }
+  }, [notifications]);
+
+  dlog('FollowButton ➡️ notifications:', notifications);
+  dlog('FollowButton ➡️ unsaved notifications:', unsavedNotifications);
+
   return (
     <>
       <Modal show={showFollowModal}>
@@ -114,20 +118,32 @@ export default function FollowButton(props: Props) {
 
         <div className="mt-6">
           <NotificationSelectItem
-            label="General Info"
-            sublabel="closed for Christmas, etc."
-            checked={unsavedNotifications.GENERAL_INFO}
+            label="Special experiences"
+            sublabel="for loyal customers"
+            checked={unsavedNotifications.SPECIAL_EXPERIENCES}
+            onChange={on => {
+              dlog('notifications FollowButton ➡️ on:', on);
+
+              setUnsavedNotifications({
+                ...unsavedNotifications,
+                [FollowerNotificationType.SPECIAL_EXPERIENCES]: on,
+              });
+            }}
+          />
+
+          <NotificationSelectItem
+            label="New limited time only dishes"
+            checked={unsavedNotifications.LIMITED_TIME_DISHES}
             onChange={on =>
               setUnsavedNotifications({
                 ...unsavedNotifications,
-                [FollowerNotificationType.GENERAL_INFO]: on,
+                [FollowerNotificationType.LIMITED_TIME_DISHES]: on,
               })
             }
           />
 
           <NotificationSelectItem
             label="Last minute tables available"
-            sublabel="at a discount price"
             checked={unsavedNotifications.LAST_MINUTE_TABLES}
             onChange={on =>
               setUnsavedNotifications({
@@ -149,24 +165,13 @@ export default function FollowButton(props: Props) {
           />
 
           <NotificationSelectItem
-            label="New limited time only dishes"
-            checked={unsavedNotifications.LIMITED_TIME_DISHES}
+            label="General Info"
+            sublabel="closed for Christmas, etc."
+            checked={unsavedNotifications.GENERAL_INFO}
             onChange={on =>
               setUnsavedNotifications({
                 ...unsavedNotifications,
-                [FollowerNotificationType.LIMITED_TIME_DISHES]: on,
-              })
-            }
-          />
-
-          <NotificationSelectItem
-            label="Special experiences"
-            sublabel="for loyal customers"
-            checked={unsavedNotifications.SPECIAL_EXPERIENCES}
-            onChange={on =>
-              setUnsavedNotifications({
-                ...unsavedNotifications,
-                [FollowerNotificationType.SPECIAL_EXPERIENCES]: on,
+                [FollowerNotificationType.GENERAL_INFO]: on,
               })
             }
           />
@@ -193,7 +198,7 @@ export default function FollowButton(props: Props) {
                   setFollowing(true);
                 }
               }}
-              loading={followLoading}
+              loading={followLoading || notificationsLoading}
             >
               {following ? 'Save' : 'Follow'}
             </Button>
