@@ -1,8 +1,9 @@
+import { CalculatorOutlined } from '@ant-design/icons';
 import { Media } from '@tastiest-io/tastiest-horus';
 import { Input } from '@tastiest-io/tastiest-ui';
 import { CmsApi, formatCurrency } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
 import { Contained } from 'components/Contained';
-import FancyBorder from 'components/FancyBorder';
 import { useScreenSize } from 'hooks/useScreenSize';
 import {
   GetStaticPaths,
@@ -95,7 +96,7 @@ const WEEKS_IN_A_YEAR = 52;
 function RestaurateurCalculator(
   props: InferGetStaticPropsType<typeof getStaticProps>,
 ) {
-  const { isDesktop } = useScreenSize();
+  const { isHuge } = useScreenSize();
 
   // All percentages are represented as a decimal until rendering
   const [highPayingCustomersPc, setHighPayingCustomersPc] = useState(0.7);
@@ -136,22 +137,27 @@ function RestaurateurCalculator(
 
   return (
     <div className="pt-12 pb-20">
-      <Contained maxWidth={700}>
-        <div className="flex justify-center mb-6">
-          <Image
-            src={props.restaurantLogo.url}
-            width={60}
-            height={60}
-            className="rounded-full"
-          />
-        </div>
+      <div className="flex justify-center mb-6">
+        <Image
+          src={props.restaurantLogo.url}
+          width={60}
+          height={60}
+          className="rounded-full"
+        />
+      </div>
 
-        <h1 className="font-primary text-center font-medium text-3xl text-primary mb-6">
-          Let's see what Tastiest can do for {props.restaurantName}.
-        </h1>
+      <h1 className="font-primary text-center font-medium text-3xl text-primary mb-12">
+        Let's see what Tastiest can do for {props.restaurantName}.
+      </h1>
 
-        <FancyBorder layers="double">
-          <div className="flex flex-col items-center gap-12 p-6 pb-6">
+      <Contained>
+        <div
+          className={clsx(
+            'flex gap-10 w-full',
+            isHuge ? 'flex-row justify-center' : 'flex-col items-center',
+          )}
+        >
+          <div className="flex flex-col items-center gap-12 py-6 w-full">
             <CalcInput
               label="How many covers can you seat?"
               value={maxSeatableCovers}
@@ -185,8 +191,8 @@ function RestaurateurCalculator(
 
             <div className="text-center w-full text-lg bg-green-500 py-6 px-5">
               {props.restaurantName} operates at{' '}
-              {100 * (coversPerQuietDay / (coversPerWeek / 7))}% capacity on
-              quiet days
+              {Math.ceil(100 * (coversPerQuietDay / (coversPerWeek / 7)))}%
+              capacity on quiet days
             </div>
 
             <CalcSlider
@@ -195,15 +201,8 @@ function RestaurateurCalculator(
               max={100}
               value={Number((highPayingCustomersPc * 100).toFixed(0))}
               setValue={value => setHighPayingCustomersPc(value / 100)}
-              initialValue={1}
+              initialValue={Number((highPayingCustomersPc * 100).toFixed(0))}
               formatter={value => `${value}%`}
-            />
-
-            <CalcInput
-              label="Average price per high paying cover"
-              value={avgHighPayingPrice}
-              setValue={setAvgHighPayingPrice}
-              formatter={value => `£${value}`}
             />
 
             <CalcSlider
@@ -212,106 +211,175 @@ function RestaurateurCalculator(
               max={100}
               value={Number((highPayingCustomersReturnPc * 100).toFixed(0))}
               setValue={value => setHighPayingCustomersReturnPc(value / 100)}
-              initialValue={1}
+              initialValue={Number(
+                (highPayingCustomersReturnPc * 100).toFixed(0),
+              )}
               formatter={value => `${value}%`}
+            />
+
+            <CalcInput
+              label="Average price per high paying cover"
+              value={avgHighPayingPrice}
+              setValue={value => setAvgHighPayingPrice(Number(value))}
+              prefix={<span className="text-lg">£</span>}
             />
           </div>
 
-          <div className="flex flex-col items-center text-center gap-6 mt-6 text-lg">
-            <div style={{ width: '400px' }}>
-              After a month working with Tastiest, we estimate that{' '}
-              {props.restaurantName} will get:
-            </div>
-            <div style={{ width: '400px' }}>
-              <span className="font-bold">
-                {potentialTastiestQrReturnCustomers}
-              </span>{' '}
-              extra high paying covers per quiet day.
-            </div>
-            <div style={{ width: '400px' }}>
-              <span className="font-bold">
-                £{tableTurnsPerDay * potentialExtraRevenueWithTastiest}
-              </span>{' '}
-              extra revenue per quiet day.
-            </div>
-            <div style={{ width: '400px' }}>
-              {extraCoversPerWeek} <span className="font-bold">extra</span>{' '}
-              covers per week.{' '}
-            </div>
-
-            <div style={{ width: '400px' }} className="bg-green-300 py-2 px-4">
-              At {quietDaysPerWeek} quiet days per week, this amounts to £
-              {potentialExtraRevenueWithTastiest} x {quietDaysPerWeek} = <br />
-              <span className="font-bold">
-                £
-                {formatCurrency(
-                  tableTurnsPerDay *
-                    potentialExtraRevenueWithTastiest *
-                    quietDaysPerWeek,
-                )}
-              </span>{' '}
-              extra revenue per week.
-            </div>
-
-            <div style={{ width: '400px' }} className="bg-green-300 py-2 px-4">
-              At {quietDaysPerWeek} quiet days per week, this amounts to
-              <br />£{potentialExtraRevenueWithTastiest} x {quietDaysPerWeek} ={' '}
-              <span className="font-bold">
-                £
-                {formatCurrency(
-                  tableTurnsPerDay *
-                    potentialExtraRevenueWithTastiest *
-                    quietDaysPerWeek,
-                )}
-              </span>{' '}
-              extra revenue per week.
-            </div>
-
-            <div style={{ width: '400px' }} className="bg-green-300 py-2 px-4">
-              <span className="font-bold">
-                £
-                {formatCurrency(
-                  tableTurnsPerDay *
-                    potentialExtraRevenueWithTastiest *
-                    quietDaysPerWeek *
-                    WEEKS_IN_A_MONTH,
-                )}
-              </span>{' '}
-              extra revenue per month.
-            </div>
-
-            <div
-              style={{ width: '400px' }}
-              className="bg-green-600 text-white py-2 px-4 font-medium"
-            >
-              <span className="font-bold">
-                £
-                {formatCurrency(
-                  tableTurnsPerDay *
-                    potentialExtraRevenueWithTastiest *
-                    quietDaysPerWeek *
-                    WEEKS_IN_A_YEAR,
-                )}
-              </span>{' '}
-              extra revenue per year.
-            </div>
-          </div>
-        </FancyBorder>
+          <ResultsColumn
+            restaurantName={props.restaurantName}
+            potentialTastiestQrReturnCustomers={
+              potentialTastiestQrReturnCustomers
+            }
+            tableTurnsPerDay={tableTurnsPerDay}
+            potentialExtraRevenueWithTastiest={
+              potentialExtraRevenueWithTastiest
+            }
+            extraCoversPerWeek={extraCoversPerWeek}
+            quietDaysPerWeek={quietDaysPerWeek}
+          />
+        </div>
       </Contained>
     </div>
   );
 }
 
+interface ResultsColumnProps {
+  restaurantName: string;
+  potentialTastiestQrReturnCustomers: number;
+  tableTurnsPerDay: number;
+  potentialExtraRevenueWithTastiest: number;
+  extraCoversPerWeek: number;
+  quietDaysPerWeek: number;
+}
+
+const ResultsColumn = (props: ResultsColumnProps) => {
+  const {
+    restaurantName,
+    tableTurnsPerDay,
+    quietDaysPerWeek,
+    extraCoversPerWeek,
+    potentialExtraRevenueWithTastiest,
+    potentialTastiestQrReturnCustomers,
+  } = props;
+
+  return (
+    <div
+      style={{ height: 'min-content', maxWidth: '400px' }}
+      className="flex flex-col items-center text-center gap-6 pt-6 px-4 text-base bg-white shadow-lg"
+    >
+      <CalculatorOutlined className="text-3xl text-secondary" />
+
+      <div className="opacity-75">
+        After a month working with Tastiest, we estimate that {restaurantName}{' '}
+        will get...
+      </div>
+
+      <ResultBlock
+        label="extra high paying covers per quiet day"
+        value={String(Math.ceil(potentialTastiestQrReturnCustomers))}
+      />
+
+      <ResultBlock
+        label="extra revenue per quiet day"
+        value={`£${formatCurrency(
+          tableTurnsPerDay * potentialExtraRevenueWithTastiest,
+        )}`}
+        size="md"
+      />
+
+      <ResultBlock
+        label="extra covers per week"
+        value={String(Math.ceil(extraCoversPerWeek))}
+      />
+
+      <div className="border-t w-full"></div>
+
+      <span className="opacity-75">
+        At {quietDaysPerWeek} quiet days per week, this amounts to...
+      </span>
+
+      <div className="py-2 w-full text-gray-700">
+        <div className="font-mono">
+          £{formatCurrency(potentialExtraRevenueWithTastiest)} x{' '}
+          {quietDaysPerWeek} =
+        </div>
+        <div className="text-2xl font-thin text-black">
+          £
+          {formatCurrency(
+            tableTurnsPerDay *
+              potentialExtraRevenueWithTastiest *
+              quietDaysPerWeek,
+          )}
+        </div>
+        <div>extra revenue per week</div>
+      </div>
+
+      <div>
+        <div style={{ width: '400px' }} className="bg-green-300 py-2 px-4">
+          <span className="font-bold">
+            £
+            {formatCurrency(
+              tableTurnsPerDay *
+                potentialExtraRevenueWithTastiest *
+                quietDaysPerWeek *
+                WEEKS_IN_A_MONTH,
+            )}
+          </span>{' '}
+          extra revenue per month.
+        </div>
+
+        <div
+          style={{ width: '400px' }}
+          className="bg-green-600 text-white py-2 px-4 font-medium"
+        >
+          <span className="font-bold">
+            £
+            {formatCurrency(
+              tableTurnsPerDay *
+                potentialExtraRevenueWithTastiest *
+                quietDaysPerWeek *
+                WEEKS_IN_A_YEAR,
+            )}
+          </span>{' '}
+          extra revenue per year.
+        </div>
+      </div>
+    </div>
+  );
+};
+
+interface ResultBlockProps {
+  label: string;
+  value: string;
+  size?: 'md' | 'lg';
+}
+
+const ResultBlock = (props: ResultBlockProps) => {
+  const { label, value, size } = props;
+
+  return (
+    <div style={{ width: '400px' }}>
+      <div
+        className={clsx('font-thin', size === 'lg' ? 'text-3xl' : 'text-2xl')}
+      >
+        {value}
+      </div>
+      <span className="opacity-50">{label}</span>
+    </div>
+  );
+};
+
 interface CalcInputProps {
   label: string;
   sublabel?: string;
   value: number;
+  prefix?: JSX.Element;
   setValue: (value: number) => void;
   formatter?: (value: string) => string;
 }
 
 const CalcInput = (props: CalcInputProps) => {
-  const { label, sublabel, value, setValue, formatter } = props;
+  const { label, sublabel, prefix, value, setValue, formatter } = props;
 
   return (
     <div className="flex flex-col items-center">
@@ -324,6 +392,9 @@ const CalcInput = (props: CalcInputProps) => {
           center
           type="number"
           value={String(value)}
+          prefix={prefix}
+          size="large"
+          inputClassName="text-xl"
           formatter={formatter}
           onValueChange={value => setValue(Number(value))}
         />
