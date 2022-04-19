@@ -1,4 +1,4 @@
-import { CalculatorOutlined } from '@ant-design/icons';
+import { BulbOutlined, CalculatorOutlined } from '@ant-design/icons';
 import { Media } from '@tastiest-io/tastiest-horus';
 import { Input } from '@tastiest-io/tastiest-ui';
 import { CmsApi, formatCurrency } from '@tastiest-io/tastiest-utils';
@@ -189,10 +189,19 @@ function RestaurateurCalculator(
               setValue={setTableTurnsPerDay}
             />
 
-            <div className="text-center w-full text-lg bg-green-500 py-6 px-5">
-              {props.restaurantName} operates at{' '}
-              {Math.ceil(100 * (coversPerQuietDay / (coversPerWeek / 7)))}%
-              capacity on quiet days
+            <div
+              style={{ maxWidth: '600px' }}
+              className="flex justify-between items-center w-full text-lg border-2 border-gray-200 shadow-md py-6 px-5"
+            >
+              <BulbOutlined className="text-2xl text-yellow-400" />
+
+              <div>
+                {props.restaurantName} operates at{' '}
+                {Math.ceil(100 * (coversPerQuietDay / (coversPerWeek / 7)))}%
+                capacity on quiet days
+              </div>
+
+              <div></div>
             </div>
 
             <CalcSlider
