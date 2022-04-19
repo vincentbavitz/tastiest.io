@@ -10,7 +10,6 @@ import LayoutRestaurant from './LayoutRestaurant';
 
 export enum Layouts {
   DEFAULT = 'default',
-  INVITE = 'invite',
   BLANK = 'blank',
   HOME = 'home',
   CHECKOUT = 'checkout',
