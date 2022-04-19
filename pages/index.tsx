@@ -17,7 +17,6 @@ import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
-import nookies from 'nookies';
 import React, { useEffect, useState } from 'react';
 import Scroll from 'react-scroll';
 import { METADATA } from '../constants';
@@ -32,17 +31,6 @@ function shuffleArray(array) {
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {
-  const hasAccess = nookies.get(context).hasAccess;
-
-  if (!hasAccess || hasAccess !== 'true') {
-    return {
-      props: {},
-      redirect: {
-        destination: '/invite',
-      },
-    };
-  }
-
   return {
     props: {},
   };
@@ -64,7 +52,13 @@ const Index = () => {
       const { dishes: _dishes } = await cms.getTastiestDishes(15);
       const { restaurants: _restaurants } = await cms.getRestaurants(10, 1);
 
-      return { posts: _posts, dishes: _dishes, restaurants: _restaurants };
+      const filteredDishes = _dishes.filter(d => !d.restaurant.is_demo);
+
+      return {
+        posts: _posts,
+        dishes: filteredDishes,
+        restaurants: _restaurants,
+      };
     };
 
     fetchContent().then(({ posts, dishes, restaurants }) => {

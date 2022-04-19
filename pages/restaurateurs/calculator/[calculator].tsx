@@ -1,8 +1,9 @@
+import { CalculatorOutlined } from '@ant-design/icons';
 import { Media } from '@tastiest-io/tastiest-horus';
 import { Input } from '@tastiest-io/tastiest-ui';
-import { CmsApi, dlog } from '@tastiest-io/tastiest-utils';
+import { CmsApi, formatCurrency } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
 import { Contained } from 'components/Contained';
-import FancyBorder from 'components/FancyBorder';
 import { useScreenSize } from 'hooks/useScreenSize';
 import {
   GetStaticPaths,
@@ -11,7 +12,7 @@ import {
 } from 'next';
 import Image from 'next/image';
 import { ParsedUrlQuery } from 'querystring';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { Slider } from 'rsuite';
 
 type RestaurateurCalcBuilder = {
@@ -90,289 +91,317 @@ export const getStaticProps = async (
 
 const DAYS_IN_WEEK = 7;
 const WEEKS_IN_A_MONTH = 4;
+const WEEKS_IN_A_YEAR = 52;
 
 function RestaurateurCalculator(
   props: InferGetStaticPropsType<typeof getStaticProps>,
 ) {
-  const { isDesktop } = useScreenSize();
+  const { isHuge } = useScreenSize();
 
-  dlog('[calculator] ➡️ props:', props);
-
-  const [availableSeats, setAvailableSeats] = useState(60);
-  // prettier-ignore
-  const [coversOnQuietDays, setCoversOnQuietDays] = useState(20);
-  // prettier-ignore
+  // All percentages are represented as a decimal until rendering
+  const [highPayingCustomersPc, setHighPayingCustomersPc] = useState(0.7);
+  const [maxSeatableCovers, setMaxSeatableCovers] = useState(100);
+  const [coversPerWeek, setCoversPerWeek] = useState(300);
+  const [coversPerQuietDay, setCoversPerQuietDay] = useState(30);
   const [quietDaysPerWeek, setQuietDaysPerWeek] = useState(4);
-  // prettier-ignore
-  const [highPayingCoversPc, setHighPayingCoversPc] = useState(props.highPayingCovers);
-  // prettier-ignore
-  const [repeatHighPayingCustomers, setRepeatHighPayingCustomers] = useState(props.repeatHighPayingCustomers);
-  // prettier-ignore
-  const [avgPricePerExperience, setAvgPricePerExperience] = useState(props.avgPricePerExperience);
 
-  // availableCovers = available seats
+  const [tableTurnsPerDay, setTableTurnsPerDay] = useState(4);
+  const [
+    highPayingCustomersReturnPc,
+    setHighPayingCustomersReturnPc,
+  ] = useState(0.2);
 
-  const calculatedRevenue = useMemo(() => {
-    return availableSeats * avgPricePerExperience;
-  }, [
-    availableSeats,
-    highPayingCoversPc,
-    avgPricePerExperience,
-    coversOnQuietDays,
-    repeatHighPayingCustomers,
-  ]);
+  // How much does the average high paying customer spend?
+  const [avgHighPayingPrice, setAvgHighPayingPrice] = useState(60);
 
-  const [coversPerWeek, setCoversPerWeek] = useState(100);
+  // Let’s say that only 25% of people scan the code. 25% of 25%.
+  const QR_CODE_SCANS_PC = 0.25;
 
-  // How many people are in the restaurant % at any given time?
-  // Let's assume they're quiet 4 days a week.
-  // const avgCapacity = quietDaysPerWeek *
+  // Tastiest will bring back 25% of the people that scan the QR code.
+  const QR_RETURN_CUSTOMERS = 0.25;
 
-  const howManyPeopleTastiestCanHelpPerWeek =
-    coversOnQuietDays * quietDaysPerWeek;
+  const potentialReturnHighPayingCustomers =
+    highPayingCustomersPc * coversPerWeek;
 
-  /** How many people in total will come through Tastiest given
-   * `PERCENTAGE_PEOPLE_SCANNING_QR` and `QR_SCANNING_CONVERSIONS`?
-   *  Specifically during quiet times.
-   */
-  // const conversionsFromQRPerWeek =
-  // howManyPeopleTastiestCanHelpPerWeek *
-  //   (highPayingCoversPc / 100) *
-  //   PERCENTAGE_PEOPLE_SCANNING_QR *
-  //   QR_SCANNING_CONVERSIONS *
-  //   coversPerWeek;
+  const extraCoversPerWeek =
+    potentialReturnHighPayingCustomers * QR_CODE_SCANS_PC;
 
-  // Put this in Contentful from their Open Hours.
-  const HOURS_OPEN_PER_DAY = 8;
-  const DAYS_OPEN_PER_WEEK = 6;
-  const HOURS_OPEN_PER_WEEK = HOURS_OPEN_PER_DAY * DAYS_OPEN_PER_WEEK;
-  const SEATING_DURATION_HOURS = 1.5;
+  const potentialTastiestQrReturnCustomers =
+    extraCoversPerWeek * QR_RETURN_CUSTOMERS;
 
-  const NUMBER_OF_TIMES_EACH_SEAT_REPLACED_PER_WEEK =
-    HOURS_OPEN_PER_WEEK / SEATING_DURATION_HOURS;
+  // Now we calculate how much they can make using Tastiest in a (what time period?).
+  const potentialExtraRevenueWithTastiest =
+    potentialTastiestQrReturnCustomers * avgHighPayingPrice;
 
-  // We assume each table is replaced with more people every seating duration.
-  // We assume the entire restaurant is replaced every seating duration.
-  const maxCoversPerWeek =
-    availableSeats * NUMBER_OF_TIMES_EACH_SEAT_REPLACED_PER_WEEK;
-
-  const capacityPc = coversPerWeek / maxCoversPerWeek;
-
-  // How many people per week are they missing out on? Assuming we get them 100% capacity all the time?
-  const missingOutOnPerWeek = maxCoversPerWeek - coversPerWeek;
-
-  // We assume that when "busy" they're at 100% capacity.
-  // How many extra covers per QUIET day can we get them?
-  // How many quiet days per week? 3.5 <-- Constant for now. <-- Ask them.
-  // Available seats during quiet times? availableCovers - coversDuringQuietTimes
-  // How many people are high paying customers? Let's say 15%
-  // That's how many we can work with.
-  // The raw number we can help them with is 15% * (availableCovers - coversDuringQuietTimes)
-
-  // How many are repeat customers? <-- Calculate how much they're losing, assuming we can get this to 100%.
-
-  // Questions
-  // The MAXIMUM amount of people they're missing out on
-  // How many valuable customers (realistically) can Tastiest bring back to the restaurant
-
-  // ^ Given those, how much extra money does that make them?
-  // ^ How much does this make Tastiest (in the console)
-
-  const PC_PEOPLE_SCANNING_QR_CODE = 0.2;
-  /** How many people who scan the QR actually book through Tastiest? */
-  const PC_QR_SCANS_ARE_CONVERSIONS = 0.4;
-
-  const highPayingCoversPerWeek = coversPerWeek * (highPayingCoversPc / 100);
-
-  const coversThroughTastiestPerWeek =
-    highPayingCoversPerWeek *
-    PC_PEOPLE_SCANNING_QR_CODE *
-    PC_QR_SCANS_ARE_CONVERSIONS;
+  // Missing out on high paying customers from the % of the high paying customers that come back.
 
   return (
     <div className="pt-12 pb-20">
-      <Contained maxWidth={700}>
-        <div className="flex justify-center mb-6">
-          <Image
-            src={props.restaurantLogo.url}
-            width={60}
-            height={60}
-            className="rounded-full"
-          />
-        </div>
+      <div className="flex justify-center mb-6">
+        <Image
+          src={props.restaurantLogo.url}
+          width={60}
+          height={60}
+          className="rounded-full"
+        />
+      </div>
 
-        <h1 className="font-primary text-center font-medium text-3xl text-primary mb-6">
-          Let's see what Tastiest can do for {props.restaurantName}.
-        </h1>
+      <h1 className="font-primary text-center font-medium text-3xl text-primary mb-12">
+        Let's see what Tastiest can do for {props.restaurantName}.
+      </h1>
 
-        <FancyBorder layers="double">
-          <div className="flex flex-col items-center gap-12 p-6 pb-6">
-            <CalcSlider
+      <Contained>
+        <div
+          className={clsx(
+            'flex gap-10 w-full',
+            isHuge ? 'flex-row justify-center' : 'flex-col items-center',
+          )}
+        >
+          <div className="flex flex-col items-center gap-12 py-6 w-full">
+            <CalcInput
               label="How many covers can you seat?"
-              min={5}
-              max={200}
-              value={availableSeats}
-              setValue={setAvailableSeats}
-              initialValue={props.availableCovers}
+              value={maxSeatableCovers}
+              setValue={setMaxSeatableCovers}
             />
 
-            <div className="flex flex-col items-center">
-              <div className="text-lg">
-                How many covers do you get per week?
-              </div>
+            <CalcInput
+              label="How many covers do you get a week?"
+              value={coversPerWeek}
+              setValue={setCoversPerWeek}
+            />
 
-              <div className="w-24">
-                <Input
-                  type="number"
-                  value={String(coversPerWeek)}
-                  onValueChange={value => setCoversPerWeek(Number(value))}
-                />
-              </div>
-            </div>
+            <CalcInput
+              label="How many covers do you get on quiet days?"
+              value={coversPerQuietDay}
+              setValue={setCoversPerQuietDay}
+            />
 
-            <div>
-              Based on the above figures, {props.restaurantName} is at{' '}
-              {Math.floor(coversOnQuietDays / (coversPerWeek / DAYS_IN_WEEK))}%
+            <CalcInput
+              label="How many quiet days do you have a week?"
+              value={quietDaysPerWeek}
+              setValue={setQuietDaysPerWeek}
+            />
+
+            <CalcInput
+              label="How many times can you turn a table a day?"
+              sublabel="Eg. 2x at lunch and 2x at dinner = 4 times a day"
+              value={tableTurnsPerDay}
+              setValue={setTableTurnsPerDay}
+            />
+
+            <div className="text-center w-full text-lg bg-green-500 py-6 px-5">
+              {props.restaurantName} operates at{' '}
+              {Math.ceil(100 * (coversPerQuietDay / (coversPerWeek / 7)))}%
               capacity on quiet days
             </div>
-
-            {/* <div>
-              Based on the above figures, {props.restaurantName} is at{' '}
-              {Math.floor(capacityPc * 100)}% capacity.
-            </div> */}
 
             <CalcSlider
               label="What percentage of your covers are high paying customers?"
               min={1}
               max={100}
-              value={highPayingCoversPc}
-              setValue={setHighPayingCoversPc}
-              initialValue={props.highPayingCovers}
+              value={Number((highPayingCustomersPc * 100).toFixed(0))}
+              setValue={value => setHighPayingCustomersPc(value / 100)}
+              initialValue={Number((highPayingCustomersPc * 100).toFixed(0))}
               formatter={value => `${value}%`}
             />
 
-            <div className="flex flex-col items-center">
-              <div className="text-lg">
-                How many covers do get on quiet days?
-              </div>
-
-              <div className="w-24">
-                <Input
-                  type="number"
-                  value={String(coversOnQuietDays)}
-                  onValueChange={value => setCoversOnQuietDays(Number(value))}
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-col items-center">
-              <div className="text-lg">
-                How many quiet days do you have per week?
-              </div>
-
-              <div className="w-24">
-                <Input
-                  type="number"
-                  value={String(quietDaysPerWeek)}
-                  onValueChange={value => setQuietDaysPerWeek(Number(value))}
-                />
-              </div>
-            </div>
-
-            {/* <div>
-              Calculated maximum number of covers per week:{' '}
-              {Math.ceil(maxCoversPerWeek)}
-            </div> */}
-
-            {/* <div className="bg-white shadow-lg px-10 py-6">
-              {props.restaurantName} is{' '}
-              {Math.floor(100 * (coversDuringQuietTimes / availableCovers))}%
-              full during quiet times.
-            </div> */}
-
-            <div className="bg-white shadow-lg px-10 py-6">
-              The amount of people that could be coming through Tastiest is{' '}
-              {Math.ceil(coversThroughTastiestPerWeek)} per week.
-            </div>
-
-            {/* <CalcSlider
-              label="How many of the high paying customers come back agian?"
-              min={1}
-              max={200}
-              value={repeatHighPayingCustomers}
-              setValue={setRepeatHighPayingCustomers}
-              initialValue={props.repeatHighPayingCustomers}
-            /> */}
-
-            {/* <div className="bg-white shadow-lg px-10 py-6">
-              {props.restaurantName} is missing out on{' '}
-              {Math.ceil(MISSING_OUT_ON_PER_WEEK)} covers per week.
-              <br />
-              <br />
-              Of the covers you're missing out on, Tastiest can increase this by
-              a maximum of{' '}
-              {Math.ceil(
-                (highPayingCoversPc / 100) * MISSING_OUT_ON_PER_WEEK,
-              )}{' '}
-              per week.
-            </div> */}
-
-            {/* <div className="bg-white shadow-lg px-10 py-6">
-              Given {PERCENTAGE_PEOPLE_SCANNING_QR * 100}% of people will scan
-              the QR code in their bill, and given that{' '}
-              {QR_SCANNING_CONVERSIONS * 100}% of people scanning WILL book
-              through Tastiest. <br />
-              <br />
-              Tastiest can give you {Math.ceil(conversionsFromQRPerWeek)} more
-              covers per week.
-            </div> */}
-
             <CalcSlider
-              label="Average Price Per Experience"
-              min={20}
-              max={200}
-              value={avgPricePerExperience}
-              setValue={setAvgPricePerExperience}
-              initialValue={props.avgPricePerExperience}
-              formatter={value => `£${value}`}
+              label="What percentage of high paying customers come back again?"
+              min={1}
+              max={100}
+              value={Number((highPayingCustomersReturnPc * 100).toFixed(0))}
+              setValue={value => setHighPayingCustomersReturnPc(value / 100)}
+              initialValue={Number(
+                (highPayingCustomersReturnPc * 100).toFixed(0),
+              )}
+              formatter={value => `${value}%`}
             />
 
-            {/* <div className="py-6 flex flex-col gap-6 text-xl">
-              <span>Revenue: {calculatedRevenue}</span>
-            </div> */}
-
-            <div
-              style={{ width: '500px' }}
-              className="text-lg font-medium text-center bg-green-500 text-light px-6 py-3"
-            >
-              In <span className="bg-green-600 px-1">1</span> month, Tastiest
-              will have earned you{' '}
-              <span className="bg-green-600 px-1">
-                £
-                {Intl.NumberFormat().format(
-                  avgPricePerExperience *
-                    coversThroughTastiestPerWeek *
-                    WEEKS_IN_A_MONTH,
-                )}
-              </span>
-            </div>
+            <CalcInput
+              label="Average price per high paying cover"
+              value={avgHighPayingPrice}
+              setValue={value => setAvgHighPayingPrice(Number(value))}
+              prefix={<span className="text-lg">£</span>}
+            />
           </div>
 
-          {/* <div className="flex justify-center w-full bg-green-500 text-light py-4 px-6">
-            <div
-              style={{ width: '400px' }}
-              className="text-lg font-medium text-center"
-            >
-              In <span className="bg-green-600 px-1">6</span> months, Tastiest
-              will have earned you{' '}
-              <span className="bg-green-600 px-1">£240,593.55</span>
-            </div>
-          </div> */}
-        </FancyBorder>
+          <ResultsColumn
+            restaurantName={props.restaurantName}
+            potentialTastiestQrReturnCustomers={
+              potentialTastiestQrReturnCustomers
+            }
+            tableTurnsPerDay={tableTurnsPerDay}
+            potentialExtraRevenueWithTastiest={
+              potentialExtraRevenueWithTastiest
+            }
+            extraCoversPerWeek={extraCoversPerWeek}
+            quietDaysPerWeek={quietDaysPerWeek}
+          />
+        </div>
       </Contained>
     </div>
   );
 }
+
+interface ResultsColumnProps {
+  restaurantName: string;
+  potentialTastiestQrReturnCustomers: number;
+  tableTurnsPerDay: number;
+  potentialExtraRevenueWithTastiest: number;
+  extraCoversPerWeek: number;
+  quietDaysPerWeek: number;
+}
+
+const ResultsColumn = (props: ResultsColumnProps) => {
+  const {
+    restaurantName,
+    tableTurnsPerDay,
+    quietDaysPerWeek,
+    extraCoversPerWeek,
+    potentialExtraRevenueWithTastiest,
+    potentialTastiestQrReturnCustomers,
+  } = props;
+
+  return (
+    <div
+      style={{ height: 'min-content', maxWidth: '400px' }}
+      className="flex flex-col items-center text-center gap-6 pt-6 px-4 text-base bg-white shadow-lg"
+    >
+      <CalculatorOutlined className="text-3xl text-secondary" />
+
+      <div className="opacity-75">
+        After a month working with Tastiest, we estimate that {restaurantName}{' '}
+        will get...
+      </div>
+
+      <ResultBlock
+        label="extra high paying covers per quiet day"
+        value={String(Math.ceil(potentialTastiestQrReturnCustomers))}
+      />
+
+      <ResultBlock
+        label="extra revenue per quiet day"
+        value={`£${formatCurrency(
+          tableTurnsPerDay * potentialExtraRevenueWithTastiest,
+        )}`}
+        size="md"
+      />
+
+      <ResultBlock
+        label="extra covers per week"
+        value={String(Math.ceil(extraCoversPerWeek))}
+      />
+
+      <div className="border-t w-full"></div>
+
+      <span className="opacity-75">
+        At {quietDaysPerWeek} quiet days per week, this amounts to...
+      </span>
+
+      <div className="py-2 w-full text-gray-700">
+        <div className="font-mono">
+          £{formatCurrency(potentialExtraRevenueWithTastiest)} x{' '}
+          {quietDaysPerWeek} =
+        </div>
+        <div className="text-2xl font-thin text-black">
+          £
+          {formatCurrency(
+            tableTurnsPerDay *
+              potentialExtraRevenueWithTastiest *
+              quietDaysPerWeek,
+          )}
+        </div>
+        <div>extra revenue per week</div>
+      </div>
+
+      <div>
+        <div style={{ width: '400px' }} className="bg-green-300 py-2 px-4">
+          <span className="font-bold">
+            £
+            {formatCurrency(
+              tableTurnsPerDay *
+                potentialExtraRevenueWithTastiest *
+                quietDaysPerWeek *
+                WEEKS_IN_A_MONTH,
+            )}
+          </span>{' '}
+          extra revenue per month.
+        </div>
+
+        <div
+          style={{ width: '400px' }}
+          className="bg-green-600 text-white py-2 px-4 font-medium"
+        >
+          <span className="font-bold">
+            £
+            {formatCurrency(
+              tableTurnsPerDay *
+                potentialExtraRevenueWithTastiest *
+                quietDaysPerWeek *
+                WEEKS_IN_A_YEAR,
+            )}
+          </span>{' '}
+          extra revenue per year.
+        </div>
+      </div>
+    </div>
+  );
+};
+
+interface ResultBlockProps {
+  label: string;
+  value: string;
+  size?: 'md' | 'lg';
+}
+
+const ResultBlock = (props: ResultBlockProps) => {
+  const { label, value, size } = props;
+
+  return (
+    <div style={{ width: '400px' }}>
+      <div
+        className={clsx('font-thin', size === 'lg' ? 'text-3xl' : 'text-2xl')}
+      >
+        {value}
+      </div>
+      <span className="opacity-50">{label}</span>
+    </div>
+  );
+};
+
+interface CalcInputProps {
+  label: string;
+  sublabel?: string;
+  value: number;
+  prefix?: JSX.Element;
+  setValue: (value: number) => void;
+  formatter?: (value: string) => string;
+}
+
+const CalcInput = (props: CalcInputProps) => {
+  const { label, sublabel, prefix, value, setValue, formatter } = props;
+
+  return (
+    <div className="flex flex-col items-center">
+      <div className="text-lg">{label}</div>
+
+      {sublabel ? <div className="text-base opacity-75">{sublabel}</div> : null}
+
+      <div className="w-24">
+        <Input
+          center
+          type="number"
+          value={String(value)}
+          prefix={prefix}
+          size="large"
+          inputClassName="text-xl"
+          formatter={formatter}
+          onValueChange={value => setValue(Number(value))}
+        />
+      </div>
+    </div>
+  );
+};
 
 interface CalcSliderProps {
   label: string;

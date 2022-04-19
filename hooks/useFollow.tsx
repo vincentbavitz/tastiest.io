@@ -50,6 +50,10 @@ export default function useFollow(restaurantId: string) {
 
       setFollowing(Boolean(_followRelation));
 
+      if (!_followRelation) {
+        return;
+      }
+
       // Set thie notifcations of the follow relation.
       setNotifications({
         [FollowerNotificationType.LIMITED_TIME_DISHES]:
