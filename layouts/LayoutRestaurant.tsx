@@ -1,6 +1,10 @@
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { Button, CrumbProps } from '@tastiest-io/tastiest-ui';
-import { dlog, titleCase } from '@tastiest-io/tastiest-utils';
+import {
+  dlog,
+  generateStaticURL,
+  titleCase,
+} from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import BlockButton from 'components/restaurant/BlockButton';
@@ -16,7 +20,6 @@ import Link from 'next/link';
 import { getStaticProps } from 'pages/[city]/[cuisine]/[restaurant]';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLockBodyScroll, useWindowScroll } from 'react-use';
-import { generateStaticURL } from 'utils/routing';
 import { LayoutProps } from './LayoutHandler';
 import LayoutWrapper from './LayoutWrapper';
 

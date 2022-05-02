@@ -32,24 +32,6 @@ export const getServerSideProps = async (
   // Get user ID from cookie.
   const cookieToken = nookies.get(context)?.token;
 
-  // if (cookieToken) {
-  //   const userDataApi = new UserDataApi(firebaseAdmin);
-  //   const { userId } = await userDataApi.initFromCookieToken(cookieToken);
-
-  //   if (userId) {
-  //     const { details } = await userDataApi.getUserData();
-
-  //     return {
-  //       props: {
-  //         initialSubject,
-  //         userName: details.firstName,
-  //         userEmail: details.email,
-  //         referringUrl,
-  //       },
-  //     };
-  //   }
-  // }
-
   return {
     props: {
       initialSubject,

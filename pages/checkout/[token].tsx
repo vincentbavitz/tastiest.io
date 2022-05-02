@@ -8,6 +8,7 @@ import {
 import { Button, Modal, Tooltip } from '@tastiest-io/tastiest-ui';
 import {
   formatCurrency,
+  generateStaticURL,
   Horus,
   reportInternalError,
   TastiestInternalErrorCode,
@@ -35,7 +36,6 @@ import { useRouter } from 'next/router';
 import nookies from 'nookies';
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { generateStaticURL } from 'utils/routing';
 
 type OrderWithUserAndRestaurant = HorusOrder & {
   user: HorusUser;

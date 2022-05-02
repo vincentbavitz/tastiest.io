@@ -1,12 +1,15 @@
 import { BellOutlined } from '@ant-design/icons';
 import { Button } from '@tastiest-io/tastiest-ui';
-import { ContentfulRestaurant, titleCase } from '@tastiest-io/tastiest-utils';
+import {
+  ContentfulRestaurant,
+  generateStaticURL,
+  titleCase,
+} from '@tastiest-io/tastiest-utils';
 import DisplayCard from 'components/cards/DisplayCard';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { SectionTitle } from 'components/SectionTitle';
 import Link from 'next/link';
 import React from 'react';
-import { generateStaticURL } from 'utils/routing';
 
 interface Props {
   restaurants: ContentfulRestaurant[];

@@ -1,4 +1,9 @@
-import { CmsApi, ContentfulPost, dlog } from '@tastiest-io/tastiest-utils';
+import {
+  CmsApi,
+  ContentfulPost,
+  dlog,
+  generateStaticURL,
+} from '@tastiest-io/tastiest-utils';
 import { ArticleSectionContent } from 'components/article/sections/ArticleSectionContent';
 import { useTrack } from 'hooks/useTrack';
 import { Layouts } from 'layouts/LayoutHandler';
@@ -10,7 +15,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toggleOfferMenu } from 'state/navigation';
 import { generateTitle } from 'utils/metadata';
-import { generateStaticURL } from 'utils/routing';
 
 interface IPath {
   params: {

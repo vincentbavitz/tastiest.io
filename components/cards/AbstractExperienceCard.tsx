@@ -4,6 +4,7 @@ import { Button } from '@tastiest-io/tastiest-ui';
 import {
   ContentfulPost,
   formatCurrency,
+  generateStaticURL,
   titleCase,
 } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
@@ -12,7 +13,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useMemo, useRef } from 'react';
 import { useHoverDirty } from 'react-use';
-import { generateStaticURL } from 'utils/routing';
 
 interface AbstractExperienceCardProps extends ContentfulPost {
   withRestaurantName?: boolean;

@@ -1,13 +1,16 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { Button } from '@tastiest-io/tastiest-ui';
-import { ContentfulPost, dlog } from '@tastiest-io/tastiest-utils';
+import {
+  ContentfulPost,
+  dlog,
+  generateStaticURL,
+} from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import clsx from 'clsx';
 import LineLimit from 'components/text/LineLimit';
 import Link from 'next/link';
 import React, { useMemo, useRef } from 'react';
 import { useMeasure } from 'react-use';
-import { generateStaticURL } from 'utils/routing';
 
 interface Props extends ContentfulPost {
   // Compact omits description

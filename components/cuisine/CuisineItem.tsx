@@ -1,8 +1,7 @@
-import { SVG } from '@tastiest-io/tastiest-utils';
+import { generateStaticURL, SVG } from '@tastiest-io/tastiest-utils';
 import classNames from 'classnames';
 import Link from 'next/link';
 import React from 'react';
-import { generateStaticURL } from 'utils/routing';
 
 interface Props {
   // Ensure that the accompanying SVG is in /assets/cuisines

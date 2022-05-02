@@ -3,6 +3,7 @@ import {
   ContentfulPost,
   ContentfulRestaurant,
   dlog,
+  generateStaticURL,
   TastiestDish,
 } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
@@ -27,7 +28,6 @@ import { ParsedUrlQuery } from 'querystring';
 import React, { useMemo } from 'react';
 import Scroll from 'react-scroll';
 import { generateTitle } from 'utils/metadata';
-import { generateStaticURL } from 'utils/routing';
 
 const Element = Scroll.Element;
 const scroller = Scroll.scroller;

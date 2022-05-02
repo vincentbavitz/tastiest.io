@@ -94,6 +94,8 @@ export const CheckoutProvider = ({ children }: any) => {
       };
     }
 
+    console.log('checkout ➡️ userData:', userData);
+
     const {
       paymentMethod,
       error: paymentMethodError,

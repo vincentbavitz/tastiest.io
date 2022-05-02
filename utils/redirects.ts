@@ -1,5 +1,4 @@
-import { CmsApi } from '@tastiest-io/tastiest-utils';
-import { generateStaticURL } from './routing';
+import { CmsApi, generateStaticURL } from '@tastiest-io/tastiest-utils';
 
 export const getBaseUrl = () => {
   if (typeof window === 'undefined') {
