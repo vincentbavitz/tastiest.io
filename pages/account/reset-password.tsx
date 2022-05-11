@@ -16,8 +16,7 @@ interface Props {
 export const getServerSideProps: GetServerSideProps = async context => {
   // Get user ID from cookie.
   const cookieToken = nookies.get(context)?.token;
-  // const userDataApi = new UserDataApi(firebaseAdmin);
-  // const { userId } = await userDataApi.initFromCookieToken(cookieToken);
+
   const userId = null;
 
   // If user is signed in, redirect to home.
@@ -85,10 +84,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
       });
     }
 
-    // Create a sign in token for them
-    // const signInToken = await firebaseAdmin
-    //   .auth()
-    //   .createCustomToken(userDataApi.userId);
     const signInToken = '';
 
     const props: Props = { signInToken, resetPasswordRequest };

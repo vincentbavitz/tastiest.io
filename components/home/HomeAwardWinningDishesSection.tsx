@@ -1,11 +1,10 @@
 import { ArrowUpOutlined } from '@ant-design/icons';
 import { Avatar } from '@tastiest-io/tastiest-ui';
-import { TastiestDish } from '@tastiest-io/tastiest-utils';
+import { generateStaticURL, TastiestDish } from '@tastiest-io/tastiest-utils';
 import DisplayCard from 'components/cards/DisplayCard';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
 import { SectionTitle } from 'components/SectionTitle';
 import React from 'react';
-import { generateStaticURL } from 'utils/routing';
 
 interface HomeAwardWinningDishesSectionProps {
   dishes: TastiestDish[];

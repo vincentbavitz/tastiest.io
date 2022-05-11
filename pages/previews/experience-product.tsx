@@ -2,13 +2,13 @@ import {
   CmsApi,
   ContentfulPost,
   ContentfulProduct,
+  generateStaticURL,
 } from '@tastiest-io/tastiest-utils';
 import { ExperienceOrderPanelDesktop } from 'components/article/widgets/ExperienceOrderPanelDesktop';
 import { Contained } from 'components/Contained';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
-import { generateStaticURL } from 'utils/routing';
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,

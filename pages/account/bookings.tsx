@@ -16,6 +16,7 @@ import {
   ContentfulProduct,
   dlog,
   formatCurrency,
+  generateStaticURL,
   Horus,
   TIME,
 } from '@tastiest-io/tastiest-utils';
@@ -34,7 +35,6 @@ import nookies from 'nookies';
 import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { useLockBodyScroll } from 'react-use';
 import { getGoogleMapLink } from 'utils/location';
-import { generateStaticURL } from 'utils/routing';
 
 const RESTULTS_PER_PAGE = 5;
 

@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { TastiestDish } from '@tastiest-io/tastiest-utils';
+import { generateStaticURL, TastiestDish } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useHoverDirty, useVideo } from 'react-use';
-import { generateStaticURL } from 'utils/routing';
 
 interface Props extends TastiestDish {
   compact?: boolean;

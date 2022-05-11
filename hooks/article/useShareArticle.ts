@@ -1,6 +1,6 @@
+import { generateStaticURL } from '@tastiest-io/tastiest-utils';
 import { useMemo } from 'react';
 import { getBaseUrl } from 'utils/redirects';
-import { generateStaticURL } from 'utils/routing';
 
 export interface IUseShareArticleParams {
   title: string;

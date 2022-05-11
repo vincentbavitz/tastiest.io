@@ -1,9 +1,9 @@
 import { CookieEmoji } from '@tastiest-io/tastiest-icons';
 import { Button } from '@tastiest-io/tastiest-ui';
-import { LocalStorageItem } from 'contexts/tracking';
 import { useAuth } from 'hooks/auth/useAuth';
 import React from 'react';
 import { useLocalStorage } from 'react-use';
+import { LocalStorageItem } from 'types/localStorage';
 import { UI } from '../../constants';
 
 export function AcceptTrackingPopup() {

@@ -3,6 +3,7 @@ import { AvailableSlot } from '@tastiest-io/tastiest-horus';
 import { Button } from '@tastiest-io/tastiest-ui';
 import {
   ContentfulProduct,
+  generateStaticURL,
   getMinsIntoDay,
   minsIntoHumanTime,
   TIME,
@@ -17,7 +18,6 @@ import lodash from 'lodash';
 import { DateTime } from 'luxon';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useState } from 'react';
-import { generateStaticURL } from 'utils/routing';
 import { ExperienceOrderPanelProps } from './ExperienceOrderPanelDesktop';
 
 type HorusOpenSlotsResponse = {

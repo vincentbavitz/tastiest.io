@@ -1,9 +1,8 @@
 import { Media } from '@tastiest-io/tastiest-horus';
-import { ContentfulPost } from '@tastiest-io/tastiest-utils';
+import { ContentfulPost, generateStaticURL } from '@tastiest-io/tastiest-utils';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import React, { useMemo } from 'react';
-import { generateStaticURL } from '../../utils/routing';
 
 export function ArticleCardRow(post: ContentfulPost) {
   const { isDesktop } = useScreenSize();

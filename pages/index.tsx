@@ -31,6 +31,35 @@ function shuffleArray(array) {
 }
 
 export const getServerSideProps: GetServerSideProps = async context => {
+  // Testing Zendesk
+
+  // const client = zendesk.createClient({
+  //   username: 'developers@tastiest.io',
+  //   token: 'ISZFlR3g1TUQpLpvLathoMBuP0vVKiFkPi5QW1tV',
+  //   remoteUri: 'https://tastiesttechnologies.zendesk.com/api/v2',
+  //   disableGlobalState: true,
+  //   debug: true, // if you want to debug in library only mode, you'll have to include this
+  // });
+
+  // Tickets are from agents
+  // client.tickets.create({
+  //   ticket: {
+  //     subject: 'My printer is on fire!',
+  //     comment: {
+  //       body: 'The smoke is very colorful.',
+  //     },
+  //   },
+  // });
+
+  // // Requests are from end-users
+  // client.requests.create({
+  //   request: {
+  //     requester: { name: 'Vince', email: 'vincent@bavitz.org' },
+  //     subject: 'Regarding trees',
+  //     comment: { body: 'Trees have branches.' },
+  //   },
+  // });
+
   return {
     props: {},
   };

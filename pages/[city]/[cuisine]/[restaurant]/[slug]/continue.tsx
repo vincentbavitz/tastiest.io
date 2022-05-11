@@ -1,5 +1,9 @@
 import { CloseOutlined } from '@ant-design/icons';
-import { CmsApi, ContentfulPost } from '@tastiest-io/tastiest-utils';
+import {
+  CmsApi,
+  ContentfulPost,
+  generateStaticURL,
+} from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import ExperienceOrderPanelInner from 'components/article/widgets/ExperienceOrderPanelInner';
 import { Contained } from 'components/Contained';
@@ -14,7 +18,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo } from 'react';
 import { generateTitle } from 'utils/metadata';
-import { generateStaticURL } from 'utils/routing';
 
 interface IPath {
   params: {

@@ -1,7 +1,7 @@
 import { ArrowUpOutlined } from '@ant-design/icons';
 import { Media } from '@tastiest-io/tastiest-horus';
 import { CrumbProps } from '@tastiest-io/tastiest-ui';
-import { titleCase } from '@tastiest-io/tastiest-utils';
+import { generateStaticURL, titleCase } from '@tastiest-io/tastiest-utils';
 import clsx from 'clsx';
 import { ArticleSaveShareWidget } from 'components/article/widgets/ArticleSaveShareWidget';
 import { ExperienceOrderPanelDesktop } from 'components/article/widgets/ExperienceOrderPanelDesktop';
@@ -15,7 +15,6 @@ import Image from 'next/image';
 import { getStaticProps } from 'pages/[city]/[cuisine]/[restaurant]/[slug]';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useWindowScroll } from 'react-use';
-import { generateStaticURL } from 'utils/routing';
 import { LayoutProps } from '../LayoutHandler';
 import LayoutWrapper from '../LayoutWrapper';
 
