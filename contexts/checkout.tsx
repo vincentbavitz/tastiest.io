@@ -59,7 +59,7 @@ export const CheckoutContext = React.createContext<CheckoutContextShape>({
 });
 
 export const CheckoutProvider = ({ children }: any) => {
-  const { isSignedIn, token, userData } = useAuth();
+  const { isSignedIn, token, userData, user } = useAuth();
 
   const router = useRouter();
   const stripe = useStripe();
@@ -93,8 +93,6 @@ export const CheckoutProvider = ({ children }: any) => {
         },
       };
     }
-
-    console.log('checkout ➡️ userData:', userData);
 
     const {
       paymentMethod,

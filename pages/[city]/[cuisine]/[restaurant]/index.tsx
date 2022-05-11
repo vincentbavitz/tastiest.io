@@ -14,6 +14,7 @@ import MobileBottomButton from 'components/MobileBottomButton';
 import VideoCarousel from 'components/restaurant/VideoCarousel';
 import { RichBody } from 'components/RichBody';
 import { SectionTitle } from 'components/SectionTitle';
+import { useFollowTagger } from 'hooks/restaurants/useFollowTagger';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { Layouts } from 'layouts/LayoutHandler';
 import {
@@ -117,6 +118,9 @@ const RestaurantPage = (
 ) => {
   const { restaurant, tastiestDishes, posts } = props;
   const { isMobile, isTablet, isDesktop, isHuge } = useScreenSize();
+
+  // Session Tagging for users coming from ?restaurateur
+  useFollowTagger(restaurant.id);
 
   const experiencesPath = useMemo(() => {
     const baseRestaurantPath = generateStaticURL({

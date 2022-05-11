@@ -3,8 +3,9 @@ import { HorusUser } from '@tastiest-io/tastiest-horus';
 import { dlog, Horus, useHorusSWR } from '@tastiest-io/tastiest-utils';
 import nookies from 'nookies';
 import React, { createContext, useEffect, useState } from 'react';
+import { LocalStorageItem } from 'types/localStorage';
 import { firebaseClient } from '../utils/firebaseClient';
-import { ANONYMOUS_USER_ID, LocalStorageItem } from './tracking';
+import { ANONYMOUS_USER_ID } from './tracking';
 
 type SignInFn = (
   email: string,
@@ -124,7 +125,7 @@ export function AuthProvider({ children }: any) {
     mutate(() => fetchUserData(token));
   }, [token]);
 
-  dlog('auth ➡️ data:', userData);
+  console.log('auth ➡️ data:', userData);
 
   const register = async (
     email: string,

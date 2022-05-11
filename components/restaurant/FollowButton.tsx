@@ -55,6 +55,7 @@ export default function FollowButton(props: Props) {
 
   const followAsSignedOut = () => {
     setHasSignedInFromFlow(true);
+
     dispatch(setAuthModalStep(AuthFlowStep.REGISTER));
     dispatch(openAuthModal());
   };

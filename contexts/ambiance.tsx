@@ -1,16 +1,11 @@
+import { useImplicitFollowSyncs } from 'hooks/restaurants/useImplicitFollowSyncs';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { Provider as StoreProvider } from 'react-redux';
-import {
-  ReactReduxFirebaseProvider,
-  ReactReduxFirebaseProviderProps,
-} from 'react-redux-firebase';
 import { createStore } from 'redux';
-import { createFirestoreInstance } from 'redux-firestore';
 import { openAuthModal } from 'state/navigation';
 import { rootReducer } from 'state/reducers';
 import { METADATA } from '../constants';
-import { firebaseClient } from '../utils/firebaseClient';
 
 // The AMBIANCE provider of Tastiest
 // Includes location management, Firestore and Redux connectivity,
@@ -18,12 +13,6 @@ import { firebaseClient } from '../utils/firebaseClient';
 export const AmbianceContext = React.createContext(undefined);
 
 const store = createStore(rootReducer);
-const rrfProps: ReactReduxFirebaseProviderProps = {
-  firebase: firebaseClient,
-  config: {},
-  dispatch: store.dispatch,
-  createFirestoreInstance,
-};
 
 interface AmbianceProviderProps {
   children: any;
@@ -31,6 +20,9 @@ interface AmbianceProviderProps {
 
 const AmbianceProvider = ({ children }: AmbianceProviderProps) => {
   const router = useRouter();
+
+  // Handle the user's pending follow syncs when they sign in.
+  useImplicitFollowSyncs();
 
   const handleLocationChange = url => {
     // Open login modal from URL params
@@ -48,11 +40,7 @@ const AmbianceProvider = ({ children }: AmbianceProviderProps) => {
 
   return (
     <>
-      <StoreProvider store={store}>
-        <ReactReduxFirebaseProvider {...rrfProps}>
-          {children}
-        </ReactReduxFirebaseProvider>
-      </StoreProvider>
+      <StoreProvider store={store}>{children}</StoreProvider>
     </>
   );
 };

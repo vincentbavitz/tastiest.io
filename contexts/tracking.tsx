@@ -7,10 +7,6 @@ import { useRouter } from 'next/router';
 import Script from 'next/script';
 import React, { useEffect } from 'react';
 
-export enum LocalStorageItem {
-  HAS_ACCEPTED_COOKIES = 'HAS_ACCEPTED_COOKIES',
-}
-
 export const ANONYMOUS_USER_ID = 'anonymous-user';
 
 export const TrackingContext = React.createContext(undefined);

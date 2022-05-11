@@ -6,8 +6,15 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useLocalStorage } from 'react-use';
 import { openAuthModal } from 'state/navigation';
+import { LocalStorageItem } from 'types/localStorage';
 import { useAuth } from './auth/useAuth';
+
+export type SyncFollow = {
+  restaurantId: string;
+  notifications?: FollowerNotificationPreferences;
+};
 
 type FollowRelation = {
   id: string;
@@ -69,6 +76,14 @@ export default function useFollow(restaurantId: string) {
     });
   }, [horus]);
 
+  // Pending Syncs when the user isn't signed in.
+  const [pendingSyncs, setPendingSyncs] = useLocalStorage<SyncFollow[]>(
+    LocalStorageItem.SYNC_FOLLOWING,
+    [],
+  );
+
+  dlog('useFollow ➡️ pendingSyncs:', pendingSyncs);
+
   const [
     notifications,
     setNotifications,
@@ -100,6 +115,21 @@ export default function useFollow(restaurantId: string) {
     if (!error) {
       setFollowing(true);
     }
+  };
+
+  /**
+   * Implicitly follow; save the follow-sync to localStorage and they will
+   * automatically follow when they sign in.
+   */
+  const followImplicitly = async (
+    notifications?: FollowerNotificationPreferences,
+  ) => {
+    // Update current pending syncs...
+    const _pendingSyncs = pendingSyncs.filter(
+      s => s.restaurantId !== restaurantId,
+    );
+
+    setPendingSyncs([..._pendingSyncs, { restaurantId, notifications }]);
   };
 
   const unfollow = async () => {
@@ -155,6 +185,7 @@ export default function useFollow(restaurantId: string) {
 
   return {
     follow,
+    followImplicitly,
     unfollow,
     following,
     setFollowing,
