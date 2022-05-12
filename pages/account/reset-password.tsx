@@ -5,7 +5,6 @@ import {
 import { GetServerSideProps } from 'next';
 import nookies from 'nookies';
 import React, { useEffect } from 'react';
-import { useFirebase } from 'react-redux-firebase';
 import { useAuth } from '../../hooks/auth/useAuth';
 
 interface Props {
@@ -114,8 +113,6 @@ export const getServerSideProps: GetServerSideProps = async context => {
 function ResetPassword(props: Props) {
   const { signInToken, resetPasswordRequest } = props;
   const { user, userData } = useAuth();
-
-  const firebase = useFirebase();
 
   // Don't sign in until their pw is changed.
   useEffect(() => {

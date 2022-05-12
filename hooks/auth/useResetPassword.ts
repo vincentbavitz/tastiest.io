@@ -1,10 +1,7 @@
 import { AuthError } from 'contexts/auth';
 import { useState } from 'react';
-import { useFirebase } from 'react-redux-firebase';
 
 export const useResetPassword = () => {
-  const firebase = useFirebase();
-
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<AuthError | null>(null);
@@ -18,7 +15,7 @@ export const useResetPassword = () => {
     try {
       setError(null);
       setSubmitting(true);
-      await firebase.auth().sendPasswordResetEmail(email);
+      await window.firebase.auth().sendPasswordResetEmail(email);
       setSuccess(true);
     } catch (error) {
       setError(error);

@@ -26,7 +26,7 @@ export function Footer() {
   if (isCheckout) return <CheckoutFooter />;
 
   return (
-    <div className="py-4 font-normal text-center text-white sm:py-8 bg-dark">
+    <div className="py-4 font-normal text-center text-white sm:py-8 bg-primary">
       <Contained>
         {!isDesktop && <MobileFooter />}
         {isDesktop && !isHuge && <DesktopFooter />}

@@ -1,3 +1,4 @@
+import { usePageLoader } from 'hooks/usePageLoader';
 import { NextComponentType, NextPageContext } from 'next';
 import { Router } from 'next/router';
 import LayoutAssociatesInfluencers from './LayoutAssociatesInfluencers';
@@ -42,13 +43,19 @@ const LayoutHandler = (props: LayoutProps) => {
   // To get the text value of the assigned layout of each component
   const Layout = layouts[props.children?.layout];
 
-  // If we have a registered layout render children with said layout
-  if (Layout != null) {
-    return <Layout {...props}>{props.children}</Layout>;
-  }
+  const { isRouteLoading, isPageLoading } = usePageLoader();
 
+  // If we have a registered layout render children with said layout
   // If not render children with fragment
-  return <LayoutDefault {...props}>{props.children}</LayoutDefault>;
+  return (
+    <>
+      {Layout != null ? (
+        <Layout {...props}>{props.children}</Layout>
+      ) : (
+        <LayoutDefault {...props}>{props.children}</LayoutDefault>
+      )}
+    </>
+  );
 };
 
 export default LayoutHandler;

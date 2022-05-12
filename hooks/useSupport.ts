@@ -1,9 +1,5 @@
-import { FirestoreCollection } from '@tastiest-io/tastiest-utils';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
 import { v4 as uuid } from 'uuid';
-import { IState } from '../state/reducers';
 import { useAuth } from './auth/useAuth';
 
 export enum SupportRequestGenerationError {
@@ -16,20 +12,14 @@ export enum SupportRequestGenerationError {
 
 export function useSupport() {
   const { user, userData } = useAuth();
-
-  const firestore = useFirestore();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useFirestoreConnect([
-    {
-      collection: FirestoreCollection.SUPPORT_USERS,
-    },
-  ]);
+  const supportRequests = [];
 
-  const supportRequests: Partial<any> = useSelector(
-    ({ firestore: { data } }: IState) =>
-      data?.[FirestoreCollection.SUPPORT_USERS],
-  );
+  // const supportRequests: Partial<any> = useSelector(
+  //   ({ firestore: { data } }: IState) =>
+  //     data?.[FirestoreCollection.SUPPORT_USERS],
+  // );
 
   const makeSupportRequest = async (
     name: string,
@@ -78,10 +68,10 @@ export function useSupport() {
 
     try {
       setIsSubmitting(true);
-      await firestore
-        .collection(FirestoreCollection.SUPPORT_USERS)
-        .doc(requestId)
-        .set(supportRequest);
+      // await firestore
+      //   .collection(FirestoreCollection.SUPPORT_USERS)
+      //   .doc(requestId)
+      //   .set(supportRequest);
 
       setIsSubmitting(false);
       return { success: true, errors: [] };
@@ -125,10 +115,10 @@ export function useSupport() {
 
     try {
       setIsSubmitting(true);
-      await firestore
-        .collection(FirestoreCollection.USER_QUERIES)
-        .doc(uuid())
-        .set(query);
+      // await firestore
+      //   .collection(FirestoreCollection.USER_QUERIES)
+      //   .doc(uuid())
+      //   .set(query);
 
       setIsSubmitting(false);
       return { success: true, errors: [] };

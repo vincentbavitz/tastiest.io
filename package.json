@@ -73,7 +73,6 @@
     "react-number-format": "^4.4.4",
     "react-paginate": "^6.5.0",
     "react-redux": "^7.2.1",
-    "react-redux-firebase": "^3.9.0",
     "react-responsive-carousel": "^3.2.22",
     "react-scroll": "^1.8.6",
     "react-stickynode": "^3.0.5",
