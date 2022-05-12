@@ -1,12 +1,6 @@
-import {
-  Address,
-  dlog,
-  FirestoreCollection,
-} from '@tastiest-io/tastiest-utils';
+import { Address, dlog } from '@tastiest-io/tastiest-utils';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useFirestore } from 'react-redux-firebase';
-import { v4 as uuid } from 'uuid';
 import { useAuth } from './auth/useAuth';
 import { useTrack } from './useTrack';
 
@@ -35,7 +29,6 @@ interface IRecommendation extends IRecommendationDetails {
 
 export function useFeedback() {
   const { track } = useTrack();
-  const firestore = useFirestore();
   const { user, userData } = useAuth();
 
   const router = useRouter();
@@ -84,10 +77,10 @@ export function useFeedback() {
 
     try {
       setIsSubmitting(true);
-      await firestore
-        .collection(FirestoreCollection.SUGGESTIONS)
-        .doc(uuid())
-        .set(recommendation);
+      // await window.firestore
+      //   .collection(FirestoreCollection.SUGGESTIONS)
+      //   .doc(uuid())
+      //   .set(recommendation);
 
       track('User Made a Recommendation', {
         name,

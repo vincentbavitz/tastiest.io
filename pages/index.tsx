@@ -3,6 +3,7 @@ import {
   CmsApi,
   ContentfulPost,
   ContentfulRestaurant,
+  dlog,
   TastiestDish,
 } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
@@ -17,6 +18,7 @@ import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
+import fetch from 'node-fetch';
 import React, { useEffect, useState } from 'react';
 import Scroll from 'react-scroll';
 import { METADATA } from '../constants';
@@ -59,6 +61,33 @@ export const getServerSideProps: GetServerSideProps = async context => {
   //     comment: { body: 'Trees have branches.' },
   //   },
   // });
+
+  // Testing Klaviyo SMS Consent
+  const KLAVIYO_SMS_LIST_ID = 'RVkX6T';
+  const endpoint = `https://a.klaviyo.com/api/v2/list/${KLAVIYO_SMS_LIST_ID}/subscribe`;
+
+  const consentData = {
+    api_key: 'pk_9709c4e5fd47f4c60483f956eff6d00ddf',
+    profiles: [
+      {
+        email: 'vincent12@tastiest.io',
+        $consent: ['sms'],
+        phone_number: '+44 79 4776 2787',
+        sms_consent: true,
+      },
+    ],
+  };
+
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    body: JSON.stringify(consentData),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const json = await response.json();
+  dlog('index ➡️ response:', json);
 
   return {
     props: {},
