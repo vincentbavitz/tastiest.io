@@ -14,7 +14,7 @@ export default function CreationHeading(props: CreationHeadingProps) {
     <div style={{ width: 'fit-content' }} className="relative z-1">
       <h2
         className={clsx(
-          'text-3xl font-primary text-primary z-10',
+          'text-3xl font-primary text-primary whitespace-nowrap z-10',
           padVertical ? 'py-10' : '',
         )}
       >

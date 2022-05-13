@@ -23,14 +23,14 @@ export default function HomeDiscoverSection() {
         <DiscoverBlock
           label="Discover Restaurants"
           image="https://images.ctfassets.net/tq39z0nxr0bv/4ObOP95uddGx55mo04YF9T/52ace8bb8f411293b6961b26b9fea9ec/Rectangle_20_2x.png?h=600"
-          description="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis, impedit dolor tempore, aperiam suscipit quibusdam optio harum"
+          description=""
           href=""
         />
 
         <DiscoverBlock
           label="Dining Experiences"
           image="https://images.ctfassets.net/tq39z0nxr0bv/7eMdV9FxnLDiGc1phAFx49/dc654fa8680cc8e23594348b550e21e0/Rectangle_20_2x.png?h=600"
-          description="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis, impedit dolor tempore, aperiam suscipit quibusdam optio harum"
+          description=""
           href=""
         />
       </div>
