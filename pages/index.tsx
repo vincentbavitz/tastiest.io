@@ -3,22 +3,21 @@ import {
   CmsApi,
   ContentfulPost,
   ContentfulRestaurant,
-  dlog,
   TastiestDish,
 } from '@tastiest-io/tastiest-utils';
 import { Contained } from 'components/Contained';
 import HomeAwardWinningDishesSection from 'components/home/HomeAwardWinningDishesSection';
+import HomeDiscoverSection from 'components/home/HomeDiscoverSection';
 import HomeFeaturedExperiencesSection from 'components/home/HomeFeaturedExperiencesSection';
 import HomeFeaturedRestaurantsSection from 'components/home/HomeFeaturedRestaurantsSection';
+import HomeHowItWorksSection from 'components/home/HomeHowItWorksSection';
 import HomeInformationSection from 'components/home/HomeInformationSection';
 import HomeWhyTastiestSection from 'components/home/HomeWhyTastiestSection';
-import HomeHowItWorksSection from 'components/home/HowHowItWorksSection';
 import SuggestRestaurantPrompBox from 'components/SuggestRestaurantPrompBox';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
-import fetch from 'node-fetch';
 import React, { useEffect, useState } from 'react';
 import Scroll from 'react-scroll';
 import { METADATA } from '../constants';
@@ -63,31 +62,31 @@ export const getServerSideProps: GetServerSideProps = async context => {
   // });
 
   // Testing Klaviyo SMS Consent
-  const KLAVIYO_SMS_LIST_ID = 'RVkX6T';
-  const endpoint = `https://a.klaviyo.com/api/v2/list/${KLAVIYO_SMS_LIST_ID}/subscribe`;
+  // const KLAVIYO_SMS_LIST_ID = 'RVkX6T';
+  // const endpoint = `https://a.klaviyo.com/api/v2/list/${KLAVIYO_SMS_LIST_ID}/subscribe`;
 
-  const consentData = {
-    api_key: 'pk_9709c4e5fd47f4c60483f956eff6d00ddf',
-    profiles: [
-      {
-        email: 'vincent12@tastiest.io',
-        $consent: ['sms'],
-        phone_number: '+44 79 4776 2787',
-        sms_consent: true,
-      },
-    ],
-  };
+  // const consentData = {
+  //   api_key: 'pk_9709c4e5fd47f4c60483f956eff6d00ddf',
+  //   profiles: [
+  //     {
+  //       email: 'vincent12@tastiest.io',
+  //       $consent: ['sms'],
+  //       phone_number: '+44 79 4776 2787',
+  //       sms_consent: true,
+  //     },
+  //   ],
+  // };
 
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    body: JSON.stringify(consentData),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  // const response = await fetch(endpoint, {
+  //   method: 'POST',
+  //   body: JSON.stringify(consentData),
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  // });
 
-  const json = await response.json();
-  dlog('index ➡️ response:', json);
+  // const json = await response.json();
+  // dlog('index ➡️ response:', json);
 
   return {
     props: {},
@@ -165,6 +164,10 @@ const Index = () => {
       <div className="flex flex-col mb-10 space-y-10">
         <HomeWhyTastiestSection />
 
+        <HomeDiscoverSection />
+
+        <HomeHowItWorksSection />
+
         <Element name="featured-restaurants-section">
           <HomeFeaturedRestaurantsSection restaurants={restaurants} />
         </Element>
@@ -178,8 +181,6 @@ const Index = () => {
         <Element name="featured-dishes-section">
           <HomeAwardWinningDishesSection dishes={sortedDishes} />
         </Element>
-
-        <HomeHowItWorksSection />
 
         <Contained>
           <div className="flex justify-center w-full py-6">

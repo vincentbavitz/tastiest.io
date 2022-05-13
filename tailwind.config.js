@@ -14,6 +14,7 @@ module.exports = {
     fontFamily: {
       primary: ['Marmelad'],
       secondary: ['Montserrat'],
+      tertiary: ['Creattion'],
       mono: ['SourceCodePro'],
     },
     fontSize: {

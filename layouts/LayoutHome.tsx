@@ -1,9 +1,6 @@
-import clsx from 'clsx';
-import { Contained } from 'components/Contained';
 import { HomeHeroSection } from 'components/home/HomeHeroSection';
 import { useScreenSize } from 'hooks/useScreenSize';
 import { InferGetServerSidePropsType } from 'next';
-import Image from 'next/image';
 import { getServerSideProps } from 'pages';
 import React, { useEffect, useState } from 'react';
 import { useWindowScroll } from 'react-use';
@@ -27,51 +24,22 @@ export default function LayoutHome({
     return () => setHeaderTransparent(false);
   }, [scrollY]);
 
+  // https://images.ctfassets.net/tq39z0nxr0bv/72wfIiMlOgPoJr4QOXBhK2/4d91421b86e344ae0847c1ef193d34e7/Rectangle_14_2x.png?h=250
+
   return (
     <LayoutWrapper
       router={router}
       pageProps={pageProps}
       headerProps={{
-        transparency: headerTransparent ? 'glass' : 'none',
+        transparency: headerTransparent ? 'full' : 'none',
         theme: headerTransparent ? 'dark' : 'light',
       }}
     >
-      <div className="">
-        <div style={{}} className="relative flex items-center overflow-hidden">
-          <div className="absolute inset-0 w-full z-0 h-auto">
-            <Image
-              src={
-                'https://images.ctfassets.net/tq39z0nxr0bv/t9LBT7P7dVavzwRaECbVn/5d0b7e83c3039a648bd914fb46c0758f/Numa_carousel_2.png'
-              }
-              layout="fill"
-              objectFit="cover"
-              loading={'eager'}
-              priority
-            />
-            <video
-              loop
-              muted
-              autoPlay
-              src={''}
-              className={clsx('object-cover w-full h-full')}
-              playsInline // prevent fullscreen on iOS
-            />
-          </div>
-
-          <Contained>
-            <div
-              className={clsx(
-                'flex items-center justify-center w-full z-50',
-                isDesktop ? 'mt-28 mb-12' : 'mt-24 mb-14',
-              )}
-            >
-              <HomeHeroSection />
-            </div>
-          </Contained>
-        </div>
-
-        <Component {...(pageProps as any)} />
+      <div className="-mt-8">
+        <HomeHeroSection />
       </div>
+
+      <Component {...(pageProps as any)} />
     </LayoutWrapper>
   );
 }

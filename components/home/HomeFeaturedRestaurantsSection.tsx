@@ -7,7 +7,7 @@ import {
 } from '@tastiest-io/tastiest-utils';
 import DisplayCard from 'components/cards/DisplayCard';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
-import { SectionTitle } from 'components/SectionTitle';
+import CreationHeading from 'components/text/CreationHeading';
 import Link from 'next/link';
 import React from 'react';
 
@@ -20,8 +20,8 @@ export default function HomeFeaturedRestaurantsSection(props: Props) {
 
   return (
     <div className="relative">
-      <div className="pb-10">
-        <SectionTitle>Featured Restaurants</SectionTitle>
+      <div style={{ marginLeft: '-75px' }} className="pb-10">
+        <CreationHeading float="right">Featured Restaurants</CreationHeading>
       </div>
 
       <div className="-mt-6">
