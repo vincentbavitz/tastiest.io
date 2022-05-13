@@ -480,7 +480,7 @@ const ModifyBookingModal = (props: ModifyBookingModalProps) => {
                   selectedDay={selectedDay}
                   setSelectedDay={setSelectedDay}
                   selectItemSize={'medium'}
-                  chevronSize={6}
+                  arrowSize={6}
                 />
               </div>
 
@@ -491,7 +491,7 @@ const ModifyBookingModal = (props: ModifyBookingModalProps) => {
                   selectedSlot={selectedSlot}
                   setSelectedSlot={setSelectedSlot}
                   selectItemSize={'medium'}
-                  chevronSize={6}
+                  arrowSize={6}
                 />
               </div>
             </div>

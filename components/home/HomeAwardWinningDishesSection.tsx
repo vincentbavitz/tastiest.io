@@ -3,7 +3,7 @@ import { Avatar } from '@tastiest-io/tastiest-ui';
 import { generateStaticURL, TastiestDish } from '@tastiest-io/tastiest-utils';
 import DisplayCard from 'components/cards/DisplayCard';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
-import { SectionTitle } from 'components/SectionTitle';
+import CreationHeading from 'components/text/CreationHeading';
 import React from 'react';
 
 interface HomeAwardWinningDishesSectionProps {
@@ -17,8 +17,8 @@ export default function HomeAwardWinningDishesSection(
 
   return (
     <div className="relative">
-      <div className="pb-10">
-        <SectionTitle>Award Winning Dishes</SectionTitle>
+      <div className="flex justify-center">
+        <CreationHeading>Award Winning Dishes</CreationHeading>
       </div>
 
       <div className="-mt-6">

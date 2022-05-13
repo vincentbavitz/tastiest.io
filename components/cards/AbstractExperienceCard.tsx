@@ -1,6 +1,4 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { TagsOutlined } from '@ant-design/icons';
-import { Button } from '@tastiest-io/tastiest-ui';
 import {
   ContentfulPost,
   formatCurrency,
@@ -61,9 +59,9 @@ export function AbstractExperienceCard(
   const isComingSoon = restaurant.name.includes('Numa');
 
   return (
-    <div className="relative">
+    <div className="relative select-none">
       {isComingSoon ? (
-        <div className="absolute top-4 left-4 bg-secondary border-2 border-white text-base font-medium text-white z-10 px-2">
+        <div className="absolute top-4 left-4 bg-secondary text-base font-medium text-white z-10 px-2">
           Coming Soon
         </div>
       ) : null}
@@ -71,8 +69,10 @@ export function AbstractExperienceCard(
       <div
         ref={ref}
         className={clsx(
-          'w-full shadow-md',
-          isComingSoon ? 'filter saturate-50 pointer-events-none' : '',
+          'w-full',
+          isComingSoon
+            ? 'filter saturate-50 brightness-75 pointer-events-none'
+            : '',
         )}
       >
         <div
@@ -135,68 +135,22 @@ export function AbstractExperienceCard(
                     </div>
                   ) : null}
                 </div>
-
-                {/* White border */}
-                <div className="absolute inset-1 border-2 border-light z-10"></div>
               </div>
             </a>
           </Link>
 
-          <div className={clsx('bg-white text-dark pt-4 pb-3 px-4')}>
+          <div className="text-dark pt-4">
             {/* Title */}
-            <h4
-              style={{ height: '4rem' }}
-              className="text-base leading-tight font-semibold pb-2"
-            >
-              {product.name}
-            </h4>
+            <h4 className="text-base leading-tight pb-2">{product.name}</h4>
 
             {/* Price */}
             <div className="flex items-center">
-              <TagsOutlined className="text-secondary text-lg mr-2" />
-
               <span className="font-thin">
-                <span className="font-medium">
+                <span className="text-primary font-medium">
                   £{formatCurrency(product.price)}
                 </span>{' '}
-                / person
+                per person
               </span>
-            </div>
-          </div>
-
-          <div className="flex flex-col pb-2 gap-2">
-            {withViewRestaurant ? (
-              <div className="mx-2 border-2 border-dark">
-                <Link href={restaurantHref} as={restaurantAs}>
-                  <a className="no-underline">
-                    <Button
-                      wide
-                      color="light"
-                      size="large"
-                      disabled={isComingSoon}
-                    >
-                      <span className=" text-base font-semibold">
-                        View Restaurant
-                      </span>
-                    </Button>
-                  </a>
-                </Link>
-              </div>
-            ) : null}
-
-            <div className="mx-2 border-2 border-primary">
-              <Link href={experienceHref} as={experienceAs}>
-                <a className="no-underline">
-                  <Button
-                    wide
-                    color="primary"
-                    size="large"
-                    disabled={isComingSoon}
-                  >
-                    <span className="text-base font-semibold">Book</span>
-                  </Button>
-                </a>
-              </Link>
             </div>
           </div>
         </div>

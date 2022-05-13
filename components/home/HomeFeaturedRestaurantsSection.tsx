@@ -1,13 +1,13 @@
-import { BellOutlined } from '@ant-design/icons';
-import { Button } from '@tastiest-io/tastiest-ui';
 import {
   ContentfulRestaurant,
   generateStaticURL,
-  titleCase,
 } from '@tastiest-io/tastiest-utils';
-import DisplayCard from 'components/cards/DisplayCard';
+import clsx from 'clsx';
+import FeaturedRestaurantCard from 'components/cards/FeaturedRestaurantCard';
+import { Contained } from 'components/Contained';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
-import { SectionTitle } from 'components/SectionTitle';
+import CreationHeading from 'components/text/CreationHeading';
+import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
 import React from 'react';
 
@@ -17,17 +17,23 @@ interface Props {
 
 export default function HomeFeaturedRestaurantsSection(props: Props) {
   const { restaurants } = props;
+  const { isMobile, isTablet, isDesktop } = useScreenSize();
 
   return (
     <div className="relative">
-      <div className="pb-10">
-        <SectionTitle>Featured Restaurants</SectionTitle>
-      </div>
+      <Contained>
+        <div className={clsx(!isDesktop && 'flex justify-center')}>
+          <CreationHeading float={isDesktop ? 'right' : 'center'}>
+            Featured Restaurants
+          </CreationHeading>
+        </div>
+      </Contained>
 
-      <div className="-mt-6">
+      <div className={clsx(isDesktop ? '-mt-20' : '')}>
         <HorizontalScrollable
           noPadding
           forceButtons
+          buttonsLocation="top"
           verticalBuffer={6}
           spacing={6}
         >
@@ -39,32 +45,16 @@ export default function HomeFeaturedRestaurantsSection(props: Props) {
             });
 
             return (
-              <div key={key} style={{ width: '350px', maxWidth: '80vw' }}>
-                <DisplayCard
-                  header={restaurant.name}
-                  headerFont="primary"
-                  overlayButton={
-                    restaurant.name.includes('Numa') ? null : (
-                      <Link
-                        href={`${link.href}?notifications=true`}
-                        as={`${link.as}?notifications=true`}
-                      >
-                        <a className="no-underline">
-                          <Button color="light" prefix={<BellOutlined />}>
-                            Follow
-                          </Button>
-                        </a>
-                      </Link>
-                    )
-                  }
-                  description={`${titleCase(
-                    restaurant.cuisine.replace('_', ' '),
-                  )} - ${restaurant.location_display}`}
-                  image={restaurant.display_photograph}
-                  isComingSoon={restaurant.name.includes('Numa')}
-                  {...link}
-                />
-              </div>
+              <Link key={key} href={link.href} as={link.as}>
+                <a className="no-underline">
+                  <div className="mt-4">
+                    <FeaturedRestaurantCard
+                      restaurant={restaurant}
+                      compact={isMobile || isTablet}
+                    />
+                  </div>
+                </a>
+              </Link>
             );
           })}
         </HorizontalScrollable>

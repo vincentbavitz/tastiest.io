@@ -133,7 +133,7 @@ function ExperienceOrderPanelInner(props: Props) {
   } = useOrderPanel(product, slug);
 
   const sizes = useMemo(() => {
-    const chevronSize = (layout === 'overlay' ? 8 : 6) as 6 | 8;
+    const arrowSize = (layout === 'overlay' ? 8 : 6) as 6 | 8;
     const selectItemSize =
       layout === 'overlay'
         ? 'medium'
@@ -145,7 +145,7 @@ function ExperienceOrderPanelInner(props: Props) {
       | 'large';
 
     return {
-      chevronSize,
+      arrowSize,
       selectItemSize,
       experienceSelectSize,
     };
@@ -179,7 +179,7 @@ function ExperienceOrderPanelInner(props: Props) {
             noPadding
             spacing={1}
             forceButtons
-            chevronSize={sizes.chevronSize}
+            arrowSize={sizes.arrowSize}
           >
             {posts?.map((_post, key) => {
               const selected = product.id === _post.product.id;
@@ -233,7 +233,7 @@ function ExperienceOrderPanelInner(props: Props) {
             days={Object.keys(days).map(k => Number(k))}
             selectedDay={selectedDay}
             setSelectedDay={setSelectedDay}
-            chevronSize={sizes.chevronSize}
+            arrowSize={sizes.arrowSize}
             selectItemSize={sizes.selectItemSize}
           />
         </div>
@@ -244,7 +244,7 @@ function ExperienceOrderPanelInner(props: Props) {
             selectedDay={selectedDay}
             selectedSlot={selectedSlot}
             setSelectedSlot={setSelectedSlot}
-            chevronSize={sizes.chevronSize}
+            arrowSize={sizes.arrowSize}
             selectItemSize={sizes.selectItemSize}
           />
         </div>
@@ -313,7 +313,7 @@ interface TimeSelectorProps {
   setSelectedSlot: (value: AvailableSlot) => void;
 
   // Visual props
-  chevronSize: 6 | 8;
+  arrowSize: 6 | 8;
   selectItemSize: 'small' | 'medium' | 'large';
 }
 
@@ -323,7 +323,7 @@ const TimeSelector = (props: TimeSelectorProps) => {
     selectedDay,
     selectedSlot,
     setSelectedSlot,
-    chevronSize,
+    arrowSize,
     selectItemSize,
   } = props;
 
@@ -332,7 +332,7 @@ const TimeSelector = (props: TimeSelectorProps) => {
       noPadding
       spacing={0}
       forceButtons
-      chevronSize={chevronSize}
+      arrowSize={arrowSize}
     >
       {selectedDay
         ? slotsOfDay.map((slot, key) => {
@@ -378,7 +378,7 @@ interface DaySelectorProps {
   setSelectedDay: (day: number) => void;
 
   // Visual props
-  chevronSize: 6 | 8;
+  arrowSize: 6 | 8;
   selectItemSize: 'small' | 'medium' | 'large';
 }
 
@@ -387,7 +387,7 @@ const DaySelector = (props: DaySelectorProps) => {
     // days,
     selectedDay,
     setSelectedDay,
-    chevronSize,
+    arrowSize,
     selectItemSize,
   } = props;
 
@@ -400,7 +400,7 @@ const DaySelector = (props: DaySelectorProps) => {
       noPadding
       spacing={1}
       forceButtons
-      chevronSize={chevronSize}
+      arrowSize={arrowSize}
     >
       {days?.map((ordinal, key) => {
         // const daysFromToday = ordinal - DateTime.now().ordinal;

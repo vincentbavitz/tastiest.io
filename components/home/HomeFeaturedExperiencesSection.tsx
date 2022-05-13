@@ -1,7 +1,10 @@
 import { ContentfulPost } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
 import { AbstractExperienceCard } from 'components/cards/AbstractExperienceCard';
+import { Contained } from 'components/Contained';
 import { HorizontalScrollable } from 'components/HorizontalScrollable';
-import { SectionTitle } from 'components/SectionTitle';
+import CreationHeading from 'components/text/CreationHeading';
+import { useScreenSize } from 'hooks/useScreenSize';
 import React from 'react';
 
 interface Props {
@@ -10,6 +13,7 @@ interface Props {
 
 export default function HomeFeaturedExperiencesSection(props: Props) {
   const { cards } = props;
+  const { isMobile, isTablet, isDesktop } = useScreenSize();
 
   // FIX ME CORRECT ME
   // Sort cards so Numa is last; it's Coming Soon
@@ -20,20 +24,24 @@ export default function HomeFeaturedExperiencesSection(props: Props) {
 
   return (
     <div className="relative">
-      <div className="pb-10">
-        <SectionTitle>Featured Experiences</SectionTitle>
-      </div>
+      <Contained>
+        <div className={clsx(!isDesktop && 'flex justify-center')}>
+          <CreationHeading float={isDesktop ? 'right' : 'center'}>
+            Featured Experiences
+          </CreationHeading>
+        </div>
+      </Contained>
 
-      <div className="-mt-6">
+      <div className={clsx(isDesktop ? '-mt-20' : '')}>
         <HorizontalScrollable
           noPadding
+          buttonsLocation="top"
           forceButtons
           spacing={6}
           verticalBuffer={6}
-          buttonsOffset={-35}
         >
           {sortedCards.map((card, key) => (
-            <div key={key} style={{ width: '250px' }}>
+            <div key={key} className="mt-4" style={{ width: '250px' }}>
               <AbstractExperienceCard
                 withViewRestaurant
                 key={card.id}
