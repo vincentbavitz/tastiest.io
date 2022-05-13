@@ -11,7 +11,10 @@ export default function CreationHeading(props: CreationHeadingProps) {
   const { children, padVertical = true, float = 'center' } = props;
 
   return (
-    <div style={{ width: 'fit-content' }} className="relative z-1">
+    <div
+      style={{ width: 'fit-content', maxWidth: '100%' }}
+      className="relative overflow-x-hidden z-1"
+    >
       <h2
         className={clsx(
           'text-3xl font-primary text-primary whitespace-nowrap z-10',
