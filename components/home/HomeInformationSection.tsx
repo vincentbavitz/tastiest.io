@@ -1,9 +1,7 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { Modal } from '@tastiest-io/tastiest-ui';
 import clsx from 'clsx';
 import { Contained } from 'components/Contained';
-import FancyBorder from 'components/FancyBorder';
-import LineLimit from 'components/text/LineLimit';
+import CreationHeading from 'components/text/CreationHeading';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -25,73 +23,78 @@ export default function HomeInformationSection(props: Props) {
   const [showFollowModal, setShowFollowModal] = useState(false);
 
   return (
-    <Contained>
-      <div className="flex flex-col py-6 space-y-6">
-        <div
-          className={clsx(
-            'grid gap-4 grid-rows-1',
-            isMobile && 'grid-cols-1',
-            isTablet && 'grid-cols-2',
-            isDesktop && 'grid-cols-2',
-            isHuge && 'grid-cols-4',
-          )}
-        >
-          <InformationBlock
-            label="Community Driven"
-            image={
-              'https://images.ctfassets.net/tq39z0nxr0bv/1TlvBsEdpgkH2s96M4K2JH/6c4cb3234bfe5e0c2c2ef44dc4639eb3/Hands_and_wine_glasses_blue.png?h=400'
-            }
-            sublabel="All restaurants are recommended by you and anonymously tested by us"
-            withoutButton={withoutButtons}
-            buttonText="Recommend a restaurant"
-            onButtonClick={() => router.push('/recommend')}
-          />
+    <div className="text-light bg-primary">
+      <CreationHeading color="light" backdropOpacity={10}>
+        Benefits of Tastiest
+      </CreationHeading>
 
-          <InformationBlock
-            label="Restaurant Stories"
-            image="https://images.ctfassets.net/tq39z0nxr0bv/115r7wGs5FM1fY953TceAv/dee35d3a25c8611fa61605ba11b7779e/600-book.png"
-            sublabel="Feel the atmosphere through our cinematography and interviews"
-            withoutButton={withoutButtons}
-            buttonText="Browse restaurants"
-            onButtonClick={() =>
-              scroller.scrollTo('featured-restaurants-section', {
-                duration: 250,
-                smooth: true,
-                offset: -75,
-              })
-            }
-          />
+      <Contained>
+        <div className="flex flex-col items-center py-6 space-y-6">
+          <div
+            className={clsx(
+              'grid gap-4 grid-rows-1',
+              isMobile && 'grid-cols-1',
+              isTablet && 'grid-cols-2',
+              isDesktop && 'grid-cols-2',
+              isHuge && 'grid-cols-4',
+            )}
+          >
+            <InformationBlock
+              label="Community Driven"
+              image={
+                'https://images.ctfassets.net/tq39z0nxr0bv/7Me4aVwgxt1i3RvmiUQr3n/4f7a921a90f9232d27e8df3b779ec19b/wine_glasses_clink_2x.png?h=400'
+              }
+              sublabel="All restaurants are recommended by you and anonymously tested by us"
+              withoutButton={withoutButtons}
+              buttonText="Recommend a restaurant"
+              onButtonClick={() => router.push('/recommend')}
+            />
 
-          <InformationBlock
-            label="Book Directly"
-            image={
-              'https://images.ctfassets.net/tq39z0nxr0bv/6Dw5ERJtjrrbCxGYL9OGA6/23dd081ee2322ec43af3e36cdd06f5de/Table_booked.png?h=400'
-            }
-            sublabel="Reserve your table through Tastiest"
-            withoutButton={withoutButtons}
-            buttonText="Browse experiences"
-            onButtonClick={() =>
-              scroller.scrollTo('featured-experiences-section', {
-                duration: 250,
-                smooth: true,
-                offset: -75,
-              })
-            }
-          />
+            <InformationBlock
+              label="Restaurant Stories"
+              image="https://images.ctfassets.net/tq39z0nxr0bv/115r7wGs5FM1fY953TceAv/dee35d3a25c8611fa61605ba11b7779e/600-book.png"
+              sublabel="Feel the atmosphere through our cinematography and interviews"
+              withoutButton={withoutButtons}
+              buttonText="Browse restaurants"
+              onButtonClick={() =>
+                scroller.scrollTo('featured-restaurants-section', {
+                  duration: 250,
+                  smooth: true,
+                  offset: -75,
+                })
+              }
+            />
 
-          <InformationBlock
-            label="Be In The Know"
-            image={
-              'https://images.ctfassets.net/tq39z0nxr0bv/3Q1dNV5LTzXKI1KM5rJpfq/1b78be9e0266ef33142098aa57cb2f35/Loyalty_hand.png?h=400'
-            }
-            sublabel="Loyal customers follow restaurants and get access to special
+            <InformationBlock
+              label="Book Directly"
+              image={
+                'https://images.ctfassets.net/tq39z0nxr0bv/6fUQwVweKUTUOkGY01Qhbo/58117932bf3aed0fecfff458d1f7dd75/reservation_table_2x.png'
+              }
+              sublabel="Reserve your table through Tastiest"
+              withoutButton={withoutButtons}
+              buttonText="Browse experiences"
+              onButtonClick={() =>
+                scroller.scrollTo('featured-experiences-section', {
+                  duration: 250,
+                  smooth: true,
+                  offset: -75,
+                })
+              }
+            />
+
+            <InformationBlock
+              label="Be In The Know"
+              image={
+                'https://images.ctfassets.net/tq39z0nxr0bv/5ZHlLymrwX4jlLA3e1oxc5/202ae9787657c05867d5ae088605da21/loyalty_hand_2x.png'
+              }
+              sublabel="Loyal customers follow restaurants and get access to special
             experiences"
-            withoutButton={withoutButtons}
-            buttonText="Learn how"
-            onButtonClick={() => setShowFollowModal(true)}
-          />
+              withoutButton={withoutButtons}
+              buttonText="Learn how"
+              onButtonClick={() => setShowFollowModal(true)}
+            />
 
-          <Modal
+            {/* <Modal
             title="How Following Works"
             show={showFollowModal}
             close={() => setShowFollowModal(false)}
@@ -120,10 +123,11 @@ export default function HomeInformationSection(props: Props) {
                 You can follow restaurants from their profile
               </p>
             </div>
-          </Modal>
+          </Modal> */}
+          </div>
         </div>
-      </div>
-    </Contained>
+      </Contained>
+    </div>
   );
 }
 
@@ -148,36 +152,20 @@ const InformationBlock: FC<InformationBlockProps> = props => {
   } = props;
 
   return (
-    <FancyBorder layers="double">
-      <div className="flex flex-col w-full px-4 py-6 h-full">
-        <h4 className="text-lg font-medium text-center">
-          <LineLimit lines={3} fit="tight">
-            {label}
-          </LineLimit>
-        </h4>
-
-        <div className="">
-          <div className="flex justify-center items-center relative w-full h-32">
-            <Image src={image} layout="fill" objectFit="contain" />
-          </div>
+    <div className="flex flex-col w-full px-4">
+      <div className="">
+        <div className="flex justify-center items-center relative w-full h-32">
+          <Image src={image} layout="fill" objectFit="contain" />
         </div>
-
-        <div className="flex items-center flex-grow">
-          <div className="pt-4 text-center text-base font-light">
-            {sublabel}
-          </div>
-        </div>
-
-        {withoutButton ? null : (
-          <div
-            onClick={onButtonClick}
-            style={{ minHeight: '64px' }}
-            className="flex items-center justify-center text-center px-4 py-2 mt-4 text-base text-light font-medium cursor-pointer w-full bg-primary duration-300 filter hover:brightness-125"
-          >
-            {buttonText}
-          </div>
-        )}
       </div>
-    </FancyBorder>
+
+      <h4 className="text-lg font-medium text-center mt-6">{label}</h4>
+
+      <div className="flex items-center">
+        <div className="text-center text-base font-light opacity-75">
+          {sublabel}
+        </div>
+      </div>
+    </div>
   );
 };

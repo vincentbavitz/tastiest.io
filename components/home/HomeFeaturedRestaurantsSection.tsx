@@ -23,7 +23,10 @@ export default function HomeFeaturedRestaurantsSection(props: Props) {
     <div className="relative">
       <Contained>
         <div className={clsx(!isDesktop && 'flex justify-center')}>
-          <CreationHeading float={isDesktop ? 'right' : 'center'}>
+          <CreationHeading
+            float={isDesktop ? 'right' : 'center'}
+            position={isDesktop ? 'left' : 'center'}
+          >
             Featured Restaurants
           </CreationHeading>
         </div>

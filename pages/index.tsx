@@ -1,10 +1,10 @@
-import { RightOutlined } from '@ant-design/icons';
 import {
   CmsApi,
   ContentfulPost,
   ContentfulRestaurant,
   TastiestDish,
 } from '@tastiest-io/tastiest-utils';
+import clsx from 'clsx';
 import { Contained } from 'components/Contained';
 import HomeAwardWinningDishesSection from 'components/home/HomeAwardWinningDishesSection';
 import HomeDiscoverSection from 'components/home/HomeDiscoverSection';
@@ -13,7 +13,8 @@ import HomeFeaturedRestaurantsSection from 'components/home/HomeFeaturedRestaura
 import HomeHowItWorksSection from 'components/home/HomeHowItWorksSection';
 import HomeInformationSection from 'components/home/HomeInformationSection';
 import HomeWhyTastiestSection from 'components/home/HomeWhyTastiestSection';
-import SuggestRestaurantPrompBox from 'components/SuggestRestaurantPrompBox';
+import ImageLinkBlock from 'components/ImageLinkBlock';
+import { useScreenSize } from 'hooks/useScreenSize';
 import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
@@ -98,6 +99,8 @@ const Index = () => {
   const [dishes, setDishes] = useState<TastiestDish[]>([]);
   const [restaurants, setRestaurants] = useState<ContentfulRestaurant[]>([]);
 
+  const { isMobile, isTablet } = useScreenSize();
+
   useEffect(() => {
     const cms = new CmsApi(
       process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID,
@@ -178,54 +181,36 @@ const Index = () => {
 
         <HomeInformationSection />
 
+        <Contained>
+          <div
+            className={clsx(
+              'flex w-full',
+              'my-6',
+              isMobile ? 'flex-col' : '',
+              isTablet ? 'gap-8' : 'gap-12',
+            )}
+          >
+            <ImageLinkBlock
+              label={['Recommend a', 'restaurant']}
+              image="https://images.ctfassets.net/tq39z0nxr0bv/ObL6xHQLuwK3lCf8eiL10/127b2c088b3b671c468505499b6d35b4/Rectangle_20_2x.png?h=800"
+              description="All our restaurant partners are recommended by you, our foodie community. Only the best make it."
+              href="/recommend"
+            />
+
+            <ImageLinkBlock
+              label={['Apply to be a', 'restaurant partner']}
+              image="https://images.ctfassets.net/tq39z0nxr0bv/3zIyx3LH9MizAJDHsMCzmn/eb53b953d14444b25f76f49b487de395/Rectangle_20_2x.png?h=800"
+              description=""
+              href="/restaurateurs"
+            />
+          </div>
+        </Contained>
+
         <Element name="featured-dishes-section">
           <HomeAwardWinningDishesSection dishes={sortedDishes} />
         </Element>
-
-        <Contained>
-          <div className="flex justify-center w-full py-6">
-            <SuggestRestaurantPrompBox />
-          </div>
-        </Contained>
       </div>
     </>
-  );
-};
-
-interface InfoRowProps {
-  header: string;
-  description: string;
-  icon: React.ForwardRefExoticComponent<any>;
-}
-
-const InfoRow = (props: InfoRowProps) => {
-  const { header, description, icon: Icon } = props;
-
-  return (
-    <div className="relative w-full">
-      <div
-        style={{
-          filter: 'drop-shadow(9px 9px 15px #3882bb20)',
-        }}
-        className="relative flex items-center justify-between gap-4 bg-white py-4 pl-6 pr-10 z-10"
-      >
-        <div className="flex items-center gap-4">
-          <Icon
-            style={{
-              filter: 'drop-shadow(0 0 3px #8dd7f4a0)',
-            }}
-            className="text-secondary text-3xl"
-          />
-
-          <div>
-            <h1 className="font-medium text-base leading-7">{header}</h1>
-            <span className="">{description}</span>
-          </div>
-        </div>
-
-        <RightOutlined className="text-xl text-secondary" />
-      </div>
-    </div>
   );
 };
 
