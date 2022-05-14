@@ -32,25 +32,33 @@ export default function HomeFeaturedExperiencesSection(props: Props) {
         </div>
       </Contained>
 
-      <div className={clsx(isDesktop ? '-mt-20' : '')}>
-        <HorizontalScrollable
-          noPadding
-          buttonsLocation="top"
-          forceButtons
-          spacing={6}
-          verticalBuffer={6}
-        >
-          {sortedCards.map((card, key) => (
-            <div key={key} className="mt-4" style={{ width: '250px' }}>
-              <AbstractExperienceCard
-                withViewRestaurant
-                key={card.id}
-                {...card}
-              />
-            </div>
-          ))}
-        </HorizontalScrollable>
-      </div>
+      {isDesktop ? (
+        <div className={clsx('', isDesktop ? '-mt-20 -ml-8' : '')}>
+          <Contained>
+            <ScrollableInner cards={sortedCards} />
+          </Contained>
+        </div>
+      ) : (
+        <ScrollableInner cards={sortedCards} />
+      )}
     </div>
   );
 }
+
+const ScrollableInner = ({ cards }: Props) => {
+  return (
+    <HorizontalScrollable
+      noPadding
+      buttonsLocation="top"
+      forceButtons
+      spacing={6}
+      verticalBuffer={6}
+    >
+      {cards.map((card, key) => (
+        <div key={key} className="mt-4" style={{ width: '250px' }}>
+          <AbstractExperienceCard withViewRestaurant key={card.id} {...card} />
+        </div>
+      ))}
+    </HorizontalScrollable>
+  );
+};

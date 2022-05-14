@@ -10,13 +10,13 @@ export default function HomeWhyTastiestSection() {
 
   return (
     <Contained>
-      <div className="flex justify-center mt-12">
+      <div className="flex justify-center mt-8">
         <CreationHeading>Why Tastiest</CreationHeading>
       </div>
 
       <div
         className={clsx(
-          'flex gap-6 w-full pt-16 pb-4',
+          'flex gap-6 w-full pb-4',
           isMobile ? 'flex-col items-center' : '',
         )}
       >
