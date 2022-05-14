@@ -15,12 +15,12 @@ export function HomeHeroSection(): JSX.Element {
     <div className="relative">
       <div
         style={{ minHeight: '700px', maxHeight: '100vh' }}
-        className="relative flex items-center bg-primary pt-12"
+        className="relative flex items-center bg-primary"
       >
-        <div className="z-50">
+        <div className="z-50 w-full">
           <Contained>
             <div className="leading-tight">
-              <h2
+              <h1
                 className={clsx(
                   'text-white font-primary',
                   isMobile ? 'text-4xl' : 'text-5xl',
@@ -28,15 +28,13 @@ export function HomeHeroSection(): JSX.Element {
               >
                 Discover premium
                 <br /> dining experiences.
-              </h2>
+              </h1>
 
               <h4 className="text-white text-xl mt-4">
                 We partner with the best restaurants so you have the best
                 experiences.
               </h4>
             </div>
-
-            <CallToActionSelector />
           </Contained>
         </div>
       </div>

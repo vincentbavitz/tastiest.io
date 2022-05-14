@@ -17,48 +17,65 @@ interface Props {
 
 export default function HomeFeaturedRestaurantsSection(props: Props) {
   const { restaurants } = props;
-  const { isMobile, isTablet, isDesktop } = useScreenSize();
+  const { isDesktop } = useScreenSize();
 
   return (
     <div className="relative">
       <Contained>
         <div className={clsx(!isDesktop && 'flex justify-center')}>
-          <CreationHeading float={isDesktop ? 'right' : 'center'}>
+          <CreationHeading
+            float={isDesktop ? 'right' : 'center'}
+            position={isDesktop ? 'left' : 'center'}
+          >
             Featured Restaurants
           </CreationHeading>
         </div>
       </Contained>
 
-      <div className={clsx(isDesktop ? '-mt-20' : '')}>
-        <HorizontalScrollable
-          noPadding
-          forceButtons
-          buttonsLocation="top"
-          verticalBuffer={6}
-          spacing={6}
-        >
-          {restaurants.map((restaurant, key) => {
-            const link = generateStaticURL({
-              city: restaurant.city,
-              cuisine: restaurant.cuisine,
-              restaurant: restaurant.uri_name,
-            });
-
-            return (
-              <Link key={key} href={link.href} as={link.as}>
-                <a className="no-underline">
-                  <div className="mt-4">
-                    <FeaturedRestaurantCard
-                      restaurant={restaurant}
-                      compact={isMobile || isTablet}
-                    />
-                  </div>
-                </a>
-              </Link>
-            );
-          })}
-        </HorizontalScrollable>
-      </div>
+      {isDesktop ? (
+        <div className={clsx('', isDesktop ? '-mt-20 -ml-8' : '')}>
+          <Contained>
+            <ScrollableInner restaurants={restaurants} />
+          </Contained>
+        </div>
+      ) : (
+        <ScrollableInner restaurants={restaurants} />
+      )}
     </div>
   );
 }
+
+const ScrollableInner = ({ restaurants }: Props) => {
+  const { isMobile, isTablet } = useScreenSize();
+
+  return (
+    <HorizontalScrollable
+      noPadding
+      forceButtons
+      buttonsLocation="top"
+      verticalBuffer={6}
+      spacing={6}
+    >
+      {restaurants.map((restaurant, key) => {
+        const link = generateStaticURL({
+          city: restaurant.city,
+          cuisine: restaurant.cuisine,
+          restaurant: restaurant.uri_name,
+        });
+
+        return (
+          <Link key={key} href={link.href} as={link.as}>
+            <a className="no-underline">
+              <div className="mt-4">
+                <FeaturedRestaurantCard
+                  restaurant={restaurant}
+                  compact={isMobile || isTablet}
+                />
+              </div>
+            </a>
+          </Link>
+        );
+      })}
+    </HorizontalScrollable>
+  );
+};

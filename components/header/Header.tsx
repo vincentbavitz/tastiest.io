@@ -90,7 +90,7 @@ function MobileHeader(props: HeaderProps) {
               </Dropdown.Trigger>
 
               <Dropdown.Item
-                display={true}
+                display={isSignedIn}
                 href="/account/bookings"
                 icon={<UserOutlined />}
               >
