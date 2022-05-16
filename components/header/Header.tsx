@@ -17,24 +17,27 @@ import { useSignOut } from 'hooks/auth/useSignOut';
 import { usePageLoader } from 'hooks/usePageLoader';
 import { useScreenSize } from 'hooks/useScreenSize';
 import Link from 'next/link';
-import React, { ReactNode, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { ReactElement, ReactNode, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { UI } from '../../constants';
 import { openAuthModal } from '../../state/navigation';
-import { IState } from '../../state/reducers';
 import { Contained } from '../Contained';
-import { HeaderAvatar } from './HeaderAvatar';
+
+type HeaderAllowedChildren = HeaderItemProps | HeaderLinkProps;
 
 export interface HeaderProps {
   transparency?: 'glass' | 'full' | 'none';
   breadcrumbs?: Omit<CrumbProps, 'selected'>[];
   theme?: 'light' | 'dark';
   blank?: boolean;
-  children?: ReactNode;
+  children?:
+    | ReactElement<HeaderAllowedChildren>
+    | ReactElement<HeaderAllowedChildren>[];
 }
 
-export function Header(props: HeaderProps) {
+function Header(props: HeaderProps) {
   const { isDesktop } = useScreenSize();
+
   return isDesktop ? <DesktopHeader {...props} /> : <MobileHeader {...props} />;
 }
 
@@ -105,14 +108,6 @@ function MobileHeader(props: HeaderProps) {
                 Bookings
               </Dropdown.Item>
 
-              {/* <Dropdown.Item
-              display={isSignedIn}
-              href="/account/preferences"
-              icon={<SettingOutlined />}
-            >
-              Preferences
-            </Dropdown.Item> */}
-
               <Dropdown.Item
                 display={isSignedIn}
                 icon={<LogoutOutlined />}
@@ -163,120 +158,125 @@ function DesktopHeader(props: HeaderProps) {
     children,
   } = props;
 
-  const { searchOverlayExpanded } = useSelector(
-    (state: IState) => state.navigation,
-  );
-  const { searchBarPinnedToHeader } = useSelector(
-    (state: IState) => state.search,
-  );
-
-  // Prevent clicking when things are loading
-  // const { isPageLoading } = usePageLoader();
-
-  // We only wnat the searchbar to be invisible on the home page
-  // and given that they have not scrolled past the main home search
-  const [searchIsShown, setSearchIsShown] = useState(false);
-  // useEffect(() => {
-  //   if (
-  //     (location.pathname === '/' && searchBarPinnedToHeader) ||
-  //     location.pathname !== '/'
-  //   ) {
-  //     if (!searchIsShown) {
-  //       setSearchIsShown(true);
-  //     }
-  //   } else {
-  //     if (searchIsShown) {
-  //       setSearchIsShown(false);
-  //     }
-  //   }
-  // }, [location.pathname, searchBarPinnedToHeader]);
-
   const navBarRef = useRef(null);
 
   return (
-    <>
-      <div
-        ref={navBarRef}
-        style={{
-          zIndex:
-            searchOverlayExpanded && searchIsShown
-              ? UI.Z_INDEX_HEADER_SEARCH
-              : UI.Z_INDEX_HEADER,
-          height: `${UI.HEADER_HEIGHT_DESKTOP_REM}rem`,
-        }}
-        className={clsx(
-          'fixed left-0 right-0 flex items-center duration-500 w-full',
-          breadcrumbs ? 'top-9' : 'top-0',
-          transparency === 'glass' && 'glass',
-          transparency === 'none'
-            ? theme === 'light'
-              ? 'bg-white'
-              : 'bg-dark'
-            : 'bg-none',
-          // isPageLoading ? 'pointer-events-none' : 'pointer-events-auto',
-        )}
-      >
-        <Contained>
-          <div className="flex items-center w-full h-full">
-            <div className="flex items-center justify-between w-full antialiased">
-              <div className="flex space-x-4 flex-grow">
+    <nav
+      ref={navBarRef}
+      style={{
+        zIndex: UI.Z_INDEX_HEADER,
+        height: `${UI.HEADER_HEIGHT_DESKTOP_REM}rem`,
+      }}
+      className={clsx(
+        'fixed left-0 right-0 flex items-center duration-500 w-full',
+        breadcrumbs ? 'top-9' : 'top-0',
+        transparency === 'glass' && 'glass',
+        transparency === 'none'
+          ? theme === 'light'
+            ? 'bg-white'
+            : 'bg-dark'
+          : 'bg-none',
+      )}
+    >
+      <Contained>
+        <div className="flex items-center w-full h-full">
+          <div className="flex items-center justify-between w-full antialiased">
+            <div className="flex-grow">
+              <div style={{ width: 'min-content' }}>
                 <Link href="/">
                   <a className="no-underline">
                     <TastiestBrand theme={theme} type="full" size={10} />
                   </a>
                 </Link>
+              </div>
+            </div>
 
+            {!blank && (
+              <div
+                className={clsx(
+                  'flex space-x-8 h-full font-primary text-base',
+                  theme === 'light' ? 'text-dark' : 'text-light',
+                )}
+              >
                 {children}
               </div>
-
-              {blank ? null : <HeaderAvatar />}
-            </div>
+            )}
           </div>
-        </Contained>
-      </div>
-
-      {breadcrumbs ? (
-        <div
-          style={{ zIndex: 999 }}
-          className="fixed top-0 left-0 right-0 h-9 bg-white flex items-center"
-        >
-          <Contained>
-            <Breadcrumbs>
-              {breadcrumbs.map((crumb, key) => (
-                <Breadcrumbs.Crumb key={key} {...crumb} />
-              ))}
-            </Breadcrumbs>
-          </Contained>
         </div>
-      ) : null}
-    </>
+      </Contained>
+    </nav>
   );
 }
 
-function CheckoutHeader({ isDesktop }: { isDesktop: boolean }) {
-  const InnerContent = () => (
+interface HeaderLinkProps {
+  name: string;
+  label: string;
+  href?: string;
+  display?: boolean;
+  onClick?: () => void;
+}
+
+const HeaderLink = (props: HeaderLinkProps) => {
+  const { label, href, display = true, onClick = () => null } = props;
+
+  const HeaderLinkInner = () => (
     <div
-      style={{
-        height: `${
-          isDesktop ? UI.HEADER_HEIGHT_DESKTOP_REM : UI.HEADER_HEIGHT_MOBILE_REM
-        }rem`,
-      }}
-      className={clsx(
-        'flex items-center w-full antialiased',
-        isDesktop ? 'justify-between' : 'justify-center',
-      )}
+      onClick={onClick}
+      className="flex items-center duration-300 opacity-75 hover:opacity-100 cursor-pointer leading-none"
     >
-      <div className="flex items-center flex-shrink-0">
-        <TastiestBrand type="full" />
-      </div>
+      {label}
     </div>
   );
 
-  return isDesktop ? (
-    <Contained maxWidth={UI.CHECKOUT_WIDTH_PX}>
-      <InnerContent />
-    </Contained>
+  if (!display) {
+    return null;
+  }
+
+  return href ? (
+    <Link href={href}>
+      <a>
+        <HeaderLinkInner />
+      </a>
+    </Link>
   ) : (
-    <InnerContent />
+    <HeaderLinkInner />
   );
+};
+
+interface HeaderItemProps {
+  children: ReactNode;
+  display?: boolean;
+
+  /**
+   * Include if you'd like to render only on Desktop
+   */
+  desktop?: boolean;
+
+  /**
+   * Include if you'd like to render only on Mobile
+   */
+  mobile?: boolean;
 }
+
+const HeaderItem = (props: HeaderItemProps) => {
+  const { display = true, desktop = false, mobile = false, children } = props;
+
+  const { isDesktop } = useScreenSize();
+
+  if (!display) {
+    return null;
+  }
+
+  // prettier-ignore
+  const shouldRender =
+    (!desktop && !mobile) ||
+    (isDesktop && desktop) ||
+    (!isDesktop && mobile);
+
+  return shouldRender ? <div className="h-full">{children}</div> : null;
+};
+
+Header.Link = HeaderLink;
+Header.Item = HeaderItem;
+
+export default Header;

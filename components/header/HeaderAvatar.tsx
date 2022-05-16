@@ -42,44 +42,44 @@ export function HeaderAvatar() {
     dispatch(openAuthModal());
   };
 
-  return (
+  if (!isSignedIn) {
+    return null;
+  }
+
+  return isSignedIn ? (
     <div className="relative w-8">
-      {isSignedIn ? (
-        <Dropdown offset={25}>
-          <Dropdown.Trigger>
-            <UserAvatar />
-          </Dropdown.Trigger>
+      <Dropdown offset={25}>
+        <Dropdown.Trigger>
+          <UserAvatar />
+        </Dropdown.Trigger>
 
-          <Dropdown.Item
-            display={true}
-            href="/account/bookings"
-            icon={<UserOutlined />}
-          >
-            {userData?.first_name ?? 'Profile'}
-          </Dropdown.Item>
+        <Dropdown.Item
+          display={true}
+          href="/account/bookings"
+          icon={<UserOutlined />}
+        >
+          {userData?.first_name ?? 'Profile'}
+        </Dropdown.Item>
 
-          <Dropdown.Item href="/account/bookings" icon={<CalendarOutlined />}>
-            Bookings
-          </Dropdown.Item>
+        <Dropdown.Item href="/account/bookings" icon={<CalendarOutlined />}>
+          Bookings
+        </Dropdown.Item>
 
-          {/* <Dropdown.Item href="/account/preferences" icon={<SettingOutlined />}>
+        {/* <Dropdown.Item href="/account/preferences" icon={<SettingOutlined />}>
             Preferences
           </Dropdown.Item> */}
 
-          <Dropdown.Divider />
+        <Dropdown.Divider />
 
-          <Dropdown.Item
-            icon={<LogoutOutlined />}
-            onClick={() => {
-              signOut();
-            }}
-          >
-            Sign out
-          </Dropdown.Item>
-        </Dropdown>
-      ) : (
-        <UserAvatar initial="T" onClick={() => dispatch(openAuthModal())} />
-      )}
+        <Dropdown.Item
+          icon={<LogoutOutlined />}
+          onClick={() => {
+            signOut();
+          }}
+        >
+          Sign out
+        </Dropdown.Item>
+      </Dropdown>
     </div>
-  );
+  ) : null;
 }
