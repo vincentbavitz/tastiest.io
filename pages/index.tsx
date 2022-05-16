@@ -19,11 +19,13 @@ import { Layouts } from 'layouts/LayoutHandler';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Scroll from 'react-scroll';
 import { METADATA } from '../constants';
 
 const Element = Scroll.Element;
+const scroller = Scroll.scroller;
 
 function shuffleArray(array) {
   return array
@@ -100,6 +102,7 @@ const Index = () => {
   const [restaurants, setRestaurants] = useState<ContentfulRestaurant[]>([]);
 
   const { isMobile, isTablet } = useScreenSize();
+  const router = useRouter();
 
   useEffect(() => {
     const cms = new CmsApi(
@@ -127,6 +130,29 @@ const Index = () => {
       setDishes(shuffleArray(dishes));
     });
   }, []);
+
+  const path = new URL(router.asPath, 'https://tastiest.io');
+
+  /**
+   * Scroll down do `#experiences` or `restaurants` section if URL param exists.
+   */
+  useEffect(() => {
+    if (!router.isReady) {
+      return;
+    }
+
+    const scrollToHashSection = (hash: string) => {
+      scroller.scrollTo(hash, {
+        duration: 250,
+        smooth: true,
+        offset: -105,
+      });
+    };
+
+    if (path.hash === '#experiences' || path.hash === '#restaurants') {
+      scrollToHashSection(`featured-${path.hash.replace('#', '')}-section`);
+    }
+  }, [path.hash, router.isReady]);
 
   const cards = posts.slice(0, 20);
 

@@ -65,12 +65,14 @@ export default function LayoutWrapper({
             <Header.Link
               name="restaurants"
               label="Restaurants"
+              href="/#restaurants"
               onClick={() => scrollTo('featured-restaurants-section')}
             />
 
             <Header.Link
               name="experiences"
               label="Experiences"
+              href="/#experiences"
               onClick={() => scrollTo('featured-experiences-section')}
             />
 

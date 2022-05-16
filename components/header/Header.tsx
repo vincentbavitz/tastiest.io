@@ -161,50 +161,67 @@ function DesktopHeader(props: HeaderProps) {
   const navBarRef = useRef(null);
 
   return (
-    <nav
-      ref={navBarRef}
-      style={{
-        zIndex: UI.Z_INDEX_HEADER,
-        height: `${UI.HEADER_HEIGHT_DESKTOP_REM}rem`,
-      }}
-      className={clsx(
-        'fixed left-0 right-0 flex items-center duration-500 w-full',
-        breadcrumbs ? 'top-9' : 'top-0',
-        transparency === 'glass' && 'glass',
-        transparency === 'none'
-          ? theme === 'light'
-            ? 'bg-white'
-            : 'bg-dark'
-          : 'bg-none',
-      )}
-    >
-      <Contained>
-        <div className="flex items-center w-full h-full">
-          <div className="flex items-center justify-between w-full antialiased">
-            <div className="flex-grow">
-              <div style={{ width: 'min-content' }}>
-                <Link href="/">
-                  <a className="no-underline">
-                    <TastiestBrand theme={theme} type="full" size={10} />
-                  </a>
-                </Link>
+    <>
+      <nav
+        ref={navBarRef}
+        style={{
+          zIndex: UI.Z_INDEX_HEADER,
+          height: `${UI.HEADER_HEIGHT_DESKTOP_REM}rem`,
+        }}
+        className={clsx(
+          'fixed left-0 right-0 flex items-center duration-500 w-full',
+          breadcrumbs ? 'top-9' : 'top-0',
+          transparency === 'glass' && 'glass',
+          transparency === 'none'
+            ? theme === 'light'
+              ? 'bg-white'
+              : 'bg-dark'
+            : 'bg-none',
+        )}
+      >
+        <Contained>
+          <div className="flex items-center w-full h-full">
+            <div className="flex items-center justify-between w-full antialiased">
+              <div className="flex-grow">
+                <div style={{ width: 'min-content' }}>
+                  <Link href="/">
+                    <a className="no-underline">
+                      <TastiestBrand theme={theme} type="full" size={10} />
+                    </a>
+                  </Link>
+                </div>
               </div>
-            </div>
 
-            {!blank && (
-              <div
-                className={clsx(
-                  'flex space-x-8 h-full font-primary text-base',
-                  theme === 'light' ? 'text-dark' : 'text-light',
-                )}
-              >
-                {children}
-              </div>
-            )}
+              {!blank && (
+                <div
+                  className={clsx(
+                    'flex space-x-8 h-full font-primary text-base',
+                    theme === 'light' ? 'text-dark' : 'text-light',
+                  )}
+                >
+                  {children}
+                </div>
+              )}
+            </div>
           </div>
+        </Contained>
+      </nav>
+
+      {breadcrumbs ? (
+        <div
+          style={{ zIndex: 999 }}
+          className="fixed top-0 left-0 right-0 h-9 bg-white flex items-center"
+        >
+          <Contained>
+            <Breadcrumbs size="small">
+              {breadcrumbs.map((crumb, key) => (
+                <Breadcrumbs.Crumb key={key} {...crumb} />
+              ))}
+            </Breadcrumbs>
+          </Contained>
         </div>
-      </Contained>
-    </nav>
+      ) : null}
+    </>
   );
 }
 
